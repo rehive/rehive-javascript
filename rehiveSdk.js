@@ -15,63 +15,121 @@
     // Baseline setup
     // --------------
 
-    var baseAPI = 'https://rehive.com/api/3/',
+    var Rehive = {},
+        baseAPI = 'https://rehive.com/api/3/',
         loginAPI = 'auth/login/',
-        token = '',
+        logoutAPI = 'auth/logout/',
+        retrieveProfileAPI = 'user/',
         header = {header: 'Content-Type: application/json'};
 
     function setToken(newToken){
-        token = newToken;
+        sessionStorage.setItem("token",newToken);
+    }
+
+    function getToken(newToken){
+        return sessionStorage.getItem("token") || '';
     }
 
     function removeToken(){
-        token = "";
+        sessionStorage.clear();
     }
 
-    function postToRehive(url,data,cb){
+    function httpPostRehive(url,data,cb){
+
+        var token = getToken();
+
+        if(token){
+            axios.defaults.headers.common['Authorization'] = 'Token ' + token;
+        } else {
+            delete axios.defaults.headers.common['Authorization'];
+        }
+
         axios.post(baseAPI + url, data , header)
             .then(function (response) {
-                cb(null,response);
+                if(response.status == 200){
+                    cb(null,response.data.data);
+                }
             })
             .catch(function (error) {
-                cb(error.response,null);
+                cb(error.response.data,null);
+            });
+    }
+
+    function httpGetRehive(url,params,cb){
+
+        var token = getToken();
+
+        if(token){
+            axios.defaults.headers.common['Authorization'] = 'Token ' + token;
+        } else {
+            delete axios.defaults.headers.common['Authorization'];
+        }
+
+        axios.get(baseAPI + url, params, header )
+            .then(function (response) {
+                if(response.status == 200){
+                    cb(null,response.data.data);
+                }
+            })
+            .catch(function (error) {
+                console.log(error.response);
+                cb(error.response.data,null);
             });
     }
 
     //public functions
 
-    function login(identifier,company_id,password,cb){
+    function login(credentials,cb){
+        axios.post(baseAPI + loginAPI, credentials , header)
+            .then(function (response) {
+                if(response.status == 200){
+                    setToken(response.data.data.token);
+                    cb(null,response.data.data.user);
+                }
+            })
+            .catch(function (error) {
+                cb(error.response.data,null);
+            });
+    }
 
-        var data = {
-            identifier: identifier,
-            company_id: company_id,
-            password: password
-        };
+    function logout(cb){
 
-        postToRehive(loginAPI,data,cb);
+        var token = getToken();
+
+        if(token){
+            axios.defaults.headers.common['Authorization'] = 'Token ' + token;
+        } else {
+            return cb(null,{message: 'User Already Logged Out'});
+        }
+
+        axios.post(baseAPI + logoutAPI, header)
+            .then(function (response) {
+                if(response.status == 200){
+                    removeToken();
+                    cb(null,response.data);
+
+                }
+            })
+            .catch(function (error) {
+                cb(error.response.data,null);
+            });
+    }
+
+    function retrieveProfile(cb){
+        httpGetRehive(retrieveProfileAPI,{},cb);
     }
 
     //public functions end
 
-    var REHIVE = {
-        login: login,
-        setToken: setToken};
+     Rehive.auth = {
+         login : login,
+         logout: logout
+     };
 
-    return window.REHIVE = REHIVE;
+    Rehive.user = {
+        retrieveProfile : retrieveProfile
+    };
+
+    return window.Rehive = Rehive;
 
 })();
-
-function Login(identifier,company_id,password){
-    REHIVE.login(identifier,company_id,password,function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
-        if(res.status == 200){
-            REHIVE.setToken(res.data.data.token);
-            window.alert('User logged in successfully');
-        }
-
-
-    })
-}
