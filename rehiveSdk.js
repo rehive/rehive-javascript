@@ -36,6 +36,7 @@
     }
 
     function removeToken(){
+        delete axios.defaults.headers.common['Authorization'];
         sessionStorage.removeItem("token");
     }
 
@@ -131,6 +132,7 @@
     }
 
     function login(credentials,cb){
+        console.log(header);
         axios.post(baseAPI + loginAPI, credentials , header)
             .then(function (response) {
                 if(response.status == 200){
