@@ -94,3 +94,19 @@ function getUserProfile(){
         })
 }
 
+function changePassword(old_password,new_password1,new_password2){
+    Rehive.auth.changePassword(
+        {
+            old_password: old_password,
+            new_password1: new_password1,
+            new_password2: new_password2
+        }, function(err,res){
+            if(err){
+                console.log(err);
+                return
+            }
+            console.log(res);
+            document.getElementById('result').innerHTML = convertToText(res.message);
+        })
+}
+

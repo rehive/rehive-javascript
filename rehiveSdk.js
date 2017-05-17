@@ -22,6 +22,7 @@
         loginAPI = 'auth/login/',
         logoutAPI = 'auth/logout/',
         logoutAllAPI = 'auth/logout/all/',
+        changePasswordAPI = 'auth/password/change/',
         retrieveProfileAPI = 'user/',
         header = {header: 'Content-Type: application/json'};
 
@@ -34,7 +35,7 @@
     }
 
     function removeToken(){
-        sessionStorage.clear();
+        sessionStorage.removeItem("token");
     }
 
     function httpPostRehive(url,data,cb){
@@ -72,6 +73,27 @@
             .then(function (response) {
                 if(response.status == 200){
                     cb(null,response.data.data);
+                }
+            })
+            .catch(function (error) {
+                cb(error.response.data,null);
+            });
+    }
+
+    function httpAuthPostRehive(url,data,cb){
+
+        var token = getToken();
+
+        if(token){
+            axios.defaults.headers.common['Authorization'] = 'Token ' + token;
+        } else {
+            delete axios.defaults.headers.common['Authorization'];
+        }
+
+        axios.post(baseAPI + url, data , header)
+            .then(function (response) {
+                if(response.status == 200){
+                    cb(null,response.data);
                 }
             })
             .catch(function (error) {
@@ -158,7 +180,6 @@
                 if(response.status == 200){
                     removeToken();
                     cb(null,response.data);
-
                 }
             })
             .catch(function (error) {
@@ -170,6 +191,10 @@
         httpGetRehive(retrieveProfileAPI,{},cb);
     }
 
+    function changePassword(data,cb){
+        httpAuthPostRehive(changePasswordAPI,data,cb);
+    }
+
     //public functions end
 
      Rehive.auth = {
@@ -177,7 +202,8 @@
          registerCompany: registerCompany,
          login : login,
          logout: logout,
-         logoutAll: logoutAll
+         logoutAll: logoutAll,
+         changePassword: changePassword
      };
 
     Rehive.user = {
