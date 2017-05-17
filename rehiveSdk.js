@@ -23,6 +23,7 @@
         logoutAPI = 'auth/logout/',
         logoutAllAPI = 'auth/logout/all/',
         changePasswordAPI = 'auth/password/change/',
+        resetPasswordAPI = 'auth/password/reset/',
         retrieveProfileAPI = 'user/',
         header = {header: 'Content-Type: application/json'};
 
@@ -187,12 +188,16 @@
             });
     }
 
-    function retrieveProfile(cb){
-        httpGetRehive(retrieveProfileAPI,{},cb);
-    }
-
     function changePassword(data,cb){
         httpAuthPostRehive(changePasswordAPI,data,cb);
+    }
+
+    function resetPassword(data,cb){
+        httpAuthPostRehive(resetPasswordAPI,data,cb);
+    }
+
+    function retrieveProfile(cb){
+        httpGetRehive(retrieveProfileAPI,{},cb);
     }
 
     //public functions end
@@ -203,7 +208,8 @@
          login : login,
          logout: logout,
          logoutAll: logoutAll,
-         changePassword: changePassword
+         changePassword: changePassword,
+         resetPassword: resetPassword
      };
 
     Rehive.user = {

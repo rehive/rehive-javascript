@@ -83,17 +83,6 @@ function logoutAll(){
     })
 }
 
-function getUserProfile(){
-    Rehive.user.retrieveProfile(function(err,user){
-            if(err){
-                console.log(err);
-                return
-            }
-            console.log(user);
-            document.getElementById('result').innerHTML = convertToText(user);
-        })
-}
-
 function changePassword(old_password,new_password1,new_password2){
     Rehive.auth.changePassword(
         {
@@ -108,5 +97,31 @@ function changePassword(old_password,new_password1,new_password2){
             console.log(res);
             document.getElementById('result').innerHTML = convertToText(res.message);
         })
+}
+
+function resetPassword(identifier,company_id){
+    Rehive.auth.resetPassword(
+        {
+            identifier: identifier,
+            company_id: company_id
+        }, function(err,res){
+            if(err){
+                console.log(err);
+                return
+            }
+            console.log(res);
+            document.getElementById('result').innerHTML = convertToText(res.message);
+        })
+}
+
+function getUserProfile(){
+    Rehive.user.retrieveProfile(function(err,user){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(user);
+        document.getElementById('result').innerHTML = convertToText(user);
+    })
 }
 
