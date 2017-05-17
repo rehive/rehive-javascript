@@ -24,6 +24,8 @@
         logoutAllAPI = 'auth/logout/all/',
         changePasswordAPI = 'auth/password/change/',
         resetPasswordAPI = 'auth/password/reset/',
+        resetConfirmPasswordAPI = 'auth/password/reset/confirm/',
+        transactionsListAPI = 'transactions/',
         retrieveProfileAPI = 'user/',
         header = {header: 'Content-Type: application/json'};
 
@@ -198,6 +200,14 @@
         httpAuthPostRehive(resetPasswordAPI,data,cb);
     }
 
+    function resetConfirmPassword(data,cb){
+        httpAuthPostRehive(resetConfirmPasswordAPI,data,cb);
+    }
+
+    function getListTransactions(cb){
+        httpGetRehive(transactionsListAPI,{},cb);
+    }
+
     function retrieveProfile(cb){
         httpGetRehive(retrieveProfileAPI,{},cb);
     }
@@ -207,15 +217,20 @@
      Rehive.auth = {
          register: register,
          registerCompany: registerCompany,
-         login : login,
+         login: login,
          logout: logout,
          logoutAll: logoutAll,
          changePassword: changePassword,
-         resetPassword: resetPassword
+         resetPassword: resetPassword,
+         resetConfirmPassword: resetConfirmPassword
      };
 
     Rehive.user = {
-        retrieveProfile : retrieveProfile
+        retrieveProfile: retrieveProfile
+    };
+
+    Rehive.transactions = {
+        getListTransactions: getListTransactions
     };
 
     return window.Rehive = Rehive;
