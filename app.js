@@ -26,6 +26,25 @@ function register(first_name,last_name,email,company_id,password1,password2){
         })
 }
 
+function registerCompany(first_name,last_name,email,company_id,password1,password2){
+    Rehive.auth.registerCompany(
+        {
+            first_name: first_name,
+            last_name: last_name,
+            email: email,
+            company_id: company_id,
+            password1: password1,
+            password2: password2
+        }, function(err,user){
+            if(err){
+                console.log(err);
+                return
+            }
+            console.log(user);
+            document.getElementById('result').innerHTML = convertToText(user);
+        })
+}
+
 function login(identifier,company_id,password){
     Rehive.auth.login(
         {

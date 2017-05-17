@@ -17,8 +17,9 @@
 
     var Rehive = {},
         baseAPI = 'https://rehive.com/api/3/',
-        loginAPI = 'auth/login/',
         registerAPI = 'auth/register/',
+        registerCompanyAPI = 'auth/company/register/',
+        loginAPI = 'auth/login/',
         logoutAPI = 'auth/logout/',
         logoutAllAPI = 'auth/logout/all/',
         retrieveProfileAPI = 'user/',
@@ -80,19 +81,6 @@
 
     //public functions
 
-    function login(credentials,cb){
-        axios.post(baseAPI + loginAPI, credentials , header)
-            .then(function (response) {
-                if(response.status == 200){
-                    setToken(response.data.data.token);
-                    cb(null,response.data.data.user);
-                }
-            })
-            .catch(function (error) {
-                cb(error.response.data,null);
-            });
-    }
-
     function register(credentials,cb){
         axios.post(baseAPI + registerAPI, credentials , header)
             .then(function (response) {
@@ -102,7 +90,32 @@
                 }
             })
             .catch(function (error) {
-                console.log(error.response);
+                cb(error.response.data,null);
+            });
+    }
+
+    function registerCompany(credentials,cb){
+        axios.post(baseAPI + registerCompanyAPI, credentials , header)
+            .then(function (response) {
+                if(response.status == 201){
+                    setToken(response.data.data.token);
+                    cb(null,response.data.data.user);
+                }
+            })
+            .catch(function (error) {
+                cb(error.response.data,null);
+            });
+    }
+
+    function login(credentials,cb){
+        axios.post(baseAPI + loginAPI, credentials , header)
+            .then(function (response) {
+                if(response.status == 200){
+                    setToken(response.data.data.token);
+                    cb(null,response.data.data.user);
+                }
+            })
+            .catch(function (error) {
                 cb(error.response.data,null);
             });
     }
@@ -160,9 +173,10 @@
     //public functions end
 
      Rehive.auth = {
+         register: register,
+         registerCompany: registerCompany,
          login : login,
          logout: logout,
-         register: register,
          logoutAll: logoutAll
      };
 
