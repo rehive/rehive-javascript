@@ -9,10 +9,12 @@
 
 </head>
 <body>
-
-<button onclick="Login('test1@rehive.com','test_company_1','test1')" style="margin: 20px" class="btn btn-lg btn-info">login</button>
+<button onclick="login('test1@rehive.com','test_company_1','test1')" style="margin: 20px" class="btn btn-lg btn-info">Login</button>
+<button onclick="logout()" style="margin: 20px" class="btn btn-lg btn-info">Logout</button>
+<button onclick="logoutAll()" style="margin: 20px" class="btn btn-lg btn-info">LogoutAll</button>
+<button onclick="register('new','user','custom7@gmail.com','test_company_1','newpassword1','newpassword1')" style="margin: 20px" class="btn btn-lg btn-info">Register</button>
 <button onclick="getUserProfile()" style="margin: 20px" class="btn btn-lg btn-info">Get user profile</button>
-<button onclick="Logout()" style="margin: 20px" class="btn btn-lg btn-info">Logout</button>
+
 
 <div>
     <pre id="result"></pre>

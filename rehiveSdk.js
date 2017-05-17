@@ -18,7 +18,9 @@
     var Rehive = {},
         baseAPI = 'https://rehive.com/api/3/',
         loginAPI = 'auth/login/',
+        registerAPI = 'auth/register/',
         logoutAPI = 'auth/logout/',
+        logoutAllAPI = 'auth/logout/all/',
         retrieveProfileAPI = 'user/',
         header = {header: 'Content-Type: application/json'};
 
@@ -72,7 +74,6 @@
                 }
             })
             .catch(function (error) {
-                console.log(error.response);
                 cb(error.response.data,null);
             });
     }
@@ -88,6 +89,20 @@
                 }
             })
             .catch(function (error) {
+                cb(error.response.data,null);
+            });
+    }
+
+    function register(credentials,cb){
+        axios.post(baseAPI + registerAPI, credentials , header)
+            .then(function (response) {
+                if(response.status == 201){
+                    setToken(response.data.data.token);
+                    cb(null,response.data.data.user);
+                }
+            })
+            .catch(function (error) {
+                console.log(error.response);
                 cb(error.response.data,null);
             });
     }
@@ -115,6 +130,29 @@
             });
     }
 
+    function logoutAll(cb){
+
+        var token = getToken();
+
+        if(token){
+            axios.defaults.headers.common['Authorization'] = 'Token ' + token;
+        } else {
+            return cb(null,{message: 'User Already Logged Out'});
+        }
+
+        axios.post(baseAPI + logoutAllAPI, header)
+            .then(function (response) {
+                if(response.status == 200){
+                    removeToken();
+                    cb(null,response.data);
+
+                }
+            })
+            .catch(function (error) {
+                cb(error.response.data,null);
+            });
+    }
+
     function retrieveProfile(cb){
         httpGetRehive(retrieveProfileAPI,{},cb);
     }
@@ -123,7 +161,9 @@
 
      Rehive.auth = {
          login : login,
-         logout: logout
+         logout: logout,
+         register: register,
+         logoutAll: logoutAll
      };
 
     Rehive.user = {
