@@ -225,12 +225,12 @@
          resetConfirmPassword: resetConfirmPassword
      };
 
-    Rehive.user = {
-        retrieveProfile: retrieveProfile
-    };
-
     Rehive.transactions = {
         getListTransactions: getListTransactions
+    };
+
+    Rehive.user = {
+        retrieveProfile: retrieveProfile
     };
 
     return window.Rehive = Rehive;
