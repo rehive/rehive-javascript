@@ -25,6 +25,7 @@
         changePasswordAPI = 'auth/password/change/',
         resetPasswordAPI = 'auth/password/reset/',
         resetConfirmPasswordAPI = 'auth/password/reset/confirm/',
+        resendEmailVerificationAPI = 'auth/email/verify/resend/',
         transactionsListAPI = 'transactions/',
         retrieveProfileAPI = 'user/',
         header = {header: 'Content-Type: application/json'};
@@ -204,6 +205,10 @@
         httpAuthPostRehive(resetConfirmPasswordAPI,data,cb);
     }
 
+    function resendEmailVerification(data,cb){
+        httpAuthPostRehive(resendEmailVerificationAPI,data,cb);
+    }
+
     function getListTransactions(cb){
         httpGetRehive(transactionsListAPI,{},cb);
     }
@@ -222,7 +227,8 @@
          logoutAll: logoutAll,
          changePassword: changePassword,
          resetPassword: resetPassword,
-         resetConfirmPassword: resetConfirmPassword
+         resetConfirmPassword: resetConfirmPassword,
+         resendEmailVerification: resendEmailVerification
      };
 
     Rehive.transactions = {

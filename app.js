@@ -131,6 +131,21 @@ function resetConfirmPassword(new_password1,new_password2,uid,token){
         })
 }
 
+function resendEmailVerification(identifier,company_id){
+    Rehive.auth.resendEmailVerification(
+        {
+            identifier: identifier,
+            company_id: company_id
+        }, function(err,res){
+            if(err){
+                console.log(err);
+                return
+            }
+            console.log(res);
+            document.getElementById('result').innerHTML = convertToText(res.status);
+        })
+}
+
 function getTransactionsList(){
     Rehive.transactions.getListTransactions(function(err,res){
         if(err){
