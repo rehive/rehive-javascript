@@ -109,6 +109,28 @@
             });
     }
 
+    function httpAuthDeleteRehive(url,data,cb){
+
+        var token = getToken();
+
+        if(token){
+            axios.defaults.headers.common['Authorization'] = 'Token ' + token;
+        } else {
+            delete axios.defaults.headers.common['Authorization'];
+        }
+
+        axios.delete(baseAPI + url, data , header)
+            .then(function (response) {
+                console.log(response);
+                if(response.status == 204){
+                    cb(null,response);
+                }
+            })
+            .catch(function (error) {
+                cb(error.response.data,null);
+            });
+    }
+
     //public functions
 
     function register(credentials,cb){
@@ -224,6 +246,10 @@
         httpPostRehive(tokensAPI,data,cb);
     }
 
+    function deleteToken(tokenKey,cb){
+        httpAuthDeleteRehive(tokensAPI + tokenKey,{},cb);
+    }
+
     function getListTransactions(cb){
         httpGetRehive(transactionsListAPI,{},cb);
     }
@@ -249,7 +275,8 @@
 
     Rehive.token = {
         getlistTokens: getlistTokens,
-        createToken: createToken
+        createToken: createToken,
+        deleteToken: deleteToken
     };
 
     Rehive.transactions = {

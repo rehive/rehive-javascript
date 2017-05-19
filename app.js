@@ -186,6 +186,17 @@ function createToken(password){
         })
 }
 
+function deleteToken(tokenKey){
+    Rehive.token.deleteToken(tokenKey,function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res.statusText);
+    })
+}
+
 function getTransactionsList(){
     Rehive.transactions.getListTransactions(function(err,res){
         if(err){
