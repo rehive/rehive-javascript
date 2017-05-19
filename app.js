@@ -172,6 +172,20 @@ function getlistTokens(){
     })
 }
 
+function createToken(password){
+    Rehive.token.createToken(
+        {
+            password: password
+        }, function(err,res){
+            if(err){
+                console.log(err);
+                return
+            }
+            console.log(res);
+            document.getElementById('result').innerHTML = convertToText(res.user);
+        })
+}
+
 function getTransactionsList(){
     Rehive.transactions.getListTransactions(function(err,res){
         if(err){

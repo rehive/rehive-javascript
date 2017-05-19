@@ -27,7 +27,7 @@
         resetConfirmPasswordAPI = 'auth/password/reset/confirm/',
         resendEmailVerificationAPI = 'auth/email/verify/resend/',
         resendMobileVerificationAPI = 'auth/mobile/verify/resend/',
-        listTokensAPI = 'auth/tokens/',
+        tokensAPI = 'auth/tokens/',
         transactionsListAPI = 'transactions/',
         retrieveProfileAPI = 'user/',
         header = {header: 'Content-Type: application/json'};
@@ -57,7 +57,8 @@
 
         axios.post(baseAPI + url, data , header)
             .then(function (response) {
-                if(response.status == 200){
+                if(response.status == 200 || response.status == 201){
+
                     cb(null,response.data.data);
                 }
             })
@@ -216,7 +217,11 @@
     }
 
     function getlistTokens(cb){
-        httpGetRehive(listTokensAPI,{},cb);
+        httpGetRehive(tokensAPI,{},cb);
+    }
+
+    function createToken(data,cb){
+        httpPostRehive(tokensAPI,data,cb);
     }
 
     function getListTransactions(cb){
@@ -243,7 +248,8 @@
      };
 
     Rehive.token = {
-        getlistTokens: getlistTokens
+        getlistTokens: getlistTokens,
+        createToken: createToken
     };
 
     Rehive.transactions = {
