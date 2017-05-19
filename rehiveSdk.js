@@ -27,6 +27,7 @@
         resetConfirmPasswordAPI = 'auth/password/reset/confirm/',
         resendEmailVerificationAPI = 'auth/email/verify/resend/',
         resendMobileVerificationAPI = 'auth/mobile/verify/resend/',
+        listTokensAPI = 'auth/tokens/',
         transactionsListAPI = 'transactions/',
         retrieveProfileAPI = 'user/',
         header = {header: 'Content-Type: application/json'};
@@ -214,6 +215,10 @@
         httpAuthPostRehive(resendMobileVerificationAPI,data,cb);
     }
 
+    function getlistTokens(cb){
+        httpGetRehive(listTokensAPI,{},cb);
+    }
+
     function getListTransactions(cb){
         httpGetRehive(transactionsListAPI,{},cb);
     }
@@ -236,6 +241,10 @@
          resendEmailVerification: resendEmailVerification,
          resendMobileVerification: resendMobileVerification
      };
+
+    Rehive.token = {
+        getlistTokens: getlistTokens
+    };
 
     Rehive.transactions = {
         getListTransactions: getListTransactions

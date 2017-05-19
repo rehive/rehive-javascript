@@ -161,6 +161,16 @@ function resendMobileVerification(identifier,company_id){
         })
 }
 
+function getlistTokens(){
+    Rehive.token.getlistTokens(function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
 
 function getTransactionsList(){
     Rehive.transactions.getListTransactions(function(err,res){
