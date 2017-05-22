@@ -253,7 +253,7 @@
         httpPostRehive(resendMobileVerificationAPI,data,cb);
     }
 
-    function getlistTokens(cb){
+    function getListTokens(cb){
         httpGetRehive(tokensAPI,{},cb);
     }
 
@@ -301,7 +301,7 @@
      };
 
     Rehive.token = {
-        getlistTokens: getlistTokens,
+        getListTokens: getListTokens,
         createToken: createToken,
         deleteToken: deleteToken
     };

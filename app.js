@@ -161,8 +161,8 @@ function resendMobileVerification(identifier,company_id){
         })
 }
 
-function getlistTokens(){
-    Rehive.token.getlistTokens(function(err,res){
+function getListTokens(){
+    Rehive.token.getListTokens(function(err,res){
         if(err){
             console.log(err);
             return
