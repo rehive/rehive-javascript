@@ -318,3 +318,14 @@ function getUserBitcoinAccounts(){
         document.getElementById('result').innerHTML = convertToText(user);
     })
 }
+
+function updateUserBitcoinAccount(accountId, data){
+    Rehive.user.updateUserBitcoinAccount(accountId,data, function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}

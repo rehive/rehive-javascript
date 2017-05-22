@@ -32,7 +32,7 @@
         userProfileAPI = 'user/',
         userAddressAPI = 'user/address/',
         userBankAccountsAPI = 'user/bank_accounts/',
-        userBitcoinAccountsAPI = 'user/bitcoin_accounts',
+        userBitcoinAccountsAPI = 'user/bitcoin_accounts/',
         header = {header: 'Content-Type: application/json'};
 
     function setToken(newToken){
@@ -307,6 +307,10 @@
         httpGetRehive(userBitcoinAccountsAPI,{},cb);
     }
 
+    function updateUserBitcoinAccount(accountId,data,cb){
+        httpPatchRehive(userBitcoinAccountsAPI + accountId,data,cb);
+    }
+
     //public functions end
 
      Rehive.auth = {
@@ -341,7 +345,8 @@
         createUserBankAccount: createUserBankAccount,
         updateUserBankAccount: updateUserBankAccount,
         deleteUserBankAccount: deleteUserBankAccount,
-        getUserBitcoinAccounts: getUserBitcoinAccounts
+        getUserBitcoinAccounts: getUserBitcoinAccounts,
+        updateUserBitcoinAccount: updateUserBitcoinAccount
     };
 
     return window.Rehive = Rehive;
