@@ -307,6 +307,10 @@
         httpGetRehive(userBitcoinAccountsAPI,{},cb);
     }
 
+    function createUserBitcoinAccount(data,cb){
+        httpPostRehive(userBitcoinAccountsAPI,data,cb);
+    }
+
     function updateUserBitcoinAccount(accountId,data,cb){
         httpPatchRehive(userBitcoinAccountsAPI + accountId,data,cb);
     }
@@ -346,6 +350,7 @@
         updateUserBankAccount: updateUserBankAccount,
         deleteUserBankAccount: deleteUserBankAccount,
         getUserBitcoinAccounts: getUserBitcoinAccounts,
+        createUserBitcoinAccount: createUserBitcoinAccount,
         updateUserBitcoinAccount: updateUserBitcoinAccount
     };
 
