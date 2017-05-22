@@ -286,3 +286,14 @@ function createUserBankAccount(name,number,type,bank_name,bank_code,branch_code,
         })
 }
 
+function updateUserBankAccount(accountId, data){
+    Rehive.user.updateUserBankAccount(accountId,data, function(err,res){
+            if(err){
+                console.log(err);
+                return
+            }
+            console.log(res);
+            document.getElementById('result').innerHTML = convertToText(res);
+        })
+}
+

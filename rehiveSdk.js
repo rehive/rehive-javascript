@@ -294,6 +294,10 @@
         httpPostRehive(userBankAccountsAPI,data,cb);
     }
 
+    function updateUserBankAccount(accountId,data,cb){
+        httpPatchRehive(userBankAccountsAPI + accountId,data,cb);
+    }
+
     //public functions end
 
      Rehive.auth = {
@@ -325,7 +329,8 @@
         retrieveUserAddress: retrieveUserAddress,
         updateUserAddress: updateUserAddress,
         retrieveUserBankAccounts: retrieveUserBankAccounts,
-        createUserBankAccount: createUserBankAccount
+        createUserBankAccount: createUserBankAccount,
+        updateUserBankAccount: updateUserBankAccount
     };
 
     return window.Rehive = Rehive;
