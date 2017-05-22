@@ -32,6 +32,7 @@
         userProfileAPI = 'user/',
         userAddressAPI = 'user/address/',
         userBankAccountsAPI = 'user/bank_accounts/',
+        userBitcoinAccountsAPI = 'user/bitcoin_accounts',
         header = {header: 'Content-Type: application/json'};
 
     function setToken(newToken){
@@ -270,7 +271,7 @@
         httpGetRehive(transactionsListAPI,{},cb);
     }
 
-    function retrieveUserProfile(cb){
+    function getUserProfile(cb){
         httpGetRehive(userProfileAPI,{},cb);
     }
 
@@ -278,7 +279,7 @@
         httpPatchRehive(userProfileAPI,data,cb);
     }
 
-    function retrieveUserAddress(cb){
+    function getUserAddress(cb){
         httpGetRehive(userAddressAPI,{},cb);
     }
 
@@ -286,7 +287,7 @@
         httpPatchRehive(userAddressAPI,data,cb);
     }
 
-    function retrieveUserBankAccounts(cb){
+    function getUserBankAccounts(cb){
         httpGetRehive(userBankAccountsAPI,{},cb);
     }
 
@@ -300,6 +301,10 @@
 
     function deleteUserBankAccount(bankAccountId,cb){
         httpDeleteRehive(userBankAccountsAPI + bankAccountId,{},cb);
+    }
+
+    function getUserBitcoinAccounts(cb){
+        httpGetRehive(userBitcoinAccountsAPI,{},cb);
     }
 
     //public functions end
@@ -328,14 +333,15 @@
     };
 
     Rehive.user = {
-        retrieveUserProfile: retrieveUserProfile,
+        getUserProfile: getUserProfile,
         updateUserProfile: updateUserProfile,
-        retrieveUserAddress: retrieveUserAddress,
+        getUserAddress: getUserAddress,
         updateUserAddress: updateUserAddress,
-        retrieveUserBankAccounts: retrieveUserBankAccounts,
+        getUserBankAccounts: getUserBankAccounts,
         createUserBankAccount: createUserBankAccount,
         updateUserBankAccount: updateUserBankAccount,
-        deleteUserBankAccount: deleteUserBankAccount
+        deleteUserBankAccount: deleteUserBankAccount,
+        getUserBitcoinAccounts: getUserBitcoinAccounts
     };
 
     return window.Rehive = Rehive;
