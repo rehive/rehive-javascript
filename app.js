@@ -297,3 +297,14 @@ function updateUserBankAccount(accountId, data){
         })
 }
 
+function deleteUserBankAccount(bankAccountId){
+    Rehive.user.deleteUserBankAccount(bankAccountId,function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res.status);
+    })
+}
+

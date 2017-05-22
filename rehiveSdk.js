@@ -298,6 +298,10 @@
         httpPatchRehive(userBankAccountsAPI + accountId,data,cb);
     }
 
+    function deleteUserBankAccount(bankAccountId,cb){
+        httpDeleteRehive(userBankAccountsAPI + bankAccountId,{},cb);
+    }
+
     //public functions end
 
      Rehive.auth = {
@@ -330,7 +334,8 @@
         updateUserAddress: updateUserAddress,
         retrieveUserBankAccounts: retrieveUserBankAccounts,
         createUserBankAccount: createUserBankAccount,
-        updateUserBankAccount: updateUserBankAccount
+        updateUserBankAccount: updateUserBankAccount,
+        deleteUserBankAccount: deleteUserBankAccount
     };
 
     return window.Rehive = Rehive;
