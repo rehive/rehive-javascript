@@ -219,3 +219,14 @@ function getUserProfile(){
     })
 }
 
+function updateUserProfile(data){
+    Rehive.user.updateProfile(data, function(err,user){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(user);
+        document.getElementById('result').innerHTML = convertToText(user);
+    })
+}
+

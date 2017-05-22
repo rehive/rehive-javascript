@@ -29,7 +29,7 @@
         resendMobileVerificationAPI = 'auth/mobile/verify/resend/',
         tokensAPI = 'auth/tokens/',
         transactionsListAPI = 'transactions/',
-        retrieveProfileAPI = 'user/',
+        userProfileAPI = 'user/',
         header = {header: 'Content-Type: application/json'};
 
     function setToken(newToken){
@@ -80,6 +80,28 @@
         axios.get(baseAPI + url, params, header )
             .then(function (response) {
                 if(response.status == 200){
+                    cb(null,response.data.data);
+                }
+            })
+            .catch(function (error) {
+                cb(error.response.data,null);
+            });
+    }
+
+    function httpPatchRehive(url,data,cb){
+
+        var token = getToken();
+
+        if(token){
+            axios.defaults.headers.common['Authorization'] = 'Token ' + token;
+        } else {
+            delete axios.defaults.headers.common['Authorization'];
+        }
+
+        axios.patch(baseAPI + url, data , header)
+            .then(function (response) {
+                if(response.status == 200 || response.status == 201){
+
                     cb(null,response.data.data);
                 }
             })
@@ -160,7 +182,6 @@
     }
 
     function login(credentials,cb){
-        console.log(header);
         axios.post(baseAPI + loginAPI, credentials , header)
             .then(function (response) {
                 if(response.status == 200){
@@ -255,7 +276,11 @@
     }
 
     function retrieveProfile(cb){
-        httpGetRehive(retrieveProfileAPI,{},cb);
+        httpGetRehive(userProfileAPI,{},cb);
+    }
+
+    function updateProfile(data,cb){
+        httpPatchRehive(userProfileAPI,data,cb);
     }
 
     //public functions end
@@ -284,7 +309,8 @@
     };
 
     Rehive.user = {
-        retrieveProfile: retrieveProfile
+        retrieveProfile: retrieveProfile,
+        updateProfile: updateProfile
     };
 
     return window.Rehive = Rehive;

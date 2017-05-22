@@ -9,28 +9,29 @@
 
 </head>
 <body>
-<button onclick="login('test1@rehive.com','test_company_1','test1')" style="margin: 20px 0 20px 20px" class="btn btn-lg btn-info">Login</button>
-<button onclick="logout()" style="margin: 20px 0 20px 20px" class="btn btn-lg btn-info">Logout</button>
-<button onclick="logoutAll()" style="margin: 20px 0 20px 20px" class="btn btn-lg btn-info">LogoutAll</button>
+<button onclick="login('test1@rehive.com','test_company_1','test1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Login</button>
+<button onclick="logout()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Logout</button>
+<button onclick="logoutAll()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">LogoutAll</button>
 <button onclick="registerCompany('new','user','custom7@gmail.com','test_company_3','newpassword1','newpassword1')"
-        style="margin: 20px 0 20px 20px" class="btn btn-lg btn-info">Register company</button>
-<button onclick="register('new','user','custom7@gmail.com','test_company_1','newpassword1','newpassword1')" style="margin: 20px 0 20px 20px" class="btn btn-lg btn-info">Register</button>
-<button onclick="changePassword('bs123456789','bs12345678','bs12345678')" style="margin: 20px 0 20px 20px" class="btn btn-lg btn-info">Change password</button>
-<button onclick="resetPassword('ark.aquib17@gmail.com','brain_station')" style="margin: 20px 0 20px 20px" class="btn btn-lg btn-info">Reset password</button>
-<button onclick="resetConfirmPassword('bs123456789','bs123456789','Nzcw','4m4-44fabede144345e6ddc4')" style="margin: 20px 0 20px 20px" class="btn btn-lg btn-info">Reset Confirm password</button>
-<button onclick="resendEmailVerification('ark.aquib17@gmail.com','brain_station')" style="margin: 20px 0 20px 20px" class="btn btn-lg btn-info">Resend Email Verification</button>
-<button onclick="resendMobileVerification('ark.aquib17@gmail.com','brain_station')" style="margin: 20px 0 20px 20px" class="btn btn-lg btn-info">Resend Mobile Verification</button>
+        style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Register company</button>
+<button onclick="register('new','user','custom7@gmail.com','test_company_1','newpassword1','newpassword1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Register</button>
+<button onclick="changePassword('bs123456789','bs12345678','bs12345678')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Change password</button>
+<button onclick="resetPassword('ark.aquib17@gmail.com','brain_station')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Reset password</button>
+<button onclick="resetConfirmPassword('bs123456789','bs123456789','Nzcw','4m4-44fabede144345e6ddc4')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Reset Confirm password</button>
+<button onclick="resendEmailVerification('ark.aquib17@gmail.com','brain_station')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Resend Email Verification</button>
+<button onclick="resendMobileVerification('ark.aquib17@gmail.com','brain_station')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Resend Mobile Verification</button>
 
-<button onclick="getlistTokens()" style="margin: 20px 0 20px 20px" class="btn btn-lg btn-default">Get Tokens List</button>
-<button onclick="createToken('test1')" style="margin: 20px 0 20px 20px" class="btn btn-lg btn-default">Create Token</button>
-<button onclick="deleteToken('c66335f7')" style="margin: 20px 0 20px 20px" class="btn btn-lg btn-default">Delete Token</button>
+<button onclick="getlistTokens()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Tokens List</button>
+<button onclick="createToken('test1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Token</button>
+<button onclick="deleteToken('94d7d8c5')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Token</button>
 
-<button onclick="getTransactionsList()" style="margin: 20px 0 20px 20px" class="btn btn-lg btn-warning">Get Transactions List</button>
+<button onclick="getTransactionsList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transactions List</button>
 
-<button onclick="getUserProfile()" style="margin: 20px 0 20px 20px" class="btn btn-lg btn-primary">Get user profile</button>
+<button onclick="getUserProfile()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user profile</button>
+<button onclick="updateUserProfile({first_name: 'Test'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user profile</button>
 
 
-<div>
+<div style="margin: 20px 0">
     <pre id="result"></pre>
 </div>
 </body>
