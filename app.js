@@ -264,3 +264,25 @@ function retrieveUserBankAccounts(){
     })
 }
 
+function createUserBankAccount(name,number,type,bank_name,bank_code,branch_code,swift,iban,bic){
+    Rehive.user.createUserBankAccount(
+        {
+            name: name,
+            number: number,
+            type: type,
+            bank_name: bank_name,
+            bank_code: bank_code,
+            branch_code: branch_code,
+            swift: swift,
+            iban: iban,
+            bic: bic
+        }, function(err,res){
+            if(err){
+                console.log(err);
+                return
+            }
+            console.log(res);
+            document.getElementById('result').innerHTML = convertToText(res);
+        })
+}
+
