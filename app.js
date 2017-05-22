@@ -209,7 +209,7 @@ function getTransactionsList(){
 }
 
 function getUserProfile(){
-    Rehive.user.retrieveProfile(function(err,user){
+    Rehive.user.retrieveUserProfile(function(err,user){
         if(err){
             console.log(err);
             return
@@ -220,7 +220,7 @@ function getUserProfile(){
 }
 
 function updateUserProfile(data){
-    Rehive.user.updateProfile(data, function(err,user){
+    Rehive.user.updateUserProfile(data, function(err,user){
         if(err){
             console.log(err);
             return
@@ -231,7 +231,7 @@ function updateUserProfile(data){
 }
 
 function getUserAddress(){
-    Rehive.user.retrieveProfileAddress(function(err,user){
+    Rehive.user.retrieveUserAddress(function(err,user){
         if(err){
             console.log(err);
             return
@@ -241,5 +241,16 @@ function getUserAddress(){
     })
 }
 
+
+function updateUserAddress(data){
+    Rehive.user.updateUserAddress(data, function(err,user){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(user);
+        document.getElementById('result').innerHTML = convertToText(user);
+    })
+}
 
 

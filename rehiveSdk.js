@@ -59,8 +59,11 @@
         axios.post(baseAPI + url, data , header)
             .then(function (response) {
                 if(response.status == 200 || response.status == 201){
-
-                    cb(null,response.data.data);
+                    if(response.data.data){
+                        cb(null,response.data.data);
+                    } else {
+                        cb(null,response.data);
+                    }
                 }
             })
             .catch(function (error) {
@@ -81,7 +84,11 @@
         axios.get(baseAPI + url, params, header )
             .then(function (response) {
                 if(response.status == 200){
-                    cb(null,response.data.data);
+                    if(response.data.data){
+                        cb(null,response.data.data);
+                    } else {
+                        cb(null,response.data);
+                    }
                 }
             })
             .catch(function (error) {
@@ -102,8 +109,11 @@
         axios.patch(baseAPI + url, data , header)
             .then(function (response) {
                 if(response.status == 200 || response.status == 201){
-
-                    cb(null,response.data.data);
+                    if(response.data.data){
+                        cb(null,response.data.data);
+                    } else {
+                        cb(null,response.data);
+                    }
                 }
             })
             .catch(function (error) {
@@ -111,28 +121,7 @@
             });
     }
 
-    function httpAuthPostRehive(url,data,cb){
-
-        var token = getToken();
-
-        if(token){
-            axios.defaults.headers.common['Authorization'] = 'Token ' + token;
-        } else {
-            delete axios.defaults.headers.common['Authorization'];
-        }
-
-        axios.post(baseAPI + url, data , header)
-            .then(function (response) {
-                if(response.status == 200){
-                    cb(null,response.data);
-                }
-            })
-            .catch(function (error) {
-                cb(error.response.data,null);
-            });
-    }
-
-    function httpAuthDeleteRehive(url,data,cb){
+    function httpDeleteRehive(url,data,cb){
 
         var token = getToken();
 
@@ -146,7 +135,11 @@
             .then(function (response) {
                 console.log(response);
                 if(response.status == 200){
-                    cb(null,response);
+                    if(response.data.data){
+                        cb(null,response.data.data);
+                    } else {
+                        cb(null,response.data);
+                    }
                 }
             })
             .catch(function (error) {
@@ -241,23 +234,23 @@
     }
 
     function changePassword(data,cb){
-        httpAuthPostRehive(changePasswordAPI,data,cb);
+        httpPostRehive(changePasswordAPI,data,cb);
     }
 
     function resetPassword(data,cb){
-        httpAuthPostRehive(resetPasswordAPI,data,cb);
+        httpPostRehive(resetPasswordAPI,data,cb);
     }
 
     function resetConfirmPassword(data,cb){
-        httpAuthPostRehive(resetConfirmPasswordAPI,data,cb);
+        httpPostRehive(resetConfirmPasswordAPI,data,cb);
     }
 
     function resendEmailVerification(data,cb){
-        httpAuthPostRehive(resendEmailVerificationAPI,data,cb);
+        httpPostRehive(resendEmailVerificationAPI,data,cb);
     }
 
     function resendMobileVerification(data,cb){
-        httpAuthPostRehive(resendMobileVerificationAPI,data,cb);
+        httpPostRehive(resendMobileVerificationAPI,data,cb);
     }
 
     function getlistTokens(cb){
@@ -269,23 +262,27 @@
     }
 
     function deleteToken(tokenKey,cb){
-        httpAuthDeleteRehive(tokensAPI + tokenKey,{},cb);
+        httpDeleteRehive(tokensAPI + tokenKey,{},cb);
     }
 
     function getListTransactions(cb){
         httpGetRehive(transactionsListAPI,{},cb);
     }
 
-    function retrieveProfile(cb){
+    function retrieveUserProfile(cb){
         httpGetRehive(userProfileAPI,{},cb);
     }
 
-    function updateProfile(data,cb){
+    function updateUserProfile(data,cb){
         httpPatchRehive(userProfileAPI,data,cb);
     }
 
-    function retrieveProfileAddress(cb){
+    function retrieveUserAddress(cb){
         httpGetRehive(userAddressAPI,{},cb);
+    }
+
+    function updateUserAddress(data,cb){
+        httpPatchRehive(userAddressAPI,data,cb);
     }
 
     //public functions end
@@ -314,9 +311,10 @@
     };
 
     Rehive.user = {
-        retrieveProfile: retrieveProfile,
-        updateProfile: updateProfile,
-        retrieveProfileAddress: retrieveProfileAddress
+        retrieveUserProfile: retrieveUserProfile,
+        updateUserProfile: updateUserProfile,
+        retrieveUserAddress: retrieveUserAddress,
+        updateUserAddress: updateUserAddress
     };
 
     return window.Rehive = Rehive;
