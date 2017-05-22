@@ -193,7 +193,7 @@ function deleteToken(tokenKey){
             return
         }
         console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res.statusText);
+        document.getElementById('result').innerHTML = convertToText(res.status);
     })
 }
 

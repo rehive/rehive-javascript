@@ -145,7 +145,7 @@
         axios.delete(baseAPI + url, data , header)
             .then(function (response) {
                 console.log(response);
-                if(response.status == 204){
+                if(response.status == 200){
                     cb(null,response);
                 }
             })
