@@ -230,3 +230,16 @@ function updateUserProfile(data){
     })
 }
 
+function getUserAddress(){
+    Rehive.user.retrieveProfileAddress(function(err,user){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(user);
+        document.getElementById('result').innerHTML = convertToText(user);
+    })
+}
+
+
+

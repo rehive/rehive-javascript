@@ -30,6 +30,7 @@
         tokensAPI = 'auth/tokens/',
         transactionsListAPI = 'transactions/',
         userProfileAPI = 'user/',
+        userAddressAPI = 'user/address/',
         header = {header: 'Content-Type: application/json'};
 
     function setToken(newToken){
@@ -283,6 +284,10 @@
         httpPatchRehive(userProfileAPI,data,cb);
     }
 
+    function retrieveProfileAddress(cb){
+        httpGetRehive(userAddressAPI,{},cb);
+    }
+
     //public functions end
 
      Rehive.auth = {
@@ -310,7 +315,8 @@
 
     Rehive.user = {
         retrieveProfile: retrieveProfile,
-        updateProfile: updateProfile
+        updateProfile: updateProfile,
+        retrieveProfileAddress: retrieveProfileAddress
     };
 
     return window.Rehive = Rehive;
