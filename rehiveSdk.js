@@ -31,6 +31,7 @@
         transactionsListAPI = 'transactions/',
         userProfileAPI = 'user/',
         userAddressAPI = 'user/address/',
+        userBankAccountsAPI = 'user/bank_accounts/',
         header = {header: 'Content-Type: application/json'};
 
     function setToken(newToken){
@@ -285,6 +286,10 @@
         httpPatchRehive(userAddressAPI,data,cb);
     }
 
+    function retrieveUserBankAccounts(cb){
+        httpGetRehive(userBankAccountsAPI,{},cb);
+    }
+
     //public functions end
 
      Rehive.auth = {
@@ -314,7 +319,8 @@
         retrieveUserProfile: retrieveUserProfile,
         updateUserProfile: updateUserProfile,
         retrieveUserAddress: retrieveUserAddress,
-        updateUserAddress: updateUserAddress
+        updateUserAddress: updateUserAddress,
+        retrieveUserBankAccounts: retrieveUserBankAccounts
     };
 
     return window.Rehive = Rehive;

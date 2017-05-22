@@ -253,4 +253,14 @@ function updateUserAddress(data){
     })
 }
 
+function retrieveUserBankAccounts(){
+    Rehive.user.retrieveUserBankAccounts(function(err,user){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(user);
+        document.getElementById('result').innerHTML = convertToText(user);
+    })
+}
 
