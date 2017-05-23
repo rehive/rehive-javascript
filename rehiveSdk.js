@@ -276,8 +276,13 @@
         httpDeleteRehive(tokensAPI + tokenKey,{},cb);
     }
 
-    function getListTransactions(cb){
-        httpGetRehive(transactionsListAPI,{},cb);
+    function getListTransactions(filters,cb){
+        if(filters){
+            filters = '?' + filters;
+        } else {
+            filters = '';
+        }
+        httpGetRehive(transactionsListAPI + filters,{},cb);
     }
 
     function getUserProfile(cb){

@@ -211,8 +211,8 @@ function deleteToken(tokenKey){
     })
 }
 
-function getTransactionsList(){
-    Rehive.transactions.getListTransactions(function(err,res){
+function getTransactionsList(filters){
+    Rehive.transactions.getListTransactions(filters,function(err,res){
         if(err){
             console.log(err);
             return
