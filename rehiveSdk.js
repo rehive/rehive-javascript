@@ -380,8 +380,13 @@
         httpGetRehive(transactionsAPI + tx_code,{},cb);
     }
 
-    function getAccountsList(cb){
-        httpGetRehive(accountsAPI,{},cb);
+    function getAccountsList(filter,cb){
+        if(filter){
+            filter = '?' + filter;
+        } else {
+            filter = '';
+        }
+        httpGetRehive(accountsAPI + filter,{},cb);
     }
 
     //public functions end

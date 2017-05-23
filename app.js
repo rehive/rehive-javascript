@@ -503,8 +503,8 @@ function getTransaction(tx_code){
     })
 }
 
-function getAccountsList(){
-    Rehive.accounts.getAccountsList(function(err,res){
+function getAccountsList(filter){
+    Rehive.accounts.getAccountsList(filter,function(err,res){
         if(err){
             console.log(err);
             return
