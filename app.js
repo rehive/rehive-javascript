@@ -161,6 +161,20 @@ function resendMobileVerification(identifier,company_id){
         })
 }
 
+function verifyMobile(otp){
+    Rehive.auth.verifyMobile(
+        {
+            otp: otp
+        }, function(err,res){
+            if(err){
+                console.log(err);
+                return
+            }
+            console.log(res);
+            document.getElementById('result').innerHTML = convertToText(res.status);
+        })
+}
+
 function getListTokens(){
     Rehive.token.getListTokens(function(err,res){
         if(err){
