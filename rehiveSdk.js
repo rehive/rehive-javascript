@@ -411,6 +411,9 @@
         httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + filter,{},cb);
     }
 
+    function getAccountCurrency(reference,code,cb){
+        httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + code,{},cb);
+    }
 
     //public functions end
 
@@ -466,7 +469,8 @@
     Rehive.accounts = {
         getAccountsList: getAccountsList,
         getAccount: getAccount,
-        getAccountCurrenciesList: getAccountCurrenciesList
+        getAccountCurrenciesList: getAccountCurrenciesList,
+        getAccountCurrency: getAccountCurrency
     };
 
     return window.Rehive = Rehive;

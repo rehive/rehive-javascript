@@ -536,3 +536,14 @@ function getAccountCurrenciesList(reference,filter){
     })
 }
 
+function getAccountCurrency(reference,code){
+    Rehive.accounts.getAccountCurrency(reference,code,function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
+
