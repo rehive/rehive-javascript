@@ -338,6 +338,10 @@
         httpGetRehive(userMobileNumbersAPI,{},cb);
     }
 
+    function updateUserMobileNumbers(mobileNumberId,data,cb){
+        httpPatchRehive(userMobileNumbersAPI + mobileNumberId,data,cb);
+    }
+
 
     //public functions end
 
@@ -380,7 +384,8 @@
         getUserEmailAddresses: getUserEmailAddresses,
         createUserEmailAddresses: createUserEmailAddresses,
         updateUserEmailAddresses: updateUserEmailAddresses,
-        getUserMobileNumbers: getUserMobileNumbers
+        getUserMobileNumbers: getUserMobileNumbers,
+        updateUserMobileNumbers: updateUserMobileNumbers
     };
 
     return window.Rehive = Rehive;

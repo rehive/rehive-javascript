@@ -396,8 +396,8 @@ function createUserEmailAddresses(email,primary){
         })
 }
 
-function updateUserEmailAddresses(emailId, primary){
-    Rehive.user.updateUserEmailAddresses(emailId,{"primary": primary}, function(err,res){
+function updateUserEmailAddresses(emailId, data){
+    Rehive.user.updateUserEmailAddresses(emailId,data, function(err,res){
         if(err){
             console.log(err);
             return
@@ -409,6 +409,17 @@ function updateUserEmailAddresses(emailId, primary){
 
 function getUserMobileNumbers(){
     Rehive.user.getUserMobileNumbers(function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
+
+function updateUserMobileNumbers(mobileNumberId, data){
+    Rehive.user.updateUserMobileNumbers(mobileNumberId,data, function(err,res){
         if(err){
             console.log(err);
             return
