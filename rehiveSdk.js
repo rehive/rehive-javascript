@@ -415,6 +415,10 @@
         httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + code,{},cb);
     }
 
+    function updateAccountCurrency(reference,code,data,cb){
+        httpPatchRehive(accountsAPI + reference + accountCurrenciesAPI + code,data,cb);
+    }
+
     //public functions end
 
      Rehive.auth = {
@@ -470,7 +474,8 @@
         getAccountsList: getAccountsList,
         getAccount: getAccount,
         getAccountCurrenciesList: getAccountCurrenciesList,
-        getAccountCurrency: getAccountCurrency
+        getAccountCurrency: getAccountCurrency,
+        updateAccountCurrency: updateAccountCurrency
     };
 
     return window.Rehive = Rehive;

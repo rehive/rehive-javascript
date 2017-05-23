@@ -547,3 +547,13 @@ function getAccountCurrency(reference,code){
     })
 }
 
+function updateAccountCurrency(reference,code,filter){
+    Rehive.accounts.updateAccountCurrency(reference,code,filter,function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
