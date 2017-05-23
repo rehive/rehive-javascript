@@ -343,3 +343,31 @@ function updateUserBitcoinAccount(accountId, data){
         document.getElementById('result').innerHTML = convertToText(res);
     })
 }
+
+function createDocument(document_category,document_type){
+    var fileSelected = document.getElementById("fileInput").files[0],
+        formData =  new FormData;
+
+    if(document_category == undefined || document_category == null){
+        document_category = '';
+    }
+
+    if(document_type == undefined || document_type == null){
+        document_type = '';
+    }
+
+    formData.append('file', fileSelected);
+    formData.append('document_category', document_category);
+    formData.append('document_type', document_type);
+
+    Rehive.user.createDocument(formData, function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
+
+

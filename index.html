@@ -23,7 +23,7 @@
 
 <button onclick="getListTokens()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Tokens List</button>
 <button onclick="createToken('test1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Token</button>
-<!--<button onclick="deleteToken('ce7d51b5')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-danger">Delete Token</button>-->
+<button onclick="deleteToken('8b0125e5')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Token</button>
 
 <button onclick="getTransactionsList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transactions List</button>
 
@@ -36,10 +36,14 @@
 <button onclick="updateUserBankAccount(123,{name: 'BSAOL'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user bank account</button>
 <!--<button onclick="deleteUserBankAccount(123)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-danger">Delete user bank account</button>-->
 <button onclick="getUserBitcoinAccounts()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user bitcoin accounts</button>
-<button onclick="createUserBitcoinAccount('asd923874382479328fsd742945354',52434,2343)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create bitcoin account</button>
-<button onclick="updateUserBitcoinAccount('328923874382479328742945354')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user bank account</button>
+<button onclick="createUserBitcoinAccount('s3289238743824793287429')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create bitcoin account</button>
+<button onclick="updateUserBitcoinAccount(48,{address: 'dsadcs3233423'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user bank account</button>
 
-
+<div style="margin: 20px 0 0 20px">
+    <label>upload Document</label>
+    <input type="file" id="fileInput">
+    <button onclick="createDocument()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Upload Document</button>
+</div>
 
 <div style="margin: 20px 0">
     <pre id="result"></pre>
