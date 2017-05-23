@@ -231,36 +231,36 @@ function updateUserProfile(data){
 }
 
 function getUserAddress(){
-    Rehive.user.getUserAddress(function(err,user){
+    Rehive.user.getUserAddress(function(err,res){
         if(err){
             console.log(err);
             return
         }
-        console.log(user);
-        document.getElementById('result').innerHTML = convertToText(user);
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     })
 }
 
 
 function updateUserAddress(data){
-    Rehive.user.updateUserAddress(data, function(err,user){
+    Rehive.user.updateUserAddress(data, function(err,res){
         if(err){
             console.log(err);
             return
         }
-        console.log(user);
-        document.getElementById('result').innerHTML = convertToText(user);
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     })
 }
 
 function getUserBankAccounts(){
-    Rehive.user.getUserBankAccounts(function(err,user){
+    Rehive.user.getUserBankAccounts(function(err,res){
         if(err){
             console.log(err);
             return
         }
-        console.log(user);
-        document.getElementById('result').innerHTML = convertToText(user);
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     })
 }
 
@@ -309,13 +309,13 @@ function deleteUserBankAccount(bankAccountId){
 }
 
 function getUserBitcoinAccounts(){
-    Rehive.user.getUserBitcoinAccounts(function(err,user){
+    Rehive.user.getUserBitcoinAccounts(function(err,res){
         if(err){
             console.log(err);
             return
         }
-        console.log(user);
-        document.getElementById('result').innerHTML = convertToText(user);
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     })
 }
 
@@ -361,6 +361,17 @@ function createDocument(document_category,document_type){
     formData.append('document_type', document_type);
 
     Rehive.user.createDocument(formData, function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
+
+function getUserEmailAddresses(){
+    Rehive.user.getUserEmailAddresses(function(err,res){
         if(err){
             console.log(err);
             return
