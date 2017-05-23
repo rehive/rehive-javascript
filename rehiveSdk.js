@@ -37,6 +37,7 @@
         userCreateDocumentAPI = 'user/document/',
         userEmailAddressesAPI = 'user/emails/',
         userMobileNumbersAPI = 'user/mobiles/',
+        userNotificationsAPI = 'user/notifications/',
         header = {header: 'Content-Type: application/json'};
 
     function setToken(newToken){
@@ -351,6 +352,9 @@
         httpPatchRehive(userMobileNumbersAPI + mobileNumberId,data,cb);
     }
 
+    function getUserNotifications(cb){
+        httpGetRehive(userNotificationsAPI,{},cb);
+    }
 
     //public functions end
 
@@ -396,7 +400,8 @@
         updateUserEmailAddresses: updateUserEmailAddresses,
         getUserMobileNumbers: getUserMobileNumbers,
         createUserMobileNumbers: createUserMobileNumbers,
-        updateUserMobileNumbers: updateUserMobileNumbers
+        updateUserMobileNumbers: updateUserMobileNumbers,
+        getUserNotifications: getUserNotifications
     };
 
     return window.Rehive = Rehive;

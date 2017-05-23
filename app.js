@@ -458,3 +458,14 @@ function updateUserMobileNumbers(mobileNumberId, data){
     })
 }
 
+function getUserNotifications(){
+    Rehive.user.getUserNotifications(function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
+
