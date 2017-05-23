@@ -389,6 +389,18 @@
         httpGetRehive(accountsAPI + filter,{},cb);
     }
 
+    function getAccount(reference,filter,cb){
+
+        reference = reference + '/'
+
+        if(filter){
+            filter = '?' + filter;
+        } else {
+            filter = '';
+        }
+        httpGetRehive(accountsAPI + reference + filter,{},cb);
+    }
+
     //public functions end
 
      Rehive.auth = {
@@ -441,7 +453,8 @@
     };
 
     Rehive.accounts = {
-        getAccountsList: getAccountsList
+        getAccountsList: getAccountsList,
+        getAccount: getAccount
     };
 
     return window.Rehive = Rehive;

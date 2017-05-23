@@ -513,3 +513,14 @@ function getAccountsList(filter){
         document.getElementById('result').innerHTML = convertToText(res);
     })
 }
+
+function getAccount(reference,filter){
+    Rehive.accounts.getAccount(reference,filter,function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
