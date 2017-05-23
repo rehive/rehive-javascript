@@ -37,8 +37,8 @@
         userEmailAddressesAPI = 'user/emails/',
         userMobileNumbersAPI = 'user/mobiles/',
         userNotificationsAPI = 'user/notifications/',
-        transactionsListAPI = 'transactions/',
-        totalTransactionsListAPI = 'transactions/totals/',
+        transactionsAPI = 'transactions/',
+        totalTransactionsListAPI = 'totals/',
         header = {header: 'Content-Type: application/json'};
 
     function setToken(newToken){
@@ -363,7 +363,7 @@
         } else {
             filters = '';
         }
-        httpGetRehive(transactionsListAPI + filters,{},cb);
+        httpGetRehive(transactionsAPI + filters,{},cb);
     }
 
     function getTotalTransactionsList(filters,cb){
@@ -372,7 +372,11 @@
         } else {
             filters = '';
         }
-        httpGetRehive(totalTransactionsListAPI + filters,{},cb);
+        httpGetRehive(transactionsAPI + totalTransactionsListAPI + filters,{},cb);
+    }
+
+    function getTransaction(tx_code,cb){
+        httpGetRehive(transactionsAPI + tx_code,{},cb);
     }
 
     //public functions end
@@ -399,7 +403,8 @@
 
     Rehive.transactions = {
         getListTransactions: getListTransactions,
-        getTotalTransactionsList: getTotalTransactionsList
+        getTotalTransactionsList: getTotalTransactionsList,
+        getTransaction: getTransaction
     };
 
     Rehive.user = {
