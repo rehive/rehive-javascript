@@ -34,6 +34,7 @@
         userBankAccountsAPI = 'user/bank_accounts/',
         userBitcoinAccountsAPI = 'user/bitcoin_accounts/',
         userCreateDocumentAPI = 'user/document/',
+        userEmailAddressesAPI = 'user/emails/',
         header = {header: 'Content-Type: application/json'};
 
     function setToken(newToken){
@@ -320,6 +321,10 @@
         httpPostRehive(userCreateDocumentAPI,data,cb);
     }
 
+    function getUserEmailAddresses(cb){
+        httpGetRehive(userEmailAddressesAPI,{},cb);
+    }
+
 
     //public functions end
 
@@ -358,7 +363,8 @@
         getUserBitcoinAccounts: getUserBitcoinAccounts,
         createUserBitcoinAccount: createUserBitcoinAccount,
         updateUserBitcoinAccount: updateUserBitcoinAccount,
-        createDocument: createDocument
+        createDocument: createDocument,
+        getUserEmailAddresses: getUserEmailAddresses
     };
 
     return window.Rehive = Rehive;
