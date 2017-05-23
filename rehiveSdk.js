@@ -329,6 +329,10 @@
         httpPostRehive(userEmailAddressesAPI,data,cb);
     }
 
+    function updateUserEmailAddresses(emailId,data,cb){
+        httpPatchRehive(userEmailAddressesAPI + emailId,data,cb);
+    }
+
 
     //public functions end
 
@@ -369,7 +373,8 @@
         updateUserBitcoinAccount: updateUserBitcoinAccount,
         createDocument: createDocument,
         getUserEmailAddresses: getUserEmailAddresses,
-        createUserEmailAddresses: createUserEmailAddresses
+        createUserEmailAddresses: createUserEmailAddresses,
+        updateUserEmailAddresses: updateUserEmailAddresses
     };
 
     return window.Rehive = Rehive;

@@ -396,4 +396,14 @@ function createUserEmailAddresses(email,primary){
         })
 }
 
+function updateUserEmailAddresses(emailId, primary){
+    Rehive.user.updateUserEmailAddresses(emailId,{"primary": primary}, function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
 
