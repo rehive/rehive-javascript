@@ -325,6 +325,10 @@
         httpGetRehive(userEmailAddressesAPI,{},cb);
     }
 
+    function createUserEmailAddresses(data,cb){
+        httpPostRehive(userEmailAddressesAPI,data,cb);
+    }
+
 
     //public functions end
 
@@ -364,7 +368,8 @@
         createUserBitcoinAccount: createUserBitcoinAccount,
         updateUserBitcoinAccount: updateUserBitcoinAccount,
         createDocument: createDocument,
-        getUserEmailAddresses: getUserEmailAddresses
+        getUserEmailAddresses: getUserEmailAddresses,
+        createUserEmailAddresses: createUserEmailAddresses
     };
 
     return window.Rehive = Rehive;

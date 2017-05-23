@@ -381,4 +381,19 @@ function getUserEmailAddresses(){
     })
 }
 
+function createUserEmailAddresses(email,primary){
+    Rehive.user.createUserEmailAddresses(
+        {
+            email: email,
+            primary: primary
+        }, function(err,res){
+            if(err){
+                console.log(err);
+                return
+            }
+            console.log(res);
+            document.getElementById('result').innerHTML = convertToText(res);
+        })
+}
+
 
