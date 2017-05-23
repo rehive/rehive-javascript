@@ -175,8 +175,8 @@ function verifyMobile(otp){
         })
 }
 
-function getListTokens(){
-    Rehive.token.getListTokens(function(err,res){
+function getTokensList(){
+    Rehive.token.getTokensList(function(err,res){
         if(err){
             console.log(err);
             return
@@ -494,6 +494,17 @@ function getTotalTransactionsList(filters){
 
 function getTransaction(tx_code){
     Rehive.transactions.getTransaction(tx_code,function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
+
+function getAccountsList(){
+    Rehive.accounts.getAccountsList(function(err,res){
         if(err){
             console.log(err);
             return

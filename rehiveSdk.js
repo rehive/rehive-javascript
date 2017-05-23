@@ -39,6 +39,7 @@
         userNotificationsAPI = 'user/notifications/',
         transactionsAPI = 'transactions/',
         totalTransactionsListAPI = 'totals/',
+        accountsAPI = 'accounts/',
         header = {header: 'Content-Type: application/json'};
 
     function setToken(newToken){
@@ -265,7 +266,7 @@
         httpPostRehive(verifyMobileAPI,data,cb);
     }
 
-    function getListTokens(cb){
+    function getTokensList(cb){
         httpGetRehive(tokensAPI,{},cb);
     }
 
@@ -379,6 +380,10 @@
         httpGetRehive(transactionsAPI + tx_code,{},cb);
     }
 
+    function getAccountsList(cb){
+        httpGetRehive(accountsAPI,{},cb);
+    }
+
     //public functions end
 
      Rehive.auth = {
@@ -396,15 +401,9 @@
      };
 
     Rehive.token = {
-        getListTokens: getListTokens,
+        getTokensList: getTokensList,
         createToken: createToken,
         deleteToken: deleteToken
-    };
-
-    Rehive.transactions = {
-        getListTransactions: getListTransactions,
-        getTotalTransactionsList: getTotalTransactionsList,
-        getTransaction: getTransaction
     };
 
     Rehive.user = {
@@ -428,6 +427,16 @@
         updateUserMobileNumbers: updateUserMobileNumbers,
         getUserNotifications: getUserNotifications,
         updateUserNotifications: updateUserNotifications
+    };
+
+    Rehive.transactions = {
+        getListTransactions: getListTransactions,
+        getTotalTransactionsList: getTotalTransactionsList,
+        getTransaction: getTransaction
+    };
+
+    Rehive.accounts = {
+        getAccountsList: getAccountsList
     };
 
     return window.Rehive = Rehive;
