@@ -469,3 +469,14 @@ function getUserNotifications(){
     })
 }
 
+function updateUserNotifications(notificationsId, data){
+    Rehive.user.updateUserNotifications(notificationsId,data, function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
+

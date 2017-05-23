@@ -356,6 +356,10 @@
         httpGetRehive(userNotificationsAPI,{},cb);
     }
 
+    function updateUserNotifications(notificationsId,data,cb){
+        httpPatchRehive(userNotificationsAPI + notificationsId,data,cb);
+    }
+
     //public functions end
 
      Rehive.auth = {
@@ -401,7 +405,8 @@
         getUserMobileNumbers: getUserMobileNumbers,
         createUserMobileNumbers: createUserMobileNumbers,
         updateUserMobileNumbers: updateUserMobileNumbers,
-        getUserNotifications: getUserNotifications
+        getUserNotifications: getUserNotifications,
+        updateUserNotifications: updateUserNotifications
     };
 
     return window.Rehive = Rehive;
