@@ -29,7 +29,6 @@
         resendMobileVerificationAPI = 'auth/mobile/verify/resend/',
         verifyMobileAPI = 'auth/mobile/verify/',
         tokensAPI = 'auth/tokens/',
-        transactionsListAPI = 'transactions/',
         userProfileAPI = 'user/',
         userAddressAPI = 'user/address/',
         userBankAccountsAPI = 'user/bank_accounts/',
@@ -38,6 +37,8 @@
         userEmailAddressesAPI = 'user/emails/',
         userMobileNumbersAPI = 'user/mobiles/',
         userNotificationsAPI = 'user/notifications/',
+        transactionsListAPI = 'transactions/',
+        totalTransactionsListAPI = 'transactions/totals/',
         header = {header: 'Content-Type: application/json'};
 
     function setToken(newToken){
@@ -276,15 +277,6 @@
         httpDeleteRehive(tokensAPI + tokenKey,{},cb);
     }
 
-    function getListTransactions(filters,cb){
-        if(filters){
-            filters = '?' + filters;
-        } else {
-            filters = '';
-        }
-        httpGetRehive(transactionsListAPI + filters,{},cb);
-    }
-
     function getUserProfile(cb){
         httpGetRehive(userProfileAPI,{},cb);
     }
@@ -365,6 +357,24 @@
         httpPatchRehive(userNotificationsAPI + notificationsId,data,cb);
     }
 
+    function getListTransactions(filters,cb){
+        if(filters){
+            filters = '?' + filters;
+        } else {
+            filters = '';
+        }
+        httpGetRehive(transactionsListAPI + filters,{},cb);
+    }
+
+    function getTotalTransactionsList(filters,cb){
+        if(filters){
+            filters = '?' + filters;
+        } else {
+            filters = '';
+        }
+        httpGetRehive(totalTransactionsListAPI + filters,{},cb);
+    }
+
     //public functions end
 
      Rehive.auth = {
@@ -388,7 +398,8 @@
     };
 
     Rehive.transactions = {
-        getListTransactions: getListTransactions
+        getListTransactions: getListTransactions,
+        getTotalTransactionsList: getTotalTransactionsList
     };
 
     Rehive.user = {

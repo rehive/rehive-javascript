@@ -26,8 +26,6 @@
 <button onclick="createToken('test1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Token</button>
 <button onclick="deleteToken('8b0125e5')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Token</button>
 
-<button onclick="getTransactionsList('tx_type=transfer')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transactions List</button>
-
 <button onclick="getUserProfile()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user profile</button>
 <button onclick="updateUserProfile({first_name: 'Test'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user profile</button>
 <button onclick="getUserAddress()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user address</button>
@@ -53,6 +51,9 @@
     <input type="file" id="fileInput">
     <button onclick="createDocument()" style="margin: 20px 0 0 0" class="btn btn-lg btn-primary">Upload Document</button>
 </div>
+
+<button onclick="getTransactionsList('tx_type=transfer')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transactions List</button>
+<button onclick="getTotalTransactionsList('currency=USD')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Total Transactions List</button>
 
 <div style="margin: 20px 0">
     <pre id="result"></pre>

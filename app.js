@@ -211,17 +211,6 @@ function deleteToken(tokenKey){
     })
 }
 
-function getTransactionsList(filters){
-    Rehive.transactions.getListTransactions(filters,function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    })
-}
-
 function getUserProfile(){
     Rehive.user.getUserProfile(function(err,user){
         if(err){
@@ -480,3 +469,25 @@ function updateUserNotifications(notificationsId, data){
     })
 }
 
+function getTransactionsList(filters){
+    Rehive.transactions.getListTransactions(filters,function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
+
+
+function getTotalTransactionsList(filters){
+    Rehive.transactions.getTotalTransactionsList(filters,function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
