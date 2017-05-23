@@ -524,3 +524,15 @@ function getAccount(reference,filter){
         document.getElementById('result').innerHTML = convertToText(res);
     })
 }
+
+function getAccountCurrenciesList(reference,filter){
+    Rehive.accounts.getAccountCurrenciesList(reference,filter,function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
+

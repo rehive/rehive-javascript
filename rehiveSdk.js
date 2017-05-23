@@ -40,6 +40,7 @@
         transactionsAPI = 'transactions/',
         totalTransactionsListAPI = 'totals/',
         accountsAPI = 'accounts/',
+        accountCurrenciesAPI = '/currencies/',
         header = {header: 'Content-Type: application/json'};
 
     function setToken(newToken){
@@ -401,6 +402,16 @@
         httpGetRehive(accountsAPI + reference + filter,{},cb);
     }
 
+    function getAccountCurrenciesList(reference,filter,cb){
+        if(filter){
+            filter = '?' + filter;
+        } else {
+            filter = '';
+        }
+        httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + filter,{},cb);
+    }
+
+
     //public functions end
 
      Rehive.auth = {
@@ -454,7 +465,8 @@
 
     Rehive.accounts = {
         getAccountsList: getAccountsList,
-        getAccount: getAccount
+        getAccount: getAccount,
+        getAccountCurrenciesList: getAccountCurrenciesList
     };
 
     return window.Rehive = Rehive;
