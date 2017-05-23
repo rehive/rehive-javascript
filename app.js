@@ -418,6 +418,21 @@ function getUserMobileNumbers(){
     })
 }
 
+function createUserMobileNumbers(number,primary){
+    Rehive.user.createUserMobileNumbers(
+        {
+            number: number,
+            primary: primary
+        }, function(err,res){
+            if(err){
+                console.log(err);
+                return
+            }
+            console.log(res);
+            document.getElementById('result').innerHTML = convertToText(res);
+        })
+}
+
 function updateUserMobileNumbers(mobileNumberId, data){
     Rehive.user.updateUserMobileNumbers(mobileNumberId,data, function(err,res){
         if(err){

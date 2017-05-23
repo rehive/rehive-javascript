@@ -338,6 +338,10 @@
         httpGetRehive(userMobileNumbersAPI,{},cb);
     }
 
+    function createUserMobileNumbers(data,cb){
+        httpPostRehive(userMobileNumbersAPI,data,cb);
+    }
+
     function updateUserMobileNumbers(mobileNumberId,data,cb){
         httpPatchRehive(userMobileNumbersAPI + mobileNumberId,data,cb);
     }
@@ -385,6 +389,7 @@
         createUserEmailAddresses: createUserEmailAddresses,
         updateUserEmailAddresses: updateUserEmailAddresses,
         getUserMobileNumbers: getUserMobileNumbers,
+        createUserMobileNumbers: createUserMobileNumbers,
         updateUserMobileNumbers: updateUserMobileNumbers
     };
 
