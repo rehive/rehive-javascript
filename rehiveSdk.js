@@ -39,6 +39,7 @@
         userNotificationsAPI = 'user/notifications/',
         transactionsAPI = 'transactions/',
         totalTransactionsListAPI = 'totals/',
+        withdrawalAPI = 'transactions/withdraw/'
         accountsAPI = 'accounts/',
         accountCurrenciesAPI = '/currencies/',
         companyAPI = 'company/',
@@ -385,6 +386,10 @@
         httpGetRehive(transactionsAPI + tx_code + '/',{},cb);
     }
 
+    function createWithdrawal(data,cb){
+      httpPostRehive(withdrawalAPI,data,cb);
+    }
+
     function getAccountsList(filter,cb){
         if(filter){
             filter = '?' + filter;
@@ -489,7 +494,8 @@
     Rehive.transactions = {
         getListTransactions: getListTransactions,
         getTotalTransactionsList: getTotalTransactionsList,
-        getTransaction: getTransaction
+        getTransaction: getTransaction,
+        createWithdrawal: createWithdrawal
     };
 
     Rehive.accounts = {

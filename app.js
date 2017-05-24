@@ -503,6 +503,25 @@ function getTransaction(tx_code){
     })
 }
 
+function createWithdrawal(amount,account,reference,subtype,note,metadata){
+    Rehive.transactions.createWithdrawal(
+        {
+            amount: amount,
+            account: account,
+            reference: reference,
+            subtype: subtype,
+            note: note,
+            metadata: metadata
+        }, function(err,res){
+            if(err){
+                console.log(err);
+                return
+            }
+            console.log(res);
+            document.getElementById('result').innerHTML = convertToText(res);
+        })
+}
+
 function getAccountsList(filter){
     Rehive.accounts.getAccountsList(filter,function(err,res){
         if(err){
