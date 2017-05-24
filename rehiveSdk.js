@@ -41,6 +41,9 @@
         totalTransactionsListAPI = 'totals/',
         accountsAPI = 'accounts/',
         accountCurrenciesAPI = '/currencies/',
+        companyAPI = 'company/',
+        companyCurrenciesAPI = 'company/currencies/',
+        companyBanksAPI = 'company/bank/',
         header = {header: 'Content-Type: application/json'};
 
     function setToken(newToken){
@@ -102,6 +105,7 @@
                 }
             })
             .catch(function (error) {
+              console.log(error.response);
                 cb(error.response.data,null);
             });
     }
@@ -378,7 +382,7 @@
     }
 
     function getTransaction(tx_code,cb){
-        httpGetRehive(transactionsAPI + tx_code,{},cb);
+        httpGetRehive(transactionsAPI + tx_code + '/',{},cb);
     }
 
     function getAccountsList(filter,cb){
@@ -412,12 +416,30 @@
     }
 
     function getAccountCurrency(reference,code,cb){
-        httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + code,{},cb);
+        httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + code + '/',{},cb);
     }
 
     function updateAccountCurrency(reference,code,data,cb){
-        httpPatchRehive(accountsAPI + reference + accountCurrenciesAPI + code,data,cb);
+        httpPatchRehive(accountsAPI + reference + accountCurrenciesAPI + code + '/',data,cb);
     }
+
+    function getCompanyDetails(cb){
+        httpGetRehive(companyAPI,{},cb);
+    }
+
+    function getCompanyCurrencies(code,cb){
+      if(code){
+        code = code + '/';
+      } else {
+        code = '';
+      }
+        httpGetRehive(companyCurrenciesAPI + code,{},cb);
+    }
+
+    function getCompanyBanks(cb){
+        httpGetRehive(companyBanksAPI,{},cb);
+    }
+
 
     //public functions end
 
@@ -476,6 +498,12 @@
         getAccountCurrenciesList: getAccountCurrenciesList,
         getAccountCurrency: getAccountCurrency,
         updateAccountCurrency: updateAccountCurrency
+    };
+
+    Rehive.company = {
+        getCompanyDetails: getCompanyDetails,
+        getCompanyCurrencies: getCompanyCurrencies,
+        getCompanyBanks: getCompanyBanks
     };
 
     return window.Rehive = Rehive;

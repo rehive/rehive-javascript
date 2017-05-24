@@ -557,3 +557,36 @@ function updateAccountCurrency(reference,code,filter){
         document.getElementById('result').innerHTML = convertToText(res);
     })
 }
+
+function getCompanyDetails(){
+    Rehive.company.getCompanyDetails(function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
+
+function getCompanyCurrencies(code){
+    Rehive.company.getCompanyCurrencies(code,function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
+
+function getCompanyBanks(){
+    Rehive.company.getCompanyBanks(function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
