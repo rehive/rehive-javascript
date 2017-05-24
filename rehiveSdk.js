@@ -39,7 +39,8 @@
         userNotificationsAPI = 'user/notifications/',
         transactionsAPI = 'transactions/',
         totalTransactionsListAPI = 'totals/',
-        withdrawalAPI = 'transactions/withdraw/'
+        withdrawalAPI = 'transactions/withdraw/',
+        depositAPI = 'transactions/deposit/',
         accountsAPI = 'accounts/',
         accountCurrenciesAPI = '/currencies/',
         companyAPI = 'company/',
@@ -390,6 +391,10 @@
       httpPostRehive(withdrawalAPI,data,cb);
     }
 
+    function createDeposit(data,cb){
+      httpPostRehive(depositAPI,data,cb);
+    }
+
     function getAccountsList(filter,cb){
         if(filter){
             filter = '?' + filter;
@@ -495,7 +500,8 @@
         getListTransactions: getListTransactions,
         getTotalTransactionsList: getTotalTransactionsList,
         getTransaction: getTransaction,
-        createWithdrawal: createWithdrawal
+        createWithdrawal: createWithdrawal,
+        createDeposit: createDeposit
     };
 
     Rehive.accounts = {

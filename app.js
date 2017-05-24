@@ -522,6 +522,24 @@ function createWithdrawal(amount,account,reference,subtype,note,metadata){
         })
 }
 
+function createDeposit(amount,account,reference,subtype,note,metadata){
+    Rehive.transactions.createDeposit(
+        {
+            amount: amount,
+            account: account,
+            reference: reference,
+            subtype: subtype,
+            note: note,
+            metadata: metadata
+        }, function(err,res){
+            if(err){
+                console.log(err);
+                return
+            }
+            console.log(res);
+            document.getElementById('result').innerHTML = convertToText(res);
+        })
+}
 function getAccountsList(filter){
     Rehive.accounts.getAccountsList(filter,function(err,res){
         if(err){
