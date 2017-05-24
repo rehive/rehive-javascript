@@ -4,11 +4,18 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
 
-    <script src="rehiveSdk.min.js"></script>
+    <script src="rehiveSDK.js"></script>
     <script src="app.js"></script>
+
+    <script>
+    window.onload = function(){
+       window.rehive = Rehive();
+    }
+    </script>
 
 </head>
 <body>
+  <button onclick="rehive.hello()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Hello</button>
 <button onclick="login('test1@rehive.com','test_company_1','test1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Login</button>
 <button onclick="logout()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Logout</button>
 <button onclick="logoutAll()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">LogoutAll</button>

@@ -8,7 +8,7 @@ function convertToText(data) {
 }
 
 function register(first_name,last_name,email,company_id,password1,password2){
-    Rehive.auth.register(
+    rehive.auth.register(
         {
             first_name: first_name,
             last_name: last_name,
@@ -27,7 +27,7 @@ function register(first_name,last_name,email,company_id,password1,password2){
 }
 
 function registerCompany(first_name,last_name,email,company_id,password1,password2){
-    Rehive.auth.registerCompany(
+    rehive.auth.registerCompany(
         {
             first_name: first_name,
             last_name: last_name,
@@ -46,7 +46,7 @@ function registerCompany(first_name,last_name,email,company_id,password1,passwor
 }
 
 function login(identifier,company_id,password){
-    Rehive.auth.login(
+    rehive.auth.login(
         {
             identifier: identifier,
             company_id: company_id,
@@ -62,7 +62,7 @@ function login(identifier,company_id,password){
 }
 
 function logout(){
-    Rehive.auth.logout(function(err,res){
+    rehive.auth.logout(function(err,res){
         if(err){
             console.log(err);
             return
@@ -73,7 +73,7 @@ function logout(){
 }
 
 function logoutAll(){
-    Rehive.auth.logoutAll(function(err,res){
+    rehive.auth.logoutAll(function(err,res){
         if(err){
             console.log(err);
             return
@@ -84,7 +84,7 @@ function logoutAll(){
 }
 
 function changePassword(old_password,new_password1,new_password2){
-    Rehive.auth.changePassword(
+    rehive.auth.changePassword(
         {
             old_password: old_password,
             new_password1: new_password1,
@@ -100,7 +100,7 @@ function changePassword(old_password,new_password1,new_password2){
 }
 
 function resetPassword(identifier,company_id){
-    Rehive.auth.resetPassword(
+    rehive.auth.resetPassword(
         {
             identifier: identifier,
             company_id: company_id
@@ -115,7 +115,7 @@ function resetPassword(identifier,company_id){
 }
 
 function resetConfirmPassword(new_password1,new_password2,uid,token){
-    Rehive.auth.resetConfirmPassword(
+    rehive.auth.resetConfirmPassword(
         {
             new_password1: new_password1,
             new_password2: new_password2,
@@ -132,7 +132,7 @@ function resetConfirmPassword(new_password1,new_password2,uid,token){
 }
 
 function resendEmailVerification(identifier,company_id){
-    Rehive.auth.resendEmailVerification(
+    rehive.auth.resendEmailVerification(
         {
             identifier: identifier,
             company_id: company_id
@@ -147,7 +147,7 @@ function resendEmailVerification(identifier,company_id){
 }
 
 function resendMobileVerification(identifier,company_id){
-    Rehive.auth.resendMobileVerification(
+    rehive.auth.resendMobileVerification(
         {
             identifier: identifier,
             company_id: company_id
@@ -162,7 +162,7 @@ function resendMobileVerification(identifier,company_id){
 }
 
 function verifyMobile(otp){
-    Rehive.auth.verifyMobile(
+    rehive.auth.verifyMobile(
         {
             otp: otp
         }, function(err,res){
@@ -176,7 +176,7 @@ function verifyMobile(otp){
 }
 
 function getTokensList(){
-    Rehive.token.getTokensList(function(err,res){
+    rehive.token.getTokensList(function(err,res){
         if(err){
             console.log(err);
             return
@@ -187,7 +187,7 @@ function getTokensList(){
 }
 
 function createToken(password){
-    Rehive.token.createToken(
+    rehive.token.createToken(
         {
             password: password
         }, function(err,res){
@@ -201,7 +201,7 @@ function createToken(password){
 }
 
 function deleteToken(tokenKey){
-    Rehive.token.deleteToken(tokenKey,function(err,res){
+    rehive.token.deleteToken(tokenKey,function(err,res){
         if(err){
             console.log(err);
             return
@@ -212,7 +212,7 @@ function deleteToken(tokenKey){
 }
 
 function getUserProfile(){
-    Rehive.user.getUserProfile(function(err,user){
+    rehive.user.getUserProfile(function(err,user){
         if(err){
             console.log(err);
             return
@@ -223,7 +223,7 @@ function getUserProfile(){
 }
 
 function updateUserProfile(data){
-    Rehive.user.updateUserProfile(data, function(err,user){
+    rehive.user.updateUserProfile(data, function(err,user){
         if(err){
             console.log(err);
             return
@@ -234,7 +234,7 @@ function updateUserProfile(data){
 }
 
 function getUserAddress(){
-    Rehive.user.getUserAddress(function(err,res){
+    rehive.user.getUserAddress(function(err,res){
         if(err){
             console.log(err);
             return
@@ -246,7 +246,7 @@ function getUserAddress(){
 
 
 function updateUserAddress(data){
-    Rehive.user.updateUserAddress(data, function(err,res){
+    rehive.user.updateUserAddress(data, function(err,res){
         if(err){
             console.log(err);
             return
@@ -257,7 +257,7 @@ function updateUserAddress(data){
 }
 
 function getUserBankAccounts(){
-    Rehive.user.getUserBankAccounts(function(err,res){
+    rehive.user.getUserBankAccounts(function(err,res){
         if(err){
             console.log(err);
             return
@@ -268,7 +268,7 @@ function getUserBankAccounts(){
 }
 
 function createUserBankAccount(name,number,type,bank_name,bank_code,branch_code,swift,iban,bic){
-    Rehive.user.createUserBankAccount(
+    rehive.user.createUserBankAccount(
         {
             name: name,
             number: number,
@@ -290,7 +290,7 @@ function createUserBankAccount(name,number,type,bank_name,bank_code,branch_code,
 }
 
 function updateUserBankAccount(accountId, data){
-    Rehive.user.updateUserBankAccount(accountId,data, function(err,res){
+    rehive.user.updateUserBankAccount(accountId,data, function(err,res){
             if(err){
                 console.log(err);
                 return
@@ -301,7 +301,7 @@ function updateUserBankAccount(accountId, data){
 }
 
 function deleteUserBankAccount(bankAccountId){
-    Rehive.user.deleteUserBankAccount(bankAccountId,function(err,res){
+    rehive.user.deleteUserBankAccount(bankAccountId,function(err,res){
         if(err){
             console.log(err);
             return
@@ -312,7 +312,7 @@ function deleteUserBankAccount(bankAccountId){
 }
 
 function getUserBitcoinAccounts(){
-    Rehive.user.getUserBitcoinAccounts(function(err,res){
+    rehive.user.getUserBitcoinAccounts(function(err,res){
         if(err){
             console.log(err);
             return
@@ -323,7 +323,7 @@ function getUserBitcoinAccounts(){
 }
 
 function createUserBitcoinAccount(address){
-    Rehive.user.createUserBitcoinAccount(
+    rehive.user.createUserBitcoinAccount(
         {
             address: address
         }, function(err,res){
@@ -337,7 +337,7 @@ function createUserBitcoinAccount(address){
 }
 
 function updateUserBitcoinAccount(accountId, data){
-    Rehive.user.updateUserBitcoinAccount(accountId,data, function(err,res){
+    rehive.user.updateUserBitcoinAccount(accountId,data, function(err,res){
         if(err){
             console.log(err);
             return
@@ -363,7 +363,7 @@ function createDocument(document_category,document_type){
     formData.append('document_category', document_category);
     formData.append('document_type', document_type);
 
-    Rehive.user.createDocument(formData, function(err,res){
+    rehive.user.createDocument(formData, function(err,res){
         if(err){
             console.log(err);
             return
@@ -374,7 +374,7 @@ function createDocument(document_category,document_type){
 }
 
 function getUserEmailAddresses(){
-    Rehive.user.getUserEmailAddresses(function(err,res){
+    rehive.user.getUserEmailAddresses(function(err,res){
         if(err){
             console.log(err);
             return
@@ -385,7 +385,7 @@ function getUserEmailAddresses(){
 }
 
 function createUserEmailAddresses(email,primary){
-    Rehive.user.createUserEmailAddresses(
+    rehive.user.createUserEmailAddresses(
         {
             email: email,
             primary: primary
@@ -400,7 +400,7 @@ function createUserEmailAddresses(email,primary){
 }
 
 function updateUserEmailAddresses(emailId, data){
-    Rehive.user.updateUserEmailAddresses(emailId,data, function(err,res){
+    rehive.user.updateUserEmailAddresses(emailId,data, function(err,res){
         if(err){
             console.log(err);
             return
@@ -411,7 +411,7 @@ function updateUserEmailAddresses(emailId, data){
 }
 
 function getUserMobileNumbers(){
-    Rehive.user.getUserMobileNumbers(function(err,res){
+    rehive.user.getUserMobileNumbers(function(err,res){
         if(err){
             console.log(err);
             return
@@ -422,7 +422,7 @@ function getUserMobileNumbers(){
 }
 
 function createUserMobileNumbers(number,primary){
-    Rehive.user.createUserMobileNumbers(
+    rehive.user.createUserMobileNumbers(
         {
             number: number,
             primary: primary
@@ -437,7 +437,7 @@ function createUserMobileNumbers(number,primary){
 }
 
 function updateUserMobileNumbers(mobileNumberId, data){
-    Rehive.user.updateUserMobileNumbers(mobileNumberId,data, function(err,res){
+    rehive.user.updateUserMobileNumbers(mobileNumberId,data, function(err,res){
         if(err){
             console.log(err);
             return
@@ -448,7 +448,7 @@ function updateUserMobileNumbers(mobileNumberId, data){
 }
 
 function getUserNotifications(){
-    Rehive.user.getUserNotifications(function(err,res){
+    rehive.user.getUserNotifications(function(err,res){
         if(err){
             console.log(err);
             return
@@ -459,7 +459,7 @@ function getUserNotifications(){
 }
 
 function updateUserNotifications(notificationsId, data){
-    Rehive.user.updateUserNotifications(notificationsId,data, function(err,res){
+    rehive.user.updateUserNotifications(notificationsId,data, function(err,res){
         if(err){
             console.log(err);
             return
@@ -470,7 +470,7 @@ function updateUserNotifications(notificationsId, data){
 }
 
 function getTransactionsList(filters){
-    Rehive.transactions.getListTransactions(filters,function(err,res){
+    rehive.transactions.getListTransactions(filters,function(err,res){
         if(err){
             console.log(err);
             return
@@ -482,7 +482,7 @@ function getTransactionsList(filters){
 
 
 function getTotalTransactionsList(filters){
-    Rehive.transactions.getTotalTransactionsList(filters,function(err,res){
+    rehive.transactions.getTotalTransactionsList(filters,function(err,res){
         if(err){
             console.log(err);
             return
@@ -493,7 +493,7 @@ function getTotalTransactionsList(filters){
 }
 
 function getTransaction(tx_code){
-    Rehive.transactions.getTransaction(tx_code,function(err,res){
+    rehive.transactions.getTransaction(tx_code,function(err,res){
         if(err){
             console.log(err);
             return
@@ -504,7 +504,7 @@ function getTransaction(tx_code){
 }
 
 function createWithdrawal(amount,account,reference,subtype,note,metadata){
-    Rehive.transactions.createWithdrawal(
+    rehive.transactions.createWithdrawal(
         {
             amount: amount,
             account: account,
@@ -523,7 +523,7 @@ function createWithdrawal(amount,account,reference,subtype,note,metadata){
 }
 
 function createDeposit(amount,account,reference,subtype,note,metadata){
-    Rehive.transactions.createDeposit(
+    rehive.transactions.createDeposit(
         {
             amount: amount,
             account: account,
@@ -541,7 +541,7 @@ function createDeposit(amount,account,reference,subtype,note,metadata){
         })
 }
 function getAccountsList(filter){
-    Rehive.accounts.getAccountsList(filter,function(err,res){
+    rehive.accounts.getAccountsList(filter,function(err,res){
         if(err){
             console.log(err);
             return
@@ -552,7 +552,7 @@ function getAccountsList(filter){
 }
 
 function getAccount(reference,filter){
-    Rehive.accounts.getAccount(reference,filter,function(err,res){
+    rehive.accounts.getAccount(reference,filter,function(err,res){
         if(err){
             console.log(err);
             return
@@ -563,7 +563,7 @@ function getAccount(reference,filter){
 }
 
 function getAccountCurrenciesList(reference,filter){
-    Rehive.accounts.getAccountCurrenciesList(reference,filter,function(err,res){
+    rehive.accounts.getAccountCurrenciesList(reference,filter,function(err,res){
         if(err){
             console.log(err);
             return
@@ -574,7 +574,7 @@ function getAccountCurrenciesList(reference,filter){
 }
 
 function getAccountCurrency(reference,code){
-    Rehive.accounts.getAccountCurrency(reference,code,function(err,res){
+    rehive.accounts.getAccountCurrency(reference,code,function(err,res){
         if(err){
             console.log(err);
             return
@@ -585,7 +585,7 @@ function getAccountCurrency(reference,code){
 }
 
 function updateAccountCurrency(reference,code,filter){
-    Rehive.accounts.updateAccountCurrency(reference,code,filter,function(err,res){
+    rehive.accounts.updateAccountCurrency(reference,code,filter,function(err,res){
         if(err){
             console.log(err);
             return
@@ -596,7 +596,7 @@ function updateAccountCurrency(reference,code,filter){
 }
 
 function getCompanyDetails(){
-    Rehive.company.getCompanyDetails(function(err,res){
+    rehive.company.getCompanyDetails(function(err,res){
         if(err){
             console.log(err);
             return
@@ -607,7 +607,7 @@ function getCompanyDetails(){
 }
 
 function getCompanyCurrencies(code){
-    Rehive.company.getCompanyCurrencies(code,function(err,res){
+    rehive.company.getCompanyCurrencies(code,function(err,res){
         if(err){
             console.log(err);
             return
@@ -618,7 +618,7 @@ function getCompanyCurrencies(code){
 }
 
 function getCompanyBanks(){
-    Rehive.company.getCompanyBanks(function(err,res){
+    rehive.company.getCompanyBanks(function(err,res){
         if(err){
             console.log(err);
             return
