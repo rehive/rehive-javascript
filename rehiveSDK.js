@@ -12,15 +12,14 @@
 
 function Rehive(config){
 
-  /// TODO: this.rehive as all the functions are now binding to window object, need to bind rehive to window object
-
-  this.auth = {};
-  this.token = {};
-  this.user = {};
-  this.transactions = {};
-  this.accounts = {};
-  this.company = {};
-  var apiVersion = '3',
+    this.rehive = {};
+    this.rehive.auth = {};
+    this.rehive.token = {};
+    this.rehive.user = {};
+    this.rehive.transactions = {};
+    this.rehive.accounts = {};
+    this.rehive.company = {};
+    var apiVersion = '3',
       baseAPI = 'https://rehive.com/api/'+ apiVersion +'/',
       registerAPI = 'auth/register/',
       registerCompanyAPI = 'auth/company/register/',
@@ -53,40 +52,39 @@ function Rehive(config){
       companyBanksAPI = 'company/bank/',
       header = {header: 'Content-Type: application/json'};
 
+    if(config){
+        config.apiVersion ? apiVersion = config.apiVersion : apiVersion = '3';
+        config.authToken ? setToken(config.authToken) : setToken('');
 
+    } else {
+        apiVersion = '3';
+        setToken('');
+    }
 
-  if(config){
-    config.apiVersion ? apiVersion = config.apiVersion : apiVersion = '3';
-    config.authToken ? setToken(config.authToken) : setToken('');
-
-  } else {
-    apiVersion = '3';
-    setToken('');
-  }
-
-  function setToken(newToken){
+    function setToken(newToken){
       sessionStorage.setItem("token",newToken);
-  }
+    }
 
-  function getToken(){
+    function getToken(){
     return sessionStorage.getItem("token") || '';
-  }
+    }
 
-  function removeToken(){
+    function removeToken(){
       delete axios.defaults.headers.common['Authorization'];
       sessionStorage.removeItem("token");
-  }
+    }
 
 
-//dummy function
-  this.hello = function(){
-    console.log(this);
-  }
+    //dummy function
+    this.rehive.hello = function(){
+    console.log(apiVersion);
+        console.log(sessionStorage.getItem("token"));
+    };
 
-  //dummy function
+    //dummy function
 
 
-  httpPostRehive = function(url,data,cb){
+    var httpPostRehive = function(url,data,cb){
 
       var token = getToken();
 
@@ -109,9 +107,9 @@ function Rehive(config){
           .catch(function (error) {
               cb(error.response.data,null);
           });
-  }
+    };
 
-  httpGetRehive = function(url,params,cb){
+    var httpGetRehive = function(url,params,cb){
 
       var token = getToken();
 
@@ -135,9 +133,9 @@ function Rehive(config){
             console.log(error.response);
               cb(error.response.data,null);
           });
-  }
+    };
 
-  httpPatchRehive = function(url,data,cb){
+    var httpPatchRehive = function(url,data,cb){
 
       var token = getToken();
 
@@ -160,9 +158,9 @@ function Rehive(config){
           .catch(function (error) {
               cb(error.response.data,null);
           });
-  }
+    };
 
-  httpDeleteRehive = function(url,data,cb){
+    var httpDeleteRehive = function(url,data,cb){
 
       var token = getToken();
 
@@ -186,11 +184,11 @@ function Rehive(config){
           .catch(function (error) {
               cb(error.response.data,null);
           });
-  }
+    };
 
-  //public functions
+    //public functions
 
-  this.auth.register = function (credentials,cb){
+    this.rehive.auth.register = function (credentials,cb){
       axios.post(baseAPI + registerAPI, credentials , header)
           .then(function (response) {
               if(response.status == 201){
@@ -201,9 +199,9 @@ function Rehive(config){
           .catch(function (error) {
               cb(error.response.data,null);
           });
-  }
+    };
 
-  this.auth.registerCompany = function(credentials,cb){
+    this.rehive.auth.registerCompany = function(credentials,cb){
       axios.post(baseAPI + registerCompanyAPI, credentials , header)
           .then(function (response) {
               if(response.status == 201){
@@ -214,9 +212,9 @@ function Rehive(config){
           .catch(function (error) {
               cb(error.response.data,null);
           });
-  }
+    };
 
-  this.auth.login = function (credentials,cb){
+    this.rehive.auth.login = function (credentials,cb){
       axios.post(baseAPI + loginAPI, credentials , header)
           .then(function (response) {
               if(response.status == 200){
@@ -227,9 +225,9 @@ function Rehive(config){
           .catch(function (error) {
               cb(error.response.data,null);
           });
-  }
+    };
 
-  this.auth.logout = function (cb){
+    this.rehive.auth.logout = function (cb){
 
       var token = getToken();
 
@@ -250,9 +248,9 @@ function Rehive(config){
           .catch(function (error) {
               cb(error.response.data,null);
           });
-  }
+    };
 
-  this.auth.logoutAll = function (cb){
+    this.rehive.auth.logoutAll = function (cb){
 
       var token = getToken();
 
@@ -272,166 +270,166 @@ function Rehive(config){
           .catch(function (error) {
               cb(error.response.data,null);
           });
-  }
+    };
 
-  this.auth.changePassword = function (data,cb){
+    this.rehive.auth.changePassword = function (data,cb){
       httpPostRehive(changePasswordAPI,data,cb);
-  }
+    };
 
-  this.auth.resetPassword = function (data,cb){
+    this.rehive.auth.resetPassword = function (data,cb){
       httpPostRehive(resetPasswordAPI,data,cb);
-  }
+    };
 
-  this.auth.resetConfirmPassword = function (data,cb){
+    this.rehive.auth.resetConfirmPassword = function (data,cb){
       httpPostRehive(resetConfirmPasswordAPI,data,cb);
-  }
+    };
 
-  this.auth.resendEmailVerification = function (data,cb){
+    this.rehive.auth.resendEmailVerification = function (data,cb){
       httpPostRehive(resendEmailVerificationAPI,data,cb);
-  }
+    };
 
-  this.auth.resendMobileVerification = function (data,cb){
+    this.rehive.auth.resendMobileVerification = function (data,cb){
       httpPostRehive(resendMobileVerificationAPI,data,cb);
-  }
+    };
 
-  this.auth.verifyMobile = function (data,cb){
+    this.rehive.auth.verifyMobile = function (data,cb){
       httpPostRehive(verifyMobileAPI,data,cb);
-  }
+    };
 
-  this.token.getTokensList = function (cb){
+    this.rehive.token.getTokensList = function (cb){
       httpGetRehive(tokensAPI,{},cb);
-  }
+    };
 
-  this.token.createToken = function (data,cb){
+    this.rehive.token.createToken = function (data,cb){
       httpPostRehive(tokensAPI,data,cb);
-  }
+    };
 
-  this.token.deleteToken = function (tokenKey,cb){
+    this.rehive.token.deleteToken = function (tokenKey,cb){
       httpDeleteRehive(tokensAPI + tokenKey,{},cb);
-  }
+    };
 
-  this.user.getUserProfile = function (cb){
+    this.rehive.user.getUserProfile = function (cb){
       httpGetRehive(userProfileAPI,{},cb);
-  }
+    };
 
-  this.user.updateUserProfile = function (data,cb){
+    this.rehive.user.updateUserProfile = function (data,cb){
       httpPatchRehive(userProfileAPI,data,cb);
-  }
+    };
 
-  this.user.getUserAddress = function (cb){
+    this.rehive.user.getUserAddress = function (cb){
       httpGetRehive(userAddressAPI,{},cb);
-  }
+    };
 
-  this.user.updateUserAddress = function (data,cb){
+    this.rehive.user.updateUserAddress = function (data,cb){
       httpPatchRehive(userAddressAPI,data,cb);
-  }
+    };
 
-  this.user.getUserBankAccounts = function (cb){
+    this.rehive.user.getUserBankAccounts = function (cb){
       httpGetRehive(userBankAccountsAPI,{},cb);
-  }
+    };
 
-  this.user.createUserBankAccount = function (data,cb){
+    this.rehive.user.createUserBankAccount = function (data,cb){
       httpPostRehive(userBankAccountsAPI,data,cb);
-  }
+    };
 
-  this.user.updateUserBankAccount = function (accountId,data,cb){
+    this.rehive.user.updateUserBankAccount = function (accountId,data,cb){
       httpPatchRehive(userBankAccountsAPI + accountId,data,cb);
-  }
+    };
 
-  this.user.deleteUserBankAccount = function (bankAccountId,cb){
+    this.rehive.user.deleteUserBankAccount = function (bankAccountId,cb){
       httpDeleteRehive(userBankAccountsAPI + bankAccountId,{},cb);
-  }
+    };
 
-  this.user.getUserBitcoinAccounts = function (cb){
+    this.rehive.user.getUserBitcoinAccounts = function (cb){
       httpGetRehive(userBitcoinAccountsAPI,{},cb);
-  }
+    };
 
-  this.user.createUserBitcoinAccount = function (data,cb){
+    this.rehive.user.createUserBitcoinAccount = function (data,cb){
       httpPostRehive(userBitcoinAccountsAPI,data,cb);
-  }
+    };
 
-  this.user.updateUserBitcoinAccount = function (accountId,data,cb){
+    this.rehive.user.updateUserBitcoinAccount = function (accountId,data,cb){
       httpPatchRehive(userBitcoinAccountsAPI + accountId,data,cb);
-  }
+    };
 
-  this.user.createDocument = function (data,cb){
+    this.rehive.user.createDocument = function (data,cb){
       httpPostRehive(userCreateDocumentAPI,data,cb);
-  }
+    };
 
-  this.user.getUserEmailAddresses = function (cb){
+    this.rehive.user.getUserEmailAddresses = function (cb){
       httpGetRehive(userEmailAddressesAPI,{},cb);
-  }
+    };
 
-  this.user.createUserEmailAddresses = function (data,cb){
+    this.rehive.user.createUserEmailAddresses = function (data,cb){
       httpPostRehive(userEmailAddressesAPI,data,cb);
-  }
+    };
 
-  this.user.updateUserEmailAddresses = function (emailId,data,cb){
+    this.rehive.user.updateUserEmailAddresses = function (emailId,data,cb){
       httpPatchRehive(userEmailAddressesAPI + emailId,data,cb);
-  }
+    };
 
-  this.user.getUserMobileNumbers = function (cb){
+    this.rehive.user.getUserMobileNumbers = function (cb){
       httpGetRehive(userMobileNumbersAPI,{},cb);
-  }
+    };
 
-  this.user.createUserMobileNumbers = function (data,cb){
+    this.rehive.user.createUserMobileNumbers = function (data,cb){
       httpPostRehive(userMobileNumbersAPI,data,cb);
-  }
+    };
 
-  this.user.updateUserMobileNumbers = function (mobileNumberId,data,cb){
+    this.rehive.user.updateUserMobileNumbers = function (mobileNumberId,data,cb){
       httpPatchRehive(userMobileNumbersAPI + mobileNumberId,data,cb);
-  }
+    };
 
-  this.user.getUserNotifications = function (cb){
+    this.rehive.user.getUserNotifications = function (cb){
       httpGetRehive(userNotificationsAPI,{},cb);
-  }
+    };
 
-  this.user.updateUserNotifications = function (notificationsId,data,cb){
+    this.rehive.user.updateUserNotifications = function (notificationsId,data,cb){
       httpPatchRehive(userNotificationsAPI + notificationsId,data,cb);
-  }
+    };
 
-  this.transactions.getListTransactions = function (filters,cb){
+    this.rehive.transactions.getListTransactions = function (filters,cb){
       if(filters){
           filters = '?' + filters;
       } else {
           filters = '';
       }
       httpGetRehive(transactionsAPI + filters,{},cb);
-  }
+    };
 
-  this.transactions.getTotalTransactionsList = function (filters,cb){
+    this.rehive.transactions.getTotalTransactionsList = function (filters,cb){
       if(filters){
           filters = '?' + filters;
       } else {
           filters = '';
       }
       httpGetRehive(transactionsAPI + totalTransactionsListAPI + filters,{},cb);
-  }
+    };
 
-  this.transactions.getTransaction = function (tx_code,cb){
+    this.rehive.transactions.getTransaction = function (tx_code,cb){
       httpGetRehive(transactionsAPI + tx_code + '/',{},cb);
-  }
+    };
 
-  this.transactions.createWithdrawal = function (data,cb){
+    this.rehive.transactions.createWithdrawal = function (data,cb){
     httpPostRehive(withdrawalAPI,data,cb);
-  }
+    };
 
-  this.transactions.createDeposit = function (data,cb){
+    this.rehive.transactions.createDeposit = function (data,cb){
     httpPostRehive(depositAPI,data,cb);
-  }
+    };
 
-  this.accounts.getAccountsList = function (filter,cb){
+    this.rehive.accounts.getAccountsList = function (filter,cb){
       if(filter){
           filter = '?' + filter;
       } else {
           filter = '';
       }
       httpGetRehive(accountsAPI + filter,{},cb);
-  }
+    };
 
-  this.accounts.getAccount = function (reference,filter,cb){
+    this.rehive.accounts.getAccount = function (reference,filter,cb){
 
-      reference = reference + '/'
+      reference = reference + '/';
 
       if(filter){
           filter = '?' + filter;
@@ -439,44 +437,44 @@ function Rehive(config){
           filter = '';
       }
       httpGetRehive(accountsAPI + reference + filter,{},cb);
-  }
+    };
 
-  this.accounts.getAccountCurrenciesList = function (reference,filter,cb){
+    this.rehive.accounts.getAccountCurrenciesList = function (reference,filter,cb){
       if(filter){
           filter = '?' + filter;
       } else {
           filter = '';
       }
       httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + filter,{},cb);
-  }
+    };
 
-  this.accounts.getAccountCurrency =function (reference,code,cb){
+    this.rehive.accounts.getAccountCurrency =function (reference,code,cb){
       httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + code + '/',{},cb);
-  }
+    };
 
-  this.accounts.updateAccountCurrency = function (reference,code,data,cb){
+    this.rehive.accounts.updateAccountCurrency = function (reference,code,data,cb){
       httpPatchRehive(accountsAPI + reference + accountCurrenciesAPI + code + '/',data,cb);
-  }
+    };
 
-  this.company.getCompanyDetails = function getCompanyDetails(cb){
+    this.rehive.company.getCompanyDetails = function getCompanyDetails(cb){
       httpGetRehive(companyAPI,{},cb);
-  }
+    };
 
-  this.company.getCompanyCurrencies = function getCompanyCurrencies(code,cb){
+    this.rehive.company.getCompanyCurrencies = function getCompanyCurrencies(code,cb){
     if(code){
       code = code + '/';
     } else {
       code = '';
     }
       httpGetRehive(companyCurrenciesAPI + code,{},cb);
-  }
+    };
 
-  this.company.getCompanyBanks = function getCompanyBanks(cb){
+    this.rehive.company.getCompanyBanks = function getCompanyBanks(cb){
       httpGetRehive(companyBanksAPI,{},cb);
-  }
+    };
 
 
-  //public functions end
+    //public functions end
 
-  return this;
-};
+    return ;
+}
