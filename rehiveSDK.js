@@ -553,13 +553,15 @@ function Rehive(config){
             .then(parseJSON)
             .then(function(response) {
                 if(response.status == 'success'){
-                    if(response.data.data){
+                    if(response.data && response.data.data){
                         cb(null,response.data.data);
-                    } else {
+                    } else if(response.data) {
                         cb(null,response.data);
+                    } else{
+                        cb(null,response);
                     }
                 } else if(response.status == 'error'){
-                    cb(null,response.data);
+                    cb(response,null);
                 }
             });
     };
@@ -581,13 +583,15 @@ function Rehive(config){
             .then(parseJSON)
             .then(function(response) {
                 if(response.status == 'success'){
-                    if(response.data.data){
-                            cb(null,response.data.data);
-                        } else {
-                            cb(null,response.data);
-                        }
+                    if(response.data && response.data.data){
+                        cb(null,response.data.data);
+                    } else if(response.data) {
+                        cb(null,response.data);
+                    } else{
+                        cb(null,response);
+                    }
                 } else if(response.status == 'error'){
-                    cb(null,response.data);
+                    cb(response,null);
                 }
             });
     };
@@ -610,13 +614,15 @@ function Rehive(config){
             .then(parseJSON)
             .then(function(response) {
                 if(response.status == 'success'){
-                    if(response.data.data){
+                    if(response.data && response.data.data){
                         cb(null,response.data.data);
-                    } else {
+                    } else if(response.data) {
                         cb(null,response.data);
+                    } else{
+                        cb(null,response);
                     }
                 } else if(response.status == 'error'){
-                    cb(null,response.data);
+                    cb(response,null);
                 }
             });
     };
@@ -639,13 +645,15 @@ function Rehive(config){
             .then(parseJSON)
             .then(function(response) {
                 if(response.status == 'success'){
-                    if(response.data.data){
+                    if(response.data && response.data.data){
                         cb(null,response.data.data);
-                    } else {
+                    } else if(response.data) {
                         cb(null,response.data);
+                    } else{
+                        cb(null,response);
                     }
                 } else if(response.status == 'error'){
-                    cb(null,response.data);
+                    cb(response,null);
                 }
             });
     };
@@ -834,7 +842,38 @@ function Rehive(config){
     };
 
     this.user.createDocument = function (data,cb){
-      httpPostRehive(userCreateDocumentAPI,data,cb);
+        var token = getToken();
+        var header = {};
+
+        if(token){
+            header['Authorization'] = 'Token ' + token;
+            header['Content-Type'] = 'application/json';
+        } else {
+            delete header['Authorization'];
+            header['Content-Type'] = 'application/json';
+        }
+
+        console.log(header);
+
+        fetch(baseAPI + userCreateDocumentAPI,{
+            method: 'POST',
+            headers: header,
+            body: data
+        })
+            .then(parseJSON)
+            .then(function(response) {
+                if(response.status == 'success'){
+                    if(response.data && response.data.data){
+                        cb(null,response.data.data);
+                    } else if(response.data) {
+                        cb(null,response.data);
+                    } else{
+                        cb(null,response);
+                    }
+                } else if(response.status == 'error'){
+                    cb(response,null);
+                }
+            });
     };
 
     this.user.getUserEmailAddresses = function (cb){
