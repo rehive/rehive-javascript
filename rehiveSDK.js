@@ -847,13 +847,9 @@ function Rehive(config){
 
         if(token){
             header['Authorization'] = 'Token ' + token;
-            header['Content-Type'] = 'application/json';
         } else {
             delete header['Authorization'];
-            header['Content-Type'] = 'application/json';
         }
-
-        console.log(header);
 
         fetch(baseAPI + userCreateDocumentAPI,{
             method: 'POST',
