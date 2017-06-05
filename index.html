@@ -3,21 +3,8 @@
 <head>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="jasmine/lib/jasmine-core/jasmine.css">
-
-    <script type="text/javascript" src="jasmine/lib/jasmine-core/jasmine.js"></script>
-    <script type="text/javascript" src="jasmine/lib/jasmine-core/jasmine-html.js"></script>
-    <script type="text/javascript" src="jasmine/lib/jasmine-core/boot.js"></script>
     <script src="build/rehiveSdk.min.js"></script>
     <script src="app.js"></script>
-
-    <script>
-    window.onload = function(){
-
-        window.rehive = new Rehive({apiVersion: 3});
-    }
-    </script>
-
 </head>
 <body>
 <button onclick="login('test1@rehive.com','test_company_1','test1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Login</button>

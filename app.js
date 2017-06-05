@@ -1,3 +1,7 @@
+window.onload = function(){
+
+    window.rehive = new Rehive({apiVersion: 3});
+};
 
 function convertToText(data) {
     if(!data) return '';
