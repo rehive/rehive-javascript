@@ -377,7 +377,7 @@ function getUserEmailAddresses(){
     })
 }
 
-function createUserEmailAddresses(email,primary){
+function createUserEmailAddress(email,primary){
     rehive.user.createUserEmailAddress(
         {
             email: email,
@@ -462,7 +462,7 @@ function updateUserNotifications(notificationsId, data){
     })
 }
 
-function getTransactionsList(filters){
+function getListTransactions(filters){
     rehive.transactions.getListTransactions(filters,function(err,res){
         if(err){
             console.log(err);
