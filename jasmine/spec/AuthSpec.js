@@ -20,15 +20,7 @@ describe("Auth", function() {
   it("should be able to register company successfully", function() {
     var email;
 
-    email = rehive.auth.registerCompany(
-      {
-        first_name: 'new',
-        last_name: 'user',
-        email: 'test1@rehive.com',
-        company_id: 'test_company_33',
-        password1: 'password1',
-        password2: 'password1'
-      });
+    email = rehive.auth.registerCompany();
 
     expect(rehive.auth.registerCompany).toHaveBeenCalledTimes(1);
     expect(email).toEqual('test1@rehive.com');
@@ -38,15 +30,7 @@ describe("Auth", function() {
   it("should be able to register successfully", function() {
     var email;
 
-    email = rehive.auth.register(
-      {
-        first_name: 'new',
-        last_name: 'user',
-        email: 'aquib+14@rehive.com',
-        company_id: 'test_company_1',
-        password1: 'newpassword1',
-        password2: 'newpassword1'
-      });
+    email = rehive.auth.register();
 
     expect(rehive.auth.register).toHaveBeenCalledTimes(1);
     expect(email).toEqual('test1@rehive.com');
@@ -55,12 +39,7 @@ describe("Auth", function() {
   it("should be able to login successfully", function() {
     var email;
 
-    email = rehive.auth.login(
-      {
-        identifier: 'test1@rehive.com',
-        company_id: 'test_company_1',
-        password: 'test1'
-      });
+    email = rehive.auth.login();
 
     expect(rehive.auth.login).toHaveBeenCalledTimes(1);
     expect(email).toEqual('test1@rehive.com');
@@ -87,12 +66,7 @@ describe("Auth", function() {
   it("should be able to change password successfully", function() {
     var message;
 
-    message = rehive.auth.changePassword(
-      {
-        old_password: 'rh123456789',
-        new_password1: 'rh12345678',
-        new_password2: 'rh12345678'
-      });
+    message = rehive.auth.changePassword();
 
     expect(rehive.auth.changePassword).toHaveBeenCalledTimes(1);
     expect(message).toEqual("New password has been saved.");
@@ -101,11 +75,7 @@ describe("Auth", function() {
   it("should be able to send reset password message successfully", function() {
     var message;
 
-    message = rehive.auth.resetPassword(
-      {
-        identifier: 'test1@rehive.com',
-        company_id: 'test_company_100'
-      });
+    message = rehive.auth.resetPassword();
 
     expect(rehive.auth.resetPassword).toHaveBeenCalledTimes(1);
     expect(message).toEqual("Password reset message has been sent.");
@@ -115,13 +85,7 @@ describe("Auth", function() {
   it("should be able to confirm password reset successfully", function() {
     var message;
 
-    message = rehive.auth.resetConfirmPassword(
-      {
-        new_password1: 'rh123456789',
-        new_password2: 'rh123456789',
-        uid: 'Mzk1MQ',
-        token: '4mn-25f375e004d691c2c1aa'
-      });
+    message = rehive.auth.resetConfirmPassword();
 
     expect(rehive.auth.resetConfirmPassword).toHaveBeenCalledTimes(1);
     expect(message).toEqual("Password has been reset with the new password.");
@@ -130,11 +94,7 @@ describe("Auth", function() {
   it("should be able to resend email verification successfully", function() {
     var status;
 
-    status = rehive.auth.resendEmailVerification(
-      {
-        identifier: 'test1@rehive.com',
-        company_id: 'test_company_100'
-      });
+    status = rehive.auth.resendEmailVerification();
 
     expect(rehive.auth.resendEmailVerification).toHaveBeenCalledTimes(1);
     expect(status).toEqual("success");
@@ -143,11 +103,7 @@ describe("Auth", function() {
   it("should be able to resend mobile verification successfully", function() {
     var status;
 
-    status = rehive.auth.resendMobileVerification(
-      {
-        identifier: 'test1@rehive.com',
-        company_id: 'test_company_100'
-      });
+    status = rehive.auth.resendMobileVerification();
 
     expect(rehive.auth.resendMobileVerification).toHaveBeenCalledTimes(1);
     expect(status).toEqual("success");
@@ -156,10 +112,7 @@ describe("Auth", function() {
   it("should be able to verify mobile number successfully", function() {
     var status;
 
-    status = rehive.auth.verifyMobile(
-      {
-        otp: 'otp'
-      });
+    status = rehive.auth.verifyMobile();
 
     expect(rehive.auth.verifyMobile).toHaveBeenCalledTimes(1);
     expect(status).toEqual("success");

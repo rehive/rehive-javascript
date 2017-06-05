@@ -356,10 +356,6 @@ function Rehive(config){
       httpPatchRehive(userBankAccountsAPI + accountId,data,cb);
     };
 
-    this.user.deleteUserBankAccount = function (bankAccountId,cb){
-      httpDeleteRehive(userBankAccountsAPI + bankAccountId,{},cb);
-    };
-
     this.user.getUserBitcoinAccounts = function (cb){
       httpGetRehive(userBitcoinAccountsAPI,{},cb);
     };
@@ -407,11 +403,11 @@ function Rehive(config){
       httpGetRehive(userEmailAddressesAPI,{},cb);
     };
 
-    this.user.createUserEmailAddresses = function (data,cb){
+    this.user.createUserEmailAddress = function (data,cb){
       httpPostRehive(userEmailAddressesAPI,data,cb);
     };
 
-    this.user.updateUserEmailAddresses = function (emailId,data,cb){
+    this.user.updateUserEmailAddress = function (emailId,data,cb){
       httpPatchRehive(userEmailAddressesAPI + emailId,data,cb);
     };
 

@@ -1,4 +1,4 @@
-describe("Transactions", function() {
+describe("Tokens", function() {
   var rehive;
 
   beforeEach(function() {
@@ -16,7 +16,7 @@ describe("Transactions", function() {
 
     expect(rehive.token.getTokensList).toHaveBeenCalledTimes(1);
     expect(status).toEqual("success");
-  });
+    });
 
   it("should be able to create a token successfully", function() {
     var status;

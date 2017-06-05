@@ -304,17 +304,6 @@ function updateUserBankAccount(accountId, data){
         })
 }
 
-function deleteUserBankAccount(bankAccountId){
-    rehive.user.deleteUserBankAccount(bankAccountId,function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res.status);
-    })
-}
-
 function getUserBitcoinAccounts(){
     rehive.user.getUserBitcoinAccounts(function(err,res){
         if(err){
@@ -389,7 +378,7 @@ function getUserEmailAddresses(){
 }
 
 function createUserEmailAddresses(email,primary){
-    rehive.user.createUserEmailAddresses(
+    rehive.user.createUserEmailAddress(
         {
             email: email,
             primary: primary
@@ -403,8 +392,8 @@ function createUserEmailAddresses(email,primary){
         })
 }
 
-function updateUserEmailAddresses(emailId, data){
-    rehive.user.updateUserEmailAddresses(emailId,data, function(err,res){
+function updateUserEmailAddress(emailId, data){
+    rehive.user.updateUserEmailAddress(emailId,data, function(err,res){
         if(err){
             console.log(err);
             return
