@@ -462,8 +462,8 @@ function updateUserNotifications(notificationsId, data){
     })
 }
 
-function getListTransactions(filters){
-    rehive.transactions.getListTransactions(filters,function(err,res){
+function getTransactionsList(filters){
+    rehive.transactions.getTransactionsList(filters,function(err,res){
         if(err){
             console.log(err);
             return

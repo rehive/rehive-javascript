@@ -431,7 +431,7 @@ function Rehive(config){
       httpPatchRehive(userNotificationsAPI + notificationsId,data,cb);
     };
 
-    this.transactions.getListTransactions = function (filters,cb){
+    this.transactions.getTransactionsList = function (filters,cb){
       if(filters){
           filters = '?' + filters;
       } else {

@@ -4,7 +4,7 @@ describe("Transactions", function() {
   beforeEach(function() {
     rehive = new Rehive({apiVersion: 3});
 
-    spyOn(rehive.transactions, "getListTransactions").and.returnValue('success');
+    spyOn(rehive.transactions, "getTransactionsList").and.returnValue('success');
     spyOn(rehive.transactions, "getTotalTransactionsList").and.returnValue('success');
     spyOn(rehive.transactions, "getTransaction").and.returnValue('success');
     spyOn(rehive.transactions, "createWithdrawal").and.returnValue('success');
@@ -14,9 +14,9 @@ describe("Transactions", function() {
   it("should be able to get list of transactions successfully", function() {
     var status;
 
-    status = rehive.transactions.getListTransactions();
+    status = rehive.transactions.getTransactionsList();
 
-    expect(rehive.transactions.getListTransactions).toHaveBeenCalledTimes(1);
+    expect(rehive.transactions.getTransactionsList).toHaveBeenCalledTimes(1);
     expect(status).toEqual("success");
   });
 
