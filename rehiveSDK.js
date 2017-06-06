@@ -50,6 +50,15 @@ function Rehive(config){
         setToken('');
     }
 
+     function serialize(obj) {
+        var str = [];
+        for(var p in obj)
+            if (obj.hasOwnProperty(p)) {
+                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+            }
+        return str.join("&");
+    }
+
     function setToken(newToken){
       sessionStorage.setItem("token",newToken);
     }
@@ -317,7 +326,20 @@ function Rehive(config){
     };
 
     this.token.getTokensList = function (cb){
-      httpGetRehive(tokensAPI,{},cb);
+        httpGetRehive(tokensAPI,{},cb);
+    };
+
+    this.token.getToken = function (tokenKey,cb){
+        var url,
+            error = {status: 'error', message: 'A token is required'};
+
+        if(tokenKey){
+            url = tokensAPI + tokenKey
+        } else {
+            cb(error,null);
+            return;
+        }
+        httpGetRehive(url,{},cb);
     };
 
     this.token.createToken = function (data,cb){
@@ -325,7 +347,16 @@ function Rehive(config){
     };
 
     this.token.deleteToken = function (tokenKey,cb){
-      httpDeleteRehive(tokensAPI + tokenKey,{},cb);
+        var url,
+            error = {status: 'error', message: 'A token is required'};
+
+        if(tokenKey){
+            url = tokensAPI + tokenKey
+        } else {
+            cb(error,null);
+            return;
+        }
+      httpDeleteRehive(url,{},cb);
     };
 
     this.user.getUserProfile = function (cb){
@@ -353,7 +384,16 @@ function Rehive(config){
     };
 
     this.user.updateUserBankAccount = function (accountId,data,cb){
-      httpPatchRehive(userBankAccountsAPI + accountId,data,cb);
+        var url,
+            error = {status: 'error', message: 'accountId is required'};
+
+        if(accountId && (typeof(accountId) == 'string')){
+            url = userBankAccountsAPI + accountId;
+        } else {
+            cb(error,null);
+            return;
+        }
+      httpPatchRehive(url,data,cb);
     };
 
     this.user.getUserBitcoinAccounts = function (cb){
@@ -365,7 +405,16 @@ function Rehive(config){
     };
 
     this.user.updateUserBitcoinAccount = function (accountId,data,cb){
-      httpPatchRehive(userBitcoinAccountsAPI + accountId,data,cb);
+        var url,
+            error = {status: 'error', message: 'accountId is required'};
+
+        if(accountId && (typeof(accountId) == 'string')){
+            url = userBitcoinAccountsAPI + accountId;
+        } else {
+            cb(error,null);
+            return;
+        }
+      httpPatchRehive(url,data,cb);
     };
 
     this.user.createDocument = function (data,cb){
@@ -408,7 +457,16 @@ function Rehive(config){
     };
 
     this.user.updateUserEmailAddress = function (emailId,data,cb){
-      httpPatchRehive(userEmailAddressesAPI + emailId,data,cb);
+        var url,
+            error = {status: 'error', message: 'emailId is required'};
+
+        if(emailId && (typeof(emailId) == 'string')){
+            url = userEmailAddressesAPI + emailId;
+        } else {
+            cb(error,null);
+            return;
+        }
+      httpPatchRehive(url,data,cb);
     };
 
     this.user.getUserMobileNumbers = function (cb){
@@ -420,7 +478,16 @@ function Rehive(config){
     };
 
     this.user.updateUserMobileNumbers = function (mobileNumberId,data,cb){
-      httpPatchRehive(userMobileNumbersAPI + mobileNumberId,data,cb);
+        var url,
+            error = {status: 'error', message: 'mobileNumberId is required'};
+
+        if(mobileNumberId && (typeof(mobileNumberId) == 'string')){
+            url = userMobileNumbersAPI + mobileNumberId;
+        } else {
+            cb(error,null);
+            return;
+        }
+      httpPatchRehive(url,data,cb);
     };
 
     this.user.getUserNotifications = function (cb){
@@ -428,29 +495,48 @@ function Rehive(config){
     };
 
     this.user.updateUserNotifications = function (notificationsId,data,cb){
-      httpPatchRehive(userNotificationsAPI + notificationsId,data,cb);
+        var url,
+            error = {status: 'error', message: 'notificationsId is required'};
+
+        if(notificationsId && (typeof(notificationsId) == 'string')){
+            url = userNotificationsAPI + notificationsId;
+        } else {
+            cb(error,null);
+            return;
+        }
+      httpPatchRehive(url,data,cb);
     };
 
     this.transactions.getTransactionsList = function (filters,cb){
       if(filters){
-          filters = '?' + filters;
+          filters = '?' + serialize(filters);
       } else {
           filters = '';
       }
+
       httpGetRehive(transactionsAPI + filters,{},cb);
     };
 
     this.transactions.getTotalTransactionsList = function (filters,cb){
       if(filters){
-          filters = '?' + filters;
+          filters = '?' + serialize(filters);
       } else {
           filters = '';
       }
       httpGetRehive(transactionsAPI + totalTransactionsListAPI + filters,{},cb);
     };
 
-    this.transactions.getTransaction = function (tx_code,cb){
-      httpGetRehive(transactionsAPI + tx_code + '/',{},cb);
+    this.transactions.getTransaction = function (txCode,cb){
+        var url,
+            error = {status: 'error', message: 'txCode is required'};
+
+        if(txCode && (typeof(txCode) == 'string')){
+            url = transactionsAPI + txCode + '/';
+        } else {
+            cb(error,null);
+            return;
+        }
+      httpGetRehive(url,{},cb);
     };
 
     this.transactions.createWithdrawal = function (data,cb){
@@ -463,7 +549,7 @@ function Rehive(config){
 
     this.accounts.getAccountsList = function (filter,cb){
       if(filter){
-          filter = '?' + filter;
+          filter = '?' + serialize(filter);
       } else {
           filter = '';
       }
@@ -471,31 +557,71 @@ function Rehive(config){
     };
 
     this.accounts.getAccount = function (reference,filter,cb){
+        var error = {status: 'error', message: 'reference is required'};
 
-      reference = reference + '/';
+        if(reference && (typeof(reference) == 'string')){
+            reference = reference + '/';
+        } else {
+            cb(error,null);
+            return;
+        }
 
-      if(filter){
-          filter = '?' + filter;
-      } else {
-          filter = '';
-      }
-      httpGetRehive(accountsAPI + reference + filter,{},cb);
+        if(filter){
+            filter = '?' + serialize(filter);
+        } else {
+            filter = '';
+        }
+
+        httpGetRehive(accountsAPI + reference + filter,{},cb);
     };
 
     this.accounts.getAccountCurrenciesList = function (reference,filter,cb){
-      if(filter){
-          filter = '?' + filter;
-      } else {
-          filter = '';
-      }
-      httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + filter,{},cb);
+        var error = {status: 'error', message: 'reference is required'};
+
+        if(!reference || !(typeof(reference) == 'string')){
+            cb(error,null);
+            return;
+        }
+
+        if(filter){
+            filter = '?' + serialize(filter);
+        } else {
+            filter = '';
+        }
+
+        httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + filter,{},cb);
     };
 
     this.accounts.getAccountCurrency =function (reference,code,cb){
+        var error = {status: 'error', message: 'reference is required'},
+            error2 = {status: 'error', message: 'code is required'};
+
+        if(!reference || !(typeof(reference) == 'string')){
+            cb(error,null);
+            return;
+        }
+
+        if(!code || !(typeof(code) == 'string')){
+            cb(error2,null);
+            return;
+        }
       httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + code + '/',{},cb);
     };
 
     this.accounts.updateAccountCurrency = function (reference,code,data,cb){
+        var error = {status: 'error', message: 'reference is required'},
+            error2 = {status: 'error', message: 'code is required'};
+
+        if(!reference || !(typeof(reference) == 'string')){
+            cb(error,null);
+            return;
+        }
+
+        if(!code || !(typeof(code) == 'string')){
+            cb(error2,null);
+            return;
+        }
+
       httpPatchRehive(accountsAPI + reference + accountCurrenciesAPI + code + '/',data,cb);
     };
 
@@ -503,13 +629,8 @@ function Rehive(config){
       httpGetRehive(companyAPI,{},cb);
     };
 
-    this.company.getCompanyCurrencies = function getCompanyCurrencies(code,cb){
-    if(code){
-      code = code + '/';
-    } else {
-      code = '';
-    }
-      httpGetRehive(companyCurrenciesAPI + code,{},cb);
+    this.company.getCompanyCurrencies = function getCompanyCurrencies(cb){
+      httpGetRehive(companyCurrenciesAPI,{},cb);
     };
 
     this.company.getCompanyBanks = function getCompanyBanks(cb){

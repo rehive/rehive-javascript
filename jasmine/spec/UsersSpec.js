@@ -26,7 +26,7 @@ describe("Users", function() {
 
   });
 
-  it("should be able to get user profile successfully", function() {
+  it("should be able to call get user profile function successfully", function() {
     var status;
 
     status = rehive.user.getUserProfile();
@@ -35,7 +35,7 @@ describe("Users", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to update user profile successfully", function() {
+  it("should be able to call update user profile function successfully", function() {
     var status;
 
     status = rehive.user.updateUserProfile();
@@ -44,7 +44,7 @@ describe("Users", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to get user address successfully", function() {
+  it("should be able to call get user address function successfully", function() {
     var status;
 
     status = rehive.user.getUserAddress();
@@ -53,7 +53,7 @@ describe("Users", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to update user address successfully", function() {
+  it("should be able to call update user address function successfully", function() {
     var status;
 
     status = rehive.user.updateUserAddress();
@@ -62,7 +62,7 @@ describe("Users", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to get user bank accounts successfully", function() {
+  it("should be able to call get user bank accounts function successfully", function() {
     var status;
 
     status = rehive.user.getUserBankAccounts();
@@ -71,7 +71,7 @@ describe("Users", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to create user bank account successfully", function() {
+  it("should be able to call create user bank account function successfully", function() {
     var status;
 
     status = rehive.user.createUserBankAccount();
@@ -80,7 +80,7 @@ describe("Users", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to update user bank account successfully", function() {
+  it("should be able to call update user bank account function successfully", function() {
     var status;
 
     status = rehive.user.updateUserBankAccount();
@@ -89,7 +89,7 @@ describe("Users", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to get user bitcoin accounts successfully", function() {
+  it("should be able to call get user bitcoin accounts function successfully", function() {
     var status;
 
     status = rehive.user.getUserBitcoinAccounts();
@@ -98,7 +98,7 @@ describe("Users", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to create user bitcoin account successfully", function() {
+  it("should be able to call create user bitcoin account function successfully", function() {
     var status;
 
     status = rehive.user.createUserBitcoinAccount();
@@ -107,7 +107,7 @@ describe("Users", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to update user bitcoin account successfully", function() {
+  it("should be able to call update user bitcoin account function successfully", function() {
     var status;
 
     status = rehive.user.updateUserBitcoinAccount();
@@ -116,7 +116,7 @@ describe("Users", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to create document successfully", function() {
+  it("should be able to call create document function successfully", function() {
     var status;
 
     status = rehive.user.createDocument();
@@ -125,7 +125,7 @@ describe("Users", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to get user email addresses successfully", function() {
+  it("should be able to call get user email addresses function successfully", function() {
     var status;
 
     status = rehive.user.getUserEmailAddresses();
@@ -134,7 +134,7 @@ describe("Users", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to create user email address successfully", function() {
+  it("should be able to call create user email address function successfully", function() {
     var status;
 
     status = rehive.user.createUserEmailAddress();
@@ -143,7 +143,7 @@ describe("Users", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to update user email address successfully", function() {
+  it("should be able to call update user email address function successfully", function() {
     var status;
 
     status = rehive.user.updateUserEmailAddress();
@@ -152,7 +152,7 @@ describe("Users", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to get user mobile numbers successfully", function() {
+  it("should be able to call get user mobile numbers function successfully", function() {
     var status;
 
     status = rehive.user.getUserMobileNumbers();
@@ -161,7 +161,7 @@ describe("Users", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to create user mobile numbers successfully", function() {
+  it("should be able to call create user mobile numbers function successfully", function() {
     var status;
 
     status = rehive.user.createUserMobileNumbers();
@@ -170,7 +170,7 @@ describe("Users", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to update user mobile numbers successfully", function() {
+  it("should be able to call update user mobile numbers function successfully", function() {
     var status;
 
     status = rehive.user.updateUserMobileNumbers();
@@ -179,7 +179,7 @@ describe("Users", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to get user notifications successfully", function() {
+  it("should be able to call get user notifications function successfully", function() {
     var status;
 
     status = rehive.user.getUserNotifications();
@@ -188,7 +188,7 @@ describe("Users", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to update user notifications successfully", function() {
+  it("should be able to call update user notifications function successfully", function() {
     var status;
 
     status = rehive.user.updateUserNotifications();

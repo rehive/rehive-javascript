@@ -190,6 +190,17 @@ function getTokensList(){
     })
 }
 
+function getToken(tokenKey){
+    rehive.token.getToken(tokenKey, function(err,res){
+            if(err){
+            console.log(err);
+            return
+            }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
+
 function createToken(password){
     rehive.token.createToken(
         {
@@ -577,8 +588,8 @@ function getAccountCurrency(reference,code){
     })
 }
 
-function updateAccountCurrency(reference,code,filter){
-    rehive.accounts.updateAccountCurrency(reference,code,filter,function(err,res){
+function updateAccountCurrency(reference,code,data){
+    rehive.accounts.updateAccountCurrency(reference,code,data,function(err,res){
         if(err){
             console.log(err);
             return
@@ -599,8 +610,8 @@ function getCompanyDetails(){
     })
 }
 
-function getCompanyCurrencies(code){
-    rehive.company.getCompanyCurrencies(code,function(err,res){
+function getCompanyCurrencies(){
+    rehive.company.getCompanyCurrencies(function(err,res){
         if(err){
             console.log(err);
             return

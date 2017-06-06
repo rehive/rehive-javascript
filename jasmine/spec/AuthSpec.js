@@ -17,7 +17,7 @@ describe("Auth", function() {
     spyOn(rehive.auth, "verifyMobile").and.returnValue('success');
   });
 
-  it("should be able to register company successfully", function() {
+  it("should be able to call register company function successfully", function() {
     var email;
 
     email = rehive.auth.registerCompany();
@@ -27,7 +27,7 @@ describe("Auth", function() {
   });
 
 
-  it("should be able to register successfully", function() {
+  it("should be able to call register function successfully", function() {
     var email;
 
     email = rehive.auth.register();
@@ -36,7 +36,7 @@ describe("Auth", function() {
     expect(email).toEqual('test1@rehive.com');
   });
 
-  it("should be able to login successfully", function() {
+  it("should be able to call login function successfully", function() {
     var email;
 
     email = rehive.auth.login();
@@ -45,7 +45,7 @@ describe("Auth", function() {
     expect(email).toEqual('test1@rehive.com');
   });
 
-  it("should be able to logout successfully", function() {
+  it("should be able to call logout function successfully", function() {
     var message;
 
     message = rehive.auth.logout();
@@ -54,7 +54,7 @@ describe("Auth", function() {
     expect(message).toEqual("Successfully logged out.");
   });
 
-  it("should be able to logout all successfully", function() {
+  it("should be able to call logout all function successfully", function() {
     var message;
 
     message = rehive.auth.logoutAll();
@@ -63,7 +63,7 @@ describe("Auth", function() {
     expect(message).toEqual("Successfully logged out all sessions.");
   });
 
-  it("should be able to change password successfully", function() {
+  it("should be able to call change password function successfully", function() {
     var message;
 
     message = rehive.auth.changePassword();
@@ -72,7 +72,7 @@ describe("Auth", function() {
     expect(message).toEqual("New password has been saved.");
   });
 
-  it("should be able to send reset password message successfully", function() {
+  it("should be able to call send reset password message function successfully", function() {
     var message;
 
     message = rehive.auth.resetPassword();
@@ -82,7 +82,7 @@ describe("Auth", function() {
 
   });
 
-  it("should be able to confirm password reset successfully", function() {
+  it("should be able to call confirm password reset function successfully", function() {
     var message;
 
     message = rehive.auth.resetConfirmPassword();
@@ -91,7 +91,7 @@ describe("Auth", function() {
     expect(message).toEqual("Password has been reset with the new password.");
   });
 
-  it("should be able to resend email verification successfully", function() {
+  it("should be able to call resend email verification function successfully", function() {
     var status;
 
     status = rehive.auth.resendEmailVerification();
@@ -100,7 +100,7 @@ describe("Auth", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to resend mobile verification successfully", function() {
+  it("should be able to call resend mobile verification function successfully", function() {
     var status;
 
     status = rehive.auth.resendMobileVerification();
@@ -109,7 +109,7 @@ describe("Auth", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to verify mobile number successfully", function() {
+  it("should be able to call verify mobile number function successfully", function() {
     var status;
 
     status = rehive.auth.verifyMobile();

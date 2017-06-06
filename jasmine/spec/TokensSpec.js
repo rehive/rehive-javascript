@@ -5,11 +5,12 @@ describe("Tokens", function() {
     rehive = new Rehive({apiVersion: 3});
 
     spyOn(rehive.token, "getTokensList").and.returnValue('success');
+    spyOn(rehive.token, "getToken").and.returnValue('success');
     spyOn(rehive.token, "createToken").and.returnValue('success');
     spyOn(rehive.token, "deleteToken").and.returnValue('success');
   });
 
-  it("should be able to get list of tokens successfully", function() {
+  it("should be able to call get list of tokens function successfully", function() {
     var status;
 
     status = rehive.token.getTokensList();
@@ -18,7 +19,16 @@ describe("Tokens", function() {
     expect(status).toEqual("success");
     });
 
-  it("should be able to create a token successfully", function() {
+  it("should be able to call get token function successfully", function() {
+    var status;
+
+    status = rehive.token.getToken();
+
+    expect(rehive.token.getToken).toHaveBeenCalledTimes(1);
+    expect(status).toEqual("success");
+  });
+
+  it("should be able to call create token function successfully", function() {
     var status;
 
     status = rehive.token.createToken();
@@ -27,7 +37,7 @@ describe("Tokens", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to delete a token successfully", function() {
+  it("should be able to call delete token function successfully", function() {
     var status;
 
     status = rehive.token.deleteToken();

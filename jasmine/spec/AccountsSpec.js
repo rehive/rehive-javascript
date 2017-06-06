@@ -11,7 +11,7 @@ describe("Accounts", function() {
     spyOn(rehive.accounts, "updateAccountCurrency").and.returnValue('success');
   });
 
-  it("should be able to get list of accounts successfully", function() {
+  it("should be able to call list of accounts function successfully", function() {
     var status;
 
     status = rehive.accounts.getAccountsList();
@@ -21,7 +21,7 @@ describe("Accounts", function() {
   });
 
 
-  it("should be able to get account successfully", function() {
+  it("should be able to call get account function successfully", function() {
     var status;
 
     status = rehive.accounts.getAccount();
@@ -30,7 +30,7 @@ describe("Accounts", function() {
     expect(status).toEqual('success');
   });
 
-  it("should be able to get list of account currencies successfully", function() {
+  it("should be able to call list of account currencies function successfully", function() {
     var status;
 
     status = rehive.accounts.getAccountCurrenciesList();
@@ -39,7 +39,7 @@ describe("Accounts", function() {
     expect(status).toEqual('success');
   });
 
-  it("should be able to get account currency successfully", function() {
+  it("should be able to call get account currency function successfully", function() {
     var message;
 
     message = rehive.accounts.getAccountCurrency();
@@ -48,7 +48,7 @@ describe("Accounts", function() {
     expect(message).toEqual("success");
   });
 
-  it("should be able to update account currency successfully", function() {
+  it("should be able to call update account currency function successfully", function() {
     var message;
 
     message = rehive.accounts.updateAccountCurrency();

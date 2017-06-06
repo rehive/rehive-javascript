@@ -9,7 +9,7 @@ describe("Company", function() {
     spyOn(rehive.company, "getCompanyBanks").and.returnValue('success');
   });
 
-  it("should be able to get company details successfully", function() {
+  it("should be able to call get company details function successfully", function() {
     var status;
 
     status = rehive.company.getCompanyDetails();
@@ -19,7 +19,7 @@ describe("Company", function() {
   });
 
 
-  it("should be able to get list of company currencies successfully", function() {
+  it("should be able to call get list of company currencies function successfully", function() {
     var status;
 
     status = rehive.company.getCompanyCurrencies();
@@ -28,7 +28,7 @@ describe("Company", function() {
     expect(status).toEqual('success');
   });
 
-  it("should be able to get list of account banks successfully", function() {
+  it("should be able to call get list of account banks function successfully", function() {
     var status;
 
     status = rehive.company.getCompanyBanks();

@@ -11,7 +11,7 @@ describe("Transactions", function() {
     spyOn(rehive.transactions, "createDeposit").and.returnValue('success');
   });
 
-  it("should be able to get list of transactions successfully", function() {
+  it("should be able to call get list of transactions function successfully", function() {
     var status;
 
     status = rehive.transactions.getTransactionsList();
@@ -20,7 +20,7 @@ describe("Transactions", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to get list of total transactions successfully", function() {
+  it("should be able to call get list of total transactions function successfully", function() {
     var status;
 
     status = rehive.transactions.getTotalTransactionsList();
@@ -29,7 +29,7 @@ describe("Transactions", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to get a transaction successfully", function() {
+  it("should be able to call get a transaction function successfully", function() {
     var status;
 
     status = rehive.transactions.getTransaction();
@@ -38,7 +38,7 @@ describe("Transactions", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to create a withdrawal successfully", function() {
+  it("should be able to call create a withdrawal function successfully", function() {
     var status;
 
     status = rehive.transactions.createWithdrawal();
@@ -47,7 +47,7 @@ describe("Transactions", function() {
     expect(status).toEqual("success");
   });
 
-  it("should be able to create a deposit successfully", function() {
+  it("should be able to call create a deposit function successfully", function() {
     var status;
 
     status = rehive.transactions.createDeposit();
