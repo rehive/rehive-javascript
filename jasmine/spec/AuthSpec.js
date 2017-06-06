@@ -3,7 +3,7 @@ describe("Auth", function() {
 
   beforeEach(function() {
     rehive = new Rehive({apiVersion: 3});
-    //console.log(rehive);
+
     spyOn(rehive.auth, "registerCompany").and.returnValue('test1@rehive.com');
     spyOn(rehive.auth, "register").and.returnValue('test1@rehive.com');
     spyOn(rehive.auth, "login").and.returnValue('test1@rehive.com');

@@ -3,7 +3,7 @@ describe("Accounts", function() {
 
   beforeEach(function() {
     rehive = new Rehive({apiVersion: 3});
-    //console.log(rehive);
+
     spyOn(rehive.accounts, "getAccountsList").and.returnValue('success');
     spyOn(rehive.accounts, "getAccount").and.returnValue('success');
     spyOn(rehive.accounts, "getAccountCurrenciesList").and.returnValue('success');
