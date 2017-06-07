@@ -379,13 +379,26 @@ function Rehive(config){
       httpGetRehive(userBankAccountsAPI,{},cb);
     };
 
+    this.user.getUserBankAccount = function (bankId,cb){
+        var url,
+            error = {status: 'error', message: 'Bank id is required'};
+
+        if(bankId && (typeof(bankId) == 'string')){
+            url = userBankAccountsAPI + bankId + '/';
+        } else {
+            cb(error,null);
+            return;
+        }
+        httpGetRehive(url,{},cb);
+    };
+
     this.user.createUserBankAccount = function (data,cb){
       httpPostRehive(userBankAccountsAPI,data,cb);
     };
 
     this.user.updateUserBankAccount = function (accountId,data,cb){
         var url,
-            error = {status: 'error', message: 'accountId is required'};
+            error = {status: 'error', message: 'Account id is required'};
 
         if(accountId && (typeof(accountId) == 'string')){
             url = userBankAccountsAPI + accountId;
@@ -400,13 +413,26 @@ function Rehive(config){
       httpGetRehive(userBitcoinAccountsAPI,{},cb);
     };
 
+    this.user.getUserBitcoinAccount = function (bitcoinAccountId,cb){
+        var url,
+            error = {status: 'error', message: 'Account id is required'};
+
+        if(bitcoinAccountId && (typeof(bitcoinAccountId) == 'string')){
+            url = userBitcoinAccountsAPI + bitcoinAccountId + '/';
+        } else {
+            cb(error,null);
+            return;
+        }
+        httpGetRehive(url,{},cb);
+    };
+
     this.user.createUserBitcoinAccount = function (data,cb){
       httpPostRehive(userBitcoinAccountsAPI,data,cb);
     };
 
     this.user.updateUserBitcoinAccount = function (accountId,data,cb){
         var url,
-            error = {status: 'error', message: 'accountId is required'};
+            error = {status: 'error', message: 'Account id is required'};
 
         if(accountId && (typeof(accountId) == 'string')){
             url = userBitcoinAccountsAPI + accountId;
@@ -458,7 +484,7 @@ function Rehive(config){
 
     this.user.updateUserEmailAddress = function (emailId,data,cb){
         var url,
-            error = {status: 'error', message: 'emailId is required'};
+            error = {status: 'error', message: 'Email address id is required'};
 
         if(emailId && (typeof(emailId) == 'string')){
             url = userEmailAddressesAPI + emailId;
@@ -479,7 +505,7 @@ function Rehive(config){
 
     this.user.updateUserMobileNumbers = function (mobileNumberId,data,cb){
         var url,
-            error = {status: 'error', message: 'mobileNumberId is required'};
+            error = {status: 'error', message: 'Mobile number id is required'};
 
         if(mobileNumberId && (typeof(mobileNumberId) == 'string')){
             url = userMobileNumbersAPI + mobileNumberId;
@@ -496,7 +522,7 @@ function Rehive(config){
 
     this.user.updateUserNotifications = function (notificationsId,data,cb){
         var url,
-            error = {status: 'error', message: 'notificationsId is required'};
+            error = {status: 'error', message: 'Notification id is required'};
 
         if(notificationsId && (typeof(notificationsId) == 'string')){
             url = userNotificationsAPI + notificationsId;
@@ -528,7 +554,7 @@ function Rehive(config){
 
     this.transactions.getTransaction = function (txCode,cb){
         var url,
-            error = {status: 'error', message: 'txCode is required'};
+            error = {status: 'error', message: 'Transaction code is required'};
 
         if(txCode && (typeof(txCode) == 'string')){
             url = transactionsAPI + txCode + '/';
@@ -557,7 +583,7 @@ function Rehive(config){
     };
 
     this.accounts.getAccount = function (reference,filter,cb){
-        var error = {status: 'error', message: 'reference is required'};
+        var error = {status: 'error', message: 'Reference is required'};
 
         if(reference && (typeof(reference) == 'string')){
             reference = reference + '/';
@@ -576,7 +602,7 @@ function Rehive(config){
     };
 
     this.accounts.getAccountCurrenciesList = function (reference,filter,cb){
-        var error = {status: 'error', message: 'reference is required'};
+        var error = {status: 'error', message: 'Reference is required'};
 
         if(!reference || !(typeof(reference) == 'string')){
             cb(error,null);
@@ -592,37 +618,37 @@ function Rehive(config){
         httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + filter,{},cb);
     };
 
-    this.accounts.getAccountCurrency =function (reference,code,cb){
-        var error = {status: 'error', message: 'reference is required'},
-            error2 = {status: 'error', message: 'code is required'};
+    this.accounts.getAccountCurrency =function (reference,currencyCode,cb){
+        var error = {status: 'error', message: 'Reference is required'},
+            error2 = {status: 'error', message: 'Currency code is required'};
 
         if(!reference || !(typeof(reference) == 'string')){
             cb(error,null);
             return;
         }
 
-        if(!code || !(typeof(code) == 'string')){
+        if(!currencyCode || !(typeof(currencyCode) == 'string')){
             cb(error2,null);
             return;
         }
-      httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + code + '/',{},cb);
+      httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + currencyCode + '/',{},cb);
     };
 
-    this.accounts.updateAccountCurrency = function (reference,code,data,cb){
-        var error = {status: 'error', message: 'reference is required'},
-            error2 = {status: 'error', message: 'code is required'};
+    this.accounts.updateAccountCurrency = function (reference,currencyCode,data,cb){
+        var error = {status: 'error', message: 'Reference is required'},
+            error2 = {status: 'error', message: 'Currency Code is required'};
 
         if(!reference || !(typeof(reference) == 'string')){
             cb(error,null);
             return;
         }
 
-        if(!code || !(typeof(code) == 'string')){
+        if(!currencyCode || !(typeof(currencyCode) == 'string')){
             cb(error2,null);
             return;
         }
 
-      httpPatchRehive(accountsAPI + reference + accountCurrenciesAPI + code + '/',data,cb);
+      httpPatchRehive(accountsAPI + reference + accountCurrenciesAPI + currencyCode + '/',data,cb);
     };
 
     this.company.getCompanyDetails = function getCompanyDetails(cb){
@@ -631,6 +657,19 @@ function Rehive(config){
 
     this.company.getCompanyCurrencies = function getCompanyCurrencies(cb){
       httpGetRehive(companyCurrenciesAPI,{},cb);
+    };
+
+    this.company.getCompanyCurrency = function (currencyCode,cb){
+        var url,
+            error = {status: 'error', message: 'Currency code is required'};
+
+        if(currencyCode && (typeof(currencyCode) == 'string')){
+            url = companyCurrenciesAPI + currencyCode + '/';
+        } else {
+            cb(error,null);
+            return;
+        }
+        httpGetRehive(url,{},cb);
     };
 
     this.company.getCompanyBanks = function getCompanyBanks(cb){

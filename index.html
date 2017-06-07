@@ -11,9 +11,9 @@
 <button onclick="login('test1@rehive.com','test_company_1','test1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Login</button>
 <button onclick="logout()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Logout</button>
 <button onclick="logoutAll()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">LogoutAll</button>
-<button onclick="registerCompany('new','user','custom7@gmail.com','test_company_4','newpassword1','newpassword1')"
+<button onclick="registerCompany('new','user','aquib+13@rehive.com','test_company_99','newpassword1','newpassword1')"
         style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Register company</button>
-<button onclick="register('new','user','custom8@gmail.com','test_company_1','newpassword1','newpassword1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Register</button>
+<button onclick="register('new','user','aquib+12@rehive.com','test_company_1','newpassword1','newpassword1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Register</button>
 <button onclick="changePassword('bs123456789','bs12345678','bs12345678')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Change password</button>
 <button onclick="resetPassword('ark.aquib17@gmail.com','brain_station')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Reset password</button>
 <button onclick="resetConfirmPassword('bs12345678','bs12345678','Nzcw','4mg-666544677a0034e34e19')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Reset Confirm password</button>
@@ -22,28 +22,36 @@
 <button onclick="verifyMobile('27422')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Verify Mobile Number</button>
 
 <button onclick="getTokensList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Tokens List</button>
-<button onclick="getToken('d9ef6b3d')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Token</button>
+<button onclick="getToken('ab331d81')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Token</button>
 <button onclick="createToken('test1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Token</button>
-<button onclick="deleteToken('d9ef6b3d')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Token</button>
+<button onclick="deleteToken('ab331d81')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Token</button>
 
 <button onclick="getUserProfile()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user profile</button>
 <button onclick="updateUserProfile({first_name: 'Test'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user profile</button>
+
 <button onclick="getUserAddress()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user address</button>
 <button onclick="updateUserAddress({city: 'San Mateo'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user address</button>
+
 <button onclick="getUserBankAccounts()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user bank accounts</button>
+<button onclick="getUserBankAccount('194')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get bank account</button>
 <button onclick="createUserBankAccount('SSS',423232,'Cash','BSA LTD',52434,2343)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create user bank account</button>
-<button onclick="updateUserBankAccount('123',{name: 'BSAL'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user bank account</button>
+<button onclick="updateUserBankAccount('123',{name: 'BSA'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user bank account</button>
+
 <button onclick="getUserBitcoinAccounts()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user bitcoin accounts</button>
-<button onclick="createUserBitcoinAccount('s32892387438247932874sads29')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create bitcoin account</button>
-<button onclick="updateUserBitcoinAccount(51,{address: '576dsadcs3233423'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user bitcoin account</button>
+<button onclick="getUserBitcoinAccount('35')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get bitcoin account</button>
+<button onclick="createUserBitcoinAccount('s32892387438247932874sads')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create bitcoin account</button>
+<button onclick="updateUserBitcoinAccount('52',{address: '576dsadcs3233423yo'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user bitcoin account</button>
+
 <button onclick="getUserEmailAddresses()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user list email addresses</button>
-<button onclick="createUserEmailAddress('abc@def.com',false)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create email address</button>
-<button onclick="updateUserEmailAddress(2,{'primary':true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user email</button>
+<button onclick="createUserEmailAddress('abc@defg.com',false)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create email address</button>
+<button onclick="updateUserEmailAddress('2',{'primary':true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user email</button>
+
 <button onclick="getUserMobileNumbers()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user list mobile numbers</button>
-<button onclick="createUserMobileNumbers('+8801703862282',true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create mobile number</button>
-<button onclick="updateUserMobileNumbers(1,{'primary': true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user mobile numbers</button>
+<button onclick="createUserMobileNumbers('+8801703862563',true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create mobile number</button>
+<button onclick="updateUserMobileNumbers('1',{'primary': true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user mobile numbers</button>
+
 <button onclick="getUserNotifications()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user notifications</button>
-<button onclick="updateUserNotifications(1,{'sms_enabled': false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user notifications</button>
+<button onclick="updateUserNotifications('1',{'sms_enabled': false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user notifications</button>
 
 <div style="margin: 20px 0 0 20px">
     <label>Upload Document</label>
@@ -51,20 +59,21 @@
     <button onclick="createDocument()" style="margin: 20px 0 0 0" class="btn btn-lg btn-primary">Upload Document</button>
 </div>
 
-<button onclick="getTransactionsList({tx_type: 'transfer'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transactions List</button>
+<button onclick="getTransactionsList({tx_type: 'transfer',currency: 'XBT'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transactions List</button>
 <button onclick="getTotalTransactionsList({currency:'ZAR'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Total Transactions List</button>
 <button onclick="getTransaction('qRA11hMpOgXbS30m3GXE')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transaction</button>
-<button onclick="createWithdrawal(400)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create withdrawal</button>
+<button onclick="createWithdrawal(300)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create withdrawal</button>
 <button onclick="createDeposit(400)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create deposit</button>
 
 <button onclick="getAccountsList({active:true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Accounts List</button>
-<button onclick="getAccount('elzYWdk8j9',{active:true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account</button>
+<button onclick="getAccount('elzYWdk8j9')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account</button>
 <button onclick="getAccountCurrenciesList('elzYWdk8j9',{active:true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account Currencies</button>
 <button onclick="getAccountCurrency('elzYWdk8j9','USD')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account Currency</button>
 <button onclick="updateAccountCurrency('elzYWdk8j9','ZAR',{active:true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Account Currency</button>
 
 <button onclick="getCompanyDetails()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Company Details</button>
 <button onclick="getCompanyCurrencies()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Company Currencies</button>
+<button onclick="getCompanyCurrency('XBT')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Company Currency</button>
 <button onclick="getCompanyBanks()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Company Banks</button>
 
 <div style="margin: 20px 0">

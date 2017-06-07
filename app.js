@@ -282,6 +282,17 @@ function getUserBankAccounts(){
     })
 }
 
+function getUserBankAccount(bankId){
+    rehive.user.getUserBankAccount(bankId,function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
+
 function createUserBankAccount(name,number,type,bank_name,bank_code,branch_code,swift,iban,bic){
     rehive.user.createUserBankAccount(
         {
@@ -317,6 +328,17 @@ function updateUserBankAccount(accountId, data){
 
 function getUserBitcoinAccounts(){
     rehive.user.getUserBitcoinAccounts(function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
+
+function getUserBitcoinAccount(bitcoinAccountId){
+    rehive.user.getUserBitcoinAccount(bitcoinAccountId,function(err,res){
         if(err){
             console.log(err);
             return
@@ -577,8 +599,8 @@ function getAccountCurrenciesList(reference,filter){
     })
 }
 
-function getAccountCurrency(reference,code){
-    rehive.accounts.getAccountCurrency(reference,code,function(err,res){
+function getAccountCurrency(reference,currencyCode){
+    rehive.accounts.getAccountCurrency(reference,currencyCode,function(err,res){
         if(err){
             console.log(err);
             return
@@ -588,8 +610,8 @@ function getAccountCurrency(reference,code){
     })
 }
 
-function updateAccountCurrency(reference,code,data){
-    rehive.accounts.updateAccountCurrency(reference,code,data,function(err,res){
+function updateAccountCurrency(reference,currencyCode,data){
+    rehive.accounts.updateAccountCurrency(reference,currencyCode,data,function(err,res){
         if(err){
             console.log(err);
             return
@@ -612,6 +634,17 @@ function getCompanyDetails(){
 
 function getCompanyCurrencies(){
     rehive.company.getCompanyCurrencies(function(err,res){
+        if(err){
+            console.log(err);
+            return
+        }
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    })
+}
+
+function getCompanyCurrency(currencyCode){
+    rehive.company.getCompanyCurrency(currencyCode,function(err,res){
         if(err){
             console.log(err);
             return
