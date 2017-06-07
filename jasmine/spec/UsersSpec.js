@@ -9,9 +9,11 @@ describe("Users", function() {
     spyOn(rehive.user, "getUserAddress").and.returnValue('success');
     spyOn(rehive.user, "updateUserAddress").and.returnValue('success');
     spyOn(rehive.user, "getUserBankAccounts").and.returnValue('success');
+    spyOn(rehive.user, "getUserBankAccount").and.returnValue('success');
     spyOn(rehive.user, "createUserBankAccount").and.returnValue('success');
     spyOn(rehive.user, "updateUserBankAccount").and.returnValue('success');
     spyOn(rehive.user, "getUserBitcoinAccounts").and.returnValue('success');
+    spyOn(rehive.user, "getUserBitcoinAccount").and.returnValue('success');
     spyOn(rehive.user, "createUserBitcoinAccount").and.returnValue('success');
     spyOn(rehive.user, "updateUserBitcoinAccount").and.returnValue('success');
     spyOn(rehive.user, "createDocument").and.returnValue('success');
@@ -71,6 +73,15 @@ describe("Users", function() {
     expect(status).toEqual("success");
   });
 
+  it("should be able to call get bank account function successfully", function() {
+    var status;
+
+    status = rehive.user.getUserBankAccount();
+
+    expect(rehive.user.getUserBankAccount).toHaveBeenCalledTimes(1);
+    expect(status).toEqual("success");
+  });
+
   it("should be able to call create user bank account function successfully", function() {
     var status;
 
@@ -95,6 +106,15 @@ describe("Users", function() {
     status = rehive.user.getUserBitcoinAccounts();
 
     expect(rehive.user.getUserBitcoinAccounts).toHaveBeenCalledTimes(1);
+    expect(status).toEqual("success");
+  });
+
+  it("should be able to call get bitcoin account function successfully", function() {
+    var status;
+
+    status = rehive.user.getUserBitcoinAccount();
+
+    expect(rehive.user.getUserBitcoinAccount).toHaveBeenCalledTimes(1);
     expect(status).toEqual("success");
   });
 
