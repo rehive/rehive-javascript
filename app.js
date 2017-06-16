@@ -49,30 +49,29 @@ function registerCompany(first_name,last_name,email,company_id,password1,passwor
         })
 }
 
-function login(identifier,company_id,password){
-    rehive.auth.login(
-        {
-            identifier: identifier,
-            company_id: company_id,
+function login(user,company,password){
+    rehive.auth.login({
+            user: user,
+            company: company,
             password: password
-        }, function(err,user){
-            if(err){
-                console.log(err);
-                return
-            }
+        }).then(function(user){
             console.log(user);
             document.getElementById('result').innerHTML = convertToText(user);
-    })
+            },function(err){
+                if(err){
+                console.log(err);
+            }
+        })
 }
 
 function logout(){
-    rehive.auth.logout(function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.auth.logout().then(function(res){
         console.log(res.message);
         document.getElementById('result').innerHTML = res.message;
+    },function(err){
+        if(err){
+            console.log(err);
+        }
     })
 }
 

@@ -234,46 +234,49 @@ function Rehive(config){
             });
     };
 
-    this.auth.login = function (credentials,cb){
-        fetch(baseAPI + loginAPI,{
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(credentials)
-        })
-            .then(parseJSON)
-            .then(function(response) {
-                if(response.status == 'success'){
-                    setToken(response.data.token);
-                    cb(null,response.data.user);
-                } else if(response.status == 'error'){
-                    cb(response,null);
-                }
+    this.auth.login = function (credentials){
+        return new Promise(function(resolve,reject){
+            fetch(baseAPI + loginAPI,{
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(credentials)
             })
+                .then(parseJSON)
+                .then(function(response) {
+                    if(response.status == 'success'){
+                        setToken(response.data.token);
+                        resolve(response.data.user);
+                    } else if(response.status == 'error'){
+                        reject(response);
+                    }
+                })
+        });
     };
 
-    this.auth.logout = function (cb){
+    this.auth.logout = function (){
+        return new Promise(function(resolve,reject){
+            var token = getToken();
 
-      var token = getToken();
+            if(token){
+                headers['Authorization'] = 'Token ' + token;
+            } else {
+                delete headers['Authorization'];
+            }
 
-        if(token){
-            headers['Authorization'] = 'Token ' + token;
-        } else {
-            delete headers['Authorization'];
-        }
-
-        fetch(baseAPI + logoutAPI,{
-            method: 'POST',
-            headers: headers
+            fetch(baseAPI + logoutAPI,{
+                method: 'POST',
+                headers: headers
+            })
+                .then(parseJSON)
+                .then(function(response) {
+                    if(response.status == 'success'){
+                        removeToken();
+                        resolve(response);
+                    } else if(response.status == 'error'){
+                        reject(response);
+                    }
+                });
         })
-            .then(parseJSON)
-            .then(function(response) {
-                if(response.status == 'success'){
-                    removeToken();
-                    cb(null,response);
-                } else if(response.status == 'error'){
-                    cb(response,null);
-                }
-            });
     };
 
     this.auth.logoutAll = function (cb){
