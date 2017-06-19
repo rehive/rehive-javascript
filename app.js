@@ -24,9 +24,7 @@ function register(first_name,last_name,email,company,password1,password2){
             console.log(user);
             document.getElementById('result').innerHTML = convertToText(user);
         },function(err){
-            if(err){
-                console.log(err);
-            }
+            console.log(err);
         });
 }
 
@@ -43,9 +41,7 @@ function registerCompany(first_name,last_name,email,company,password1,password2)
             console.log(user);
             document.getElementById('result').innerHTML = convertToText(user);
         },function(err){
-            if(err){
-                console.log(err);
-            }
+            console.log(err);
         });
 }
 
@@ -58,9 +54,7 @@ function login(user,company,password){
             console.log(user);
             document.getElementById('result').innerHTML = convertToText(user);
             },function(err){
-                if(err){
-                console.log(err);
-            }
+            console.log(err);
         })
 }
 
@@ -69,9 +63,7 @@ function logout(){
         console.log(res.message);
         document.getElementById('result').innerHTML = res.message;
     },function(err){
-        if(err){
-            console.log(err);
-        }
+        console.log(err);
     })
 }
 
@@ -81,9 +73,7 @@ function logoutAll(){
         console.log(res.message);
         document.getElementById('result').innerHTML = res.message;
     }, function (err) {
-            if(err){
-                console.log(err);
-            }
+            console.log(err);
         })
 }
 
@@ -93,29 +83,25 @@ function changePassword(old_password,new_password1,new_password2){
             old_password: old_password,
             new_password1: new_password1,
             new_password2: new_password2
-        }, function(err,res){
-            if(err){
-                console.log(err);
-                return
-            }
+        }).then(function(res){
             console.log(res);
             document.getElementById('result').innerHTML = convertToText(res.message);
-        })
+        },function(err){
+            console.log(err);
+    })
 }
 
-function resetPassword(identifier,company_id){
+function resetPassword(user,company){
     rehive.auth.resetPassword(
         {
-            identifier: identifier,
-            company_id: company_id
-        }, function(err,res){
-            if(err){
-                console.log(err);
-                return
-            }
+            user: user,
+            company: company
+        }).then(function(res){
             console.log(res);
             document.getElementById('result').innerHTML = convertToText(res.message);
-        })
+        }, function (err) {
+            console.log(err);
+    })
 }
 
 function resetConfirmPassword(new_password1,new_password2,uid,token){
@@ -125,58 +111,50 @@ function resetConfirmPassword(new_password1,new_password2,uid,token){
             new_password2: new_password2,
             uid: uid,
             token: token
-        }, function(err,res){
-            if(err){
-                console.log(err);
-                return
-            }
+        }).then(function(res){
             console.log(res);
             document.getElementById('result').innerHTML = convertToText(res.message);
-        })
+        },function(err){
+            console.log(err);
+    })
 }
 
-function resendEmailVerification(identifier,company_id){
+function resendEmailVerification(email,company){
     rehive.auth.resendEmailVerification(
         {
-            identifier: identifier,
-            company_id: company_id
-        }, function(err,res){
-            if(err){
-                console.log(err);
-                return
-            }
-            console.log(res);
-            document.getElementById('result').innerHTML = convertToText(res.status);
-        })
+            email: email,
+            company: company
+        }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res.status);
+    },function(err){
+        console.log(err);
+    })
 }
 
-function resendMobileVerification(identifier,company_id){
+function resendMobileVerification(mobile,company){
     rehive.auth.resendMobileVerification(
         {
-            identifier: identifier,
-            company_id: company_id
-        }, function(err,res){
-            if(err){
-                console.log(err);
-                return
-            }
-            console.log(res);
-            document.getElementById('result').innerHTML = convertToText(res.status);
-        })
+            mobile: mobile,
+            company: company
+        }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res.status);
+    },function(err){
+        console.log(err);
+    })
 }
 
 function verifyMobile(otp){
     rehive.auth.verifyMobile(
         {
             otp: otp
-        }, function(err,res){
-            if(err){
-                console.log(err);
-                return
-            }
-            console.log(res);
-            document.getElementById('result').innerHTML = convertToText(res.status);
-        })
+        }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res.status);
+    },function(err){
+        console.log(err);
+    })
 }
 
 function getTokensList(){

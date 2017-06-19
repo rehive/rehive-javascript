@@ -76,126 +76,131 @@ function Rehive(config){
         return response.json()
     }
 
-    var httpPostRehive = function(url,data,cb){
-        var token = getToken();
+    var httpPostRehive = function(url,data){
+        return new Promise(function(resolve,reject){
+            var token = getToken();
 
-        if(token){
-            headers['Authorization'] = 'Token ' + token;
-        } else {
-            delete headers['Authorization'];
-        }
+            if(token){
+                headers['Authorization'] = 'Token ' + token;
+            } else {
+                delete headers['Authorization'];
+            }
 
-        fetch(baseAPI + url,{
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(data)
-        })
-            .then(parseJSON)
-            .then(function(response) {
-                if(response.status == 'success'){
-                    if(response.data && response.data.data){
-                        cb(null,response.data.data);
-                    } else if(response.data) {
-                        cb(null,response.data);
-                    } else{
-                        cb(null,response);
+            fetch(baseAPI + url,{
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(data)
+            })
+                .then(parseJSON)
+                .then(function(response) {
+                    if(response.status == 'success'){
+                        if(response.data && response.data.data){
+                            resolve(response.data.data);
+                        } else if(response.data) {
+                            resolve(response.data);
+                        } else{
+                            resolve(response);
+                        }
+                    } else if(response.status == 'error'){
+                        reject(response);
                     }
-                } else if(response.status == 'error'){
-                    cb(response,null);
-                }
-            });
+                });
+        })
     };
 
-    var httpGetRehive = function(url,params,cb){
+    var httpGetRehive = function(url){
+        return new Promise(function(resolve,reject){
+            var token = getToken();
 
-      var token = getToken();
+            if(token){
+                headers['Authorization'] = 'Token ' + token;
+            } else {
+                delete headers['Authorization'];
+            }
 
-      if(token){
-          headers['Authorization'] = 'Token ' + token;
-      } else {
-          delete headers['Authorization'];
-      }
-
-        fetch(baseAPI + url,{
-            method: 'GET',
-            headers: headers
-        })
-            .then(parseJSON)
-            .then(function(response) {
-                if(response.status == 'success'){
-                    if(response.data && response.data.data){
-                        cb(null,response.data.data);
-                    } else if(response.data) {
-                        cb(null,response.data);
-                    } else{
-                        cb(null,response);
+            fetch(baseAPI + url,{
+                method: 'GET',
+                headers: headers
+            })
+                .then(parseJSON)
+                .then(function(response) {
+                    if(response.status == 'success'){
+                        if(response.data && response.data.data){
+                            resolve(response.data.data);
+                        } else if(response.data) {
+                            resolve(response.data);
+                        } else{
+                            resolve(response);
+                        }
+                    } else if(response.status == 'error'){
+                        reject(response);
                     }
-                } else if(response.status == 'error'){
-                    cb(response,null);
-                }
-            });
+                });
+        })
     };
 
-    var httpPatchRehive = function(url,data,cb){
+    var httpPatchRehive = function(url,data){
+        return new Promise(function(resolve,reject){
+            var token = getToken();
 
-        var token = getToken();
+            if(token){
+                headers['Authorization'] = 'Token ' + token;
+            } else {
+                delete headers['Authorization'];
+            }
 
-        if(token){
-            headers['Authorization'] = 'Token ' + token;
-        } else {
-            delete headers['Authorization'];
-        }
-
-        fetch(baseAPI + url,{
-            method: 'PATCH',
-            headers: headers,
-            body: JSON.stringify(data)
-        })
-            .then(parseJSON)
-            .then(function(response) {
-                if(response.status == 'success'){
-                    if(response.data && response.data.data){
-                        cb(null,response.data.data);
-                    } else if(response.data) {
-                        cb(null,response.data);
-                    } else{
-                        cb(null,response);
+            fetch(baseAPI + url,{
+                method: 'PATCH',
+                headers: headers,
+                body: JSON.stringify(data)
+            })
+                .then(parseJSON)
+                .then(function(response) {
+                    if(response.status == 'success'){
+                        if(response.data && response.data.data){
+                            resolve(response.data.data);
+                        } else if(response.data) {
+                            resolve(response.data);
+                        } else{
+                            resolve(response);
+                        }
+                    } else if(response.status == 'error'){
+                        reject(response);
                     }
-                } else if(response.status == 'error'){
-                    cb(response,null);
-                }
-            });
+                });
+        })
     };
 
-    var httpDeleteRehive = function(url,data,cb){
+    var httpDeleteRehive = function(url,data){
+        return new Promise(function(resolve,reject){
+            var token = getToken();
 
-        var token = getToken();
+            if(token){
+                headers['Authorization'] = 'Token ' + token;
+            } else {
+                delete headers['Authorization'];
+            }
 
-        if(token){
-            headers['Authorization'] = 'Token ' + token;
-        } else {
-            delete headers['Authorization'];
-        }
-
-        fetch(baseAPI + url,{
-            method: 'DELETE',
-            headers: headers,
-            body: JSON.stringify(data)
-        })
-            .then(parseJSON)
-            .then(function(response) {
-                if(response.status == 'success'){
-                    if(response.data && response.data.data){
-                        cb(null,response.data.data);
-                    } else if(response.data) {
-                        cb(null,response.data);
-                    } else{
-                        cb(null,response);
+            fetch(baseAPI + url,{
+                method: 'DELETE',
+                headers: headers,
+                body: JSON.stringify(data)
+            })
+                .then(parseJSON)
+                .then(function(response) {
+                    if(response.status == 'success'){
+                        if(response.data && response.data.data){
+                            resolve(response.data.data);
+                        } else if(response.data) {
+                            resolve(response.data);
+                        } else{
+                            resolve(response);
+                        }
+                    } else if(response.status == 'error'){
+                        reject(response);
                     }
-                } else if(response.status == 'error'){
-                    cb(response,null);
-                }
-            });
+                });
+        })
     };
 
     //public functions
@@ -309,32 +314,68 @@ function Rehive(config){
         })
     };
 
-    this.auth.changePassword = function (data,cb){
-      httpPostRehive(changePasswordAPI,data,cb);
+    this.auth.changePassword = function (data){
+        return new Promise(function(resolve,reject){
+            httpPostRehive(changePasswordAPI,data).then(function(response){
+                resolve(response);
+            }, function(error){
+                reject(error);
+            });
+        })
     };
 
-    this.auth.resetPassword = function (data,cb){
-      httpPostRehive(resetPasswordAPI,data,cb);
+    this.auth.resetPassword = function (data){
+        return new Promise(function(resolve,reject){
+            httpPostRehive(resetPasswordAPI,data).then(function(response){
+                resolve(response);
+            }, function(error){
+                reject(error);
+            });
+        });
     };
 
-    this.auth.resetConfirmPassword = function (data,cb){
-      httpPostRehive(resetConfirmPasswordAPI,data,cb);
+    this.auth.resetConfirmPassword = function (data){
+        return new Promise(function(resolve,reject){
+            httpPostRehive(resetConfirmPasswordAPI,data).then(function(response){
+                resolve(response);
+            }, function(error){
+                reject(error);
+            });
+        });
     };
 
-    this.auth.resendEmailVerification = function (data,cb){
-      httpPostRehive(resendEmailVerificationAPI,data,cb);
+    this.auth.resendEmailVerification = function (data){
+        return new Promise(function(resolve,reject){
+            httpPostRehive(resendEmailVerificationAPI,data).then(function(response){
+                resolve(response);
+            }, function(error){
+                reject(error);
+            });
+        });
     };
 
-    this.auth.resendMobileVerification = function (data,cb){
-      httpPostRehive(resendMobileVerificationAPI,data,cb);
+    this.auth.resendMobileVerification = function (data){
+        return new Promise(function(resolve,reject){
+            httpPostRehive(resendMobileVerificationAPI,data).then(function(response){
+                resolve(response);
+            }, function(error){
+                reject(error);
+            });
+        });
     };
 
-    this.auth.verifyMobile = function (data,cb){
-      httpPostRehive(verifyMobileAPI,data,cb);
+    this.auth.verifyMobile = function (data){
+        return new Promise(function(resolve,reject){
+            httpPostRehive(verifyMobileAPI,data).then(function(response){
+                resolve(response);
+            }, function(error){
+                reject(error);
+            });
+        });
     };
 
-    this.token.getTokensList = function (cb){
-        httpGetRehive(tokensAPI,{},cb);
+    this.token.getTokensList = function (){
+        httpGetRehive(tokensAPI);
     };
 
     this.token.getToken = function (tokenKey,cb){
@@ -347,7 +388,7 @@ function Rehive(config){
             cb(error,null);
             return;
         }
-        httpGetRehive(url,{},cb);
+        httpGetRehive(url);
     };
 
     this.token.createToken = function (data,cb){
@@ -368,7 +409,7 @@ function Rehive(config){
     };
 
     this.user.getUserProfile = function (cb){
-      httpGetRehive(userProfileAPI,{},cb);
+      httpGetRehive(userProfileAPI);
     };
 
     this.user.updateUserProfile = function (data,cb){
@@ -376,7 +417,7 @@ function Rehive(config){
     };
 
     this.user.getUserAddress = function (cb){
-      httpGetRehive(userAddressAPI,{},cb);
+      httpGetRehive(userAddressAPI);
     };
 
     this.user.updateUserAddress = function (data,cb){
@@ -384,7 +425,7 @@ function Rehive(config){
     };
 
     this.user.getUserBankAccounts = function (cb){
-      httpGetRehive(userBankAccountsAPI,{},cb);
+      httpGetRehive(userBankAccountsAPI);
     };
 
     this.user.getUserBankAccount = function (bankId,cb){
@@ -397,7 +438,7 @@ function Rehive(config){
             cb(error,null);
             return;
         }
-        httpGetRehive(url,{},cb);
+        httpGetRehive(url);
     };
 
     this.user.createUserBankAccount = function (data,cb){
@@ -418,7 +459,7 @@ function Rehive(config){
     };
 
     this.user.getUserBitcoinAccounts = function (cb){
-      httpGetRehive(userBitcoinAccountsAPI,{},cb);
+      httpGetRehive(userBitcoinAccountsAPI);
     };
 
     this.user.getUserBitcoinAccount = function (bitcoinAccountId,cb){
@@ -431,7 +472,7 @@ function Rehive(config){
             cb(error,null);
             return;
         }
-        httpGetRehive(url,{},cb);
+        httpGetRehive(url);
     };
 
     this.user.createUserBitcoinAccount = function (data,cb){
@@ -483,7 +524,7 @@ function Rehive(config){
     };
 
     this.user.getUserEmailAddresses = function (cb){
-      httpGetRehive(userEmailAddressesAPI,{},cb);
+      httpGetRehive(userEmailAddressesAPI);
     };
 
     this.user.createUserEmailAddress = function (data,cb){
@@ -504,7 +545,7 @@ function Rehive(config){
     };
 
     this.user.getUserMobileNumbers = function (cb){
-      httpGetRehive(userMobileNumbersAPI,{},cb);
+      httpGetRehive(userMobileNumbersAPI);
     };
 
     this.user.createUserMobileNumbers = function (data,cb){
@@ -525,7 +566,7 @@ function Rehive(config){
     };
 
     this.user.getUserNotifications = function (cb){
-      httpGetRehive(userNotificationsAPI,{},cb);
+      httpGetRehive(userNotificationsAPI);
     };
 
     this.user.updateUserNotifications = function (notificationsId,data,cb){
@@ -548,7 +589,7 @@ function Rehive(config){
           filters = '';
       }
 
-      httpGetRehive(transactionsAPI + filters,{},cb);
+      httpGetRehive(transactionsAPI + filters);
     };
 
     this.transactions.getTotalTransactionsList = function (filters,cb){
@@ -557,7 +598,7 @@ function Rehive(config){
       } else {
           filters = '';
       }
-      httpGetRehive(transactionsAPI + totalTransactionsListAPI + filters,{},cb);
+      httpGetRehive(transactionsAPI + totalTransactionsListAPI + filters);
     };
 
     this.transactions.getTransaction = function (txCode,cb){
@@ -570,7 +611,7 @@ function Rehive(config){
             cb(error,null);
             return;
         }
-      httpGetRehive(url,{},cb);
+      httpGetRehive(url);
     };
 
     this.transactions.createWithdrawal = function (data,cb){
@@ -587,7 +628,7 @@ function Rehive(config){
       } else {
           filter = '';
       }
-      httpGetRehive(accountsAPI + filter,{},cb);
+      httpGetRehive(accountsAPI + filter);
     };
 
     this.accounts.getAccount = function (reference,filter,cb){
@@ -606,7 +647,7 @@ function Rehive(config){
             filter = '';
         }
 
-        httpGetRehive(accountsAPI + reference + filter,{},cb);
+        httpGetRehive(accountsAPI + reference + filter);
     };
 
     this.accounts.getAccountCurrenciesList = function (reference,filter,cb){
@@ -623,7 +664,7 @@ function Rehive(config){
             filter = '';
         }
 
-        httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + filter,{},cb);
+        httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + filter);
     };
 
     this.accounts.getAccountCurrency =function (reference,currencyCode,cb){
@@ -639,7 +680,7 @@ function Rehive(config){
             cb(error2,null);
             return;
         }
-      httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + currencyCode + '/',{},cb);
+      httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + currencyCode + '/');
     };
 
     this.accounts.updateAccountCurrency = function (reference,currencyCode,data,cb){
@@ -660,11 +701,11 @@ function Rehive(config){
     };
 
     this.company.getCompanyDetails = function getCompanyDetails(cb){
-      httpGetRehive(companyAPI,{},cb);
+      httpGetRehive(companyAPI);
     };
 
     this.company.getCompanyCurrencies = function getCompanyCurrencies(cb){
-      httpGetRehive(companyCurrenciesAPI,{},cb);
+      httpGetRehive(companyCurrenciesAPI);
     };
 
     this.company.getCompanyCurrency = function (currencyCode,cb){
@@ -677,11 +718,11 @@ function Rehive(config){
             cb(error,null);
             return;
         }
-        httpGetRehive(url,{},cb);
+        httpGetRehive(url);
     };
 
     this.company.getCompanyBanks = function getCompanyBanks(cb){
-      httpGetRehive(companyBanksAPI,{},cb);
+      httpGetRehive(companyBanksAPI);
     };
 
 
