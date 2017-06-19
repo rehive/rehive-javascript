@@ -197,69 +197,57 @@ function deleteToken(tokenKey){
 }
 
 function getUserProfile(){
-    rehive.user.getUserProfile(function(err,user){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.user.getUserProfile().then(function(user){
         console.log(user);
         document.getElementById('result').innerHTML = convertToText(user);
+    },function(err){
+        console.log(err);
     })
 }
 
 function updateUserProfile(data){
-    rehive.user.updateUserProfile(data, function(err,user){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.user.updateUserProfile(data).then(function(user){
         console.log(user);
         document.getElementById('result').innerHTML = convertToText(user);
+    },function(err){
+        console.log(err);
     })
 }
 
 function getUserAddress(){
-    rehive.user.getUserAddress(function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.user.getUserAddress().then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
 
 function updateUserAddress(data){
-    rehive.user.updateUserAddress(data, function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.user.updateUserAddress(data).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
 function getUserBankAccounts(){
-    rehive.user.getUserBankAccounts(function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.user.getUserBankAccounts().then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
 function getUserBankAccount(bankId){
-    rehive.user.getUserBankAccount(bankId,function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.user.getUserBankAccount(bankId).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
@@ -275,46 +263,38 @@ function createUserBankAccount(name,number,type,bank_name,bank_code,branch_code,
             swift: swift,
             iban: iban,
             bic: bic
-        }, function(err,res){
-            if(err){
-                console.log(err);
-                return
-            }
+        }).then(function(res){
             console.log(res);
             document.getElementById('result').innerHTML = convertToText(res);
-        })
+        },function(err){
+            console.log(err);
+        });
 }
 
 function updateUserBankAccount(accountId, data){
-    rehive.user.updateUserBankAccount(accountId,data, function(err,res){
-            if(err){
-                console.log(err);
-                return
-            }
+    rehive.user.updateUserBankAccount(accountId,data).then(function(res){
             console.log(res);
             document.getElementById('result').innerHTML = convertToText(res);
-        })
+        },function(err){
+        console.log(err);
+    })
 }
 
 function getUserBitcoinAccounts(){
-    rehive.user.getUserBitcoinAccounts(function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.user.getUserBitcoinAccounts().then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
 function getUserBitcoinAccount(bitcoinAccountId){
-    rehive.user.getUserBitcoinAccount(bitcoinAccountId,function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.user.getUserBitcoinAccount(bitcoinAccountId).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
@@ -322,24 +302,20 @@ function createUserBitcoinAccount(address){
     rehive.user.createUserBitcoinAccount(
         {
             address: address
-        }, function(err,res){
-            if(err){
-                console.log(err);
-                return
-            }
+        }).then(function(res){
             console.log(res);
             document.getElementById('result').innerHTML = convertToText(res);
+        },function(err){
+            console.log(err);
         })
 }
 
 function updateUserBitcoinAccount(accountId, data){
-    rehive.user.updateUserBitcoinAccount(accountId,data, function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.user.updateUserBitcoinAccount(accountId,data).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
@@ -359,24 +335,20 @@ function createDocument(document_category,document_type){
     formData.append('document_category', document_category);
     formData.append('document_type', document_type);
 
-    rehive.user.createDocument(formData, function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.user.createDocument(formData).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
 function getUserEmailAddresses(){
-    rehive.user.getUserEmailAddresses(function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.user.getUserEmailAddresses().then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
@@ -385,122 +357,102 @@ function createUserEmailAddress(email,primary){
         {
             email: email,
             primary: primary
-        }, function(err,res){
-            if(err){
-                console.log(err);
-                return
-            }
+        }).then(function(res){
             console.log(res);
             document.getElementById('result').innerHTML = convertToText(res);
-        })
+        },function(err){
+        console.log(err);
+    })
 }
 
 function updateUserEmailAddress(emailId, data){
-    rehive.user.updateUserEmailAddress(emailId,data, function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.user.updateUserEmailAddress(emailId,data).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
 function getUserMobileNumbers(){
-    rehive.user.getUserMobileNumbers(function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.user.getUserMobileNumbers().then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
-function createUserMobileNumbers(number,primary){
-    rehive.user.createUserMobileNumbers(
+function createUserMobileNumber(number,primary){
+    rehive.user.createUserMobileNumber(
         {
             number: number,
             primary: primary
-        }, function(err,res){
-            if(err){
-                console.log(err);
-                return
-            }
+        }).then(function(res){
             console.log(res);
             document.getElementById('result').innerHTML = convertToText(res);
-        })
+        },function(err){
+        console.log(err);
+    })
 }
 
-function updateUserMobileNumbers(mobileNumberId, data){
-    rehive.user.updateUserMobileNumbers(mobileNumberId,data, function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+function updateUserMobileNumber(mobileNumberId, data){
+    rehive.user.updateUserMobileNumber(mobileNumberId,data).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
 function getUserNotifications(){
-    rehive.user.getUserNotifications(function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.user.getUserNotifications().then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
 function updateUserNotifications(notificationsId, data){
-    rehive.user.updateUserNotifications(notificationsId,data, function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.user.updateUserNotifications(notificationsId,data).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
 function getTransactionsList(filters){
-    rehive.transactions.getTransactionsList(filters,function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.transactions.getTransactionsList(filters).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
 
 function getTotalTransactionsList(filters){
-    rehive.transactions.getTotalTransactionsList(filters,function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.transactions.getTotalTransactionsList(filters).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
 function getTransaction(tx_code){
-    rehive.transactions.getTransaction(tx_code,function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.transactions.getTransaction(tx_code).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
-function createWithdrawal(amount,account,reference,subtype,note,metadata){
-    rehive.transactions.createWithdrawal(
+function createDebit(amount,account,reference,subtype,note,metadata){
+    rehive.transactions.createDebit(
         {
             amount: amount,
             account: account,
@@ -508,18 +460,16 @@ function createWithdrawal(amount,account,reference,subtype,note,metadata){
             subtype: subtype,
             note: note,
             metadata: metadata
-        }, function(err,res){
-            if(err){
-                console.log(err);
-                return
-            }
+        }).then(function(res){
             console.log(res);
             document.getElementById('result').innerHTML = convertToText(res);
-        })
+        },function(err){
+        console.log(err);
+    })
 }
 
-function createDeposit(amount,account,reference,subtype,note,metadata){
-    rehive.transactions.createDeposit(
+function createCredit(amount,account,reference,subtype,note,metadata){
+    rehive.transactions.createCredit(
         {
             amount: amount,
             account: account,
@@ -527,15 +477,25 @@ function createDeposit(amount,account,reference,subtype,note,metadata){
             subtype: subtype,
             note: note,
             metadata: metadata
-        }, function(err,res){
-            if(err){
-                console.log(err);
-                return
-            }
-            console.log(res);
-            document.getElementById('result').innerHTML = convertToText(res);
-        })
+        }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    })
 }
+
+function createTransfer(transferData){
+    rehive.transactions.createTransfer(
+        transferData).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    })
+}
+
+
 function getAccountsList(filter){
     rehive.accounts.getAccountsList(filter,function(err,res){
         if(err){

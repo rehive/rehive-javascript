@@ -24,16 +24,17 @@ function Rehive(config){
       tokensAPI = 'auth/tokens/',
       userProfileAPI = 'user/',
       userAddressAPI = 'user/address/',
-      userBankAccountsAPI = 'user/bank_accounts/',
-      userBitcoinAccountsAPI = 'user/bitcoin_accounts/',
+      userBankAccountsAPI = 'user/bank-accounts/',
+      userBitcoinAccountsAPI = 'user/bitcoin-accounts/',
       userCreateDocumentAPI = 'user/document/',
       userEmailAddressesAPI = 'user/emails/',
       userMobileNumbersAPI = 'user/mobiles/',
       userNotificationsAPI = 'user/notifications/',
       transactionsAPI = 'transactions/',
       totalTransactionsListAPI = 'totals/',
-      withdrawalAPI = 'transactions/withdraw/',
-      depositAPI = 'transactions/deposit/',
+      debitAPI = 'transactions/debit/',
+      creditAPI = 'transactions/credit/',
+      transferAPI = 'transactions/transfer/',
       accountsAPI = 'accounts/',
       accountCurrenciesAPI = '/currencies/',
       companyAPI = 'company/',
@@ -431,218 +432,381 @@ function Rehive(config){
         })
     };
 
-    this.user.getUserProfile = function (cb){
-      httpGetRehive(userProfileAPI);
+    this.user.getUserProfile = function (){
+        return new Promise(function(resolve,reject){
+            httpGetRehive(userProfileAPI).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
     };
 
-    this.user.updateUserProfile = function (data,cb){
-      httpPatchRehive(userProfileAPI,data,cb);
+    this.user.updateUserProfile = function (data){
+        return new Promise(function(resolve,reject){
+            httpPatchRehive(userProfileAPI,data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
     };
 
-    this.user.getUserAddress = function (cb){
-      httpGetRehive(userAddressAPI);
+    this.user.getUserAddress = function (){
+        return new Promise(function(resolve,reject){
+            httpGetRehive(userAddressAPI).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
     };
 
-    this.user.updateUserAddress = function (data,cb){
-      httpPatchRehive(userAddressAPI,data,cb);
+    this.user.updateUserAddress = function (data){
+        return new Promise(function(resolve,reject){
+            httpPatchRehive(userAddressAPI,data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
     };
 
-    this.user.getUserBankAccounts = function (cb){
-      httpGetRehive(userBankAccountsAPI);
+    this.user.getUserBankAccounts = function (){
+        return new Promise(function(resolve,reject){
+            httpGetRehive(userBankAccountsAPI).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
     };
 
     this.user.getUserBankAccount = function (bankId,cb){
-        var url,
-            error = {status: 'error', message: 'Bank id is required'};
+        return new Promise(function(resolve,reject){
+            var url,
+                error = {status: 'error', message: 'Bank id is required'};
 
-        if(bankId && (typeof(bankId) == 'string')){
-            url = userBankAccountsAPI + bankId + '/';
-        } else {
-            cb(error,null);
-            return;
-        }
-        httpGetRehive(url);
-    };
-
-    this.user.createUserBankAccount = function (data,cb){
-      httpPostRehive(userBankAccountsAPI,data,cb);
-    };
-
-    this.user.updateUserBankAccount = function (accountId,data,cb){
-        var url,
-            error = {status: 'error', message: 'Account id is required'};
-
-        if(accountId && (typeof(accountId) == 'string')){
-            url = userBankAccountsAPI + accountId;
-        } else {
-            cb(error,null);
-            return;
-        }
-      httpPatchRehive(url,data,cb);
-    };
-
-    this.user.getUserBitcoinAccounts = function (cb){
-      httpGetRehive(userBitcoinAccountsAPI);
-    };
-
-    this.user.getUserBitcoinAccount = function (bitcoinAccountId,cb){
-        var url,
-            error = {status: 'error', message: 'Account id is required'};
-
-        if(bitcoinAccountId && (typeof(bitcoinAccountId) == 'string')){
-            url = userBitcoinAccountsAPI + bitcoinAccountId + '/';
-        } else {
-            cb(error,null);
-            return;
-        }
-        httpGetRehive(url);
-    };
-
-    this.user.createUserBitcoinAccount = function (data,cb){
-      httpPostRehive(userBitcoinAccountsAPI,data,cb);
-    };
-
-    this.user.updateUserBitcoinAccount = function (accountId,data,cb){
-        var url,
-            error = {status: 'error', message: 'Account id is required'};
-
-        if(accountId && (typeof(accountId) == 'string')){
-            url = userBitcoinAccountsAPI + accountId;
-        } else {
-            cb(error,null);
-            return;
-        }
-      httpPatchRehive(url,data,cb);
-    };
-
-    this.user.createDocument = function (data,cb){
-        var token = getToken();
-        var header = {};
-
-        if(token){
-            header['Authorization'] = 'Token ' + token;
-        } else {
-            delete header['Authorization'];
-        }
-
-        fetch(baseAPI + userCreateDocumentAPI,{
-            method: 'POST',
-            headers: header,
-            body: data
-        })
-            .then(parseJSON)
-            .then(function(response) {
-                if(response.status == 'success'){
-                    if(response.data && response.data.data){
-                        cb(null,response.data.data);
-                    } else if(response.data) {
-                        cb(null,response.data);
-                    } else{
-                        cb(null,response);
-                    }
-                } else if(response.status == 'error'){
-                    cb(response,null);
-                }
+            if(bankId && (typeof(bankId) == 'string')){
+                url = userBankAccountsAPI + bankId + '/';
+            } else {
+                reject(error);
+                return;
+            }
+            httpGetRehive(url).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
             });
+        })
     };
 
-    this.user.getUserEmailAddresses = function (cb){
-      httpGetRehive(userEmailAddressesAPI);
+    this.user.createUserBankAccount = function (data){
+        return new Promise(function(resolve,reject){
+            httpPostRehive(userBankAccountsAPI,data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
     };
 
-    this.user.createUserEmailAddress = function (data,cb){
-      httpPostRehive(userEmailAddressesAPI,data,cb);
+    this.user.updateUserBankAccount = function (accountId,data){
+        return new Promise(function(resolve,reject){
+            var url,
+                error = {status: 'error', message: 'Account id is required'};
+
+            if(accountId && (typeof(accountId) == 'string')){
+                url = userBankAccountsAPI + accountId;
+            } else {
+                reject(error);
+                return;
+            }
+            httpPatchRehive(url,data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        })
     };
 
-    this.user.updateUserEmailAddress = function (emailId,data,cb){
-        var url,
-            error = {status: 'error', message: 'Email address id is required'};
-
-        if(emailId && (typeof(emailId) == 'string')){
-            url = userEmailAddressesAPI + emailId;
-        } else {
-            cb(error,null);
-            return;
-        }
-      httpPatchRehive(url,data,cb);
+    this.user.getUserBitcoinAccounts = function (){
+        return new Promise(function(resolve,reject){
+            httpGetRehive(userBitcoinAccountsAPI).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        })
     };
 
-    this.user.getUserMobileNumbers = function (cb){
-      httpGetRehive(userMobileNumbersAPI);
+    this.user.getUserBitcoinAccount = function (bitcoinAccountId){
+        return new Promise(function(resolve,reject){
+            var url,
+                error = {status: 'error', message: 'Account id is required'};
+
+            if(bitcoinAccountId && (typeof(bitcoinAccountId) == 'string')){
+                url = userBitcoinAccountsAPI + bitcoinAccountId + '/';
+            } else {
+                reject(error);
+                return;
+            }
+            httpGetRehive(url).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        })
     };
 
-    this.user.createUserMobileNumbers = function (data,cb){
-      httpPostRehive(userMobileNumbersAPI,data,cb);
+    this.user.createUserBitcoinAccount = function (data){
+        return new Promise(function(resolve,reject){
+            httpPostRehive(userBitcoinAccountsAPI,data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        })
     };
 
-    this.user.updateUserMobileNumbers = function (mobileNumberId,data,cb){
-        var url,
-            error = {status: 'error', message: 'Mobile number id is required'};
+    this.user.updateUserBitcoinAccount = function (accountId,data){
+        return new Promise(function(resolve,reject){
+            var url,
+                error = {status: 'error', message: 'Account id is required'};
 
-        if(mobileNumberId && (typeof(mobileNumberId) == 'string')){
-            url = userMobileNumbersAPI + mobileNumberId;
-        } else {
-            cb(error,null);
-            return;
-        }
-      httpPatchRehive(url,data,cb);
+            if(accountId && (typeof(accountId) == 'string')){
+                url = userBitcoinAccountsAPI + accountId;
+            } else {
+                reject(error);
+                return;
+            }
+
+            httpPatchRehive(url,data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        })
     };
 
-    this.user.getUserNotifications = function (cb){
-      httpGetRehive(userNotificationsAPI);
+    this.user.createDocument = function (data){
+        return new Promise(function(resolve,reject){
+            var token = getToken();
+            var header = {};
+
+            if(token){
+                header['Authorization'] = 'Token ' + token;
+            } else {
+                delete header['Authorization'];
+            }
+
+            fetch(baseAPI + userCreateDocumentAPI,{
+                method: 'POST',
+                headers: header,
+                body: data
+            })
+                .then(parseJSON)
+                .then(function(response) {
+                    if(response.status == 'success'){
+                        if(response.data && response.data.data){
+                            resolve(response.data.data);
+                        } else if(response.data) {
+                            resolve(response.data);
+                        } else{
+                            resolve(response);
+                        }
+                    } else if(response.status == 'error'){
+                        reject(response);
+                    }
+                });
+        });
     };
 
-    this.user.updateUserNotifications = function (notificationsId,data,cb){
-        var url,
-            error = {status: 'error', message: 'Notification id is required'};
-
-        if(notificationsId && (typeof(notificationsId) == 'string')){
-            url = userNotificationsAPI + notificationsId;
-        } else {
-            cb(error,null);
-            return;
-        }
-      httpPatchRehive(url,data,cb);
+    this.user.getUserEmailAddresses = function (){
+        return new Promise(function(resolve,reject){
+            httpGetRehive(userEmailAddressesAPI).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
     };
 
-    this.transactions.getTransactionsList = function (filters,cb){
-      if(filters){
-          filters = '?' + serialize(filters);
-      } else {
-          filters = '';
-      }
-
-      httpGetRehive(transactionsAPI + filters);
+    this.user.createUserEmailAddress = function (data){
+        return new Promise(function(resolve,reject){
+            httpPostRehive(userEmailAddressesAPI,data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
     };
 
-    this.transactions.getTotalTransactionsList = function (filters,cb){
-      if(filters){
-          filters = '?' + serialize(filters);
-      } else {
-          filters = '';
-      }
-      httpGetRehive(transactionsAPI + totalTransactionsListAPI + filters);
+    this.user.updateUserEmailAddress = function (emailId,data){
+        return new Promise(function(resolve,reject){
+            var url,
+                error = {status: 'error', message: 'Email address id is required'};
+
+            if(emailId && (typeof(emailId) == 'string')){
+                url = userEmailAddressesAPI + emailId;
+            } else {
+                reject(error,null);
+                return;
+            }
+            httpPatchRehive(url,data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        })
     };
 
-    this.transactions.getTransaction = function (txCode,cb){
-        var url,
-            error = {status: 'error', message: 'Transaction code is required'};
-
-        if(txCode && (typeof(txCode) == 'string')){
-            url = transactionsAPI + txCode + '/';
-        } else {
-            cb(error,null);
-            return;
-        }
-      httpGetRehive(url);
+    this.user.getUserMobileNumbers = function (){
+        return new Promise(function(resolve,reject){
+            httpGetRehive(userMobileNumbersAPI).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
     };
 
-    this.transactions.createWithdrawal = function (data,cb){
-    httpPostRehive(withdrawalAPI,data,cb);
+    this.user.createUserMobileNumber = function (data){
+        return new Promise(function(resolve,reject){
+            httpPostRehive(userMobileNumbersAPI,data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
     };
 
-    this.transactions.createDeposit = function (data,cb){
-    httpPostRehive(depositAPI,data,cb);
+    this.user.updateUserMobileNumber = function (mobileNumberId,data){
+        return new Promise(function(resolve,reject){
+            var url,
+                error = {status: 'error', message: 'Mobile number id is required'};
+
+            if(mobileNumberId && (typeof(mobileNumberId) == 'string')){
+                url = userMobileNumbersAPI + mobileNumberId;
+            } else {
+                reject(error);
+                return;
+            }
+            httpPatchRehive(url,data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.getUserNotifications = function (){
+        return new Promise(function(resolve,reject){
+            httpGetRehive(userNotificationsAPI).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.updateUserNotifications = function (notificationsId,data){
+        return new Promise(function(resolve,reject){
+            var url,
+                error = {status: 'error', message: 'Notification id is required'};
+
+            if(notificationsId && (typeof(notificationsId) == 'string')){
+                url = userNotificationsAPI + notificationsId;
+            } else {
+                reject(error,null);
+                return;
+            }
+            httpPatchRehive(url,data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.transactions.getTransactionsList = function (filters){
+        return new Promise(function(resolve,reject){
+            if(filters){
+                filters = '?' + serialize(filters);
+            } else {
+                filters = '';
+            }
+
+            httpGetRehive(transactionsAPI + filters).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.transactions.getTotalTransactionsList = function (filters){
+        return new Promise(function(resolve,reject){
+            if(filters){
+                filters = '?' + serialize(filters);
+            } else {
+                filters = '';
+            }
+            httpGetRehive(transactionsAPI + totalTransactionsListAPI + filters).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        })
+    };
+
+    this.transactions.getTransaction = function (txCode){
+        return new Promise(function(resolve,reject){
+            var url,
+                error = {status: 'error', message: 'Transaction code is required'};
+
+            if(txCode && (typeof(txCode) == 'string')){
+                url = transactionsAPI + txCode + '/';
+            } else {
+                reject(error);
+                return;
+            }
+            httpGetRehive(url).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        })
+    };
+
+    this.transactions.createDebit = function (data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(debitAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.transactions.createCredit = function (data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(creditAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.transactions.createTransfer = function (data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(transferAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
     };
 
     this.accounts.getAccountsList = function (filter,cb){

@@ -40,15 +40,15 @@
 <button onclick="getUserBitcoinAccounts()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user bitcoin accounts</button>
 <button onclick="getUserBitcoinAccount('35')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get bitcoin account</button>
 <button onclick="createUserBitcoinAccount('s32892387438247932874sads')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create bitcoin account</button>
-<button onclick="updateUserBitcoinAccount('52',{address: '576dsadcs3233423yo'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user bitcoin account</button>
+<button onclick="updateUserBitcoinAccount('53',{address: '576dsadcs3233423so'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user bitcoin account</button>
 
 <button onclick="getUserEmailAddresses()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user list email addresses</button>
-<button onclick="createUserEmailAddress('abc@defg.com',false)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create email address</button>
+<button onclick="createUserEmailAddress('abc@girl.com',true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create email address</button>
 <button onclick="updateUserEmailAddress('2',{'primary':true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user email</button>
 
 <button onclick="getUserMobileNumbers()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user list mobile numbers</button>
-<button onclick="createUserMobileNumbers('+8801703862563',true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create mobile number</button>
-<button onclick="updateUserMobileNumbers('1',{'primary': true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user mobile numbers</button>
+<button onclick="createUserMobileNumber('+8801703862565',false)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create mobile number</button>
+<button onclick="updateUserMobileNumber('1',{'primary': true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user mobile numbers</button>
 
 <button onclick="getUserNotifications()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user notifications</button>
 <button onclick="updateUserNotifications('1',{'sms_enabled': false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user notifications</button>
@@ -59,11 +59,15 @@
     <button onclick="createDocument()" style="margin: 20px 0 0 0" class="btn btn-lg btn-primary">Upload Document</button>
 </div>
 
-<button onclick="getTransactionsList({tx_type: 'transfer',currency: 'XBT'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transactions List</button>
-<button onclick="getTotalTransactionsList({currency:'ZAR'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Total Transactions List</button>
-<button onclick="getTransaction('qRA11hMpOgXbS30m3GXE')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transaction</button>
-<button onclick="createWithdrawal(300)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create withdrawal</button>
-<button onclick="createDeposit(400)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create deposit</button>
+<button onclick="getTransactionsList({tx_type: 'debit',currency: 'XBT'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transactions List</button>
+<button onclick="getTotalTransactionsList({currency:'XBT'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-danger">Get Total Transactions List</button>
+<button onclick="getTransaction('BVet5rtGYhLWDACd3NOT')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transaction</button>
+<button onclick="createDebit(300)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create debit</button>
+<button onclick="createCredit(400)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create credit</button>
+<button onclick="createTransfer({amount: 300,recipient: 'joshua@rehive.com'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Transfer</button>
+
+
+//start from here tomorrow
 
 <button onclick="getAccountsList({active:true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Accounts List</button>
 <button onclick="getAccount('elzYWdk8j9')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account</button>
