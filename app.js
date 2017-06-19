@@ -158,24 +158,20 @@ function verifyMobile(otp){
 }
 
 function getTokensList(){
-    rehive.token.getTokensList(function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.token.getTokensList().then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
-    })
+    },function(err){
+        console.log(err);
+    });
 }
 
 function getToken(tokenKey){
-    rehive.token.getToken(tokenKey, function(err,res){
-            if(err){
-            console.log(err);
-            return
-            }
+    rehive.token.getToken(tokenKey).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
@@ -183,24 +179,20 @@ function createToken(password){
     rehive.token.createToken(
         {
             password: password
-        }, function(err,res){
-            if(err){
-                console.log(err);
-                return
-            }
+        }).then(function(res){
             console.log(res);
             document.getElementById('result').innerHTML = convertToText(res.user);
-        })
+        },function(err){
+        console.log(err);
+    })
 }
 
 function deleteToken(tokenKey){
-    rehive.token.deleteToken(tokenKey,function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.token.deleteToken(tokenKey).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res.status);
+    },function(err){
+        console.log(err);
     })
 }
 

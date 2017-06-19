@@ -375,37 +375,60 @@ function Rehive(config){
     };
 
     this.token.getTokensList = function (){
-        httpGetRehive(tokensAPI);
+        return new Promise(function(resolve,reject){
+            httpGetRehive(tokensAPI).then(function(response){
+                resolve(response);
+            }, function(error){
+                reject(error);
+            });
+        });
     };
 
-    this.token.getToken = function (tokenKey,cb){
-        var url,
-            error = {status: 'error', message: 'A token is required'};
+    this.token.getToken = function (tokenKey){
+        return new Promise(function(resolve,reject){
+            var url,
+                error = {status: 'error', message: 'A token is required'};
 
-        if(tokenKey){
-            url = tokensAPI + tokenKey
-        } else {
-            cb(error,null);
-            return;
-        }
-        httpGetRehive(url);
+            if(tokenKey){
+                url = tokensAPI + tokenKey
+            } else {
+                reject(error);
+                return;
+            }
+            httpGetRehive(url).then(function(response){
+               resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
     };
 
-    this.token.createToken = function (data,cb){
-      httpPostRehive(tokensAPI,data,cb);
+    this.token.createToken = function (data){
+        return new Promise(function(resolve,reject){
+            httpPostRehive(tokensAPI,data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
     };
 
-    this.token.deleteToken = function (tokenKey,cb){
-        var url,
-            error = {status: 'error', message: 'A token is required'};
+    this.token.deleteToken = function (tokenKey){
+        return new Promise(function(resolve,reject){
+            var url,
+                error = {status: 'error', message: 'A token is required'};
 
-        if(tokenKey){
-            url = tokensAPI + tokenKey
-        } else {
-            cb(error,null);
-            return;
-        }
-      httpDeleteRehive(url,{},cb);
+            if(tokenKey){
+                url = tokensAPI + tokenKey
+            } else {
+                reject(error);
+            }
+            httpDeleteRehive(url,{}).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        })
     };
 
     this.user.getUserProfile = function (cb){
