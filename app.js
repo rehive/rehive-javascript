@@ -11,42 +11,42 @@ function convertToText(data) {
     return dataString;
 }
 
-function register(first_name,last_name,email,company_id,password1,password2){
+function register(first_name,last_name,email,company,password1,password2){
     rehive.auth.register(
         {
             first_name: first_name,
             last_name: last_name,
             email: email,
-            company_id: company_id,
+            company: company,
             password1: password1,
             password2: password2
-        }, function(err,user){
-            if(err){
-                console.log(err);
-                return
-            }
+        }).then(function(user){
             console.log(user);
             document.getElementById('result').innerHTML = convertToText(user);
-        })
+        },function(err){
+            if(err){
+                console.log(err);
+            }
+        });
 }
 
-function registerCompany(first_name,last_name,email,company_id,password1,password2){
+function registerCompany(first_name,last_name,email,company,password1,password2){
     rehive.auth.registerCompany(
         {
             first_name: first_name,
             last_name: last_name,
             email: email,
-            company_id: company_id,
+            company: company,
             password1: password1,
             password2: password2
-        }, function(err,user){
-            if(err){
-                console.log(err);
-                return
-            }
+        }).then(function(user){
             console.log(user);
             document.getElementById('result').innerHTML = convertToText(user);
-        })
+        },function(err){
+            if(err){
+                console.log(err);
+            }
+        });
 }
 
 function login(user,company,password){
@@ -76,14 +76,15 @@ function logout(){
 }
 
 function logoutAll(){
-    rehive.auth.logoutAll(function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.auth.logoutAll()
+        .then(function(res){
         console.log(res.message);
         document.getElementById('result').innerHTML = res.message;
-    })
+    }, function (err) {
+            if(err){
+                console.log(err);
+            }
+        })
 }
 
 function changePassword(old_password,new_password1,new_password2){
