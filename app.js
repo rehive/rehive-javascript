@@ -497,100 +497,82 @@ function createTransfer(transferData){
 
 
 function getAccountsList(filter){
-    rehive.accounts.getAccountsList(filter,function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.accounts.getAccountsList(filter).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
 function getAccount(reference,filter){
-    rehive.accounts.getAccount(reference,filter,function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.accounts.getAccount(reference,filter).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
 function getAccountCurrenciesList(reference,filter){
-    rehive.accounts.getAccountCurrenciesList(reference,filter,function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.accounts.getAccountCurrenciesList(reference,filter).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
 function getAccountCurrency(reference,currencyCode){
-    rehive.accounts.getAccountCurrency(reference,currencyCode,function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.accounts.getAccountCurrency(reference,currencyCode).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
 function updateAccountCurrency(reference,currencyCode,data){
-    rehive.accounts.updateAccountCurrency(reference,currencyCode,data,function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.accounts.updateAccountCurrency(reference,currencyCode,data).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
 function getCompanyDetails(){
-    rehive.company.getCompanyDetails(function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.company.getCompanyDetails().then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
 function getCompanyCurrencies(){
-    rehive.company.getCompanyCurrencies(function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.company.getCompanyCurrencies().then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
 function getCompanyCurrency(currencyCode){
-    rehive.company.getCompanyCurrency(currencyCode,function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.company.getCompanyCurrency(currencyCode).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }
 
 function getCompanyBanks(){
-    rehive.company.getCompanyBanks(function(err,res){
-        if(err){
-            console.log(err);
-            return
-        }
+    rehive.company.getCompanyBanks().then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
     })
 }

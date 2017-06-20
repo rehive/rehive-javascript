@@ -66,18 +66,15 @@
 <button onclick="createCredit(400)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create credit</button>
 <button onclick="createTransfer({amount: 300,recipient: 'joshua@rehive.com'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Transfer</button>
 
-
-//start from here tomorrow
-
-<button onclick="getAccountsList({active:true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Accounts List</button>
-<button onclick="getAccount('elzYWdk8j9')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account</button>
+<button onclick="getAccountsList({active:false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Accounts List</button>
+<button onclick="getAccount('elzYWdk8j9',{active:true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account</button>
 <button onclick="getAccountCurrenciesList('elzYWdk8j9',{active:true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account Currencies</button>
 <button onclick="getAccountCurrency('elzYWdk8j9','USD')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account Currency</button>
 <button onclick="updateAccountCurrency('elzYWdk8j9','ZAR',{active:true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Account Currency</button>
 
 <button onclick="getCompanyDetails()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Company Details</button>
 <button onclick="getCompanyCurrencies()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Company Currencies</button>
-<button onclick="getCompanyCurrency('XBT')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Company Currency</button>
+<button onclick="getCompanyCurrency('ZAR')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Company Currency</button>
 <button onclick="getCompanyBanks()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Company Banks</button>
 
 <div style="margin: 20px 0">

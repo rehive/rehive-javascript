@@ -809,107 +809,163 @@ function Rehive(config){
         });
     };
 
-    this.accounts.getAccountsList = function (filter,cb){
-      if(filter){
-          filter = '?' + serialize(filter);
-      } else {
-          filter = '';
-      }
-      httpGetRehive(accountsAPI + filter);
+    this.accounts.getAccountsList = function (filter){
+        return new Promise(function(resolve,reject) {
+            if(filter){
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
+
+            httpGetRehive(accountsAPI + filter).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
     };
 
-    this.accounts.getAccount = function (reference,filter,cb){
-        var error = {status: 'error', message: 'Reference is required'};
+    this.accounts.getAccount = function (reference,filter){
+        return new Promise(function(resolve,reject){
+            var error = {status: 'error', message: 'Reference is required'};
 
-        if(reference && (typeof(reference) == 'string')){
-            reference = reference + '/';
-        } else {
-            cb(error,null);
-            return;
-        }
+            if(reference && (typeof(reference) == 'string')){
+                reference = reference + '/';
+            } else {
+                reject(error);
+                return;
+            }
 
-        if(filter){
-            filter = '?' + serialize(filter);
-        } else {
-            filter = '';
-        }
+            if(filter){
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
 
-        httpGetRehive(accountsAPI + reference + filter);
+            httpGetRehive(accountsAPI + reference + filter).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        })
     };
 
-    this.accounts.getAccountCurrenciesList = function (reference,filter,cb){
-        var error = {status: 'error', message: 'Reference is required'};
+    this.accounts.getAccountCurrenciesList = function (reference,filter){
+        return new Promise(function(resolve,reject){
+            var error = {status: 'error', message: 'Reference is required'};
 
-        if(!reference || !(typeof(reference) == 'string')){
-            cb(error,null);
-            return;
-        }
+            if(!reference || !(typeof(reference) == 'string')){
+                reject(error);
+                return;
+            }
 
-        if(filter){
-            filter = '?' + serialize(filter);
-        } else {
-            filter = '';
-        }
+            if(filter){
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
 
-        httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + filter);
+            httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + filter).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        })
     };
 
-    this.accounts.getAccountCurrency =function (reference,currencyCode,cb){
-        var error = {status: 'error', message: 'Reference is required'},
-            error2 = {status: 'error', message: 'Currency code is required'};
+    this.accounts.getAccountCurrency =function (reference,currencyCode){
+        return new Promise(function(resolve,reject){
+            var error = {status: 'error', message: 'Reference is required'},
+                error2 = {status: 'error', message: 'Currency code is required'};
 
-        if(!reference || !(typeof(reference) == 'string')){
-            cb(error,null);
-            return;
-        }
+            if(!reference || !(typeof(reference) == 'string')){
+                reject(error);
+                return;
+            }
 
-        if(!currencyCode || !(typeof(currencyCode) == 'string')){
-            cb(error2,null);
-            return;
-        }
-      httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + currencyCode + '/');
+            if(!currencyCode || !(typeof(currencyCode) == 'string')){
+                reject(error2);
+                return;
+            }
+            httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + currencyCode + '/').then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
     };
 
-    this.accounts.updateAccountCurrency = function (reference,currencyCode,data,cb){
-        var error = {status: 'error', message: 'Reference is required'},
-            error2 = {status: 'error', message: 'Currency Code is required'};
+    this.accounts.updateAccountCurrency = function (reference,currencyCode,data){
+        return new Promise(function(resolve,reject){
+            var error = {status: 'error', message: 'Reference is required'},
+                error2 = {status: 'error', message: 'Currency Code is required'};
 
-        if(!reference || !(typeof(reference) == 'string')){
-            cb(error,null);
-            return;
-        }
+            if(!reference || !(typeof(reference) == 'string')){
+                reject(error);
+                return;
+            }
 
-        if(!currencyCode || !(typeof(currencyCode) == 'string')){
-            cb(error2,null);
-            return;
-        }
+            if(!currencyCode || !(typeof(currencyCode) == 'string')){
+                reject(error2);
+                return;
+            }
 
-      httpPatchRehive(accountsAPI + reference + accountCurrenciesAPI + currencyCode + '/',data,cb);
+            httpPatchRehive(accountsAPI + reference + accountCurrenciesAPI + currencyCode + '/',data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        })
     };
 
-    this.company.getCompanyDetails = function getCompanyDetails(cb){
-      httpGetRehive(companyAPI);
+    this.company.getCompanyDetails = function getCompanyDetails(){
+        return new Promise(function(resolve,reject) {
+            httpGetRehive(companyAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
     };
 
-    this.company.getCompanyCurrencies = function getCompanyCurrencies(cb){
-      httpGetRehive(companyCurrenciesAPI);
+    this.company.getCompanyCurrencies = function getCompanyCurrencies(){
+        return new Promise(function(resolve,reject) {
+            httpGetRehive(companyCurrenciesAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
     };
 
-    this.company.getCompanyCurrency = function (currencyCode,cb){
-        var url,
-            error = {status: 'error', message: 'Currency code is required'};
+    this.company.getCompanyCurrency = function (currencyCode){
+        return new Promise(function(resolve,reject){
+            var url,
+                error = {status: 'error', message: 'Currency code is required'};
 
-        if(currencyCode && (typeof(currencyCode) == 'string')){
-            url = companyCurrenciesAPI + currencyCode + '/';
-        } else {
-            cb(error,null);
-            return;
-        }
-        httpGetRehive(url);
+            if(currencyCode && (typeof(currencyCode) == 'string')){
+                url = companyCurrenciesAPI + currencyCode + '/';
+            } else {
+                reject(error);
+                return;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
     };
 
-    this.company.getCompanyBanks = function getCompanyBanks(cb){
-      httpGetRehive(companyBanksAPI);
+    this.company.getCompanyBanks = function getCompanyBanks(){
+        return new Promise(function(resolve,reject) {
+            httpGetRehive(companyBanksAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
     };
 
 
