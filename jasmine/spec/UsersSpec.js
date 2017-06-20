@@ -21,8 +21,8 @@ describe("Users", function() {
     spyOn(rehive.user, "createUserEmailAddress").and.returnValue('success');
     spyOn(rehive.user, "updateUserEmailAddress").and.returnValue('success');
     spyOn(rehive.user, "getUserMobileNumbers").and.returnValue('success');
-    spyOn(rehive.user, "createUserMobileNumbers").and.returnValue('success');
-    spyOn(rehive.user, "updateUserMobileNumbers").and.returnValue('success');
+    spyOn(rehive.user, "createUserMobileNumber").and.returnValue('success');
+    spyOn(rehive.user, "updateUserMobileNumber").and.returnValue('success');
     spyOn(rehive.user, "getUserNotifications").and.returnValue('success');
     spyOn(rehive.user, "updateUserNotifications").and.returnValue('success');
 
@@ -184,18 +184,18 @@ describe("Users", function() {
   it("should be able to call create user mobile numbers function successfully", function() {
     var status;
 
-    status = rehive.user.createUserMobileNumbers();
+    status = rehive.user.createUserMobileNumber();
 
-    expect(rehive.user.createUserMobileNumbers).toHaveBeenCalledTimes(1);
+    expect(rehive.user.createUserMobileNumber).toHaveBeenCalledTimes(1);
     expect(status).toEqual("success");
   });
 
   it("should be able to call update user mobile numbers function successfully", function() {
     var status;
 
-    status = rehive.user.updateUserMobileNumbers();
+    status = rehive.user.updateUserMobileNumber();
 
-    expect(rehive.user.updateUserMobileNumbers).toHaveBeenCalledTimes(1);
+    expect(rehive.user.updateUserMobileNumber).toHaveBeenCalledTimes(1);
     expect(status).toEqual("success");
   });
 
