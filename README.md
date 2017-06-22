@@ -10,4 +10,4 @@ Initialize the sdk with: window.rehive = new Rehive({apiVersion: 3});
 
 License
 -------------
-<a href=/LICENSE.txt target="_blank">MIT</a> license.
+<a href=/LICENSE target="_blank">MIT</a> license.
