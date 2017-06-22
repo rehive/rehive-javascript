@@ -6,7 +6,7 @@ This is the javascript sdk for the Rehive User APIs' only.
 
 ### Getting started
 
-Initialize the sdk with: window.rehive = new Rehive({apiVersion: 3});
+Initialize the sdk with: `window.rehive = new Rehive({apiVersion: 3});`
 
 License
 -------------
