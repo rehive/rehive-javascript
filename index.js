@@ -39,7 +39,7 @@ function Rehive(config){
       accountCurrenciesAPI = '/currencies/',
       companyAPI = 'company/',
       companyCurrenciesAPI = 'company/currencies/',
-      companyBanksAPI = 'company/bank/',
+      companyBanksAPI = 'company/bank-account/',
       headers = {'Content-Type': 'application/json'};
 
     if(config){
@@ -99,11 +99,17 @@ function Rehive(config){
                             resolve(response.data.data);
                         } else if(response.data) {
                             resolve(response.data);
-                        } else{
-                            resolve(response);
+                        } else if(response.message){
+                            resolve({message: response.message});
+                        } else {
+                            resolve({});
                         }
                     } else if(response.status == 'error'){
-                        reject(response);
+                        if(response.data){
+                            reject(response.data);
+                        } else {
+                            reject({message: response.message});
+                        }
                     }
                 });
         })
@@ -130,11 +136,17 @@ function Rehive(config){
                             resolve(response.data.data);
                         } else if(response.data) {
                             resolve(response.data);
-                        } else{
-                            resolve(response);
+                        } else if(response.message){
+                            resolve({message: response.message});
+                        } else {
+                            resolve({});
                         }
                     } else if(response.status == 'error'){
-                        reject(response);
+                        if(response.data){
+                            reject(response.data);
+                        } else {
+                            reject({message: response.message});
+                        }
                     }
                 });
         })
@@ -162,11 +174,17 @@ function Rehive(config){
                             resolve(response.data.data);
                         } else if(response.data) {
                             resolve(response.data);
-                        } else{
-                            resolve(response);
+                        } else if(response.message){
+                            resolve({message: response.message});
+                        } else {
+                            resolve({});
                         }
                     } else if(response.status == 'error'){
-                        reject(response);
+                        if(response.data){
+                            reject(response.data);
+                        } else {
+                            reject({message: response.message});
+                        }
                     }
                 });
         })
@@ -194,11 +212,17 @@ function Rehive(config){
                             resolve(response.data.data);
                         } else if(response.data) {
                             resolve(response.data);
-                        } else{
-                            resolve(response);
+                        } else if(response.message){
+                            resolve({message: response.message});
+                        } else {
+                            resolve({});
                         }
                     } else if(response.status == 'error'){
-                        reject(response);
+                        if(response.data){
+                            reject(response.data);
+                        } else {
+                            reject({message: response.message});
+                        }
                     }
                 });
         })
@@ -219,7 +243,11 @@ function Rehive(config){
                         setToken(response.data.token);
                         resolve(response.data.user);
                     } else if(response.status == 'error'){
-                        reject(response);
+                        if(response.data){
+                            reject(response.data);
+                        } else {
+                            reject({message: response.message});
+                        }
                     }
                 });
         });
@@ -238,7 +266,11 @@ function Rehive(config){
                         setToken(response.data.token);
                         resolve(response.data.user);
                     } else if(response.status == 'error'){
-                        reject(response);
+                        if(response.data){
+                            reject(response.data);
+                        } else {
+                            reject({message: response.message});
+                        }
                     }
                 });
         })
@@ -257,7 +289,11 @@ function Rehive(config){
                         setToken(response.data.token);
                         resolve(response.data.user);
                     } else if(response.status == 'error'){
-                        reject(response);
+                        if(response.data){
+                            reject(response.data);
+                        } else {
+                            reject(response.message);
+                        }
                     }
                 })
         });
@@ -281,9 +317,13 @@ function Rehive(config){
                 .then(function(response) {
                     if(response.status == 'success'){
                         removeToken();
-                        resolve(response);
+                        resolve({message: response.message});
                     } else if(response.status == 'error'){
-                        reject(response);
+                        if(response.data){
+                            reject(response.data);
+                        } else {
+                            reject({message: response.message});
+                        }
                     }
                 });
         })
@@ -307,9 +347,13 @@ function Rehive(config){
                 .then(function(response) {
                     if(response.status == 'success'){
                         removeToken();
-                        resolve(response);
+                        resolve({message: response.message});
                     } else if(response.status == 'error'){
-                        reject(response);
+                        if(response.data){
+                            reject(response.data);
+                        } else {
+                            reject({message: response.message});
+                        }
                     }
                 });
         })
@@ -616,7 +660,11 @@ function Rehive(config){
                             resolve(response);
                         }
                     } else if(response.status == 'error'){
-                        reject(response);
+                        if(response.data){
+                            reject(response.data);
+                        } else {
+                            reject({message: response.message});
+                        }
                     }
                 });
         });

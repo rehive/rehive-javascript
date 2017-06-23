@@ -60,7 +60,7 @@ function login(user,company,password){
 
 function logout(){
     rehive.auth.logout().then(function(res){
-        console.log(res.message);
+        console.log(res);
         document.getElementById('result').innerHTML = res.message;
     },function(err){
         console.log(err);
@@ -70,7 +70,7 @@ function logout(){
 function logoutAll(){
     rehive.auth.logoutAll()
         .then(function(res){
-        console.log(res.message);
+        console.log(res);
         document.getElementById('result').innerHTML = res.message;
     }, function (err) {
             console.log(err);

@@ -2,7 +2,7 @@
   "name": "rehivesdk",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "dependencies": {
     "gulp": "^3.9.1"
   },
