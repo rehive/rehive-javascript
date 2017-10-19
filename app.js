@@ -1,10 +1,14 @@
+"use strict";
+
 window.onload = function(){
 
     window.rehive = new Rehive({apiVersion: 3});
 };
 
 function convertToText(data) {
-    if(!data) return '';
+    if(!data){
+        return '';
+    }
 
     var dataString = JSON.stringify(data, null, 1);
     dataString = dataString.replace(/[{",\\}]/g, '').trim();
@@ -570,6 +574,35 @@ function getCompanyCurrency(currencyCode){
 
 function getCompanyBanks(){
     rehive.company.getCompanyBanks().then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    })
+}
+
+function getAdminUsersList(filter){
+    rehive.admin.users.getList(filter).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    })
+}
+
+function getAdminUsersListNext(){
+    rehive.admin.users.getList.next().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    })
+}
+
+function getAdminUsersListPrevious(){
+    rehive.admin.users.getList.previous().then(function(res){
+
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){

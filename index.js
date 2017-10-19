@@ -8,6 +8,9 @@ function Rehive(config){
     this.transactions = {};
     this.accounts = {};
     this.company = {};
+    this.admin = {
+        users: {}
+    };
     var apiVersion = '3',
       baseAPI = 'https://rehive.com/api/'+ apiVersion +'/',
       registerAPI = 'auth/register/',
@@ -42,6 +45,8 @@ function Rehive(config){
       companyBanksAPI = 'company/bank-account/',
       headers = {'Content-Type': 'application/json'};
 
+    var adminUsersListAPI = 'admin/users/';
+
     if(config){
         config.apiVersion ? apiVersion = config.apiVersion : apiVersion = '3';
         config.authToken ? setToken(config.authToken) : setToken('');
@@ -53,10 +58,11 @@ function Rehive(config){
 
      function serialize(obj) {
         var str = [];
-        for(var p in obj)
-            if (obj.hasOwnProperty(p)) {
+        for(var p in obj){
+            if(obj.hasOwnProperty(p)) {
                 str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
             }
+        }
         return str.join("&");
     }
 
@@ -75,6 +81,19 @@ function Rehive(config){
 
     function parseJSON(response) {
         return response.json()
+    }
+
+    function saveFilterInSessionStorage(response){
+        if(response.next){
+            sessionStorage.setItem('nextFilterForLists',response.next);
+        } else {
+            sessionStorage.removeItem('nextFilterForLists');
+        }
+        if(response.previous){
+            sessionStorage.setItem('previousFilterForLists',response.previous);
+        } else {
+            sessionStorage.removeItem('previousFilterForLists');
+        }
     }
 
     var httpPostRehive = function(url,data){
@@ -112,7 +131,7 @@ function Rehive(config){
                         }
                     }
                 });
-        })
+        });
     };
 
     var httpGetRehive = function(url){
@@ -149,7 +168,7 @@ function Rehive(config){
                         }
                     }
                 });
-        })
+        });
     };
 
     var httpPatchRehive = function(url,data){
@@ -225,7 +244,7 @@ function Rehive(config){
                         }
                     }
                 });
-        })
+        });
     };
 
     //public functions
@@ -1013,6 +1032,62 @@ function Rehive(config){
             }, function (error) {
                 reject(error);
             });
+        });
+    };
+
+    this.admin.users.getList = function (filter) {
+        return new Promise(function(resolve,reject) {
+
+            if(filter){
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
+
+            httpGetRehive(adminUsersListAPI + filter).then(function (response) {
+                saveFilterInSessionStorage(response)
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getList.next = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.users.getList.previous = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
         });
     };
 

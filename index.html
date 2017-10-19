@@ -3,8 +3,8 @@
 <head>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
-    <script src="build/rehiveSdk.min.js"></script>
-    <!--<script src="index.js"></script>-->
+    <!--<script src="build/rehiveSdk.min.js"></script>-->
+    <script src="index.js"></script>
     <script src="app.js"></script>
 </head>
 <body>
@@ -59,7 +59,7 @@
     <button onclick="createDocument()" style="margin: 20px 0 0 0" class="btn btn-lg btn-primary">Upload Document</button>
 </div>
 
-<button onclick="getTransactionsList({tx_type: 'debit',currency: 'XBT'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transactions List</button>
+<button onclick="getTransactionsList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transactions List</button>
 <button onclick="getTotalTransactionsList({currency:'XBT'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-danger">Get Total Transactions List</button>
 <button onclick="getTransaction('BVet5rtGYhLWDACd3NOT')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transaction</button>
 <button onclick="createDebit(300)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create debit</button>
@@ -80,5 +80,10 @@
 <div style="margin: 20px 0">
     <pre id="result"></pre>
 </div>
+
+<button onclick="getAdminUsersList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users List</button>
+<button onclick="getAdminUsersListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users List Next</button>
+<button onclick="getAdminUsersListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users List Previous</button>
+
 </body>
 </html>
