@@ -243,7 +243,7 @@ function getUserBankAccounts(){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function getUserBankAccount(bankId){
@@ -252,7 +252,7 @@ function getUserBankAccount(bankId){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function createUserBankAccount(name,number,type,bank_name,bank_code,branch_code,swift,iban,bic){
@@ -281,7 +281,7 @@ function updateUserBankAccount(accountId, data){
             document.getElementById('result').innerHTML = convertToText(res);
         },function(err){
         console.log(err);
-    })
+    });
 }
 
 function getUserBitcoinAccounts(){
@@ -290,7 +290,7 @@ function getUserBitcoinAccounts(){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function getUserBitcoinAccount(bitcoinAccountId){
@@ -299,7 +299,7 @@ function getUserBitcoinAccount(bitcoinAccountId){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function createUserBitcoinAccount(address){
@@ -311,7 +311,7 @@ function createUserBitcoinAccount(address){
             document.getElementById('result').innerHTML = convertToText(res);
         },function(err){
             console.log(err);
-        })
+        });
 }
 
 function updateUserBitcoinAccount(accountId, data){
@@ -320,12 +320,12 @@ function updateUserBitcoinAccount(accountId, data){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function createDocument(document_category,document_type){
     var fileSelected = document.getElementById("fileInput").files[0],
-        formData =  new FormData;
+        formData =  new FormData()
 
     if(document_category == undefined || document_category == null){
         document_category = '';
@@ -344,7 +344,7 @@ function createDocument(document_category,document_type){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function getUserEmailAddresses(){
@@ -353,7 +353,7 @@ function getUserEmailAddresses(){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function createUserEmailAddress(email,primary){
@@ -366,7 +366,7 @@ function createUserEmailAddress(email,primary){
             document.getElementById('result').innerHTML = convertToText(res);
         },function(err){
         console.log(err);
-    })
+    });
 }
 
 function updateUserEmailAddress(emailId, data){
@@ -375,7 +375,7 @@ function updateUserEmailAddress(emailId, data){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function getUserMobileNumbers(){
@@ -384,7 +384,7 @@ function getUserMobileNumbers(){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function createUserMobileNumber(number,primary){
@@ -397,7 +397,7 @@ function createUserMobileNumber(number,primary){
             document.getElementById('result').innerHTML = convertToText(res);
         },function(err){
         console.log(err);
-    })
+    });
 }
 
 function updateUserMobileNumber(mobileNumberId, data){
@@ -406,7 +406,7 @@ function updateUserMobileNumber(mobileNumberId, data){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function getUserNotifications(){
@@ -415,7 +415,7 @@ function getUserNotifications(){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function updateUserNotifications(notificationsId, data){
@@ -424,7 +424,7 @@ function updateUserNotifications(notificationsId, data){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function getTransactionsList(filters){
@@ -433,7 +433,7 @@ function getTransactionsList(filters){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 
@@ -443,7 +443,7 @@ function getTotalTransactionsList(filters){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function getTransaction(tx_code){
@@ -452,7 +452,7 @@ function getTransaction(tx_code){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function createDebit(amount,account,reference,subtype,note,metadata){
@@ -469,7 +469,7 @@ function createDebit(amount,account,reference,subtype,note,metadata){
             document.getElementById('result').innerHTML = convertToText(res);
         },function(err){
         console.log(err);
-    })
+    });
 }
 
 function createCredit(amount,account,reference,subtype,note,metadata){
@@ -486,7 +486,7 @@ function createCredit(amount,account,reference,subtype,note,metadata){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function createTransfer(transferData){
@@ -496,7 +496,7 @@ function createTransfer(transferData){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 
@@ -506,7 +506,7 @@ function getAccountsList(filter){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function getAccount(reference,filter){
@@ -515,7 +515,7 @@ function getAccount(reference,filter){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function getAccountCurrenciesList(reference,filter){
@@ -524,7 +524,7 @@ function getAccountCurrenciesList(reference,filter){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function getAccountCurrency(reference,currencyCode){
@@ -533,7 +533,7 @@ function getAccountCurrency(reference,currencyCode){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function updateAccountCurrency(reference,currencyCode,data){
@@ -542,7 +542,7 @@ function updateAccountCurrency(reference,currencyCode,data){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function getCompanyDetails(){
@@ -551,7 +551,7 @@ function getCompanyDetails(){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function getCompanyCurrencies(){
@@ -560,7 +560,7 @@ function getCompanyCurrencies(){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function getCompanyCurrency(currencyCode){
@@ -569,7 +569,7 @@ function getCompanyCurrency(currencyCode){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function getCompanyBanks(){
@@ -578,34 +578,288 @@ function getCompanyBanks(){
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function getAdminUsersList(filter){
-    rehive.admin.users.getList(filter).then(function(res){
+    rehive.admin.users.getUsersList(filter).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function getAdminUsersListNext(){
-    rehive.admin.users.getList.next().then(function(res){
+    rehive.admin.users.getUsersList.next().then(function(res){
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
 }
 
 function getAdminUsersListPrevious(){
-    rehive.admin.users.getList.previous().then(function(res){
+    rehive.admin.users.getUsersList.previous().then(function(res){
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
         console.log(err);
-    })
+    });
+}
+
+function createUser(first_name,last_name,email,id_number,language,nationality,metadata,mobile_number,timezone){
+    var fileSelected = document.getElementById("userProfile").files[0],
+        formData =  new FormData();
+
+
+
+    formData.append('profile', fileSelected);
+    formData.append('first_name', first_name);
+    formData.append('last_name', last_name);
+    formData.append('email', email);
+    formData.append('id_number', id_number);
+    formData.append('language', language);
+    formData.append('nationality', nationality);
+    formData.append('metadata', metadata);
+    formData.append('mobile_number', mobile_number);
+    formData.append('timezone', timezone);
+
+
+    rehive.admin.users.createUser(formData).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUser(uuid){
+    rehive.admin.users.getUser(uuid).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function updateAdminUser(uuid,data){
+    var fileSelected = document.getElementById("userUpdateProfile").files[0],
+        formData =  new FormData();
+
+    formData.append('profile', fileSelected);
+
+    for(var key in data){
+        if(data[key]){
+            formData.append(key,data[key]);
+        }
+    }
+
+    rehive.admin.users.updateUser(uuid,formData).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUserSwitchesList(uuid){
+    rehive.admin.users.getUserSwitchesList(uuid).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function createAdminUserSwitch(uuid,tx_type,subtype,enabled){
+    rehive.admin.users.createUserSwitch(uuid,{tx_type: tx_type,subtype: subtype,enabled: enabled}).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUserSwitch(uuid,id){
+    rehive.admin.users.getUserSwitch(uuid,id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function updateAdminUserSwitch(uuid,id,data){
+    rehive.admin.users.updateUserSwitch(uuid,id,data).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function deleteAdminUserSwitch(uuid,id){
+    rehive.admin.users.deleteUserSwitch(uuid,id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminAddressesList(uuid){
+    rehive.admin.users.getAddressesList(uuid).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminAddressesListNext(){
+    rehive.admin.users.getAddressesList.next().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminAddressesListPrevious(){
+    rehive.admin.users.getAddressesList.previous().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function createAdminUserAddress(uuid,line_1,line_2,city,state_province,country,postal_code,status){
+    rehive.admin.users.createUserAddress(
+        {
+            user: uuid,
+            line_1: line_1,
+            line_2: line_2,
+            city: city,
+            state_province:state_province,
+            country: country,
+            postal_code:postal_code,
+            status:status
+
+        }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUserAddress(id){
+    rehive.admin.users.getUserAddress(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function updateAdminUserAddress(id,data){
+    rehive.admin.users.updateUserAddress(id,data).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function deleteAdminUserAddress(id){
+    rehive.admin.users.deleteUserAddress(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminBankAccountsList(uuid){
+    rehive.admin.users.getBankAccountsList(uuid).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminBankAccountsListNext(){
+    rehive.admin.users.getBankAccountsList.next().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminBankAccountsListPrevious(){
+    rehive.admin.users.getBankAccountsList.previous().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function createAdminUserBankAccount(uuid,name,number,type,bank_name,bank_code,branch_code,swift,iban,bic,status){
+    rehive.admin.users.createUserBankAccount(
+        {
+            user: uuid,
+            name: name,
+            number: number,
+            type: type,
+            bank_name: bank_name,
+            bank_code: bank_code,
+            branch_code: branch_code,
+            swift: swift,
+            iban: iban,
+            bic: bic,
+            status: status
+        }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUserBankAccount(id){
+    rehive.admin.users.getUserBankAccount(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function updateAdminUserBankAccount(id,data){
+    rehive.admin.users.updateBankAccount(id,data).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function deleteAdminUserBankAccount(id){
+    rehive.admin.users.deleteUserBankAccount(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
 }
