@@ -582,7 +582,7 @@ function getCompanyBanks(){
 }
 
 function getAdminUsersList(filter){
-    rehive.admin.users.getUsersList(filter).then(function(res){
+    rehive.admin.users.getList(filter).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
@@ -591,7 +591,7 @@ function getAdminUsersList(filter){
 }
 
 function getAdminUsersListNext(){
-    rehive.admin.users.getUsersList.next().then(function(res){
+    rehive.admin.users.getList.next().then(function(res){
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -601,7 +601,7 @@ function getAdminUsersListNext(){
 }
 
 function getAdminUsersListPrevious(){
-    rehive.admin.users.getUsersList.previous().then(function(res){
+    rehive.admin.users.getList.previous().then(function(res){
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -628,7 +628,7 @@ function createUser(first_name,last_name,email,id_number,language,nationality,me
     formData.append('timezone', timezone);
 
 
-    rehive.admin.users.createUser(formData).then(function(res){
+    rehive.admin.users.create(formData).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
@@ -637,7 +637,7 @@ function createUser(first_name,last_name,email,id_number,language,nationality,me
 }
 
 function getAdminUser(uuid){
-    rehive.admin.users.getUser(uuid).then(function(res){
+    rehive.admin.users.get(uuid).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
@@ -657,7 +657,7 @@ function updateAdminUser(uuid,data){
         }
     }
 
-    rehive.admin.users.updateUser(uuid,formData).then(function(res){
+    rehive.admin.users.update(uuid,formData).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
@@ -666,7 +666,7 @@ function updateAdminUser(uuid,data){
 }
 
 function getAdminUserSwitchesList(uuid){
-    rehive.admin.users.getUserSwitchesList(uuid).then(function(res){
+    rehive.admin.users.getSwitchesList(uuid).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
@@ -675,7 +675,7 @@ function getAdminUserSwitchesList(uuid){
 }
 
 function createAdminUserSwitch(uuid,tx_type,subtype,enabled){
-    rehive.admin.users.createUserSwitch(uuid,{tx_type: tx_type,subtype: subtype,enabled: enabled}).then(function(res){
+    rehive.admin.users.createSwitch(uuid,{tx_type: tx_type,subtype: subtype,enabled: enabled}).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
@@ -684,7 +684,7 @@ function createAdminUserSwitch(uuid,tx_type,subtype,enabled){
 }
 
 function getAdminUserSwitch(uuid,id){
-    rehive.admin.users.getUserSwitch(uuid,id).then(function(res){
+    rehive.admin.users.getSwitch(uuid,id).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
@@ -693,7 +693,7 @@ function getAdminUserSwitch(uuid,id){
 }
 
 function updateAdminUserSwitch(uuid,id,data){
-    rehive.admin.users.updateUserSwitch(uuid,id,data).then(function(res){
+    rehive.admin.users.updateSwitch(uuid,id,data).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
@@ -702,7 +702,7 @@ function updateAdminUserSwitch(uuid,id,data){
 }
 
 function deleteAdminUserSwitch(uuid,id){
-    rehive.admin.users.deleteUserSwitch(uuid,id).then(function(res){
+    rehive.admin.users.deleteSwitch(uuid,id).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
@@ -710,7 +710,7 @@ function deleteAdminUserSwitch(uuid,id){
     });
 }
 
-function getAdminAddressesList(uuid){
+function getAdminUserAddressesList(uuid){
     rehive.admin.users.getAddressesList(uuid).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -719,7 +719,7 @@ function getAdminAddressesList(uuid){
     });
 }
 
-function getAdminAddressesListNext(){
+function getAdminUserAddressesListNext(){
     rehive.admin.users.getAddressesList.next().then(function(res){
 
         console.log(res);
@@ -729,7 +729,7 @@ function getAdminAddressesListNext(){
     });
 }
 
-function getAdminAddressesListPrevious(){
+function getAdminUserAddressesListPrevious(){
     rehive.admin.users.getAddressesList.previous().then(function(res){
 
         console.log(res);
@@ -740,7 +740,7 @@ function getAdminAddressesListPrevious(){
 }
 
 function createAdminUserAddress(uuid,line_1,line_2,city,state_province,country,postal_code,status){
-    rehive.admin.users.createUserAddress(
+    rehive.admin.users.createAddress(
         {
             user: uuid,
             line_1: line_1,
@@ -760,7 +760,7 @@ function createAdminUserAddress(uuid,line_1,line_2,city,state_province,country,p
 }
 
 function getAdminUserAddress(id){
-    rehive.admin.users.getUserAddress(id).then(function(res){
+    rehive.admin.users.getAddress(id).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
@@ -769,7 +769,7 @@ function getAdminUserAddress(id){
 }
 
 function updateAdminUserAddress(id,data){
-    rehive.admin.users.updateUserAddress(id,data).then(function(res){
+    rehive.admin.users.updateAddress(id,data).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
@@ -778,7 +778,7 @@ function updateAdminUserAddress(id,data){
 }
 
 function deleteAdminUserAddress(id){
-    rehive.admin.users.deleteUserAddress(id).then(function(res){
+    rehive.admin.users.deleteAddress(id).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
@@ -786,7 +786,7 @@ function deleteAdminUserAddress(id){
     });
 }
 
-function getAdminBankAccountsList(uuid){
+function getAdminUserBankAccountsList(uuid){
     rehive.admin.users.getBankAccountsList(uuid).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -795,7 +795,7 @@ function getAdminBankAccountsList(uuid){
     });
 }
 
-function getAdminBankAccountsListNext(){
+function getAdminUserBankAccountsListNext(){
     rehive.admin.users.getBankAccountsList.next().then(function(res){
 
         console.log(res);
@@ -805,7 +805,7 @@ function getAdminBankAccountsListNext(){
     });
 }
 
-function getAdminBankAccountsListPrevious(){
+function getAdminUserBankAccountsListPrevious(){
     rehive.admin.users.getBankAccountsList.previous().then(function(res){
 
         console.log(res);
@@ -816,7 +816,7 @@ function getAdminBankAccountsListPrevious(){
 }
 
 function createAdminUserBankAccount(uuid,name,number,type,bank_name,bank_code,branch_code,swift,iban,bic,status){
-    rehive.admin.users.createUserBankAccount(
+    rehive.admin.users.createBankAccount(
         {
             user: uuid,
             name: name,
@@ -838,7 +838,7 @@ function createAdminUserBankAccount(uuid,name,number,type,bank_name,bank_code,br
 }
 
 function getAdminUserBankAccount(id){
-    rehive.admin.users.getUserBankAccount(id).then(function(res){
+    rehive.admin.users.getBankAccount(id).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
@@ -856,7 +856,367 @@ function updateAdminUserBankAccount(id,data){
 }
 
 function deleteAdminUserBankAccount(id){
-    rehive.admin.users.deleteUserBankAccount(id).then(function(res){
+    rehive.admin.users.deleteBankAccount(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUserCryptoAccountsList(uuid){
+    rehive.admin.users.getCryptoAccountsList(uuid).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUserCryptoAccountsListNext(){
+    rehive.admin.users.getCryptoAccountsList.next().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUserCryptoAccountsListPrevious(){
+    rehive.admin.users.getCryptoAccountsList.previous().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function createAdminUserCryptoAccount(user,crypto_type,address,metadata,status){
+    rehive.admin.users.createCryptoAccount(
+        {
+            user: user,
+            crypto_type: crypto_type,
+            address: address,
+            metadata: metadata,
+            status: status
+        }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUserCryptoAccount(id){
+    rehive.admin.users.getCryptoAccount(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function updateAdminUserCryptoAccount(id,data){
+    rehive.admin.users.updateCryptoAccount(id,data).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function deleteAdminUserCryptoAccount(id){
+    rehive.admin.users.deleteCryptoAccount(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUserDocumentsList(uuid){
+    rehive.admin.users.getDocumentsList(uuid).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUserDocumentsListNext(){
+    rehive.admin.users.getDocumentsList.next().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUserDocumentsListPrevious(){
+    rehive.admin.users.getDocumentsList.previous().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function createAdminUserDocument(user,document_type,metadata,note,status){
+    var fileSelected = document.getElementById("adminUserDocument").files[0],
+        formData =  new FormData();
+
+
+
+    formData.append('file', fileSelected);
+    formData.append('user', user);
+    formData.append('document_type', document_type);
+    formData.append('metadata', JSON.stringify(metadata));
+    formData.append('note', note);
+    formData.append('status', status);
+
+    rehive.admin.users.createDocument(formData).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUserDocument(id){
+    rehive.admin.users.getDocument(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function updateAdminUserDocument(id,data){
+    var fileSelected = document.getElementById("updateAdminUserDocument").files[0],
+        formData =  new FormData();
+
+    if(fileSelected){
+        formData.append('file', fileSelected);
+    }
+
+    for(var key in data){
+        if(data[key]){
+            formData.append(key,data[key]);
+        }
+    }
+
+    rehive.admin.users.updateDocument(id,formData).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function deleteAdminUserDocument(id){
+    rehive.admin.users.deleteDocument(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUserEmailsList(uuid){
+    rehive.admin.users.getEmailsList(uuid).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUserEmailsListNext(){
+    rehive.admin.users.getEmailsList.next().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUserEmailsListPrevious(){
+    rehive.admin.users.getEmailsList.previous().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function createAdminUserEmail(user,email,primary,verified){
+    rehive.admin.users.createEmail(
+        {
+            user: user,
+            email: email,
+            primary: primary,
+            verified: verified
+        }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUserEmail(id){
+    rehive.admin.users.getEmail(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function updateAdminUserEmail(id,data){
+    rehive.admin.users.updateEmail(id,data).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function deleteAdminUserEmail(id){
+    rehive.admin.users.deleteEmail(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUserMobilesList(uuid){
+    rehive.admin.users.getMobilesList(uuid).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUserMobilesListNext(){
+    rehive.admin.users.getMobilesList.next().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUserMobilesListPrevious(){
+    rehive.admin.users.getMobilesList.previous().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function createAdminUserMobile(user,number,primary,verified){
+    rehive.admin.users.createMobile(
+        {
+            user: user,
+            number: number,
+            primary: primary,
+            verified: verified
+        }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUserMobile(id){
+    rehive.admin.users.getMobile(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function updateAdminUserMobile(id,data){
+    rehive.admin.users.updateMobile(id,data).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function deleteAdminUserMobile(id){
+    rehive.admin.users.deleteMobile(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminTransactionsList(filter){
+    rehive.admin.transactions.getList(filter).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminTransactionsListNext(){
+    rehive.admin.transactions.getList.next().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminTransactionsListPrevious(){
+    rehive.admin.transactions.getList.previous().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminTransactionsTotal(filter){
+    rehive.admin.transactions.getTotal(filter).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminTransaction(id){
+    rehive.admin.transactions.get(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function updateAdminTransaction(id,data){
+    rehive.admin.transactions.update(id,data).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
