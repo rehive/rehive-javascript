@@ -1223,3 +1223,327 @@ function updateAdminTransaction(id,data){
         console.log(err);
     });
 }
+
+function createAdminCreditTransaction(user,currency,amount,subtype,account,reference,metadata,note,confirm_on_create){
+    rehive.admin.transactions.createCredit(
+        {
+            user: user,
+            currency: currency,
+            amount: amount,
+            subtype: subtype,
+            account: account,
+            reference: reference,
+            metadata: metadata,
+            note: note,
+            confirm_on_create: confirm_on_create
+        }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function createAdminDebitTransaction(user,currency,amount,subtype,account,reference,metadata,note,confirm_on_create){
+    rehive.admin.transactions.createDebit(
+        {
+            user: user,
+            currency: currency,
+            amount: amount,
+            subtype: subtype,
+            account: account,
+            reference: reference,
+            metadata: metadata,
+            note: note,
+            confirm_on_create: confirm_on_create
+        }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function createAdminTransferTransaction(user,recipient,currency,amount,debit_subtype,debit_account,
+                                        debit_note,debit_metadata,debit_reference,credit_subtype,credit_reference,
+                                        credit_metadata,credit_note){
+    rehive.admin.transactions.createTransfer(
+        {
+            user: user,
+            recipient: recipient,
+            currency: currency,
+            amount: amount,
+            debit_subtype: debit_subtype,
+            debit_account: debit_account,
+            debit_note: debit_note,
+            debit_metadata: debit_metadata,
+            debit_reference: debit_reference,
+            credit_subtype: credit_subtype,
+            credit_reference: credit_reference,
+            credit_metadata: credit_metadata,
+            credit_note: credit_note
+        }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUsersAccountsList(uuid){
+    rehive.admin.accounts.getList(uuid).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUsersAccountsListNext(){
+    rehive.admin.accounts.getList.next().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUsersAccountsListPrevious(){
+    rehive.admin.accounts.getList.previous().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function createAdminUsersAccount(user,name,primary,reference){
+    rehive.admin.accounts.create(
+        {
+            user: user,
+            name: name,
+            primary: primary,
+            reference: reference
+        }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUsersAccount(reference){
+    rehive.admin.accounts.get(reference).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function updateAdminUsersAccount(reference,data){
+    rehive.admin.accounts.update(reference,data).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUsersAccountCurrenciesList(reference,filter){
+    rehive.admin.accounts.getCurrenciesList(reference,filter).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUsersAccountCurrenciesListNext(){
+    rehive.admin.accounts.getCurrenciesList.next().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUsersAccountCurrenciesListPrevious(){
+    rehive.admin.accounts.getCurrenciesList.previous().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUsersAccountCurrency(reference,code){
+    rehive.admin.accounts.getCurrency(reference,code).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function updateAdminUsersAccountCurrency(reference,code,data){
+    rehive.admin.accounts.updateCurrency(reference,code,data).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUsersAccountCurrencyLimitsList(reference,code){
+    rehive.admin.accounts.getCurrencyLimitsList(reference,code).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function createAdminUsersAccountCurrencyLimit(reference,code,tx_type,value,type,subtype){
+    rehive.admin.accounts.createCurrencyLimit(reference,code,{
+        tx_type: tx_type,
+        value: value,
+        type: type,
+        subtype: subtype
+    }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUsersAccountCurrencyLimit(reference,code,id){
+    rehive.admin.accounts.getCurrencyLimit(reference,code,id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function updateAdminUsersAccountCurrencyLimit(reference,code,id,data){
+    rehive.admin.accounts.updateCurrencyLimit(reference,code,id,data).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function deleteAdminUsersAccountCurrencyLimit(reference,code,id){
+    rehive.admin.accounts.deleteCurrencyLimit(reference,code,id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUsersAccountCurrencyFeesList(reference,code){
+    rehive.admin.accounts.getCurrencyFeesList(reference,code).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function createAdminUsersAccountCurrencyFee(reference,code,tx_type,value,percentage,subtype){
+    rehive.admin.accounts.createCurrencyFee(reference,code,{
+        tx_type: tx_type,
+        value: value,
+        percentage: percentage,
+        subtype: subtype
+    }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUsersAccountCurrencyFee(reference,code,id){
+    rehive.admin.accounts.getCurrencyFee(reference,code,id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function updateAdminUsersAccountCurrencyFee(reference,code,id,data){
+    rehive.admin.accounts.updateCurrencyFee(reference,code,id,data).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function deleteAdminUsersAccountCurrencyFee(reference,code,id){
+    rehive.admin.accounts.deleteCurrencyFee(reference,code,id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUsersAccountCurrencySwitchesList(reference,code){
+    rehive.admin.accounts.getCurrencySwitchesList(reference,code).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function createAdminUsersAccountCurrencySwitch(reference,code,tx_type,subtype,enabled){
+    rehive.admin.accounts.createCurrencySwitch(reference,code,{
+        tx_type: tx_type,
+        subtype: subtype,
+        enabled: enabled
+    }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminUsersAccountCurrencySwitch(reference,code,id){
+    rehive.admin.accounts.getCurrencySwitch(reference,code,id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function updateAdminUsersAccountCurrencySwitch(reference,code,id,data){
+    rehive.admin.accounts.updateCurrencySwitch(reference,code,id,data).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function deleteAdminUsersAccountCurrencySwitch(reference,code,id){
+    rehive.admin.accounts.deleteCurrencySwitch(reference,code,id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}

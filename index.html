@@ -166,7 +166,43 @@
 
 <button onclick="getAdminTransactionsTotal()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Transactions Total</button>
 <button onclick="getAdminTransaction('Y2EHgq3S39twrMCptv54')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Transaction</button>
-<button onclick="updateAdminTransaction('Y2EHgq3S39twrMCptv54',{status: 'complete'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Transaction</button>
+<button onclick="updateAdminTransaction('OeMDngAWOtnRUuTSkEAI',{status: 'complete'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Transaction</button>
+<button onclick="createAdminCreditTransaction('test1@rehive.com','USD',10000,'sell',null,null,{hey: 'yo'},'hello note',false)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Credit Transaction</button>
+<button onclick="createAdminDebitTransaction('test1@rehive.com','USD',1000,'purchase',null,null,{hey: 'yolo'},'hello note 2',true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Debit Transaction</button>
+<button onclick="createAdminTransferTransaction('test1@rehive.com','joshua@rehive.com','USD',1000,'purchase',null,'note this is',{hello: 'yo'},null,'sell',null,{yo: 'hello'},'this is a note')"
+        style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Transfer Transaction</button>
+
+
+<button onclick="getAdminUsersAccountsList('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Accounts List</button>
+<button onclick="getAdminUsersAccountsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Users Accounts List Next</button>
+<button onclick="getAdminUsersAccountsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Users Accounts List Previous</button>
+<button onclick="createAdminUsersAccount('62f7517a-493c-429f-a635-055cdd44ae10','test',false,null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Admin Users Account</button>
+<button onclick="getAdminUsersAccount('NLR92G2VMC')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Account</button>
+<button onclick="updateAdminUsersAccount('NLR92G2VMC',{primary: true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin Users Account</button>
+
+<button onclick="getAdminUsersAccountCurrenciesList('B2PT5JSL7U')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Users Account Currencies List</button>
+<button onclick="getAdminUsersAccountCurrenciesListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Users Account Currencies List Next</button>
+<button onclick="getAdminUsersAccountCurrenciesListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Users Account Currencies List Previous</button>
+<button onclick="getAdminUsersAccountCurrency('G5WRHPYEUG','ZAR')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Users Account Currency</button>
+<button onclick="updateAdminUsersAccountCurrency('B2PT5JSL7U','XBT',{active: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Users Account Currency</button>
+
+<button onclick="getAdminUsersAccountCurrencyLimitsList('G5WRHPYEUG','ZAR')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Users Account Currency Limits List</button>
+<button onclick="createAdminUsersAccountCurrencyLimit('G5WRHPYEUG','ZAR','credit',300,'max',null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Users Account Currency Limit</button>
+<button onclick="getAdminUsersAccountCurrencyLimit('G5WRHPYEUG','ZAR','46')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Users Account Currency Limit</button>
+<button onclick="updateAdminUsersAccountCurrencyLimit('G5WRHPYEUG','ZAR','46',{tx_type: 'debit',type: 'min'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Users Account Currency Limit</button>
+<button onclick="deleteAdminUsersAccountCurrencyLimit('G5WRHPYEUG','ZAR','45')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Users Account Currency Limit</button>
+
+<button onclick="getAdminUsersAccountCurrencyFeesList('G5WRHPYEUG','ZAR')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Account Currency Fees List</button>
+<button onclick="createAdminUsersAccountCurrencyFee('G5WRHPYEUG','ZAR','credit',300,3,null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Admin Users Account Currency Fee</button>
+<button onclick="getAdminUsersAccountCurrencyFee('G5WRHPYEUG','ZAR','57')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Account Currency Fee</button>
+<button onclick="updateAdminUsersAccountCurrencyFee('G5WRHPYEUG','ZAR','57',{tx_type: 'debit'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin Users Account Currency Fee</button>
+<button onclick="deleteAdminUsersAccountCurrencyFee('G5WRHPYEUG','ZAR','57')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Admin Users Account Currency Fee</button>
+
+<button onclick="getAdminUsersAccountCurrencySwitchesList('G5WRHPYEUG','ZAR')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Users Account Currency Switches List</button>
+<button onclick="createAdminUsersAccountCurrencySwitch('G5WRHPYEUG','ZAR','credit',null,false)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Users Account Currency Switch</button>
+<button onclick="getAdminUsersAccountCurrencySwitch('G5WRHPYEUG','ZAR','24')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Users Account Currency Switch</button>
+<button onclick="updateAdminUsersAccountCurrencySwitch('G5WRHPYEUG','ZAR','24',{tx_type: 'debit'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Users Account Currency Switch</button>
+<button onclick="deleteAdminUsersAccountCurrencySwitch('G5WRHPYEUG','ZAR','24')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Users Account Currency Switch</button>
 
 
 </body>
