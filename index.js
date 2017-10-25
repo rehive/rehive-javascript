@@ -14,7 +14,10 @@ function Rehive(config) {
     this.accounts = {};
     this.company = {};
     this.admin = {
-        users: {}
+        users: {},
+        transactions: {},
+        accounts: {},
+        currencies: {}
     };
     var apiVersion = '3',
         baseAPI = 'https://rehive.com/api/' + apiVersion + '/',
@@ -55,7 +58,25 @@ function Rehive(config) {
         companyBanksAPI = 'company/bank-account/',
         headers = {'Content-Type': 'application/json'};
 
-    var adminUsersListAPI = 'admin/users/';
+    var adminUsersAPI = 'admin/users/',
+        adminUserSwitchesAPI = '/switches/',
+        adminUserAddressesAPI = 'admin/users/addresses/',
+        adminUserBankAccountsAPI = 'admin/users/bank-accounts/',
+        adminUserCryptoAccontsAPI = 'admin/users/crypto-accounts/',
+        adminUserDocumentsAPI = 'admin/users/documents/',
+        adminUserEmailsAPI = 'admin/users/emails/',
+        adminUserMobilesAPI = 'admin/users/mobiles/',
+        adminTransactionsAPI = 'admin/transactions/',
+        adminTransactionsTotalAPI = 'admin/transactions/totals/',
+        adminCreditTransactionsAPI = 'admin/transactions/credit/',
+        adminDebitTransactionsAPI = 'admin/transactions/debit/',
+        adminTransferTransactionsAPI = 'admin/transactions/transfer/',
+        adminAccountsAPI = 'admin/accounts/',
+        adminAccountsCurrenciesAPI = '/currencies/',
+        adminAccountsCurrencyLimitsAPI = '/limits/',
+        adminAccountsCurrencyFeesAPI = '/fees/',
+        adminAccountsCurrencySwitchesAPI = '/switches/',
+        adminCurrenciesAPI = 'admin/currencies/';
 
     if (config) {
         config.apiVersion ? apiVersion = config.apiVersion : apiVersion = '3';
@@ -230,7 +251,7 @@ function Rehive(config) {
                         }
                     }
                 });
-        })
+        });
     };
 
     var httpDeleteRehive = function (url, data) {
@@ -316,7 +337,7 @@ function Rehive(config) {
                         }
                     }
                 });
-        })
+        });
     };
 
     this.auth.login = function (credentials) {
@@ -338,7 +359,7 @@ function Rehive(config) {
                             reject(response.message);
                         }
                     }
-                })
+                });
         });
     };
 
@@ -369,7 +390,7 @@ function Rehive(config) {
                         }
                     }
                 });
-        })
+        });
     };
 
     this.auth.logoutAll = function () {
@@ -399,7 +420,7 @@ function Rehive(config) {
                         }
                     }
                 });
-        })
+        });
     };
 
     this.auth.changePassword = function (data) {
@@ -409,7 +430,7 @@ function Rehive(config) {
             }, function (error) {
                 reject(error);
             });
-        })
+        });
     };
 
     this.multiAuth.multiFactorAuthStatus=function(){
@@ -546,9 +567,8 @@ function Rehive(config) {
         return new Promise(function (resolve, reject) {
             var url,
                 error = {status: 'error', message: 'A token is required'};
-
-            if (tokenKey) {
-                url = tokensAPI + tokenKey
+            if(tokenKey){
+                url = tokensAPI + tokenKey;
             } else {
                 reject(error);
                 return;
@@ -586,7 +606,7 @@ function Rehive(config) {
             }, function (error) {
                 reject(error);
             });
-        })
+        });
     };
 
     this.user.getUserProfile = function () {
@@ -1321,7 +1341,7 @@ function Rehive(config) {
                 filter = '';
             }
 
-            httpGetRehive(adminUsersListAPI + filter).then(function (response) {
+            httpGetRehive(adminUsersAPI + filter).then(function (response) {
                 saveFilterInSessionStorage(response)
                 resolve(response);
             }, function (error) {
@@ -1367,6 +1387,1405 @@ function Rehive(config) {
             }
         });
     };
+
+    this.admin.users.create = function (data){
+        return new Promise(function(resolve,reject){
+            var token = getToken();
+            var header = {};
+
+            if(token){
+                header['Authorization'] = 'Token ' + token;
+            } else {
+                delete header['Authorization'];
+            }
+
+            fetch(baseAPI + adminUsersAPI,{
+                method: 'POST',
+                headers: header,
+                body: data
+            })
+                .then(parseJSON)
+                .then(function(response) {
+                    if(response.status == 'success'){
+                        if(response.data && response.data.data){
+                            resolve(response.data.data);
+                        } else if(response.data) {
+                            resolve(response.data);
+                        } else{
+                            resolve(response);
+                        }
+                    } else if(response.status == 'error'){
+                        if(response.data){
+                            reject(response.data);
+                        } else {
+                            reject({message: response.message});
+                        }
+                    }
+                });
+        });
+    };
+
+    this.admin.users.get = function (uuid) {
+        return new Promise(function(resolve,reject) {
+            if(!uuid){
+                reject('No identifier has been given');
+                return;
+            }
+
+            httpGetRehive(adminUsersAPI + uuid + '/').then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.update = function (uuid,data){
+        return new Promise(function(resolve,reject){
+            if(!uuid){
+                reject('No identifier has been given');
+                return;
+            }
+
+            var token = getToken();
+            var header = {};
+
+            if(token){
+                header['Authorization'] = 'Token ' + token;
+            } else {
+                delete header['Authorization'];
+            }
+
+            fetch(baseAPI + adminUsersAPI + uuid + '/',{
+                method: 'PATCH',
+                headers: header,
+                body: data
+            })
+                .then(parseJSON)
+                .then(function(response) {
+                    if(response.status == 'success'){
+                        if(response.data && response.data.data){
+                            resolve(response.data.data);
+                        } else if(response.data) {
+                            resolve(response.data);
+                        } else{
+                            resolve(response);
+                        }
+                    } else if(response.status == 'error'){
+                        if(response.data){
+                            reject(response.data);
+                        } else {
+                            reject({message: response.message});
+                        }
+                    }
+                });
+        });
+    };
+
+    this.admin.users.getSwitchesList = function (uuid) {
+        return new Promise(function(resolve,reject) {
+            if(!uuid){
+                reject('No identifier has been given');
+                return;
+            }
+
+            httpGetRehive(adminUsersAPI + uuid + adminUserSwitchesAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.createSwitch = function (uuid,data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(adminUsersAPI + uuid + adminUserSwitchesAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getSwitch = function (uuid,id) {
+        return new Promise(function(resolve,reject) {
+            if(!uuid || !id){
+                reject('No identifier or id has been given');
+                return;
+            }
+
+            httpGetRehive(adminUsersAPI + uuid + adminUserSwitchesAPI + id + '/').then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.updateSwitch = function (uuid,id,data){
+        return new Promise(function(resolve,reject){
+            if(!uuid || !id){
+                reject('No identifier or id has been given');
+                return;
+            }
+
+            httpPatchRehive(adminUsersAPI + uuid + adminUserSwitchesAPI + id + '/',data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.deleteSwitch = function (uuid,id){
+        return new Promise(function(resolve,reject){
+            if(!uuid || !id){
+                reject('No identifier or id has been given');
+                return;
+            }
+
+            httpDeleteRehive(adminUsersAPI + uuid + adminUserSwitchesAPI + id + '/',{}).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getAddressesList = function (filter) {
+        return new Promise(function(resolve,reject) {
+            if(filter){
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
+
+
+            httpGetRehive(adminUserAddressesAPI + filter).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getAddressesList.next = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.users.getAddressesList.previous = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.users.createAddress = function (data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(adminUserAddressesAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getAddress = function (id){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No address id provided');
+            }
+
+            httpGetRehive(adminUserAddressesAPI + id + '/').then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.updateAddress = function (id,data){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No id has been given');
+                return;
+            }
+
+            httpPatchRehive(adminUserAddressesAPI + id + '/',data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.deleteAddress = function (id){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No id has been given');
+                return;
+            }
+
+            httpDeleteRehive(adminUserAddressesAPI + id + '/',{}).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getBankAccountsList = function (filter) {
+        return new Promise(function(resolve,reject) {
+            if(filter){
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
+
+            httpGetRehive(adminUserBankAccountsAPI + filter).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getBankAccountsList.next = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.users.getBankAccountsList.previous = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.users.createBankAccount = function (data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(adminUserBankAccountsAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getBankAccount = function (id){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No address id provided');
+            }
+
+            httpGetRehive(adminUserBankAccountsAPI + id + '/').then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.updateBankAccount = function (id,data){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No id has been given');
+                return;
+            }
+
+            httpPatchRehive(adminUserBankAccountsAPI + id + '/',data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.deleteBankAccount = function (id){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No id has been given');
+                return;
+            }
+
+            httpDeleteRehive(adminUserBankAccountsAPI + id + '/',{}).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getCryptoAccountsList = function (filter) {
+        return new Promise(function(resolve,reject) {
+            if(filter){
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
+
+            httpGetRehive(adminUserCryptoAccontsAPI + filter).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getCryptoAccountsList.next = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.users.getCryptoAccountsList.previous = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.users.createCryptoAccount = function (data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(adminUserCryptoAccontsAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getCryptoAccount = function (id){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No address id provided');
+            }
+
+            httpGetRehive(adminUserCryptoAccontsAPI + id + '/').then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.updateCryptoAccount = function (id,data){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No id has been given');
+                return;
+            }
+
+            httpPatchRehive(adminUserCryptoAccontsAPI + id + '/',data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.deleteCryptoAccount = function (id){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No id has been given');
+                return;
+            }
+
+            httpDeleteRehive(adminUserCryptoAccontsAPI + id + '/',{}).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getDocumentsList = function (filter) {
+        return new Promise(function(resolve,reject) {
+            if(filter){
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
+
+            httpGetRehive(adminUserDocumentsAPI + filter).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getDocumentsList.next = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.users.getDocumentsList.previous = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.users.createDocument = function (data){
+        return new Promise(function(resolve,reject){
+            var token = getToken();
+            var header = {};
+
+            if(token){
+                header['Authorization'] = 'Token ' + token;
+            } else {
+                delete header['Authorization'];
+            }
+
+            fetch(baseAPI + adminUserDocumentsAPI,{
+                method: 'POST',
+                headers: header,
+                body: data
+            })
+                .then(parseJSON)
+                .then(function(response) {
+                    if(response.status == 'success'){
+                        if(response.data && response.data.data){
+                            resolve(response.data.data);
+                        } else if(response.data) {
+                            resolve(response.data);
+                        } else{
+                            resolve(response);
+                        }
+                    } else if(response.status == 'error'){
+                        if(response.data){
+                            reject(response.data);
+                        } else {
+                            reject({message: response.message});
+                        }
+                    }
+                });
+        });
+    };
+
+    this.admin.users.getDocument = function (id){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No id provided');
+            }
+
+            httpGetRehive(adminUserDocumentsAPI + id + '/').then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.updateDocument = function (id,data){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No id has been given');
+                return;
+            }
+
+            var token = getToken();
+            var header = {};
+
+            if(token){
+                header['Authorization'] = 'Token ' + token;
+            } else {
+                delete header['Authorization'];
+            }
+
+            fetch(baseAPI + adminUserDocumentsAPI + id + '/',{
+                method: 'PATCH',
+                headers: header,
+                body: data
+            })
+                .then(parseJSON)
+                .then(function(response) {
+                    if(response.status == 'success'){
+                        if(response.data && response.data.data){
+                            resolve(response.data.data);
+                        } else if(response.data) {
+                            resolve(response.data);
+                        } else{
+                            resolve(response);
+                        }
+                    } else if(response.status == 'error'){
+                        if(response.data){
+                            reject(response.data);
+                        } else {
+                            reject({message: response.message});
+                        }
+                    }
+                });
+        });
+    };
+
+    this.admin.users.deleteDocument = function (id){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No id has been given');
+                return;
+            }
+
+            httpDeleteRehive(adminUserDocumentsAPI + id + '/',{}).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getEmailsList = function (filter) {
+        return new Promise(function(resolve,reject) {
+            if(filter){
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
+
+            httpGetRehive(adminUserEmailsAPI + filter).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getEmailsList.next = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.users.getEmailsList.previous = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.users.createEmail = function (data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(adminUserEmailsAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getEmail = function (id){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No address id provided');
+            }
+
+            httpGetRehive(adminUserEmailsAPI + id + '/').then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.updateEmail = function (id,data){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No id has been given');
+                return;
+            }
+
+            httpPatchRehive(adminUserEmailsAPI + id + '/',data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.deleteEmail = function (id){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No id has been given');
+                return;
+            }
+
+            httpDeleteRehive(adminUserEmailsAPI + id + '/',{}).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getMobilesList = function (filter) {
+        return new Promise(function(resolve,reject) {
+            if(filter){
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
+
+            httpGetRehive(adminUserMobilesAPI + filter).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getMobilesList.next = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.users.getMobilesList.previous = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.users.createMobile = function (data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(adminUserMobilesAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getMobile = function (id){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No address id provided');
+            }
+
+            httpGetRehive(adminUserMobilesAPI + id + '/').then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.updateMobile = function (id,data){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No id has been given');
+                return;
+            }
+
+            httpPatchRehive(adminUserMobilesAPI + id + '/',data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.deleteMobile = function (id){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No id has been given');
+                return;
+            }
+
+            httpDeleteRehive(adminUserMobilesAPI + id + '/',{}).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transactions.getList = function (filter) {
+        return new Promise(function(resolve,reject) {
+            if(filter){
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
+
+            httpGetRehive(adminTransactionsAPI + filter).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transactions.getList.next = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.transactions.getList.previous = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.transactions.getTotal = function (filter) {
+        return new Promise(function(resolve,reject) {
+            if(filter){
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
+
+            httpGetRehive(adminTransactionsTotalAPI + filter).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transactions.get = function (id){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No address id provided');
+            }
+
+            httpGetRehive(adminTransactionsAPI + id + '/').then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transactions.update = function (id,data){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No id has been given');
+                return;
+            }
+
+            httpPatchRehive(adminTransactionsAPI + id + '/',data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transactions.createCredit = function (data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(adminCreditTransactionsAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transactions.createDebit = function (data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(adminDebitTransactionsAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transactions.createTransfer = function (data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(adminTransferTransactionsAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.getList = function (filter) {
+        return new Promise(function(resolve,reject) {
+            if(filter){
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
+
+            httpGetRehive(adminAccountsAPI + filter).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.getList.next = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.accounts.getList.previous = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.accounts.create = function (data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(adminAccountsAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.get = function (id){
+        return new Promise(function(resolve,reject){
+            if(!id){
+                reject('No address id provided');
+            }
+
+            httpGetRehive(adminAccountsAPI + id + '/').then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.update = function (reference,data){
+        return new Promise(function(resolve,reject){
+            if(!reference){
+                reject('No reference has been given');
+                return;
+            }
+
+            httpPatchRehive(adminAccountsAPI + reference + '/',data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.getCurrenciesList = function (reference,filter) {
+        return new Promise(function(resolve,reject) {
+            if(!reference){
+                reject('No reference has been given');
+                return;
+            }
+
+            if(filter){
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
+
+            httpGetRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + filter).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.getCurrenciesList.next = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.accounts.getCurrenciesList.previous = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.accounts.getCurrency = function (reference,code) {
+        return new Promise(function(resolve,reject) {
+            if(!reference || !code){
+                reject('No reference or code has been given');
+                return;
+            }
+
+            httpGetRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.updateCurrency = function (reference,code,data){
+        return new Promise(function(resolve,reject){
+            if(!reference || !code){
+                reject('No reference or code has been given');
+                return;
+            }
+
+            httpPatchRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code,data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.getCurrencyLimitsList = function (reference,code) {
+        return new Promise(function(resolve,reject) {
+            if(!reference || !code){
+                reject('No reference or code has been given');
+                return;
+            }
+
+            httpGetRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyLimitsAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.createCurrencyLimit = function (reference,code,data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyLimitsAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.getCurrencyLimit = function (reference,code,id) {
+        return new Promise(function(resolve,reject) {
+            if(!reference || !code || !id){
+                reject('No reference or code or id has been given');
+                return;
+            }
+
+            httpGetRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyLimitsAPI + id).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.updateCurrencyLimit = function (reference,code,id,data){
+        return new Promise(function(resolve,reject){
+            if(!reference || !code || !id){
+                reject('No reference or code or id has been given');
+                return;
+            }
+
+            httpPatchRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyLimitsAPI + id,data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.deleteCurrencyLimit = function (reference,code,id) {
+        return new Promise(function(resolve,reject) {
+            if(!reference || !code || !id){
+                reject('No reference or code or id has been given');
+                return;
+            }
+
+            httpDeleteRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyLimitsAPI + id,{}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.getCurrencyFeesList = function (reference,code) {
+        return new Promise(function(resolve,reject) {
+            if(!reference || !code){
+                reject('No reference or code has been given');
+                return;
+            }
+
+            httpGetRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyFeesAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.createCurrencyFee = function (reference,code,data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyFeesAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.getCurrencyFee = function (reference,code,id) {
+        return new Promise(function(resolve,reject) {
+            if(!reference || !code || !id){
+                reject('No reference or code or id has been given');
+                return;
+            }
+
+            httpGetRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyFeesAPI + id).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.updateCurrencyFee = function (reference,code,id,data){
+        return new Promise(function(resolve,reject){
+            if(!reference || !code || !id){
+                reject('No reference or code or id has been given');
+                return;
+            }
+
+            httpPatchRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyFeesAPI + id,data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.deleteCurrencyFee = function (reference,code,id) {
+        return new Promise(function(resolve,reject) {
+            if(!reference || !code || !id){
+                reject('No reference or code or id has been given');
+                return;
+            }
+
+            httpDeleteRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyFeesAPI + id,{}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.getCurrencySwitchesList = function (reference,code) {
+        return new Promise(function(resolve,reject) {
+            if(!reference || !code){
+                reject('No reference or code has been given');
+                return;
+            }
+
+            httpGetRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencySwitchesAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.createCurrencySwitch = function (reference,code,data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencySwitchesAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.getCurrencySwitch = function (reference,code,id) {
+        return new Promise(function(resolve,reject) {
+            if(!reference || !code || !id){
+                reject('No reference or code or id has been given');
+                return;
+            }
+
+            httpGetRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencySwitchesAPI + id).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.updateCurrencySwitch = function (reference,code,id,data){
+        return new Promise(function(resolve,reject){
+            if(!reference || !code || !id){
+                reject('No reference or code or id has been given');
+                return;
+            }
+
+            httpPatchRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencySwitchesAPI + id,data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.deleteCurrencySwitch = function (reference,code,id) {
+        return new Promise(function(resolve,reject) {
+            if(!reference || !code || !id){
+                reject('No reference or code or id has been given');
+                return;
+            }
+
+            httpDeleteRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencySwitchesAPI + id,{}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
 
 
     //public functions end
