@@ -1916,6 +1916,46 @@ function updateAdminCompany(data){
     });
 }
 
+function getAdminGeneralWebhooksList(){
+    rehive.admin.webhooks.getList().then(function(res){
+        console.log(res)
+        document.getElementById('result').innerHTML=convertToText(res)
+    }, function(err){
+        console.log(err);
+    })
+}
+
+function createAdminGeneralWebhooks(url,event,secret){
+    rehive.admin.webhooks.create({
+        url:url,
+        event:event,
+        secrete:secret
+    }).then(function(res){
+        console.log(res)
+        document.getElementById('result').innerHTML=convertToText(res)
+    }, function(err){
+        console.log(err);
+    })
+}
+
+function getAdminGeneralWebhooks(webhooksId){
+    rehive.admin.webhooks.get(webhooksId).then(function(res){
+        console.log(res)
+        document.getElementById('result').innerHTML=convertToText(res)
+    }, function(err){
+        console.log(err);
+    })
+}
+
+function updateAdminGeneralWebhooks(webhooksId,data){
+    rehive.admin.webhooks.update(webhooksId,data).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
 function getAdminSubtypesList(){
     rehive.admin.subtypes.getList().then(function(res){
         console.log(res);
@@ -1951,6 +1991,33 @@ function getAdminSubtype(id){
 
 function updateAdminSubtype(id,data){
     rehive.admin.subtypes.update(id,data).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminNotificationsList(){
+    rehive.admin.notifications.getList().then(function(res){
+        console.log(res)
+        document.getElementById('result').innerHTML = convertToText(res)
+    },function(err){
+        console.log(err)
+    })
+}
+
+function getAdminNotification(notificationid){
+    rehive.admin.notifications.get(notificationid).then(function(res){
+        console.log(res)
+        document.getElementById('result').innerHTML=convertToText(res)
+    },function(err){
+        console.log(err)
+    })
+}
+
+function updateAdminNotification(notificationId,data){
+    rehive.admin.notifications.update(notificationId,data).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){
