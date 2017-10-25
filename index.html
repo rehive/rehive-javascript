@@ -104,7 +104,7 @@
 <button onclick="updateAdminUserSwitch('a420eaec-04c7-4cdb-a0e4-43c500383c73','44',{enabled: true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin User Switch</button>
 <button onclick="deleteAdminUserSwitch('a420eaec-04c7-4cdb-a0e4-43c500383c73','44')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Admin User Switch</button>
 
-<button onclick="getAdminUserAddressesList('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Addresses List</button>
+<button onclick="getAdminUserAddressesList({user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Addresses List</button>
 <button onclick="getAdminUserAddressesListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Addresses List Next</button>
 <button onclick="getAdminUserAddressesListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Addresses List Previous</button>
 <button onclick="createAdminUserAddress('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','baily','road','Dhaka','haka','Bd','','pending')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin User Address</button>
@@ -112,7 +112,7 @@
 <button onclick="updateAdminUserAddress('195',{line_1: 'toodleloo',country: 'US'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin User Address</button>
 <button onclick="deleteAdminUserAddress('195')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin User Address</button>
 
-<button onclick="getAdminUserBankAccountsList('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Bank Accounts List</button>
+<button onclick="getAdminUserBankAccountsList({user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Bank Accounts List</button>
 <button onclick="getAdminUserBankAccountsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Bank Accounts List Next</button>
 <button onclick="getAdminUserBankAccountsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Bank Accounts List Previous</button>
 <button onclick="createAdminUserBankAccount('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','Bank','23434','cash','bank name','234342','2343','','','','verified')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin User Bank Account</button>
@@ -120,7 +120,7 @@
 <button onclick="updateAdminUserBankAccount('494',{name: 'wootwoot',number: 'yo yo'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin User Bank Account</button>
 <button onclick="deleteAdminUserBankAccount('494')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin User Bank Account</button>
 
-<button onclick="getAdminUserCryptoAccountsList('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Crypto Accounts List</button>
+<button onclick="getAdminUserCryptoAccountsList({user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Crypto Accounts List</button>
 <button onclick="getAdminUserCryptoAccountsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Crypto Accounts List Next</button>
 <button onclick="getAdminUserCryptoAccountsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Crypto Accounts List Previous</button>
 <button onclick="createAdminUserCryptoAccount('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','ethereum','3242342343223dewwrewrw','','incomplete')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin User Crypto Account</button>
@@ -128,7 +128,7 @@
 <button onclick="updateAdminUserCryptoAccount('126',{address: 'wootwoot',status: 'verified'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin User Crypto Account</button>
 <button onclick="deleteAdminUserCryptoAccount('126')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin User Crypto Account</button>
 
-<button onclick="getAdminUserDocumentsList('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Documents List</button>
+<button onclick="getAdminUserDocumentsList({user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Documents List</button>
 <button onclick="getAdminUserDocumentsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Documents List Next</button>
 <button onclick="getAdminUserDocumentsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Documents List Previous</button>
 <div style="margin: 20px 0 0 20px">
@@ -144,7 +144,7 @@
 </div>
 <button onclick="deleteAdminUserDocument('351')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Admin User Document</button>
 
-<button onclick="getAdminUserEmailsList('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Emails List</button>
+<button onclick="getAdminUserEmailsList({user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Emails List</button>
 <button onclick="getAdminUserEmailsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Emails List Next</button>
 <button onclick="getAdminUserEmailsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Emails List Previous</button>
 <button onclick="createAdminUserEmail('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','a@n.com',false,true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin User Emails</button>
@@ -152,7 +152,7 @@
 <button onclick="updateAdminUserEmail('11853',{verified: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin User Emails</button>
 <button onclick="deleteAdminUserEmail('11853')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin User Emails</button>
 
-<button onclick="getAdminUserMobilesList('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Mobiles List</button>
+<button onclick="getAdminUserMobilesList({user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Mobiles List</button>
 <button onclick="getAdminUserMobilesListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Mobiles List Next</button>
 <button onclick="getAdminUserMobilesListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Mobiles List Previous</button>
 <button onclick="createAdminUserMobile('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','+8801703862293',false,true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin User Mobiles</button>
@@ -173,7 +173,7 @@
         style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Transfer Transaction</button>
 
 
-<button onclick="getAdminUsersAccountsList('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Accounts List</button>
+<button onclick="getAdminUsersAccountsList({user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Accounts List</button>
 <button onclick="getAdminUsersAccountsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Users Accounts List Next</button>
 <button onclick="getAdminUsersAccountsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Users Accounts List Previous</button>
 <button onclick="createAdminUsersAccount('62f7517a-493c-429f-a635-055cdd44ae10','test',false,null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Admin Users Account</button>

@@ -11,7 +11,8 @@ function Rehive(config){
     this.admin = {
         users: {},
         transactions: {},
-        accounts: {}
+        accounts: {},
+        currencies: {}
     };
     var apiVersion = '3',
       baseAPI = 'https://rehive.com/api/'+ apiVersion +'/',
@@ -64,7 +65,8 @@ function Rehive(config){
         adminAccountsCurrenciesAPI = '/currencies/',
         adminAccountsCurrencyLimitsAPI = '/limits/',
         adminAccountsCurrencyFeesAPI = '/fees/',
-        adminAccountsCurrencySwitchesAPI = '/switches/';
+        adminAccountsCurrencySwitchesAPI = '/switches/',
+        adminCurrenciesAPI = 'admin/currencies/';
 
     if(config){
         config.apiVersion ? apiVersion = config.apiVersion : apiVersion = '3';
@@ -1274,15 +1276,16 @@ function Rehive(config){
         });
     };
 
-    this.admin.users.getAddressesList = function (uuid) {
+    this.admin.users.getAddressesList = function (filter) {
         return new Promise(function(resolve,reject) {
-            var mainUrl;
-            if(uuid){
-                mainUrl = adminUserAddressesAPI + '?user=' + uuid;
+            if(filter){
+                filter = '?' + serialize(filter);
             } else {
-                mainUrl = adminUserAddressesAPI;
+                filter = '';
             }
-            httpGetRehive(mainUrl).then(function (response) {
+
+
+            httpGetRehive(adminUserAddressesAPI + filter).then(function (response) {
                 saveFilterInSessionStorage(response);
                 resolve(response);
             }, function (error) {
@@ -1383,15 +1386,15 @@ function Rehive(config){
         });
     };
 
-    this.admin.users.getBankAccountsList = function (uuid) {
+    this.admin.users.getBankAccountsList = function (filter) {
         return new Promise(function(resolve,reject) {
-            var mainUrl;
-            if(uuid){
-                mainUrl = adminUserBankAccountsAPI + '?user=' + uuid;
+            if(filter){
+                filter = '?' + serialize(filter);
             } else {
-                mainUrl = adminUserBankAccountsAPI;
+                filter = '';
             }
-            httpGetRehive(mainUrl).then(function (response) {
+
+            httpGetRehive(adminUserBankAccountsAPI + filter).then(function (response) {
                 saveFilterInSessionStorage(response);
                 resolve(response);
             }, function (error) {
@@ -1492,15 +1495,15 @@ function Rehive(config){
         });
     };
 
-    this.admin.users.getCryptoAccountsList = function (uuid) {
+    this.admin.users.getCryptoAccountsList = function (filter) {
         return new Promise(function(resolve,reject) {
-            var mainUrl;
-            if(uuid){
-                mainUrl = adminUserCryptoAccontsAPI + '?user=' + uuid;
+            if(filter){
+                filter = '?' + serialize(filter);
             } else {
-                mainUrl = adminUserCryptoAccontsAPI;
+                filter = '';
             }
-            httpGetRehive(mainUrl).then(function (response) {
+
+            httpGetRehive(adminUserCryptoAccontsAPI + filter).then(function (response) {
                 saveFilterInSessionStorage(response);
                 resolve(response);
             }, function (error) {
@@ -1601,15 +1604,15 @@ function Rehive(config){
         });
     };
 
-    this.admin.users.getDocumentsList = function (uuid) {
+    this.admin.users.getDocumentsList = function (filter) {
         return new Promise(function(resolve,reject) {
-            var mainUrl;
-            if(uuid){
-                mainUrl = adminUserDocumentsAPI + '?user=' + uuid;
+            if(filter){
+                filter = '?' + serialize(filter);
             } else {
-                mainUrl = adminUserDocumentsAPI;
+                filter = '';
             }
-            httpGetRehive(mainUrl).then(function (response) {
+
+            httpGetRehive(adminUserDocumentsAPI + filter).then(function (response) {
                 saveFilterInSessionStorage(response);
                 resolve(response);
             }, function (error) {
@@ -1764,15 +1767,15 @@ function Rehive(config){
         });
     };
 
-    this.admin.users.getEmailsList = function (uuid) {
+    this.admin.users.getEmailsList = function (filter) {
         return new Promise(function(resolve,reject) {
-            var mainUrl;
-            if(uuid){
-                mainUrl = adminUserEmailsAPI + '?user=' + uuid;
+            if(filter){
+                filter = '?' + serialize(filter);
             } else {
-                mainUrl = adminUserEmailsAPI;
+                filter = '';
             }
-            httpGetRehive(mainUrl).then(function (response) {
+
+            httpGetRehive(adminUserEmailsAPI + filter).then(function (response) {
                 saveFilterInSessionStorage(response);
                 resolve(response);
             }, function (error) {
@@ -1873,15 +1876,15 @@ function Rehive(config){
         });
     };
 
-    this.admin.users.getMobilesList = function (uuid) {
+    this.admin.users.getMobilesList = function (filter) {
         return new Promise(function(resolve,reject) {
-            var mainUrl;
-            if(uuid){
-                mainUrl = adminUserMobilesAPI + '?user=' + uuid;
+            if(filter){
+                filter = '?' + serialize(filter);
             } else {
-                mainUrl = adminUserMobilesAPI;
+                filter = '';
             }
-            httpGetRehive(mainUrl).then(function (response) {
+
+            httpGetRehive(adminUserMobilesAPI + filter).then(function (response) {
                 saveFilterInSessionStorage(response);
                 resolve(response);
             }, function (error) {
@@ -2113,15 +2116,15 @@ function Rehive(config){
         });
     };
 
-    this.admin.accounts.getList = function (uuid) {
+    this.admin.accounts.getList = function (filter) {
         return new Promise(function(resolve,reject) {
-            var mainUrl;
-            if(uuid){
-                mainUrl = adminAccountsAPI + '?user=' + uuid;
+            if(filter){
+                filter = '?' + serialize(filter);
             } else {
-                mainUrl = adminAccountsAPI;
+                filter = '';
             }
-            httpGetRehive(mainUrl).then(function (response) {
+
+            httpGetRehive(adminAccountsAPI + filter).then(function (response) {
                 saveFilterInSessionStorage(response);
                 resolve(response);
             }, function (error) {
