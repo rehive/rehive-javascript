@@ -8,21 +8,31 @@
     <script src="app.js"></script>
 </head>
 <body>
-<button onclick="login('test1@rehive.com','test_company_1','test1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Login</button>
+<button onclick="login('isfar.uddin@bs-23.net','rehive','12345678')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Login</button>
 <button onclick="logout()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Logout</button>
 <button onclick="logoutAll()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">LogoutAll</button>
 <button onclick="registerCompany('new','user','aquib+15@rehive.com','test_company_102','newpassword1','newpassword1')"
         style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Register company</button>
-<button onclick="register('new','user','aquib+18@rehive.com','test_company_1','newpassword1','newpassword1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Register</button>
-<button onclick="changePassword('bs12345678','bs123456789','bs123456789')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Change password</button>
+<button onclick="register('new','user','aquib+18@rehive.com','+8801703862565','test_company_1','newpassword1','newpassword1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Register</button>
+<button onclick="changePassword('test1234','bs123456789','bs123456789')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Change password</button>
 <button onclick="resetPassword('ark.aquib17@gmail.com','brain_station')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Reset password</button>
 <button onclick="resetConfirmPassword('bs12345678','bs12345678','Nzcw','4n1-41b025388fee7e5d422e')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Reset Confirm password</button>
 <button onclick="resendEmailVerification('aquib+18@rehive.com','test_company_1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Resend Email Verification</button>
 <button onclick="resendMobileVerification('+27793416724','test_company_1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Resend Mobile Verification</button>
 <button onclick="verifyMobile('76989')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-danger">Verify Mobile Number</button>
 
+<button onclick="twoFactorAuthStatus()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">two factor authentication status</button>
+
+<button onclick="activateTwoFactorSMSAuth()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-danger">activate sms authentication</button>
+<button onclick="deleteTwoFactorSMSAuth()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-danger">delete sms authentication</button>
+
+<button onclick="activateTwoFactorTokenAuth()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-danger">activate token authentication</button>
+<button onclick="deleteTwoFactorTokenAuth()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-danger">delete token authentication</button>
+
+<button onclick="verifyOTP()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">verify otp</button>
+
 <button onclick="getTokensList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Tokens List</button>
-<button onclick="getToken('4c9fbb2f')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Token</button>
+<button onclick="getToken('bc4eafd9')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Token</button>
 <button onclick="createToken('test1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Token</button>
 <button onclick="deleteToken('fbe42099')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Token</button>
 
@@ -36,6 +46,12 @@
 <button onclick="getUserBankAccount('194')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get bank account</button>
 <button onclick="createUserBankAccount('SSS',423232,'Cash','BSA LTD',52434,2343)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create user bank account</button>
 <button onclick="updateUserBankAccount('123',{name: 'BSA'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user bank account</button>
+
+<button onclick="getUserCryptoAccounts()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user crypto accounts</button>
+<button onclick="getUserCryptoAccount('123')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get crypto account</button>
+<button onclick="createUserCryptoAccounts('1508509404214','bitcoin',{})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create user crypto account</button>
+<button onclick="updateUserCryptoAccounts('123',{address: '1508509404216'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user crypto account</button>
+
 
 <button onclick="getUserBitcoinAccounts()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user bitcoin accounts</button>
 <button onclick="getUserBitcoinAccount('35')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get bitcoin account</button>
@@ -60,6 +76,9 @@
 </div>
 
 <button onclick="getTransactionsList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transactions List</button>
+<button onclick="getTransactionListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transaction List Next</button>
+<button onclick="getTransactionListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transaction List Previous</button>
+
 <button onclick="getTotalTransactionsList({currency:'XBT'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-danger">Get Total Transactions List</button>
 <button onclick="getTransaction('BVet5rtGYhLWDACd3NOT')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transaction</button>
 <button onclick="createDebit(300)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create debit</button>
@@ -67,8 +86,16 @@
 <button onclick="createTransfer({amount: 300,recipient: 'joshua@rehive.com'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Transfer</button>
 
 <button onclick="getAccountsList({active:false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Accounts List</button>
+<button onclick="createAccount('savings',false)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Account</button>
+<button onclick="getAccountsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account List Next</button>
+<button onclick="getAccountsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account List Previous</button>
 <button onclick="getAccount('elzYWdk8j9',{active:true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account</button>
+
 <button onclick="getAccountCurrenciesList('elzYWdk8j9',{active:true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account Currencies</button>
+
+<button onclick="getAccountCurrenciesListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account Currency Next</button>
+<button onclick="getAccountCurrenciesListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account Currency Previous</button>
+
 <button onclick="getAccountCurrency('elzYWdk8j9','USD')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account Currency</button>
 <button onclick="updateAccountCurrency('elzYWdk8j9','ZAR',{active:true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Account Currency</button>
 
