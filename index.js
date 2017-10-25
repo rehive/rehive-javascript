@@ -17,7 +17,10 @@ function Rehive(config) {
         users: {},
         transactions: {},
         accounts: {},
-        currencies: {}
+        currencies: {},
+        company: {},
+        subtypes: {},
+        switches: {}
     };
     var apiVersion = '3',
         baseAPI = 'https://rehive.com/api/' + apiVersion + '/',
@@ -71,12 +74,17 @@ function Rehive(config) {
         adminCreditTransactionsAPI = 'admin/transactions/credit/',
         adminDebitTransactionsAPI = 'admin/transactions/debit/',
         adminTransferTransactionsAPI = 'admin/transactions/transfer/',
+        adminTransactionsSwitchesAPI = 'admin/transactions/switches/',
+        adminTransactionsWebhooksAPI = 'admin/transactions/webhooks/',
         adminAccountsAPI = 'admin/accounts/',
         adminAccountsCurrenciesAPI = '/currencies/',
         adminAccountsCurrencyLimitsAPI = '/limits/',
         adminAccountsCurrencyFeesAPI = '/fees/',
         adminAccountsCurrencySwitchesAPI = '/switches/',
-        adminCurrenciesAPI = 'admin/currencies/';
+        adminCurrenciesAPI = 'admin/currencies/',
+        adminCompanyAPI = 'admin/company/',
+        adminSubtypesAPI = 'admin/subtypes/',
+        adminSwitchesAPI = 'admin/switches/';
 
     if (config) {
         config.apiVersion ? apiVersion = config.apiVersion : apiVersion = '3';
@@ -141,7 +149,6 @@ function Rehive(config) {
     }
 
     var httpPostRehive = function (url, data) {
-        console.log(JSON.stringify(data))
         return new Promise(function (resolve, reject) {
             var token = getToken();
 
@@ -2392,6 +2399,106 @@ function Rehive(config) {
         });
     };
 
+    this.admin.transactions.getSwitchesList = function () {
+        return new Promise(function(resolve,reject) {
+            httpGetRehive(adminTransactionsSwitchesAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transactions.createSwitch = function (data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(adminTransactionsSwitchesAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transactions.getSwitch = function (id) {
+        return new Promise(function(resolve,reject) {
+            httpGetRehive(adminTransactionsSwitchesAPI + id).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transactions.updateSwitch = function (id,data) {
+        return new Promise(function(resolve,reject) {
+            httpPatchRehive(adminTransactionsSwitchesAPI + id,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transactions.deleteSwitch = function (id) {
+        return new Promise(function(resolve,reject) {
+            httpDeleteRehive(adminTransactionsSwitchesAPI + id,{}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transactions.getWebhooksList = function () {
+        return new Promise(function(resolve,reject) {
+            httpGetRehive(adminTransactionsWebhooksAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transactions.createWebhook = function (data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(adminTransactionsWebhooksAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transactions.getWebhook = function (id) {
+        return new Promise(function(resolve,reject) {
+            httpGetRehive(adminTransactionsWebhooksAPI + id).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transactions.updateWebhook = function (id,data) {
+        return new Promise(function(resolve,reject) {
+            httpPatchRehive(adminTransactionsWebhooksAPI + id,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transactions.deleteWebhook = function (id) {
+        return new Promise(function(resolve,reject) {
+            httpDeleteRehive(adminTransactionsWebhooksAPI + id,{}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
     this.admin.accounts.getList = function (filter) {
         return new Promise(function(resolve,reject) {
             if(filter){
@@ -2880,6 +2987,125 @@ function Rehive(config) {
         });
     };
 
+    this.admin.company.get = function (){
+        return new Promise(function(resolve,reject){
+            httpGetRehive(adminCompanyAPI).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.company.update = function (data){
+        return new Promise(function(resolve,reject){
+            httpPatchRehive(adminCompanyAPI,data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.subtypes.getList = function () {
+        return new Promise(function(resolve,reject) {
+            httpGetRehive(adminSubtypesAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.subtypes.create = function (data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(adminSubtypesAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.subtypes.get = function (id) {
+        return new Promise(function(resolve,reject) {
+            httpGetRehive(adminSubtypesAPI + id).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.subtypes.update = function (id,data) {
+        return new Promise(function(resolve,reject) {
+            httpPatchRehive(adminSubtypesAPI + id,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.subtypes.delete = function (id) {
+        return new Promise(function(resolve,reject) {
+            httpDeleteRehive(adminSubtypesAPI + id,{}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.switches.getList = function () {
+        return new Promise(function(resolve,reject) {
+            httpGetRehive(adminSwitchesAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.switches.create = function (data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(adminSwitchesAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.switches.get = function (id) {
+        return new Promise(function(resolve,reject) {
+            httpGetRehive(adminSwitchesAPI + id).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.switches.update = function (id,data) {
+        return new Promise(function(resolve,reject) {
+            httpPatchRehive(adminSwitchesAPI + id,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.switches.delete = function (id) {
+        return new Promise(function(resolve,reject) {
+            httpDeleteRehive(adminSwitchesAPI + id,{}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
     //public functions end
 
     return this;

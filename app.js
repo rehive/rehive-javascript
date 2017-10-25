@@ -1476,6 +1476,107 @@ function createAdminTransferTransaction(user,recipient,currency,amount,debit_sub
     });
 }
 
+function getAdminTransactionsSwitchesList(){
+    rehive.admin.transactions.getSwitchesList().then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function createAdminTransactionsSwitch(tx_type,subtype,enabled){
+    rehive.admin.transactions.createSwitch(
+        {
+            tx_type: tx_type,
+            subtype: subtype,
+            enabled: enabled
+        }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminTransactionsSwitch(id){
+    rehive.admin.transactions.getSwitch(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function updateAdminTransactionsSwitch(id,data){
+    rehive.admin.transactions.updateSwitch(id,data).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function deleteAdminTransactionsSwitch(id){
+    rehive.admin.transactions.deleteSwitch(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminTransactionsWebhooksList(){
+    rehive.admin.transactions.getWebhooksList().then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function createAdminTransactionsWebhook(tx_type,event,url,secret){
+    rehive.admin.transactions.createWebhook(
+        {
+            tx_type: tx_type,
+            event: event,
+            url: url,
+            secret: secret
+        }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminTransactionsWebhook(id){
+    rehive.admin.transactions.getWebhook(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function updateAdminTransactionsWebhook(id,data){
+    rehive.admin.transactions.updateWebhook(id,data).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function deleteAdminTransactionsWebhook(id){
+    rehive.admin.transactions.deleteWebhook(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
 function getAdminUsersAccountsList(filter){
     rehive.admin.accounts.getList(filter).then(function(res){
         console.log(res);
@@ -1779,7 +1880,7 @@ function createAdminCurrency(code,description,symbol,unit,divisibility){
     });
 }
 
-function getAdminAdminCurrency(code){
+function getAdminCurrency(code){
     rehive.admin.currencies.get(code).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1788,8 +1889,126 @@ function getAdminAdminCurrency(code){
     });
 }
 
-function updateAdminAdminCurrency(code,data){
+function updateAdminCurrency(code,data){
     rehive.admin.currencies.update(code,data).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminCompany(){
+    rehive.admin.company.get().then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function updateAdminCompany(data){
+    rehive.admin.company.update(data).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminSubtypesList(){
+    rehive.admin.subtypes.getList().then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function createAdminSubtype(tx_type,name,label,description){
+    rehive.admin.subtypes.create(
+        {
+            tx_type: tx_type,
+            name: name,
+            label: label,
+            description: description
+        }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminSubtype(id){
+    rehive.admin.subtypes.get(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function updateAdminSubtype(id,data){
+    rehive.admin.subtypes.update(id,data).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function deleteAdminSubtype(id){
+    rehive.admin.subtypes.delete(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminGlobalSwitchesList(){
+    rehive.admin.switches.getList().then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function createAdminGlobalSwitch(switch_type,enabled){
+    rehive.admin.switches.create(
+        {
+            switch_type: switch_type,
+            enabled: enabled
+        }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminGlobalSwitch(id){
+    rehive.admin.switches.get(id).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function updateAdminGlobalSwitch(id,data){
+    rehive.admin.switches.update(id,data).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function deleteAdminGlobalSwitch(id){
+    rehive.admin.switches.delete(id).then(function(res){
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     },function(err){

@@ -115,7 +115,7 @@
 <div style="margin: 20px 0 0 20px">
     <label>Create new user</label>
     <input type="file" id="userProfile">
-    <button onclick="createUser('Aquib','Khan','ark.aquib17+110@gmail.com','','en','US','','','')" style="margin: 20px 0 0 0" class="btn btn-lg btn-danger">Create new user</button>
+    <button onclick="createUser('Aquib','Khan','ark.aquib17+110@gmail.com','','en','US','','','')" style="margin: 20px 0 0 0" class="btn btn-lg btn-default">Create new user</button>
 </div>
 
 <button onclick="getAdminUser('624e5d4f-ffa3-4fde-8dc1-1f001fb3d527')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin User</button>
@@ -199,6 +199,17 @@
 <button onclick="createAdminTransferTransaction('test1@rehive.com','joshua@rehive.com','USD',1000,'purchase',null,'note this is',{hello: 'yo'},null,'sell',null,{yo: 'hello'},'this is a note')"
         style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Transfer Transaction</button>
 
+<button onclick="getAdminTransactionsSwitchesList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Transactions Switches List</button>
+<button onclick="createAdminTransactionsSwitch('debit',null,true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Transactions Switch</button>
+<button onclick="getAdminTransactionsSwitch('47')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Transactions Switch</button>
+<button onclick="updateAdminTransactionsSwitch('48',{enabled: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Transactions Switch</button>
+<button onclick="deleteAdminTransactionsSwitch('48')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Transactions Switch</button>
+
+<button onclick="getAdminTransactionsWebhooksList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Transactions Webhooks List</button>
+<button onclick="createAdminTransactionsWebhook('debit','transaction.execute','http://www.sda.com','wow')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin Transactions Webhook</button>
+<button onclick="getAdminTransactionsWebhook('173')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Transactions Webhook</button>
+<button onclick="updateAdminTransactionsWebhook('173',{secret: 'not'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Transactions Webhook</button>
+<button onclick="deleteAdminTransactionsWebhook('173')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin Transactions Webhook</button>
 
 <button onclick="getAdminUsersAccountsList({user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Accounts List</button>
 <button onclick="getAdminUsersAccountsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Users Accounts List Next</button>
@@ -235,8 +246,23 @@
 <button onclick="getAdminCurrenciesListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Currencies List Next</button>
 <button onclick="getAdminCurrenciesListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Currencies List Previous</button>
 <button onclick="createAdminCurrency('POK','Test Currency','&^','pokal',2)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin Currency</button>
-<button onclick="getAdminAdminCurrency('POK')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Currency</button>
-<button onclick="updateAdminAdminCurrency('POK',{enabled: true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Currency</button>
+<button onclick="getAdminCurrency('POK')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Currency</button>
+<button onclick="updateAdminCurrency('POK',{enabled: true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Currency</button>
+
+<button onclick="getAdminCompany()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Company</button>
+<button onclick="updateAdminCompany({description: 'This is a test company'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Company</button>
+
+<button onclick="getAdminSubtypesList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Subtypes List</button>
+<button onclick="createAdminSubtype('credit','hello','hello all','hello all kids')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Admin Subtype</button>
+<button onclick="getAdminSubtype('69')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Subtype</button>
+<button onclick="updateAdminSubtype('69',{tx_type: 'debit'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin Subtype</button>
+<button onclick="deleteAdminSubtype('69')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Admin Subtype</button>
+
+<button onclick="getAdminGlobalSwitchesList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Switches List</button>
+<button onclick="createAdminGlobalSwitch('verification',true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Switch</button>
+<button onclick="getAdminGlobalSwitch('93')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Switch</button>
+<button onclick="updateAdminGlobalSwitch('93',{enabled: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Switch</button>
+<button onclick="deleteAdminGlobalSwitch('93')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Switch</button>
 
 </body>
 </html>
