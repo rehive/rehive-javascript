@@ -265,7 +265,27 @@
 
 <button onclick="getAdminNotificationsList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Notifications List</button>
 <button onclick="getAdminNotification('7')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Notification</button>
-<button onclick="updateAdminNotification('7',{enabled: true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin General Webhook</button>
+<button onclick="updateAdminNotification('7',{enabled: true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Notification</button>
+
+<button onclick="getAdminTiersList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Tiers List</button>
+<button onclick="createAdminTier('XBT','2','First Tier','My Second Tier')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Admin Tier</button>
+<button onclick="getAdminTier('123')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Tier</button>
+<button onclick="updateAdminTier('123',{name: 'Change My Tier name'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin Tier</button>
+
+<button onclick="getAdminTiersRequirementsList('123')" style="margin: 20px 0 0 20px" class="btn btn-lg default">Get Admin Tiers Requirements List</button>
+<button onclick="createAdminTierRequirements('123','first_name')" style="margin: 20px 0 0 20px" class="btn btn-lg default">Create Admin Tier Requirement</button>
+<button onclick="getAdminTierRequirement('123','279')" style="margin: 20px 0 0 20px" class="btn btn-lg default">Get Admin Tier Requirement</button>
+<button onclick="updateAdminTierRequirement('123','279','last_name')" style="margin: 20px 0 0 20px" class="btn btn-lg default">Update Admin Tier Requirement</button>
+
+<button onclick="getAdminTiersLimitsList('123')" style="margin: 20px 0 0 20px" class="btn btn-lg default">Get Admin Tiers Limits List</button>
+<button onclick="createAdminTierLimit('123','1000','max','debit',null)" style="margin: 20px 0 0 20px" class="btn btn-lg default">Create Admin Tier Limit</button>
+<button onclick="getAdminTierLimit('123','109')" style="margin: 20px 0 0 20px" class="btn btn-lg default">Get Admin Tier Limit</button>
+<button onclick="updateAdminTierLimit('123','109','5000')" style="margin: 20px 0 0 20px" class="btn btn-lg default">Update Admin Tier Limit</button>
+
+<button onclick="getAdminTiersFeesList('123')" style="margin: 20px 0 0 20px" class="btn btn-lg default">Get Admin Tiers Fees List</button>
+<button onclick="createAdminTierFee('123','2000','50','credit',null)" style="margin: 20px 0 0 20px" class="btn btn-lg default">Create Admin Tier Fee</button>
+<button onclick="getAdminTierFee('123','88')" style="margin: 20px 0 0 20px" class="btn btn-lg default">Get Admin Tier Fee</button>
+<button onclick="updateAdminTierFee('123','88','5000','25')" style="margin: 20px 0 0 20px" class="btn btn-lg default">Update Admin Tier Fee</button>
 
 <button onclick="getAdminGlobalSwitchesList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Switches List</button>
 <button onclick="createAdminGlobalSwitch('verification',true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Switch</button>

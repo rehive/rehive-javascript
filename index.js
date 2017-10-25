@@ -19,9 +19,10 @@ function Rehive(config) {
         accounts: {},
         currencies: {},
         company: {},
-        webhooks:{},
+        webhooks: {},
         subtypes: {},
-        notifications:{},
+        notifications: {},
+        tiers: {},
         switches: {}
     };
     var apiVersion = '3',
@@ -85,9 +86,14 @@ function Rehive(config) {
         adminAccountsCurrencySwitchesAPI = '/switches/',
         adminCurrenciesAPI = 'admin/currencies/',
         adminCompanyAPI = 'admin/company/',
-        adminWebhooksAPI='admin/webhooks/',
+        adminWebhooksAPI = 'admin/webhooks/',
         adminSubtypesAPI = 'admin/subtypes/',
-        adminNotificationsAPI='admin/notifications/',
+        adminNotificationsAPI = 'admin/notifications/',
+        adminTiersAPI = 'admin/tiers/',
+        adminTiersRequirementsAPI='/requirements/',
+        adminTiersLimitsAPI='/limits/',
+        adminTiersFeesAPI='/fees/',
+        adminTiersSwitchesAPI='/switches/',
         adminSwitchesAPI = 'admin/switches/';
 
     if (config) {
@@ -3050,7 +3056,7 @@ function Rehive(config) {
         })
     };
 
-    this.admin.webhooks.update = function (webhooksId,data) {
+    this.admin.webhooks.update = function (webhooksId, data) {
         return new Promise(function (resolve, reject) {
             httpPatchRehive(adminWebhooksAPI + webhooksId + '/', data).then(function (response) {
                 resolve(response);
@@ -3110,32 +3116,32 @@ function Rehive(config) {
         });
     };
 
-    this.admin.notifications.getList=function(){
-        return new Promise(function (resolve,reject){
-            httpGetRehive(adminNotificationsAPI).then(function (response){
+    this.admin.notifications.getList = function () {
+        return new Promise(function (resolve, reject) {
+            httpGetRehive(adminNotificationsAPI).then(function (response) {
                 resolve(response)
-            }, function(err){
+            }, function (err) {
                 reject(err)
             })
         })
     }
 
-    this.admin.notifications.get=function(notificationId){
-        return new Promise(function (resolve,reject) {
+    this.admin.notifications.get = function (notificationId) {
+        return new Promise(function (resolve, reject) {
             var url,
-                error = {status:'error', message:'Notifications id is required'}
-            if(notificationId && (typeof (notificationId)=='string')){
-                url=adminNotificationsAPI+ notificationId + '/'
+                error = {status: 'error', message: 'Notifications id is required'}
+            if (notificationId && (typeof (notificationId) == 'string')) {
+                url = adminNotificationsAPI + notificationId + '/'
             }
-            httpGetRehive(url).then(function(response){
+            httpGetRehive(url).then(function (response) {
                 resolve(response);
-            },function(error){
+            }, function (error) {
                 reject(error)
             })
         })
     }
 
-    this.admin.notifications.update = function (notificationId,data) {
+    this.admin.notifications.update = function (notificationId, data) {
         return new Promise(function (resolve, reject) {
             httpPatchRehive(adminNotificationsAPI + notificationId + '/', data).then(function (response) {
                 resolve(response);
@@ -3144,6 +3150,243 @@ function Rehive(config) {
             });
         })
     };
+
+    this.admin.tiers.getList = function () {
+        return new Promise(function (resolve, reject) {
+            httpGetRehive(adminTiersAPI).then(function (response) {
+                resolve(response)
+            }, function (err) {
+                reject(err)
+            })
+        })
+    }
+
+    this.admin.tiers.create = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(adminTiersAPI, data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    }
+
+    this.admin.tiers.get = function (tierId) {
+        return new Promise(function (resolve, reject) {
+            httpGetRehive(adminTiersAPI + tierId).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    }
+
+    this.admin.tiers.update = function (tierId, data) {
+        return new Promise(function (resolve, reject) {
+            httpPatchRehive(adminTiersAPI + tierId, data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    }
+
+
+    this.admin.tiers.getRequirementsList = function (tiersId) {
+        return new Promise(function (resolve, reject) {
+            if (!tiersId) {
+                reject('No Id is provided');
+                return
+            }
+            httpGetRehive(adminTiersAPI + tiersId + adminTiersRequirementsAPI).then(function (response) {
+                resolve(response)
+            }, function (err) {
+                reject(err)
+            })
+        })
+    }
+
+    this.admin.tiers.createRequirements = function (tiersId,data) {
+        return new Promise(function (resolve, reject) {
+            if (!tiersId) {
+                reject('No Id is provided');
+                return
+            }
+            httpPostRehive(adminTiersAPI + tiersId + adminTiersRequirementsAPI, data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    }
+
+    this.admin.tiers.getRequirement = function (tierId,requirementId) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No  tier id is provided');
+                return
+            }
+            if (!requirementId) {
+                reject('No  requirement id is provided');
+                return
+            }
+            httpGetRehive(adminTiersAPI + tierId + adminTiersRequirementsAPI + requirementId).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    }
+
+    this.admin.tiers.updateRequirement = function (tierId, requirementId, data) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No  tier id is provided');
+                return
+            }
+            if (!requirementId) {
+                reject('No  requirement id is provided');
+                return
+            }
+            httpPatchRehive(adminTiersAPI + tierId + adminTiersRequirementsAPI + requirementId, data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    }
+
+
+    this.admin.tiers.getFeesList = function (tiersId) {
+        return new Promise(function (resolve, reject) {
+            if (!tiersId) {
+                reject('No Id is provided');
+                return
+            }
+            httpGetRehive(adminTiersAPI + tiersId + adminTiersFeesAPI).then(function (response) {
+                resolve(response)
+            }, function (err) {
+                reject(err)
+            })
+        })
+    }
+
+    this.admin.tiers.createFee = function (tiersId,data) {
+        return new Promise(function (resolve, reject) {
+            if (!tiersId) {
+                reject('No Id is provided');
+                return
+            }
+            httpPostRehive(adminTiersAPI + tiersId + adminTiersFeesAPI, data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    }
+
+    this.admin.tiers.getFee = function (tierId,feeId) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No  tier id is provided');
+                return
+            }
+            if (!feeId) {
+                reject('No  fee id is provided');
+                return
+            }
+            httpGetRehive(adminTiersAPI + tierId + adminTiersFeesAPI + feeId).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    }
+
+    this.admin.tiers.updateFee = function (tierId, feeId, data) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No  tier id is provided');
+                return
+            }
+            if (!feeId) {
+                reject('No  fee id is provided');
+                return
+            }
+            httpPatchRehive(adminTiersAPI + tierId + adminTiersFeesAPI + feeId, data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    }
+
+
+
+    this.admin.tiers.getLimitsList = function (tiersId) {
+        return new Promise(function (resolve, reject) {
+            if (!tiersId) {
+                reject('No Id is provided');
+                return
+            }
+            httpGetRehive(adminTiersAPI + tiersId + adminTiersLimitsAPI).then(function (response) {
+                resolve(response)
+            }, function (err) {
+                reject(err)
+            })
+        })
+    }
+
+    this.admin.tiers.createLimit = function (tiersId,data) {
+        return new Promise(function (resolve, reject) {
+            if (!tiersId) {
+                reject('No Id is provided');
+                return
+            }
+            httpPostRehive(adminTiersAPI + tiersId + adminTiersLimitsAPI, data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    }
+
+    this.admin.tiers.getLimit = function (tierId,limitId) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No  tier id is provided');
+                return
+            }
+            if (!limitId) {
+                reject('No  requirement id is provided');
+                return
+            }
+            httpGetRehive(adminTiersAPI + tierId + adminTiersLimitsAPI + limitId).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    }
+
+    this.admin.tiers.updateLimit = function (tierId, limitId, data) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No  tier id is provided');
+                return
+            }
+            if (!limitId) {
+                reject('No  requirement id is provided');
+                return
+            }
+            httpPatchRehive(adminTiersAPI + tierId + adminTiersLimitsAPI + limitId, data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    }
+
 
     this.admin.switches.getList = function () {
         return new Promise(function (resolve, reject) {
