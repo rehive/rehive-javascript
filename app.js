@@ -1547,3 +1547,66 @@ function deleteAdminUsersAccountCurrencySwitch(reference,code,id){
         console.log(err);
     });
 }
+
+function getAdminCurrenciesList(filter){
+    rehive.admin.currencies.getList(filter).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminCurrenciesListNext(){
+    rehive.admin.currencies.getList.next().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminCurrenciesListPrevious(){
+    rehive.admin.currencies.getList.previous().then(function(res){
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function createAdminCurrency(code,description,symbol,unit,divisibility){
+    rehive.admin.currencies.create(
+        {
+            code: code,
+            description: description,
+            symbol: symbol,
+            unit: unit,
+            divisibility: divisibility
+        }).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function getAdminAdminCurrency(code){
+    rehive.admin.currencies.get(code).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}
+
+function updateAdminAdminCurrency(code,data){
+    rehive.admin.currencies.update(code,data).then(function(res){
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    },function(err){
+        console.log(err);
+    });
+}

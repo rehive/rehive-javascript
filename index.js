@@ -2510,7 +2510,99 @@ function Rehive(config){
         });
     };
 
+    this.admin.currencies.getList = function (filter) {
+        return new Promise(function(resolve,reject) {
+            if(filter){
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
 
+            httpGetRehive(adminCurrenciesAPI + filter).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.currencies.getList.next = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.currencies.getList.previous = function () {
+        return new Promise(function(resolve,reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'),mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.currencies.create = function (data){
+        return new Promise(function(resolve,reject) {
+            httpPostRehive(adminCurrenciesAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.currencies.get = function (code){
+        return new Promise(function(resolve,reject){
+            if(!code){
+                reject('No code provided');
+            }
+
+            httpGetRehive(adminCurrenciesAPI + code + '/').then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.currencies.update = function (code,data){
+        return new Promise(function(resolve,reject){
+            if(!code){
+                reject('No code has been given');
+                return;
+            }
+
+            httpPatchRehive(adminCurrenciesAPI + code + '/',data).then(function(response){
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
 
     //public functions end
 
