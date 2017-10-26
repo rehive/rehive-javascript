@@ -1954,6 +1954,15 @@ function updateAdminGeneralWebhooks(webhooksId, data) {
     });
 }
 
+function deleteAdminGeneralWebhooks(id) {
+    rehive.admin.webhooks.delete(id).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
 function getAdminSubtypesList() {
     rehive.admin.subtypes.getList().then(function (res) {
         console.log(res);
@@ -1989,6 +1998,15 @@ function getAdminSubtype(id) {
 
 function updateAdminSubtype(id, data) {
     rehive.admin.subtypes.update(id, data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function deleteAdminSubtype(id) {
+    rehive.admin.subtypes.delete(id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2065,6 +2083,14 @@ function updateAdminTier(tierId, data) {
     })
 }
 
+function deleteAdminTier(tierId) {
+    rehive.admin.tiers.delete(tierId).then(function (res) {
+        console.log(res)
+        document.getElementById('result').innerHTML = convertToText(res)
+    }, function (error) {
+        console.log(error)
+    })
+}
 
 function getAdminTiersRequirementsList(tiersId) {
     rehive.admin.tiers.getRequirementsList(tiersId).then(function (res) {
@@ -2095,8 +2121,17 @@ function getAdminTierRequirement(tierId, requirementId) {
     })
 }
 
-function updateAdminTierRequirement(tierId, requirementId, requirement) {
-    rehive.admin.tiers.updateRequirement(tierId, requirementId, {requirement: requirement}).then(function (res) {
+function updateAdminTierRequirement(tierId, requirementId, data) {
+    rehive.admin.tiers.updateRequirement(tierId, requirementId, data).then(function (res) {
+        console.log(res)
+        document.getElementById('result').innerHTML = convertToText(res)
+    }, function (error) {
+        console.log(error)
+    })
+}
+
+function deleteAdminTierRequirement(tierId,requirementId) {
+    rehive.admin.tiers.deleteRequirement(tierId,requirementId).then(function (res) {
         console.log(res)
         document.getElementById('result').innerHTML = convertToText(res)
     }, function (error) {
@@ -2137,14 +2172,8 @@ function getAdminTierLimit(tierId, limitId) {
     })
 }
 
-function updateAdminTierLimit(tierId, limitId, value, type, tx_type, subtype) {
-    rehive.admin.tiers.updateLimit(tierId, limitId,
-        {
-            value: value,
-            type: type,
-            tx_type: tx_type,
-            subtype: subtype
-        }).then(function (res) {
+function updateAdminTierLimit(tierId, limitId,data) {
+    rehive.admin.tiers.updateLimit(tierId, limitId,data).then(function (res) {
         console.log(res)
         document.getElementById('result').innerHTML = convertToText(res)
     }, function (error) {
@@ -2152,6 +2181,14 @@ function updateAdminTierLimit(tierId, limitId, value, type, tx_type, subtype) {
     })
 }
 
+function deleteAdminTierLimit(tierId, limitId) {
+    rehive.admin.tiers.deleteLimit(tierId, limitId).then(function (res) {
+        console.log(res)
+        document.getElementById('result').innerHTML = convertToText(res)
+    }, function (error) {
+        console.log(error)
+    })
+}
 
 
 function getAdminTiersFeesList(tiersId) {
@@ -2186,14 +2223,17 @@ function getAdminTierFee(tierId, feeId) {
     })
 }
 
-function updateAdminTierFee(tierId, feeId, value, percentage, tx_type, subtype) {
-    rehive.admin.tiers.updateFee(tierId, feeId,
-        {
-            value: value,
-            percentage: percentage,
-            tx_type: tx_type,
-            subtype: subtype
-        }).then(function (res) {
+function updateAdminTierFee(tierId, feeId,data) {
+    rehive.admin.tiers.updateFee(tierId, feeId,data).then(function (res) {
+        console.log(res)
+        document.getElementById('result').innerHTML = convertToText(res)
+    }, function (error) {
+        console.log(error)
+    })
+}
+
+function deleteAdminTierFee(tierId, feeId) {
+    rehive.admin.tiers.deleteFee(tierId, feeId).then(function (res) {
         console.log(res)
         document.getElementById('result').innerHTML = convertToText(res)
     }, function (error) {
@@ -2233,12 +2273,8 @@ function getAdminTierSwitch(tierId, switchId) {
     })
 }
 
-function updateAdminTierSwitch(tierId, switchId, tx_type, enabled) {
-    rehive.admin.tiers.updateSwitch(tierId, switchId,
-        {
-            tx_type: tx_type,
-            enabled: enabled
-        }).then(function (res) {
+function updateAdminTierSwitch(tierId, switchId, data) {
+    rehive.admin.tiers.updateSwitch(tierId, switchId,data).then(function (res) {
         console.log(res)
         document.getElementById('result').innerHTML = convertToText(res)
     }, function (error) {
@@ -2246,14 +2282,13 @@ function updateAdminTierSwitch(tierId, switchId, tx_type, enabled) {
     })
 }
 
-
-function deleteAdminSubtype(id) {
-    rehive.admin.subtypes.delete(id).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
+function deleteAdminTierSwitch(tierId, switchId) {
+    rehive.admin.tiers.deleteSwitch(tierId, switchId).then(function (res) {
+        console.log(res)
+        document.getElementById('result').innerHTML = convertToText(res)
+    }, function (error) {
+        console.log(error)
+    })
 }
 
 function getAdminGlobalSwitchesList() {

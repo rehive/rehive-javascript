@@ -3066,6 +3066,16 @@ function Rehive(config) {
         })
     };
 
+    this.admin.webhooks.delete = function (id) {
+        return new Promise(function (resolve, reject) {
+            httpDeleteRehive(adminWebhooksAPI + id, {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
     this.admin.subtypes.getList = function () {
         return new Promise(function (resolve, reject) {
             httpGetRehive(adminSubtypesAPI).then(function (response) {
@@ -3169,7 +3179,7 @@ function Rehive(config) {
                 reject(error)
             })
         })
-    }
+    };
 
     this.admin.tiers.get = function (tierId) {
         return new Promise(function (resolve, reject) {
@@ -3179,7 +3189,7 @@ function Rehive(config) {
                 reject(error)
             })
         })
-    }
+    };
 
     this.admin.tiers.update = function (tierId, data) {
         return new Promise(function (resolve, reject) {
@@ -3189,7 +3199,17 @@ function Rehive(config) {
                 reject(error)
             })
         })
-    }
+    };
+
+    this.admin.tiers.delete = function (tierId) {
+        return new Promise(function (resolve, reject) {
+            httpDeleteRehive(adminTiersAPI + tierId,{}).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
 
 
     this.admin.tiers.getRequirementsList = function (tiersId) {
@@ -3204,7 +3224,7 @@ function Rehive(config) {
                 reject(err)
             })
         })
-    }
+    };
 
     this.admin.tiers.createRequirements = function (tiersId,data) {
         return new Promise(function (resolve, reject) {
@@ -3218,7 +3238,7 @@ function Rehive(config) {
                 reject(error)
             })
         })
-    }
+    };
 
     this.admin.tiers.getRequirement = function (tierId,requirementId) {
         return new Promise(function (resolve, reject) {
@@ -3236,7 +3256,7 @@ function Rehive(config) {
                 reject(error)
             })
         })
-    }
+    };
 
     this.admin.tiers.updateRequirement = function (tierId, requirementId, data) {
         return new Promise(function (resolve, reject) {
@@ -3254,7 +3274,25 @@ function Rehive(config) {
                 reject(error)
             })
         })
-    }
+    };
+
+    this.admin.tiers.deleteRequirement = function (tierId,requirementId) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No  tier id is provided');
+                return
+            }
+            if (!requirementId) {
+                reject('No  requirement id is provided');
+                return
+            }
+            httpDeleteRehive(adminTiersAPI + tierId + adminTiersRequirementsAPI + requirementId).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
 
 
     this.admin.tiers.getFeesList = function (tiersId) {
@@ -3283,7 +3321,7 @@ function Rehive(config) {
                 reject(error)
             })
         })
-    }
+    };
 
     this.admin.tiers.getFee = function (tierId,feeId) {
         return new Promise(function (resolve, reject) {
@@ -3301,7 +3339,7 @@ function Rehive(config) {
                 reject(error)
             })
         })
-    }
+    };
 
     this.admin.tiers.updateFee = function (tierId, feeId, data) {
         return new Promise(function (resolve, reject) {
@@ -3319,8 +3357,25 @@ function Rehive(config) {
                 reject(error)
             })
         })
-    }
+    };
 
+    this.admin.tiers.deleteFee = function (tierId,feeId) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No  tier id is provided');
+                return
+            }
+            if (!feeId) {
+                reject('No  fee id is provided');
+                return
+            }
+            httpDeleteRehive(adminTiersAPI + tierId + adminTiersFeesAPI + feeId).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
 
 
     this.admin.tiers.getSwitchesList = function (tiersId) {
@@ -3335,7 +3390,7 @@ function Rehive(config) {
                 reject(err)
             })
         })
-    }
+    };
 
     this.admin.tiers.createSwitch = function (tiersId,data) {
         return new Promise(function (resolve, reject) {
@@ -3349,7 +3404,7 @@ function Rehive(config) {
                 reject(error)
             })
         })
-    }
+    };
 
     this.admin.tiers.getSwitch = function (tierId,switchId) {
         return new Promise(function (resolve, reject) {
@@ -3367,7 +3422,7 @@ function Rehive(config) {
                 reject(error)
             })
         })
-    }
+    };
 
     this.admin.tiers.updateSwitch = function (tierId, switchId, data) {
         return new Promise(function (resolve, reject) {
@@ -3385,8 +3440,25 @@ function Rehive(config) {
                 reject(error)
             })
         })
-    }
+    };
 
+    this.admin.tiers.deleteSwitch = function (tierId,switchId) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No  tier id is provided');
+                return
+            }
+            if (!switchId) {
+                reject('No  switch id is provided');
+                return
+            }
+            httpDeleteRehive(adminTiersAPI + tierId + adminTiersSwitchesAPI + switchId).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
 
 
     this.admin.tiers.getLimitsList = function (tiersId) {
@@ -3415,7 +3487,7 @@ function Rehive(config) {
                 reject(error)
             })
         })
-    }
+    };
 
     this.admin.tiers.getLimit = function (tierId,limitId) {
         return new Promise(function (resolve, reject) {
@@ -3433,7 +3505,7 @@ function Rehive(config) {
                 reject(error)
             })
         })
-    }
+    };
 
     this.admin.tiers.updateLimit = function (tierId, limitId, data) {
         return new Promise(function (resolve, reject) {
@@ -3451,7 +3523,25 @@ function Rehive(config) {
                 reject(error)
             })
         })
-    }
+    };
+
+    this.admin.tiers.deleteLimit = function (tierId,limitId) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No  tier id is provided');
+                return
+            }
+            if (!limitId) {
+                reject('No  requirement id is provided');
+                return
+            }
+            httpDeleteRehive(adminTiersAPI + tierId + adminTiersLimitsAPI + limitId).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
 
 
     this.admin.switches.getList = function () {
