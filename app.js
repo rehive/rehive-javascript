@@ -2202,6 +2202,51 @@ function updateAdminTierFee(tierId, feeId, value, percentage, tx_type, subtype) 
 }
 
 
+function getAdminTiersSwitchesList(tiersId) {
+    rehive.admin.tiers.getSwitchesList(tiersId).then(function (res) {
+        console.log(res)
+        document.getElementById('result').innerHTML = convertToText(res)
+    }, function (error) {
+        console.log(error)
+    })
+}
+
+function createAdminTierSwitch(tiersId, tx_type, subtype, enabled) {
+    rehive.admin.tiers.createSwitch(tiersId, {
+        tx_type: tx_type,
+        subtype: subtype,
+        enabled:enabled
+    }).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminTierSwitch(tierId, switchId) {
+    rehive.admin.tiers.getSwitch(tierId, switchId).then(function (res) {
+        console.log(res)
+        document.getElementById('result').innerHTML = convertToText(res)
+    }, function (error) {
+        console.log(error)
+    })
+}
+
+function updateAdminTierSwitch(tierId, switchId, tx_type, enabled) {
+    rehive.admin.tiers.updateSwitch(tierId, switchId,
+        {
+            tx_type: tx_type,
+            enabled: enabled
+        }).then(function (res) {
+        console.log(res)
+        document.getElementById('result').innerHTML = convertToText(res)
+    }, function (error) {
+        console.log(error)
+    })
+}
+
+
 function deleteAdminSubtype(id) {
     rehive.admin.subtypes.delete(id).then(function (res) {
         console.log(res);

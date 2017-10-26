@@ -3323,6 +3323,72 @@ function Rehive(config) {
 
 
 
+    this.admin.tiers.getSwitchesList = function (tiersId) {
+        return new Promise(function (resolve, reject) {
+            if (!tiersId) {
+                reject('No Id is provided');
+                return
+            }
+            httpGetRehive(adminTiersAPI + tiersId + adminTiersSwitchesAPI).then(function (response) {
+                resolve(response)
+            }, function (err) {
+                reject(err)
+            })
+        })
+    }
+
+    this.admin.tiers.createSwitch = function (tiersId,data) {
+        return new Promise(function (resolve, reject) {
+            if (!tiersId) {
+                reject('No Id is provided');
+                return
+            }
+            httpPostRehive(adminTiersAPI + tiersId + adminTiersSwitchesAPI, data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    }
+
+    this.admin.tiers.getSwitch = function (tierId,switchId) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No  tier id is provided');
+                return
+            }
+            if (!switchId) {
+                reject('No  switch id is provided');
+                return
+            }
+            httpGetRehive(adminTiersAPI + tierId + adminTiersSwitchesAPI + switchId).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    }
+
+    this.admin.tiers.updateSwitch = function (tierId, switchId, data) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No  tier id is provided');
+                return
+            }
+            if (!switchId) {
+                reject('No  switch id is provided');
+                return
+            }
+            httpPatchRehive(adminTiersAPI + tierId + adminTiersSwitchesAPI + switchId, data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    }
+
+
+
     this.admin.tiers.getLimitsList = function (tiersId) {
         return new Promise(function (resolve, reject) {
             if (!tiersId) {
