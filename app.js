@@ -15,7 +15,7 @@ function convertToText(data) {
     return dataString;
 }
 
-function register(first_name, last_name, email, mobile, company, password1, password2) {
+function register(first_name, last_name, email, mobile, company, password1, password2,terms_and_conditions) {
     rehive.auth.register(
         {
             first_name: first_name,
@@ -24,7 +24,8 @@ function register(first_name, last_name, email, mobile, company, password1, pass
             mobile: mobile,
             company: company,
             password1: password1,
-            password2: password2
+            password2: password2,
+            terms_and_conditions: terms_and_conditions
         }).then(function (user) {
         console.log(user);
         document.getElementById('result').innerHTML = convertToText(user);
@@ -33,7 +34,7 @@ function register(first_name, last_name, email, mobile, company, password1, pass
     });
 }
 
-function registerCompany(first_name, last_name, email, company, password1, password2) {
+function registerCompany(first_name, last_name, email, company, password1, password2,terms_and_conditions) {
     rehive.auth.registerCompany(
         {
             first_name: first_name,
@@ -41,7 +42,8 @@ function registerCompany(first_name, last_name, email, company, password1, passw
             email: email,
             company: company,
             password1: password1,
-            password2: password2
+            password2: password2,
+            terms_and_conditions: terms_and_conditions
         }).then(function (user) {
         console.log(user);
         document.getElementById('result').innerHTML = convertToText(user);
@@ -796,6 +798,15 @@ function getAdminUsersListPrevious() {
     })
 }
 
+function getAdminUsersOverview() {
+    rehive.admin.users.getOverview().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
 function createUser(first_name, last_name, email, id_number, language, nationality, metadata, mobile_number, timezone) {
     var fileSelected = document.getElementById("userProfile").files[0],
         formData = new FormData();
@@ -888,6 +899,123 @@ function updateAdminUserSwitch(uuid, id, data) {
 
 function deleteAdminUserSwitch(uuid, id) {
     rehive.admin.users.deleteSwitch(uuid, id).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminUserPermissionsList(uuid,filter) {
+    rehive.admin.users.getPermissionsList(uuid,filter).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminUserPermissionsListNext() {
+    rehive.admin.users.getPermissionsList.next().then(function (res) {
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminUserPermissionsListPrevious() {
+    rehive.admin.users.getPermissionsList.previous().then(function (res) {
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function createAdminUserPermission(uuid,type,level) {
+    rehive.admin.users.createPermission(uuid, {
+        type: type,
+        level: level
+    }).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminUserPermission(uuid,id) {
+    rehive.admin.users.getPermission(uuid,id).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function deleteAdminUserPermission(uuid,id) {
+    rehive.admin.users.deletePermission(uuid,id).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminUserPermissionGroupsList(uuid,filter) {
+    rehive.admin.users.getPermissionGroupsList(uuid,filter).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminUserPermissionGroupsListNext() {
+    rehive.admin.users.getPermissionGroupsList.next().then(function (res) {
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminUserPermissionGroupsListPrevious() {
+    rehive.admin.users.getPermissionGroupsList.previous().then(function (res) {
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function addAdminUserPermissionGroup(uuid,group) {
+    rehive.admin.users.addPermissionGroup(uuid, {
+        group: group
+    }).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminUserPermissionGroup(uuid,name) {
+    rehive.admin.users.getPermissionGroup(uuid,name).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function deleteAdminUserPermissionGroup(uuid,name) {
+    rehive.admin.users.deletePermissionGroup(uuid,name).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1896,6 +2024,69 @@ function updateAdminCurrency(code, data) {
     });
 }
 
+function getAdminCurrencyBankAccountsList(code,filter) {
+    rehive.admin.currencies.getBankAccountsList(code,filter).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminCurrencyBankAccountsListNext() {
+    rehive.admin.currencies.getBankAccountsList.next().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminCurrencyBankAccountsListPrevious() {
+    rehive.admin.currencies.getBankAccountsList.previous().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminCurrencyBankAccount(code,id) {
+    rehive.admin.currencies.getBankAccount(code,id).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function addAdminCurrencyBankAccount(code,data) {
+    rehive.admin.currencies.addBankAccount(code,data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function deleteAdminCurrencyBankAccount(code,id) {
+    rehive.admin.currencies.deleteBankAccount(code,id).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminCurrencyOverview(code) {
+    rehive.admin.currencies.getOverview(code).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
 function getAdminCompany() {
     rehive.admin.company.get().then(function (res) {
         console.log(res);
@@ -2333,6 +2524,109 @@ function updateAdminGlobalSwitch(id, data) {
 
 function deleteAdminGlobalSwitch(id) {
     rehive.admin.switches.delete(id).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminBankAccountsList() {
+    rehive.admin.bankAccounts.getList().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function createAdminBankAccount(name, number,type, bank_name, bank_code, branch_code, swift, iban, bic) {
+    rehive.admin.bankAccounts.create(
+        {
+            name: name,
+            number: number,
+            type: type,
+            bank_name: bank_name,
+            bank_code: bank_code,
+            branch_code: branch_code,
+            swift: swift,
+            iban: iban,
+            bic: bic
+        }).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminBankAccount(id) {
+    rehive.admin.bankAccounts.get(id).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function updateAdminBankAccount(id, data) {
+    rehive.admin.bankAccounts.update(id, data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function deleteAdminBankAccount(id) {
+    rehive.admin.bankAccounts.delete(id).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminServicesList(filter) {
+    rehive.admin.services.getList(filter).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminServicesListNext() {
+    rehive.admin.services.getList.next().then(function (res) {
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminServicesListPrevious() {
+    rehive.admin.services.getList.previous().then(function (res) {
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminService(id) {
+    rehive.admin.services.get(id).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function updateAdminService(id, data) {
+    rehive.admin.services.update(id, data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {

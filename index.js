@@ -19,11 +19,13 @@ function Rehive(config) {
         accounts: {},
         currencies: {},
         company: {},
+        bankAccounts: {},
         webhooks: {},
         subtypes: {},
         notifications: {},
         tiers: {},
-        switches: {}
+        switches: {},
+        services: {}
     };
     var apiVersion = '3',
         baseAPI = 'https://rehive.com/api/' + apiVersion + '/',
@@ -65,10 +67,13 @@ function Rehive(config) {
         headers = {'Content-Type': 'application/json'};
 
     var adminUsersAPI = 'admin/users/',
+        adminUsersOverviewAPI = 'admin/users/overview/',
         adminUserSwitchesAPI = '/switches/',
+        adminUserPermissionsAPI = '/permissions/',
+        adminUserPermissionGroupsAPI = '/permission-groups/',
         adminUserAddressesAPI = 'admin/users/addresses/',
         adminUserBankAccountsAPI = 'admin/users/bank-accounts/',
-        adminUserCryptoAccontsAPI = 'admin/users/crypto-accounts/',
+        adminUserCryptoAccountsAPI = 'admin/users/crypto-accounts/',
         adminUserDocumentsAPI = 'admin/users/documents/',
         adminUserEmailsAPI = 'admin/users/emails/',
         adminUserMobilesAPI = 'admin/users/mobiles/',
@@ -85,6 +90,8 @@ function Rehive(config) {
         adminAccountsCurrencyFeesAPI = '/fees/',
         adminAccountsCurrencySwitchesAPI = '/switches/',
         adminCurrenciesAPI = 'admin/currencies/',
+        adminCurrenciesBankAccountsAPI = '/bank-accounts/',
+        adminCurrenciesOverviewAPI = '/overview/',
         adminCompanyAPI = 'admin/company/',
         adminWebhooksAPI = 'admin/webhooks/',
         adminSubtypesAPI = 'admin/subtypes/',
@@ -94,7 +101,9 @@ function Rehive(config) {
         adminTiersLimitsAPI='/limits/',
         adminTiersFeesAPI='/fees/',
         adminTiersSwitchesAPI='/switches/',
-        adminSwitchesAPI = 'admin/switches/';
+        adminSwitchesAPI = 'admin/switches/',
+        adminBankAccountsAPI = 'admin/bank-accounts/',
+        adminServicesAPI = 'admin/services/';
 
     if (config) {
         config.apiVersion ? apiVersion = config.apiVersion : apiVersion = '3';
@@ -1405,6 +1414,17 @@ function Rehive(config) {
         });
     };
 
+    this.admin.users.getOverview = function () {
+        return new Promise(function (resolve, reject) {
+            httpGetRehive(adminUsersOverviewAPI).then(function (response) {
+                saveFilterInSessionStorage(response)
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
     this.admin.users.create = function (data) {
         return new Promise(function (resolve, reject) {
             var token = getToken();
@@ -1562,6 +1582,186 @@ function Rehive(config) {
             }
 
             httpDeleteRehive(adminUsersAPI + uuid + adminUserSwitchesAPI + id + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getPermissionsList = function (uuid,filter) {
+        return new Promise(function (resolve, reject) {
+            if (!uuid) {
+                reject('No identifier has been given');
+                return;
+            }
+
+            if (filter) {
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
+
+            httpGetRehive(adminUsersAPI + uuid + adminUserPermissionsAPI + filter).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getPermissionsList.next = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.users.getPermissionsList.previous = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.users.createPermission = function (uuid, data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(adminUsersAPI + uuid + adminUserPermissionsAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getPermission = function (uuid, id) {
+        return new Promise(function (resolve, reject) {
+            httpGetRehive(adminUsersAPI + uuid + adminUserPermissionsAPI + id + '/').then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.deletePermission = function (uuid, id) {
+        return new Promise(function (resolve, reject) {
+            httpDeleteRehive(adminUsersAPI + uuid + adminUserPermissionsAPI + id + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getPermissionGroupsList = function (uuid,filter) {
+        return new Promise(function (resolve, reject) {
+            if (!uuid) {
+                reject('No identifier has been given');
+                return;
+            }
+
+            if (filter) {
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
+
+            httpGetRehive(adminUsersAPI + uuid + adminUserPermissionGroupsAPI + filter).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getPermissionGroupsList.next = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.users.getPermissionGroupsList.previous = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.users.addPermissionGroup = function (uuid, data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(adminUsersAPI + uuid + adminUserPermissionGroupsAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getPermissionGroup = function (uuid, name) {
+        return new Promise(function (resolve, reject) {
+            httpGetRehive(adminUsersAPI + uuid + adminUserPermissionGroupsAPI + name + '/').then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.deletePermissionGroup = function (uuid, name) {
+        return new Promise(function (resolve, reject) {
+            httpDeleteRehive(adminUsersAPI + uuid + adminUserPermissionGroupsAPI + name + '/', {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1796,7 +1996,7 @@ function Rehive(config) {
                 filter = '';
             }
 
-            httpGetRehive(adminUserCryptoAccontsAPI + filter).then(function (response) {
+            httpGetRehive(adminUserCryptoAccountsAPI + filter).then(function (response) {
                 saveFilterInSessionStorage(response);
                 resolve(response);
             }, function (error) {
@@ -1845,7 +2045,7 @@ function Rehive(config) {
 
     this.admin.users.createCryptoAccount = function (data) {
         return new Promise(function (resolve, reject) {
-            httpPostRehive(adminUserCryptoAccontsAPI, data).then(function (response) {
+            httpPostRehive(adminUserCryptoAccountsAPI, data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1859,7 +2059,7 @@ function Rehive(config) {
                 reject('No address id provided');
             }
 
-            httpGetRehive(adminUserCryptoAccontsAPI + id + '/').then(function (response) {
+            httpGetRehive(adminUserCryptoAccountsAPI + id + '/').then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1874,7 +2074,7 @@ function Rehive(config) {
                 return;
             }
 
-            httpPatchRehive(adminUserCryptoAccontsAPI + id + '/', data).then(function (response) {
+            httpPatchRehive(adminUserCryptoAccountsAPI + id + '/', data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1889,7 +2089,7 @@ function Rehive(config) {
                 return;
             }
 
-            httpDeleteRehive(adminUserCryptoAccontsAPI + id + '/', {}).then(function (response) {
+            httpDeleteRehive(adminUserCryptoAccountsAPI + id + '/', {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2431,7 +2631,7 @@ function Rehive(config) {
 
     this.admin.transactions.getSwitch = function (id) {
         return new Promise(function (resolve, reject) {
-            httpGetRehive(adminTransactionsSwitchesAPI + id).then(function (response) {
+            httpGetRehive(adminTransactionsSwitchesAPI + id + '/').then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2441,7 +2641,7 @@ function Rehive(config) {
 
     this.admin.transactions.updateSwitch = function (id, data) {
         return new Promise(function (resolve, reject) {
-            httpPatchRehive(adminTransactionsSwitchesAPI + id, data).then(function (response) {
+            httpPatchRehive(adminTransactionsSwitchesAPI + id + '/', data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2451,7 +2651,7 @@ function Rehive(config) {
 
     this.admin.transactions.deleteSwitch = function (id) {
         return new Promise(function (resolve, reject) {
-            httpDeleteRehive(adminTransactionsSwitchesAPI + id, {}).then(function (response) {
+            httpDeleteRehive(adminTransactionsSwitchesAPI + id + '/', {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2481,7 +2681,7 @@ function Rehive(config) {
 
     this.admin.transactions.getWebhook = function (id) {
         return new Promise(function (resolve, reject) {
-            httpGetRehive(adminTransactionsWebhooksAPI + id).then(function (response) {
+            httpGetRehive(adminTransactionsWebhooksAPI + id + '/').then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2491,7 +2691,7 @@ function Rehive(config) {
 
     this.admin.transactions.updateWebhook = function (id, data) {
         return new Promise(function (resolve, reject) {
-            httpPatchRehive(adminTransactionsWebhooksAPI + id, data).then(function (response) {
+            httpPatchRehive(adminTransactionsWebhooksAPI + id + '/', data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2501,7 +2701,7 @@ function Rehive(config) {
 
     this.admin.transactions.deleteWebhook = function (id) {
         return new Promise(function (resolve, reject) {
-            httpDeleteRehive(adminTransactionsWebhooksAPI + id, {}).then(function (response) {
+            httpDeleteRehive(adminTransactionsWebhooksAPI + id + '/', {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2670,7 +2870,7 @@ function Rehive(config) {
                 return;
             }
 
-            httpGetRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code).then(function (response) {
+            httpGetRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + '/').then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2685,7 +2885,7 @@ function Rehive(config) {
                 return;
             }
 
-            httpPatchRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code, data).then(function (response) {
+            httpPatchRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + '/', data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2725,7 +2925,7 @@ function Rehive(config) {
                 return;
             }
 
-            httpGetRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyLimitsAPI + id).then(function (response) {
+            httpGetRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyLimitsAPI + id + '/').then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2740,7 +2940,7 @@ function Rehive(config) {
                 return;
             }
 
-            httpPatchRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyLimitsAPI + id, data).then(function (response) {
+            httpPatchRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyLimitsAPI + id + '/', data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2755,7 +2955,7 @@ function Rehive(config) {
                 return;
             }
 
-            httpDeleteRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyLimitsAPI + id, {}).then(function (response) {
+            httpDeleteRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyLimitsAPI + id + '/', {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2795,7 +2995,7 @@ function Rehive(config) {
                 return;
             }
 
-            httpGetRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyFeesAPI + id).then(function (response) {
+            httpGetRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyFeesAPI + id + '/').then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2810,7 +3010,7 @@ function Rehive(config) {
                 return;
             }
 
-            httpPatchRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyFeesAPI + id, data).then(function (response) {
+            httpPatchRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyFeesAPI + id + '/', data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2825,7 +3025,7 @@ function Rehive(config) {
                 return;
             }
 
-            httpDeleteRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyFeesAPI + id, {}).then(function (response) {
+            httpDeleteRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyFeesAPI + id + '/', {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2865,7 +3065,7 @@ function Rehive(config) {
                 return;
             }
 
-            httpGetRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencySwitchesAPI + id).then(function (response) {
+            httpGetRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencySwitchesAPI + id + '/').then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2880,7 +3080,7 @@ function Rehive(config) {
                 return;
             }
 
-            httpPatchRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencySwitchesAPI + id, data).then(function (response) {
+            httpPatchRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencySwitchesAPI + id + '/', data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2895,7 +3095,7 @@ function Rehive(config) {
                 return;
             }
 
-            httpDeleteRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencySwitchesAPI + id, {}).then(function (response) {
+            httpDeleteRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencySwitchesAPI + id + '/', {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2997,6 +3197,105 @@ function Rehive(config) {
         });
     };
 
+    this.admin.currencies.getBankAccountsList = function (code,filter) {
+        return new Promise(function (resolve, reject) {
+            if (filter) {
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
+
+            httpGetRehive(adminCurrenciesAPI + code + adminCurrenciesBankAccountsAPI + filter).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.currencies.getBankAccountsList.next = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.currencies.getBankAccountsList.previous = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.currencies.getBankAccount = function (code,id) {
+        return new Promise(function (resolve, reject) {
+            httpGetRehive(adminCurrenciesAPI + code + adminCurrenciesBankAccountsAPI + id + '/').then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.currencies.addBankAccount = function (code,data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(adminCurrenciesAPI + code + adminCurrenciesBankAccountsAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.currencies.deleteBankAccount = function (code,id) {
+        return new Promise(function (resolve, reject) {
+            httpDeleteRehive(adminCurrenciesAPI + code + adminCurrenciesBankAccountsAPI + id + '/').then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.currencies.getOverview = function (code) {
+        return new Promise(function (resolve, reject) {
+            if (!code) {
+                reject('No code provided');
+            }
+
+            httpGetRehive(adminCurrenciesAPI + code + adminCurrenciesOverviewAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
     this.admin.company.get = function () {
         return new Promise(function (resolve, reject) {
             httpGetRehive(adminCompanyAPI).then(function (response) {
@@ -3068,7 +3367,7 @@ function Rehive(config) {
 
     this.admin.webhooks.delete = function (id) {
         return new Promise(function (resolve, reject) {
-            httpDeleteRehive(adminWebhooksAPI + id, {}).then(function (response) {
+            httpDeleteRehive(adminWebhooksAPI + id + '/', {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -3098,7 +3397,7 @@ function Rehive(config) {
 
     this.admin.subtypes.get = function (id) {
         return new Promise(function (resolve, reject) {
-            httpGetRehive(adminSubtypesAPI + id).then(function (response) {
+            httpGetRehive(adminSubtypesAPI + id + '/').then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -3108,7 +3407,7 @@ function Rehive(config) {
 
     this.admin.subtypes.update = function (id, data) {
         return new Promise(function (resolve, reject) {
-            httpPatchRehive(adminSubtypesAPI + id, data).then(function (response) {
+            httpPatchRehive(adminSubtypesAPI + id + '/', data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -3118,7 +3417,7 @@ function Rehive(config) {
 
     this.admin.subtypes.delete = function (id) {
         return new Promise(function (resolve, reject) {
-            httpDeleteRehive(adminSubtypesAPI + id, {}).then(function (response) {
+            httpDeleteRehive(adminSubtypesAPI + id + '/', {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -3183,7 +3482,7 @@ function Rehive(config) {
 
     this.admin.tiers.get = function (tierId) {
         return new Promise(function (resolve, reject) {
-            httpGetRehive(adminTiersAPI + tierId).then(function (res) {
+            httpGetRehive(adminTiersAPI + tierId + '/').then(function (res) {
                 resolve(res)
             }, function (error) {
                 reject(error)
@@ -3193,7 +3492,7 @@ function Rehive(config) {
 
     this.admin.tiers.update = function (tierId, data) {
         return new Promise(function (resolve, reject) {
-            httpPatchRehive(adminTiersAPI + tierId, data).then(function (res) {
+            httpPatchRehive(adminTiersAPI + tierId + '/', data).then(function (res) {
                 resolve(res)
             }, function (error) {
                 reject(error)
@@ -3203,7 +3502,7 @@ function Rehive(config) {
 
     this.admin.tiers.delete = function (tierId) {
         return new Promise(function (resolve, reject) {
-            httpDeleteRehive(adminTiersAPI + tierId,{}).then(function (res) {
+            httpDeleteRehive(adminTiersAPI + tierId + '/',{}).then(function (res) {
                 resolve(res)
             }, function (error) {
                 reject(error)
@@ -3250,7 +3549,7 @@ function Rehive(config) {
                 reject('No  requirement id is provided');
                 return
             }
-            httpGetRehive(adminTiersAPI + tierId + adminTiersRequirementsAPI + requirementId).then(function (res) {
+            httpGetRehive(adminTiersAPI + tierId + adminTiersRequirementsAPI + requirementId + '/').then(function (res) {
                 resolve(res)
             }, function (error) {
                 reject(error)
@@ -3268,7 +3567,7 @@ function Rehive(config) {
                 reject('No  requirement id is provided');
                 return
             }
-            httpPatchRehive(adminTiersAPI + tierId + adminTiersRequirementsAPI + requirementId, data).then(function (res) {
+            httpPatchRehive(adminTiersAPI + tierId + adminTiersRequirementsAPI + requirementId + '/', data).then(function (res) {
                 resolve(res)
             }, function (error) {
                 reject(error)
@@ -3286,7 +3585,7 @@ function Rehive(config) {
                 reject('No  requirement id is provided');
                 return
             }
-            httpDeleteRehive(adminTiersAPI + tierId + adminTiersRequirementsAPI + requirementId).then(function (res) {
+            httpDeleteRehive(adminTiersAPI + tierId + adminTiersRequirementsAPI + requirementId + '/').then(function (res) {
                 resolve(res)
             }, function (error) {
                 reject(error)
@@ -3333,7 +3632,7 @@ function Rehive(config) {
                 reject('No  fee id is provided');
                 return
             }
-            httpGetRehive(adminTiersAPI + tierId + adminTiersFeesAPI + feeId).then(function (res) {
+            httpGetRehive(adminTiersAPI + tierId + adminTiersFeesAPI + feeId + '/').then(function (res) {
                 resolve(res)
             }, function (error) {
                 reject(error)
@@ -3351,7 +3650,7 @@ function Rehive(config) {
                 reject('No  fee id is provided');
                 return
             }
-            httpPatchRehive(adminTiersAPI + tierId + adminTiersFeesAPI + feeId, data).then(function (res) {
+            httpPatchRehive(adminTiersAPI + tierId + adminTiersFeesAPI + feeId + '/', data).then(function (res) {
                 resolve(res)
             }, function (error) {
                 reject(error)
@@ -3369,7 +3668,7 @@ function Rehive(config) {
                 reject('No  fee id is provided');
                 return
             }
-            httpDeleteRehive(adminTiersAPI + tierId + adminTiersFeesAPI + feeId).then(function (res) {
+            httpDeleteRehive(adminTiersAPI + tierId + adminTiersFeesAPI + feeId + '/').then(function (res) {
                 resolve(res)
             }, function (error) {
                 reject(error)
@@ -3416,7 +3715,7 @@ function Rehive(config) {
                 reject('No  switch id is provided');
                 return
             }
-            httpGetRehive(adminTiersAPI + tierId + adminTiersSwitchesAPI + switchId).then(function (res) {
+            httpGetRehive(adminTiersAPI + tierId + adminTiersSwitchesAPI + switchId + '/').then(function (res) {
                 resolve(res)
             }, function (error) {
                 reject(error)
@@ -3434,7 +3733,7 @@ function Rehive(config) {
                 reject('No  switch id is provided');
                 return
             }
-            httpPatchRehive(adminTiersAPI + tierId + adminTiersSwitchesAPI + switchId, data).then(function (res) {
+            httpPatchRehive(adminTiersAPI + tierId + adminTiersSwitchesAPI + switchId + '/', data).then(function (res) {
                 resolve(res)
             }, function (error) {
                 reject(error)
@@ -3452,7 +3751,7 @@ function Rehive(config) {
                 reject('No  switch id is provided');
                 return
             }
-            httpDeleteRehive(adminTiersAPI + tierId + adminTiersSwitchesAPI + switchId).then(function (res) {
+            httpDeleteRehive(adminTiersAPI + tierId + adminTiersSwitchesAPI + switchId + '/').then(function (res) {
                 resolve(res)
             }, function (error) {
                 reject(error)
@@ -3499,7 +3798,7 @@ function Rehive(config) {
                 reject('No  requirement id is provided');
                 return
             }
-            httpGetRehive(adminTiersAPI + tierId + adminTiersLimitsAPI + limitId).then(function (res) {
+            httpGetRehive(adminTiersAPI + tierId + adminTiersLimitsAPI + limitId + '/').then(function (res) {
                 resolve(res)
             }, function (error) {
                 reject(error)
@@ -3517,7 +3816,7 @@ function Rehive(config) {
                 reject('No  requirement id is provided');
                 return
             }
-            httpPatchRehive(adminTiersAPI + tierId + adminTiersLimitsAPI + limitId, data).then(function (res) {
+            httpPatchRehive(adminTiersAPI + tierId + adminTiersLimitsAPI + limitId + '/', data).then(function (res) {
                 resolve(res)
             }, function (error) {
                 reject(error)
@@ -3535,14 +3834,13 @@ function Rehive(config) {
                 reject('No  requirement id is provided');
                 return
             }
-            httpDeleteRehive(adminTiersAPI + tierId + adminTiersLimitsAPI + limitId).then(function (res) {
+            httpDeleteRehive(adminTiersAPI + tierId + adminTiersLimitsAPI + limitId + '/').then(function (res) {
                 resolve(res)
             }, function (error) {
                 reject(error)
             })
         })
     };
-
 
     this.admin.switches.getList = function () {
         return new Promise(function (resolve, reject) {
@@ -3566,7 +3864,7 @@ function Rehive(config) {
 
     this.admin.switches.get = function (id) {
         return new Promise(function (resolve, reject) {
-            httpGetRehive(adminSwitchesAPI + id).then(function (response) {
+            httpGetRehive(adminSwitchesAPI + id + '/').then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -3576,7 +3874,7 @@ function Rehive(config) {
 
     this.admin.switches.update = function (id, data) {
         return new Promise(function (resolve, reject) {
-            httpPatchRehive(adminSwitchesAPI + id, data).then(function (response) {
+            httpPatchRehive(adminSwitchesAPI + id + '/', data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -3586,13 +3884,139 @@ function Rehive(config) {
 
     this.admin.switches.delete = function (id) {
         return new Promise(function (resolve, reject) {
-            httpDeleteRehive(adminSwitchesAPI + id, {}).then(function (response) {
+            httpDeleteRehive(adminSwitchesAPI + id + '/', {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
             });
         });
     };
+
+    this.admin.bankAccounts.getList = function () {
+        return new Promise(function (resolve, reject) {
+            httpGetRehive(adminBankAccountsAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.bankAccounts.create = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(adminBankAccountsAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.bankAccounts.get = function (id) {
+        return new Promise(function (resolve, reject) {
+            httpGetRehive(adminBankAccountsAPI + id + '/').then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.bankAccounts.update = function (id, data) {
+        return new Promise(function (resolve, reject) {
+            httpPatchRehive(adminBankAccountsAPI + id + '/', data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.bankAccounts.delete = function (id) {
+        return new Promise(function (resolve, reject) {
+            httpDeleteRehive(adminBankAccountsAPI + id + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.services.getList = function (filter) {
+        return new Promise(function (resolve, reject) {
+            if (filter) {
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
+
+            httpGetRehive(adminServicesAPI + filter).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.services.getList.next = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.services.getList.previous = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.services.get = function (id) {
+        return new Promise(function (resolve, reject) {
+            httpGetRehive(adminServicesAPI + id + '/').then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.services.update = function (id, data) {
+        return new Promise(function (resolve, reject) {
+            httpPatchRehive(adminServicesAPI + id + '/', data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
     //public functions end
 
     return this;
