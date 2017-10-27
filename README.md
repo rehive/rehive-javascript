@@ -2,7 +2,7 @@
 
 ### About
 
-This is the javascript sdk for the Rehive User APIs' only.
+This is the javascript sdk for the Rehive APIs.
 
 ### Getting started
 
