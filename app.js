@@ -2633,3 +2633,133 @@ function updateAdminService(id, data) {
         console.log(err);
     });
 }
+
+function getAdminPermissionGroupsList(filter) {
+    rehive.admin.permissionGroups.getList(filter).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminPermissionGroupsListNext() {
+    rehive.admin.permissionGroups.getList.next().then(function (res) {
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminPermissionGroupsListPrevious() {
+    rehive.admin.permissionGroups.getList.previous().then(function (res) {
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function createAdminPermissionGroup(name) {
+    rehive.admin.permissionGroups.create(
+        {
+            name: name
+
+        }).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminPermissionGroup(name) {
+    rehive.admin.permissionGroups.get(name).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function updateAdminPermissionGroup(name, data) {
+    rehive.admin.permissionGroups.update(name,data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function deleteAdminPermissionGroup(name) {
+    rehive.admin.permissionGroups.delete(name).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminPermissionGroupPermissionsList(name,filter) {
+    rehive.admin.permissionGroups.getPermissionsList(name,filter).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminPermissionGroupPermissionsListNext() {
+    rehive.admin.permissionGroups.getPermissionsList.next().then(function (res) {
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminPermissionGroupPermissionsListPrevious() {
+    rehive.admin.permissionGroups.getPermissionsList.previous().then(function (res) {
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function createAdminPermissionGroupPermission(name,type,level) {
+    rehive.admin.permissionGroups.createPermission(name,
+        {
+            type: type,
+            level: level
+
+        }).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminPermissionGroupPermission(name,id) {
+    rehive.admin.permissionGroups.getPermission(name,id).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function deleteAdminPermissionGroupPermission(name,id) {
+    rehive.admin.permissionGroups.deletePermission(name,id).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}

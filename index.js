@@ -25,7 +25,8 @@ function Rehive(config) {
         notifications: {},
         tiers: {},
         switches: {},
-        services: {}
+        services: {},
+        permissionGroups: {}
     };
     var apiVersion = '3',
         baseAPI = 'https://rehive.com/api/' + apiVersion + '/',
@@ -103,7 +104,9 @@ function Rehive(config) {
         adminTiersSwitchesAPI='/switches/',
         adminSwitchesAPI = 'admin/switches/',
         adminBankAccountsAPI = 'admin/bank-accounts/',
-        adminServicesAPI = 'admin/services/';
+        adminServicesAPI = 'admin/services/',
+        adminPermissionGroupsAPI = 'admin/permission-groups/',
+        adminPermissionGroupsPermissionsAPI = '/permissions/';
 
     if (config) {
         config.apiVersion ? apiVersion = config.apiVersion : apiVersion = '3';
@@ -4010,6 +4013,218 @@ function Rehive(config) {
     this.admin.services.update = function (id, data) {
         return new Promise(function (resolve, reject) {
             httpPatchRehive(adminServicesAPI + id + '/', data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.permissionGroups.getList = function (filter) {
+        return new Promise(function (resolve, reject) {
+            if (filter) {
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
+
+
+            httpGetRehive(adminPermissionGroupsAPI + filter).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.permissionGroups.getList.next = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.permissionGroups.getList.previous = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.permissionGroups.create = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(adminPermissionGroupsAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.permissionGroups.get = function (name) {
+        return new Promise(function (resolve, reject) {
+            if (!name) {
+                reject('No permission group name provided');
+            }
+
+            httpGetRehive(adminPermissionGroupsAPI + name + '/').then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.permissionGroups.update = function (name, data) {
+        return new Promise(function (resolve, reject) {
+            if (!name) {
+                reject('No permission group name has been given');
+                return;
+            }
+
+            httpPatchRehive(adminPermissionGroupsAPI + name + '/', data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.permissionGroups.delete = function (name) {
+        return new Promise(function (resolve, reject) {
+            if (!name) {
+                reject('No permission group name has been given');
+                return;
+            }
+
+            httpDeleteRehive(adminPermissionGroupsAPI + name + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.permissionGroups.getPermissionsList = function (name,filter) {
+        return new Promise(function (resolve, reject) {
+            if (filter) {
+                filter = '?' + serialize(filter);
+            } else {
+                filter = '';
+            }
+
+
+            httpGetRehive(adminPermissionGroupsAPI + name + adminPermissionGroupsPermissionsAPI + filter).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.permissionGroups.getPermissionsList.next = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.permissionGroups.getPermissionsList.previous = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.permissionGroups.createPermission = function (name,data) {
+        return new Promise(function (resolve, reject) {
+            if (!name) {
+                reject('No permission group name has been given');
+                return;
+            }
+
+
+            httpPostRehive(adminPermissionGroupsAPI + name + adminPermissionGroupsPermissionsAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.permissionGroups.getPermission = function (name,id) {
+        return new Promise(function (resolve, reject) {
+            if (!name || !id) {
+                reject('No permission group name or permission id has been given');
+                return;
+            }
+
+            httpGetRehive(adminPermissionGroupsAPI + name + adminPermissionGroupsPermissionsAPI + id + '/').then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.permissionGroups.deletePermission = function (name,id) {
+        return new Promise(function (resolve, reject) {
+            if (!name || !id) {
+                reject('No permission group name or permission id has been given');
+                return;
+            }
+
+            httpDeleteRehive(adminPermissionGroupsAPI + name + adminPermissionGroupsPermissionsAPI + id + '/', {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
