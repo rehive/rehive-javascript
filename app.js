@@ -2115,6 +2115,23 @@ function updateAdminCompany(data) {
     });
 }
 
+function getAdminCompanyAddress() {
+    rehive.admin.company.getAddress().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function updateAdminCompanyAddress(data) {
+    rehive.admin.company.updateAddress(data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
 function getAdminGeneralWebhooksList() {
     rehive.admin.webhooks.getList().then(function (res) {
         console.log(res)

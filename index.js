@@ -96,6 +96,7 @@ function Rehive(config) {
         adminCurrenciesBankAccountsAPI = '/bank-accounts/',
         adminCurrenciesOverviewAPI = '/overview/',
         adminCompanyAPI = 'admin/company/',
+        adminCompanyAddressAPI = 'address/',
         adminWebhooksAPI = 'admin/webhooks/',
         adminSubtypesAPI = 'admin/subtypes/',
         adminNotificationsAPI = 'admin/notifications/',
@@ -3339,6 +3340,26 @@ function Rehive(config) {
     this.admin.company.update = function (data) {
         return new Promise(function (resolve, reject) {
             httpPatchRehive(adminCompanyAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.company.getAddress = function () {
+        return new Promise(function (resolve, reject) {
+            httpGetRehive(adminCompanyAPI + adminCompanyAddressAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.company.updateAddress = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPatchRehive(adminCompanyAPI + adminCompanyAddressAPI, data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);

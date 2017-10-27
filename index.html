@@ -3,8 +3,8 @@
 <head>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
-    <!--<script src="build/rehiveSdk.min.js"></script>-->
-    <script src="index.js"></script>
+    <script src="build/rehiveSdk.min.js"></script>
+    <!--<script src="index.js"></script>-->
     <script src="app.js"></script>
 </head>
 <body>
@@ -278,6 +278,9 @@
 
 <button onclick="getAdminCompany()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Company</button>
 <button onclick="updateAdminCompany({description: 'This is a test company'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Company</button>
+
+<button onclick="getAdminCompanyAddress()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Company Address</button>
+<button onclick="updateAdminCompanyAddress({country: 'ZA'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Company Address</button>
 
 <button onclick="getAdminGeneralWebhooksList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin General Webhook List</button>
 <button onclick="createAdminGeneralWebhooks('https://requestb.in/1blu2q31','user.create','secret')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin General Webhook List</button>
