@@ -4282,5 +4282,12 @@ function Rehive(config) {
 
     //public functions end
 
-    return this;
+    if(typeof process === 'object' && process + '' === '[object process]'){
+        // is node
+        module.exports = this;
+    }
+    else{
+        // not node
+        return this;
+    }
 }
