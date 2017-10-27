@@ -39,6 +39,8 @@
 <button onclick="getUserProfile()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user profile</button>
 <button onclick="updateUserProfile({first_name: 'Test'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user profile</button>
 
+<button onclick="getUserTiers()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user tiers</button>
+
 <button onclick="getUserAddress()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user address</button>
 <button onclick="updateUserAddress({city: 'San Mateo'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user address</button>
 
@@ -125,6 +127,8 @@
     <input type="file" id="userUpdateProfile">
     <button onclick="updateAdminUser('a420eaec-04c7-4cdb-a0e4-43c500383c73',{first_name: 'Aquib',last_name:'Rahman'})" style="margin: 20px 0 0 0" class="btn btn-lg btn-primary">Update admin user</button>
 </div>
+
+<button onclick="getAdminUserTiers('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin User Tiers</button>
 
 <button onclick="getAdminUserSwitchesList('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin User Switches List</button>
 <button onclick="createAdminUserSwitch('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','credit','',false)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Admin User Switch</button>

@@ -271,8 +271,8 @@ function activateTwoFactorTokenAuth() {
 
 function deleteTwoFactorTokenAuth() {
     rehive.multiAuth.token.delete().then(function (res) {
-        console.log(res)
-    })
+        console.log(res);
+    });
 }
 
 function getUserProfile() {
@@ -281,7 +281,7 @@ function getUserProfile() {
         document.getElementById('result').innerHTML = convertToText(user);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 function updateUserProfile(data) {
@@ -290,7 +290,16 @@ function updateUserProfile(data) {
         document.getElementById('result').innerHTML = convertToText(user);
     }, function (err) {
         console.log(err);
-    })
+    });
+}
+
+function getUserTiers() {
+    rehive.user.getUserTiers().then(function (user) {
+        console.log(user);
+        document.getElementById('result').innerHTML = convertToText(user);
+    }, function (err) {
+        console.log(err);
+    });
 }
 
 function getUserAddress() {
@@ -299,7 +308,7 @@ function getUserAddress() {
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 
@@ -309,7 +318,7 @@ function updateUserAddress(data) {
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 function getUserBankAccounts() {
@@ -854,6 +863,15 @@ function updateAdminUser(uuid, data) {
     }
 
     rehive.admin.users.update(uuid, formData).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminUserTiers(uuid) {
+    rehive.admin.users.getTiers(uuid).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {

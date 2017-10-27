@@ -47,6 +47,7 @@ function Rehive(config) {
         multiFactorAuthVerifyAPI = 'auth/mfa/verify/',
         tokensAPI = 'auth/tokens/',
         userProfileAPI = 'user/',
+        userTiersAPI = 'user/tiers/',
         userAddressAPI = 'user/address/',
         userBankAccountsAPI = 'user/bank-accounts/',
         userCryptoAccountsAPI = 'user/crypto-accounts/',
@@ -68,6 +69,7 @@ function Rehive(config) {
         headers = {'Content-Type': 'application/json'};
 
     var adminUsersAPI = 'admin/users/',
+        adminUsersTiersAPI = '/tiers/',
         adminUsersOverviewAPI = 'admin/users/overview/',
         adminUserSwitchesAPI = '/switches/',
         adminUserPermissionsAPI = '/permissions/',
@@ -651,6 +653,16 @@ function Rehive(config) {
     this.user.updateUserProfile = function (data) {
         return new Promise(function (resolve, reject) {
             httpPatchRehive(userProfileAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.getUserTiers = function () {
+        return new Promise(function (resolve, reject) {
+            httpGetRehive(userTiersAPI).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1519,6 +1531,21 @@ function Rehive(config) {
                         }
                     }
                 });
+        });
+    };
+
+    this.admin.users.getTiers = function (uuid) {
+        return new Promise(function (resolve, reject) {
+            if (!uuid) {
+                reject('No identifier has been given');
+                return;
+            }
+
+            httpGetRehive(adminUsersAPI + uuid + adminUsersTiersAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
         });
     };
 
