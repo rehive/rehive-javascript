@@ -1,6 +1,6 @@
 {
   "name": "rehivesdk",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
@@ -18,7 +18,10 @@
     "type": "git",
     "url": "git+https://github.com/rehive/rehive-javascript.git"
   },
-  "author": "",
+  "engines": {
+    "node": ">=6.9.1"
+  },
+  "author": "rehive",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/rehive/rehive-javascript/issues"
