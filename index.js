@@ -52,7 +52,7 @@ function Rehive(config) {
         userBankAccountsAPI = 'user/bank-accounts/',
         userCryptoAccountsAPI = 'user/crypto-accounts/',
         userBitcoinAccountsAPI = 'user/bitcoin-accounts/',
-        userCreateDocumentAPI = 'user/document/',
+        userCreateDocumentAPI = 'user/documents/',
         userEmailAddressesAPI = 'user/emails/',
         userMobileNumbersAPI = 'user/mobiles/',
         userNotificationsAPI = 'user/notifications/',

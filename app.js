@@ -448,21 +448,13 @@ function updateUserBitcoinAccount(accountId, data) {
     });
 }
 
-function createDocument(document_category, document_type) {
+function createDocument(document_type,metadata) {
     var fileSelected = document.getElementById("fileInput").files[0],
         formData = new FormData;
 
-    if (document_category == undefined || document_category == null) {
-        document_category = '';
-    }
-
-    if (document_type == undefined || document_type == null) {
-        document_type = '';
-    }
-
     formData.append('file', fileSelected);
-    formData.append('document_category', document_category);
     formData.append('document_type', document_type);
+    formData.append('metadata', JSON.stringify(metadata));
 
     rehive.user.createDocument(formData).then(function (res) {
         console.log(res);
