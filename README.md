@@ -12,7 +12,7 @@ via NPM:
 
 via CDN:
 
-`https://cdn.jsdelivr.net/npm/rehive@0.1.1/build/rehive.min.js`
+`https://cdn.jsdelivr.net/npm/rehive@{version_number}/build/rehive.min.js`
 
 or use the minified file in the `build` folder
 
