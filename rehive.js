@@ -111,10 +111,13 @@ function Rehive(config) {
         adminPermissionGroupsAPI = 'admin/permission-groups/',
         adminPermissionGroupsPermissionsAPI = '/permissions/';
 
-    if (config) {
+    if(!config){
+        config = {};
+    }
+
+    if (Object.keys(config).length > 0) {
         config.apiVersion ? apiVersion = config.apiVersion : apiVersion = '3';
         config.authToken ? setToken(config.authToken) : setToken('');
-
     } else {
         apiVersion = '3';
         setToken('');

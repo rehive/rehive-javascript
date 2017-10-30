@@ -5,7 +5,7 @@ var gulp = require('gulp'),
 
 gulp.task('scripts', function() {
     return gulp.src(['./promisePolyfill.js','./fetch.js','./index.js'])
-        .pipe(concat('rehiveSdk.min.js'))
+        .pipe(concat('rehive.min.js'))
         .pipe(uglify())
         .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
         .pipe(gulp.dest('build'));
