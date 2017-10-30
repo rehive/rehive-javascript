@@ -1,7 +1,7 @@
 {
   "name": "rehive",
-  "version": "0.1.5",
-  "description": "",
+  "version": "0.1.6",
+  "description": "Javascript sdk for rehive APIs",
   "main": "rehive.js",
   "dependencies": {
     "gulp": "^3.9.1"
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/rehive/rehive-javascript.git"
+    "url": "https://github.com/rehive/rehive-javascript"
   },
   "engines": {
     "node": ">=6.9.1"

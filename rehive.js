@@ -29,7 +29,6 @@ function Rehive(config) {
         permissionGroups: {}
     };
     var apiVersion = '3',
-        baseAPI = 'https://rehive.com/api/' + apiVersion + '/',
         registerAPI = 'auth/register/',
         registerCompanyAPI = 'auth/company/register/',
         loginAPI = 'auth/login/',
@@ -122,6 +121,8 @@ function Rehive(config) {
         apiVersion = '3';
         setToken('');
     }
+
+    var baseAPI = 'https://rehive.com/api/' + apiVersion + '/';
 
     function serialize(obj) {
         var str = [];
@@ -4284,6 +4285,8 @@ function Rehive(config) {
     };
 
     //public functions end
+
+
 
     if(typeof process === 'object' && process + '' === '[object process]'){
         // is node
