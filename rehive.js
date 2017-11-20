@@ -40,11 +40,13 @@ function Rehive(config) {
         resendEmailVerificationAPI = 'auth/email/verify/resend/',
         resendMobileVerificationAPI = 'auth/mobile/verify/resend/',
         verifyMobileAPI = 'auth/mobile/verify/',
+        verifyEmailAPI = 'auth/email/verify/',
         multiFactorAuthStatusAPI = 'auth/mfa/',
         multiFactorAuthSmsAPI = 'auth/mfa/sms/',
         multiFactorAuthTokenAPI = 'auth/mfa/token/',
         multiFactorAuthVerifyAPI = 'auth/mfa/verify/',
         tokensAPI = 'auth/tokens/',
+        tokensVerifyAPI = 'auth/tokens/verify/',
         userProfileAPI = 'user/',
         userTiersAPI = 'user/tiers/',
         userAddressAPI = 'user/address/',
@@ -589,6 +591,16 @@ function Rehive(config) {
         });
     };
 
+    this.auth.verifyEmail = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(verifyEmailAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
     this.token.getTokensList = function () {
         return new Promise(function (resolve, reject) {
             httpGetRehive(tokensAPI).then(function (response) {
@@ -638,6 +650,16 @@ function Rehive(config) {
                 reject(error);
             }
             httpDeleteRehive(url, {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.token.verifyToken = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(tokensVerifyAPI, data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);

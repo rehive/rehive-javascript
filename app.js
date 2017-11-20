@@ -164,6 +164,18 @@ function verifyMobile(otp) {
     })
 }
 
+function verifyEmail(key) {
+    rehive.auth.verifyEmail(
+        {
+            key: key
+        }).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res.status);
+    }, function (err) {
+        console.log(err);
+    })
+}
+
 function getTokensList() {
     rehive.token.getTokensList().then(function (res) {
         console.log(res);
@@ -196,6 +208,15 @@ function createToken(password) {
 
 function deleteToken(tokenKey) {
     rehive.token.deleteToken(tokenKey).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res.status);
+    }, function (err) {
+        console.log(err);
+    })
+}
+
+function verifyToken(tokenKey) {
+    rehive.token.verifyToken({token: tokenKey}).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res.status);
     }, function (err) {
