@@ -389,6 +389,15 @@ function updateUserBankAccount(accountId, data) {
     })
 }
 
+function deleteUserBankAccount(bankId) {
+    rehive.user.deleteUserBankAccount(bankId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
 function getUserCryptoAccounts() {
     rehive.user.getUserCryptoAccounts().then(function (res) {
         console.log(res);
@@ -430,8 +439,8 @@ function updateUserCryptoAccounts(cryptoAccountId, data) {
     });
 }
 
-function getUserBitcoinAccounts() {
-    rehive.user.getUserBitcoinAccounts().then(function (res) {
+function deleteUserCryptoAccounts(cryptoAccountId) {
+    rehive.user.deleteUserCryptoAccounts(cryptoAccountId).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -439,34 +448,22 @@ function getUserBitcoinAccounts() {
     });
 }
 
-function getUserBitcoinAccount(bitcoinAccountId) {
-    rehive.user.getUserBitcoinAccount(bitcoinAccountId).then(function (res) {
+function getUserDocuments() {
+    rehive.user.getUserDocuments().then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
         console.log(err);
-    });
+    })
 }
 
-function createUserBitcoinAccount(address) {
-    rehive.user.createUserBitcoinAccount(
-        {
-            address: address
-        }).then(function (res) {
+function getUserDocument(documentId) {
+    rehive.user.getUserDocument(documentId).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
         console.log(err);
-    });
-}
-
-function updateUserBitcoinAccount(accountId, data) {
-    rehive.user.updateUserBitcoinAccount(accountId, data).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
+    })
 }
 
 function createDocument(document_type,metadata) {
@@ -487,6 +484,15 @@ function createDocument(document_type,metadata) {
 
 function getUserEmailAddresses() {
     rehive.user.getUserEmailAddresses().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getUserEmailAddress(id) {
+    rehive.user.getUserEmailAddress(id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -516,6 +522,15 @@ function updateUserEmailAddress(emailId, data) {
     });
 }
 
+function deleteUserEmailAddress(emailId) {
+    rehive.user.deleteUserEmailAddress(emailId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
 function getUserMobileNumbers() {
     rehive.user.getUserMobileNumbers().then(function (res) {
         console.log(res);
@@ -524,6 +539,16 @@ function getUserMobileNumbers() {
         console.log(err);
     });
 }
+
+function getUserMobileNumber(id) {
+    rehive.user.getUserMobileNumber(id).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
 
 function createUserMobileNumber(number, primary) {
     rehive.user.createUserMobileNumber(
@@ -540,6 +565,15 @@ function createUserMobileNumber(number, primary) {
 
 function updateUserMobileNumber(mobileNumberId, data) {
     rehive.user.updateUserMobileNumber(mobileNumberId, data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function deleteUserMobileNumber(mobileNumberId) {
+    rehive.user.deleteUserMobileNumber(mobileNumberId).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2166,7 +2200,7 @@ function createAdminGeneralWebhooks(url, event, secret) {
     rehive.admin.webhooks.create({
         url: url,
         event: event,
-        secrete: secret
+        secret: secret
     }).then(function (res) {
         console.log(res)
         document.getElementById('result').innerHTML = convertToText(res)
