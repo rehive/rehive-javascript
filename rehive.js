@@ -2,8 +2,12 @@
 
 function Rehive(config) {
 
-    this.auth = {};
-    this.token = {};
+    this.auth = {
+        password: {},
+        email: {},
+        mobile: {},
+        tokens: {}
+    };
     this.multiAuth = {
         sms: {},
         token: {}
@@ -43,7 +47,7 @@ function Rehive(config) {
         verifyEmailAPI = 'auth/email/verify/',
         multiFactorAuthStatusAPI = 'auth/mfa/',
         multiFactorAuthSmsAPI = 'auth/mfa/sms/',
-        multiFactorAuthTokenAPI = 'auth/mfa/token/',
+        multiFactorApiTokenAPI = 'auth/mfa/token/',
         multiFactorAuthVerifyAPI = 'auth/mfa/verify/',
         tokensAPI = 'auth/tokens/',
         tokensVerifyAPI = 'auth/tokens/verify/',
@@ -117,7 +121,7 @@ function Rehive(config) {
 
     if (Object.keys(config).length > 0) {
         config.apiVersion ? apiVersion = config.apiVersion : apiVersion = '3';
-        config.authToken ? setToken(config.authToken) : setToken('');
+        config.apiToken ? setToken(config.apiToken) : setToken('');
     } else {
         apiVersion = '3';
         setToken('');
@@ -149,7 +153,7 @@ function Rehive(config) {
     }
 
     function parseJSON(response) {
-        return response.json()
+        return response.json();
     }
 
     function saveFilterInSessionStorage(response) {
@@ -418,7 +422,7 @@ function Rehive(config) {
                 .then(function (response) {
                     if (response.status == 'success') {
                         removeToken();
-                        resolve({message: response.message});
+                        resolve({});
                     } else if (response.status == 'error') {
                         if (response.data) {
                             reject(response.data);
@@ -448,7 +452,7 @@ function Rehive(config) {
                 .then(function (response) {
                     if (response.status == 'success') {
                         removeToken();
-                        resolve({message: response.message});
+                        resolve({});
                     } else if (response.status == 'error') {
                         if (response.data) {
                             reject(response.data);
@@ -460,9 +464,124 @@ function Rehive(config) {
         });
     };
 
-    this.auth.changePassword = function (data) {
+    this.auth.password.change = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(changePasswordAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.auth.password.reset = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(resetPasswordAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.auth.password.resetConfirm = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(resetConfirmPasswordAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.auth.email.resendEmailVerification = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(resendEmailVerificationAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.auth.mobile.resendMobileVerification = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(resendMobileVerificationAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.auth.mobile.verify = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(verifyMobileAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.auth.email.verify = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(verifyEmailAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.auth.tokens.get = function (tokenKey) {
+        var url
+        if (tokenKey) {
+            url = tokensAPI + tokenKey;
+        } else {
+            url = tokensAPI;
+        }
+
+        return new Promise(function (resolve, reject) {
+            httpGetRehive(url).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.auth.tokens.create = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(tokensAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.auth.tokens.delete = function (tokenKey) {
+        return new Promise(function (resolve, reject) {
+            var url,
+                error = {status: 'error', message: 'A token is required'};
+
+            if (tokenKey) {
+                url = tokensAPI + tokenKey
+            } else {
+                reject(error);
+            }
+            httpDeleteRehive(url, {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.auth.tokens.verify = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(tokensVerifyAPI, data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -502,7 +621,27 @@ function Rehive(config) {
 
     this.multiAuth.token.multiFactorAuthGetTokenStatus = function (data) {
         return new Promise(function (resolve, reject) {
-            httpPostRehive(multiFactorAuthTokenAPI, data).then(function (response) {
+            httpPostRehive(multiFactorApiTokenAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.multiAuth.sms.delete = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpDeleteRehive(multiFactorAuthSmsAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    }
+
+    this.multiAuth.token.delete = function () {
+        return new Promise(function (resolve, reject) {
+            httpDeleteRehive(multiFactorApiTokenAPI).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -519,152 +658,6 @@ function Rehive(config) {
             });
         });
     }
-
-    this.multiAuth.sms.delete = function (data) {
-        return new Promise(function (resolve, reject) {
-            httpDeleteRehive(multiFactorAuthSmsAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    }
-
-    this.multiAuth.token.delete = function () {
-        return new Promise(function (resolve, reject) {
-            httpDeleteRehive(multiFactorAuthTokenAPI).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    }
-
-    this.auth.resetPassword = function (data) {
-        return new Promise(function (resolve, reject) {
-            httpPostRehive(resetPasswordAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.auth.resetConfirmPassword = function (data) {
-        return new Promise(function (resolve, reject) {
-            httpPostRehive(resetConfirmPasswordAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.auth.resendEmailVerification = function (data) {
-        return new Promise(function (resolve, reject) {
-            httpPostRehive(resendEmailVerificationAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.auth.resendMobileVerification = function (data) {
-        return new Promise(function (resolve, reject) {
-            httpPostRehive(resendMobileVerificationAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.auth.verifyMobile = function (data) {
-        return new Promise(function (resolve, reject) {
-            httpPostRehive(verifyMobileAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.auth.verifyEmail = function (data) {
-        return new Promise(function (resolve, reject) {
-            httpPostRehive(verifyEmailAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.token.getTokensList = function () {
-        return new Promise(function (resolve, reject) {
-            httpGetRehive(tokensAPI).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.token.getToken = function (tokenKey) {
-        return new Promise(function (resolve, reject) {
-            var url,
-                error = {status: 'error', message: 'A token is required'};
-            if (tokenKey) {
-                url = tokensAPI + tokenKey;
-            } else {
-                reject(error);
-                return;
-            }
-            httpGetRehive(url).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.token.createToken = function (data) {
-        return new Promise(function (resolve, reject) {
-            httpPostRehive(tokensAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.token.deleteToken = function (tokenKey) {
-        return new Promise(function (resolve, reject) {
-            var url,
-                error = {status: 'error', message: 'A token is required'};
-
-            if (tokenKey) {
-                url = tokensAPI + tokenKey
-            } else {
-                reject(error);
-            }
-            httpDeleteRehive(url, {}).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.token.verifyToken = function (data) {
-        return new Promise(function (resolve, reject) {
-            httpPostRehive(tokensVerifyAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
 
     this.user.getUserProfile = function () {
         return new Promise(function (resolve, reject) {

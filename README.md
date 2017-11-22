@@ -26,9 +26,9 @@ Initialize the sdk with: `window.rehive = new Rehive(config);`
 
 * {apiVersion: 3}
 
-* {authToken: "authenticationTokenHere"}
+* {apiToken: "authenticationTokenHere"}
 
-* {apiVersion: 3, authToken: "authenticationTokenHere"}
+* {apiVersion: 3, apiToken: "authenticationTokenHere"}
 
 Default settings are set as API version 3, and that is the only version supported currently
 

@@ -58,11 +58,11 @@ function login(user, company, password) {
         company: company,
         password: password
     }).then(function (user) {
-        console.log(user)
         document.getElementById('result').innerHTML = convertToText(user);
+        console.log(user);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 function logout() {
@@ -71,7 +71,7 @@ function logout() {
         document.getElementById('result').innerHTML = res.message;
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 function logoutAll() {
@@ -81,11 +81,11 @@ function logoutAll() {
             document.getElementById('result').innerHTML = res.message;
         }, function (err) {
             console.log(err);
-        })
+        });
 }
 
 function changePassword(old_password, new_password1, new_password2) {
-    rehive.auth.changePassword(
+    rehive.auth.password.change(
         {
             old_password: old_password,
             new_password1: new_password1,
@@ -95,11 +95,11 @@ function changePassword(old_password, new_password1, new_password2) {
         document.getElementById('result').innerHTML = convertToText(res.message);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 function resetPassword(user, company) {
-    rehive.auth.resetPassword(
+    rehive.auth.password.reset(
         {
             user: user,
             company: company
@@ -108,11 +108,11 @@ function resetPassword(user, company) {
         document.getElementById('result').innerHTML = convertToText(res.message);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 function resetConfirmPassword(new_password1, new_password2, uid, token) {
-    rehive.auth.resetConfirmPassword(
+    rehive.auth.password.resetConfirm(
         {
             new_password1: new_password1,
             new_password2: new_password2,
@@ -123,11 +123,11 @@ function resetConfirmPassword(new_password1, new_password2, uid, token) {
         document.getElementById('result').innerHTML = convertToText(res.message);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 function resendEmailVerification(email, company) {
-    rehive.auth.resendEmailVerification(
+    rehive.auth.email.resendEmailVerification(
         {
             email: email,
             company: company
@@ -136,11 +136,11 @@ function resendEmailVerification(email, company) {
         document.getElementById('result').innerHTML = convertToText(res.status);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 function resendMobileVerification(mobile, company) {
-    rehive.auth.resendMobileVerification(
+    rehive.auth.mobile.resendMobileVerification(
         {
             mobile: mobile,
             company: company
@@ -149,11 +149,11 @@ function resendMobileVerification(mobile, company) {
         document.getElementById('result').innerHTML = convertToText(res.status);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 function verifyMobile(otp) {
-    rehive.auth.verifyMobile(
+    rehive.auth.mobile.verify(
         {
             otp: otp
         }).then(function (res) {
@@ -161,11 +161,11 @@ function verifyMobile(otp) {
         document.getElementById('result').innerHTML = convertToText(res.status);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 function verifyEmail(key) {
-    rehive.auth.verifyEmail(
+    rehive.auth.email.verify(
         {
             key: key
         }).then(function (res) {
@@ -173,11 +173,11 @@ function verifyEmail(key) {
         document.getElementById('result').innerHTML = convertToText(res.status);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 function getTokensList() {
-    rehive.token.getTokensList().then(function (res) {
+    rehive.auth.tokens.get().then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -186,16 +186,16 @@ function getTokensList() {
 }
 
 function getToken(tokenKey) {
-    rehive.token.getToken(tokenKey).then(function (res) {
+    rehive.auth.tokens.get(tokenKey).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 function createToken(password) {
-    rehive.token.createToken(
+    rehive.auth.tokens.create(
         {
             password: password
         }).then(function (res) {
@@ -203,32 +203,32 @@ function createToken(password) {
         document.getElementById('result').innerHTML = convertToText(res.user);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 function deleteToken(tokenKey) {
-    rehive.token.deleteToken(tokenKey).then(function (res) {
+    rehive.auth.tokens.delete(tokenKey).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res.status);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 function verifyToken(tokenKey) {
-    rehive.token.verifyToken({token: tokenKey}).then(function (res) {
+    rehive.auth.tokens.verify({token: tokenKey}).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res.status);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 function twoFactorAuthStatus() {
     rehive.multiAuth.multiFactorAuthStatus().then(function (res) {
         console.log(res)
         document.getElementById('result').innerHTML = convertToText(res.status);
-    })
+    });
 }
 
 function activateTwoFactorSMSAuth() {
@@ -238,19 +238,19 @@ function activateTwoFactorSMSAuth() {
         if (res.sms === true) {
             rehive.multiAuth.sms.multiFactorAuthGetStatus().then(function (res) {
                 get_mobile_no = res.mobile_number
-                console.log(res)
-            })
+                console.log(res);
+            });
         }
         var mobile_no = prompt("Enter valid mobile no", get_mobile_no);
         if (mobile_no != null) {
             rehive.multiAuth.sms.multiFactorAuthSMSPost({mobile_number: mobile_no}).then(function (res) {
-                console.log(res)
-            })
+                console.log(res);
+            });
         }
         document.getElementById('result').innerHTML = convertToText(res.status);
     }, function (err) {
-        console.log(err)
-    })
+        console.log(err);
+    });
 }
 
 function verifyOTP() {
