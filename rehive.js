@@ -6,11 +6,12 @@ function Rehive(config) {
         password: {},
         email: {},
         mobile: {},
-        tokens: {}
-    };
-    this.multiAuth = {
-        sms: {},
-        token: {}
+        tokens: {},
+        mfa: {
+            sms: {},
+            token: {},
+            status: {}
+        }
     };
     this.authVerify = {};
     this.user = {};
@@ -47,6 +48,7 @@ function Rehive(config) {
         verifyEmailAPI = 'auth/email/verify/',
         multiFactorAuthStatusAPI = 'auth/mfa/',
         multiFactorAuthSmsAPI = 'auth/mfa/sms/',
+        multiFactorAuthSendSmsAPI = 'auth/mfa/sms/send/',
         multiFactorApiTokenAPI = 'auth/mfa/token/',
         multiFactorAuthVerifyAPI = 'auth/mfa/verify/',
         tokensAPI = 'auth/tokens/',
@@ -589,7 +591,7 @@ function Rehive(config) {
         });
     };
 
-    this.multiAuth.multiFactorAuthStatus = function () {
+    this.auth.mfa.status.get = function () {
         return new Promise(function (resolve, reject) {
             httpGetRehive(multiFactorAuthStatusAPI).then(function (response) {
                 resolve(response);
@@ -597,9 +599,9 @@ function Rehive(config) {
                 reject(error);
             });
         });
-    }
+    };
 
-    this.multiAuth.sms.multiFactorAuthGetStatus = function () {
+    this.auth.mfa.sms.get = function () {
         return new Promise(function (resolve, reject) {
             httpGetRehive(multiFactorAuthSmsAPI).then(function (response) {
                 resolve(response);
@@ -607,9 +609,9 @@ function Rehive(config) {
                 reject(error);
             });
         });
-    }
+    };
 
-    this.multiAuth.sms.multiFactorAuthSMSPost = function (data) {
+    this.auth.mfa.sms.enable = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(multiFactorAuthSmsAPI, data).then(function (response) {
                 resolve(response);
@@ -617,9 +619,39 @@ function Rehive(config) {
                 reject(error);
             });
         });
-    }
+    };
 
-    this.multiAuth.token.multiFactorAuthGetTokenStatus = function (data) {
+    this.auth.mfa.sms.send = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(multiFactorAuthSendSmsAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.auth.mfa.sms.disable = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpDeleteRehive(multiFactorAuthSmsAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.auth.mfa.token.get = function () {
+        return new Promise(function (resolve, reject) {
+            httpGetRehive(multiFactorApiTokenAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.auth.mfa.token.enable = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(multiFactorApiTokenAPI, data).then(function (response) {
                 resolve(response);
@@ -629,17 +661,7 @@ function Rehive(config) {
         });
     };
 
-    this.multiAuth.sms.delete = function (data) {
-        return new Promise(function (resolve, reject) {
-            httpDeleteRehive(multiFactorAuthSmsAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    }
-
-    this.multiAuth.token.delete = function () {
+    this.auth.mfa.token.disable = function () {
         return new Promise(function (resolve, reject) {
             httpDeleteRehive(multiFactorApiTokenAPI).then(function (response) {
                 resolve(response);
@@ -647,9 +669,9 @@ function Rehive(config) {
                 reject(error);
             });
         });
-    }
+    };
 
-    this.authVerify.verification = function (data) {
+    this.auth.mfa.verify = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(multiFactorAuthVerifyAPI, data).then(function (response) {
                 resolve(response);
@@ -657,7 +679,7 @@ function Rehive(config) {
                 reject(error);
             });
         });
-    }
+    };
 
     this.user.getUserProfile = function () {
         return new Promise(function (resolve, reject) {

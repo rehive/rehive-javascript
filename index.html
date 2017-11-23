@@ -27,15 +27,18 @@
 <button onclick="deleteToken('02dacb33')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Token</button>
 <button onclick="verifyToken('f3125e961d184f6b0458beecbc47011e3ce7976e5be743e2263ffd919212f3b0')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Verify Token</button>
 
-<button onclick="twoFactorAuthStatus()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">two factor authentication status</button>
+<button onclick="twoFactorAuthStatus()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">two factor authentication status</button>
 
-<button onclick="activateTwoFactorSMSAuth()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-danger">activate sms authentication</button>
-<button onclick="deleteTwoFactorSMSAuth()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-danger">delete sms authentication</button>
+<button onclick="viewMultiAuthSms()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">view sms authentication status</button>
+<button onclick="activateTwoFactorSMSAuth('+8801703862282')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">activate sms authentication</button>
+<button onclick="sendTwoFactorSMSAuth()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">send sms authentication</button>
+<button onclick="deactivateTwoFactorSMSAuth()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">deactivate sms authentication</button>
 
-<button onclick="activateTwoFactorTokenAuth()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-danger">activate token authentication</button>
-<button onclick="deleteTwoFactorTokenAuth()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-danger">delete token authentication</button>
+<button onclick="viewMultiAuthToken()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">view token authentication status</button>
+<button onclick="activateTwoFactorTokenAuth()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">activate token authentication</button>
+<button onclick="deactivateTwoFactorTokenAuth()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">delete token authentication</button>
 
-<button onclick="verifyOTP()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">verify otp</button>
+<button onclick="verifyMultiFactorOTP('326797')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">verify otp</button>
 
 <button onclick="getUserProfile()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user profile</button>
 <button onclick="updateUserProfile({first_name: 'Test'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update user profile</button>

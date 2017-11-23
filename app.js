@@ -225,75 +225,86 @@ function verifyToken(tokenKey) {
 }
 
 function twoFactorAuthStatus() {
-    rehive.multiAuth.multiFactorAuthStatus().then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res.status);
-    });
-}
-
-function activateTwoFactorSMSAuth() {
-    rehive.multiAuth.multiFactorAuthStatus().then(function (res) {
+    rehive.auth.mfa.status.get().then(function (res) {
         console.log(res);
-        var get_mobile_no = "+8801714690450"
-        if (res.sms === true) {
-            rehive.multiAuth.sms.multiFactorAuthGetStatus().then(function (res) {
-                get_mobile_no = res.mobile_number
-                console.log(res);
-            });
-        }
-        var mobile_no = prompt("Enter valid mobile no", get_mobile_no);
-        if (mobile_no != null) {
-            rehive.multiAuth.sms.multiFactorAuthSMSPost({mobile_number: mobile_no}).then(function (res) {
-                console.log(res);
-            });
-        }
         document.getElementById('result').innerHTML = convertToText(res.status);
     }, function (err) {
         console.log(err);
     });
 }
 
-function verifyOTP() {
-    var token = prompt("Enter valid token", "123456");
-    if (token != null) {
-        rehive.authVerify.verification({token: token}).then(function (res) {
-            console.log(res)
-            document.getElementById('result').innerHTML = convertToText(res.status);
-        })
-    }
+function viewMultiAuthSms() {
+    rehive.auth.mfa.sms.get().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res.status);
+    }, function (err) {
+        console.log(err);
+    });
 }
 
-function deleteTwoFactorSMSAuth() {
-    var mobile_no;
-    rehive.multiAuth.sms.multiFactorAuthGetStatus().then(function (res) {
-        mobile_no = res.mobile_no
-    })
-    rehive.multiAuth.sms.delete(mobile_no).then(function (res) {
-        console.log(res)
-    })
+function activateTwoFactorSMSAuth(mobile_no) {
+    rehive.auth.mfa.sms.enable({
+        mobile_number: mobile_no
+    }).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res.status);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function sendTwoFactorSMSAuth() {
+    rehive.auth.mfa.sms.send().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res.status);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function deactivateTwoFactorSMSAuth() {
+    rehive.auth.mfa.sms.disable().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res.status);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function viewMultiAuthToken() {
+    rehive.auth.mfa.token.get().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res.status);
+    }, function (err) {
+        console.log(err);
+    });
 }
 
 function activateTwoFactorTokenAuth() {
-    rehive.multiAuth.multiFactorAuthStatus().then(function (res) {
-        var token = "123456"
-        if (res.token === false) {
-            rehive.multiAuth.token.multiFactorAuthGetTokenStatus().then(function (res) {
-                console.log(res)
-                document.getElementById('result').innerHTML = convertToText(res.status);
-            })
-        } else {
-            console.log(res)
-            document.getElementById('result').innerHTML = convertToText(res.status);
-        }
+    rehive.auth.mfa.token.enable().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res.status);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function deactivateTwoFactorTokenAuth() {
+    rehive.auth.mfa.token.disable().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res.status);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function verifyMultiFactorOTP(token) {
+    rehive.auth.mfa.verify({token: token}).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res.status);
     }, function (err) {
         console.log(err)
     })
-}
-
-function deleteTwoFactorTokenAuth() {
-    rehive.multiAuth.token.delete().then(function (res) {
-        console.log(res);
-    });
 }
 
 function getUserProfile() {
