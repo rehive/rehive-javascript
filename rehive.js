@@ -13,8 +13,15 @@ function Rehive(config) {
             status: {}
         }
     };
-    this.authVerify = {};
-    this.user = {};
+    this.user = {
+        tiers: {},
+        address: {},
+        bankAccounts: {},
+        cryptoAccounts: {},
+        documents: {},
+        emails: {},
+        mobiles: {}
+    };
     this.transactions = {};
     this.accounts = {};
     this.company = {};
@@ -681,7 +688,7 @@ function Rehive(config) {
         });
     };
 
-    this.user.getUserProfile = function () {
+    this.user.get = function () {
         return new Promise(function (resolve, reject) {
             httpGetRehive(userProfileAPI).then(function (response) {
                 resolve(response);
@@ -691,7 +698,7 @@ function Rehive(config) {
         });
     };
 
-    this.user.updateUserProfile = function (data) {
+    this.user.update = function (data) {
         return new Promise(function (resolve, reject) {
             httpPatchRehive(userProfileAPI, data).then(function (response) {
                 resolve(response);
@@ -701,7 +708,7 @@ function Rehive(config) {
         });
     };
 
-    this.user.getUserTiers = function () {
+    this.user.tiers.get = function () {
         return new Promise(function (resolve, reject) {
             httpGetRehive(userTiersAPI).then(function (response) {
                 resolve(response);
@@ -711,7 +718,7 @@ function Rehive(config) {
         });
     };
 
-    this.user.getUserAddress = function () {
+    this.user.address.get = function () {
         return new Promise(function (resolve, reject) {
             httpGetRehive(userAddressAPI).then(function (response) {
                 resolve(response);
@@ -721,7 +728,7 @@ function Rehive(config) {
         });
     };
 
-    this.user.updateUserAddress = function (data) {
+    this.user.address.update = function (data) {
         return new Promise(function (resolve, reject) {
             httpPatchRehive(userAddressAPI, data).then(function (response) {
                 resolve(response);
@@ -731,9 +738,16 @@ function Rehive(config) {
         });
     };
 
-    this.user.getUserBankAccounts = function () {
+    this.user.bankAccounts.get = function (bankId) {
         return new Promise(function (resolve, reject) {
-            httpGetRehive(userBankAccountsAPI).then(function (response) {
+            var url;
+
+            if (bankId) {
+                url = userBankAccountsAPI + bankId + '/';
+            } else {
+                url = userBankAccountsAPI;
+            }
+            httpGetRehive(url).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -741,26 +755,7 @@ function Rehive(config) {
         });
     };
 
-    this.user.getUserBankAccount = function (bankId) {
-        return new Promise(function (resolve, reject) {
-            var url,
-                error = {status: 'error', message: 'Bank id is required'};
-
-            if (bankId && (typeof(bankId) == 'string')) {
-                url = userBankAccountsAPI + bankId + '/';
-            } else {
-                reject(error);
-                return;
-            }
-            httpGetRehive(url).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        })
-    };
-
-    this.user.createUserBankAccount = function (data) {
+    this.user.bankAccounts.create = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(userBankAccountsAPI, data).then(function (response) {
                 resolve(response);
@@ -770,12 +765,12 @@ function Rehive(config) {
         });
     };
 
-    this.user.updateUserBankAccount = function (bankId, data) {
+    this.user.bankAccounts.update = function (bankId, data) {
         return new Promise(function (resolve, reject) {
             var url,
                 error = {status: 'error', message: 'Account id is required'};
 
-            if (bankId && (typeof(bankId) == 'string')) {
+            if (bankId) {
                 url = userBankAccountsAPI + bankId;
             } else {
                 reject(error);
@@ -786,15 +781,15 @@ function Rehive(config) {
             }, function (error) {
                 reject(error);
             });
-        })
+        });
     };
 
-    this.user.deleteUserBankAccount = function(bankId) {
+    this.user.bankAccounts.delete = function(bankId) {
         return new Promise(function (resolve, reject) {
             var url,
                 error = {status: 'error', message: 'Bank id is required'};
 
-            if (bankId && (typeof(bankId) == 'string')) {
+            if (bankId) {
                 url = userBankAccountsAPI + bankId + '/';
             } else {
                 reject(error);
@@ -809,9 +804,16 @@ function Rehive(config) {
         });
     };
 
-    this.user.getUserCryptoAccounts = function () {
+    this.user.cryptoAccounts.get = function (cryptoAccountId) {
         return new Promise(function (resolve, reject) {
-            httpGetRehive(userCryptoAccountsAPI).then(function (response) {
+            var url;
+
+            if (cryptoAccountId) {
+                url = userCryptoAccountsAPI + cryptoAccountId + '/';
+            } else {
+                url = userCryptoAccountsAPI;
+            }
+            httpGetRehive(url).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -819,41 +821,22 @@ function Rehive(config) {
         });
     };
 
-    this.user.getUserCryptoAccount = function (cryptoAccountId) {
-        return new Promise(function (resolve, reject) {
-            var url,
-                error = {status: 'error', message: 'Account id is required'};
-
-            if (cryptoAccountId && (typeof(cryptoAccountId) == 'string')) {
-                url = userCryptoAccountsAPI + cryptoAccountId + '/';
-            } else {
-                reject(error);
-                return;
-            }
-            httpGetRehive(url).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        })
-    };
-
-    this.user.createUserCryptoAccounts = function (data) {
+    this.user.cryptoAccounts.create = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(userCryptoAccountsAPI, data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
             });
-        })
+        });
     };
 
-    this.user.updateUserCryptoAccounts = function (accountId, data) {
+    this.user.cryptoAccounts.update = function (accountId, data) {
         return new Promise(function (resolve, reject) {
             var url,
-                error = {status: 'error', message: 'Account id is required'};
+                error = {status: 'error', message: 'Crypto account id is required'};
 
-            if (accountId && (typeof(accountId) == 'string')) {
+            if (accountId) {
                 url = userCryptoAccountsAPI + accountId;
             } else {
                 reject(error);
@@ -865,15 +848,15 @@ function Rehive(config) {
             }, function (error) {
                 reject(error);
             });
-        })
+        });
     };
 
-    this.user.deleteUserCryptoAccounts = function (id) {
+    this.user.cryptoAccounts.delete = function (id) {
         return new Promise(function (resolve, reject) {
             var url,
                 error = {status: 'error', message: 'Crypto account id is required'};
 
-            if (id && (typeof(id) == 'string')) {
+            if (id) {
                 url = userCryptoAccountsAPI + id + '/';
             } else {
                 reject(error);
@@ -885,29 +868,17 @@ function Rehive(config) {
             }, function (error) {
                 reject(error);
             });
-        })
-    };
-
-    this.user.getUserDocuments = function () {
-        return new Promise(function (resolve, reject) {
-            httpGetRehive(userCreateDocumentAPI).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
         });
     };
 
-    this.user.getUserDocument = function (id) {
+    this.user.documents.get = function (id) {
         return new Promise(function (resolve, reject) {
-            var url,
-                error = {status: 'error', message: 'Document id is required'};
+            var url;
 
-            if (id && (typeof(id) == 'string')) {
+            if (id) {
                 url = userCreateDocumentAPI + id + '/';
             } else {
-                reject(error);
-                return;
+                url = userCreateDocumentAPI;
             }
 
             httpGetRehive(url).then(function (response) {
@@ -918,7 +889,7 @@ function Rehive(config) {
         });
     };
 
-    this.user.createDocument = function (data) {
+    this.user.documents.create = function (data) {
         return new Promise(function (resolve, reject) {
             var token = getToken();
             var header = {};
@@ -955,26 +926,14 @@ function Rehive(config) {
         });
     };
 
-    this.user.getUserEmailAddresses = function () {
+    this.user.emails.get = function (id) {
         return new Promise(function (resolve, reject) {
-            httpGetRehive(userEmailAddressesAPI).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
+            var url;
 
-    this.user.getUserEmailAddress = function (id) {
-        return new Promise(function (resolve, reject) {
-            var url,
-                error = {status: 'error', message: 'Email address id is required'};
-
-            if (id && (typeof(id) == 'string')) {
+            if (id) {
                 url = userEmailAddressesAPI + id + '/';
             } else {
-                reject(error);
-                return;
+                url = userEmailAddressesAPI;
             }
 
             httpGetRehive(url).then(function (response) {
@@ -985,7 +944,7 @@ function Rehive(config) {
         });
     };
 
-    this.user.createUserEmailAddress = function (data) {
+    this.user.emails.create = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(userEmailAddressesAPI, data).then(function (response) {
                 resolve(response);
@@ -995,7 +954,7 @@ function Rehive(config) {
         });
     };
 
-    this.user.updateUserEmailAddress = function (emailId, data) {
+    this.user.emails.update = function (emailId, data) {
         return new Promise(function (resolve, reject) {
             var url,
                 error = {status: 'error', message: 'Email address id is required'};
@@ -1011,10 +970,10 @@ function Rehive(config) {
             }, function (error) {
                 reject(error);
             });
-        })
+        });
     };
 
-    this.user.deleteUserEmailAddress = function (id) {
+    this.user.emails.delete = function (id) {
         return new Promise(function (resolve, reject) {
             var url,
                 error = {status: 'error', message: 'Email address id is required'};
@@ -1031,29 +990,17 @@ function Rehive(config) {
             }, function (error) {
                 reject(error);
             });
-        })
-    };
-
-    this.user.getUserMobileNumbers = function () {
-        return new Promise(function (resolve, reject) {
-            httpGetRehive(userMobileNumbersAPI).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
         });
     };
 
-    this.user.getUserMobileNumber = function (id) {
+    this.user.mobiles.get = function (id) {
         return new Promise(function (resolve, reject) {
-            var url,
-                error = {status: 'error', message: 'Mobile number id is required'};
+            var url;
 
-            if (id && (typeof(id) == 'string')) {
+            if (id) {
                 url = userMobileNumbersAPI + id + '/';
             } else {
-                reject(error);
-                return;
+                url = userMobileNumbersAPI;
             }
 
             httpGetRehive(url).then(function (response) {
@@ -1065,7 +1012,7 @@ function Rehive(config) {
     };
 
 
-    this.user.createUserMobileNumber = function (data) {
+    this.user.mobiles.create = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(userMobileNumbersAPI, data).then(function (response) {
                 resolve(response);
@@ -1075,7 +1022,7 @@ function Rehive(config) {
         });
     };
 
-    this.user.updateUserMobileNumber = function (mobileNumberId, data) {
+    this.user.mobiles.update = function (mobileNumberId, data) {
         return new Promise(function (resolve, reject) {
             var url,
                 error = {status: 'error', message: 'Mobile number id is required'};
@@ -1094,7 +1041,7 @@ function Rehive(config) {
         });
     };
 
-    this.user.deleteUserMobileNumber = function (id) {
+    this.user.mobiles.delete = function (id) {
         return new Promise(function (resolve, reject) {
             var url,
                 error = {status: 'error', message: 'Mobile number id is required'};
@@ -1107,35 +1054,6 @@ function Rehive(config) {
             }
 
             httpDeleteRehive(url, {}).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        })
-    };
-
-    this.user.getUserNotifications = function () {
-        return new Promise(function (resolve, reject) {
-            httpGetRehive(userNotificationsAPI).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.updateUserNotifications = function (notificationsId, data) {
-        return new Promise(function (resolve, reject) {
-            var url,
-                error = {status: 'error', message: 'Notification id is required'};
-
-            if (notificationsId && (typeof(notificationsId) == 'string')) {
-                url = userNotificationsAPI + notificationsId;
-            } else {
-                reject(error, null);
-                return;
-            }
-            httpPatchRehive(url, data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
