@@ -72,37 +72,38 @@
 <button onclick="updateUserMobileNumber('3418',{'primary': true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update user mobile numbers</button>
 <button onclick="deleteUserMobileNumber('462')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete mobile number</button>
 
-<button onclick="getUserDocuments()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user documents</button>
-<button onclick="getUserDocument('280')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user document</button>
+<button onclick="getUserDocuments({filters: {page_size: 2}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user documents</button>
+<button onclick="getUserDocumentsNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user documents Next</button>
+<button onclick="getUserDocumentsPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user documents Previous</button>
+<button onclick="getUserDocument({id:'280'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get user document</button>
 <div style="margin: 20px 0 0 20px">
     <label>Upload Document</label>
     <input type="file" id="fileInput">
     <button onclick="createDocument('telephone',{hello: 'to'})" style="margin: 20px 0 0 0" class="btn btn-lg btn-primary">Upload Document</button>
 </div>
 
-<button onclick="getTransactionsList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transactions List</button>
+<button onclick="getTransactionsList({filters: {page_size: 2}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transactions List</button>
 <button onclick="getTransactionListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transaction List Next</button>
 <button onclick="getTransactionListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transaction List Previous</button>
 
-<button onclick="getTotalTransactionsList({currency:'XBT'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-danger">Get Total Transactions List</button>
-<button onclick="getTransaction('BVet5rtGYhLWDACd3NOT')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transaction</button>
+<button onclick="getTotalTransactionsList({currency:'XBT'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Total Transactions List</button>
+<button onclick="getTransaction({id: 'BVet5rtGYhLWDACd3NOT'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Transaction</button>
 <button onclick="createDebit(300)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create debit</button>
 <button onclick="createCredit(400)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create credit</button>
 <button onclick="createTransfer({amount: 300,recipient: 'joshua@rehive.com'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Transfer</button>
 
-<button onclick="getAccountsList({active:false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Accounts List</button>
-<button onclick="createAccount('savings',false)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Account</button>
+<button onclick="getAccountsList({filters: {page_size: 2}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Accounts List</button>
 <button onclick="getAccountsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account List Next</button>
 <button onclick="getAccountsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account List Previous</button>
-<button onclick="getAccount('G5WRHPYEUG',{active:true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account</button>
+<button onclick="createAccount('savings',false)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Account</button>
+<button onclick="updateAccount('3DR6ZVGS8M',{primary: true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Account</button>
+<button onclick="getAccount({reference: '3DR6ZVGS8M'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account</button>
 
-<button onclick="getAccountCurrenciesList('elzYWdk8j9',{active:true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account Currencies</button>
-
+<button onclick="getAccountCurrenciesList('3DR6ZVGS8M',{filters: {page_size: 2}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account Currencies</button>
 <button onclick="getAccountCurrenciesListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account Currency Next</button>
 <button onclick="getAccountCurrenciesListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account Currency Previous</button>
-
-<button onclick="getAccountCurrency('B2PT5JSL7U','ZAR')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account Currency</button>
-<button onclick="updateAccountCurrency('B2PT5JSL7U','ZAR',{active:true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Account Currency</button>
+<button onclick="getAccountCurrency('3DR6ZVGS8M',{code:'USD'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Account Currency</button>
+<button onclick="updateAccountCurrency('3DR6ZVGS8M','USD',{active:true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Account Currency</button>
 
 <button onclick="getCompanyDetails()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Company Details</button>
 <button onclick="getCompanyCurrencies()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Company Currencies</button>

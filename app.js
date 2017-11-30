@@ -459,8 +459,26 @@ function deleteUserCryptoAccounts(cryptoAccountId) {
     });
 }
 
-function getUserDocuments() {
-    rehive.user.documents.get().then(function (res) {
+function getUserDocuments(obj) {
+    rehive.user.documents.get(obj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getUserDocumentsNext() {
+    rehive.user.documents.getNext().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getUserDocumentsPrevious() {
+    rehive.user.documents.getPrevious().then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -593,7 +611,7 @@ function deleteUserMobileNumber(mobileNumberId) {
 }
 
 function getTransactionsList(filters) {
-    rehive.transactions.getTransactionsList(filters).then(function (res) {
+    rehive.transactions.get(filters).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -602,7 +620,7 @@ function getTransactionsList(filters) {
 }
 
 function getTransactionListNext() {
-    rehive.transactions.getTransactionsList.next().then(function (res) {
+    rehive.transactions.getNext().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -612,7 +630,7 @@ function getTransactionListNext() {
 }
 
 function getTransactionListPrevious() {
-    rehive.transactions.getTransactionsList.previous().then(function (res) {
+    rehive.transactions.getPrevious().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -622,7 +640,7 @@ function getTransactionListPrevious() {
 }
 
 function getTotalTransactionsList(filters) {
-    rehive.transactions.getTotalTransactionsList(filters).then(function (res) {
+    rehive.transactions.getTotals(filters).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -631,12 +649,12 @@ function getTotalTransactionsList(filters) {
 }
 
 function getTransaction(tx_code) {
-    rehive.transactions.getTransaction(tx_code).then(function (res) {
+    rehive.transactions.get(tx_code).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 function createDebit(amount, account, reference, subtype, note, metadata) {
@@ -685,7 +703,7 @@ function createTransfer(transferData) {
 
 
 function getAccountsList(filter) {
-    rehive.accounts.getAccountsList(filter).then(function (res) {
+    rehive.accounts.get(filter).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -693,20 +711,8 @@ function getAccountsList(filter) {
     });
 }
 
-function createAccount(name, primary) {
-    rehive.accounts.createAccount({
-        name: name,
-        primary: primary
-    }).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
-    }, function (err) {
-        console.log(err)
-    })
-}
-
 function getAccountsListNext() {
-    rehive.accounts.getAccountsList.next().then(function (res) {
+    rehive.accounts.getNext().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -716,7 +722,7 @@ function getAccountsListNext() {
 }
 
 function getAccountsListPrevious() {
-    rehive.accounts.getAccountsList.previous().then(function (res) {
+    rehive.accounts.getPrevious().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -725,8 +731,29 @@ function getAccountsListPrevious() {
     });
 }
 
-function getAccount(reference, filter) {
-    rehive.accounts.getAccount(reference, filter).then(function (res) {
+function createAccount(name, primary) {
+    rehive.accounts.create({
+        name: name,
+        primary: primary
+    }).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res)
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function updateAccount(reference, data) {
+    rehive.accounts.update(reference,data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res)
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAccount(obj) {
+    rehive.accounts.get(obj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -734,8 +761,8 @@ function getAccount(reference, filter) {
     });
 }
 
-function getAccountCurrenciesList(reference, filter) {
-    rehive.accounts.getAccountCurrenciesList(reference, filter).then(function (res) {
+function getAccountCurrenciesList(reference, obj) {
+    rehive.accounts.currencies.get(reference, obj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -744,7 +771,7 @@ function getAccountCurrenciesList(reference, filter) {
 }
 
 function getAccountCurrenciesListNext() {
-    rehive.accounts.getAccountCurrenciesList.next().then(function (res) {
+    rehive.accounts.currencies.getNext().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -754,7 +781,7 @@ function getAccountCurrenciesListNext() {
 }
 
 function getAccountCurrenciesListPrevious() {
-    rehive.accounts.getAccountCurrenciesList.previous().then(function (res) {
+    rehive.accounts.currencies.getPrevious().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -764,8 +791,8 @@ function getAccountCurrenciesListPrevious() {
 }
 
 
-function getAccountCurrency(reference, currencyCode) {
-    rehive.accounts.getAccountCurrency(reference, currencyCode).then(function (res) {
+function getAccountCurrency(reference, obj) {
+    rehive.accounts.currencies.get(reference, obj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -774,7 +801,7 @@ function getAccountCurrency(reference, currencyCode) {
 }
 
 function updateAccountCurrency(reference, currencyCode, data) {
-    rehive.accounts.updateAccountCurrency(reference, currencyCode, data).then(function (res) {
+    rehive.accounts.currencies.update(reference, currencyCode, data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {

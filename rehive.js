@@ -23,7 +23,9 @@ function Rehive(config) {
         mobiles: {}
     };
     this.transactions = {};
-    this.accounts = {};
+    this.accounts = {
+        currencies: {}
+    };
     this.company = {};
     this.admin = {
         users: {},
@@ -871,21 +873,63 @@ function Rehive(config) {
         });
     };
 
-    this.user.documents.get = function (id) {
+    this.user.documents.get = function (obj) {
         return new Promise(function (resolve, reject) {
-            var url;
+            var url,filters;
 
-            if (id) {
-                url = userCreateDocumentAPI + id + '/';
+            if(obj && obj.id) {
+                url = userCreateDocumentAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = userCreateDocumentAPI + filters;
             } else {
                 url = userCreateDocumentAPI;
             }
 
             httpGetRehive(url).then(function (response) {
+                saveUserApiFilterInSessionStorage(response, 'Documents');
                 resolve(response);
             }, function (error) {
                 reject(error);
             });
+        });
+    };
+
+    this.user.documents.getNext = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('nextDocumentsFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveUserApiFilterInSessionStorage(response, 'Documents');
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.user.documents.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('previousDocumentsFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveUserApiFilterInSessionStorage(response, 'Documents');
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
         });
     };
 
@@ -1061,16 +1105,21 @@ function Rehive(config) {
         });
     };
 
-    this.transactions.getTransactionsList = function (filters) {
+    this.transactions.get = function (obj) {
         return new Promise(function (resolve, reject) {
-            if (filters) {
-                filters = '?' + serialize(filters);
+            var url,filters;
+
+            if(obj && obj.id) {
+                url = transactionsAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = transactionsAPI + filters;
             } else {
-                filters = '';
+                url = transactionsAPI;
             }
 
-            httpGetRehive(transactionsAPI + filters).then(function (response) {
-                saveUserApiFilterInSessionStorage(response, 'Transaction')
+            httpGetRehive(url).then(function (response) {
+                saveUserApiFilterInSessionStorage(response, 'Transaction');
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1078,7 +1127,7 @@ function Rehive(config) {
         });
     };
 
-    this.transactions.getTransactionsList.next = function () {
+    this.transactions.getNext = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('nextTransactionFilterForLists'), mainUrl;
             if (url) {
@@ -1086,7 +1135,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveUserApiFilterInSessionStorage(response, 'Transaction')
+                    saveUserApiFilterInSessionStorage(response, 'Transaction');
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1097,7 +1146,7 @@ function Rehive(config) {
         });
     };
 
-    this.transactions.getTransactionsList.previous = function () {
+    this.transactions.getPrevious = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('previousTransactionFilterForLists'), mainUrl;
             if (url) {
@@ -1116,7 +1165,7 @@ function Rehive(config) {
         });
     };
 
-    this.transactions.getTotalTransactionsList = function (filters) {
+    this.transactions.getTotals = function (filters) {
         return new Promise(function (resolve, reject) {
             if (filters) {
                 filters = '?' + serialize(filters);
@@ -1128,26 +1177,7 @@ function Rehive(config) {
             }, function (error) {
                 reject(error);
             });
-        })
-    };
-
-    this.transactions.getTransaction = function (txCode) {
-        return new Promise(function (resolve, reject) {
-            var url,
-                error = {status: 'error', message: 'Transaction code is required'};
-
-            if (txCode && (typeof(txCode) == 'string')) {
-                url = transactionsAPI + txCode + '/';
-            } else {
-                reject(error);
-                return;
-            }
-            httpGetRehive(url).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        })
+        });
     };
 
     this.transactions.createDebit = function (data) {
@@ -1180,32 +1210,29 @@ function Rehive(config) {
         });
     };
 
-    this.accounts.getAccountsList = function (filter) {
+    this.accounts.get = function (obj) {
         return new Promise(function (resolve, reject) {
-            if (filter) {
-                filter = '?' + serialize(filter);
+            var url,filters;
+
+            if(obj && obj.reference) {
+                url = accountsAPI + obj.reference + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = accountsAPI + filters;
             } else {
-                filter = '';
+                url = accountsAPI;
             }
 
-            httpGetRehive(accountsAPI + filter).then(function (response) {
-                saveUserApiFilterInSessionStorage(response, 'Account')
+            httpGetRehive(url).then(function (response) {
+                saveUserApiFilterInSessionStorage(response, 'Account');
                 resolve(response);
             }, function (error) {
                 reject(error);
             });
         });
     };
-    this.accounts.createAccount = function (data) {
-        return new Promise(function (resolve, reject) {
-            httpPostRehive(accountsAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    }
-    this.accounts.getAccountsList.next = function () {
+
+    this.accounts.getNext = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('nextAccountFilterForLists'), mainUrl;
             if (url) {
@@ -1213,7 +1240,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveUserApiFilterInSessionStorage(response, 'Account')
+                    saveUserApiFilterInSessionStorage(response, 'Account');
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1224,7 +1251,7 @@ function Rehive(config) {
         });
     };
 
-    this.accounts.getAccountsList.previous = function () {
+    this.accounts.getPrevious = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('previousAccountFilterForLists'), mainUrl;
             if (url) {
@@ -1243,55 +1270,54 @@ function Rehive(config) {
         });
     };
 
-    this.accounts.getAccount = function (reference, filter) {
+    this.accounts.create = function (data) {
         return new Promise(function (resolve, reject) {
-            var error = {status: 'error', message: 'Reference is required'};
-
-            if (reference && (typeof(reference) == 'string')) {
-                reference = reference + '/';
-            } else {
-                reject(error);
-                return;
-            }
-
-            if (filter) {
-                filter = '?' + serialize(filter);
-            } else {
-                filter = '';
-            }
-
-            httpGetRehive(accountsAPI + reference + filter).then(function (response) {
+            httpPostRehive(accountsAPI, data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
             });
-        })
+        });
     };
 
-    this.accounts.getAccountCurrenciesList = function (reference, filter) {
+    this.accounts.update = function (reference,data) {
         return new Promise(function (resolve, reject) {
-            var error = {status: 'error', message: 'Reference is required'};
+            httpPatchRehive(accountsAPI + reference + '/', data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.accounts.currencies.get = function (reference, obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters,error = {status: 'error', message: 'Reference is required'};
 
             if (!reference || !(typeof(reference) == 'string')) {
                 reject(error);
                 return;
             }
 
-            if (filter) {
-                filter = '?' + serialize(filter);
+            if(obj && obj.code) {
+                url = accountsAPI + reference + accountCurrenciesAPI + obj.code + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = accountsAPI + reference + accountCurrenciesAPI + filters;
             } else {
-                filter = '';
+                url = accountsAPI + reference + accountCurrenciesAPI;
             }
 
-            httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + filter).then(function (response) {
+            httpGetRehive(url).then(function (response) {
+                saveUserApiFilterInSessionStorage(response, 'AccountCurrencies');
                 resolve(response);
             }, function (error) {
                 reject(error);
             });
-        })
+        });
     };
 
-    this.accounts.getAccountCurrenciesList.next = function () {
+    this.accounts.currencies.getNext = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('nextAccountCurrenciesFilterForLists'), mainUrl;
             if (url) {
@@ -1299,7 +1325,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveUserApiFilterInSessionStorage(response, 'AccountCurrencies')
+                    saveUserApiFilterInSessionStorage(response, 'AccountCurrencies');
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1310,7 +1336,7 @@ function Rehive(config) {
         });
     };
 
-    this.accounts.getAccountCurrenciesList.previous = function () {
+    this.accounts.currencies.getPrevious = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('previousAccountCurrenciesFilterForLists'), mainUrl;
             if (url) {
@@ -1329,29 +1355,7 @@ function Rehive(config) {
         });
     };
 
-    this.accounts.getAccountCurrency = function (reference, currencyCode) {
-        return new Promise(function (resolve, reject) {
-            var error = {status: 'error', message: 'Reference is required'},
-                error2 = {status: 'error', message: 'Currency code is required'};
-
-            if (!reference || !(typeof(reference) == 'string')) {
-                reject(error);
-                return;
-            }
-
-            if (!currencyCode || !(typeof(currencyCode) == 'string')) {
-                reject(error2);
-                return;
-            }
-            httpGetRehive(accountsAPI + reference + accountCurrenciesAPI + currencyCode + '/').then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.accounts.updateAccountCurrency = function (reference, currencyCode, data) {
+    this.accounts.currencies.update = function (reference, currencyCode, data) {
         return new Promise(function (resolve, reject) {
             var error = {status: 'error', message: 'Reference is required'},
                 error2 = {status: 'error', message: 'Currency Code is required'};
