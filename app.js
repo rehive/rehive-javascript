@@ -303,8 +303,8 @@ function verifyMultiFactorOTP(token) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res.status);
     }, function (err) {
-        console.log(err)
-    })
+        console.log(err);
+    });
 }
 
 function getUserProfile() {
@@ -737,7 +737,7 @@ function createAccount(name, primary) {
         primary: primary
     }).then(function (res) {
         console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res)
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
         console.log(err);
     });
@@ -746,7 +746,7 @@ function createAccount(name, primary) {
 function updateAccount(reference, data) {
     rehive.accounts.update(reference,data).then(function (res) {
         console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res)
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
         console.log(err);
     });
@@ -810,7 +810,7 @@ function updateAccountCurrency(reference, currencyCode, data) {
 }
 
 function getCompanyDetails() {
-    rehive.company.getCompanyDetails().then(function (res) {
+    rehive.company.get().then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -818,17 +818,35 @@ function getCompanyDetails() {
     });
 }
 
-function getCompanyCurrencies() {
-    rehive.company.getCompanyCurrencies().then(function (res) {
+function getCompanyCurrencies(filters) {
+    rehive.company.currencies.get(filters).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
         console.log(err);
-    })
+    });
+}
+
+function getCompanyCurrenciesNext() {
+    rehive.company.currencies.getNext().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getCompanyCurrenciesPrevious() {
+    rehive.company.currencies.getPrevious().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
 }
 
 function getCompanyCurrency(currencyCode) {
-    rehive.company.getCompanyCurrency(currencyCode).then(function (res) {
+    rehive.company.currencies.get(currencyCode).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -837,16 +855,25 @@ function getCompanyCurrency(currencyCode) {
 }
 
 function getCompanyBanks() {
-    rehive.company.getCompanyBanks().then(function (res) {
+    rehive.company.bankAccounts.get().then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
-function getAdminUsersList(filter) {
-    rehive.admin.users.getList(filter).then(function (res) {
+function getAdminUsersOverview() {
+    rehive.admin.users.overview.get().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminUsersList(filters) {
+    rehive.admin.users.get(filters).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -855,27 +882,18 @@ function getAdminUsersList(filter) {
 }
 
 function getAdminUsersListNext() {
-    rehive.admin.users.getList.next().then(function (res) {
+    rehive.admin.users.getNext().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 function getAdminUsersListPrevious() {
-    rehive.admin.users.getList.previous().then(function (res) {
+    rehive.admin.users.getPrevious().then(function (res) {
 
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    })
-}
-
-function getAdminUsersOverview() {
-    rehive.admin.users.getOverview().then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -921,7 +939,9 @@ function updateAdminUser(uuid, data) {
     var fileSelected = document.getElementById("userUpdateProfile").files[0],
         formData = new FormData();
 
-    formData.append('profile', fileSelected);
+    if(fileSelected){
+        formData.append('profile', fileSelected);
+    }
 
     for (var key in data) {
         if (data[key]) {
@@ -938,7 +958,7 @@ function updateAdminUser(uuid, data) {
 }
 
 function getAdminUserTiers(uuid) {
-    rehive.admin.users.getTiers(uuid).then(function (res) {
+    rehive.admin.users.tiers.get(uuid).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -946,8 +966,8 @@ function getAdminUserTiers(uuid) {
     });
 }
 
-function getAdminUserSwitchesList(uuid) {
-    rehive.admin.users.getSwitchesList(uuid).then(function (res) {
+function getAdminUserSwitchesList(uuid,filters) {
+    rehive.admin.users.switches.get(uuid,filters).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -956,7 +976,7 @@ function getAdminUserSwitchesList(uuid) {
 }
 
 function createAdminUserSwitch(uuid, tx_type, subtype, enabled) {
-    rehive.admin.users.createSwitch(uuid, {tx_type: tx_type, subtype: subtype, enabled: enabled}).then(function (res) {
+    rehive.admin.users.switches.create(uuid, {tx_type: tx_type, subtype: subtype, enabled: enabled}).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -964,8 +984,8 @@ function createAdminUserSwitch(uuid, tx_type, subtype, enabled) {
     });
 }
 
-function getAdminUserSwitch(uuid, id) {
-    rehive.admin.users.getSwitch(uuid, id).then(function (res) {
+function getAdminUserSwitch(uuid, idObj) {
+    rehive.admin.users.switches.get(uuid, idObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -974,7 +994,7 @@ function getAdminUserSwitch(uuid, id) {
 }
 
 function updateAdminUserSwitch(uuid, id, data) {
-    rehive.admin.users.updateSwitch(uuid, id, data).then(function (res) {
+    rehive.admin.users.switches.update(uuid, id, data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -983,7 +1003,7 @@ function updateAdminUserSwitch(uuid, id, data) {
 }
 
 function deleteAdminUserSwitch(uuid, id) {
-    rehive.admin.users.deleteSwitch(uuid, id).then(function (res) {
+    rehive.admin.users.switches.delete(uuid, id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1109,7 +1129,7 @@ function deleteAdminUserPermissionGroup(uuid,name) {
 }
 
 function getAdminUserAddressesList(filter) {
-    rehive.admin.users.getAddressesList(filter).then(function (res) {
+    rehive.admin.users.addresses.get(filter).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1118,7 +1138,7 @@ function getAdminUserAddressesList(filter) {
 }
 
 function getAdminUserAddressesListNext() {
-    rehive.admin.users.getAddressesList.next().then(function (res) {
+    rehive.admin.users.addresses.getNext().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1128,7 +1148,7 @@ function getAdminUserAddressesListNext() {
 }
 
 function getAdminUserAddressesListPrevious() {
-    rehive.admin.users.getAddressesList.previous().then(function (res) {
+    rehive.admin.users.addresses.getPrevious().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1138,7 +1158,7 @@ function getAdminUserAddressesListPrevious() {
 }
 
 function createAdminUserAddress(uuid, line_1, line_2, city, state_province, country, postal_code, status) {
-    rehive.admin.users.createAddress(
+    rehive.admin.users.addresses.create(
         {
             user: uuid,
             line_1: line_1,
@@ -1158,7 +1178,7 @@ function createAdminUserAddress(uuid, line_1, line_2, city, state_province, coun
 }
 
 function getAdminUserAddress(id) {
-    rehive.admin.users.getAddress(id).then(function (res) {
+    rehive.admin.users.addresses.get(id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1167,7 +1187,7 @@ function getAdminUserAddress(id) {
 }
 
 function updateAdminUserAddress(id, data) {
-    rehive.admin.users.updateAddress(id, data).then(function (res) {
+    rehive.admin.users.addresses.update(id, data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1176,7 +1196,7 @@ function updateAdminUserAddress(id, data) {
 }
 
 function deleteAdminUserAddress(id) {
-    rehive.admin.users.deleteAddress(id).then(function (res) {
+    rehive.admin.users.addresses.delete(id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1184,8 +1204,8 @@ function deleteAdminUserAddress(id) {
     });
 }
 
-function getAdminUserBankAccountsList(filter) {
-    rehive.admin.users.getBankAccountsList(filter).then(function (res) {
+function getAdminUserBankAccountsList(filterObj) {
+    rehive.admin.users.bankAccounts.get(filterObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1194,7 +1214,7 @@ function getAdminUserBankAccountsList(filter) {
 }
 
 function getAdminUserBankAccountsListNext() {
-    rehive.admin.users.getBankAccountsList.next().then(function (res) {
+    rehive.admin.users.bankAccounts.getNext().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1204,7 +1224,7 @@ function getAdminUserBankAccountsListNext() {
 }
 
 function getAdminUserBankAccountsListPrevious() {
-    rehive.admin.users.getBankAccountsList.previous().then(function (res) {
+    rehive.admin.users.bankAccounts.getPrevious().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1214,7 +1234,7 @@ function getAdminUserBankAccountsListPrevious() {
 }
 
 function createAdminUserBankAccount(uuid, name, number, type, bank_name, bank_code, branch_code, swift, iban, bic, status) {
-    rehive.admin.users.createBankAccount(
+    rehive.admin.users.bankAccounts.create(
         {
             user: uuid,
             name: name,
@@ -1235,8 +1255,8 @@ function createAdminUserBankAccount(uuid, name, number, type, bank_name, bank_co
     });
 }
 
-function getAdminUserBankAccount(id) {
-    rehive.admin.users.getBankAccount(id).then(function (res) {
+function getAdminUserBankAccount(idObj) {
+    rehive.admin.users.bankAccounts.get(idObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1245,7 +1265,7 @@ function getAdminUserBankAccount(id) {
 }
 
 function updateAdminUserBankAccount(id, data) {
-    rehive.admin.users.updateBankAccount(id, data).then(function (res) {
+    rehive.admin.users.bankAccounts.update(id, data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1254,7 +1274,7 @@ function updateAdminUserBankAccount(id, data) {
 }
 
 function deleteAdminUserBankAccount(id) {
-    rehive.admin.users.deleteBankAccount(id).then(function (res) {
+    rehive.admin.users.bankAccounts.delete(id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1262,8 +1282,8 @@ function deleteAdminUserBankAccount(id) {
     });
 }
 
-function getAdminUserCryptoAccountsList(filter) {
-    rehive.admin.users.getCryptoAccountsList(filter).then(function (res) {
+function getAdminUserCryptoAccountsList(filterObj) {
+    rehive.admin.users.cryptoAccounts.get(filterObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1272,7 +1292,7 @@ function getAdminUserCryptoAccountsList(filter) {
 }
 
 function getAdminUserCryptoAccountsListNext() {
-    rehive.admin.users.getCryptoAccountsList.next().then(function (res) {
+    rehive.admin.users.cryptoAccounts.getNext().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1282,7 +1302,7 @@ function getAdminUserCryptoAccountsListNext() {
 }
 
 function getAdminUserCryptoAccountsListPrevious() {
-    rehive.admin.users.getCryptoAccountsList.previous().then(function (res) {
+    rehive.admin.users.cryptoAccounts.getPrevious().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1292,7 +1312,7 @@ function getAdminUserCryptoAccountsListPrevious() {
 }
 
 function createAdminUserCryptoAccount(user, crypto_type, address, metadata, status) {
-    rehive.admin.users.createCryptoAccount(
+    rehive.admin.users.cryptoAccounts.create(
         {
             user: user,
             crypto_type: crypto_type,
@@ -1307,8 +1327,8 @@ function createAdminUserCryptoAccount(user, crypto_type, address, metadata, stat
     });
 }
 
-function getAdminUserCryptoAccount(id) {
-    rehive.admin.users.getCryptoAccount(id).then(function (res) {
+function getAdminUserCryptoAccount(idObj) {
+    rehive.admin.users.cryptoAccounts.get(idObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1317,7 +1337,7 @@ function getAdminUserCryptoAccount(id) {
 }
 
 function updateAdminUserCryptoAccount(id, data) {
-    rehive.admin.users.updateCryptoAccount(id, data).then(function (res) {
+    rehive.admin.users.cryptoAccounts.update(id, data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1326,7 +1346,7 @@ function updateAdminUserCryptoAccount(id, data) {
 }
 
 function deleteAdminUserCryptoAccount(id) {
-    rehive.admin.users.deleteCryptoAccount(id).then(function (res) {
+    rehive.admin.users.cryptoAccounts.delete(id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2209,11 +2229,11 @@ function updateAdminCompanyAddress(data) {
 }
 function getAdminGeneralWebhooksList() {
     rehive.admin.webhooks.getList().then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 function createAdminGeneralWebhooks(url, event, secret) {
@@ -2222,20 +2242,20 @@ function createAdminGeneralWebhooks(url, event, secret) {
         event: event,
         secret: secret
     }).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 function getAdminGeneralWebhooks(webhooksId) {
     rehive.admin.webhooks.get(webhooksId).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
         console.log(err);
-    })
+    });
 }
 
 function updateAdminGeneralWebhooks(webhooksId, data) {
@@ -2309,20 +2329,20 @@ function deleteAdminSubtype(id) {
 
 function getAdminNotificationsList() {
     rehive.admin.notifications.getList().then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
-        console.log(err)
-    })
+        console.log(err);
+    });
 }
 
 function getAdminNotification(notificationid) {
     rehive.admin.notifications.get(notificationid).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
-        console.log(err)
-    })
+        console.log(err);
+    });
 }
 
 function updateAdminNotification(notificationId, data) {
@@ -2336,11 +2356,11 @@ function updateAdminNotification(notificationId, data) {
 
 function getAdminTiersList() {
     rehive.admin.tiers.getList().then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
-        console.log(error)
-    })
+        console.log(error);
+    });
 }
 
 function createAdminTier(currency, level, name, description) {
@@ -2360,38 +2380,38 @@ function createAdminTier(currency, level, name, description) {
 
 function getAdminTier(tierId) {
     rehive.admin.tiers.get(tierId).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
-        console.log(error)
-    })
+        console.log(error);
+    });
 }
 
 function updateAdminTier(tierId, data) {
     rehive.admin.tiers.update(tierId, data).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
-        console.log(error)
-    })
+        console.log(error);
+    });
 }
 
 function deleteAdminTier(tierId) {
     rehive.admin.tiers.delete(tierId).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
-        console.log(error)
-    })
+        console.log(error);
+    });
 }
 
 function getAdminTiersRequirementsList(tiersId) {
     rehive.admin.tiers.getRequirementsList(tiersId).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
-        console.log(error)
-    })
+        console.log(error);
+    });
 }
 
 function createAdminTierRequirements(tiersId, requirement) {
@@ -2407,39 +2427,39 @@ function createAdminTierRequirements(tiersId, requirement) {
 
 function getAdminTierRequirement(tierId, requirementId) {
     rehive.admin.tiers.getRequirement(tierId, requirementId).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
-        console.log(error)
-    })
+        console.log(error);
+    });
 }
 
 function updateAdminTierRequirement(tierId, requirementId, data) {
     rehive.admin.tiers.updateRequirement(tierId, requirementId, data).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
-        console.log(error)
-    })
+        console.log(error);
+    });
 }
 
 function deleteAdminTierRequirement(tierId,requirementId) {
     rehive.admin.tiers.deleteRequirement(tierId,requirementId).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
-        console.log(error)
-    })
+        console.log(error);
+    });
 }
 
 
 function getAdminTiersLimitsList(tiersId) {
     rehive.admin.tiers.getLimitsList(tiersId).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
-        console.log(error)
-    })
+        console.log(error);
+    });
 }
 
 function createAdminTierLimit(tiersId, value, type, tx_type, subtype) {
@@ -2458,39 +2478,39 @@ function createAdminTierLimit(tiersId, value, type, tx_type, subtype) {
 
 function getAdminTierLimit(tierId, limitId) {
     rehive.admin.tiers.getLimit(tierId, limitId).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
-        console.log(error)
-    })
+        console.log(error);
+    });
 }
 
 function updateAdminTierLimit(tierId, limitId,data) {
     rehive.admin.tiers.updateLimit(tierId, limitId,data).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
-        console.log(error)
-    })
+        console.log(error);
+    });
 }
 
 function deleteAdminTierLimit(tierId, limitId) {
     rehive.admin.tiers.deleteLimit(tierId, limitId).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
-        console.log(error)
-    })
+        console.log(error);
+    });
 }
 
 
 function getAdminTiersFeesList(tiersId) {
     rehive.admin.tiers.getFeesList(tiersId).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
-        console.log(error)
-    })
+        console.log(error);
+    });
 }
 
 function createAdminTierFee(tiersId, value, percentage, tx_type, subtype) {
@@ -2509,39 +2529,39 @@ function createAdminTierFee(tiersId, value, percentage, tx_type, subtype) {
 
 function getAdminTierFee(tierId, feeId) {
     rehive.admin.tiers.getFee(tierId, feeId).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
-        console.log(error)
-    })
+        console.log(error);
+    });
 }
 
 function updateAdminTierFee(tierId, feeId,data) {
     rehive.admin.tiers.updateFee(tierId, feeId,data).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
-        console.log(error)
-    })
+        console.log(error);
+    });
 }
 
 function deleteAdminTierFee(tierId, feeId) {
     rehive.admin.tiers.deleteFee(tierId, feeId).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
-        console.log(error)
-    })
+        console.log(error);
+    });
 }
 
 
 function getAdminTiersSwitchesList(tiersId) {
     rehive.admin.tiers.getSwitchesList(tiersId).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
-        console.log(error)
-    })
+        console.log(error);
+    });
 }
 
 function createAdminTierSwitch(tiersId, tx_type, subtype, enabled) {
@@ -2559,29 +2579,29 @@ function createAdminTierSwitch(tiersId, tx_type, subtype, enabled) {
 
 function getAdminTierSwitch(tierId, switchId) {
     rehive.admin.tiers.getSwitch(tierId, switchId).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
-        console.log(error)
-    })
+        console.log(error);
+    });
 }
 
 function updateAdminTierSwitch(tierId, switchId, data) {
     rehive.admin.tiers.updateSwitch(tierId, switchId,data).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
-        console.log(error)
-    })
+        console.log(error);
+    });
 }
 
 function deleteAdminTierSwitch(tierId, switchId) {
     rehive.admin.tiers.deleteSwitch(tierId, switchId).then(function (res) {
-        console.log(res)
-        document.getElementById('result').innerHTML = convertToText(res)
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
-        console.log(error)
-    })
+        console.log(error);
+    });
 }
 
 function getAdminGlobalSwitchesList() {

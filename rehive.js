@@ -26,9 +26,20 @@ function Rehive(config) {
     this.accounts = {
         currencies: {}
     };
-    this.company = {};
+    this.company = {
+        currencies: {},
+        bankAccounts: {}
+    };
     this.admin = {
-        users: {},
+        users: {
+            overview: {},
+            tiers: {},
+            switches: {},
+            addresses: {},
+            bankAccounts: {},
+            cryptoAccounts: {},
+            documents: {}
+        },
         transactions: {},
         accounts: {},
         currencies: {},
@@ -1378,7 +1389,7 @@ function Rehive(config) {
         })
     };
 
-    this.company.getCompanyDetails = function getCompanyDetails() {
+    this.company.get = function () {
         return new Promise(function (resolve, reject) {
             httpGetRehive(companyAPI).then(function (response) {
                 resolve(response);
@@ -1388,29 +1399,21 @@ function Rehive(config) {
         });
     };
 
-    this.company.getCompanyCurrencies = function getCompanyCurrencies() {
+    this.company.currencies.get = function (obj) {
         return new Promise(function (resolve, reject) {
-            httpGetRehive(companyCurrenciesAPI).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
+            var url,filters;
 
-    this.company.getCompanyCurrency = function (currencyCode) {
-        return new Promise(function (resolve, reject) {
-            var url,
-                error = {status: 'error', message: 'Currency code is required'};
-
-            if (currencyCode && (typeof(currencyCode) == 'string')) {
-                url = companyCurrenciesAPI + currencyCode + '/';
+            if(obj && obj.code) {
+                url = companyCurrenciesAPI + obj.code + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = companyCurrenciesAPI + filters;
             } else {
-                reject(error);
-                return;
+                url = companyCurrenciesAPI;
             }
 
             httpGetRehive(url).then(function (response) {
+                saveUserApiFilterInSessionStorage(response, 'CompanyCurrencies');
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1418,7 +1421,45 @@ function Rehive(config) {
         });
     };
 
-    this.company.getCompanyBanks = function getCompanyBanks() {
+    this.company.currencies.getNext = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('nextCompanyCurrenciesFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveUserApiFilterInSessionStorage(response, 'CompanyCurrencies');
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.company.currencies.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('previousCompanyCurrenciesFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveUserApiFilterInSessionStorage(response, 'CompanyCurrencies');
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.company.bankAccounts.get = function() {
         return new Promise(function (resolve, reject) {
             httpGetRehive(companyBanksAPI).then(function (response) {
                 resolve(response);
@@ -1428,17 +1469,9 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getList = function (filter) {
+    this.admin.users.overview.get = function () {
         return new Promise(function (resolve, reject) {
-
-            if (filter) {
-                filter = '?' + serialize(filter);
-            } else {
-                filter = '';
-            }
-
-            httpGetRehive(adminUsersAPI + filter).then(function (response) {
-                saveFilterInSessionStorage(response)
+            httpGetRehive(adminUsersOverviewAPI).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1446,7 +1479,30 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getList.next = function () {
+    this.admin.users.get = function (obj) {
+        return new Promise(function (resolve, reject) {
+
+            var url,filters;
+
+            if(obj && obj.identifier) {
+                url = adminUsersAPI + obj.identifier + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminUsersAPI + filters;
+            } else {
+                url = adminUsersAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.getNext = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
             if (url) {
@@ -1454,7 +1510,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response)
+                    saveFilterInSessionStorage(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1465,7 +1521,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getList.previous = function () {
+    this.admin.users.getPrevious = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
             if (url) {
@@ -1473,7 +1529,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response)
+                    saveFilterInSessionStorage(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1481,17 +1537,6 @@ function Rehive(config) {
             } else {
                 reject('Not allowed');
             }
-        });
-    };
-
-    this.admin.users.getOverview = function () {
-        return new Promise(function (resolve, reject) {
-            httpGetRehive(adminUsersOverviewAPI).then(function (response) {
-                saveFilterInSessionStorage(response)
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
         });
     };
 
@@ -1532,20 +1577,6 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.get = function (uuid) {
-        return new Promise(function (resolve, reject) {
-            if (!uuid) {
-                reject('No identifier has been given');
-                return;
-            }
-
-            httpGetRehive(adminUsersAPI + uuid + '/').then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
 
     this.admin.users.update = function (uuid, data) {
         return new Promise(function (resolve, reject) {
@@ -1589,7 +1620,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getTiers = function (uuid) {
+    this.admin.users.tiers.get = function (uuid) {
         return new Promise(function (resolve, reject) {
             if (!uuid) {
                 reject('No identifier has been given');
@@ -1604,14 +1635,25 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getSwitchesList = function (uuid) {
+    this.admin.users.switches.get = function (uuid,obj) {
         return new Promise(function (resolve, reject) {
-            if (!uuid) {
+            var url,filters;
+
+            if (!uuid || (typeof uuid!= 'string')) {
                 reject('No identifier has been given');
                 return;
             }
 
-            httpGetRehive(adminUsersAPI + uuid + adminUserSwitchesAPI).then(function (response) {
+            if(obj && obj.id) {
+                url = adminUsersAPI + uuid + adminUserSwitchesAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminUsersAPI + uuid + adminUserSwitchesAPI + filters;
+            } else {
+                url = adminUsersAPI + uuid + adminUserSwitchesAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1619,7 +1661,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.createSwitch = function (uuid, data) {
+    this.admin.users.switches.create = function (uuid, data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(adminUsersAPI + uuid + adminUserSwitchesAPI, data).then(function (response) {
                 resolve(response);
@@ -1629,22 +1671,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getSwitch = function (uuid, id) {
-        return new Promise(function (resolve, reject) {
-            if (!uuid || !id) {
-                reject('No identifier or id has been given');
-                return;
-            }
-
-            httpGetRehive(adminUsersAPI + uuid + adminUserSwitchesAPI + id + '/').then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.users.updateSwitch = function (uuid, id, data) {
+    this.admin.users.switches.update = function (uuid, id, data) {
         return new Promise(function (resolve, reject) {
             if (!uuid || !id) {
                 reject('No identifier or id has been given');
@@ -1659,7 +1686,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.deleteSwitch = function (uuid, id) {
+    this.admin.users.switches.delete = function (uuid, id) {
         return new Promise(function (resolve, reject) {
             if (!uuid || !id) {
                 reject('No identifier or id has been given');
@@ -1854,16 +1881,21 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getAddressesList = function (filter) {
+    this.admin.users.addresses.get = function (obj) {
         return new Promise(function (resolve, reject) {
-            if (filter) {
-                filter = '?' + serialize(filter);
+
+            var url,filters;
+
+            if(obj && obj.id) {
+                url = adminUserAddressesAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminUserAddressesAPI + filters;
             } else {
-                filter = '';
+                url = adminUserAddressesAPI;
             }
 
-
-            httpGetRehive(adminUserAddressesAPI + filter).then(function (response) {
+            httpGetRehive(url).then(function (response) {
                 saveFilterInSessionStorage(response);
                 resolve(response);
             }, function (error) {
@@ -1872,7 +1904,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getAddressesList.next = function () {
+    this.admin.users.addresses.getNext = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
             if (url) {
@@ -1891,7 +1923,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getAddressesList.previous = function () {
+    this.admin.users.addresses.getPrevious = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
             if (url) {
@@ -1910,7 +1942,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.createAddress = function (data) {
+    this.admin.users.addresses.create = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(adminUserAddressesAPI, data).then(function (response) {
                 resolve(response);
@@ -1920,21 +1952,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getAddress = function (id) {
-        return new Promise(function (resolve, reject) {
-            if (!id) {
-                reject('No address id provided');
-            }
-
-            httpGetRehive(adminUserAddressesAPI + id + '/').then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.users.updateAddress = function (id, data) {
+    this.admin.users.addresses.update = function (id, data) {
         return new Promise(function (resolve, reject) {
             if (!id) {
                 reject('No id has been given');
@@ -1949,7 +1967,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.deleteAddress = function (id) {
+    this.admin.users.addresses.delete = function (id) {
         return new Promise(function (resolve, reject) {
             if (!id) {
                 reject('No id has been given');
@@ -1964,15 +1982,20 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getBankAccountsList = function (filter) {
+    this.admin.users.bankAccounts.get = function (obj) {
         return new Promise(function (resolve, reject) {
-            if (filter) {
-                filter = '?' + serialize(filter);
+            var url,filters;
+
+            if(obj && obj.id) {
+                url = adminUserBankAccountsAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminUserBankAccountsAPI + filters;
             } else {
-                filter = '';
+                url = adminUserBankAccountsAPI;
             }
 
-            httpGetRehive(adminUserBankAccountsAPI + filter).then(function (response) {
+            httpGetRehive(url).then(function (response) {
                 saveFilterInSessionStorage(response);
                 resolve(response);
             }, function (error) {
@@ -1981,7 +2004,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getBankAccountsList.next = function () {
+    this.admin.users.bankAccounts.getNext = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
             if (url) {
@@ -2000,7 +2023,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getBankAccountsList.previous = function () {
+    this.admin.users.bankAccounts.getPrevious = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
             if (url) {
@@ -2008,7 +2031,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response)
+                    saveFilterInSessionStorage(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -2019,7 +2042,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.createBankAccount = function (data) {
+    this.admin.users.bankAccounts.create = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(adminUserBankAccountsAPI, data).then(function (response) {
                 resolve(response);
@@ -2029,21 +2052,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getBankAccount = function (id) {
-        return new Promise(function (resolve, reject) {
-            if (!id) {
-                reject('No address id provided');
-            }
-
-            httpGetRehive(adminUserBankAccountsAPI + id + '/').then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.users.updateBankAccount = function (id, data) {
+    this.admin.users.bankAccounts.update = function (id, data) {
         return new Promise(function (resolve, reject) {
             if (!id) {
                 reject('No id has been given');
@@ -2058,7 +2067,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.deleteBankAccount = function (id) {
+    this.admin.users.bankAccounts.delete = function (id) {
         return new Promise(function (resolve, reject) {
             if (!id) {
                 reject('No id has been given');
@@ -2073,15 +2082,20 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getCryptoAccountsList = function (filter) {
+    this.admin.users.cryptoAccounts.get = function (obj) {
         return new Promise(function (resolve, reject) {
-            if (filter) {
-                filter = '?' + serialize(filter);
+            var url,filters;
+
+            if(obj && obj.id) {
+                url = adminUserCryptoAccountsAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminUserCryptoAccountsAPI + filters;
             } else {
-                filter = '';
+                url = adminUserCryptoAccountsAPI;
             }
 
-            httpGetRehive(adminUserCryptoAccountsAPI + filter).then(function (response) {
+            httpGetRehive(url).then(function (response) {
                 saveFilterInSessionStorage(response);
                 resolve(response);
             }, function (error) {
@@ -2090,7 +2104,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getCryptoAccountsList.next = function () {
+    this.admin.users.cryptoAccounts.getNext = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
             if (url) {
@@ -2109,7 +2123,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getCryptoAccountsList.previous = function () {
+    this.admin.users.cryptoAccounts.getPrevious = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
             if (url) {
@@ -2128,7 +2142,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.createCryptoAccount = function (data) {
+    this.admin.users.cryptoAccounts.create = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(adminUserCryptoAccountsAPI, data).then(function (response) {
                 resolve(response);
@@ -2138,21 +2152,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getCryptoAccount = function (id) {
-        return new Promise(function (resolve, reject) {
-            if (!id) {
-                reject('No address id provided');
-            }
-
-            httpGetRehive(adminUserCryptoAccountsAPI + id + '/').then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.users.updateCryptoAccount = function (id, data) {
+    this.admin.users.cryptoAccounts.update = function (id, data) {
         return new Promise(function (resolve, reject) {
             if (!id) {
                 reject('No id has been given');
@@ -2167,7 +2167,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.deleteCryptoAccount = function (id) {
+    this.admin.users.cryptoAccounts.delete = function (id) {
         return new Promise(function (resolve, reject) {
             if (!id) {
                 reject('No id has been given');
@@ -2182,7 +2182,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getDocumentsList = function (filter) {
+    this.admin.users.documents.get = function (filter) {
         return new Promise(function (resolve, reject) {
             if (filter) {
                 filter = '?' + serialize(filter);
@@ -2199,7 +2199,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getDocumentsList.next = function () {
+    this.admin.users.documents.getNext = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
             if (url) {
@@ -2218,7 +2218,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getDocumentsList.previous = function () {
+    this.admin.users.documents.getPrevious = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
             if (url) {
@@ -2237,7 +2237,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.createDocument = function (data) {
+    this.admin.users.documents.create = function (data) {
         return new Promise(function (resolve, reject) {
             var token = getToken();
             var header = {};
@@ -2274,21 +2274,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getDocument = function (id) {
-        return new Promise(function (resolve, reject) {
-            if (!id) {
-                reject('No id provided');
-            }
-
-            httpGetRehive(adminUserDocumentsAPI + id + '/').then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.users.updateDocument = function (id, data) {
+    this.admin.users.documents.update = function (id, data) {
         return new Promise(function (resolve, reject) {
             if (!id) {
                 reject('No id has been given');
@@ -2330,7 +2316,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.deleteDocument = function (id) {
+    this.admin.users.documents.delete = function (id) {
         return new Promise(function (resolve, reject) {
             if (!id) {
                 reject('No id has been given');
