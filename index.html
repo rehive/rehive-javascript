@@ -181,7 +181,7 @@
 <button onclick="updateAdminUserCryptoAccount('142',{address: 'wootwoot',status: 'verified'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin User Crypto Account</button>
 <button onclick="deleteAdminUserCryptoAccount('142')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin User Crypto Account</button>
 
-<button onclick="getAdminUserDocumentsList({user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Documents List</button>
+<button onclick="getAdminUserDocumentsList({filters: {user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce',page_size: 2}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Documents List</button>
 <button onclick="getAdminUserDocumentsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Documents List Next</button>
 <button onclick="getAdminUserDocumentsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Documents List Previous</button>
 <div style="margin: 20px 0 0 20px">
@@ -189,53 +189,47 @@
     <input type="file" id="adminUserDocument">
     <button onclick="createAdminUserDocument('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','telephone',{ello: 'asdsad'},'yhis is a notr','verified')" style="margin: 20px 0 0 0" class="btn btn-lg btn-default">Create Admin User Document</button>
 </div>
-<button onclick="getAdminUserDocument('351')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin User Document</button>
+<button onclick="getAdminUserDocument({id: '389'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin User Document</button>
 <div style="margin: 20px 0 0 20px">
     <label>Update new document</label>
     <input type="file" id="updateAdminUserDocument">
-    <button onclick="updateAdminUserDocument('351',{document_type: 'retail_store',note: 'jojo234234',status: 'incomplete'})" style="margin: 20px 0 0 0" class="btn btn-lg btn-default">Update Admin User Document</button>
+    <button onclick="updateAdminUserDocument('389',{document_type: 'retail_store',note: 'jojo234234',status: 'incomplete'})" style="margin: 20px 0 0 0" class="btn btn-lg btn-default">Update Admin User Document</button>
 </div>
-<button onclick="deleteAdminUserDocument('351')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Admin User Document</button>
+<button onclick="deleteAdminUserDocument('389')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Admin User Document</button>
 
-<button onclick="getAdminUserEmailsList({user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Emails List</button>
+<button onclick="getAdminUserEmailsList({filters: {user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce',page_size: 2}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Emails List</button>
 <button onclick="getAdminUserEmailsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Emails List Next</button>
 <button onclick="getAdminUserEmailsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Emails List Previous</button>
 <button onclick="createAdminUserEmail('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','a@n.com',false,true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin User Emails</button>
-<button onclick="getAdminUserEmail('11853')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Emails</button>
-<button onclick="updateAdminUserEmail('11853',{verified: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin User Emails</button>
-<button onclick="deleteAdminUserEmail('11853')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin User Emails</button>
+<button onclick="getAdminUserEmail({id: '16008'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Emails</button>
+<button onclick="updateAdminUserEmail('16008',{verified: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin User Emails</button>
+<button onclick="deleteAdminUserEmail('16008')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin User Emails</button>
 
-<button onclick="getAdminUserMobilesList({user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Mobiles List</button>
+<button onclick="getAdminUserMobilesList({filters: {user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce',page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Mobiles List</button>
 <button onclick="getAdminUserMobilesListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Mobiles List Next</button>
 <button onclick="getAdminUserMobilesListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Mobiles List Previous</button>
 <button onclick="createAdminUserMobile('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','+8801703862293',false,true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin User Mobiles</button>
-<button onclick="getAdminUserMobile('1787')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Mobiles</button>
+<button onclick="getAdminUserMobile({id: '1787'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Mobiles</button>
 <button onclick="updateAdminUserMobile('1787',{verified: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin User Mobiles</button>
 <button onclick="deleteAdminUserMobile('1787')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin User Mobiles</button>
 
-<button onclick="getAdminTransactionsList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Transactions List</button>
+<button onclick="getAdminTransactionsList({filters: {user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce'}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Transactions List</button>
 <button onclick="getAdminTransactionsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Transactions List Next</button>
 <button onclick="getAdminTransactionsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Transactions List Previous</button>
 
-<button onclick="getAdminTransactionsTotal()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Transactions Total</button>
-<button onclick="getAdminTransaction('Y2EHgq3S39twrMCptv54')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Transaction</button>
-<button onclick="updateAdminTransaction('OeMDngAWOtnRUuTSkEAI',{status: 'complete'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Transaction</button>
+<button onclick="getAdminTransactionsTotal({filters: {currency: 'USD'}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Transactions Total</button>
+<button onclick="getAdminTransaction({id: 'MGKMQZPxoSlwfneC9zE9'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Transaction</button>
+<button onclick="updateAdminTransaction('MGKMQZPxoSlwfneC9zE9',{status: 'complete'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Transaction</button>
 <button onclick="createAdminCreditTransaction('test1@rehive.com','USD',10000,'sell',null,null,{hey: 'yo'},'hello note',false)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Credit Transaction</button>
 <button onclick="createAdminDebitTransaction('test1@rehive.com','USD',1000,'purchase',null,null,{hey: 'yolo'},'hello note 2',true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Debit Transaction</button>
 <button onclick="createAdminTransferTransaction('test1@rehive.com','joshua@rehive.com','USD',1000,'purchase',null,'note this is',{hello: 'yo'},null,'sell',null,{yo: 'hello'},'this is a note')"
         style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Transfer Transaction</button>
 
 <button onclick="getAdminTransactionsSwitchesList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Transactions Switches List</button>
-<button onclick="createAdminTransactionsSwitch('debit',null,true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Transactions Switch</button>
-<button onclick="getAdminTransactionsSwitch('47')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Transactions Switch</button>
-<button onclick="updateAdminTransactionsSwitch('48',{enabled: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Transactions Switch</button>
-<button onclick="deleteAdminTransactionsSwitch('48')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Transactions Switch</button>
-
-<button onclick="getAdminTransactionsWebhooksList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Transactions Webhooks List</button>
-<button onclick="createAdminTransactionsWebhook('debit','transaction.execute','http://www.sda.com','wow')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin Transactions Webhook</button>
-<button onclick="getAdminTransactionsWebhook('173')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Transactions Webhook</button>
-<button onclick="updateAdminTransactionsWebhook('173',{secret: 'not'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Transactions Webhook</button>
-<button onclick="deleteAdminTransactionsWebhook('173')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin Transactions Webhook</button>
+<button onclick="createAdminTransactionsSwitch('credit',null,false)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Transactions Switch</button>
+<button onclick="getAdminTransactionsSwitch({id: '54'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Transactions Switch</button>
+<button onclick="updateAdminTransactionsSwitch('54',{enabled: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Transactions Switch</button>
+<button onclick="deleteAdminTransactionsSwitch('54')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Transactions Switch</button>
 
 <button onclick="getAdminUsersAccountsList({user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Accounts List</button>
 <button onclick="getAdminUsersAccountsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Users Accounts List Next</button>

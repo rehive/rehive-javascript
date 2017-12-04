@@ -38,9 +38,13 @@ function Rehive(config) {
             addresses: {},
             bankAccounts: {},
             cryptoAccounts: {},
-            documents: {}
+            documents: {},
+            emails: {},
+            mobiles: {}
         },
-        transactions: {},
+        transactions: {
+            switches: {}
+        },
         accounts: {},
         currencies: {},
         company: {},
@@ -81,7 +85,6 @@ function Rehive(config) {
         userCreateDocumentAPI = 'user/documents/',
         userEmailAddressesAPI = 'user/emails/',
         userMobileNumbersAPI = 'user/mobiles/',
-        userNotificationsAPI = 'user/notifications/',
         transactionsAPI = 'transactions/',
         totalTransactionsListAPI = 'totals/',
         debitAPI = 'transactions/debit/',
@@ -2182,15 +2185,20 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.documents.get = function (filter) {
+    this.admin.users.documents.get = function (obj) {
         return new Promise(function (resolve, reject) {
-            if (filter) {
-                filter = '?' + serialize(filter);
+            var url,filters;
+
+            if(obj && obj.id) {
+                url = adminUserDocumentsAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminUserDocumentsAPI + filters;
             } else {
-                filter = '';
+                url = adminUserDocumentsAPI;
             }
 
-            httpGetRehive(adminUserDocumentsAPI + filter).then(function (response) {
+            httpGetRehive(url).then(function (response) {
                 saveFilterInSessionStorage(response);
                 resolve(response);
             }, function (error) {
@@ -2331,15 +2339,20 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getEmailsList = function (filter) {
+    this.admin.users.emails.get = function (obj) {
         return new Promise(function (resolve, reject) {
-            if (filter) {
-                filter = '?' + serialize(filter);
+            var url,filters;
+
+            if(obj && obj.id) {
+                url = adminUserEmailsAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminUserEmailsAPI + filters;
             } else {
-                filter = '';
+                url = adminUserEmailsAPI;
             }
 
-            httpGetRehive(adminUserEmailsAPI + filter).then(function (response) {
+            httpGetRehive(url).then(function (response) {
                 saveFilterInSessionStorage(response);
                 resolve(response);
             }, function (error) {
@@ -2348,7 +2361,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getEmailsList.next = function () {
+    this.admin.users.emails.getNext = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
             if (url) {
@@ -2367,7 +2380,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getEmailsList.previous = function () {
+    this.admin.users.emails.getPrevious = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
             if (url) {
@@ -2375,7 +2388,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response)
+                    saveFilterInSessionStorage(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -2386,7 +2399,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.createEmail = function (data) {
+    this.admin.users.emails.create = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(adminUserEmailsAPI, data).then(function (response) {
                 resolve(response);
@@ -2396,21 +2409,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getEmail = function (id) {
-        return new Promise(function (resolve, reject) {
-            if (!id) {
-                reject('No address id provided');
-            }
-
-            httpGetRehive(adminUserEmailsAPI + id + '/').then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.users.updateEmail = function (id, data) {
+    this.admin.users.emails.update = function (id, data) {
         return new Promise(function (resolve, reject) {
             if (!id) {
                 reject('No id has been given');
@@ -2425,7 +2424,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.deleteEmail = function (id) {
+    this.admin.users.emails.delete = function (id) {
         return new Promise(function (resolve, reject) {
             if (!id) {
                 reject('No id has been given');
@@ -2440,15 +2439,20 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getMobilesList = function (filter) {
+    this.admin.users.mobiles.get = function (obj) {
         return new Promise(function (resolve, reject) {
-            if (filter) {
-                filter = '?' + serialize(filter);
+            var url,filters;
+
+            if(obj && obj.id) {
+                url = adminUserMobilesAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminUserMobilesAPI + filters;
             } else {
-                filter = '';
+                url = adminUserMobilesAPI;
             }
 
-            httpGetRehive(adminUserMobilesAPI + filter).then(function (response) {
+            httpGetRehive(url).then(function (response) {
                 saveFilterInSessionStorage(response);
                 resolve(response);
             }, function (error) {
@@ -2457,7 +2461,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getMobilesList.next = function () {
+    this.admin.users.mobiles.getNext = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
             if (url) {
@@ -2476,7 +2480,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getMobilesList.previous = function () {
+    this.admin.users.mobiles.getPrevious = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
             if (url) {
@@ -2495,7 +2499,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.createMobile = function (data) {
+    this.admin.users.mobiles.create = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(adminUserMobilesAPI, data).then(function (response) {
                 resolve(response);
@@ -2505,21 +2509,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getMobile = function (id) {
-        return new Promise(function (resolve, reject) {
-            if (!id) {
-                reject('No address id provided');
-            }
-
-            httpGetRehive(adminUserMobilesAPI + id + '/').then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.users.updateMobile = function (id, data) {
+    this.admin.users.mobiles.update = function (id, data) {
         return new Promise(function (resolve, reject) {
             if (!id) {
                 reject('No id has been given');
@@ -2534,7 +2524,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.deleteMobile = function (id) {
+    this.admin.users.mobiles.delete = function (id) {
         return new Promise(function (resolve, reject) {
             if (!id) {
                 reject('No id has been given');
@@ -2549,15 +2539,20 @@ function Rehive(config) {
         });
     };
 
-    this.admin.transactions.getList = function (filter) {
+    this.admin.transactions.get = function (obj) {
         return new Promise(function (resolve, reject) {
-            if (filter) {
-                filter = '?' + serialize(filter);
+            var url,filters;
+
+            if(obj && obj.id) {
+                url = adminTransactionsAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminTransactionsAPI + filters;
             } else {
-                filter = '';
+                url = adminTransactionsAPI;
             }
 
-            httpGetRehive(adminTransactionsAPI + filter).then(function (response) {
+            httpGetRehive(url).then(function (response) {
                 saveFilterInSessionStorage(response);
                 resolve(response);
             }, function (error) {
@@ -2566,7 +2561,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.transactions.getList.next = function () {
+    this.admin.transactions.getNext = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
             if (url) {
@@ -2585,7 +2580,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.transactions.getList.previous = function () {
+    this.admin.transactions.getPrevious = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
             if (url) {
@@ -2604,30 +2599,18 @@ function Rehive(config) {
         });
     };
 
-    this.admin.transactions.getTotal = function (filter) {
+    this.admin.transactions.getTotals = function (obj) {
         return new Promise(function (resolve, reject) {
-            if (filter) {
-                filter = '?' + serialize(filter);
+            var filter;
+
+            if (obj) {
+                filter = '?' + serialize(obj.filters);
             } else {
                 filter = '';
             }
 
             httpGetRehive(adminTransactionsTotalAPI + filter).then(function (response) {
                 saveFilterInSessionStorage(response);
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.transactions.get = function (id) {
-        return new Promise(function (resolve, reject) {
-            if (!id) {
-                reject('No address id provided');
-            }
-
-            httpGetRehive(adminTransactionsAPI + id + '/').then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2680,9 +2663,20 @@ function Rehive(config) {
         });
     };
 
-    this.admin.transactions.getSwitchesList = function () {
+    this.admin.transactions.switches.get = function (obj) {
+        var url,filters;
+
+        if(obj && obj.id) {
+            url = adminTransactionsSwitchesAPI + obj.id + '/';
+        } else if(obj && obj.filters){
+            filters = '?' + serialize(obj.filters);
+            url = adminTransactionsSwitchesAPI + filters;
+        } else {
+            url = adminTransactionsSwitchesAPI;
+        }
+
         return new Promise(function (resolve, reject) {
-            httpGetRehive(adminTransactionsSwitchesAPI).then(function (response) {
+            httpGetRehive(url).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2690,7 +2684,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.transactions.createSwitch = function (data) {
+    this.admin.transactions.switches.create = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(adminTransactionsSwitchesAPI, data).then(function (response) {
                 resolve(response);
@@ -2700,17 +2694,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.transactions.getSwitch = function (id) {
-        return new Promise(function (resolve, reject) {
-            httpGetRehive(adminTransactionsSwitchesAPI + id + '/').then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.transactions.updateSwitch = function (id, data) {
+    this.admin.transactions.switches.update = function (id, data) {
         return new Promise(function (resolve, reject) {
             httpPatchRehive(adminTransactionsSwitchesAPI + id + '/', data).then(function (response) {
                 resolve(response);
@@ -2720,59 +2704,9 @@ function Rehive(config) {
         });
     };
 
-    this.admin.transactions.deleteSwitch = function (id) {
+    this.admin.transactions.switches.delete = function (id) {
         return new Promise(function (resolve, reject) {
             httpDeleteRehive(adminTransactionsSwitchesAPI + id + '/', {}).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.transactions.getWebhooksList = function () {
-        return new Promise(function (resolve, reject) {
-            httpGetRehive(adminTransactionsWebhooksAPI).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.transactions.createWebhook = function (data) {
-        return new Promise(function (resolve, reject) {
-            httpPostRehive(adminTransactionsWebhooksAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.transactions.getWebhook = function (id) {
-        return new Promise(function (resolve, reject) {
-            httpGetRehive(adminTransactionsWebhooksAPI + id + '/').then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.transactions.updateWebhook = function (id, data) {
-        return new Promise(function (resolve, reject) {
-            httpPatchRehive(adminTransactionsWebhooksAPI + id + '/', data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.transactions.deleteWebhook = function (id) {
-        return new Promise(function (resolve, reject) {
-            httpDeleteRehive(adminTransactionsWebhooksAPI + id + '/', {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);

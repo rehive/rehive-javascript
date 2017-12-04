@@ -497,7 +497,7 @@ function getUserDocument(documentId) {
 
 function createDocument(document_type,metadata) {
     var fileSelected = document.getElementById("fileInput").files[0],
-        formData = new FormData;
+        formData = new FormData();
 
     formData.append('file', fileSelected);
     formData.append('document_type', document_type);
@@ -1355,7 +1355,7 @@ function deleteAdminUserCryptoAccount(id) {
 }
 
 function getAdminUserDocumentsList(filter) {
-    rehive.admin.users.getDocumentsList(filter).then(function (res) {
+    rehive.admin.users.documents.get(filter).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1364,7 +1364,7 @@ function getAdminUserDocumentsList(filter) {
 }
 
 function getAdminUserDocumentsListNext() {
-    rehive.admin.users.getDocumentsList.next().then(function (res) {
+    rehive.admin.users.documents.getNext().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1374,7 +1374,7 @@ function getAdminUserDocumentsListNext() {
 }
 
 function getAdminUserDocumentsListPrevious() {
-    rehive.admin.users.getDocumentsList.previous().then(function (res) {
+    rehive.admin.users.documents.getPrevious().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1395,7 +1395,7 @@ function createAdminUserDocument(user, document_type, metadata, note, status) {
     formData.append('note', note);
     formData.append('status', status);
 
-    rehive.admin.users.createDocument(formData).then(function (res) {
+    rehive.admin.users.documents.create(formData).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1404,7 +1404,7 @@ function createAdminUserDocument(user, document_type, metadata, note, status) {
 }
 
 function getAdminUserDocument(id) {
-    rehive.admin.users.getDocument(id).then(function (res) {
+    rehive.admin.users.documents.get(id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1426,7 +1426,7 @@ function updateAdminUserDocument(id, data) {
         }
     }
 
-    rehive.admin.users.updateDocument(id, formData).then(function (res) {
+    rehive.admin.users.documents.update(id, formData).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1435,7 +1435,7 @@ function updateAdminUserDocument(id, data) {
 }
 
 function deleteAdminUserDocument(id) {
-    rehive.admin.users.deleteDocument(id).then(function (res) {
+    rehive.admin.users.documents.delete(id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1443,8 +1443,8 @@ function deleteAdminUserDocument(id) {
     });
 }
 
-function getAdminUserEmailsList(filter) {
-    rehive.admin.users.getEmailsList(filter).then(function (res) {
+function getAdminUserEmailsList(filters) {
+    rehive.admin.users.emails.get(filters).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1453,7 +1453,7 @@ function getAdminUserEmailsList(filter) {
 }
 
 function getAdminUserEmailsListNext() {
-    rehive.admin.users.getEmailsList.next().then(function (res) {
+    rehive.admin.users.emails.getNext().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1463,7 +1463,7 @@ function getAdminUserEmailsListNext() {
 }
 
 function getAdminUserEmailsListPrevious() {
-    rehive.admin.users.getEmailsList.previous().then(function (res) {
+    rehive.admin.users.emails.getPrevious().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1473,7 +1473,7 @@ function getAdminUserEmailsListPrevious() {
 }
 
 function createAdminUserEmail(user, email, primary, verified) {
-    rehive.admin.users.createEmail(
+    rehive.admin.users.emails.create(
         {
             user: user,
             email: email,
@@ -1487,8 +1487,8 @@ function createAdminUserEmail(user, email, primary, verified) {
     });
 }
 
-function getAdminUserEmail(id) {
-    rehive.admin.users.getEmail(id).then(function (res) {
+function getAdminUserEmail(idObj) {
+    rehive.admin.users.emails.get(idObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1497,7 +1497,7 @@ function getAdminUserEmail(id) {
 }
 
 function updateAdminUserEmail(id, data) {
-    rehive.admin.users.updateEmail(id, data).then(function (res) {
+    rehive.admin.users.emails.update(id, data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1506,7 +1506,7 @@ function updateAdminUserEmail(id, data) {
 }
 
 function deleteAdminUserEmail(id) {
-    rehive.admin.users.deleteEmail(id).then(function (res) {
+    rehive.admin.users.emails.delete(id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1515,7 +1515,7 @@ function deleteAdminUserEmail(id) {
 }
 
 function getAdminUserMobilesList(filter) {
-    rehive.admin.users.getMobilesList(filter).then(function (res) {
+    rehive.admin.users.mobiles.get(filter).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1524,8 +1524,7 @@ function getAdminUserMobilesList(filter) {
 }
 
 function getAdminUserMobilesListNext() {
-    rehive.admin.users.getMobilesList.next().then(function (res) {
-
+    rehive.admin.users.mobiles.getNext().then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1534,7 +1533,7 @@ function getAdminUserMobilesListNext() {
 }
 
 function getAdminUserMobilesListPrevious() {
-    rehive.admin.users.getMobilesList.previous().then(function (res) {
+    rehive.admin.users.mobiles.getPrevious().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1544,7 +1543,7 @@ function getAdminUserMobilesListPrevious() {
 }
 
 function createAdminUserMobile(user, number, primary, verified) {
-    rehive.admin.users.createMobile(
+    rehive.admin.users.mobiles.create(
         {
             user: user,
             number: number,
@@ -1558,8 +1557,8 @@ function createAdminUserMobile(user, number, primary, verified) {
     });
 }
 
-function getAdminUserMobile(id) {
-    rehive.admin.users.getMobile(id).then(function (res) {
+function getAdminUserMobile(idObj) {
+    rehive.admin.users.mobiles.get(idObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1568,7 +1567,7 @@ function getAdminUserMobile(id) {
 }
 
 function updateAdminUserMobile(id, data) {
-    rehive.admin.users.updateMobile(id, data).then(function (res) {
+    rehive.admin.users.mobiles.update(id, data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1577,7 +1576,7 @@ function updateAdminUserMobile(id, data) {
 }
 
 function deleteAdminUserMobile(id) {
-    rehive.admin.users.deleteMobile(id).then(function (res) {
+    rehive.admin.users.mobiles.delete(id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1585,8 +1584,8 @@ function deleteAdminUserMobile(id) {
     });
 }
 
-function getAdminTransactionsList(filter) {
-    rehive.admin.transactions.getList(filter).then(function (res) {
+function getAdminTransactionsList(filters) {
+    rehive.admin.transactions.get(filters).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1595,7 +1594,7 @@ function getAdminTransactionsList(filter) {
 }
 
 function getAdminTransactionsListNext() {
-    rehive.admin.transactions.getList.next().then(function (res) {
+    rehive.admin.transactions.getNext().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1605,7 +1604,7 @@ function getAdminTransactionsListNext() {
 }
 
 function getAdminTransactionsListPrevious() {
-    rehive.admin.transactions.getList.previous().then(function (res) {
+    rehive.admin.transactions.getPrevious().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1615,7 +1614,7 @@ function getAdminTransactionsListPrevious() {
 }
 
 function getAdminTransactionsTotal(filter) {
-    rehive.admin.transactions.getTotal(filter).then(function (res) {
+    rehive.admin.transactions.getTotals(filter).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1708,7 +1707,7 @@ function createAdminTransferTransaction(user, recipient, currency, amount, debit
 }
 
 function getAdminTransactionsSwitchesList() {
-    rehive.admin.transactions.getSwitchesList().then(function (res) {
+    rehive.admin.transactions.switches.get().then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1717,7 +1716,7 @@ function getAdminTransactionsSwitchesList() {
 }
 
 function createAdminTransactionsSwitch(tx_type, subtype, enabled) {
-    rehive.admin.transactions.createSwitch(
+    rehive.admin.transactions.switches.create(
         {
             tx_type: tx_type,
             subtype: subtype,
@@ -1730,8 +1729,8 @@ function createAdminTransactionsSwitch(tx_type, subtype, enabled) {
     });
 }
 
-function getAdminTransactionsSwitch(id) {
-    rehive.admin.transactions.getSwitch(id).then(function (res) {
+function getAdminTransactionsSwitch(idObj) {
+    rehive.admin.transactions.switches.get(idObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1740,7 +1739,7 @@ function getAdminTransactionsSwitch(id) {
 }
 
 function updateAdminTransactionsSwitch(id, data) {
-    rehive.admin.transactions.updateSwitch(id, data).then(function (res) {
+    rehive.admin.transactions.switches.update(id, data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1749,58 +1748,7 @@ function updateAdminTransactionsSwitch(id, data) {
 }
 
 function deleteAdminTransactionsSwitch(id) {
-    rehive.admin.transactions.deleteSwitch(id).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function getAdminTransactionsWebhooksList() {
-    rehive.admin.transactions.getWebhooksList().then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function createAdminTransactionsWebhook(tx_type, event, url, secret) {
-    rehive.admin.transactions.createWebhook(
-        {
-            tx_type: tx_type,
-            event: event,
-            url: url,
-            secret: secret
-        }).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function getAdminTransactionsWebhook(id) {
-    rehive.admin.transactions.getWebhook(id).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function updateAdminTransactionsWebhook(id, data) {
-    rehive.admin.transactions.updateWebhook(id, data).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function deleteAdminTransactionsWebhook(id) {
-    rehive.admin.transactions.deleteWebhook(id).then(function (res) {
+    rehive.admin.transactions.switches.delete(id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
