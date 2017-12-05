@@ -1756,8 +1756,8 @@ function deleteAdminTransactionsSwitch(id) {
     });
 }
 
-function getAdminUsersAccountsList(filter) {
-    rehive.admin.accounts.getList(filter).then(function (res) {
+function getAdminUsersAccountsList(filtersObj) {
+    rehive.admin.accounts.get(filtersObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1766,7 +1766,7 @@ function getAdminUsersAccountsList(filter) {
 }
 
 function getAdminUsersAccountsListNext() {
-    rehive.admin.accounts.getList.next().then(function (res) {
+    rehive.admin.accounts.getNext().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1776,7 +1776,7 @@ function getAdminUsersAccountsListNext() {
 }
 
 function getAdminUsersAccountsListPrevious() {
-    rehive.admin.accounts.getList.previous().then(function (res) {
+    rehive.admin.accounts.getPrevious().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1800,8 +1800,8 @@ function createAdminUsersAccount(user, name, primary, reference) {
     });
 }
 
-function getAdminUsersAccount(reference) {
-    rehive.admin.accounts.get(reference).then(function (res) {
+function getAdminUsersAccount(referenceObj) {
+    rehive.admin.accounts.get(referenceObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1818,8 +1818,8 @@ function updateAdminUsersAccount(reference, data) {
     });
 }
 
-function getAdminUsersAccountCurrenciesList(reference, filter) {
-    rehive.admin.accounts.getCurrenciesList(reference, filter).then(function (res) {
+function getAdminUsersAccountCurrenciesList(reference, filterObj) {
+    rehive.admin.accounts.currencies.get(reference, filterObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1828,7 +1828,7 @@ function getAdminUsersAccountCurrenciesList(reference, filter) {
 }
 
 function getAdminUsersAccountCurrenciesListNext() {
-    rehive.admin.accounts.getCurrenciesList.next().then(function (res) {
+    rehive.admin.accounts.currencies.getNext().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1838,7 +1838,7 @@ function getAdminUsersAccountCurrenciesListNext() {
 }
 
 function getAdminUsersAccountCurrenciesListPrevious() {
-    rehive.admin.accounts.getCurrenciesList.previous().then(function (res) {
+    rehive.admin.accounts.currencies.getPrevious().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1847,8 +1847,20 @@ function getAdminUsersAccountCurrenciesListPrevious() {
     });
 }
 
-function getAdminUsersAccountCurrency(reference, code) {
-    rehive.admin.accounts.getCurrency(reference, code).then(function (res) {
+function getAdminUsersAccountCurrency(reference, codeObj) {
+    rehive.admin.accounts.currencies.get(reference, codeObj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function addAdminUsersAccountCurrency(reference, currencyObj) {
+    rehive.admin.accounts.currencies.create(reference,
+        {
+            currencies: [currencyObj]
+        }).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1857,7 +1869,7 @@ function getAdminUsersAccountCurrency(reference, code) {
 }
 
 function updateAdminUsersAccountCurrency(reference, code, data) {
-    rehive.admin.accounts.updateCurrency(reference, code, data).then(function (res) {
+    rehive.admin.accounts.currencies.update(reference, code, data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1866,7 +1878,7 @@ function updateAdminUsersAccountCurrency(reference, code, data) {
 }
 
 function getAdminUsersAccountCurrencyLimitsList(reference, code) {
-    rehive.admin.accounts.getCurrencyLimitsList(reference, code).then(function (res) {
+    rehive.admin.accounts.currencies.limits.get(reference, code).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1875,7 +1887,7 @@ function getAdminUsersAccountCurrencyLimitsList(reference, code) {
 }
 
 function createAdminUsersAccountCurrencyLimit(reference, code, tx_type, value, type, subtype) {
-    rehive.admin.accounts.createCurrencyLimit(reference, code, {
+    rehive.admin.accounts.currencies.limits.create(reference, code, {
         tx_type: tx_type,
         value: value,
         type: type,
@@ -1888,8 +1900,8 @@ function createAdminUsersAccountCurrencyLimit(reference, code, tx_type, value, t
     });
 }
 
-function getAdminUsersAccountCurrencyLimit(reference, code, id) {
-    rehive.admin.accounts.getCurrencyLimit(reference, code, id).then(function (res) {
+function getAdminUsersAccountCurrencyLimit(reference, code, idObj) {
+    rehive.admin.accounts.currencies.limits.get(reference, code, idObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1898,7 +1910,7 @@ function getAdminUsersAccountCurrencyLimit(reference, code, id) {
 }
 
 function updateAdminUsersAccountCurrencyLimit(reference, code, id, data) {
-    rehive.admin.accounts.updateCurrencyLimit(reference, code, id, data).then(function (res) {
+    rehive.admin.accounts.currencies.limits.update(reference, code, id, data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1907,7 +1919,7 @@ function updateAdminUsersAccountCurrencyLimit(reference, code, id, data) {
 }
 
 function deleteAdminUsersAccountCurrencyLimit(reference, code, id) {
-    rehive.admin.accounts.deleteCurrencyLimit(reference, code, id).then(function (res) {
+    rehive.admin.accounts.currencies.limits.delete(reference, code, id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1916,7 +1928,7 @@ function deleteAdminUsersAccountCurrencyLimit(reference, code, id) {
 }
 
 function getAdminUsersAccountCurrencyFeesList(reference, code) {
-    rehive.admin.accounts.getCurrencyFeesList(reference, code).then(function (res) {
+    rehive.admin.accounts.currencies.fees.get(reference, code).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1925,7 +1937,7 @@ function getAdminUsersAccountCurrencyFeesList(reference, code) {
 }
 
 function createAdminUsersAccountCurrencyFee(reference, code, tx_type, value, percentage, subtype) {
-    rehive.admin.accounts.createCurrencyFee(reference, code, {
+    rehive.admin.accounts.currencies.fees.create(reference, code, {
         tx_type: tx_type,
         value: value,
         percentage: percentage,
@@ -1938,8 +1950,8 @@ function createAdminUsersAccountCurrencyFee(reference, code, tx_type, value, per
     });
 }
 
-function getAdminUsersAccountCurrencyFee(reference, code, id) {
-    rehive.admin.accounts.getCurrencyFee(reference, code, id).then(function (res) {
+function getAdminUsersAccountCurrencyFee(reference, code, idObj) {
+    rehive.admin.accounts.currencies.fees.get(reference, code, idObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1948,7 +1960,7 @@ function getAdminUsersAccountCurrencyFee(reference, code, id) {
 }
 
 function updateAdminUsersAccountCurrencyFee(reference, code, id, data) {
-    rehive.admin.accounts.updateCurrencyFee(reference, code, id, data).then(function (res) {
+    rehive.admin.accounts.currencies.fees.update(reference, code, id, data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1957,7 +1969,7 @@ function updateAdminUsersAccountCurrencyFee(reference, code, id, data) {
 }
 
 function deleteAdminUsersAccountCurrencyFee(reference, code, id) {
-    rehive.admin.accounts.deleteCurrencyFee(reference, code, id).then(function (res) {
+    rehive.admin.accounts.currencies.fees.delete(reference, code, id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1966,7 +1978,7 @@ function deleteAdminUsersAccountCurrencyFee(reference, code, id) {
 }
 
 function getAdminUsersAccountCurrencySwitchesList(reference, code) {
-    rehive.admin.accounts.getCurrencySwitchesList(reference, code).then(function (res) {
+    rehive.admin.accounts.currencies.switches.get(reference, code).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1975,7 +1987,7 @@ function getAdminUsersAccountCurrencySwitchesList(reference, code) {
 }
 
 function createAdminUsersAccountCurrencySwitch(reference, code, tx_type, subtype, enabled) {
-    rehive.admin.accounts.createCurrencySwitch(reference, code, {
+    rehive.admin.accounts.currencies.switches.create(reference, code, {
         tx_type: tx_type,
         subtype: subtype,
         enabled: enabled
@@ -1987,8 +1999,8 @@ function createAdminUsersAccountCurrencySwitch(reference, code, tx_type, subtype
     });
 }
 
-function getAdminUsersAccountCurrencySwitch(reference, code, id) {
-    rehive.admin.accounts.getCurrencySwitch(reference, code, id).then(function (res) {
+function getAdminUsersAccountCurrencySwitch(reference, code, idObj) {
+    rehive.admin.accounts.currencies.switches.get(reference, code, idObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1997,7 +2009,7 @@ function getAdminUsersAccountCurrencySwitch(reference, code, id) {
 }
 
 function updateAdminUsersAccountCurrencySwitch(reference, code, id, data) {
-    rehive.admin.accounts.updateCurrencySwitch(reference, code, id, data).then(function (res) {
+    rehive.admin.accounts.currencies.switches.update(reference, code, id, data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2006,7 +2018,7 @@ function updateAdminUsersAccountCurrencySwitch(reference, code, id, data) {
 }
 
 function deleteAdminUsersAccountCurrencySwitch(reference, code, id) {
-    rehive.admin.accounts.deleteCurrencySwitch(reference, code, id).then(function (res) {
+    rehive.admin.accounts.currencies.switches.delete(reference, code, id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2014,8 +2026,8 @@ function deleteAdminUsersAccountCurrencySwitch(reference, code, id) {
     });
 }
 
-function getAdminCurrenciesList(filter) {
-    rehive.admin.currencies.getList(filter).then(function (res) {
+function getAdminCurrenciesList(filterObj) {
+    rehive.admin.currencies.get(filterObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2024,7 +2036,7 @@ function getAdminCurrenciesList(filter) {
 }
 
 function getAdminCurrenciesListNext() {
-    rehive.admin.currencies.getList.next().then(function (res) {
+    rehive.admin.currencies.getNext().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -2034,7 +2046,7 @@ function getAdminCurrenciesListNext() {
 }
 
 function getAdminCurrenciesListPrevious() {
-    rehive.admin.currencies.getList.previous().then(function (res) {
+    rehive.admin.currencies.getPrevious().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -2059,8 +2071,8 @@ function createAdminCurrency(code, description, symbol, unit, divisibility) {
     });
 }
 
-function getAdminCurrency(code) {
-    rehive.admin.currencies.get(code).then(function (res) {
+function getAdminCurrency(codeObj) {
+    rehive.admin.currencies.get(codeObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2077,8 +2089,17 @@ function updateAdminCurrency(code, data) {
     });
 }
 
+function getAdminCurrencyOverview(code) {
+    rehive.admin.currencies.overview.get(code).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
 function getAdminCurrencyBankAccountsList(code,filter) {
-    rehive.admin.currencies.getBankAccountsList(code,filter).then(function (res) {
+    rehive.admin.currencies.bankAccounts.get(code,filter).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2087,7 +2108,7 @@ function getAdminCurrencyBankAccountsList(code,filter) {
 }
 
 function getAdminCurrencyBankAccountsListNext() {
-    rehive.admin.currencies.getBankAccountsList.next().then(function (res) {
+    rehive.admin.currencies.bankAccounts.getNext().then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2096,7 +2117,7 @@ function getAdminCurrencyBankAccountsListNext() {
 }
 
 function getAdminCurrencyBankAccountsListPrevious() {
-    rehive.admin.currencies.getBankAccountsList.previous().then(function (res) {
+    rehive.admin.currencies.bankAccounts.getPrevious().then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2104,8 +2125,8 @@ function getAdminCurrencyBankAccountsListPrevious() {
     });
 }
 
-function getAdminCurrencyBankAccount(code,id) {
-    rehive.admin.currencies.getBankAccount(code,id).then(function (res) {
+function getAdminCurrencyBankAccount(code,idObj) {
+    rehive.admin.currencies.bankAccounts.get(code,idObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2114,7 +2135,7 @@ function getAdminCurrencyBankAccount(code,id) {
 }
 
 function addAdminCurrencyBankAccount(code,data) {
-    rehive.admin.currencies.addBankAccount(code,data).then(function (res) {
+    rehive.admin.currencies.bankAccounts.create(code,data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2123,16 +2144,7 @@ function addAdminCurrencyBankAccount(code,data) {
 }
 
 function deleteAdminCurrencyBankAccount(code,id) {
-    rehive.admin.currencies.deleteBankAccount(code,id).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function getAdminCurrencyOverview(code) {
-    rehive.admin.currencies.getOverview(code).then(function (res) {
+    rehive.admin.currencies.bankAccounts.delete(code,id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2159,7 +2171,7 @@ function updateAdminCompany(data) {
 }
 
 function getAdminCompanyAddress() {
-    rehive.admin.company.getAddress().then(function (res) {
+    rehive.admin.company.address.get().then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2168,15 +2180,7 @@ function getAdminCompanyAddress() {
 }
 
 function updateAdminCompanyAddress(data) {
-    rehive.admin.company.updateAddress(data).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-function getAdminGeneralWebhooksList() {
-    rehive.admin.webhooks.getList().then(function (res) {
+    rehive.admin.company.address.update(data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2184,7 +2188,90 @@ function getAdminGeneralWebhooksList() {
     });
 }
 
-function createAdminGeneralWebhooks(url, event, secret) {
+function getAdminBankAccountsList() {
+    rehive.admin.bankAccounts.get().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function createAdminBankAccount(name, number,type, bank_name, bank_code, branch_code, swift, iban, bic) {
+    rehive.admin.bankAccounts.create(
+        {
+            name: name,
+            number: number,
+            type: type,
+            bank_name: bank_name,
+            bank_code: bank_code,
+            branch_code: branch_code,
+            swift: swift,
+            iban: iban,
+            bic: bic
+        }).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminBankAccount(idObj) {
+    rehive.admin.bankAccounts.get(idObj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function updateAdminBankAccount(id, data) {
+    rehive.admin.bankAccounts.update(id, data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function deleteAdminBankAccount(id) {
+    rehive.admin.bankAccounts.delete(id).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminWebhooksList(filtersObj) {
+    rehive.admin.webhooks.get(filtersObj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminWebhooksListNext() {
+    rehive.admin.webhooks.getNext().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminWebhooksListPrevious() {
+    rehive.admin.webhooks.getPrevious().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function createAdminWebhooks(url, event, secret) {
     rehive.admin.webhooks.create({
         url: url,
         event: event,
@@ -2197,8 +2284,8 @@ function createAdminGeneralWebhooks(url, event, secret) {
     });
 }
 
-function getAdminGeneralWebhooks(webhooksId) {
-    rehive.admin.webhooks.get(webhooksId).then(function (res) {
+function getAdminWebhooks(idObj) {
+    rehive.admin.webhooks.get(idObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2206,7 +2293,7 @@ function getAdminGeneralWebhooks(webhooksId) {
     });
 }
 
-function updateAdminGeneralWebhooks(webhooksId, data) {
+function updateAdminWebhooks(webhooksId, data) {
     rehive.admin.webhooks.update(webhooksId, data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -2215,7 +2302,7 @@ function updateAdminGeneralWebhooks(webhooksId, data) {
     });
 }
 
-function deleteAdminGeneralWebhooks(id) {
+function deleteAdminWebhooks(id) {
     rehive.admin.webhooks.delete(id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -2225,7 +2312,7 @@ function deleteAdminGeneralWebhooks(id) {
 }
 
 function getAdminSubtypesList() {
-    rehive.admin.subtypes.getList().then(function (res) {
+    rehive.admin.subtypes.get().then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2248,8 +2335,8 @@ function createAdminSubtype(tx_type, name, label, description) {
     });
 }
 
-function getAdminSubtype(id) {
-    rehive.admin.subtypes.get(id).then(function (res) {
+function getAdminSubtype(idObj) {
+    rehive.admin.subtypes.get(idObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2276,7 +2363,7 @@ function deleteAdminSubtype(id) {
 }
 
 function getAdminNotificationsList() {
-    rehive.admin.notifications.getList().then(function (res) {
+    rehive.admin.notifications.get().then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2284,8 +2371,8 @@ function getAdminNotificationsList() {
     });
 }
 
-function getAdminNotification(notificationid) {
-    rehive.admin.notifications.get(notificationid).then(function (res) {
+function getAdminNotification(idObj) {
+    rehive.admin.notifications.get(idObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2594,62 +2681,6 @@ function updateAdminGlobalSwitch(id, data) {
 
 function deleteAdminGlobalSwitch(id) {
     rehive.admin.switches.delete(id).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function getAdminBankAccountsList() {
-    rehive.admin.bankAccounts.getList().then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function createAdminBankAccount(name, number,type, bank_name, bank_code, branch_code, swift, iban, bic) {
-    rehive.admin.bankAccounts.create(
-        {
-            name: name,
-            number: number,
-            type: type,
-            bank_name: bank_name,
-            bank_code: bank_code,
-            branch_code: branch_code,
-            swift: swift,
-            iban: iban,
-            bic: bic
-        }).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function getAdminBankAccount(id) {
-    rehive.admin.bankAccounts.get(id).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function updateAdminBankAccount(id, data) {
-    rehive.admin.bankAccounts.update(id, data).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function deleteAdminBankAccount(id) {
-    rehive.admin.bankAccounts.delete(id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {

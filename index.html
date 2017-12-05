@@ -231,72 +231,81 @@
 <button onclick="updateAdminTransactionsSwitch('54',{enabled: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Transactions Switch</button>
 <button onclick="deleteAdminTransactionsSwitch('54')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Transactions Switch</button>
 
-<button onclick="getAdminUsersAccountsList({user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Accounts List</button>
+<button onclick="getAdminUsersAccountsList({filters: {user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce'}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Accounts List</button>
 <button onclick="getAdminUsersAccountsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Users Accounts List Next</button>
 <button onclick="getAdminUsersAccountsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Users Accounts List Previous</button>
-<button onclick="createAdminUsersAccount('62f7517a-493c-429f-a635-055cdd44ae10','test',false,null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Admin Users Account</button>
-<button onclick="getAdminUsersAccount('NLR92G2VMC')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Account</button>
-<button onclick="updateAdminUsersAccount('NLR92G2VMC',{primary: true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin Users Account</button>
+<button onclick="createAdminUsersAccount('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','random',false,null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Admin Users Account</button>
+<button onclick="getAdminUsersAccount({reference: 'VYK3XQTDV5'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Account</button>
+<button onclick="updateAdminUsersAccount('3DR6ZVGS8M',{name: 'new two'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin Users Account</button>
 
-<button onclick="getAdminUsersAccountCurrenciesList('B2PT5JSL7U')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Users Account Currencies List</button>
+<button onclick="getAdminUsersAccountCurrenciesList('VYK3XQTDV5',{filters: {page_size: 2}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Users Account Currencies List</button>
 <button onclick="getAdminUsersAccountCurrenciesListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Users Account Currencies List Next</button>
 <button onclick="getAdminUsersAccountCurrenciesListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Users Account Currencies List Previous</button>
-<button onclick="getAdminUsersAccountCurrency('G5WRHPYEUG','ZAR')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Users Account Currency</button>
-<button onclick="updateAdminUsersAccountCurrency('B2PT5JSL7U','XBT',{active: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Users Account Currency</button>
+<button onclick="addAdminUsersAccountCurrency('VYK3XQTDV5',{currency: 'ZAR'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Add Admin Users Account Currency</button>
+<button onclick="getAdminUsersAccountCurrency('G5WRHPYEUG',{code: 'ZAR'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Users Account Currency</button>
+<button onclick="updateAdminUsersAccountCurrency('G5WRHPYEUG','ZAR',{active: true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Users Account Currency</button>
 
 <button onclick="getAdminUsersAccountCurrencyLimitsList('G5WRHPYEUG','ZAR')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Users Account Currency Limits List</button>
 <button onclick="createAdminUsersAccountCurrencyLimit('G5WRHPYEUG','ZAR','credit',300,'max',null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Users Account Currency Limit</button>
-<button onclick="getAdminUsersAccountCurrencyLimit('G5WRHPYEUG','ZAR','46')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Users Account Currency Limit</button>
-<button onclick="updateAdminUsersAccountCurrencyLimit('G5WRHPYEUG','ZAR','46',{tx_type: 'debit',type: 'min'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Users Account Currency Limit</button>
-<button onclick="deleteAdminUsersAccountCurrencyLimit('G5WRHPYEUG','ZAR','45')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Users Account Currency Limit</button>
+<button onclick="getAdminUsersAccountCurrencyLimit('G5WRHPYEUG','ZAR',{id: '50'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Users Account Currency Limit</button>
+<button onclick="updateAdminUsersAccountCurrencyLimit('G5WRHPYEUG','ZAR','50',{tx_type: 'debit',type: 'min'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Users Account Currency Limit</button>
+<button onclick="deleteAdminUsersAccountCurrencyLimit('G5WRHPYEUG','ZAR','50')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Users Account Currency Limit</button>
 
 <button onclick="getAdminUsersAccountCurrencyFeesList('G5WRHPYEUG','ZAR')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Account Currency Fees List</button>
 <button onclick="createAdminUsersAccountCurrencyFee('G5WRHPYEUG','ZAR','credit',300,3,null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Admin Users Account Currency Fee</button>
-<button onclick="getAdminUsersAccountCurrencyFee('G5WRHPYEUG','ZAR','57')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Account Currency Fee</button>
-<button onclick="updateAdminUsersAccountCurrencyFee('G5WRHPYEUG','ZAR','57',{tx_type: 'debit'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin Users Account Currency Fee</button>
-<button onclick="deleteAdminUsersAccountCurrencyFee('G5WRHPYEUG','ZAR','57')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Admin Users Account Currency Fee</button>
+<button onclick="getAdminUsersAccountCurrencyFee('G5WRHPYEUG','ZAR',{id: '60'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Account Currency Fee</button>
+<button onclick="updateAdminUsersAccountCurrencyFee('G5WRHPYEUG','ZAR','60',{tx_type: 'debit'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin Users Account Currency Fee</button>
+<button onclick="deleteAdminUsersAccountCurrencyFee('G5WRHPYEUG','ZAR','60')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Admin Users Account Currency Fee</button>
 
 <button onclick="getAdminUsersAccountCurrencySwitchesList('G5WRHPYEUG','ZAR')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Users Account Currency Switches List</button>
 <button onclick="createAdminUsersAccountCurrencySwitch('G5WRHPYEUG','ZAR','credit',null,false)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Users Account Currency Switch</button>
-<button onclick="getAdminUsersAccountCurrencySwitch('G5WRHPYEUG','ZAR','24')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Users Account Currency Switch</button>
-<button onclick="updateAdminUsersAccountCurrencySwitch('G5WRHPYEUG','ZAR','24',{tx_type: 'debit'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Users Account Currency Switch</button>
-<button onclick="deleteAdminUsersAccountCurrencySwitch('G5WRHPYEUG','ZAR','24')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Users Account Currency Switch</button>
+<button onclick="getAdminUsersAccountCurrencySwitch('G5WRHPYEUG','ZAR',{id: '26'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Users Account Currency Switch</button>
+<button onclick="updateAdminUsersAccountCurrencySwitch('G5WRHPYEUG','ZAR','26',{tx_type: 'debit'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Users Account Currency Switch</button>
+<button onclick="deleteAdminUsersAccountCurrencySwitch('G5WRHPYEUG','ZAR','26')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Users Account Currency Switch</button>
 
-<button onclick="getAdminCurrenciesList({enabled: true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Currencies List</button>
+<button onclick="getAdminCurrenciesList({filters: {enabled: true}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Currencies List</button>
 <button onclick="getAdminCurrenciesListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Currencies List Next</button>
 <button onclick="getAdminCurrenciesListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Currencies List Previous</button>
-<button onclick="createAdminCurrency('POK','Test Currency','&^','pokal',2)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin Currency</button>
-<button onclick="getAdminCurrency('POK')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Currency</button>
-<button onclick="updateAdminCurrency('POK',{enabled: true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Currency</button>
+<button onclick="createAdminCurrency('POL','Test Currency','&^','poyal',2)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin Currency</button>
+<button onclick="getAdminCurrency({code: 'POL'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Currency</button>
+<button onclick="updateAdminCurrency('POL',{enabled: true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Currency</button>
 <button onclick="getAdminCurrencyOverview('ZAR')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Currency Overview</button>
 
-<button onclick="getAdminCurrencyBankAccountsList('ZAR')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Currency Bank Accounts List</button>
+<button onclick="getAdminCurrencyBankAccountsList('ZAR',{filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Currency Bank Accounts List</button>
 <button onclick="getAdminCurrencyBankAccountsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Currency Bank Accounts List Next</button>
 <button onclick="getAdminCurrencyBankAccountsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Currency Bank Accounts List Previous</button>
-<button onclick="addAdminCurrencyBankAccount('ZAR',{id: '107'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Add Admin Currency Bank Account</button>
-<button onclick="getAdminCurrencyBankAccount('ZAR','94')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Currency Bank Account</button>
+<button onclick="addAdminCurrencyBankAccount('ZAR',{id: 94})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Add Admin Currency Bank Account</button>
+<button onclick="getAdminCurrencyBankAccount('ZAR',{id: 94})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Currency Bank Account</button>
 <button onclick="deleteAdminCurrencyBankAccount('ZAR','94')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Currency Bank Account</button>
 
 <button onclick="getAdminCompany()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Company</button>
-<button onclick="updateAdminCompany({description: 'This is a test company'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Company</button>
+<button onclick="updateAdminCompany({description: 'This is a test company 1'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Company</button>
 
 <button onclick="getAdminCompanyAddress()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Company Address</button>
-<button onclick="updateAdminCompanyAddress({country: 'ZA'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Company Address</button>
+<button onclick="updateAdminCompanyAddress({country: 'US'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Company Address</button>
 
-<button onclick="getAdminGeneralWebhooksList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin General Webhook List</button>
-<button onclick="createAdminGeneralWebhooks('https://requestb.in/1blu2q31','user.create','secret')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin General Webhook List</button>
-<button onclick="getAdminGeneralWebhooks('44')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin General Webhook</button>
-<button onclick="updateAdminGeneralWebhooks('44',{url:'https://requestb.in/1blu2q32'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin General Webhook</button>
-<button onclick="deleteAdminGeneralWebhooks('44')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin General Webhook</button>
+<button onclick="getAdminBankAccountsList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Bank Accounts List</button>
+<button onclick="createAdminBankAccount('new Bank','2342','cash','LOL bank','234234','dqwwq','23432','234243','43342')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Admin Bank Account</button>
+<button onclick="getAdminBankAccount({id: '112'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Bank Account</button>
+<button onclick="updateAdminBankAccount('112',{name: 'OLD Bank'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin Bank Account</button>
+<button onclick="deleteAdminBankAccount('112')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Admin Bank Account</button>
+
+<button onclick="getAdminWebhooksList({filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Webhook List</button>
+<button onclick="getAdminWebhooksListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Webhook List Next</button>
+<button onclick="getAdminWebhooksListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Webhook List Previous</button>
+<button onclick="createAdminWebhooks('https://requestb.in/1blu2q31','user.create','secret')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin  Webhook List</button>
+<button onclick="getAdminWebhooks({id: '75'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin  Webhook</button>
+<button onclick="updateAdminWebhooks('75',{url:'https://requestb.in/1blu2q32'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin  Webhook</button>
+<button onclick="deleteAdminWebhooks('75')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin  Webhook</button>
 
 <button onclick="getAdminSubtypesList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Subtypes List</button>
 <button onclick="createAdminSubtype('credit','hello','hello all','hello all kids')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Admin Subtype</button>
-<button onclick="getAdminSubtype('69')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Subtype</button>
-<button onclick="updateAdminSubtype('69',{tx_type: 'debit'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin Subtype</button>
-<button onclick="deleteAdminSubtype('69')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Admin Subtype</button>
+<button onclick="getAdminSubtype({id: '80'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Subtype</button>
+<button onclick="updateAdminSubtype('80',{tx_type: 'debit'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin Subtype</button>
+<button onclick="deleteAdminSubtype('80')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Admin Subtype</button>
 
 <button onclick="getAdminNotificationsList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Notifications List</button>
-<button onclick="getAdminNotification('7')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Notification</button>
+<button onclick="getAdminNotification({id: '7'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Notification</button>
 <button onclick="updateAdminNotification('7',{enabled: true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Notification</button>
 
 <button onclick="getAdminTiersList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tiers List</button>
@@ -334,12 +343,6 @@
 <button onclick="getAdminGlobalSwitch('93')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Switch</button>
 <button onclick="updateAdminGlobalSwitch('93',{enabled: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Switch</button>
 <button onclick="deleteAdminGlobalSwitch('93')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Switch</button>
-
-<button onclick="getAdminBankAccountsList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Bank Accounts List</button>
-<button onclick="createAdminBankAccount('new Bank','2342','cash','LOL bank','234234','dqwwq','23432','234243','43342')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Admin Bank Account</button>
-<button onclick="getAdminBankAccount('106')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Bank Account</button>
-<button onclick="updateAdminBankAccount('106',{name: 'OLD Bank'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin Bank Account</button>
-<button onclick="deleteAdminBankAccount('106')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Admin Bank Account</button>
 
 <button onclick="getAdminServicesList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Services List</button>
 <button onclick="getAdminServicesListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Services List Next</button>
