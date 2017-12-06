@@ -40,7 +40,9 @@ function Rehive(config) {
             cryptoAccounts: {},
             documents: {},
             emails: {},
-            mobiles: {}
+            mobiles: {},
+            permissions: {},
+            permissionGroups: {}
         },
         transactions: {
             switches: {}
@@ -63,10 +65,17 @@ function Rehive(config) {
         webhooks: {},
         subtypes: {},
         notifications: {},
-        tiers: {},
+        tiers: {
+            requirements: {},
+            limits: {},
+            fees: {},
+            switches: {}
+        },
         switches: {},
         services: {},
-        permissionGroups: {}
+        permissionGroups: {
+            permissions: {}
+        }
     };
     var apiVersion = '3',
         registerAPI = 'auth/register/',
@@ -1715,20 +1724,25 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getPermissionsList = function (uuid,filter) {
+    this.admin.users.permissions.get = function (uuid, obj) {
         return new Promise(function (resolve, reject) {
             if (!uuid) {
                 reject('No identifier has been given');
                 return;
             }
 
-            if (filter) {
-                filter = '?' + serialize(filter);
+            var url, filters;
+
+            if(obj && obj.id) {
+                url = adminUsersAPI + uuid + adminUserPermissionsAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminUsersAPI + uuid + adminUserPermissionsAPI + filters;
             } else {
-                filter = '';
+                url = adminUsersAPI + uuid + adminUserPermissionsAPI;
             }
 
-            httpGetRehive(adminUsersAPI + uuid + adminUserPermissionsAPI + filter).then(function (response) {
+            httpGetRehive(url).then(function (response) {
                 saveFilterInSessionStorage(response);
                 resolve(response);
             }, function (error) {
@@ -1737,7 +1751,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getPermissionsList.next = function () {
+    this.admin.users.permissions.getNext = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
             if (url) {
@@ -1756,7 +1770,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getPermissionsList.previous = function () {
+    this.admin.users.permissions.getPrevious = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
             if (url) {
@@ -1775,7 +1789,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.createPermission = function (uuid, data) {
+    this.admin.users.permissions.create = function (uuid, data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(adminUsersAPI + uuid + adminUserPermissionsAPI, data).then(function (response) {
                 resolve(response);
@@ -1785,17 +1799,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getPermission = function (uuid, id) {
-        return new Promise(function (resolve, reject) {
-            httpGetRehive(adminUsersAPI + uuid + adminUserPermissionsAPI + id + '/').then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.users.deletePermission = function (uuid, id) {
+    this.admin.users.permissions.delete = function (uuid, id) {
         return new Promise(function (resolve, reject) {
             httpDeleteRehive(adminUsersAPI + uuid + adminUserPermissionsAPI + id + '/', {}).then(function (response) {
                 resolve(response);
@@ -1805,20 +1809,25 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getPermissionGroupsList = function (uuid,filter) {
+    this.admin.users.permissionGroups.get = function (uuid,obj) {
         return new Promise(function (resolve, reject) {
             if (!uuid) {
                 reject('No identifier has been given');
                 return;
             }
 
-            if (filter) {
-                filter = '?' + serialize(filter);
+            var url, filters;
+
+            if(obj && obj.name) {
+                url = adminUsersAPI + uuid + adminUserPermissionGroupsAPI + obj.name + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminUsersAPI + uuid + adminUserPermissionGroupsAPI + filters;
             } else {
-                filter = '';
+                url = adminUsersAPI + uuid + adminUserPermissionGroupsAPI;
             }
 
-            httpGetRehive(adminUsersAPI + uuid + adminUserPermissionGroupsAPI + filter).then(function (response) {
+            httpGetRehive(url).then(function (response) {
                 saveFilterInSessionStorage(response);
                 resolve(response);
             }, function (error) {
@@ -1827,7 +1836,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getPermissionGroupsList.next = function () {
+    this.admin.users.permissionGroups.getNext = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
             if (url) {
@@ -1846,7 +1855,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getPermissionGroupsList.previous = function () {
+    this.admin.users.permissionGroups.getPrevious = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
             if (url) {
@@ -1865,7 +1874,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.addPermissionGroup = function (uuid, data) {
+    this.admin.users.permissionGroups.create = function (uuid, data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(adminUsersAPI + uuid + adminUserPermissionGroupsAPI, data).then(function (response) {
                 resolve(response);
@@ -1875,17 +1884,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.getPermissionGroup = function (uuid, name) {
-        return new Promise(function (resolve, reject) {
-            httpGetRehive(adminUsersAPI + uuid + adminUserPermissionGroupsAPI + name + '/').then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.users.deletePermissionGroup = function (uuid, name) {
+    this.admin.users.permissionGroups.delete = function (uuid, name) {
         return new Promise(function (resolve, reject) {
             httpDeleteRehive(adminUsersAPI + uuid + adminUserPermissionGroupsAPI + name + '/', {}).then(function (response) {
                 resolve(response);
@@ -3523,29 +3522,27 @@ function Rehive(config) {
         })
     };
 
-    this.admin.tiers.getList = function () {
+    this.admin.tiers.get = function (obj) {
+        var url;
+
+        if(obj && obj.id) {
+            url = adminTiersAPI + obj.id + '/';
+        } else {
+            url = adminTiersAPI;
+        }
+
         return new Promise(function (resolve, reject) {
-            httpGetRehive(adminTiersAPI).then(function (response) {
+            httpGetRehive(url).then(function (response) {
                 resolve(response)
             }, function (err) {
                 reject(err)
             })
         })
-    }
+    };
 
     this.admin.tiers.create = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(adminTiersAPI, data).then(function (res) {
-                resolve(res)
-            }, function (error) {
-                reject(error)
-            })
-        })
-    };
-
-    this.admin.tiers.get = function (tierId) {
-        return new Promise(function (resolve, reject) {
-            httpGetRehive(adminTiersAPI + tierId + '/').then(function (res) {
                 resolve(res)
             }, function (error) {
                 reject(error)
@@ -3574,13 +3571,22 @@ function Rehive(config) {
     };
 
 
-    this.admin.tiers.getRequirementsList = function (tiersId) {
+    this.admin.tiers.requirements.get = function (tierId,obj) {
         return new Promise(function (resolve, reject) {
-            if (!tiersId) {
-                reject('No Id is provided');
+            if (!tierId) {
+                reject('No tier id is provided');
                 return
             }
-            httpGetRehive(adminTiersAPI + tiersId + adminTiersRequirementsAPI).then(function (response) {
+
+            var url;
+
+            if(obj && obj.id) {
+                url = adminTiersAPI + tierId + adminTiersRequirementsAPI + obj.id + '/';
+            } else {
+                url = adminTiersAPI + tierId + adminTiersRequirementsAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
                 resolve(response)
             }, function (err) {
                 reject(err)
@@ -3588,10 +3594,10 @@ function Rehive(config) {
         })
     };
 
-    this.admin.tiers.createRequirements = function (tiersId,data) {
+    this.admin.tiers.requirements.create = function (tiersId,data) {
         return new Promise(function (resolve, reject) {
             if (!tiersId) {
-                reject('No Id is provided');
+                reject('No tier id is provided');
                 return
             }
             httpPostRehive(adminTiersAPI + tiersId + adminTiersRequirementsAPI, data).then(function (res) {
@@ -3602,25 +3608,7 @@ function Rehive(config) {
         })
     };
 
-    this.admin.tiers.getRequirement = function (tierId,requirementId) {
-        return new Promise(function (resolve, reject) {
-            if (!tierId) {
-                reject('No  tier id is provided');
-                return
-            }
-            if (!requirementId) {
-                reject('No  requirement id is provided');
-                return
-            }
-            httpGetRehive(adminTiersAPI + tierId + adminTiersRequirementsAPI + requirementId + '/').then(function (res) {
-                resolve(res)
-            }, function (error) {
-                reject(error)
-            })
-        })
-    };
-
-    this.admin.tiers.updateRequirement = function (tierId, requirementId, data) {
+    this.admin.tiers.requirements.update = function (tierId, requirementId, data) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
                 reject('No  tier id is provided');
@@ -3638,7 +3626,7 @@ function Rehive(config) {
         })
     };
 
-    this.admin.tiers.deleteRequirement = function (tierId,requirementId) {
+    this.admin.tiers.requirements.delete = function (tierId,requirementId) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
                 reject('No  tier id is provided');
@@ -3657,27 +3645,36 @@ function Rehive(config) {
     };
 
 
-    this.admin.tiers.getFeesList = function (tiersId) {
+    this.admin.tiers.fees.get = function (tierId,obj) {
         return new Promise(function (resolve, reject) {
-            if (!tiersId) {
-                reject('No Id is provided');
+            if (!tierId) {
+                reject('No tier id is provided');
                 return
             }
-            httpGetRehive(adminTiersAPI + tiersId + adminTiersFeesAPI).then(function (response) {
+
+            var url;
+
+            if(obj && obj.id) {
+                url = adminTiersAPI + tierId + adminTiersFeesAPI + obj.id + '/';
+            } else {
+                url = adminTiersAPI + tierId + adminTiersFeesAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
                 resolve(response)
             }, function (err) {
                 reject(err)
             })
         })
-    }
+    };
 
-    this.admin.tiers.createFee = function (tiersId,data) {
+    this.admin.tiers.fees.create = function (tierId,data) {
         return new Promise(function (resolve, reject) {
-            if (!tiersId) {
-                reject('No Id is provided');
+            if (!tierId) {
+                reject('No tier id is provided');
                 return
             }
-            httpPostRehive(adminTiersAPI + tiersId + adminTiersFeesAPI, data).then(function (res) {
+            httpPostRehive(adminTiersAPI + tierId + adminTiersFeesAPI, data).then(function (res) {
                 resolve(res)
             }, function (error) {
                 reject(error)
@@ -3685,32 +3682,14 @@ function Rehive(config) {
         })
     };
 
-    this.admin.tiers.getFee = function (tierId,feeId) {
+    this.admin.tiers.fees.update = function (tierId, feeId, data) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
-                reject('No  tier id is provided');
+                reject('No tier id is provided');
                 return
             }
             if (!feeId) {
-                reject('No  fee id is provided');
-                return
-            }
-            httpGetRehive(adminTiersAPI + tierId + adminTiersFeesAPI + feeId + '/').then(function (res) {
-                resolve(res)
-            }, function (error) {
-                reject(error)
-            })
-        })
-    };
-
-    this.admin.tiers.updateFee = function (tierId, feeId, data) {
-        return new Promise(function (resolve, reject) {
-            if (!tierId) {
-                reject('No  tier id is provided');
-                return
-            }
-            if (!feeId) {
-                reject('No  fee id is provided');
+                reject('No fee id is provided');
                 return
             }
             httpPatchRehive(adminTiersAPI + tierId + adminTiersFeesAPI + feeId + '/', data).then(function (res) {
@@ -3721,14 +3700,14 @@ function Rehive(config) {
         })
     };
 
-    this.admin.tiers.deleteFee = function (tierId,feeId) {
+    this.admin.tiers.fees.delete = function (tierId,feeId) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
-                reject('No  tier id is provided');
+                reject('No tier id is provided');
                 return
             }
             if (!feeId) {
-                reject('No  fee id is provided');
+                reject('No fee id is provided');
                 return
             }
             httpDeleteRehive(adminTiersAPI + tierId + adminTiersFeesAPI + feeId + '/').then(function (res) {
@@ -3740,13 +3719,22 @@ function Rehive(config) {
     };
 
 
-    this.admin.tiers.getSwitchesList = function (tiersId) {
+    this.admin.tiers.switches.get = function (tierId,obj) {
         return new Promise(function (resolve, reject) {
-            if (!tiersId) {
-                reject('No Id is provided');
+            if (!tierId) {
+                reject('No tier id is provided');
                 return
             }
-            httpGetRehive(adminTiersAPI + tiersId + adminTiersSwitchesAPI).then(function (response) {
+
+            var url;
+
+            if(obj && obj.id) {
+                url = adminTiersAPI + tierId + adminTiersSwitchesAPI + obj.id + '/';
+            } else {
+                url = adminTiersAPI + tierId + adminTiersSwitchesAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
                 resolve(response)
             }, function (err) {
                 reject(err)
@@ -3754,13 +3742,13 @@ function Rehive(config) {
         })
     };
 
-    this.admin.tiers.createSwitch = function (tiersId,data) {
+    this.admin.tiers.switches.create = function (tierId,data) {
         return new Promise(function (resolve, reject) {
-            if (!tiersId) {
-                reject('No Id is provided');
+            if (!tierId) {
+                reject('No tier id is provided');
                 return
             }
-            httpPostRehive(adminTiersAPI + tiersId + adminTiersSwitchesAPI, data).then(function (res) {
+            httpPostRehive(adminTiersAPI + tierId + adminTiersSwitchesAPI, data).then(function (res) {
                 resolve(res)
             }, function (error) {
                 reject(error)
@@ -3768,32 +3756,14 @@ function Rehive(config) {
         })
     };
 
-    this.admin.tiers.getSwitch = function (tierId,switchId) {
+    this.admin.tiers.switches.update = function (tierId, switchId, data) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
-                reject('No  tier id is provided');
+                reject('No tier id is provided');
                 return
             }
             if (!switchId) {
-                reject('No  switch id is provided');
-                return
-            }
-            httpGetRehive(adminTiersAPI + tierId + adminTiersSwitchesAPI + switchId + '/').then(function (res) {
-                resolve(res)
-            }, function (error) {
-                reject(error)
-            })
-        })
-    };
-
-    this.admin.tiers.updateSwitch = function (tierId, switchId, data) {
-        return new Promise(function (resolve, reject) {
-            if (!tierId) {
-                reject('No  tier id is provided');
-                return
-            }
-            if (!switchId) {
-                reject('No  switch id is provided');
+                reject('No switch id is provided');
                 return
             }
             httpPatchRehive(adminTiersAPI + tierId + adminTiersSwitchesAPI + switchId + '/', data).then(function (res) {
@@ -3804,14 +3774,14 @@ function Rehive(config) {
         })
     };
 
-    this.admin.tiers.deleteSwitch = function (tierId,switchId) {
+    this.admin.tiers.switches.delete = function (tierId,switchId) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
-                reject('No  tier id is provided');
+                reject('No tier id is provided');
                 return
             }
             if (!switchId) {
-                reject('No  switch id is provided');
+                reject('No switch id is provided');
                 return
             }
             httpDeleteRehive(adminTiersAPI + tierId + adminTiersSwitchesAPI + switchId + '/').then(function (res) {
@@ -3823,27 +3793,36 @@ function Rehive(config) {
     };
 
 
-    this.admin.tiers.getLimitsList = function (tiersId) {
+    this.admin.tiers.limits.get = function (tierId,obj) {
         return new Promise(function (resolve, reject) {
-            if (!tiersId) {
-                reject('No Id is provided');
+            if (!tierId) {
+                reject('No tier id is provided');
                 return
             }
-            httpGetRehive(adminTiersAPI + tiersId + adminTiersLimitsAPI).then(function (response) {
+
+            var url;
+
+            if(obj && obj.id) {
+                url = adminTiersAPI + tierId + adminTiersLimitsAPI + obj.id + '/';
+            } else {
+                url = adminTiersAPI + tierId + adminTiersLimitsAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
                 resolve(response)
             }, function (err) {
                 reject(err)
             })
         })
-    }
+    };
 
-    this.admin.tiers.createLimit = function (tiersId,data) {
+    this.admin.tiers.limits.create = function (tierId,data) {
         return new Promise(function (resolve, reject) {
-            if (!tiersId) {
-                reject('No Id is provided');
+            if (!tierId) {
+                reject('No tier id is provided');
                 return
             }
-            httpPostRehive(adminTiersAPI + tiersId + adminTiersLimitsAPI, data).then(function (res) {
+            httpPostRehive(adminTiersAPI + tierId + adminTiersLimitsAPI, data).then(function (res) {
                 resolve(res)
             }, function (error) {
                 reject(error)
@@ -3851,32 +3830,14 @@ function Rehive(config) {
         })
     };
 
-    this.admin.tiers.getLimit = function (tierId,limitId) {
+    this.admin.tiers.limits.update = function (tierId, limitId, data) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
                 reject('No  tier id is provided');
                 return
             }
             if (!limitId) {
-                reject('No  requirement id is provided');
-                return
-            }
-            httpGetRehive(adminTiersAPI + tierId + adminTiersLimitsAPI + limitId + '/').then(function (res) {
-                resolve(res)
-            }, function (error) {
-                reject(error)
-            })
-        })
-    };
-
-    this.admin.tiers.updateLimit = function (tierId, limitId, data) {
-        return new Promise(function (resolve, reject) {
-            if (!tierId) {
-                reject('No  tier id is provided');
-                return
-            }
-            if (!limitId) {
-                reject('No  requirement id is provided');
+                reject('No limit id is provided');
                 return
             }
             httpPatchRehive(adminTiersAPI + tierId + adminTiersLimitsAPI + limitId + '/', data).then(function (res) {
@@ -3887,14 +3848,14 @@ function Rehive(config) {
         })
     };
 
-    this.admin.tiers.deleteLimit = function (tierId,limitId) {
+    this.admin.tiers.limits.delete = function (tierId,limitId) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
                 reject('No  tier id is provided');
                 return
             }
             if (!limitId) {
-                reject('No  requirement id is provided');
+                reject('No  limit id is provided');
                 return
             }
             httpDeleteRehive(adminTiersAPI + tierId + adminTiersLimitsAPI + limitId + '/').then(function (res) {
@@ -3905,9 +3866,17 @@ function Rehive(config) {
         })
     };
 
-    this.admin.switches.getList = function () {
+    this.admin.switches.get = function (obj) {
+        var url;
+
+        if(obj && obj.id) {
+            url = adminSwitchesAPI + obj.id + '/';
+        } else {
+            url = adminSwitchesAPI;
+        }
+
         return new Promise(function (resolve, reject) {
-            httpGetRehive(adminSwitchesAPI).then(function (response) {
+            httpGetRehive(url).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -3918,16 +3887,6 @@ function Rehive(config) {
     this.admin.switches.create = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(adminSwitchesAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.switches.get = function (id) {
-        return new Promise(function (resolve, reject) {
-            httpGetRehive(adminSwitchesAPI + id + '/').then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -3955,15 +3914,21 @@ function Rehive(config) {
         });
     };
 
-    this.admin.services.getList = function (filter) {
+    this.admin.services.get = function (obj) {
         return new Promise(function (resolve, reject) {
-            if (filter) {
-                filter = '?' + serialize(filter);
+            var url,filters;
+
+            if(obj && obj.id) {
+                url = adminServicesAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminServicesAPI + filters;
             } else {
-                filter = '';
+                url = adminServicesAPI;
             }
 
-            httpGetRehive(adminServicesAPI + filter).then(function (response) {
+
+            httpGetRehive(url).then(function (response) {
                 saveFilterInSessionStorage(response);
                 resolve(response);
             }, function (error) {
@@ -3972,7 +3937,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.services.getList.next = function () {
+    this.admin.services.getNext = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
             if (url) {
@@ -3991,7 +3956,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.services.getList.previous = function () {
+    this.admin.services.getPrevious = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
             if (url) {
@@ -4007,16 +3972,6 @@ function Rehive(config) {
             } else {
                 reject('Not allowed');
             }
-        });
-    };
-
-    this.admin.services.get = function (id) {
-        return new Promise(function (resolve, reject) {
-            httpGetRehive(adminServicesAPI + id + '/').then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
         });
     };
 
@@ -4030,16 +3985,21 @@ function Rehive(config) {
         });
     };
 
-    this.admin.permissionGroups.getList = function (filter) {
+    this.admin.permissionGroups.get = function (obj) {
         return new Promise(function (resolve, reject) {
-            if (filter) {
-                filter = '?' + serialize(filter);
+            var url,filters;
+
+            if(obj && obj.name) {
+                url = adminPermissionGroupsAPI + obj.name + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminPermissionGroupsAPI + filters;
             } else {
-                filter = '';
+                url = adminPermissionGroupsAPI;
             }
 
 
-            httpGetRehive(adminPermissionGroupsAPI + filter).then(function (response) {
+            httpGetRehive(url).then(function (response) {
                 saveFilterInSessionStorage(response);
                 resolve(response);
             }, function (error) {
@@ -4048,7 +4008,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.permissionGroups.getList.next = function () {
+    this.admin.permissionGroups.getNext = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
             if (url) {
@@ -4067,7 +4027,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.permissionGroups.getList.previous = function () {
+    this.admin.permissionGroups.getPrevious = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
             if (url) {
@@ -4075,7 +4035,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response)
+                    saveFilterInSessionStorage(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -4089,20 +4049,6 @@ function Rehive(config) {
     this.admin.permissionGroups.create = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(adminPermissionGroupsAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.permissionGroups.get = function (name) {
-        return new Promise(function (resolve, reject) {
-            if (!name) {
-                reject('No permission group name provided');
-            }
-
-            httpGetRehive(adminPermissionGroupsAPI + name + '/').then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -4140,16 +4086,20 @@ function Rehive(config) {
         });
     };
 
-    this.admin.permissionGroups.getPermissionsList = function (name,filter) {
+    this.admin.permissionGroups.permissions.get = function (name,obj) {
         return new Promise(function (resolve, reject) {
-            if (filter) {
-                filter = '?' + serialize(filter);
+            var url,filters;
+
+            if(obj && obj.id) {
+                url = adminPermissionGroupsAPI + name + adminPermissionGroupsPermissionsAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminPermissionGroupsAPI + name + adminPermissionGroupsPermissionsAPI + filters;
             } else {
-                filter = '';
+                url = adminPermissionGroupsAPI + name + adminPermissionGroupsPermissionsAPI;
             }
 
-
-            httpGetRehive(adminPermissionGroupsAPI + name + adminPermissionGroupsPermissionsAPI + filter).then(function (response) {
+            httpGetRehive(url).then(function (response) {
                 saveFilterInSessionStorage(response);
                 resolve(response);
             }, function (error) {
@@ -4158,7 +4108,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.permissionGroups.getPermissionsList.next = function () {
+    this.admin.permissionGroups.permissions.getNext = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
             if (url) {
@@ -4177,7 +4127,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.permissionGroups.getPermissionsList.previous = function () {
+    this.admin.permissionGroups.permissions.getPrevious = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
             if (url) {
@@ -4185,7 +4135,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response)
+                    saveFilterInSessionStorage(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -4196,7 +4146,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.permissionGroups.createPermission = function (name,data) {
+    this.admin.permissionGroups.permissions.create = function (name,data) {
         return new Promise(function (resolve, reject) {
             if (!name) {
                 reject('No permission group name has been given');
@@ -4212,22 +4162,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.permissionGroups.getPermission = function (name,id) {
-        return new Promise(function (resolve, reject) {
-            if (!name || !id) {
-                reject('No permission group name or permission id has been given');
-                return;
-            }
-
-            httpGetRehive(adminPermissionGroupsAPI + name + adminPermissionGroupsPermissionsAPI + id + '/').then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.permissionGroups.deletePermission = function (name,id) {
+    this.admin.permissionGroups.permissions.delete = function (name,id) {
         return new Promise(function (resolve, reject) {
             if (!name || !id) {
                 reject('No permission group name or permission id has been given');

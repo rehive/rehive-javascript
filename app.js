@@ -1011,8 +1011,8 @@ function deleteAdminUserSwitch(uuid, id) {
     });
 }
 
-function getAdminUserPermissionsList(uuid,filter) {
-    rehive.admin.users.getPermissionsList(uuid,filter).then(function (res) {
+function getAdminUserPermissionsList(uuid,filterObj) {
+    rehive.admin.users.permissions.get(uuid,filterObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1021,7 +1021,7 @@ function getAdminUserPermissionsList(uuid,filter) {
 }
 
 function getAdminUserPermissionsListNext() {
-    rehive.admin.users.getPermissionsList.next().then(function (res) {
+    rehive.admin.users.permissions.getNext().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1031,7 +1031,7 @@ function getAdminUserPermissionsListNext() {
 }
 
 function getAdminUserPermissionsListPrevious() {
-    rehive.admin.users.getPermissionsList.previous().then(function (res) {
+    rehive.admin.users.permissions.getPrevious().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1041,7 +1041,7 @@ function getAdminUserPermissionsListPrevious() {
 }
 
 function createAdminUserPermission(uuid,type,level) {
-    rehive.admin.users.createPermission(uuid, {
+    rehive.admin.users.permissions.create(uuid, {
         type: type,
         level: level
     }).then(function (res) {
@@ -1052,8 +1052,8 @@ function createAdminUserPermission(uuid,type,level) {
     });
 }
 
-function getAdminUserPermission(uuid,id) {
-    rehive.admin.users.getPermission(uuid,id).then(function (res) {
+function getAdminUserPermission(uuid,idObj) {
+    rehive.admin.users.permissions.get(uuid,idObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1062,7 +1062,7 @@ function getAdminUserPermission(uuid,id) {
 }
 
 function deleteAdminUserPermission(uuid,id) {
-    rehive.admin.users.deletePermission(uuid,id).then(function (res) {
+    rehive.admin.users.permissions.delete(uuid,id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1070,8 +1070,8 @@ function deleteAdminUserPermission(uuid,id) {
     });
 }
 
-function getAdminUserPermissionGroupsList(uuid,filter) {
-    rehive.admin.users.getPermissionGroupsList(uuid,filter).then(function (res) {
+function getAdminUserPermissionGroupsList(uuid,filtersObj) {
+    rehive.admin.users.permissionGroups.get(uuid,filtersObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1080,7 +1080,7 @@ function getAdminUserPermissionGroupsList(uuid,filter) {
 }
 
 function getAdminUserPermissionGroupsListNext() {
-    rehive.admin.users.getPermissionGroupsList.next().then(function (res) {
+    rehive.admin.users.permissionGroups.getNext().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1090,7 +1090,7 @@ function getAdminUserPermissionGroupsListNext() {
 }
 
 function getAdminUserPermissionGroupsListPrevious() {
-    rehive.admin.users.getPermissionGroupsList.previous().then(function (res) {
+    rehive.admin.users.permissionGroups.getPrevious().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1100,7 +1100,7 @@ function getAdminUserPermissionGroupsListPrevious() {
 }
 
 function addAdminUserPermissionGroup(uuid,group) {
-    rehive.admin.users.addPermissionGroup(uuid, {
+    rehive.admin.users.permissionGroups.create(uuid, {
         group: group
     }).then(function (res) {
         console.log(res);
@@ -1110,8 +1110,8 @@ function addAdminUserPermissionGroup(uuid,group) {
     });
 }
 
-function getAdminUserPermissionGroup(uuid,name) {
-    rehive.admin.users.getPermissionGroup(uuid,name).then(function (res) {
+function getAdminUserPermissionGroup(uuid,nameObj) {
+    rehive.admin.users.permissionGroups.get(uuid,nameObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1120,7 +1120,7 @@ function getAdminUserPermissionGroup(uuid,name) {
 }
 
 function deleteAdminUserPermissionGroup(uuid,name) {
-    rehive.admin.users.deletePermissionGroup(uuid,name).then(function (res) {
+    rehive.admin.users.permissionGroups.delete(uuid,name).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2390,7 +2390,7 @@ function updateAdminNotification(notificationId, data) {
 }
 
 function getAdminTiersList() {
-    rehive.admin.tiers.getList().then(function (res) {
+    rehive.admin.tiers.get().then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
@@ -2413,8 +2413,8 @@ function createAdminTier(currency, level, name, description) {
     });
 }
 
-function getAdminTier(tierId) {
-    rehive.admin.tiers.get(tierId).then(function (res) {
+function getAdminTier(tierIdObj) {
+    rehive.admin.tiers.get(tierIdObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
@@ -2440,8 +2440,8 @@ function deleteAdminTier(tierId) {
     });
 }
 
-function getAdminTiersRequirementsList(tiersId) {
-    rehive.admin.tiers.getRequirementsList(tiersId).then(function (res) {
+function getAdminTiersRequirementsList(tierIdObj) {
+    rehive.admin.tiers.requirements.get(tierIdObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
@@ -2449,8 +2449,8 @@ function getAdminTiersRequirementsList(tiersId) {
     });
 }
 
-function createAdminTierRequirements(tiersId, requirement) {
-    rehive.admin.tiers.createRequirements(tiersId, {
+function createAdminTierRequirements(tierId, requirement) {
+    rehive.admin.tiers.requirements.create(tierId, {
         requirement: requirement
     }).then(function (res) {
         console.log(res);
@@ -2460,8 +2460,8 @@ function createAdminTierRequirements(tiersId, requirement) {
     });
 }
 
-function getAdminTierRequirement(tierId, requirementId) {
-    rehive.admin.tiers.getRequirement(tierId, requirementId).then(function (res) {
+function getAdminTierRequirement(tierId, requirementIdObj) {
+    rehive.admin.tiers.requirements.get(tierId, requirementIdObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
@@ -2470,7 +2470,7 @@ function getAdminTierRequirement(tierId, requirementId) {
 }
 
 function updateAdminTierRequirement(tierId, requirementId, data) {
-    rehive.admin.tiers.updateRequirement(tierId, requirementId, data).then(function (res) {
+    rehive.admin.tiers.requirements.update(tierId, requirementId, data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
@@ -2479,7 +2479,7 @@ function updateAdminTierRequirement(tierId, requirementId, data) {
 }
 
 function deleteAdminTierRequirement(tierId,requirementId) {
-    rehive.admin.tiers.deleteRequirement(tierId,requirementId).then(function (res) {
+    rehive.admin.tiers.requirements.delete(tierId,requirementId).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
@@ -2488,8 +2488,8 @@ function deleteAdminTierRequirement(tierId,requirementId) {
 }
 
 
-function getAdminTiersLimitsList(tiersId) {
-    rehive.admin.tiers.getLimitsList(tiersId).then(function (res) {
+function getAdminTiersLimitsList(tierId) {
+    rehive.admin.tiers.limits.get(tierId).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
@@ -2497,8 +2497,8 @@ function getAdminTiersLimitsList(tiersId) {
     });
 }
 
-function createAdminTierLimit(tiersId, value, type, tx_type, subtype) {
-    rehive.admin.tiers.createLimit(tiersId, {
+function createAdminTierLimit(tierId, value, type, tx_type, subtype) {
+    rehive.admin.tiers.limits.create(tierId, {
         value: value,
         type: type,
         tx_type: tx_type,
@@ -2511,8 +2511,8 @@ function createAdminTierLimit(tiersId, value, type, tx_type, subtype) {
     });
 }
 
-function getAdminTierLimit(tierId, limitId) {
-    rehive.admin.tiers.getLimit(tierId, limitId).then(function (res) {
+function getAdminTierLimit(tierId, limitIdObj) {
+    rehive.admin.tiers.limits.get(tierId, limitIdObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
@@ -2521,7 +2521,7 @@ function getAdminTierLimit(tierId, limitId) {
 }
 
 function updateAdminTierLimit(tierId, limitId,data) {
-    rehive.admin.tiers.updateLimit(tierId, limitId,data).then(function (res) {
+    rehive.admin.tiers.limits.update(tierId, limitId,data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
@@ -2530,7 +2530,7 @@ function updateAdminTierLimit(tierId, limitId,data) {
 }
 
 function deleteAdminTierLimit(tierId, limitId) {
-    rehive.admin.tiers.deleteLimit(tierId, limitId).then(function (res) {
+    rehive.admin.tiers.limits.delete(tierId, limitId).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
@@ -2539,8 +2539,8 @@ function deleteAdminTierLimit(tierId, limitId) {
 }
 
 
-function getAdminTiersFeesList(tiersId) {
-    rehive.admin.tiers.getFeesList(tiersId).then(function (res) {
+function getAdminTiersFeesList(tierId) {
+    rehive.admin.tiers.fees.get(tierId).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
@@ -2548,8 +2548,8 @@ function getAdminTiersFeesList(tiersId) {
     });
 }
 
-function createAdminTierFee(tiersId, value, percentage, tx_type, subtype) {
-    rehive.admin.tiers.createFee(tiersId, {
+function createAdminTierFee(tierId, value, percentage, tx_type, subtype) {
+    rehive.admin.tiers.fees.create(tierId, {
         value: value,
         percentage: percentage,
         tx_type: tx_type,
@@ -2562,8 +2562,8 @@ function createAdminTierFee(tiersId, value, percentage, tx_type, subtype) {
     });
 }
 
-function getAdminTierFee(tierId, feeId) {
-    rehive.admin.tiers.getFee(tierId, feeId).then(function (res) {
+function getAdminTierFee(tierId, feeIdObj) {
+    rehive.admin.tiers.fees.get(tierId, feeIdObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
@@ -2572,7 +2572,7 @@ function getAdminTierFee(tierId, feeId) {
 }
 
 function updateAdminTierFee(tierId, feeId,data) {
-    rehive.admin.tiers.updateFee(tierId, feeId,data).then(function (res) {
+    rehive.admin.tiers.fees.update(tierId, feeId,data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
@@ -2581,7 +2581,7 @@ function updateAdminTierFee(tierId, feeId,data) {
 }
 
 function deleteAdminTierFee(tierId, feeId) {
-    rehive.admin.tiers.deleteFee(tierId, feeId).then(function (res) {
+    rehive.admin.tiers.fees.delete(tierId, feeId).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
@@ -2590,8 +2590,8 @@ function deleteAdminTierFee(tierId, feeId) {
 }
 
 
-function getAdminTiersSwitchesList(tiersId) {
-    rehive.admin.tiers.getSwitchesList(tiersId).then(function (res) {
+function getAdminTiersSwitchesList(tierId) {
+    rehive.admin.tiers.switches.get(tierId).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
@@ -2599,8 +2599,8 @@ function getAdminTiersSwitchesList(tiersId) {
     });
 }
 
-function createAdminTierSwitch(tiersId, tx_type, subtype, enabled) {
-    rehive.admin.tiers.createSwitch(tiersId, {
+function createAdminTierSwitch(tierId, tx_type, subtype, enabled) {
+    rehive.admin.tiers.switches.create(tierId, {
         tx_type: tx_type,
         subtype: subtype,
         enabled:enabled
@@ -2612,8 +2612,8 @@ function createAdminTierSwitch(tiersId, tx_type, subtype, enabled) {
     });
 }
 
-function getAdminTierSwitch(tierId, switchId) {
-    rehive.admin.tiers.getSwitch(tierId, switchId).then(function (res) {
+function getAdminTierSwitch(tierId, switchIdObj) {
+    rehive.admin.tiers.switches.get(tierId,switchIdObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
@@ -2622,7 +2622,7 @@ function getAdminTierSwitch(tierId, switchId) {
 }
 
 function updateAdminTierSwitch(tierId, switchId, data) {
-    rehive.admin.tiers.updateSwitch(tierId, switchId,data).then(function (res) {
+    rehive.admin.tiers.switches.update(tierId, switchId,data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
@@ -2631,7 +2631,7 @@ function updateAdminTierSwitch(tierId, switchId, data) {
 }
 
 function deleteAdminTierSwitch(tierId, switchId) {
-    rehive.admin.tiers.deleteSwitch(tierId, switchId).then(function (res) {
+    rehive.admin.tiers.switches.delete(tierId, switchId).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
@@ -2640,7 +2640,7 @@ function deleteAdminTierSwitch(tierId, switchId) {
 }
 
 function getAdminGlobalSwitchesList() {
-    rehive.admin.switches.getList().then(function (res) {
+    rehive.admin.switches.get().then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2661,8 +2661,8 @@ function createAdminGlobalSwitch(switch_type, enabled) {
     });
 }
 
-function getAdminGlobalSwitch(id) {
-    rehive.admin.switches.get(id).then(function (res) {
+function getAdminGlobalSwitch(idObj) {
+    rehive.admin.switches.get(idObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2689,7 +2689,7 @@ function deleteAdminGlobalSwitch(id) {
 }
 
 function getAdminServicesList(filter) {
-    rehive.admin.services.getList(filter).then(function (res) {
+    rehive.admin.services.get(filter).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2698,7 +2698,7 @@ function getAdminServicesList(filter) {
 }
 
 function getAdminServicesListNext() {
-    rehive.admin.services.getList.next().then(function (res) {
+    rehive.admin.services.getNext().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -2708,7 +2708,7 @@ function getAdminServicesListNext() {
 }
 
 function getAdminServicesListPrevious() {
-    rehive.admin.services.getList.previous().then(function (res) {
+    rehive.admin.services.getPrevious().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -2717,8 +2717,8 @@ function getAdminServicesListPrevious() {
     });
 }
 
-function getAdminService(id) {
-    rehive.admin.services.get(id).then(function (res) {
+function getAdminService(idObj) {
+    rehive.admin.services.get(idObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2735,8 +2735,8 @@ function updateAdminService(id, data) {
     });
 }
 
-function getAdminPermissionGroupsList(filter) {
-    rehive.admin.permissionGroups.getList(filter).then(function (res) {
+function getAdminPermissionGroupsList(filtersObj) {
+    rehive.admin.permissionGroups.get(filtersObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2745,7 +2745,7 @@ function getAdminPermissionGroupsList(filter) {
 }
 
 function getAdminPermissionGroupsListNext() {
-    rehive.admin.permissionGroups.getList.next().then(function (res) {
+    rehive.admin.permissionGroups.getNext().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -2755,7 +2755,7 @@ function getAdminPermissionGroupsListNext() {
 }
 
 function getAdminPermissionGroupsListPrevious() {
-    rehive.admin.permissionGroups.getList.previous().then(function (res) {
+    rehive.admin.permissionGroups.getPrevious().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -2777,8 +2777,8 @@ function createAdminPermissionGroup(name) {
     });
 }
 
-function getAdminPermissionGroup(name) {
-    rehive.admin.permissionGroups.get(name).then(function (res) {
+function getAdminPermissionGroup(nameObj) {
+    rehive.admin.permissionGroups.get(nameObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2804,8 +2804,8 @@ function deleteAdminPermissionGroup(name) {
     });
 }
 
-function getAdminPermissionGroupPermissionsList(name,filter) {
-    rehive.admin.permissionGroups.getPermissionsList(name,filter).then(function (res) {
+function getAdminPermissionGroupPermissionsList(name,filtersObj) {
+    rehive.admin.permissionGroups.permissions.get(name,filtersObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2814,7 +2814,7 @@ function getAdminPermissionGroupPermissionsList(name,filter) {
 }
 
 function getAdminPermissionGroupPermissionsListNext() {
-    rehive.admin.permissionGroups.getPermissionsList.next().then(function (res) {
+    rehive.admin.permissionGroups.permissions.getNext().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -2824,7 +2824,7 @@ function getAdminPermissionGroupPermissionsListNext() {
 }
 
 function getAdminPermissionGroupPermissionsListPrevious() {
-    rehive.admin.permissionGroups.getPermissionsList.previous().then(function (res) {
+    rehive.admin.permissionGroups.permissions.getPrevious().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -2834,7 +2834,7 @@ function getAdminPermissionGroupPermissionsListPrevious() {
 }
 
 function createAdminPermissionGroupPermission(name,type,level) {
-    rehive.admin.permissionGroups.createPermission(name,
+    rehive.admin.permissionGroups.permissions.create(name,
         {
             type: type,
             level: level
@@ -2847,8 +2847,8 @@ function createAdminPermissionGroupPermission(name,type,level) {
     });
 }
 
-function getAdminPermissionGroupPermission(name,id) {
-    rehive.admin.permissionGroups.getPermission(name,id).then(function (res) {
+function getAdminPermissionGroupPermission(name,idObj) {
+    rehive.admin.permissionGroups.permissions.get(name,idObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2857,7 +2857,7 @@ function getAdminPermissionGroupPermission(name,id) {
 }
 
 function deleteAdminPermissionGroupPermission(name,id) {
-    rehive.admin.permissionGroups.deletePermission(name,id).then(function (res) {
+    rehive.admin.permissionGroups.permissions.delete(name,id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {

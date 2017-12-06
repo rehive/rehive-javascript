@@ -6,7 +6,7 @@
     <script src="rehive.js"></script>
     <script src="app.js"></script>
 </head>
-<body>
+<body style="background-color: #d9d9d9">
 <button onclick="login('test1@rehive.com','test_company_1','test1234')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Login</button>
 <button onclick="logout()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Logout</button>
 <button onclick="logoutAll()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">LogoutAll</button>
@@ -143,19 +143,19 @@
 <button onclick="updateAdminUserSwitch('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','65',{enabled: true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin User Switch</button>
 <button onclick="deleteAdminUserSwitch('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','65')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Admin User Switch</button>
 
-<button onclick="getAdminUserPermissionsList('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce',{page_size: 6})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Permissions List</button>
+<button onclick="getAdminUserPermissionsList('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce',{filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Permissions List</button>
 <button onclick="getAdminUserPermissionsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Permissions List Next</button>
 <button onclick="getAdminUserPermissionsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Permissions List Previous</button>
 <button onclick="createAdminUserPermission('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','account','change')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin User Permission</button>
-<button onclick="getAdminUserPermission('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','56')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Permission</button>
+<button onclick="getAdminUserPermission('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce',{id: '56'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Permission</button>
 <button onclick="deleteAdminUserPermission('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','56')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin User Permission</button>
 
-<button onclick="getAdminUserPermissionGroupsList('81837fad-991a-420c-a24f-b4c9b03cf862',{page_size: 1})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Permissions Groups List</button>
+<button onclick="getAdminUserPermissionGroupsList('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce',{filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Permissions Groups List</button>
 <button onclick="getAdminUserPermissionGroupsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Permissions Groups List Next</button>
 <button onclick="getAdminUserPermissionGroupsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Permissions Groups List Previous</button>
-<button onclick="addAdminUserPermissionGroup('81837fad-991a-420c-a24f-b4c9b03cf862','test_group_1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Add Admin User Permission Group</button>
-<button onclick="getAdminUserPermissionGroup('81837fad-991a-420c-a24f-b4c9b03cf862','test_group_1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Permission Group</button>
-<button onclick="deleteAdminUserPermissionGroup('81837fad-991a-420c-a24f-b4c9b03cf862','test_group_1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin User Permission Group</button>
+<button onclick="addAdminUserPermissionGroup('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','test_group_1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Add Admin User Permission Group</button>
+<button onclick="getAdminUserPermissionGroup('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce',{name: 'test_group_1'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Permission Group</button>
+<button onclick="deleteAdminUserPermissionGroup('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','test_group_1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin User Permission Group</button>
 
 <button onclick="getAdminUserAddressesList({filters: {user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce'}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Addresses List</button>
 <button onclick="getAdminUserAddressesListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Addresses List Next</button>
@@ -310,59 +310,59 @@
 
 <button onclick="getAdminTiersList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tiers List</button>
 <button onclick="createAdminTier('XBT','2','First Tier','My Second Tier')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Tier</button>
-<button onclick="getAdminTier('124')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tier</button>
-<button onclick="updateAdminTier('124',{name: 'Change My Tier name'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Tier</button>
-<button onclick="deleteAdminTier('124')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Tier</button>
+<button onclick="getAdminTier({id: '122'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tier</button>
+<button onclick="updateAdminTier('122',{name: 'Change My Tier name'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Tier</button>
+<button onclick="deleteAdminTier('122')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Tier</button>
 
-<button onclick="getAdminTiersRequirementsList('124')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tiers Requirements List</button>
-<button onclick="createAdminTierRequirements('124','first_name')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Tier Requirement</button>
-<button onclick="getAdminTierRequirement('124','280')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tier Requirement</button>
-<button onclick="updateAdminTierRequirement('124','280',{requirement: 'last_name'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Tier Requirement</button>
-<button onclick="deleteAdminTierRequirement('124','280')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Tier Requirement</button>
+<button onclick="getAdminTiersRequirementsList('131')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tiers Requirements List</button>
+<button onclick="createAdminTierRequirements('131','first_name')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Tier Requirement</button>
+<button onclick="getAdminTierRequirement('131',{id: '295'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tier Requirement</button>
+<button onclick="updateAdminTierRequirement('131','295',{requirement: 'last_name'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Tier Requirement</button>
+<button onclick="deleteAdminTierRequirement('131','295')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Tier Requirement</button>
 
-<button onclick="getAdminTiersLimitsList('124')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tiers Limits List</button>
-<button onclick="createAdminTierLimit('124','1000','max','debit',null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Tier Limit</button>
-<button onclick="getAdminTierLimit('124','111')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tier Limit</button>
-<button onclick="updateAdminTierLimit('124','111',{value: '5000'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Tier Limit</button>
-<button onclick="deleteAdminTierLimit('124','111')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Tier Limit</button>
+<button onclick="getAdminTiersLimitsList('131')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tiers Limits List</button>
+<button onclick="createAdminTierLimit('131','1000','max','debit',null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Tier Limit</button>
+<button onclick="getAdminTierLimit('131',{id: '124'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tier Limit</button>
+<button onclick="updateAdminTierLimit('131','124',{value: '5000'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Tier Limit</button>
+<button onclick="deleteAdminTierLimit('131','124')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Tier Limit</button>
 
-<button onclick="getAdminTiersFeesList('124')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tiers Fees List</button>
-<button onclick="createAdminTierFee('124','2000','50','credit',null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Tier Fee</button>
-<button onclick="getAdminTierFee('124','90')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tier Fee</button>
-<button onclick="updateAdminTierFee('124','90',{value: '5000',percentage: 25})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Tier Fee</button>
-<button onclick="deleteAdminTierFee('124','90')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Tier Fee</button>
+<button onclick="getAdminTiersFeesList('131')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tiers Fees List</button>
+<button onclick="createAdminTierFee('131','2000','50','credit',null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Tier Fee</button>
+<button onclick="getAdminTierFee('131',{id: '100'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tier Fee</button>
+<button onclick="updateAdminTierFee('131','100',{value: '5000',percentage: 25})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Tier Fee</button>
+<button onclick="deleteAdminTierFee('131','100')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Tier Fee</button>
 
-<button onclick="getAdminTiersSwitchesList('124')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tiers Switches List</button>
-<button onclick="createAdminTierSwitch('124','debit',null,true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Tier Switch</button>
-<button onclick="getAdminTierSwitch('124','42')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tier Switch</button>
-<button onclick="updateAdminTierSwitch('124','42',{tx_type:'debit',enabled:false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Tier Switch</button>
-<button onclick="deleteAdminTierSwitch('124','42')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Tier Switch</button>
+<button onclick="getAdminTiersSwitchesList('131')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tiers Switches List</button>
+<button onclick="createAdminTierSwitch('131','debit',null,true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Tier Switch</button>
+<button onclick="getAdminTierSwitch('131',{id: '45'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tier Switch</button>
+<button onclick="updateAdminTierSwitch('131','45',{tx_type:'debit',enabled:false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Tier Switch</button>
+<button onclick="deleteAdminTierSwitch('131','45')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Tier Switch</button>
 
 <button onclick="getAdminGlobalSwitchesList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Switches List</button>
-<button onclick="createAdminGlobalSwitch('verification',true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Switch</button>
-<button onclick="getAdminGlobalSwitch('93')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Switch</button>
-<button onclick="updateAdminGlobalSwitch('93',{enabled: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Switch</button>
-<button onclick="deleteAdminGlobalSwitch('93')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Switch</button>
+<button onclick="createAdminGlobalSwitch('transactions',true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Switch</button>
+<button onclick="getAdminGlobalSwitch({id: '107'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Switch</button>
+<button onclick="updateAdminGlobalSwitch('107',{enabled: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Switch</button>
+<button onclick="deleteAdminGlobalSwitch('107')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Switch</button>
 
-<button onclick="getAdminServicesList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Services List</button>
+<button onclick="getAdminServicesList({filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Services List</button>
 <button onclick="getAdminServicesListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Services List Next</button>
 <button onclick="getAdminServicesListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Services List Previous</button>
-<button onclick="getAdminService('6')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Service</button>
-<button onclick="updateAdminService('6',{active: false,password: 'test1234'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Service</button>
+<button onclick="getAdminService({id: '2'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Service</button>
+<button onclick="updateAdminService('2',{active: false,password: 'test1234'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Service</button>
 
-<button onclick="getAdminPermissionGroupsList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Permission Groups List</button>
+<button onclick="getAdminPermissionGroupsList({filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Permission Groups List</button>
 <button onclick="getAdminPermissionGroupsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Permission Groups List Next</button>
 <button onclick="getAdminPermissionGroupsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Permission Groups List Previous</button>
-<button onclick="createAdminPermissionGroup('test_group_2')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Permission Group</button>
-<button onclick="getAdminPermissionGroup('test_group_3')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Permission Group</button>
+<button onclick="createAdminPermissionGroup('test_group_3')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Permission Group</button>
+<button onclick="getAdminPermissionGroup({name: 'test_group_3'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Permission Group</button>
 <button onclick="updateAdminPermissionGroup('test_group_2',{name: 'test_group_3'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Permission Group</button>
 <button onclick="deleteAdminPermissionGroup('test_group_3')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Permission Group</button>
 
-<button onclick="getAdminPermissionGroupPermissionsList('test_group_1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Permission Group Permissions List</button>
+<button onclick="getAdminPermissionGroupPermissionsList('test_group_1',{filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Permission Group Permissions List</button>
 <button onclick="getAdminPermissionGroupPermissionsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Permission Group Permissions List Next</button>
 <button onclick="getAdminPermissionGroupPermissionsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Permission Group Permissions List Previous</button>
 <button onclick="createAdminPermissionGroupPermission('test_group_1','account','change')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Permission Group Permission</button>
-<button onclick="getAdminPermissionGroupPermission('test_group_1','56')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Permission Group Permission</button>
+<button onclick="getAdminPermissionGroupPermission('test_group_1',{id: '56'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Permission Group Permission</button>
 <button onclick="deleteAdminPermissionGroupPermission('test_group_1','56')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Permission Group Permission</button>
 
 </body>
