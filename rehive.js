@@ -49,7 +49,8 @@ function Rehive(config) {
         accounts: {
             currencies: {
                 limits: {},
-                fees: {}
+                fees: {},
+                settings: {}
             }
         },
         currencies: {
@@ -134,6 +135,7 @@ function Rehive(config) {
         adminAccountsCurrenciesAPI = '/currencies/',
         adminAccountsCurrencyLimitsAPI = '/limits/',
         adminAccountsCurrencyFeesAPI = '/fees/',
+        adminAccountsCurrencySettingsAPI = '/settings/',
         adminCurrenciesAPI = 'admin/currencies/',
         adminCurrenciesBankAccountsAPI = '/bank-accounts/',
         adminCurrenciesOverviewAPI = '/overview/',
@@ -2910,6 +2912,36 @@ function Rehive(config) {
             }
 
             httpDeleteRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencyFeesAPI + id + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.currencies.settings.get = function (reference, code) {
+        return new Promise(function (resolve, reject) {
+            if (!reference || !code) {
+                reject('No reference or code has been given');
+                return;
+            }
+
+            httpGetRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencySettingsAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.currencies.settings.update = function (reference, code, data) {
+        return new Promise(function (resolve, reject) {
+            if (!reference || !code) {
+                reject('No reference or code has been given');
+                return;
+            }
+
+            httpPatchRehive(adminAccountsAPI + reference + adminAccountsCurrenciesAPI + code + adminAccountsCurrencySettingsAPI, data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);

@@ -1891,8 +1891,17 @@ function deleteAdminUsersAccountCurrencyFee(reference, code, id) {
     });
 }
 
-function getAdminUsersAccountCurrencyFeesList(reference, code) {
-    rehive.admin.accounts.currencies.fees.get(reference, code).then(function (res) {
+function getAdminUsersAccountCurrencySettings(reference, code) {
+    rehive.admin.accounts.currencies.settings.get(reference, code).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function updateAdminUsersAccountCurrencySettings(reference, code, data) {
+    rehive.admin.accounts.currencies.settings.update(reference, code, data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
