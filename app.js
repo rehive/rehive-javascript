@@ -872,6 +872,24 @@ function getAdminUsersOverview() {
     });
 }
 
+function getAdminUsersSettings(identifier) {
+    rehive.admin.users.settings.get(identifier).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function updateAdminUsersSettings(identifier,data) {
+    rehive.admin.users.settings.update(identifier,data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
 function getAdminUsersList(filters) {
     rehive.admin.users.get(filters).then(function (res) {
         console.log(res);
@@ -950,60 +968,6 @@ function updateAdminUser(uuid, data) {
     }
 
     rehive.admin.users.update(uuid, formData).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function getAdminUserTiers(uuid) {
-    rehive.admin.users.tiers.get(uuid).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function getAdminUserSwitchesList(uuid,filters) {
-    rehive.admin.users.switches.get(uuid,filters).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function createAdminUserSwitch(uuid, tx_type, subtype, enabled) {
-    rehive.admin.users.switches.create(uuid, {tx_type: tx_type, subtype: subtype, enabled: enabled}).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function getAdminUserSwitch(uuid, idObj) {
-    rehive.admin.users.switches.get(uuid, idObj).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function updateAdminUserSwitch(uuid, id, data) {
-    rehive.admin.users.switches.update(uuid, id, data).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function deleteAdminUserSwitch(uuid, id) {
-    rehive.admin.users.switches.delete(uuid, id).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1706,56 +1670,6 @@ function createAdminTransferTransaction(user, recipient, currency, amount, debit
     });
 }
 
-function getAdminTransactionsSwitchesList() {
-    rehive.admin.transactions.switches.get().then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function createAdminTransactionsSwitch(tx_type, subtype, enabled) {
-    rehive.admin.transactions.switches.create(
-        {
-            tx_type: tx_type,
-            subtype: subtype,
-            enabled: enabled
-        }).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function getAdminTransactionsSwitch(idObj) {
-    rehive.admin.transactions.switches.get(idObj).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function updateAdminTransactionsSwitch(id, data) {
-    rehive.admin.transactions.switches.update(id, data).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function deleteAdminTransactionsSwitch(id) {
-    rehive.admin.transactions.switches.delete(id).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
 function getAdminUsersAccountsList(filtersObj) {
     rehive.admin.accounts.get(filtersObj).then(function (res) {
         console.log(res);
@@ -1977,48 +1891,8 @@ function deleteAdminUsersAccountCurrencyFee(reference, code, id) {
     });
 }
 
-function getAdminUsersAccountCurrencySwitchesList(reference, code) {
-    rehive.admin.accounts.currencies.switches.get(reference, code).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function createAdminUsersAccountCurrencySwitch(reference, code, tx_type, subtype, enabled) {
-    rehive.admin.accounts.currencies.switches.create(reference, code, {
-        tx_type: tx_type,
-        subtype: subtype,
-        enabled: enabled
-    }).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function getAdminUsersAccountCurrencySwitch(reference, code, idObj) {
-    rehive.admin.accounts.currencies.switches.get(reference, code, idObj).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function updateAdminUsersAccountCurrencySwitch(reference, code, id, data) {
-    rehive.admin.accounts.currencies.switches.update(reference, code, id, data).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function deleteAdminUsersAccountCurrencySwitch(reference, code, id) {
-    rehive.admin.accounts.currencies.switches.delete(reference, code, id).then(function (res) {
+function getAdminUsersAccountCurrencyFeesList(reference, code) {
+    rehive.admin.accounts.currencies.fees.get(reference, code).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2163,6 +2037,24 @@ function getAdminCompany() {
 
 function updateAdminCompany(data) {
     rehive.admin.company.update(data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminCompanySettings() {
+    rehive.admin.company.settings.get().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function updateAdminCompanySettings(data) {
+    rehive.admin.company.settings.update(data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2586,105 +2478,6 @@ function deleteAdminTierFee(tierId, feeId) {
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
         console.log(error);
-    });
-}
-
-
-function getAdminTiersSwitchesList(tierId) {
-    rehive.admin.tiers.switches.get(tierId).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
-    });
-}
-
-function createAdminTierSwitch(tierId, tx_type, subtype, enabled) {
-    rehive.admin.tiers.switches.create(tierId, {
-        tx_type: tx_type,
-        subtype: subtype,
-        enabled:enabled
-    }).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function getAdminTierSwitch(tierId, switchIdObj) {
-    rehive.admin.tiers.switches.get(tierId,switchIdObj).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
-    });
-}
-
-function updateAdminTierSwitch(tierId, switchId, data) {
-    rehive.admin.tiers.switches.update(tierId, switchId,data).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
-    });
-}
-
-function deleteAdminTierSwitch(tierId, switchId) {
-    rehive.admin.tiers.switches.delete(tierId, switchId).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
-    });
-}
-
-function getAdminGlobalSwitchesList() {
-    rehive.admin.switches.get().then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function createAdminGlobalSwitch(switch_type, enabled) {
-    rehive.admin.switches.create(
-        {
-            switch_type: switch_type,
-            enabled: enabled
-        }).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function getAdminGlobalSwitch(idObj) {
-    rehive.admin.switches.get(idObj).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function updateAdminGlobalSwitch(id, data) {
-    rehive.admin.switches.update(id, data).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function deleteAdminGlobalSwitch(id) {
-    rehive.admin.switches.delete(id).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
     });
 }
 

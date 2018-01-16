@@ -118,6 +118,8 @@
 
 
 <button onclick="getAdminUsersOverview()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Overview</button>
+<button onclick="getAdminUsersSettings('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Settings</button>
+<button onclick="updateAdminUsersSettings('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce',{allow_transactions: true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin Users Settings</button>
 <button onclick="getAdminUsersList({filters: {page_size: 5}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users List</button>
 <button onclick="getAdminUsersListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users List Next</button>
 <button onclick="getAdminUsersListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users List Previous</button>
@@ -134,14 +136,6 @@
     <input type="file" id="userUpdateProfile">
     <button onclick="updateAdminUser('624e5d4f-ffa3-4fde-8dc1-1f001fb3d527',{first_name: 'Aquib',last_name:'Rahman'})" style="margin: 20px 0 0 0" class="btn btn-lg btn-primary">Update admin user</button>
 </div>
-
-<button onclick="getAdminUserTiers('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin User Tiers</button>
-
-<button onclick="getAdminUserSwitchesList('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin User Switches List</button>
-<button onclick="createAdminUserSwitch('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','credit','',false)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Admin User Switch</button>
-<button onclick="getAdminUserSwitch('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce',{id: '65'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin User Switch</button>
-<button onclick="updateAdminUserSwitch('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','65',{enabled: true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin User Switch</button>
-<button onclick="deleteAdminUserSwitch('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','65')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Admin User Switch</button>
 
 <button onclick="getAdminUserPermissionsList('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce',{filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Permissions List</button>
 <button onclick="getAdminUserPermissionsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Permissions List Next</button>
@@ -225,12 +219,6 @@
 <button onclick="createAdminTransferTransaction('test1@rehive.com','joshua@rehive.com','USD',1000,'purchase',null,'note this is',{hello: 'yo'},null,'sell',null,{yo: 'hello'},'this is a note')"
         style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Transfer Transaction</button>
 
-<button onclick="getAdminTransactionsSwitchesList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Transactions Switches List</button>
-<button onclick="createAdminTransactionsSwitch('credit',null,false)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Transactions Switch</button>
-<button onclick="getAdminTransactionsSwitch({id: '54'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Transactions Switch</button>
-<button onclick="updateAdminTransactionsSwitch('54',{enabled: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Transactions Switch</button>
-<button onclick="deleteAdminTransactionsSwitch('54')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Transactions Switch</button>
-
 <button onclick="getAdminUsersAccountsList({filters: {user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce'}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Accounts List</button>
 <button onclick="getAdminUsersAccountsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Users Accounts List Next</button>
 <button onclick="getAdminUsersAccountsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Users Accounts List Previous</button>
@@ -257,12 +245,6 @@
 <button onclick="updateAdminUsersAccountCurrencyFee('G5WRHPYEUG','ZAR','60',{tx_type: 'debit'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin Users Account Currency Fee</button>
 <button onclick="deleteAdminUsersAccountCurrencyFee('G5WRHPYEUG','ZAR','60')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Admin Users Account Currency Fee</button>
 
-<button onclick="getAdminUsersAccountCurrencySwitchesList('G5WRHPYEUG','ZAR')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Users Account Currency Switches List</button>
-<button onclick="createAdminUsersAccountCurrencySwitch('G5WRHPYEUG','ZAR','credit',null,false)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Users Account Currency Switch</button>
-<button onclick="getAdminUsersAccountCurrencySwitch('G5WRHPYEUG','ZAR',{id: '26'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Users Account Currency Switch</button>
-<button onclick="updateAdminUsersAccountCurrencySwitch('G5WRHPYEUG','ZAR','26',{tx_type: 'debit'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Users Account Currency Switch</button>
-<button onclick="deleteAdminUsersAccountCurrencySwitch('G5WRHPYEUG','ZAR','26')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Users Account Currency Switch</button>
-
 <button onclick="getAdminCurrenciesList({filters: {enabled: true}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Currencies List</button>
 <button onclick="getAdminCurrenciesListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Currencies List Next</button>
 <button onclick="getAdminCurrenciesListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Currencies List Previous</button>
@@ -281,6 +263,9 @@
 <button onclick="getAdminCompany()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Company</button>
 <button onclick="updateAdminCompany({description: 'This is a test company 1'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Company</button>
 
+<button onclick="getAdminCompanySettings()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Company Settings</button>
+<button onclick="updateAdminCompanySettings({allow_credit_transactions: false, allow_registrations: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Company Settings</button>
+
 <button onclick="getAdminCompanyAddress()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Company Address</button>
 <button onclick="updateAdminCompanyAddress({country: 'US'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Company Address</button>
 
@@ -293,10 +278,10 @@
 <button onclick="getAdminWebhooksList({filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Webhook List</button>
 <button onclick="getAdminWebhooksListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Webhook List Next</button>
 <button onclick="getAdminWebhooksListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Webhook List Previous</button>
-<button onclick="createAdminWebhooks('https://requestb.in/1blu2q31','user.create','secret')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin  Webhook List</button>
-<button onclick="getAdminWebhooks({id: '75'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin  Webhook</button>
-<button onclick="updateAdminWebhooks('75',{url:'https://requestb.in/1blu2q32'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin  Webhook</button>
-<button onclick="deleteAdminWebhooks('75')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin  Webhook</button>
+<button onclick="createAdminWebhooks('https://requestb.in/1blu2q31','transaction.initiate','secret')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin  Webhook</button>
+<button onclick="getAdminWebhooks({id: '85'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin  Webhook</button>
+<button onclick="updateAdminWebhooks('85',{url:'https://requestb.in/1blu2q32'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin  Webhook</button>
+<button onclick="deleteAdminWebhooks('85')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin  Webhook</button>
 
 <button onclick="getAdminSubtypesList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Subtypes List</button>
 <button onclick="createAdminSubtype('credit','hello','hello all','hello all kids')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Admin Subtype</button>
@@ -331,18 +316,6 @@
 <button onclick="getAdminTierFee('131',{id: '100'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tier Fee</button>
 <button onclick="updateAdminTierFee('131','100',{value: '5000',percentage: 25})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Tier Fee</button>
 <button onclick="deleteAdminTierFee('131','100')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Tier Fee</button>
-
-<button onclick="getAdminTiersSwitchesList('131')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tiers Switches List</button>
-<button onclick="createAdminTierSwitch('131','debit',null,true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Tier Switch</button>
-<button onclick="getAdminTierSwitch('131',{id: '45'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tier Switch</button>
-<button onclick="updateAdminTierSwitch('131','45',{tx_type:'debit',enabled:false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Tier Switch</button>
-<button onclick="deleteAdminTierSwitch('131','45')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Tier Switch</button>
-
-<button onclick="getAdminGlobalSwitchesList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Switches List</button>
-<button onclick="createAdminGlobalSwitch('transactions',true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Switch</button>
-<button onclick="getAdminGlobalSwitch({id: '107'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Switch</button>
-<button onclick="updateAdminGlobalSwitch('107',{enabled: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Switch</button>
-<button onclick="deleteAdminGlobalSwitch('107')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Switch</button>
 
 <button onclick="getAdminServicesList({filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Services List</button>
 <button onclick="getAdminServicesListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Services List Next</button>
