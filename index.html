@@ -326,20 +326,23 @@
 <button onclick="getAdminService({id: '2'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Service</button>
 <button onclick="updateAdminService('2',{active: false,password: 'test1234'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Service</button>
 
-<button onclick="getAdminPermissionGroupsList({filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Permission Groups List</button>
-<button onclick="getAdminPermissionGroupsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Permission Groups List Next</button>
-<button onclick="getAdminPermissionGroupsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Permission Groups List Previous</button>
-<button onclick="createAdminPermissionGroup('test_group_3')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Permission Group</button>
-<button onclick="getAdminPermissionGroup({name: 'test_group_3'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Permission Group</button>
-<button onclick="updateAdminPermissionGroup('test_group_2',{name: 'test_group_3'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Permission Group</button>
-<button onclick="deleteAdminPermissionGroup('test_group_3')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Permission Group</button>
+<button onclick="getAdminGroupsList({filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Groups List</button>
+<button onclick="getAdminGroupsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Groups List Next</button>
+<button onclick="getAdminGroupsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Groups List Previous</button>
+<button onclick="createAdminGroup('test','TEST',false,true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Group</button>
+<button onclick="getAdminGroup({name: 'test'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Group</button>
+<button onclick="updateAdminGroup('test',{label: 'test_group'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Group</button>
+<button onclick="deleteAdminGroup('test')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Group</button>
 
-<button onclick="getAdminPermissionGroupPermissionsList('test_group_1',{filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Permission Group Permissions List</button>
-<button onclick="getAdminPermissionGroupPermissionsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Permission Group Permissions List Next</button>
-<button onclick="getAdminPermissionGroupPermissionsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Permission Group Permissions List Previous</button>
-<button onclick="createAdminPermissionGroupPermission('test_group_1','account','change')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Permission Group Permission</button>
-<button onclick="getAdminPermissionGroupPermission('test_group_1',{id: '56'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Permission Group Permission</button>
-<button onclick="deleteAdminPermissionGroupPermission('test_group_1','56')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Permission Group Permission</button>
+<button onclick="getAdminGroupPermissionsList('test',{filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Permissions List</button>
+<button onclick="getAdminGroupPermissionsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Permissions List Next</button>
+<button onclick="getAdminGroupPermissionsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Permissions List Previous</button>
+<button onclick="createAdminGroupPermission('test','account','change')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Group Permission</button>
+<button onclick="getAdminGroupPermission('test',{id: '77'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Permission</button>
+<button onclick="deleteAdminGroupPermission('test','77')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Group Permission</button>
+
+<button onclick="getAdminGroupSettings('test')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Group Settings</button>
+<button onclick="updateAdminGroupSettings('test',{allow_credit_transactions: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Group Settings</button>
 
 </body>
 </html>

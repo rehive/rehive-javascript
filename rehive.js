@@ -42,7 +42,7 @@ function Rehive(config) {
             emails: {},
             mobiles: {},
             permissions: {},
-            permissionGroups: {}
+            groups: {}
         },
         transactions: {
         },
@@ -71,8 +71,9 @@ function Rehive(config) {
             fees: {}
         },
         services: {},
-        permissionGroups: {
-            permissions: {}
+        groups: {
+            permissions: {},
+            settings: {}
         }
     };
     var apiVersion = '3',
@@ -119,7 +120,7 @@ function Rehive(config) {
         adminUsersSettingsAPI = '/settings/',
         adminUsersOverviewAPI = 'admin/users/overview/',
         adminUserPermissionsAPI = '/permissions/',
-        adminUserPermissionGroupsAPI = '/permission-groups/',
+        adminUserGroupsAPI = '/groups/',
         adminUserAddressesAPI = 'admin/users/addresses/',
         adminUserBankAccountsAPI = 'admin/users/bank-accounts/',
         adminUserCryptoAccountsAPI = 'admin/users/crypto-accounts/',
@@ -151,8 +152,9 @@ function Rehive(config) {
         adminTiersFeesAPI='/fees/',
         adminBankAccountsAPI = 'admin/bank-accounts/',
         adminServicesAPI = 'admin/services/',
-        adminPermissionGroupsAPI = 'admin/permission-groups/',
-        adminPermissionGroupsPermissionsAPI = '/permissions/';
+        adminGroupsAPI = 'admin/groups/',
+        adminGroupsPermissionsAPI = '/permissions/',
+        adminGroupsSettingsAPI = '/settings/';
 
     if(!config){
         config = {};
@@ -1754,7 +1756,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.permissionGroups.get = function (uuid,obj) {
+    this.admin.users.groups.get = function (uuid,obj) {
         return new Promise(function (resolve, reject) {
             if (!uuid) {
                 reject('No identifier has been given');
@@ -1764,12 +1766,12 @@ function Rehive(config) {
             var url, filters;
 
             if(obj && obj.name) {
-                url = adminUsersAPI + uuid + adminUserPermissionGroupsAPI + obj.name + '/';
+                url = adminUsersAPI + uuid + adminUserGroupsAPI + obj.name + '/';
             } else if(obj && obj.filters){
                 filters = '?' + serialize(obj.filters);
-                url = adminUsersAPI + uuid + adminUserPermissionGroupsAPI + filters;
+                url = adminUsersAPI + uuid + adminUserGroupsAPI + filters;
             } else {
-                url = adminUsersAPI + uuid + adminUserPermissionGroupsAPI;
+                url = adminUsersAPI + uuid + adminUserGroupsAPI;
             }
 
             httpGetRehive(url).then(function (response) {
@@ -1781,7 +1783,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.permissionGroups.getNext = function () {
+    this.admin.users.groups.getNext = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
             if (url) {
@@ -1800,7 +1802,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.permissionGroups.getPrevious = function () {
+    this.admin.users.groups.getPrevious = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
             if (url) {
@@ -1819,9 +1821,9 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.permissionGroups.create = function (uuid, data) {
+    this.admin.users.groups.create = function (uuid, data) {
         return new Promise(function (resolve, reject) {
-            httpPostRehive(adminUsersAPI + uuid + adminUserPermissionGroupsAPI, data).then(function (response) {
+            httpPostRehive(adminUsersAPI + uuid + adminUserGroupsAPI, data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1829,9 +1831,9 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.permissionGroups.delete = function (uuid, name) {
+    this.admin.users.groups.delete = function (uuid, name) {
         return new Promise(function (resolve, reject) {
-            httpDeleteRehive(adminUsersAPI + uuid + adminUserPermissionGroupsAPI + name + '/', {}).then(function (response) {
+            httpDeleteRehive(adminUsersAPI + uuid + adminUserGroupsAPI + name + '/', {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -3743,17 +3745,17 @@ function Rehive(config) {
         });
     };
 
-    this.admin.permissionGroups.get = function (obj) {
+    this.admin.groups.get = function (obj) {
         return new Promise(function (resolve, reject) {
             var url,filters;
 
             if(obj && obj.name) {
-                url = adminPermissionGroupsAPI + obj.name + '/';
+                url = adminGroupsAPI + obj.name + '/';
             } else if(obj && obj.filters){
                 filters = '?' + serialize(obj.filters);
-                url = adminPermissionGroupsAPI + filters;
+                url = adminGroupsAPI + filters;
             } else {
-                url = adminPermissionGroupsAPI;
+                url = adminGroupsAPI;
             }
 
 
@@ -3766,7 +3768,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.permissionGroups.getNext = function () {
+    this.admin.groups.getNext = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
             if (url) {
@@ -3785,7 +3787,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.permissionGroups.getPrevious = function () {
+    this.admin.groups.getPrevious = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
             if (url) {
@@ -3804,9 +3806,9 @@ function Rehive(config) {
         });
     };
 
-    this.admin.permissionGroups.create = function (data) {
+    this.admin.groups.create = function (data) {
         return new Promise(function (resolve, reject) {
-            httpPostRehive(adminPermissionGroupsAPI, data).then(function (response) {
+            httpPostRehive(adminGroupsAPI, data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -3814,29 +3816,14 @@ function Rehive(config) {
         });
     };
 
-    this.admin.permissionGroups.update = function (name, data) {
-        return new Promise(function (resolve, reject) {
-            if (!name) {
-                reject('No permission group name has been given');
-                return;
-            }
-
-            httpPatchRehive(adminPermissionGroupsAPI + name + '/', data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.permissionGroups.delete = function (name) {
+    this.admin.groups.update = function (name, data) {
         return new Promise(function (resolve, reject) {
             if (!name) {
                 reject('No permission group name has been given');
                 return;
             }
 
-            httpDeleteRehive(adminPermissionGroupsAPI + name + '/', {}).then(function (response) {
+            httpPatchRehive(adminGroupsAPI + name + '/', data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -3844,17 +3831,32 @@ function Rehive(config) {
         });
     };
 
-    this.admin.permissionGroups.permissions.get = function (name,obj) {
+    this.admin.groups.delete = function (name) {
+        return new Promise(function (resolve, reject) {
+            if (!name) {
+                reject('No permission group name has been given');
+                return;
+            }
+
+            httpDeleteRehive(adminGroupsAPI + name + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.groups.permissions.get = function (name,obj) {
         return new Promise(function (resolve, reject) {
             var url,filters;
 
             if(obj && obj.id) {
-                url = adminPermissionGroupsAPI + name + adminPermissionGroupsPermissionsAPI + obj.id + '/';
+                url = adminGroupsAPI + name + adminGroupsPermissionsAPI + obj.id + '/';
             } else if(obj && obj.filters){
                 filters = '?' + serialize(obj.filters);
-                url = adminPermissionGroupsAPI + name + adminPermissionGroupsPermissionsAPI + filters;
+                url = adminGroupsAPI + name + adminGroupsPermissionsAPI + filters;
             } else {
-                url = adminPermissionGroupsAPI + name + adminPermissionGroupsPermissionsAPI;
+                url = adminGroupsAPI + name + adminGroupsPermissionsAPI;
             }
 
             httpGetRehive(url).then(function (response) {
@@ -3866,7 +3868,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.permissionGroups.permissions.getNext = function () {
+    this.admin.groups.permissions.getNext = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
             if (url) {
@@ -3885,7 +3887,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.permissionGroups.permissions.getPrevious = function () {
+    this.admin.groups.permissions.getPrevious = function () {
         return new Promise(function (resolve, reject) {
             var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
             if (url) {
@@ -3904,7 +3906,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.permissionGroups.permissions.create = function (name,data) {
+    this.admin.groups.permissions.create = function (name,data) {
         return new Promise(function (resolve, reject) {
             if (!name) {
                 reject('No permission group name has been given');
@@ -3912,7 +3914,7 @@ function Rehive(config) {
             }
 
 
-            httpPostRehive(adminPermissionGroupsAPI + name + adminPermissionGroupsPermissionsAPI, data).then(function (response) {
+            httpPostRehive(adminGroupsAPI + name + adminGroupsPermissionsAPI, data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -3920,14 +3922,44 @@ function Rehive(config) {
         });
     };
 
-    this.admin.permissionGroups.permissions.delete = function (name,id) {
+    this.admin.groups.permissions.delete = function (name,id) {
         return new Promise(function (resolve, reject) {
             if (!name || !id) {
                 reject('No permission group name or permission id has been given');
                 return;
             }
 
-            httpDeleteRehive(adminPermissionGroupsAPI + name + adminPermissionGroupsPermissionsAPI + id + '/', {}).then(function (response) {
+            httpDeleteRehive(adminGroupsAPI + name + adminGroupsPermissionsAPI + id + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.groups.settings.get = function (name) {
+        return new Promise(function (resolve, reject) {
+            if (!name) {
+                reject('No group name has been given');
+                return;
+            }
+
+            httpGetRehive(adminGroupsAPI + name + adminGroupsSettingsAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.groups.settings.update = function (name, data) {
+        if (!name) {
+            reject('No group name has been given');
+            return;
+        }
+
+        return new Promise(function (resolve, reject) {
+            httpPatchRehive(adminGroupsAPI + name + adminGroupsSettingsAPI, data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
