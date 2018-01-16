@@ -135,7 +135,6 @@ function Rehive(config) {
         adminDebitTransactionsAPI = 'admin/transactions/debit/',
         adminTransferTransactionsAPI = 'admin/transactions/transfer/',
         adminTransactionsSwitchesAPI = 'admin/transactions/switches/',
-        adminTransactionsWebhooksAPI = 'admin/transactions/webhooks/',
         adminAccountsAPI = 'admin/accounts/',
         adminAccountsCurrenciesAPI = '/currencies/',
         adminAccountsCurrencyLimitsAPI = '/limits/',
@@ -167,12 +166,14 @@ function Rehive(config) {
     if (Object.keys(config).length > 0) {
         config.apiVersion ? apiVersion = config.apiVersion : apiVersion = '3';
         config.apiToken ? setToken(config.apiToken) : setToken('');
+        config.network ? config.network == 'staging' ?
+            config.network = 'staging.rehive.com' : config.network = 'rehive.com' : config.network = 'rehive.com';
     } else {
         apiVersion = '3';
         setToken('');
     }
 
-    var baseAPI = 'https://rehive.com/api/' + apiVersion + '/';
+    var baseAPI = 'https://' + config.network + '/api/' + apiVersion + '/';
 
     function serialize(obj) {
         var str = [];

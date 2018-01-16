@@ -2,7 +2,7 @@
 
 window.onload = function () {
 
-    window.rehive = new Rehive({apiVersion: 3});
+    window.rehive = new Rehive({apiVersion: 3,network: 'staging'});
 };
 
 function convertToText(data) {
