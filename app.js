@@ -1034,8 +1034,8 @@ function deleteAdminUserPermission(uuid,id) {
     });
 }
 
-function getAdminUserPermissionGroupsList(uuid,filtersObj) {
-    rehive.admin.users.permissionGroups.get(uuid,filtersObj).then(function (res) {
+function getAdminUserGroupsList(uuid,filtersObj) {
+    rehive.admin.users.groups.get(uuid,filtersObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1043,18 +1043,8 @@ function getAdminUserPermissionGroupsList(uuid,filtersObj) {
     });
 }
 
-function getAdminUserPermissionGroupsListNext() {
-    rehive.admin.users.permissionGroups.getNext().then(function (res) {
-
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function getAdminUserPermissionGroupsListPrevious() {
-    rehive.admin.users.permissionGroups.getPrevious().then(function (res) {
+function getAdminUserGroupsListNext() {
+    rehive.admin.users.groups.getNext().then(function (res) {
 
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -1063,8 +1053,18 @@ function getAdminUserPermissionGroupsListPrevious() {
     });
 }
 
-function addAdminUserPermissionGroup(uuid,group) {
-    rehive.admin.users.permissionGroups.create(uuid, {
+function getAdminUserGroupsListPrevious() {
+    rehive.admin.users.groups.getPrevious().then(function (res) {
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function addAdminUserGroup(uuid,group) {
+    rehive.admin.users.groups.create(uuid, {
         group: group
     }).then(function (res) {
         console.log(res);
@@ -1074,8 +1074,8 @@ function addAdminUserPermissionGroup(uuid,group) {
     });
 }
 
-function getAdminUserPermissionGroup(uuid,nameObj) {
-    rehive.admin.users.permissionGroups.get(uuid,nameObj).then(function (res) {
+function getAdminUserGroup(uuid,nameObj) {
+    rehive.admin.users.groups.get(uuid,nameObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1083,8 +1083,8 @@ function getAdminUserPermissionGroup(uuid,nameObj) {
     });
 }
 
-function deleteAdminUserPermissionGroup(uuid,name) {
-    rehive.admin.users.permissionGroups.delete(uuid,name).then(function (res) {
+function deleteAdminUserGroup(uuid,name) {
+    rehive.admin.users.groups.delete(uuid,name).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {

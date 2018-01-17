@@ -3552,7 +3552,7 @@ function Rehive(config) {
     this.admin.groups.update = function (name, data) {
         return new Promise(function (resolve, reject) {
             if (!name) {
-                reject('No permission group name has been given');
+                reject('No group name has been given');
                 return;
             }
 
@@ -3567,7 +3567,7 @@ function Rehive(config) {
     this.admin.groups.delete = function (name) {
         return new Promise(function (resolve, reject) {
             if (!name) {
-                reject('No permission group name has been given');
+                reject('No group name has been given');
                 return;
             }
 
@@ -3642,7 +3642,7 @@ function Rehive(config) {
     this.admin.groups.permissions.create = function (name,data) {
         return new Promise(function (resolve, reject) {
             if (!name) {
-                reject('No permission group name has been given');
+                reject('No group name has been given');
                 return;
             }
 
@@ -3658,7 +3658,7 @@ function Rehive(config) {
     this.admin.groups.permissions.delete = function (name,id) {
         return new Promise(function (resolve, reject) {
             if (!name || !id) {
-                reject('No permission group name or permission id has been given');
+                reject('No group name or permission id has been given');
                 return;
             }
 
