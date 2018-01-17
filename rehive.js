@@ -65,13 +65,14 @@ function Rehive(config) {
         webhooks: {},
         subtypes: {},
         notifications: {},
-        tiers: {
-            requirements: {},
-            limits: {},
-            fees: {}
-        },
         services: {},
         groups: {
+            tiers: {
+                requirements: {},
+                limits: {},
+                fees: {},
+                settings: {}
+            },
             permissions: {},
             settings: {}
         }
@@ -146,7 +147,6 @@ function Rehive(config) {
         adminWebhooksAPI = 'admin/webhooks/',
         adminSubtypesAPI = 'admin/subtypes/',
         adminNotificationsAPI = 'admin/notifications/',
-        adminTiersAPI = 'admin/tiers/',
         adminTiersRequirementsAPI='/requirements/',
         adminTiersLimitsAPI='/limits/',
         adminTiersFeesAPI='/fees/',
@@ -154,7 +154,9 @@ function Rehive(config) {
         adminServicesAPI = 'admin/services/',
         adminGroupsAPI = 'admin/groups/',
         adminGroupsPermissionsAPI = '/permissions/',
-        adminGroupsSettingsAPI = '/settings/';
+        adminGroupsSettingsAPI = '/settings/',
+        adminGroupsTiersAPI = '/tiers/',
+        adminGroupsTiersSettingsAPI = '/settings/';
 
     if(!config){
         config = {};
@@ -3405,275 +3407,6 @@ function Rehive(config) {
         })
     };
 
-    this.admin.tiers.get = function (obj) {
-        var url;
-
-        if(obj && obj.id) {
-            url = adminTiersAPI + obj.id + '/';
-        } else {
-            url = adminTiersAPI;
-        }
-
-        return new Promise(function (resolve, reject) {
-            httpGetRehive(url).then(function (response) {
-                resolve(response)
-            }, function (err) {
-                reject(err)
-            })
-        })
-    };
-
-    this.admin.tiers.create = function (data) {
-        return new Promise(function (resolve, reject) {
-            httpPostRehive(adminTiersAPI, data).then(function (res) {
-                resolve(res)
-            }, function (error) {
-                reject(error)
-            })
-        })
-    };
-
-    this.admin.tiers.update = function (tierId, data) {
-        return new Promise(function (resolve, reject) {
-            httpPatchRehive(adminTiersAPI + tierId + '/', data).then(function (res) {
-                resolve(res)
-            }, function (error) {
-                reject(error)
-            })
-        })
-    };
-
-    this.admin.tiers.delete = function (tierId) {
-        return new Promise(function (resolve, reject) {
-            httpDeleteRehive(adminTiersAPI + tierId + '/',{}).then(function (res) {
-                resolve(res)
-            }, function (error) {
-                reject(error)
-            })
-        })
-    };
-
-
-    this.admin.tiers.requirements.get = function (tierId,obj) {
-        return new Promise(function (resolve, reject) {
-            if (!tierId) {
-                reject('No tier id is provided');
-                return
-            }
-
-            var url;
-
-            if(obj && obj.id) {
-                url = adminTiersAPI + tierId + adminTiersRequirementsAPI + obj.id + '/';
-            } else {
-                url = adminTiersAPI + tierId + adminTiersRequirementsAPI;
-            }
-
-            httpGetRehive(url).then(function (response) {
-                resolve(response)
-            }, function (err) {
-                reject(err)
-            })
-        })
-    };
-
-    this.admin.tiers.requirements.create = function (tiersId,data) {
-        return new Promise(function (resolve, reject) {
-            if (!tiersId) {
-                reject('No tier id is provided');
-                return
-            }
-            httpPostRehive(adminTiersAPI + tiersId + adminTiersRequirementsAPI, data).then(function (res) {
-                resolve(res)
-            }, function (error) {
-                reject(error)
-            })
-        })
-    };
-
-    this.admin.tiers.requirements.update = function (tierId, requirementId, data) {
-        return new Promise(function (resolve, reject) {
-            if (!tierId) {
-                reject('No  tier id is provided');
-                return
-            }
-            if (!requirementId) {
-                reject('No  requirement id is provided');
-                return
-            }
-            httpPatchRehive(adminTiersAPI + tierId + adminTiersRequirementsAPI + requirementId + '/', data).then(function (res) {
-                resolve(res)
-            }, function (error) {
-                reject(error)
-            })
-        })
-    };
-
-    this.admin.tiers.requirements.delete = function (tierId,requirementId) {
-        return new Promise(function (resolve, reject) {
-            if (!tierId) {
-                reject('No  tier id is provided');
-                return
-            }
-            if (!requirementId) {
-                reject('No  requirement id is provided');
-                return
-            }
-            httpDeleteRehive(adminTiersAPI + tierId + adminTiersRequirementsAPI + requirementId + '/').then(function (res) {
-                resolve(res)
-            }, function (error) {
-                reject(error)
-            })
-        })
-    };
-
-
-    this.admin.tiers.fees.get = function (tierId,obj) {
-        return new Promise(function (resolve, reject) {
-            if (!tierId) {
-                reject('No tier id is provided');
-                return
-            }
-
-            var url;
-
-            if(obj && obj.id) {
-                url = adminTiersAPI + tierId + adminTiersFeesAPI + obj.id + '/';
-            } else {
-                url = adminTiersAPI + tierId + adminTiersFeesAPI;
-            }
-
-            httpGetRehive(url).then(function (response) {
-                resolve(response)
-            }, function (err) {
-                reject(err)
-            })
-        })
-    };
-
-    this.admin.tiers.fees.create = function (tierId,data) {
-        return new Promise(function (resolve, reject) {
-            if (!tierId) {
-                reject('No tier id is provided');
-                return
-            }
-            httpPostRehive(adminTiersAPI + tierId + adminTiersFeesAPI, data).then(function (res) {
-                resolve(res)
-            }, function (error) {
-                reject(error)
-            })
-        })
-    };
-
-    this.admin.tiers.fees.update = function (tierId, feeId, data) {
-        return new Promise(function (resolve, reject) {
-            if (!tierId) {
-                reject('No tier id is provided');
-                return
-            }
-            if (!feeId) {
-                reject('No fee id is provided');
-                return
-            }
-            httpPatchRehive(adminTiersAPI + tierId + adminTiersFeesAPI + feeId + '/', data).then(function (res) {
-                resolve(res)
-            }, function (error) {
-                reject(error)
-            })
-        })
-    };
-
-    this.admin.tiers.fees.delete = function (tierId,feeId) {
-        return new Promise(function (resolve, reject) {
-            if (!tierId) {
-                reject('No tier id is provided');
-                return
-            }
-            if (!feeId) {
-                reject('No fee id is provided');
-                return
-            }
-            httpDeleteRehive(adminTiersAPI + tierId + adminTiersFeesAPI + feeId + '/').then(function (res) {
-                resolve(res)
-            }, function (error) {
-                reject(error)
-            })
-        })
-    };
-
-    this.admin.tiers.limits.get = function (tierId,obj) {
-        return new Promise(function (resolve, reject) {
-            if (!tierId) {
-                reject('No tier id is provided');
-                return
-            }
-
-            var url;
-
-            if(obj && obj.id) {
-                url = adminTiersAPI + tierId + adminTiersLimitsAPI + obj.id + '/';
-            } else {
-                url = adminTiersAPI + tierId + adminTiersLimitsAPI;
-            }
-
-            httpGetRehive(url).then(function (response) {
-                resolve(response)
-            }, function (err) {
-                reject(err)
-            })
-        })
-    };
-
-    this.admin.tiers.limits.create = function (tierId,data) {
-        return new Promise(function (resolve, reject) {
-            if (!tierId) {
-                reject('No tier id is provided');
-                return
-            }
-            httpPostRehive(adminTiersAPI + tierId + adminTiersLimitsAPI, data).then(function (res) {
-                resolve(res)
-            }, function (error) {
-                reject(error)
-            })
-        })
-    };
-
-    this.admin.tiers.limits.update = function (tierId, limitId, data) {
-        return new Promise(function (resolve, reject) {
-            if (!tierId) {
-                reject('No  tier id is provided');
-                return
-            }
-            if (!limitId) {
-                reject('No limit id is provided');
-                return
-            }
-            httpPatchRehive(adminTiersAPI + tierId + adminTiersLimitsAPI + limitId + '/', data).then(function (res) {
-                resolve(res)
-            }, function (error) {
-                reject(error)
-            })
-        })
-    };
-
-    this.admin.tiers.limits.delete = function (tierId,limitId) {
-        return new Promise(function (resolve, reject) {
-            if (!tierId) {
-                reject('No  tier id is provided');
-                return
-            }
-            if (!limitId) {
-                reject('No  limit id is provided');
-                return
-            }
-            httpDeleteRehive(adminTiersAPI + tierId + adminTiersLimitsAPI + limitId + '/').then(function (res) {
-                resolve(res)
-            }, function (error) {
-                reject(error)
-            })
-        })
-    };
-
     this.admin.services.get = function (obj) {
         return new Promise(function (resolve, reject) {
             var url,filters;
@@ -3724,7 +3457,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response)
+                    saveFilterInSessionStorage(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -3960,6 +3693,305 @@ function Rehive(config) {
 
         return new Promise(function (resolve, reject) {
             httpPatchRehive(adminGroupsAPI + name + adminGroupsSettingsAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.groups.tiers.get = function (name,obj) {
+        var url;
+
+        if(obj && obj.id) {
+            url = adminGroupsAPI + name + adminGroupsTiersAPI + obj.id + '/';
+        } else {
+            url = adminGroupsAPI + name + adminGroupsTiersAPI;
+        }
+
+        return new Promise(function (resolve, reject) {
+            httpGetRehive(url).then(function (response) {
+                resolve(response)
+            }, function (err) {
+                reject(err)
+            })
+        })
+    };
+
+    this.admin.groups.tiers.create = function (name,data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(adminGroupsAPI + name + adminGroupsTiersAPI, data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
+
+    this.admin.groups.tiers.update = function (name,tierId, data) {
+        return new Promise(function (resolve, reject) {
+            httpPatchRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + '/', data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
+
+    this.admin.groups.tiers.delete = function (name,tierId) {
+        return new Promise(function (resolve, reject) {
+            httpDeleteRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + '/',{}).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
+
+
+    this.admin.groups.tiers.requirements.get = function (name,tierId,obj) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No tier id is provided');
+                return
+            }
+
+            var url;
+
+            if(obj && obj.id) {
+                url = adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersRequirementsAPI + obj.id + '/';
+            } else {
+                url = adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersRequirementsAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                resolve(response)
+            }, function (err) {
+                reject(err)
+            })
+        })
+    };
+
+    this.admin.groups.tiers.requirements.create = function (name,tiersId,data) {
+        return new Promise(function (resolve, reject) {
+            if (!tiersId) {
+                reject('No tier id is provided');
+                return
+            }
+            httpPostRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tiersId + adminTiersRequirementsAPI, data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
+
+    this.admin.groups.tiers.requirements.update = function (name,tierId, requirementId, data) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No  tier id is provided');
+                return
+            }
+            if (!requirementId) {
+                reject('No  requirement id is provided');
+                return
+            }
+            httpPatchRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersRequirementsAPI + requirementId + '/', data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
+
+    this.admin.groups.tiers.requirements.delete = function (name,tierId,requirementId) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No  tier id is provided');
+                return
+            }
+            if (!requirementId) {
+                reject('No  requirement id is provided');
+                return
+            }
+            httpDeleteRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersRequirementsAPI + requirementId + '/').then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
+
+
+    this.admin.groups.tiers.fees.get = function (name,tierId,obj) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No tier id is provided');
+                return
+            }
+
+            var url;
+
+            if(obj && obj.id) {
+                url = adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersFeesAPI + obj.id + '/';
+            } else {
+                url = adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersFeesAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                resolve(response)
+            }, function (err) {
+                reject(err)
+            })
+        })
+    };
+
+    this.admin.groups.tiers.fees.create = function (name,tierId,data) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No tier id is provided');
+                return
+            }
+            httpPostRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersFeesAPI, data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
+
+    this.admin.groups.tiers.fees.update = function (name,tierId, feeId, data) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No tier id is provided');
+                return
+            }
+            if (!feeId) {
+                reject('No fee id is provided');
+                return
+            }
+            httpPatchRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersFeesAPI + feeId + '/', data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
+
+    this.admin.groups.tiers.fees.delete = function (name,tierId,feeId) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No tier id is provided');
+                return
+            }
+            if (!feeId) {
+                reject('No fee id is provided');
+                return
+            }
+            httpDeleteRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersFeesAPI + feeId + '/').then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
+
+    this.admin.groups.tiers.limits.get = function (name,tierId,obj) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No tier id is provided');
+                return
+            }
+
+            var url;
+
+            if(obj && obj.id) {
+                url = adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersLimitsAPI + obj.id + '/';
+            } else {
+                url = adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersLimitsAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                resolve(response)
+            }, function (err) {
+                reject(err)
+            })
+        })
+    };
+
+    this.admin.groups.tiers.limits.create = function (name,tierId,data) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No tier id is provided');
+                return
+            }
+            httpPostRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersLimitsAPI, data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
+
+    this.admin.groups.tiers.limits.update = function (name,tierId, limitId, data) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No  tier id is provided');
+                return
+            }
+            if (!limitId) {
+                reject('No limit id is provided');
+                return
+            }
+            httpPatchRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersLimitsAPI + limitId + '/', data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
+
+    this.admin.groups.tiers.limits.delete = function (name,tierId,limitId) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject('No  tier id is provided');
+                return
+            }
+            if (!limitId) {
+                reject('No  limit id is provided');
+                return
+            }
+            httpDeleteRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersLimitsAPI + limitId + '/').then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
+
+    this.admin.groups.tiers.settings.get = function (name,tierId) {
+        return new Promise(function (resolve, reject) {
+            if (!name) {
+                reject('No group name has been given');
+                return;
+            }
+
+            httpGetRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminGroupsTiersSettingsAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.groups.tiers.settings.update = function (name,tierId, data) {
+        if (!name) {
+            reject('No group name has been given');
+            return;
+        }
+
+        return new Promise(function (resolve, reject) {
+            httpPatchRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminGroupsTiersSettingsAPI, data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);

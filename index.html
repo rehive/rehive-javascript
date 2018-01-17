@@ -296,30 +296,6 @@
 <button onclick="getAdminNotification({id: '7'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Notification</button>
 <button onclick="updateAdminNotification('7',{enabled: true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Notification</button>
 
-<button onclick="getAdminTiersList()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tiers List</button>
-<button onclick="createAdminTier('XBT','2','First Tier','My Second Tier')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Tier</button>
-<button onclick="getAdminTier({id: '122'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tier</button>
-<button onclick="updateAdminTier('122',{name: 'Change My Tier name'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Tier</button>
-<button onclick="deleteAdminTier('122')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Tier</button>
-
-<button onclick="getAdminTiersRequirementsList('131')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tiers Requirements List</button>
-<button onclick="createAdminTierRequirements('131','first_name')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Tier Requirement</button>
-<button onclick="getAdminTierRequirement('131',{id: '295'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tier Requirement</button>
-<button onclick="updateAdminTierRequirement('131','295',{requirement: 'last_name'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Tier Requirement</button>
-<button onclick="deleteAdminTierRequirement('131','295')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Tier Requirement</button>
-
-<button onclick="getAdminTiersLimitsList('131')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tiers Limits List</button>
-<button onclick="createAdminTierLimit('131','1000','max','debit',null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Tier Limit</button>
-<button onclick="getAdminTierLimit('131',{id: '124'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tier Limit</button>
-<button onclick="updateAdminTierLimit('131','124',{value: '5000'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Tier Limit</button>
-<button onclick="deleteAdminTierLimit('131','124')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Tier Limit</button>
-
-<button onclick="getAdminTiersFeesList('131')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tiers Fees List</button>
-<button onclick="createAdminTierFee('131','2000','50','credit',null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Tier Fee</button>
-<button onclick="getAdminTierFee('131',{id: '100'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Tier Fee</button>
-<button onclick="updateAdminTierFee('131','100',{value: '5000',percentage: 25})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Tier Fee</button>
-<button onclick="deleteAdminTierFee('131','100')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Tier Fee</button>
-
 <button onclick="getAdminServicesList({filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Services List</button>
 <button onclick="getAdminServicesListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Services List Next</button>
 <button onclick="getAdminServicesListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Services List Previous</button>
@@ -331,7 +307,7 @@
 <button onclick="getAdminGroupsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Groups List Previous</button>
 <button onclick="createAdminGroup('test','TEST',false,true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Group</button>
 <button onclick="getAdminGroup({name: 'test'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Group</button>
-<button onclick="updateAdminGroup('test',{label: 'test_group'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Group</button>
+<button onclick="updateAdminGroup('test',{label: 'Test'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Group</button>
 <button onclick="deleteAdminGroup('test')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Group</button>
 
 <button onclick="getAdminGroupPermissionsList('test',{filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Permissions List</button>
@@ -344,5 +320,31 @@
 <button onclick="getAdminGroupSettings('test')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Group Settings</button>
 <button onclick="updateAdminGroupSettings('test',{allow_credit_transactions: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Group Settings</button>
 
+<button onclick="getAdminGroupTiersList('test')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Group Tiers List</button>
+<button onclick="createAdminGroupTier('test',1,'First Tier','My Second Tier')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Group Tier</button>
+<button onclick="getAdminGroupTier('test',{id: '11'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Group Tier</button>
+<button onclick="updateAdminGroupTier('test','11',{name: 'Change My Tier name'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Group Tier</button>
+<button onclick="deleteAdminGroupTier('test','11')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Group Tier</button>
+
+<button onclick="getAdminGroupTiersRequirementsList('test','11')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Tiers Requirements List</button>
+<button onclick="createAdminGroupTierRequirements('test','11','first_name')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Group Tier Requirement</button>
+<button onclick="getAdminGroupTierRequirement('test','11',{id: '5'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Tier Requirement</button>
+<button onclick="updateAdminGroupTierRequirement('test','11','5',{requirement: 'last_name'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Group Tier Requirement</button>
+<button onclick="deleteAdminGroupTierRequirement('test','11','5')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Group Tier Requirement</button>
+
+<button onclick="getAdminGroupTiersLimitsList('test','11')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Group Tiers Limits List</button>
+<button onclick="createAdminGroupTierLimit('test','11','ZAR','1000','max','debit',null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin Group Tier Limit</button>
+<button onclick="getAdminGroupTierLimit('test','11',{id: '11'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Group Tier Limit</button>
+<button onclick="updateAdminGroupTierLimit('test','11','11',{value: '5000'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Group Tier Limit</button>
+<button onclick="deleteAdminGroupTierLimit('test','11','11')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin Group Tier Limit</button>
+
+<button onclick="getAdminGroupTiersFeesList('test','11')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Group Tiers Fees List</button>
+<button onclick="createAdminGroupTierFee('test','11','ZAR','2000','50','credit',null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Group Tier Fee</button>
+<button onclick="getAdminGroupTierFee('test','11',{id: '6'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Group Tier Fee</button>
+<button onclick="updateAdminGroupTierFee('test','11','6',{value: '5000',percentage: 25})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Group Tier Fee</button>
+<button onclick="deleteAdminGroupTierFee('test','11','6')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Group Tier Fee</button>
+
+<button onclick="getAdminGroupTiersSettings('test','11')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Group Tier Settings</button>
+<button onclick="updateAdminGroupTiersSettings('test','11',{allow_credit_transactions: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Group Tier Settings</button>
 </body>
 </html>

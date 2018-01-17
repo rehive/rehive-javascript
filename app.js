@@ -2290,206 +2290,6 @@ function updateAdminNotification(notificationId, data) {
     });
 }
 
-function getAdminTiersList() {
-    rehive.admin.tiers.get().then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
-    });
-}
-
-function createAdminTier(currency, level, name, description) {
-    rehive.admin.tiers.create(
-        {
-            currency: currency,
-            level: level,
-            name: name,
-            description: description
-        }).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function getAdminTier(tierIdObj) {
-    rehive.admin.tiers.get(tierIdObj).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
-    });
-}
-
-function updateAdminTier(tierId, data) {
-    rehive.admin.tiers.update(tierId, data).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
-    });
-}
-
-function deleteAdminTier(tierId) {
-    rehive.admin.tiers.delete(tierId).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
-    });
-}
-
-function getAdminTiersRequirementsList(tierIdObj) {
-    rehive.admin.tiers.requirements.get(tierIdObj).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
-    });
-}
-
-function createAdminTierRequirements(tierId, requirement) {
-    rehive.admin.tiers.requirements.create(tierId, {
-        requirement: requirement
-    }).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function getAdminTierRequirement(tierId, requirementIdObj) {
-    rehive.admin.tiers.requirements.get(tierId, requirementIdObj).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
-    });
-}
-
-function updateAdminTierRequirement(tierId, requirementId, data) {
-    rehive.admin.tiers.requirements.update(tierId, requirementId, data).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
-    });
-}
-
-function deleteAdminTierRequirement(tierId,requirementId) {
-    rehive.admin.tiers.requirements.delete(tierId,requirementId).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
-    });
-}
-
-
-function getAdminTiersLimitsList(tierId) {
-    rehive.admin.tiers.limits.get(tierId).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
-    });
-}
-
-function createAdminTierLimit(tierId, value, type, tx_type, subtype) {
-    rehive.admin.tiers.limits.create(tierId, {
-        value: value,
-        type: type,
-        tx_type: tx_type,
-        subtype: subtype
-    }).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function getAdminTierLimit(tierId, limitIdObj) {
-    rehive.admin.tiers.limits.get(tierId, limitIdObj).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
-    });
-}
-
-function updateAdminTierLimit(tierId, limitId,data) {
-    rehive.admin.tiers.limits.update(tierId, limitId,data).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
-    });
-}
-
-function deleteAdminTierLimit(tierId, limitId) {
-    rehive.admin.tiers.limits.delete(tierId, limitId).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
-    });
-}
-
-
-function getAdminTiersFeesList(tierId) {
-    rehive.admin.tiers.fees.get(tierId).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
-    });
-}
-
-function createAdminTierFee(tierId, value, percentage, tx_type, subtype) {
-    rehive.admin.tiers.fees.create(tierId, {
-        value: value,
-        percentage: percentage,
-        tx_type: tx_type,
-        subtype: subtype
-    }).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function getAdminTierFee(tierId, feeIdObj) {
-    rehive.admin.tiers.fees.get(tierId, feeIdObj).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
-    });
-}
-
-function updateAdminTierFee(tierId, feeId,data) {
-    rehive.admin.tiers.fees.update(tierId, feeId,data).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
-    });
-}
-
-function deleteAdminTierFee(tierId, feeId) {
-    rehive.admin.tiers.fees.delete(tierId, feeId).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
-    });
-}
-
 function getAdminServicesList(filter) {
     rehive.admin.services.get(filter).then(function (res) {
         console.log(res);
@@ -2681,6 +2481,225 @@ function getAdminGroupSettings(name) {
 
 function updateAdminGroupSettings(name,data) {
     rehive.admin.groups.settings.update(name,data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminGroupTiersList(name) {
+    rehive.admin.groups.tiers.get(name).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function createAdminGroupTier(groupName, level, name, description) {
+    rehive.admin.groups.tiers.create(groupName,
+        {
+            level: level,
+            name: name,
+            description: description
+        }).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminGroupTier(name,tierIdObj) {
+    rehive.admin.groups.tiers.get(name,tierIdObj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function updateAdminGroupTier(name,tierId, data) {
+    rehive.admin.groups.tiers.update(name,tierId, data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function deleteAdminGroupTier(name,tierId) {
+    rehive.admin.groups.tiers.delete(name,tierId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function getAdminGroupTiersRequirementsList(name,tierIdObj) {
+    rehive.admin.groups.tiers.requirements.get(name,tierIdObj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function createAdminGroupTierRequirements(name,tierId, requirement) {
+    rehive.admin.groups.tiers.requirements.create(name,tierId, {
+        requirement: requirement
+    }).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminGroupTierRequirement(name,tierId, requirementIdObj) {
+    rehive.admin.groups.tiers.requirements.get(name,tierId, requirementIdObj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function updateAdminGroupTierRequirement(name,tierId, requirementId, data) {
+    rehive.admin.groups.tiers.requirements.update(name,tierId, requirementId, data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function deleteAdminGroupTierRequirement(name,tierId,requirementId) {
+    rehive.admin.groups.tiers.requirements.delete(name,tierId,requirementId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+
+function getAdminGroupTiersLimitsList(name,tierId) {
+    rehive.admin.groups.tiers.limits.get(name,tierId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function createAdminGroupTierLimit(name,tierId,currency, value, type, tx_type, subtype) {
+    rehive.admin.groups.tiers.limits.create(name,tierId, {
+        currency: currency,
+        value: value,
+        type: type,
+        tx_type: tx_type,
+        subtype: subtype
+    }).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminGroupTierLimit(name,tierId, limitIdObj) {
+    rehive.admin.groups.tiers.limits.get(name,tierId, limitIdObj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function updateAdminGroupTierLimit(name,tierId, limitId,data) {
+    rehive.admin.groups.tiers.limits.update(name,tierId, limitId,data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function deleteAdminGroupTierLimit(name,tierId, limitId) {
+    rehive.admin.groups.tiers.limits.delete(name,tierId, limitId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+
+function getAdminGroupTiersFeesList(name,tierId) {
+    rehive.admin.groups.tiers.fees.get(name,tierId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function createAdminGroupTierFee(name,tierId,currency, value, percentage, tx_type, subtype) {
+    rehive.admin.groups.tiers.fees.create(name,tierId, {
+        currency: currency,
+        value: value,
+        percentage: percentage,
+        tx_type: tx_type,
+        subtype: subtype
+    }).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminGroupTierFee(name,tierId, feeIdObj) {
+    rehive.admin.groups.tiers.fees.get(name,tierId, feeIdObj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function updateAdminGroupTierFee(name,tierId, feeId,data) {
+    rehive.admin.groups.tiers.fees.update(name,tierId, feeId,data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function deleteAdminGroupTierFee(name,tierId, feeId) {
+    rehive.admin.groups.tiers.fees.delete(name,tierId, feeId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function getAdminGroupTiersSettings(name,tierId) {
+    rehive.admin.groups.tiers.settings.get(name,tierId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function updateAdminGroupTiersSettings(name,tierId,data) {
+    rehive.admin.groups.tiers.settings.update(name,tierId,data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
