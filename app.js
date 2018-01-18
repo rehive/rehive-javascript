@@ -2706,3 +2706,75 @@ function updateAdminGroupTiersSettings(name,tierId,data) {
         console.log(err);
     });
 }
+
+function getAdminGroupAccountConfigurationsList(name,filtersObj) {
+    rehive.admin.groups.accountConfigurations.get(name,filtersObj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminGroupAccountConfigurationsListNext() {
+    rehive.admin.groups.accountConfigurations.getNext().then(function (res) {
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminGroupAccountConfigurationsListPrevious() {
+    rehive.admin.groups.accountConfigurations.getPrevious().then(function (res) {
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function createAdminGroupAccountConfiguration(name,accConfigName,label,defaultVal,primaryVal) {
+    rehive.admin.groups.accountConfigurations.create(name,
+        {
+            name: accConfigName,
+            label: label,
+            defaultVal: defaultVal,
+            primaryVal: primaryVal
+
+        }).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminGroupAccountConfiguration(name,accConfigNameObj) {
+    rehive.admin.groups.accountConfigurations.get(name,accConfigNameObj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function updateAdminGroupAccountConfiguration(name,accConfigName,data) {
+    rehive.admin.groups.accountConfigurations.update(name,accConfigName,data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function deleteAdminGroupAccountConfiguration(name,accConfigName) {
+    rehive.admin.groups.accountConfigurations.delete(name,accConfigName).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}

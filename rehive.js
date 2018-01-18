@@ -74,6 +74,7 @@ function Rehive(config) {
                 settings: {}
             },
             permissions: {},
+            accountConfigurations: {},
             settings: {}
         }
     };
@@ -156,6 +157,7 @@ function Rehive(config) {
         adminGroupsPermissionsAPI = '/permissions/',
         adminGroupsSettingsAPI = '/settings/',
         adminGroupsTiersAPI = '/tiers/',
+        adminGroupsAccountConfigurationsAPI = '/account-configurations/',
         adminGroupsTiersSettingsAPI = '/settings/';
 
     if(!config){
@@ -3992,6 +3994,107 @@ function Rehive(config) {
 
         return new Promise(function (resolve, reject) {
             httpPatchRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminGroupsTiersSettingsAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.groups.accountConfigurations.get = function (name,obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+
+            if(obj && obj.name) {
+                url = adminGroupsAPI + name + adminGroupsAccountConfigurationsAPI + obj.name + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminGroupsAPI + name + adminGroupsAccountConfigurationsAPI + filters;
+            } else {
+                url = adminGroupsAPI + name + adminGroupsAccountConfigurationsAPI;
+            }
+
+
+            httpGetRehive(url).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.groups.accountConfigurations.getNext = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.groups.accountConfigurations.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.groups.accountConfigurations.create = function (name,data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(adminGroupsAPI + name + adminGroupsAccountConfigurationsAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.groups.accountConfigurations.update = function (name, accConfigName, data) {
+        return new Promise(function (resolve, reject) {
+            if (!name) {
+                reject('No group name has been given');
+                return;
+            }
+
+            httpPatchRehive(adminGroupsAPI + name + adminGroupsAccountConfigurationsAPI + accConfigName + '/', data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.groups.accountConfigurations.delete = function (name, accConfigName) {
+        return new Promise(function (resolve, reject) {
+            if (!name) {
+                reject('No group name has been given');
+                return;
+            }
+
+            httpDeleteRehive(adminGroupsAPI + name + adminGroupsAccountConfigurationsAPI + accConfigName + '/', {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
