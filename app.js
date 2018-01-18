@@ -2778,3 +2778,63 @@ function deleteAdminGroupAccountConfiguration(name,accConfigName) {
         console.log(err);
     });
 }
+
+function getAdminGroupAccountConfigurationsCurrenciesList(name,accConfigName,filtersObj) {
+    rehive.admin.groups.accountConfigurations.currencies.get(name,accConfigName,filtersObj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminGroupAccountConfigurationsCurrenciesListNext() {
+    rehive.admin.groups.accountConfigurations.currencies.getNext().then(function (res) {
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminGroupAccountConfigurationsCurrenciesListPrevious() {
+    rehive.admin.groups.accountConfigurations.currencies.getPrevious().then(function (res) {
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function createAdminGroupAccountConfigurationCurrency(name,accConfigName,currencyCode) {
+    rehive.admin.groups.accountConfigurations.currencies.create(name,accConfigName,
+        {
+            currency: currencyCode
+
+        }).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminGroupAccountConfigurationCurrency(name,accConfigNameObj,currencyCodeObj) {
+    rehive.admin.groups.accountConfigurations.currencies.get(name,accConfigNameObj,currencyCodeObj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function deleteAdminGroupAccountConfigurationCurrency(name,accConfigName,currencyCode) {
+    rehive.admin.groups.accountConfigurations.currencies.delete(name,accConfigName,currencyCode).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}

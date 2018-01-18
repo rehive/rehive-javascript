@@ -74,7 +74,9 @@ function Rehive(config) {
                 settings: {}
             },
             permissions: {},
-            accountConfigurations: {},
+            accountConfigurations: {
+                currencies: {}
+            },
             settings: {}
         }
     };
@@ -158,6 +160,7 @@ function Rehive(config) {
         adminGroupsSettingsAPI = '/settings/',
         adminGroupsTiersAPI = '/tiers/',
         adminGroupsAccountConfigurationsAPI = '/account-configurations/',
+        adminGroupsAccountConfigurationsCurrenciesAPI = '/currencies/',
         adminGroupsTiersSettingsAPI = '/settings/';
 
     if(!config){
@@ -4095,6 +4098,92 @@ function Rehive(config) {
             }
 
             httpDeleteRehive(adminGroupsAPI + name + adminGroupsAccountConfigurationsAPI + accConfigName + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.groups.accountConfigurations.currencies.get = function (name,accConfigName,obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+
+            if(obj && obj.code) {
+                url = adminGroupsAPI + name + adminGroupsAccountConfigurationsAPI + accConfigName + adminGroupsAccountConfigurationsCurrenciesAPI + obj.code + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminGroupsAPI + name + adminGroupsAccountConfigurationsAPI + accConfigName + adminGroupsAccountConfigurationsCurrenciesAPI + filters;
+            } else {
+                url = adminGroupsAPI + name + adminGroupsAccountConfigurationsAPI + accConfigName + adminGroupsAccountConfigurationsCurrenciesAPI;
+            }
+
+
+            httpGetRehive(url).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.groups.accountConfigurations.currencies.getNext = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.groups.accountConfigurations.currencies.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.groups.accountConfigurations.currencies.create = function (name,accConfigName,data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(adminGroupsAPI + name + adminGroupsAccountConfigurationsAPI  + accConfigName + adminGroupsAccountConfigurationsCurrenciesAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.groups.accountConfigurations.currencies.delete = function (name, accConfigName,currencyCode) {
+        return new Promise(function (resolve, reject) {
+            if (!name) {
+                reject('No group name has been given');
+                return;
+            }
+
+            httpDeleteRehive(adminGroupsAPI + name + adminGroupsAccountConfigurationsAPI  + accConfigName + adminGroupsAccountConfigurationsCurrenciesAPI + currencyCode + '/', {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
