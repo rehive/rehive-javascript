@@ -2,7 +2,7 @@
 
 window.onload = function () {
 
-    window.rehive = new Rehive({apiVersion: 3,network: 'staging'});
+    window.rehive = new Rehive({apiVersion: 3});
 };
 
 function convertToText(data) {
@@ -15,13 +15,12 @@ function convertToText(data) {
     return dataString;
 }
 
-function register(first_name, last_name, email, mobile, company, password1, password2,terms_and_conditions) {
+function register(first_name, last_name, email, company, password1, password2,terms_and_conditions) {
     rehive.auth.register(
         {
             first_name: first_name,
             last_name: last_name,
             email: email,
-            mobile: mobile,
             company: company,
             password1: password1,
             password2: password2,
@@ -318,15 +317,6 @@ function getUserProfile() {
 
 function updateUserProfile(data) {
     rehive.user.update(data).then(function (user) {
-        console.log(user);
-        document.getElementById('result').innerHTML = convertToText(user);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function getUserTiers() {
-    rehive.user.tiers.get().then(function (user) {
         console.log(user);
         document.getElementById('result').innerHTML = convertToText(user);
     }, function (err) {
@@ -657,10 +647,11 @@ function getTransaction(tx_code) {
     });
 }
 
-function createDebit(amount, account, reference, subtype, note, metadata) {
+function createDebit(amount, currency, account, reference, subtype, note, metadata) {
     rehive.transactions.createDebit(
         {
             amount: amount,
+            currency: currency,
             account: account,
             reference: reference,
             subtype: subtype,
@@ -674,10 +665,11 @@ function createDebit(amount, account, reference, subtype, note, metadata) {
     });
 }
 
-function createCredit(amount, account, reference, subtype, note, metadata) {
+function createCredit(amount, currency, account, reference, subtype, note, metadata) {
     rehive.transactions.createCredit(
         {
             amount: amount,
+            currency: currency,
             account: account,
             reference: reference,
             subtype: subtype,
@@ -731,20 +723,10 @@ function getAccountsListPrevious() {
     });
 }
 
-function createAccount(name, primary) {
+function createAccount(name) {
     rehive.accounts.create({
-        name: name,
-        primary: primary
+        name: name
     }).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (err) {
-        console.log(err);
-    });
-}
-
-function updateAccount(reference, data) {
-    rehive.accounts.update(reference,data).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -856,6 +838,82 @@ function getCompanyCurrency(currencyCode) {
 
 function getCompanyBanks() {
     rehive.company.bankAccounts.get().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getPermissionsList(filterObj) {
+    rehive.permissions.get(filterObj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getPermissionsListNext() {
+    rehive.permissions.getNext().then(function (res) {
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getPermissionsListPrevious() {
+    rehive.permissions.getPrevious().then(function (res) {
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getPermission(idObj) {
+    rehive.permissions.get(idObj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getGroupsList(filterObj) {
+    rehive.groups.get(filterObj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getGroupsListNext() {
+    rehive.groups.getNext().then(function (res) {
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getGroupsListPrevious() {
+    rehive.groups.getPrevious().then(function (res) {
+
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getGroup(nameObj) {
+    rehive.groups.get(nameObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {

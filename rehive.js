@@ -14,7 +14,6 @@ function Rehive(config) {
         }
     };
     this.user = {
-        tiers: {},
         address: {},
         bankAccounts: {},
         cryptoAccounts: {},
@@ -30,6 +29,8 @@ function Rehive(config) {
         currencies: {},
         bankAccounts: {}
     };
+    this.groups = {};
+    this.permissions = {};
     this.admin = {
         users: {
             overview: {},
@@ -101,7 +102,6 @@ function Rehive(config) {
         tokensAPI = 'auth/tokens/',
         tokensVerifyAPI = 'auth/tokens/verify/',
         userProfileAPI = 'user/',
-        userTiersAPI = 'user/tiers/',
         userAddressAPI = 'user/address/',
         userBankAccountsAPI = 'user/bank-accounts/',
         userCryptoAccountsAPI = 'user/crypto-accounts/',
@@ -118,6 +118,8 @@ function Rehive(config) {
         companyAPI = 'company/',
         companyCurrenciesAPI = 'company/currencies/',
         companyBanksAPI = 'company/bank-account/',
+        permissionsAPI = 'permissions/',
+        groupsAPI = 'groups/',
         headers = {'Content-Type': 'application/json'};
 
     var adminUsersAPI = 'admin/users/',
@@ -170,8 +172,8 @@ function Rehive(config) {
     if (Object.keys(config).length > 0) {
         config.apiVersion ? apiVersion = config.apiVersion : apiVersion = '3';
         config.apiToken ? setToken(config.apiToken) : setToken('');
-        config.network ? config.network == 'staging' ?
-            config.network = 'staging.rehive.com' : config.network = 'rehive.com' : config.network = 'rehive.com';
+        config.network ? (config.network == 'staging' ?
+            config.network = 'staging.rehive.com' : config.network = 'rehive.com') : config.network = 'rehive.com';
     } else {
         apiVersion = '3';
         setToken('');
@@ -749,16 +751,6 @@ function Rehive(config) {
         });
     };
 
-    this.user.tiers.get = function () {
-        return new Promise(function (resolve, reject) {
-            httpGetRehive(userTiersAPI).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
     this.user.address.get = function () {
         return new Promise(function (resolve, reject) {
             httpGetRehive(userAddressAPI).then(function (response) {
@@ -1319,16 +1311,6 @@ function Rehive(config) {
         });
     };
 
-    this.accounts.update = function (reference,data) {
-        return new Promise(function (resolve, reject) {
-            httpPatchRehive(accountsAPI + reference + '/', data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
     this.accounts.currencies.get = function (reference, obj) {
         return new Promise(function (resolve, reject) {
             var url,filters,error = {status: 'error', message: 'Reference is required'};
@@ -1494,6 +1476,126 @@ function Rehive(config) {
             }, function (error) {
                 reject(error);
             });
+        });
+    };
+
+    this.permissions.get = function (obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+
+            if(obj && obj.id) {
+                url = permissionsAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = permissionsAPI + filters;
+            } else {
+                url = permissionsAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveUserApiFilterInSessionStorage(response, 'Permissions');
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.permissions.getNext = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('nextPermissionsFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveUserApiFilterInSessionStorage(response, 'Permissions');
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.permissions.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('previousPermissionsFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveUserApiFilterInSessionStorage(response, 'Permissions');
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.groups.get = function (obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+
+            if(obj && obj.name) {
+                url = groupsAPI + obj.name + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = groupsAPI + filters;
+            } else {
+                url = groupsAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveUserApiFilterInSessionStorage(response, 'CompanyCurrencies');
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.groups.getNext = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('nextCompanyCurrenciesFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveUserApiFilterInSessionStorage(response, 'CompanyCurrencies');
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.groups.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('previousCompanyCurrenciesFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveUserApiFilterInSessionStorage(response, 'CompanyCurrencies');
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
         });
     };
 
