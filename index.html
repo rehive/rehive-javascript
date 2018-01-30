@@ -7,7 +7,7 @@
     <script src="app.js"></script>
 </head>
 <body style="background-color: #d9d9d9">
-<button onclick="login('ark.aquib17+043@gmail.com','test_company_042','test1234')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Login</button>
+<button onclick="login('ark.aquib17+042@gmail.com','test_company_042','test1234')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Login</button>
 <button onclick="logout()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Logout</button>
 <button onclick="logoutAll()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">LogoutAll</button>
 <button onclick="registerCompany('new','user','ark.aquib17+042@gmail.com','test_company_042','test1234','test1234',true)"
@@ -125,113 +125,114 @@
 
 
 <button onclick="getAdminUsersOverview()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Overview</button>
-<button onclick="getAdminUsersSettings('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Settings</button>
-<button onclick="updateAdminUsersSettings('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce',{allow_transactions: true})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin Users Settings</button>
-<button onclick="getAdminUsersList({filters: {page_size: 5}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users List</button>
+<button onclick="getAdminUsersList({filters: {page_size: 2}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users List</button>
 <button onclick="getAdminUsersListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users List Next</button>
 <button onclick="getAdminUsersListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users List Previous</button>
 
 <div style="margin: 20px 0 0 20px">
     <label>Create new user</label>
     <input type="file" id="userProfile">
-    <button onclick="createUser('Aquib','Khan','ark.aquib17+110@gmail.com','','en','US','','','')" style="margin: 20px 0 0 0" class="btn btn-lg btn-default">Create new user</button>
+    <button onclick="createUser('Aquib','Khan','ark.aquib17+110@gmail.com','','en','US','{}','','')" style="margin: 20px 0 0 0" class="btn btn-lg btn-default">Create new user</button>
 </div>
 
-<button onclick="getAdminUser({identifier: '624e5d4f-ffa3-4fde-8dc1-1f001fb3d527'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin User</button>
+<button onclick="getAdminUser({identifier: '80484e04-c971-40c0-b64b-37c82f79890b'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin User</button>
 <div style="margin: 20px 0 0 20px">
     <label>Update user</label>
     <input type="file" id="userUpdateProfile">
-    <button onclick="updateAdminUser('624e5d4f-ffa3-4fde-8dc1-1f001fb3d527',{first_name: 'Aquib',last_name:'Rahman'})" style="margin: 20px 0 0 0" class="btn btn-lg btn-primary">Update admin user</button>
+    <button onclick="updateAdminUser('80484e04-c971-40c0-b64b-37c82f79890b',{first_name: 'Aquib',last_name:'Rahman'})" style="margin: 20px 0 0 0" class="btn btn-lg btn-primary">Update admin user</button>
 </div>
 
-<button onclick="getAdminUserPermissionsList('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce',{filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Permissions List</button>
-<button onclick="getAdminUserPermissionsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Permissions List Next</button>
-<button onclick="getAdminUserPermissionsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Permissions List Previous</button>
-<button onclick="createAdminUserPermission('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','account','change')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin User Permission</button>
-<button onclick="getAdminUserPermission('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce',{id: '56'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Permission</button>
-<button onclick="deleteAdminUserPermission('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','56')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin User Permission</button>
+<button onclick="getAdminUsersSettings('80484e04-c971-40c0-b64b-37c82f79890b')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Settings</button>
+<button onclick="updateAdminUsersSettings('80484e04-c971-40c0-b64b-37c82f79890b',{allow_transactions: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin Users Settings</button>
 
-<button onclick="getAdminUserGroupsList('eba9afd7-f917-4a00-969b-caf5996bbd8d',{filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Groups List</button>
-<button onclick="getAdminUserGroupsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Groups List Next</button>
-<button onclick="getAdminUserGroupsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Groups List Previous</button>
-<button onclick="addAdminUserGroup('eba9afd7-f917-4a00-969b-caf5996bbd8d','user')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Add Admin User Group</button>
-<button onclick="getAdminUserGroup('eba9afd7-f917-4a00-969b-caf5996bbd8d',{name: 'user'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Group</button>
-<button onclick="deleteAdminUserGroup('eba9afd7-f917-4a00-969b-caf5996bbd8d','user')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin User Group</button>
-
-<button onclick="getAdminUserAddressesList({filters: {user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce'}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Addresses List</button>
+<button onclick="getAdminUserAddressesList({filters: {user: '80484e04-c971-40c0-b64b-37c82f79890b'}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Addresses List</button>
 <button onclick="getAdminUserAddressesListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Addresses List Next</button>
 <button onclick="getAdminUserAddressesListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Addresses List Previous</button>
-<button onclick="createAdminUserAddress('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','baily','road','Dhaka','haka','Bd','','pending')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin User Address</button>
-<button onclick="getAdminUserAddress({id: '248'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin User Address</button>
-<button onclick="updateAdminUserAddress('248',{line_1: 'toodleloo',country: 'US'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin User Address</button>
-<button onclick="deleteAdminUserAddress('248')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin User Address</button>
+<button onclick="createAdminUserAddress('80484e04-c971-40c0-b64b-37c82f79890b','baily','road','Dhaka','haka','Bd','','pending')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin User Address</button>
+<button onclick="getAdminUserAddress({id: '372'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin User Address</button>
+<button onclick="updateAdminUserAddress('372',{line_1: 'toodleloo',country: 'US'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin User Address</button>
+<button onclick="deleteAdminUserAddress('372')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin User Address</button>
 
-<button onclick="getAdminUserBankAccountsList({filters: {user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce',page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Bank Accounts List</button>
+<button onclick="getAdminUserBankAccountsList({filters: {user: '80484e04-c971-40c0-b64b-37c82f79890b',page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Bank Accounts List</button>
 <button onclick="getAdminUserBankAccountsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Bank Accounts List Next</button>
 <button onclick="getAdminUserBankAccountsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Bank Accounts List Previous</button>
-<button onclick="createAdminUserBankAccount('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','Bank','23434','cash','bank name','234342','2343','','','','verified')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin User Bank Account</button>
-<button onclick="getAdminUserBankAccount({id: '805'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Bank Account</button>
-<button onclick="updateAdminUserBankAccount('805',{name: 'wootwoot',number: 'yo yo'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin User Bank Account</button>
-<button onclick="deleteAdminUserBankAccount('805')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin User Bank Account</button>
+<button onclick="createAdminUserBankAccount('80484e04-c971-40c0-b64b-37c82f79890b','Bank','23434','cash','bank name','234342','2343','','','','verified')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin User Bank Account</button>
+<button onclick="getAdminUserBankAccount({id: '1082'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Bank Account</button>
+<button onclick="updateAdminUserBankAccount('1082',{name: 'wootwoot',number: 'yo yo'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin User Bank Account</button>
+<button onclick="deleteAdminUserBankAccount('1082')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin User Bank Account</button>
 
-<button onclick="getAdminUserCryptoAccountsList({filters: {user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce',page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Crypto Accounts List</button>
+<button onclick="getAdminUserCryptoAccountsList({filters: {user: '80484e04-c971-40c0-b64b-37c82f79890b',page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Crypto Accounts List</button>
 <button onclick="getAdminUserCryptoAccountsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Crypto Accounts List Next</button>
 <button onclick="getAdminUserCryptoAccountsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Crypto Accounts List Previous</button>
-<button onclick="createAdminUserCryptoAccount('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','ethereum','3242342343223dewwrewrw','','incomplete')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin User Crypto Account</button>
-<button onclick="getAdminUserCryptoAccount({id: '142'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Crypto Account</button>
-<button onclick="updateAdminUserCryptoAccount('142',{address: 'wootwoot',status: 'verified'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin User Crypto Account</button>
-<button onclick="deleteAdminUserCryptoAccount('142')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin User Crypto Account</button>
+<button onclick="createAdminUserCryptoAccount('80484e04-c971-40c0-b64b-37c82f79890b','ethereum','3242342343223dewwrewrw','','incomplete')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin User Crypto Account</button>
+<button onclick="getAdminUserCryptoAccount({id: '159'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Crypto Account</button>
+<button onclick="updateAdminUserCryptoAccount('159',{address: 'wootwoot',status: 'verified'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin User Crypto Account</button>
+<button onclick="deleteAdminUserCryptoAccount('159')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin User Crypto Account</button>
 
-<button onclick="getAdminUserDocumentsList({filters: {user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce',page_size: 2}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Documents List</button>
+<button onclick="getAdminUserDocumentsList({filters: {user: '80484e04-c971-40c0-b64b-37c82f79890b',page_size: 2}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Documents List</button>
 <button onclick="getAdminUserDocumentsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Documents List Next</button>
 <button onclick="getAdminUserDocumentsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Documents List Previous</button>
 <div style="margin: 20px 0 0 20px">
     <label>Create new document</label>
     <input type="file" id="adminUserDocument">
-    <button onclick="createAdminUserDocument('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','telephone',{ello: 'asdsad'},'yhis is a notr','verified')" style="margin: 20px 0 0 0" class="btn btn-lg btn-default">Create Admin User Document</button>
+    <button onclick="createAdminUserDocument('80484e04-c971-40c0-b64b-37c82f79890b','telephone',{ello: 'asdsad'},'yhis is a notr','verified')" style="margin: 20px 0 0 0" class="btn btn-lg btn-default">Create Admin User Document</button>
 </div>
-<button onclick="getAdminUserDocument({id: '389'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin User Document</button>
+<button onclick="getAdminUserDocument({id: '455'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin User Document</button>
 <div style="margin: 20px 0 0 20px">
     <label>Update new document</label>
     <input type="file" id="updateAdminUserDocument">
-    <button onclick="updateAdminUserDocument('389',{document_type: 'retail_store',note: 'jojo234234',status: 'incomplete'})" style="margin: 20px 0 0 0" class="btn btn-lg btn-default">Update Admin User Document</button>
+    <button onclick="updateAdminUserDocument('455',{document_type: 'retail_store',note: 'jojo234234',status: 'incomplete'})" style="margin: 20px 0 0 0" class="btn btn-lg btn-default">Update Admin User Document</button>
 </div>
-<button onclick="deleteAdminUserDocument('389')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Admin User Document</button>
+<button onclick="deleteAdminUserDocument('455')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Delete Admin User Document</button>
 
-<button onclick="getAdminUserEmailsList({filters: {user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce',page_size: 2}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Emails List</button>
+<button onclick="getAdminUserEmailsList({filters: {user: '80484e04-c971-40c0-b64b-37c82f79890b',page_size: 2}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Emails List</button>
 <button onclick="getAdminUserEmailsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Emails List Next</button>
 <button onclick="getAdminUserEmailsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Emails List Previous</button>
-<button onclick="createAdminUserEmail('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','a@n.com',false,true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin User Emails</button>
-<button onclick="getAdminUserEmail({id: '16008'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Emails</button>
-<button onclick="updateAdminUserEmail('16008',{verified: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin User Emails</button>
-<button onclick="deleteAdminUserEmail('16008')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin User Emails</button>
+<button onclick="createAdminUserEmail('80484e04-c971-40c0-b64b-37c82f79890b','a@n.com',false,true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin User Emails</button>
+<button onclick="getAdminUserEmail({id: '19740'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Emails</button>
+<button onclick="updateAdminUserEmail('19740',{verified: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin User Emails</button>
+<button onclick="deleteAdminUserEmail('19740')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin User Emails</button>
 
-<button onclick="getAdminUserMobilesList({filters: {user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce',page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Mobiles List</button>
+<button onclick="getAdminUserMobilesList({filters: {user: '80484e04-c971-40c0-b64b-37c82f79890b',page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Mobiles List</button>
 <button onclick="getAdminUserMobilesListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Mobiles List Next</button>
 <button onclick="getAdminUserMobilesListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Mobiles List Previous</button>
-<button onclick="createAdminUserMobile('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','+8801703862293',false,true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin User Mobiles</button>
-<button onclick="getAdminUserMobile({id: '1787'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Mobiles</button>
-<button onclick="updateAdminUserMobile('1787',{verified: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin User Mobiles</button>
-<button onclick="deleteAdminUserMobile('1787')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin User Mobiles</button>
+<button onclick="createAdminUserMobile('80484e04-c971-40c0-b64b-37c82f79890b','+8801703862293',false,true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin User Mobiles</button>
+<button onclick="getAdminUserMobile({id: '4743'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Mobiles</button>
+<button onclick="updateAdminUserMobile('4743',{verified: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin User Mobiles</button>
+<button onclick="deleteAdminUserMobile('4743')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin User Mobiles</button>
 
-<button onclick="getAdminTransactionsList({filters: {user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce'}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Transactions List</button>
+<button onclick="getAdminUserPermissionsList('80484e04-c971-40c0-b64b-37c82f79890b',{filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Permissions List</button>
+<button onclick="getAdminUserPermissionsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Permissions List Next</button>
+<button onclick="getAdminUserPermissionsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Permissions List Previous</button>
+<button onclick="createAdminUserPermission('80484e04-c971-40c0-b64b-37c82f79890b','account','change')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin User Permission</button>
+<button onclick="getAdminUserPermission('80484e04-c971-40c0-b64b-37c82f79890b',{id: '56'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Permission</button>
+<button onclick="deleteAdminUserPermission('80484e04-c971-40c0-b64b-37c82f79890b','56')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin User Permission</button>
+
+<button onclick="getAdminUserGroupsList('80484e04-c971-40c0-b64b-37c82f79890b',{filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Groups List</button>
+<button onclick="getAdminUserGroupsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Groups List Next</button>
+<button onclick="getAdminUserGroupsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Groups List Previous</button>
+<button onclick="addAdminUserGroup('80484e04-c971-40c0-b64b-37c82f79890b','test')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Add Admin User Group</button>
+<button onclick="getAdminUserGroup('80484e04-c971-40c0-b64b-37c82f79890b',{name: 'test'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Group</button>
+<button onclick="deleteAdminUserGroup('80484e04-c971-40c0-b64b-37c82f79890b','test')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin User Group</button>
+
+<button onclick="getAdminTransactionsList({filters: {page_size: 2}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Transactions List</button>
 <button onclick="getAdminTransactionsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Transactions List Next</button>
 <button onclick="getAdminTransactionsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Transactions List Previous</button>
 
 <button onclick="getAdminTransactionsTotal({filters: {currency: 'USD'}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Transactions Total</button>
-<button onclick="getAdminTransaction({id: 'MGKMQZPxoSlwfneC9zE9'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Transaction</button>
-<button onclick="updateAdminTransaction('MGKMQZPxoSlwfneC9zE9',{status: 'complete'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Transaction</button>
-<button onclick="createAdminCreditTransaction('test1@rehive.com','USD',10000,'sell',null,null,{hey: 'yo'},'hello note',false)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Credit Transaction</button>
-<button onclick="createAdminDebitTransaction('test1@rehive.com','USD',1000,'purchase',null,null,{hey: 'yolo'},'hello note 2',true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Debit Transaction</button>
-<button onclick="createAdminTransferTransaction('test1@rehive.com','joshua@rehive.com','USD',1000,'purchase',null,'note this is',{hello: 'yo'},null,'sell',null,{yo: 'hello'},'this is a note')"
+<button onclick="getAdminTransaction({id: 'n5N3XRbT4QMlaN93hL31'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Transaction</button>
+<button onclick="updateAdminTransaction('n5N3XRbT4QMlaN93hL31',{status: 'complete'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Transaction</button>
+<button onclick="createAdminCreditTransaction('ark.aquib17+043@gmail.com','USD',10000,'',null,null,{hey: 'yo'},'hello note',false)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Credit Transaction</button>
+<button onclick="createAdminDebitTransaction('ark.aquib17+043@gmail.com','USD',100,'',null,null,{hey: 'yolo'},'hello note 2',true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Debit Transaction</button>
+<button onclick="createAdminTransferTransaction('ark.aquib17+043@gmail.com','ark.aquib17+042@gmail.com','USD',100,'',null,'note this is',{hello: 'yo'},null,'',null,{yo: 'hello'},'this is a note')"
         style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Transfer Transaction</button>
 
-<button onclick="getAdminUsersAccountsList({filters: {user: 'bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce'}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Accounts List</button>
+<button onclick="getAdminUsersAccountsList({filters: {user: '80484e04-c971-40c0-b64b-37c82f79890b',page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Accounts List</button>
 <button onclick="getAdminUsersAccountsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Users Accounts List Next</button>
 <button onclick="getAdminUsersAccountsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Users Accounts List Previous</button>
-<button onclick="createAdminUsersAccount('bb3d5d3b-3e2e-4d84-8bbf-f3e4c3c987ce','random',false,null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Admin Users Account</button>
-<button onclick="getAdminUsersAccount({reference: 'VYK3XQTDV5'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Account</button>
-<button onclick="updateAdminUsersAccount('3DR6ZVGS8M',{name: 'new two'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin Users Account</button>
+<button onclick="createAdminUsersAccount('80484e04-c971-40c0-b64b-37c82f79890b','random',false,null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Create Admin Users Account</button>
+<button onclick="getAdminUsersAccount({reference: '8HQUQNG8TQ'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Get Admin Users Account</button>
+<button onclick="updateAdminUsersAccount('8HQUQNG8TQ',{name: 'new_two'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-default">Update Admin Users Account</button>
 
 <button onclick="getAdminUsersAccountCurrenciesList('VYK3XQTDV5',{filters: {page_size: 2}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Users Account Currencies List</button>
 <button onclick="getAdminUsersAccountCurrenciesListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Users Account Currencies List Next</button>

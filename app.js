@@ -3,6 +3,8 @@
 window.onload = function () {
 
     window.rehive = new Rehive({apiVersion: 3});
+
+    login('ark.aquib17+042@gmail.com','test_company_042','test1234');
 };
 
 function convertToText(data) {
@@ -981,6 +983,7 @@ function createUser(first_name, last_name, email, id_number, language, nationali
     var fileSelected = document.getElementById("userProfile").files[0],
         formData = new FormData();
 
+    console.log(metadata);
 
     formData.append('profile', fileSelected);
     formData.append('first_name', first_name);
