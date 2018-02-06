@@ -1832,10 +1832,7 @@ function getAdminUsersAccountCurrency(reference, codeObj) {
 }
 
 function addAdminUsersAccountCurrency(reference, currencyObj) {
-    rehive.admin.accounts.currencies.create(reference,
-        {
-            currencies: [currencyObj]
-        }).then(function (res) {
+    rehive.admin.accounts.currencies.create(reference,currencyObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
