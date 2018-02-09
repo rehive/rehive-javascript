@@ -5,6 +5,7 @@ window.onload = function () {
     window.rehive = new Rehive({apiVersion: 3});
 
     login('ark.aquib17+042@gmail.com','test_company_042','test1234');
+    //login('test1@rehive.com','test_company_1','test1234');
 };
 
 function convertToText(data) {
@@ -1996,14 +1997,15 @@ function getAdminCurrenciesListPrevious() {
     });
 }
 
-function createAdminCurrency(code, description, symbol, unit, divisibility) {
+function createAdminCurrency(code, description, symbol, unit, divisibility,enabled) {
     rehive.admin.currencies.create(
         {
             code: code,
             description: description,
             symbol: symbol,
             unit: unit,
-            divisibility: divisibility
+            divisibility: divisibility,
+            enabled:enabled
         }).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
@@ -2023,6 +2025,15 @@ function getAdminCurrency(codeObj) {
 
 function updateAdminCurrency(code, data) {
     rehive.admin.currencies.update(code, data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function deleteAdminCurrency(code) {
+    rehive.admin.currencies.delete(code).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -2263,6 +2274,79 @@ function updateAdminWebhooks(webhooksId, data) {
 
 function deleteAdminWebhooks(id) {
     rehive.admin.webhooks.delete(id).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminWebhookTasksList(filtersObj) {
+    rehive.admin.webhookTasks.get(filtersObj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminWebhookTasksListNext() {
+    rehive.admin.webhookTasks.getNext().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminWebhookTasksListPrevious() {
+    rehive.admin.webhookTasks.getPrevious().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminWebhookTask(idObj) {
+    rehive.admin.webhookTasks.get(idObj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+
+function getAdminWebhookTaskRequestsList(webhookTaskID,filtersObj) {
+    rehive.admin.webhookTasks.requests.get(webhookTaskID,filtersObj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminWebhookTaskRequestsListNext() {
+    rehive.admin.webhookTasks.requests.getNext().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminWebhookTaskRequestsListPrevious() {
+    rehive.admin.webhookTasks.requests.getPrevious().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function getAdminWebhookTaskRequest(webhookTaskID,idObj) {
+    rehive.admin.webhookTasks.requests.get(webhookTaskID,idObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {

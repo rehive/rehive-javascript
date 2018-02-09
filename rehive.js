@@ -79,6 +79,9 @@ function Rehive(config) {
                 currencies: {}
             },
             settings: {}
+        },
+        webhookTasks: {
+            requests: {}
         }
     };
     var apiVersion = '3',
@@ -150,6 +153,8 @@ function Rehive(config) {
         adminCompanySettingsAPI = 'settings/',
         adminCompanyAddressAPI = 'address/',
         adminWebhooksAPI = 'admin/webhooks/',
+        adminWebhookTasksAPI = 'admin/webhook-tasks/',
+        adminWebhookTaskRequestsAPI = '/requests/',
         adminSubtypesAPI = 'admin/subtypes/',
         adminNotificationsAPI = 'admin/notifications/',
         adminTiersRequirementsAPI='/requirements/',
@@ -173,7 +178,7 @@ function Rehive(config) {
         config.apiVersion ? apiVersion = config.apiVersion : apiVersion = '3';
         config.apiToken ? setToken(config.apiToken) : setToken('');
         config.network ? (config.network == 'staging' ?
-            config.network = 'staging.rehive.com' : config.network = 'rehive.com') : config.network = 'rehive.com';
+            config.network = 'staging.rehive.com' : config.network = 'api.rehive.com') : config.network = 'api.rehive.com';
     } else {
         apiVersion = '3';
         setToken('');
@@ -3132,12 +3137,27 @@ function Rehive(config) {
 
     this.admin.currencies.update = function (code, data) {
         return new Promise(function (resolve, reject) {
-            if (!code) {
+            if (!code) {currencies.update
                 reject('No code has been given');
                 return;
             }
 
             httpPatchRehive(adminCurrenciesAPI + code + '/', data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.currencies.delete = function (code) {
+        return new Promise(function (resolve, reject) {
+            if (!code) {
+                reject('No code has been given');
+                return;
+            }
+
+            httpDeleteRehive(adminCurrenciesAPI + code + '/', {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -3434,6 +3454,159 @@ function Rehive(config) {
             }, function (error) {
                 reject(error);
             });
+        });
+    };
+
+    this.admin.webhookTasks.get = function (obj) {
+        var url,filters;
+
+        if(obj && obj.id) {
+            url = adminWebhookTasksAPI + obj.id + '/';
+        } else if(obj && obj.filters){
+            filters = '?' + serialize(obj.filters);
+            url = adminWebhookTasksAPI + filters;
+        } else {
+            url = adminWebhookTasksAPI;
+        }
+
+        if(obj && obj.id){
+            return new Promise(function (resolve, reject) {
+                var token = getToken();
+
+                if (token) {
+                    headers['Authorization'] = 'Token ' + token;
+                } else {
+                    delete headers['Authorization'];
+                }
+
+                fetch(baseAPI + url, {
+                    method: 'GET',
+                    headers: headers
+                })
+                    .then(parseJSON)
+                    .then(function (response) {
+                        if (response.status == 'success') {
+                            if (response.data) {
+                                resolve(response.data);
+                            }
+                        } else if (response.status == 'error') {
+                            if (response.data) {
+                                reject(response.data);
+                            } else {
+                                reject({message: response.message});
+                            }
+                        }
+                    });
+            });
+        } else {
+            return new Promise(function (resolve, reject) {
+                httpGetRehive(url).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response)
+                }, function (err) {
+                    reject(err)
+                })
+            })
+        }
+    };
+
+
+
+    this.admin.webhookTasks.getNext = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.webhookTasks.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.webhookTasks.requests.get = function (webhookTaskID,obj) {
+        var url,filters;
+
+        if(obj && obj.id) {
+            url = adminWebhookTasksAPI + webhookTaskID + adminWebhookTaskRequestsAPI + obj.id +  '/';
+        } else if(obj && obj.filters){
+            filters = '?' + serialize(obj.filters);
+            url = adminWebhookTasksAPI + webhookTaskID + adminWebhookTaskRequestsAPI + filters;
+        } else {
+            url = adminWebhookTasksAPI;
+        }
+
+        return new Promise(function (resolve, reject) {
+            httpGetRehive(url).then(function (response) {
+                saveFilterInSessionStorage(response);
+                resolve(response)
+            }, function (err) {
+                reject(err)
+            })
+        })
+    };
+
+    this.admin.webhookTasks.requests.getNext = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
+        });
+    };
+
+    this.admin.webhookTasks.requests.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilterInSessionStorage(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject('Not allowed');
+            }
         });
     };
 
