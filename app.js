@@ -2680,8 +2680,8 @@ function deleteAdminGroupTier(name,tierId) {
     });
 }
 
-function getAdminGroupTiersRequirementsList(name,tierIdObj) {
-    rehive.admin.groups.tiers.requirements.get(name,tierIdObj).then(function (res) {
+function getAdminGroupTiersRequirementsList(name,tierId) {
+    rehive.admin.groups.tiers.requirements.get(name,tierId).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (error) {
@@ -2963,8 +2963,8 @@ function createAdminGroupAccountConfigurationCurrency(name,accConfigName,currenc
     });
 }
 
-function getAdminGroupAccountConfigurationCurrency(name,accConfigNameObj,currencyCodeObj) {
-    rehive.admin.groups.accountConfigurations.currencies.get(name,accConfigNameObj,currencyCodeObj).then(function (res) {
+function getAdminGroupAccountConfigurationCurrency(name,accConfigName,currencyCodeObj) {
+    rehive.admin.groups.accountConfigurations.currencies.get(name,accConfigName,currencyCodeObj).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {

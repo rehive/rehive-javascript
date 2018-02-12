@@ -208,12 +208,12 @@
 <button onclick="getAdminUserPermission('80484e04-c971-40c0-b64b-37c82f79890b',{id: '56'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin User Permission</button>
 <button onclick="deleteAdminUserPermission('80484e04-c971-40c0-b64b-37c82f79890b','56')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin User Permission</button>
 
-<button onclick="getAdminUserGroupsList('80484e04-c971-40c0-b64b-37c82f79890b',{filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Groups List</button>
+<button onclick="getAdminUserGroupsList('8270b306-a26a-4c1f-8c2d-50ef704ae092',{filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Groups List</button>
 <button onclick="getAdminUserGroupsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Groups List Next</button>
 <button onclick="getAdminUserGroupsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Groups List Previous</button>
-<button onclick="addAdminUserGroup('80484e04-c971-40c0-b64b-37c82f79890b','test')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Add Admin User Group</button>
-<button onclick="getAdminUserGroup('80484e04-c971-40c0-b64b-37c82f79890b',{name: 'test'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Group</button>
-<button onclick="deleteAdminUserGroup('80484e04-c971-40c0-b64b-37c82f79890b','test')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin User Group</button>
+<button onclick="addAdminUserGroup('8270b306-a26a-4c1f-8c2d-50ef704ae092','test')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Add Admin User Group</button>
+<button onclick="getAdminUserGroup('8270b306-a26a-4c1f-8c2d-50ef704ae092',{name: 'test'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin User Group</button>
+<button onclick="deleteAdminUserGroup('8270b306-a26a-4c1f-8c2d-50ef704ae092','test')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin User Group</button>
 
 <button onclick="getAdminTransactionsList({filters: {page_size: 2}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Transactions List</button>
 <button onclick="getAdminTransactionsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Transactions List Next</button>
@@ -324,47 +324,47 @@
 <button onclick="getAdminGroupsList({filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Groups List</button>
 <button onclick="getAdminGroupsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Groups List Next</button>
 <button onclick="getAdminGroupsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Groups List Previous</button>
-<button onclick="createAdminGroup('test','TEST',false,true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Group</button>
-<button onclick="getAdminGroup({name: 'test'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Group</button>
-<button onclick="updateAdminGroup('test',{label: 'Test'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Group</button>
-<button onclick="deleteAdminGroup('test')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Group</button>
+<button onclick="createAdminGroup('test1','TEST1',false,true)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Group</button>
+<button onclick="getAdminGroup({name: 'test1'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Group</button>
+<button onclick="updateAdminGroup('test1',{label: 'Test'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Group</button>
+<button onclick="deleteAdminGroup('test1')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Group</button>
 
 <button onclick="getAdminGroupPermissionsList('test',{filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Permissions List</button>
 <button onclick="getAdminGroupPermissionsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Permissions List Next</button>
 <button onclick="getAdminGroupPermissionsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Permissions List Previous</button>
 <button onclick="createAdminGroupPermission('test','account','change')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Group Permission</button>
-<button onclick="getAdminGroupPermission('test',{id: '77'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Permission</button>
-<button onclick="deleteAdminGroupPermission('test','77')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Group Permission</button>
+<button onclick="getAdminGroupPermission('test',{id: '56'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Permission</button>
+<button onclick="deleteAdminGroupPermission('test','56')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Group Permission</button>
 
 <button onclick="getAdminGroupSettings('test')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Group Settings</button>
 <button onclick="updateAdminGroupSettings('test',{allow_credit_transactions: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Group Settings</button>
 
 <button onclick="getAdminGroupTiersList('test')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Group Tiers List</button>
-<button onclick="createAdminGroupTier('test',1,'First Tier','My Second Tier')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Group Tier</button>
-<button onclick="getAdminGroupTier('test',{id: '11'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Group Tier</button>
-<button onclick="updateAdminGroupTier('test','11',{name: 'Change My Tier name'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Group Tier</button>
-<button onclick="deleteAdminGroupTier('test','11')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Group Tier</button>
+<button onclick="createAdminGroupTier('test',2,'First Tier','My Second Tier')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Group Tier</button>
+<button onclick="getAdminGroupTier('test',{id: '23'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Group Tier</button>
+<button onclick="updateAdminGroupTier('test','23',{name: 'Change My Tier name'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Group Tier</button>
+<button onclick="deleteAdminGroupTier('test','23')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Group Tier</button>
 
-<button onclick="getAdminGroupTiersRequirementsList('test','11')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Tiers Requirements List</button>
-<button onclick="createAdminGroupTierRequirements('test','11','first_name')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Group Tier Requirement</button>
-<button onclick="getAdminGroupTierRequirement('test','11',{id: '5'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Tier Requirement</button>
-<button onclick="updateAdminGroupTierRequirement('test','11','5',{requirement: 'last_name'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Group Tier Requirement</button>
-<button onclick="deleteAdminGroupTierRequirement('test','11','5')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Group Tier Requirement</button>
+<button onclick="getAdminGroupTiersRequirementsList('test','22')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Tiers Requirements List</button>
+<button onclick="createAdminGroupTierRequirements('test','22','first_name')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Group Tier Requirement</button>
+<button onclick="getAdminGroupTierRequirement('test','22',{id: '34'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Tier Requirement</button>
+<button onclick="updateAdminGroupTierRequirement('test','22','34',{requirement: 'last_name'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Group Tier Requirement</button>
+<button onclick="deleteAdminGroupTierRequirement('test','22','34')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Group Tier Requirement</button>
 
-<button onclick="getAdminGroupTiersLimitsList('test','11')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Group Tiers Limits List</button>
-<button onclick="createAdminGroupTierLimit('test','11','ZAR','1000','max','debit',null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin Group Tier Limit</button>
-<button onclick="getAdminGroupTierLimit('test','11',{id: '11'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Group Tier Limit</button>
-<button onclick="updateAdminGroupTierLimit('test','11','11',{value: '5000'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Group Tier Limit</button>
-<button onclick="deleteAdminGroupTierLimit('test','11','11')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin Group Tier Limit</button>
+<button onclick="getAdminGroupTiersLimitsList('test','22')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Group Tiers Limits List</button>
+<button onclick="createAdminGroupTierLimit('test','22','ZAR','1000','max','debit',null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin Group Tier Limit</button>
+<button onclick="getAdminGroupTierLimit('test','22',{id: '10'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Group Tier Limit</button>
+<button onclick="updateAdminGroupTierLimit('test','22','10',{value: '7000'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Group Tier Limit</button>
+<button onclick="deleteAdminGroupTierLimit('test','22','10')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Delete Admin Group Tier Limit</button>
 
-<button onclick="getAdminGroupTiersFeesList('test','11')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Group Tiers Fees List</button>
-<button onclick="createAdminGroupTierFee('test','11','ZAR','2000','50','credit',null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Group Tier Fee</button>
-<button onclick="getAdminGroupTierFee('test','11',{id: '6'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Group Tier Fee</button>
-<button onclick="updateAdminGroupTierFee('test','11','6',{value: '5000',percentage: 25})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Group Tier Fee</button>
-<button onclick="deleteAdminGroupTierFee('test','11','6')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Group Tier Fee</button>
+<button onclick="getAdminGroupTiersFeesList('test','22')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Group Tiers Fees List</button>
+<button onclick="createAdminGroupTierFee('test','22','ZAR','2000','50','credit',null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Create Admin Group Tier Fee</button>
+<button onclick="getAdminGroupTierFee('test','22',{id: '5'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Group Tier Fee</button>
+<button onclick="updateAdminGroupTierFee('test','22','5',{value: '5000',percentage: 25})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Group Tier Fee</button>
+<button onclick="deleteAdminGroupTierFee('test','22','5')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Group Tier Fee</button>
 
-<button onclick="getAdminGroupTiersSettings('test','11')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Group Tier Settings</button>
-<button onclick="updateAdminGroupTiersSettings('test','11',{allow_credit_transactions: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Group Tier Settings</button>
+<button onclick="getAdminGroupTiersSettings('test','22')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Group Tier Settings</button>
+<button onclick="updateAdminGroupTiersSettings('test','22',{allow_credit_transactions: false})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Update Admin Group Tier Settings</button>
 
 <button onclick="getAdminGroupAccountConfigurationsList('test',{filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Group Account Configurations List</button>
 <button onclick="getAdminGroupAccountConfigurationsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Get Admin Group Account Configurations List Next</button>
@@ -374,11 +374,11 @@
 <button onclick="updateAdminGroupAccountConfiguration('test','te',{label: 'Test'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Update Admin Group Account Configuration</button>
 <button onclick="deleteAdminGroupAccountConfiguration('test','te')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-info">Delete Admin Group Account Configuration</button>
 
-<button onclick="getAdminGroupAccountConfigurationsCurrenciesList('test','te',{filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Account Configurations Currencies List</button>
+<button onclick="getAdminGroupAccountConfigurationsCurrenciesList('test','purchase',{filters: {page_size: 1}})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Account Configurations Currencies List</button>
 <button onclick="getAdminGroupAccountConfigurationsCurrenciesListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Account Configurations Currencies List Next</button>
 <button onclick="getAdminGroupAccountConfigurationsCurrenciesListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Account Configurations Currencies List Previous</button>
-<button onclick="createAdminGroupAccountConfigurationCurrency('test','te','ZAR')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Group Account Configuration Currency</button>
-<button onclick="getAdminGroupAccountConfigurationCurrency('test','te',{code: 'ZAR'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Account Configuration Currency</button>
-<button onclick="deleteAdminGroupAccountConfigurationCurrency('test','te','ZAR')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Group Account Configuration Currency</button>
+<button onclick="createAdminGroupAccountConfigurationCurrency('test','purchase','ZAR')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Group Account Configuration Currency</button>
+<button onclick="getAdminGroupAccountConfigurationCurrency('test','purchase',{code: 'ZAR'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Account Configuration Currency</button>
+<button onclick="deleteAdminGroupAccountConfigurationCurrency('test','purchase','ZAR')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Group Account Configuration Currency</button>
 </body>
 </html>
