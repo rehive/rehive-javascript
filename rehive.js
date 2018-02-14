@@ -4484,6 +4484,6 @@ function Rehive(config) {
     }
     else{
         // not node
-        return this;
+        window.this;
     }
 }
