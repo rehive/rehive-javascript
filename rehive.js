@@ -178,7 +178,7 @@ function Rehive(config) {
         config.apiVersion ? apiVersion = config.apiVersion : apiVersion = '3';
         config.apiToken ? setToken(config.apiToken) : setToken('');
         config.network ? (config.network == 'staging' ?
-            config.network = 'staging.rehive.com' : config.network = 'api.rehive.com') : config.network = 'api.rehive.com';
+            config.network = 'api.staging.rehive.com' : config.network = 'api.rehive.com') : config.network = 'api.rehive.com';
     } else {
         apiVersion = '3';
         setToken('');
