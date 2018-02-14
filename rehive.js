@@ -13,6 +13,7 @@ function Rehive(config) {
             status: {}
         }
     };
+
     this.user = {
         address: {},
         bankAccounts: {},
@@ -21,16 +22,22 @@ function Rehive(config) {
         emails: {},
         mobiles: {}
     };
+
     this.transactions = {};
+
     this.accounts = {
         currencies: {}
     };
+
     this.company = {
         currencies: {},
         bankAccounts: {}
     };
+
     this.groups = {};
+
     this.permissions = {};
+
     this.admin = {
         users: {
             overview: {},
@@ -84,6 +91,7 @@ function Rehive(config) {
             requests: {}
         }
     };
+
     var apiVersion = '3',
         registerAPI = 'auth/register/',
         registerCompanyAPI = 'auth/company/register/',
