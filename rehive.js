@@ -192,7 +192,7 @@ function Rehive(config) {
         setToken('');
     }
 
-    var baseAPI = 'https://' + config.network + '/api/' + apiVersion + '/';
+    var baseAPI = 'https://' + config.network + '/' + apiVersion + '/';
 
     function serialize(obj) {
         var str = [];
