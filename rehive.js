@@ -4475,15 +4475,10 @@ function Rehive(config) {
     };
 
     //public functions end
+}
 
-
-
-    if(typeof process === 'object' && process + '' === '[object process]'){
-        // is node
-        module.exports = this;
-    }
-    else{
-        // not node
-        window.this;
-    }
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = Rehive
+} else {
+	window.this
 }
