@@ -1596,7 +1596,7 @@ function Rehive(config) {
 
     this.groups.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextGroupsFilterForLists'), mainUrl;
+						var url = nextFilter['Groups'], mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -1615,7 +1615,7 @@ function Rehive(config) {
 
     this.groups.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousGroupsFilterForLists'), mainUrl;
+					var url = previousFilter['Groups'], mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
