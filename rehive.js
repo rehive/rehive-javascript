@@ -205,8 +205,6 @@ function Rehive(config) {
 				config.network = 'api.rehive.com'
         setToken('');
 		}
-		
-		console.log("CONFIG", config);
 
 		var baseAPI = 'https://' + config.network + '/' + apiVersion + '/';
 		
