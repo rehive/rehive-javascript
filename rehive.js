@@ -1721,7 +1721,7 @@ function Rehive(config) {
 
     this.admin.users.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -1866,7 +1866,7 @@ function Rehive(config) {
 
     this.admin.users.permissions.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -1951,7 +1951,7 @@ function Rehive(config) {
 
     this.admin.users.groups.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -2032,7 +2032,7 @@ function Rehive(config) {
 
     this.admin.users.addresses.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -2132,7 +2132,7 @@ function Rehive(config) {
 
     this.admin.users.bankAccounts.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -2232,7 +2232,7 @@ function Rehive(config) {
 
     this.admin.users.cryptoAccounts.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -2332,7 +2332,7 @@ function Rehive(config) {
 
     this.admin.users.documents.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -2486,7 +2486,7 @@ function Rehive(config) {
 
     this.admin.users.emails.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -2586,7 +2586,7 @@ function Rehive(config) {
 
     this.admin.users.mobiles.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -2811,7 +2811,7 @@ function Rehive(config) {
 
     this.admin.accounts.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -2901,7 +2901,7 @@ function Rehive(config) {
 
     this.admin.accounts.currencies.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -3142,7 +3142,7 @@ function Rehive(config) {
 
     this.admin.currencies.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -3256,7 +3256,7 @@ function Rehive(config) {
 
     this.admin.currencies.bankAccounts.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -3444,7 +3444,7 @@ function Rehive(config) {
 
     this.admin.webhooks.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -3567,7 +3567,7 @@ function Rehive(config) {
 
     this.admin.webhookTasks.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -3627,7 +3627,7 @@ function Rehive(config) {
 
     this.admin.webhookTasks.requests.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -3765,7 +3765,7 @@ function Rehive(config) {
 
     this.admin.services.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -3836,7 +3836,7 @@ function Rehive(config) {
 
     this.admin.groups.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -3936,7 +3936,7 @@ function Rehive(config) {
 
     this.admin.groups.permissions.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -4357,7 +4357,7 @@ function Rehive(config) {
 
     this.admin.groups.accountConfigurations.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -4458,7 +4458,7 @@ function Rehive(config) {
 
     this.admin.groups.accountConfigurations.currencies.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+            var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
