@@ -1,7 +1,18 @@
 "use strict";
+var isNode = false;
+
+var fetch;
+
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = Rehive
+	fetch = require('node-fetch');
+} else {
+	window.this
+	fetch = window.fetch;
+}
+
 
 function Rehive(config) {
-
     this.auth = {
         password: {},
         email: {},
@@ -188,11 +199,16 @@ function Rehive(config) {
         config.network ? (config.network == 'staging' ?
             config.network = 'api.staging.rehive.com' : config.network = 'api.rehive.com') : config.network = 'api.rehive.com';
     } else {
-        apiVersion = '3';
+				apiVersion = '3';
+				config.network = 'api.rehive.com'
         setToken('');
-    }
+		}
+		
+		console.log("CONFIG", config);
 
-    var baseAPI = 'https://' + config.network + '/' + apiVersion + '/';
+		var baseAPI = 'https://' + config.network + '/' + apiVersion + '/';
+		
+		var token;
 
     function serialize(obj) {
         var str = [];
@@ -205,7 +221,7 @@ function Rehive(config) {
     }
 
     function setToken(newToken) {
-        sessionStorage.setItem("token", newToken);
+        token = newToken
     }
 
     function getToken() {
@@ -4477,8 +4493,4 @@ function Rehive(config) {
     //public functions end
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-	module.exports = Rehive
-} else {
-	window.this
-}
+

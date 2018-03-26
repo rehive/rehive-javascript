@@ -4,7 +4,8 @@
   "description": "Javascript sdk for rehive APIs",
   "main": "rehive.js",
   "dependencies": {
-    "gulp": "^3.9.1"
+    "gulp": "^3.9.1",
+    "node-fetch": "^2.1.2"
   },
   "devDependencies": {
     "gulp-concat": "^2.6.1",
