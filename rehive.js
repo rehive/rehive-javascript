@@ -210,7 +210,7 @@ function Rehive(config) {
 		
 		var token,
 				nextFilterForLists,
-				previousFilterForLists
+				previousFilterForLists,
 				nextFilter = {},
 				previousFilter = {};
 
@@ -256,17 +256,13 @@ function Rehive(config) {
 
     function saveUserApiFilter(response, key) {
         if (response.next) {
-						// sessionStorage.setItem('next' + key + 'FilterForLists', response.next);
 						nextFilter[key] = response.next;
         } else {
-						// sessionStorage.removeItem('next' + key + 'FilterForLists');
 						delete nextFilter[key];
         }
         if (response.previous) {
-						// sessionStorage.setItem('previous' + key + 'FilterForLists', response.previous);
 						previousFilter[key] = response.previous;
         } else {
-						// sessionStorage.removeItem('previous' + key + 'FilterForLists');
 						delete previousFilter[key];
         }
     }
@@ -965,8 +961,7 @@ function Rehive(config) {
 
     this.user.documents.getNext = function () {
         return new Promise(function (resolve, reject) {
-						var url = sessionStorage.getItem('nextDocumentsFilterForLists'), mainUrl;
-						// var url = nextFilter['Documents']
+						var url = nextFilter['Documents'], mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -985,7 +980,7 @@ function Rehive(config) {
 
     this.user.documents.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousDocumentsFilterForLists'), mainUrl;
+						var url = previousFilter['Documents'], mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -1198,7 +1193,7 @@ function Rehive(config) {
 
     this.transactions.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextTransactionFilterForLists'), mainUrl;
+						var url = nextFilter['Transaction'], mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -1217,7 +1212,7 @@ function Rehive(config) {
 
     this.transactions.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousTransactionFilterForLists'), mainUrl;
+						var url = previousFilter['Transaction'], mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -1303,7 +1298,7 @@ function Rehive(config) {
 
     this.accounts.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextAccountFilterForLists'), mainUrl;
+						var url = nextFilter['Account'], mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -1322,7 +1317,7 @@ function Rehive(config) {
 
     this.accounts.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousAccountFilterForLists'), mainUrl;
+						var url = previousFilter['Account'], mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -1378,7 +1373,7 @@ function Rehive(config) {
 
     this.accounts.currencies.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextAccountCurrenciesFilterForLists'), mainUrl;
+						var url = nextFilter['AccountCurrencies'], mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -1397,7 +1392,7 @@ function Rehive(config) {
 
     this.accounts.currencies.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousAccountCurrenciesFilterForLists'), mainUrl;
+						var url = previousFilter['AccountCurrencies'], mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -1471,7 +1466,7 @@ function Rehive(config) {
 
     this.company.currencies.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextCompanyCurrenciesFilterForLists'), mainUrl;
+						var url = nextFilter['CompanyCurrencies'], mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -1490,7 +1485,7 @@ function Rehive(config) {
 
     this.company.currencies.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousCompanyCurrenciesFilterForLists'), mainUrl;
+						var url = previousFilter['CompanyCurrencies'], mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -1541,7 +1536,7 @@ function Rehive(config) {
 
     this.permissions.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextPermissionsFilterForLists'), mainUrl;
+						var url = nextFilter['Permissions'], mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -1560,7 +1555,7 @@ function Rehive(config) {
 
     this.permissions.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousPermissionsFilterForLists'), mainUrl;
+						var url = previousFilter['Permissions'], mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -1591,7 +1586,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveUserApiFilter(response, 'CompanyCurrencies');
+                saveUserApiFilter(response, 'Groups');
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1601,13 +1596,13 @@ function Rehive(config) {
 
     this.groups.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextCompanyCurrenciesFilterForLists'), mainUrl;
+            var url = sessionStorage.getItem('nextGroupsFilterForLists'), mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveUserApiFilter(response, 'CompanyCurrencies');
+                    saveUserApiFilter(response, 'Groups');
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1620,7 +1615,7 @@ function Rehive(config) {
 
     this.groups.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousCompanyCurrenciesFilterForLists'), mainUrl;
+            var url = sessionStorage.getItem('previousGroupsFilterForLists'), mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];

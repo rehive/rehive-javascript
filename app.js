@@ -4,8 +4,8 @@ window.onload = function () {
 
     window.rehive = new Rehive({apiVersion: 3});
 
-    login('ark.aquib17+042@gmail.com','test_company_042','test1234');
-    //login('test1@rehive.com','test_company_1','test1234');
+    // login('ark.aquib17+042@gmail.com','test_company_042','test1234');
+    login('test1@rehive.com','test_company_1','test1234');
 };
 
 function convertToText(data) {
