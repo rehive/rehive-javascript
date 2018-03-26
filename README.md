@@ -1,8 +1,10 @@
-# Javascript sdk for rehive api
+# Rehive Javascript SDK
 
 ### About
 
-This is the javascript sdk for the Rehive APIs.
+This is the client side Javascript SDK for the Rehive API. It can be used with any client side web application (React, Angular, Vue, etc) or included as a CDN in your HTML file
+
+If you would like to use the Rehive API in a server side NodeJS Application, please consider using the [REST Endpoints](https://docs.rehive.com/?shell#introduction) instead.
 
 ### Installation
 
