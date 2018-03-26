@@ -4,10 +4,12 @@ var isNode = false;
 var fetch;
 
 if (typeof module !== 'undefined' && module.exports) {
-	module.exports = Rehive
+	module.exports = Rehive;
+	isNode = true;
 	fetch = require('node-fetch');
 } else {
 	window.this
+	isNode = false;
 	fetch = window.fetch;
 }
 
@@ -221,16 +223,16 @@ function Rehive(config) {
     }
 
     function setToken(newToken) {
-        token = newToken
+        token = newToken;
     }
 
     function getToken() {
-        return sessionStorage.getItem("token") || '';
+        return token || '';
     }
 
     function removeToken() {
         delete headers['Authorization'];
-        sessionStorage.removeItem("token");
+        token = '';
     }
 
     function parseJSON(response) {

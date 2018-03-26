@@ -7,8 +7,14 @@ r.auth.login({
 	company: 'shape',
 	password: 'launch1234'
 }).then(function (user) {
-	console.log("USER ", user);
-	console.log(user);
+
+	r.user.get().then(function (user) {
+		console.log("FROM USER METHOD", user);
+	}, function (err) {
+		console.log(err);
+	});
+
 }, function (err) {
 	console.log(err);
 });
+
