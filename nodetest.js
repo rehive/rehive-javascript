@@ -17,12 +17,19 @@ r.auth.login({
 	});
 
 	// GET TRANSACTIONS
-	r.transactions.get().then(function (res) {
-		console.log("TRANSACTIONS", res);
+	r.transactions.get().then(function (tx) {
+		console.log("TRANSACTIONS", tx);
 
 		// GET NEXT TRANSACTIONS
-		r.transactions.getNext().then(function (res) {
-			console.log("NEXT TRANSACTIONS", res);
+		r.transactions.getNext().then(function (nextTx) {
+			console.log("NEXT TRANSACTIONS", nextTx);
+
+			r.transactions.getPrevious().then(function (prevTx) {
+				console.log("PREVIOUS TRANSACTIONS", prevTx);
+
+			}, function (err) {
+				console.log(err);
+			});
 
 		}, function (err) {
 			console.log(err);
