@@ -208,7 +208,11 @@ function Rehive(config) {
 
 		var baseAPI = 'https://' + config.network + '/' + apiVersion + '/';
 		
-		var token;
+		var token,
+				nextFilterForLists,
+				previousFilterForLists
+				nextFilter = {},
+				previousFilter = {};
 
     function serialize(obj) {
         var str = [];
@@ -237,29 +241,33 @@ function Rehive(config) {
         return response.json();
     }
 
-    function saveFilterInSessionStorage(response) {
+    function saveFilter(response) {
         if (response.next) {
-            sessionStorage.setItem('nextFilterForLists', response.next);
+						nextFilterForLists = response.next;
         } else {
-            sessionStorage.removeItem('nextFilterForLists');
+						nextFilterForLists = null;
         }
         if (response.previous) {
-            sessionStorage.setItem('previousFilterForLists', response.previous);
+						previousFilterForLists = response.previous;
         } else {
-            sessionStorage.removeItem('previousFilterForLists');
+						previousFilterForLists = null;
         }
     }
 
-    function saveUserApiFilterInSessionStorage(response, key) {
+    function saveUserApiFilter(response, key) {
         if (response.next) {
-            sessionStorage.setItem('next' + key + 'FilterForLists', response.next);
+						// sessionStorage.setItem('next' + key + 'FilterForLists', response.next);
+						nextFilter[key] = response.next;
         } else {
-            sessionStorage.removeItem('next' + key + 'FilterForLists');
+						// sessionStorage.removeItem('next' + key + 'FilterForLists');
+						delete nextFilter[key];
         }
         if (response.previous) {
-            sessionStorage.setItem('previous' + key + 'FilterForLists', response.previous);
+						// sessionStorage.setItem('previous' + key + 'FilterForLists', response.previous);
+						previousFilter[key] = response.previous;
         } else {
-            sessionStorage.removeItem('previous' + key + 'FilterForLists');
+						// sessionStorage.removeItem('previous' + key + 'FilterForLists');
+						delete previousFilter[key];
         }
     }
 
@@ -947,7 +955,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveUserApiFilterInSessionStorage(response, 'Documents');
+                saveUserApiFilter(response, 'Documents');
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -957,13 +965,14 @@ function Rehive(config) {
 
     this.user.documents.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextDocumentsFilterForLists'), mainUrl;
+						var url = sessionStorage.getItem('nextDocumentsFilterForLists'), mainUrl;
+						// var url = nextFilter['Documents']
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveUserApiFilterInSessionStorage(response, 'Documents');
+                    saveUserApiFilter(response, 'Documents');
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -982,7 +991,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveUserApiFilterInSessionStorage(response, 'Documents');
+                    saveUserApiFilter(response, 'Documents');
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1179,7 +1188,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveUserApiFilterInSessionStorage(response, 'Transaction');
+                saveUserApiFilter(response, 'Transaction');
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1195,7 +1204,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveUserApiFilterInSessionStorage(response, 'Transaction');
+                    saveUserApiFilter(response, 'Transaction');
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1214,7 +1223,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveUserApiFilterInSessionStorage(response, 'Transaction')
+                    saveUserApiFilter(response, 'Transaction')
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1284,7 +1293,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveUserApiFilterInSessionStorage(response, 'Account');
+                saveUserApiFilter(response, 'Account');
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1300,7 +1309,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveUserApiFilterInSessionStorage(response, 'Account');
+                    saveUserApiFilter(response, 'Account');
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1319,7 +1328,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveUserApiFilterInSessionStorage(response, 'Account')
+                    saveUserApiFilter(response, 'Account')
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1359,7 +1368,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveUserApiFilterInSessionStorage(response, 'AccountCurrencies');
+                saveUserApiFilter(response, 'AccountCurrencies');
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1375,7 +1384,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveUserApiFilterInSessionStorage(response, 'AccountCurrencies');
+                    saveUserApiFilter(response, 'AccountCurrencies');
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1394,7 +1403,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveUserApiFilterInSessionStorage(response, 'AccountCurrencies')
+                    saveUserApiFilter(response, 'AccountCurrencies')
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1452,7 +1461,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveUserApiFilterInSessionStorage(response, 'CompanyCurrencies');
+                saveUserApiFilter(response, 'CompanyCurrencies');
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1468,7 +1477,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveUserApiFilterInSessionStorage(response, 'CompanyCurrencies');
+                    saveUserApiFilter(response, 'CompanyCurrencies');
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1487,7 +1496,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveUserApiFilterInSessionStorage(response, 'CompanyCurrencies');
+                    saveUserApiFilter(response, 'CompanyCurrencies');
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1522,7 +1531,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveUserApiFilterInSessionStorage(response, 'Permissions');
+                saveUserApiFilter(response, 'Permissions');
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1538,7 +1547,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveUserApiFilterInSessionStorage(response, 'Permissions');
+                    saveUserApiFilter(response, 'Permissions');
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1557,7 +1566,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveUserApiFilterInSessionStorage(response, 'Permissions');
+                    saveUserApiFilter(response, 'Permissions');
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1582,7 +1591,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveUserApiFilterInSessionStorage(response, 'CompanyCurrencies');
+                saveUserApiFilter(response, 'CompanyCurrencies');
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1598,7 +1607,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveUserApiFilterInSessionStorage(response, 'CompanyCurrencies');
+                    saveUserApiFilter(response, 'CompanyCurrencies');
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1617,7 +1626,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveUserApiFilterInSessionStorage(response, 'CompanyCurrencies');
+                    saveUserApiFilter(response, 'CompanyCurrencies');
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1683,7 +1692,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1693,13 +1702,13 @@ function Rehive(config) {
 
     this.admin.users.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1718,7 +1727,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1828,7 +1837,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1838,13 +1847,13 @@ function Rehive(config) {
 
     this.admin.users.permissions.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1863,7 +1872,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response)
+                    saveFilter(response)
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1913,7 +1922,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1923,13 +1932,13 @@ function Rehive(config) {
 
     this.admin.users.groups.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1948,7 +1957,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response)
+                    saveFilter(response)
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -1994,7 +2003,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2004,13 +2013,13 @@ function Rehive(config) {
 
     this.admin.users.addresses.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -2029,7 +2038,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response)
+                    saveFilter(response)
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -2094,7 +2103,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2104,13 +2113,13 @@ function Rehive(config) {
 
     this.admin.users.bankAccounts.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -2129,7 +2138,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -2194,7 +2203,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2204,13 +2213,13 @@ function Rehive(config) {
 
     this.admin.users.cryptoAccounts.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -2229,7 +2238,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response)
+                    saveFilter(response)
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -2294,7 +2303,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2304,13 +2313,13 @@ function Rehive(config) {
 
     this.admin.users.documents.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -2329,7 +2338,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response)
+                    saveFilter(response)
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -2448,7 +2457,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2458,13 +2467,13 @@ function Rehive(config) {
 
     this.admin.users.emails.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -2483,7 +2492,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -2548,7 +2557,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2558,13 +2567,13 @@ function Rehive(config) {
 
     this.admin.users.mobiles.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -2583,7 +2592,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response)
+                    saveFilter(response)
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -2648,7 +2657,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2658,13 +2667,14 @@ function Rehive(config) {
 
     this.admin.transactions.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -2677,13 +2687,13 @@ function Rehive(config) {
 
     this.admin.transactions.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('previousFilterForLists'), mainUrl;
+						var url = previousFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response)
+                    saveFilter(response)
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -2705,7 +2715,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(adminTransactionsTotalAPI + filter).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2772,7 +2782,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2782,13 +2792,13 @@ function Rehive(config) {
 
     this.admin.accounts.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -2807,7 +2817,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -2862,7 +2872,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -2872,13 +2882,13 @@ function Rehive(config) {
 
     this.admin.accounts.currencies.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -2897,7 +2907,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -3103,7 +3113,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -3113,13 +3123,13 @@ function Rehive(config) {
 
     this.admin.currencies.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -3138,7 +3148,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response)
+                    saveFilter(response)
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -3217,7 +3227,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -3227,13 +3237,13 @@ function Rehive(config) {
 
     this.admin.currencies.bankAccounts.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -3252,7 +3262,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response)
+                    saveFilter(response)
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -3405,7 +3415,7 @@ function Rehive(config) {
 
         return new Promise(function (resolve, reject) {
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response)
             }, function (err) {
                 reject(err)
@@ -3415,13 +3425,13 @@ function Rehive(config) {
 
     this.admin.webhooks.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -3440,7 +3450,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -3525,7 +3535,7 @@ function Rehive(config) {
         } else {
             return new Promise(function (resolve, reject) {
                 httpGetRehive(url).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response)
                 }, function (err) {
                     reject(err)
@@ -3538,13 +3548,13 @@ function Rehive(config) {
 
     this.admin.webhookTasks.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -3563,7 +3573,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -3588,7 +3598,7 @@ function Rehive(config) {
 
         return new Promise(function (resolve, reject) {
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response)
             }, function (err) {
                 reject(err)
@@ -3598,13 +3608,13 @@ function Rehive(config) {
 
     this.admin.webhookTasks.requests.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -3623,7 +3633,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -3726,7 +3736,7 @@ function Rehive(config) {
 
 
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -3736,13 +3746,13 @@ function Rehive(config) {
 
     this.admin.services.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -3761,7 +3771,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -3797,7 +3807,7 @@ function Rehive(config) {
 
 
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -3807,13 +3817,13 @@ function Rehive(config) {
 
     this.admin.groups.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -3832,7 +3842,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -3897,7 +3907,7 @@ function Rehive(config) {
             }
 
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -3907,13 +3917,13 @@ function Rehive(config) {
 
     this.admin.groups.permissions.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -3932,7 +3942,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -4318,7 +4328,7 @@ function Rehive(config) {
 
 
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -4328,13 +4338,13 @@ function Rehive(config) {
 
     this.admin.groups.accountConfigurations.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -4353,7 +4363,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -4419,7 +4429,7 @@ function Rehive(config) {
 
 
             httpGetRehive(url).then(function (response) {
-                saveFilterInSessionStorage(response);
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -4429,13 +4439,13 @@ function Rehive(config) {
 
     this.admin.groups.accountConfigurations.currencies.getNext = function () {
         return new Promise(function (resolve, reject) {
-            var url = sessionStorage.getItem('nextFilterForLists'), mainUrl;
+						var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
@@ -4454,7 +4464,7 @@ function Rehive(config) {
                 mainUrl = urlArray[1];
 
                 httpGetRehive(mainUrl).then(function (response) {
-                    saveFilterInSessionStorage(response);
+                    saveFilter(response);
                     resolve(response);
                 }, function (error) {
                     reject(error);
