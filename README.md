@@ -22,7 +22,7 @@ or use the minified file in the `build` folder
 
 Initialize the SDK with: 
 
-`window.rehive = new Rehive(config);` (Node)JS
+`window.rehive = new Rehive(config);` (NodeJS)
 
 or 
 
