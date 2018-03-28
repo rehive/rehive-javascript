@@ -225,13 +225,14 @@ function Rehive(config) {
     }
 
     function setToken(newToken) {
+			console.log("TOKEN TO BE SET", newToken);
         if (config && config.storageMethod) {
-            if (sessionStorage && localStorage) {
-                if (config.storageMethod === 'local') {
-                    localStorage.setItem('token', newToken);
-                } else if (config.storageMethod === 'session') {
-                    sessionStorage.setItem('token', newToken)
-                }
+            if (sessionStorage !== undefined && localStorage !== undefined) {
+							if (config.storageMethod === 'local') {
+								localStorage.setItem('token', newToken);
+							} else if (config.storageMethod === 'session') {
+								sessionStorage.setItem('token', newToken)
+							}
             } else {
                 console.log("sessionStorage and localStorage not supported.");
                 return;
