@@ -225,14 +225,37 @@ function Rehive(config) {
     }
 
     function setToken(newToken) {
+        if (config && config.storageMethod) {
+            if (sessionStorage && localStorage) {
+                if (config.storageMethod === 'local') {
+                    localStorage.setItem('token', newToken);
+                } else if (config.storageMethod === 'session') {
+                    sessionStorage.setItem('token', newToken)
+                }
+            } else {
+                console.log("sessionStorage and localStorage not supported.");
+                return;
+            }
+        }
         token = newToken;
     }
 
     function getToken() {
+        if (config && config.storageMethod === 'local') {
+            token = localStorage.getItem('token');
+        } else if (config && config.storageMethod === 'session') {
+            token = sessionStorage.getItem('token');
+        }
+
         return token || '';
     }
 
     function removeToken() {
+        if (config && config.storageMethod === 'local') {
+            token = localStorage.removeItem('token');
+        } else if (config && config.storageMethod === 'session') {
+            token = sessionStorage.removeItem('token');
+        }
         delete headers['Authorization'];
         token = '';
     }
@@ -243,14 +266,14 @@ function Rehive(config) {
 
     function saveFilter(response) {
         if (response.next) {
-						nextFilterForLists = response.next;
+			nextFilterForLists = response.next;
         } else {
-						nextFilterForLists = null;
+			nextFilterForLists = null;
         }
         if (response.previous) {
-						previousFilterForLists = response.previous;
+			previousFilterForLists = response.previous;
         } else {
-						previousFilterForLists = null;
+			previousFilterForLists = null;
         }
     }
 
@@ -477,7 +500,10 @@ function Rehive(config) {
                 .then(function (response) {
                     if (response.status == 'success') {
                         setToken(response.data.token);
-                        resolve(response.data.user);
+                        resolve({
+                            user: response.data.user,
+                            token: response.data.token
+                        });
                     } else if (response.status == 'error') {
                         if (response.data) {
                             reject(response.data);
