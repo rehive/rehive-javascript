@@ -197,13 +197,13 @@ function Rehive(config) {
 
     if (Object.keys(config).length > 0) {
         config.apiVersion ? apiVersion = config.apiVersion : apiVersion = '3';
-        config.apiToken ? setToken(config.apiToken) : setToken('');
+        config.apiToken ? setToken(config.apiToken) : null // setToken('');
         config.network ? (config.network == 'staging' ?
             config.network = 'api.staging.rehive.com' : config.network = 'api.rehive.com') : config.network = 'api.rehive.com';
     } else {
 				apiVersion = '3';
 				config.network = 'api.rehive.com'
-        setToken('');
+        // setToken('');
 		}
 
 		var baseAPI = 'https://' + config.network + '/' + apiVersion + '/';
