@@ -225,7 +225,6 @@ function Rehive(config) {
     }
 
     function setToken(newToken) {
-			console.log("TOKEN TO BE SET", newToken);
         if (config && config.storageMethod) {
             if (sessionStorage !== undefined && localStorage !== undefined) {
 							if (config.storageMethod === 'local') {
