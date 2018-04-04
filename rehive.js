@@ -1762,20 +1762,20 @@ function Rehive(config) {
     this.admin.users.create = function (data) {
         return new Promise(function (resolve, reject) {
             var token = getToken();
-            var header = {};
+
 
             if (token) {
-                header['Authorization'] = 'Token ' + token;
+                headers['Authorization'] = 'Token ' + token;
             } else {
-                delete header['Authorization'];
+                delete headers['Authorization'];
             }
 
             fetch(baseAPI + adminUsersAPI, {
                 method: 'POST',
-                headers: header,
-                body: data
+                headers: headers,
+                body: JSON.stringify(data)
             })
-                .then(parseJSON)
+            .then(json => json.json())
                 .then(function (response) {
                     if (response.status == 'success') {
                         if (response.data && response.data.data) {
