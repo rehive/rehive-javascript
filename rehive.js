@@ -1775,7 +1775,7 @@ function Rehive(config) {
                 headers: headers,
                 body: JSON.stringify(data)
             })
-            .then(json => json.json())
+            .then(parseJSON)
                 .then(function (response) {
                     if (response.status == 'success') {
                         if (response.data && response.data.data) {
