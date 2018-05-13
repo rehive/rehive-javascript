@@ -454,7 +454,10 @@ function Rehive(config) {
                 .then(function (response) {
                     if (response.status == 'success') {
                         setToken(response.data.token);
-                        resolve(response.data);
+                        resolve({
+                            user: response.data.user,
+                            token: response.data.token
+                        });
                     } else if (response.status == 'error') {
                         if (response.data) {
                             reject(response.data);
