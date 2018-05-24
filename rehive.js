@@ -1661,9 +1661,18 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.overview.get = function () {
+    this.admin.users.overview.get = function (obj) {
         return new Promise(function (resolve, reject) {
-            httpGetRehive(adminUsersOverviewAPI).then(function (response) {
+             var url,filters;
+
+            if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminUsersOverviewAPI + filters;
+            } else {
+                url = adminUsersOverviewAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
