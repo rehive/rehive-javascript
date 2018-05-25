@@ -261,7 +261,17 @@ function Rehive(config) {
     }
 
     function parseJSON(response) {
-        return response.json();
+        return response.json().then(function (json) {
+            return new Promise(function (resolve) {
+                if(response.ok){
+                    resolve(json);
+                } else{
+                    json.status_code = response.status;
+                    json.ok = response.ok;
+                    resolve(json);
+                }
+            })
+        })
     }
 
     function saveFilter(response) {
@@ -319,9 +329,9 @@ function Rehive(config) {
                         }
                     } else if (response.status == 'error') {
                         if (response.data) {
-                            reject(response.data);
+                            reject({ status: response.status_code, message: response.message, data: response.data});
                         } else {
-                            reject({message: response.message});
+                            reject({ status: response.status_code, message: response.message});
                         }
                     }
                 });
@@ -356,9 +366,9 @@ function Rehive(config) {
                         }
                     } else if (response.status == 'error') {
                         if (response.data) {
-                            reject(response.data);
+                            reject({ status: response.status_code, message: response.message, data: response.data});
                         } else {
-                            reject({message: response.message});
+                            reject({ status: response.status_code, message: response.message});
                         }
                     }
                 });
@@ -394,9 +404,9 @@ function Rehive(config) {
                         }
                     } else if (response.status == 'error') {
                         if (response.data) {
-                            reject(response.data);
+                            reject({ status: response.status_code, message: response.message, data: response.data});
                         } else {
-                            reject({message: response.message});
+                            reject({ status: response.status_code, message: response.message});
                         }
                     }
                 });
@@ -432,9 +442,9 @@ function Rehive(config) {
                         }
                     } else if (response.status == 'error') {
                         if (response.data) {
-                            reject(response.data);
+                            reject({ status: response.status_code, message: response.message, data: response.data});
                         } else {
-                            reject({message: response.message});
+                            reject({ status: response.status_code, message: response.message});
                         }
                     }
                 });
@@ -460,9 +470,9 @@ function Rehive(config) {
                         });
                     } else if (response.status == 'error') {
                         if (response.data) {
-                            reject(response.data);
+                            reject({ status: response.status_code, message: response.message, data: response.data});
                         } else {
-                            reject({message: response.message});
+                            reject({ status: response.status_code, message: response.message});
                         }
                     }
                 });
@@ -483,9 +493,9 @@ function Rehive(config) {
                         resolve(response.data.user);
                     } else if (response.status == 'error') {
                         if (response.data) {
-                            reject(response.data);
+                            reject({ status: response.status_code, message: response.message, data: response.data});
                         } else {
-                            reject({message: response.message});
+                            reject({ status: response.status_code, message: response.message});
                         }
                     }
                 });
@@ -509,9 +519,9 @@ function Rehive(config) {
                         });
                     } else if (response.status == 'error') {
                         if (response.data) {
-                            reject(response.data);
+                            reject({ status: response.status_code, message: response.message, data: response.data});
                         } else {
-                            reject(response.message);
+                            reject({ status: response.status_code, message: response.message});
                         }
                     }
                 });
@@ -541,7 +551,7 @@ function Rehive(config) {
                         if (response.data) {
                             reject(response.data);
                         } else {
-                            reject({message: response.message});
+                            reject({ status: response.status_code, message: response.message});
                         }
                     }
                 });
@@ -569,9 +579,9 @@ function Rehive(config) {
                         resolve({});
                     } else if (response.status == 'error') {
                         if (response.data) {
-                            reject(response.data);
+                            reject({ status: response.status_code, message: response.message, data: response.data});
                         } else {
-                            reject({message: response.message});
+                            reject({ status: response.status_code, message: response.message});
                         }
                     }
                 });
@@ -1002,7 +1012,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -1021,7 +1031,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -1056,7 +1066,7 @@ function Rehive(config) {
                         if (response.data) {
                             reject(response.data);
                         } else {
-                            reject({message: response.message});
+                            reject({ status: response.status_code, message: response.message});
                         }
                     }
                 });
@@ -1234,7 +1244,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -1253,7 +1263,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -1339,7 +1349,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -1358,7 +1368,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -1414,7 +1424,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -1433,7 +1443,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -1507,7 +1517,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -1526,7 +1536,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -1577,7 +1587,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -1596,7 +1606,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -1637,7 +1647,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -1656,7 +1666,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -1682,7 +1692,7 @@ function Rehive(config) {
 
     this.admin.users.settings.get = function (identifier) {
         if(!identifier){
-            reject('No identifier has been given');
+            reject({ status: 400, message: 'No identifier has been given' });
             return;
         }
 
@@ -1697,7 +1707,7 @@ function Rehive(config) {
 
     this.admin.users.settings.update = function (identifier,data) {
         if(!identifier){
-            reject('No identifier has been given');
+            reject({ status: 400, message: 'No identifier has been given' });
             return;
         }
 
@@ -1747,7 +1757,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -1766,7 +1776,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -1801,7 +1811,7 @@ function Rehive(config) {
                         if (response.data) {
                             reject(response.data);
                         } else {
-                            reject({message: response.message});
+                            reject({ status: response.status_code, message: response.message});
                         }
                     }
                 });
@@ -1812,7 +1822,7 @@ function Rehive(config) {
     this.admin.users.update = function (uuid, data) {
         return new Promise(function (resolve, reject) {
             if (!uuid) {
-                reject('No identifier has been given');
+                reject({ status: 400, message: 'No identifier has been given' });
                 return;
             }
 
@@ -1844,7 +1854,7 @@ function Rehive(config) {
                         if (response.data) {
                             reject(response.data);
                         } else {
-                            reject({message: response.message});
+                            reject({ status: response.status_code, message: response.message});
                         }
                     }
                 });
@@ -1854,7 +1864,7 @@ function Rehive(config) {
     this.admin.users.permissions.get = function (uuid, obj) {
         return new Promise(function (resolve, reject) {
             if (!uuid) {
-                reject('No identifier has been given');
+                reject({ status: 400, message: 'No identifier has been given' });
                 return;
             }
 
@@ -1892,7 +1902,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -1911,7 +1921,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -1939,7 +1949,7 @@ function Rehive(config) {
     this.admin.users.groups.get = function (uuid,obj) {
         return new Promise(function (resolve, reject) {
             if (!uuid) {
-                reject('No identifier has been given');
+                reject({ status: 400, message: 'No identifier has been given' });
                 return;
             }
 
@@ -1977,7 +1987,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -1996,7 +2006,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -2058,7 +2068,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -2077,7 +2087,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -2095,7 +2105,7 @@ function Rehive(config) {
     this.admin.users.addresses.update = function (id, data) {
         return new Promise(function (resolve, reject) {
             if (!id) {
-                reject('No id has been given');
+                reject({ status: 400, message: 'No id has been given' });
                 return;
             }
 
@@ -2110,7 +2120,7 @@ function Rehive(config) {
     this.admin.users.addresses.delete = function (id) {
         return new Promise(function (resolve, reject) {
             if (!id) {
-                reject('No id has been given');
+                reject({ status: 400, message: 'No id has been given' });
                 return;
             }
 
@@ -2158,7 +2168,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -2177,7 +2187,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -2195,7 +2205,7 @@ function Rehive(config) {
     this.admin.users.bankAccounts.update = function (id, data) {
         return new Promise(function (resolve, reject) {
             if (!id) {
-                reject('No id has been given');
+                reject({ status: 400, message: 'No id has been given' });
                 return;
             }
 
@@ -2210,7 +2220,7 @@ function Rehive(config) {
     this.admin.users.bankAccounts.delete = function (id) {
         return new Promise(function (resolve, reject) {
             if (!id) {
-                reject('No id has been given');
+                reject({ status: 400, message: 'No id has been given' });
                 return;
             }
 
@@ -2258,7 +2268,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -2277,7 +2287,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -2295,7 +2305,7 @@ function Rehive(config) {
     this.admin.users.cryptoAccounts.update = function (id, data) {
         return new Promise(function (resolve, reject) {
             if (!id) {
-                reject('No id has been given');
+                reject({ status: 400, message: 'No id has been given' });
                 return;
             }
 
@@ -2310,7 +2320,7 @@ function Rehive(config) {
     this.admin.users.cryptoAccounts.delete = function (id) {
         return new Promise(function (resolve, reject) {
             if (!id) {
-                reject('No id has been given');
+                reject({ status: 400, message: 'No id has been given' });
                 return;
             }
 
@@ -2358,7 +2368,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -2377,7 +2387,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -2412,7 +2422,7 @@ function Rehive(config) {
                         if (response.data) {
                             reject(response.data);
                         } else {
-                            reject({message: response.message});
+                            reject({ status: response.status_code, message: response.message});
                         }
                     }
                 });
@@ -2422,7 +2432,7 @@ function Rehive(config) {
     this.admin.users.documents.update = function (id, data) {
         return new Promise(function (resolve, reject) {
             if (!id) {
-                reject('No id has been given');
+                reject({ status: 400, message: 'No id has been given' });
                 return;
             }
 
@@ -2454,7 +2464,7 @@ function Rehive(config) {
                         if (response.data) {
                             reject(response.data);
                         } else {
-                            reject({message: response.message});
+                            reject({ status: response.status_code, message: response.message});
                         }
                     }
                 });
@@ -2464,7 +2474,7 @@ function Rehive(config) {
     this.admin.users.documents.delete = function (id) {
         return new Promise(function (resolve, reject) {
             if (!id) {
-                reject('No id has been given');
+                reject({ status: 400, message: 'No id has been given' });
                 return;
             }
 
@@ -2512,7 +2522,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -2531,7 +2541,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -2549,7 +2559,7 @@ function Rehive(config) {
     this.admin.users.emails.update = function (id, data) {
         return new Promise(function (resolve, reject) {
             if (!id) {
-                reject('No id has been given');
+                reject({ status: 400, message: 'No id has been given' });
                 return;
             }
 
@@ -2564,7 +2574,7 @@ function Rehive(config) {
     this.admin.users.emails.delete = function (id) {
         return new Promise(function (resolve, reject) {
             if (!id) {
-                reject('No id has been given');
+                reject({ status: 400, message: 'No id has been given' });
                 return;
             }
 
@@ -2612,7 +2622,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -2631,7 +2641,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -2649,7 +2659,7 @@ function Rehive(config) {
     this.admin.users.mobiles.update = function (id, data) {
         return new Promise(function (resolve, reject) {
             if (!id) {
-                reject('No id has been given');
+                reject({ status: 400, message: 'No id has been given' });
                 return;
             }
 
@@ -2664,7 +2674,7 @@ function Rehive(config) {
     this.admin.users.mobiles.delete = function (id) {
         return new Promise(function (resolve, reject) {
             if (!id) {
-                reject('No id has been given');
+                reject({ status: 400, message: 'No id has been given' });
                 return;
             }
 
@@ -2713,7 +2723,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -2732,7 +2742,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -2759,7 +2769,7 @@ function Rehive(config) {
     this.admin.transactions.update = function (id, data) {
         return new Promise(function (resolve, reject) {
             if (!id) {
-                reject('No id has been given');
+                reject({ status: 400, message: 'No id has been given' });
                 return;
             }
 
@@ -2837,7 +2847,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -2856,7 +2866,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -2874,7 +2884,7 @@ function Rehive(config) {
     this.admin.accounts.update = function (reference, data) {
         return new Promise(function (resolve, reject) {
             if (!reference) {
-                reject('No reference has been given');
+                reject({ status: 400, message: 'No reference has been given' });
                 return;
             }
 
@@ -2889,7 +2899,7 @@ function Rehive(config) {
     this.admin.accounts.currencies.get = function (reference, obj) {
         return new Promise(function (resolve, reject) {
             if (!reference) {
-                reject('No reference has been given');
+                reject({ status: 400, message: 'No reference has been given' });
                 return;
             }
 
@@ -2927,7 +2937,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -2946,7 +2956,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -2964,7 +2974,7 @@ function Rehive(config) {
     this.admin.accounts.currencies.update = function (reference, code, data) {
         return new Promise(function (resolve, reject) {
             if (!reference || !code) {
-                reject('No reference or code has been given');
+                reject({ status: 400, message: 'No reference or code has been given' });
                 return;
             }
 
@@ -2979,7 +2989,7 @@ function Rehive(config) {
     this.admin.accounts.currencies.limits.get = function (reference, code , obj) {
         return new Promise(function (resolve, reject) {
             if (!reference || !code) {
-                reject('No reference or code has been given');
+                reject({ status: 400, message: 'No reference or code has been given' });
                 return;
             }
 
@@ -3012,7 +3022,7 @@ function Rehive(config) {
     this.admin.accounts.currencies.limits.update = function (reference, code, id, data) {
         return new Promise(function (resolve, reject) {
             if (!reference || !code || !id) {
-                reject('No reference or code or id has been given');
+                reject({ status: 400, message: 'No reference or code or id has been given' });
                 return;
             }
 
@@ -3027,7 +3037,7 @@ function Rehive(config) {
     this.admin.accounts.currencies.limits.delete = function (reference, code, id) {
         return new Promise(function (resolve, reject) {
             if (!reference || !code || !id) {
-                reject('No reference or code or id has been given');
+                reject({ status: 400, message: 'No reference or code or id has been given' });
                 return;
             }
 
@@ -3042,7 +3052,7 @@ function Rehive(config) {
     this.admin.accounts.currencies.fees.get = function (reference, code, obj) {
         return new Promise(function (resolve, reject) {
             if (!reference || !code) {
-                reject('No reference or code has been given');
+                reject({ status: 400, message: 'No reference or code has been given' });
                 return;
             }
 
@@ -3075,7 +3085,7 @@ function Rehive(config) {
     this.admin.accounts.currencies.fees.update = function (reference, code, id, data) {
         return new Promise(function (resolve, reject) {
             if (!reference || !code || !id) {
-                reject('No reference or code or id has been given');
+                reject({ status: 400, message: 'No reference or code or id has been given' });
                 return;
             }
 
@@ -3090,7 +3100,7 @@ function Rehive(config) {
     this.admin.accounts.currencies.fees.delete = function (reference, code, id) {
         return new Promise(function (resolve, reject) {
             if (!reference || !code || !id) {
-                reject('No reference or code or id has been given');
+                reject({ status: 400, message: 'No reference or code or id has been given' });
                 return;
             }
 
@@ -3105,7 +3115,7 @@ function Rehive(config) {
     this.admin.accounts.currencies.settings.get = function (reference, code) {
         return new Promise(function (resolve, reject) {
             if (!reference || !code) {
-                reject('No reference or code has been given');
+                reject({ status: 400, message: 'No reference or code has been given' });
                 return;
             }
 
@@ -3120,7 +3130,7 @@ function Rehive(config) {
     this.admin.accounts.currencies.settings.update = function (reference, code, data) {
         return new Promise(function (resolve, reject) {
             if (!reference || !code) {
-                reject('No reference or code has been given');
+                reject({ status: 400, message: 'No reference or code has been given' });
                 return;
             }
 
@@ -3168,7 +3178,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -3187,7 +3197,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -3205,7 +3215,7 @@ function Rehive(config) {
     this.admin.currencies.update = function (code, data) {
         return new Promise(function (resolve, reject) {
             if (!code) {currencies.update
-                reject('No code has been given');
+                reject({ status: 400, message: 'No code has been given' });
                 return;
             }
 
@@ -3220,7 +3230,7 @@ function Rehive(config) {
     this.admin.currencies.delete = function (code) {
         return new Promise(function (resolve, reject) {
             if (!code) {
-                reject('No code has been given');
+                reject({ status: 400, message: 'No code has been given' });
                 return;
             }
 
@@ -3235,7 +3245,7 @@ function Rehive(config) {
     this.admin.currencies.overview.get = function (code) {
         return new Promise(function (resolve, reject) {
             if (!code) {
-                reject('No code provided');
+                reject({ status: 400, message: 'No code provided' });
             }
 
             httpGetRehive(adminCurrenciesAPI + code + adminCurrenciesOverviewAPI).then(function (response) {
@@ -3282,7 +3292,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -3301,7 +3311,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -3470,7 +3480,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -3489,7 +3499,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -3560,7 +3570,7 @@ function Rehive(config) {
                             if (response.data) {
                                 reject(response.data);
                             } else {
-                                reject({message: response.message});
+                                reject({ status: response.status_code, message: response.message});
                             }
                         }
                     });
@@ -3593,7 +3603,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -3612,7 +3622,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -3653,7 +3663,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -3672,7 +3682,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -3791,7 +3801,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -3810,7 +3820,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -3862,7 +3872,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -3881,7 +3891,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -3899,7 +3909,7 @@ function Rehive(config) {
     this.admin.groups.update = function (name, data) {
         return new Promise(function (resolve, reject) {
             if (!name) {
-                reject('No group name has been given');
+                reject({ status: 400, message: 'No group name has been given' });
                 return;
             }
 
@@ -3914,7 +3924,7 @@ function Rehive(config) {
     this.admin.groups.delete = function (name) {
         return new Promise(function (resolve, reject) {
             if (!name) {
-                reject('No group name has been given');
+                reject({ status: 400, message: 'No group name has been given' });
                 return;
             }
 
@@ -3962,7 +3972,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -3981,7 +3991,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -3989,7 +3999,7 @@ function Rehive(config) {
     this.admin.groups.permissions.create = function (name,data) {
         return new Promise(function (resolve, reject) {
             if (!name) {
-                reject('No group name has been given');
+                reject({ status: 400, message: 'No group name has been given' });
                 return;
             }
 
@@ -4005,7 +4015,7 @@ function Rehive(config) {
     this.admin.groups.permissions.delete = function (name,id) {
         return new Promise(function (resolve, reject) {
             if (!name || !id) {
-                reject('No group name or permission id has been given');
+                reject({ status: 400, message: 'No group name or permission id has been given' });
                 return;
             }
 
@@ -4020,7 +4030,7 @@ function Rehive(config) {
     this.admin.groups.settings.get = function (name) {
         return new Promise(function (resolve, reject) {
             if (!name) {
-                reject('No group name has been given');
+                reject({ status: 400, message: 'No group name has been given' });
                 return;
             }
 
@@ -4034,7 +4044,7 @@ function Rehive(config) {
 
     this.admin.groups.settings.update = function (name, data) {
         if (!name) {
-            reject('No group name has been given');
+            reject({ status: 400, message: 'No group name has been given' });
             return;
         }
 
@@ -4099,7 +4109,7 @@ function Rehive(config) {
     this.admin.groups.tiers.requirements.get = function (name,tierId,obj) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
-                reject('No tier id is provided');
+                reject({ status: 400, message: 'No tier id is provided' });
                 return
             }
 
@@ -4122,7 +4132,7 @@ function Rehive(config) {
     this.admin.groups.tiers.requirements.create = function (name,tiersId,data) {
         return new Promise(function (resolve, reject) {
             if (!tiersId) {
-                reject('No tier id is provided');
+                reject({ status: 400, message: 'No tier id is provided' });
                 return
             }
             httpPostRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tiersId + adminTiersRequirementsAPI, data).then(function (res) {
@@ -4136,11 +4146,11 @@ function Rehive(config) {
     this.admin.groups.tiers.requirements.update = function (name,tierId, requirementId, data) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
-                reject('No  tier id is provided');
+                reject({ status: 400, message: 'No  tier id is provided' });
                 return
             }
             if (!requirementId) {
-                reject('No  requirement id is provided');
+                reject({ status: 400, message: 'No  requirement id is provided' });
                 return
             }
             httpPatchRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersRequirementsAPI + requirementId + '/', data).then(function (res) {
@@ -4154,11 +4164,11 @@ function Rehive(config) {
     this.admin.groups.tiers.requirements.delete = function (name,tierId,requirementId) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
-                reject('No  tier id is provided');
+                reject({ status: 400, message: 'No  tier id is provided' });
                 return
             }
             if (!requirementId) {
-                reject('No  requirement id is provided');
+                reject({ status: 400, message: 'No  requirement id is provided' });
                 return
             }
             httpDeleteRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersRequirementsAPI + requirementId + '/').then(function (res) {
@@ -4173,7 +4183,7 @@ function Rehive(config) {
     this.admin.groups.tiers.fees.get = function (name,tierId,obj) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
-                reject('No tier id is provided');
+                reject({ status: 400, message: 'No tier id is provided' });
                 return
             }
 
@@ -4196,7 +4206,7 @@ function Rehive(config) {
     this.admin.groups.tiers.fees.create = function (name,tierId,data) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
-                reject('No tier id is provided');
+                reject({ status: 400, message: 'No tier id is provided' });
                 return
             }
             httpPostRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersFeesAPI, data).then(function (res) {
@@ -4210,11 +4220,11 @@ function Rehive(config) {
     this.admin.groups.tiers.fees.update = function (name,tierId, feeId, data) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
-                reject('No tier id is provided');
+                reject({ status: 400, message: 'No tier id is provided' });
                 return
             }
             if (!feeId) {
-                reject('No fee id is provided');
+                reject({ status: 400, message: 'No fee id is provided' });
                 return
             }
             httpPatchRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersFeesAPI + feeId + '/', data).then(function (res) {
@@ -4228,11 +4238,11 @@ function Rehive(config) {
     this.admin.groups.tiers.fees.delete = function (name,tierId,feeId) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
-                reject('No tier id is provided');
+                reject({ status: 400, message: 'No tier id is provided' });
                 return
             }
             if (!feeId) {
-                reject('No fee id is provided');
+                reject({ status: 400, message: 'No fee id is provided' });
                 return
             }
             httpDeleteRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersFeesAPI + feeId + '/').then(function (res) {
@@ -4246,7 +4256,7 @@ function Rehive(config) {
     this.admin.groups.tiers.limits.get = function (name,tierId,obj) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
-                reject('No tier id is provided');
+                reject({ status: 400, message: 'No tier id is provided' });
                 return
             }
 
@@ -4269,7 +4279,7 @@ function Rehive(config) {
     this.admin.groups.tiers.limits.create = function (name,tierId,data) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
-                reject('No tier id is provided');
+                reject({ status: 400, message: 'No tier id is provided' });
                 return
             }
             httpPostRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersLimitsAPI, data).then(function (res) {
@@ -4283,11 +4293,11 @@ function Rehive(config) {
     this.admin.groups.tiers.limits.update = function (name,tierId, limitId, data) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
-                reject('No  tier id is provided');
+                reject({ status: 400, message: 'No  tier id is provided' });
                 return
             }
             if (!limitId) {
-                reject('No limit id is provided');
+                reject({ status: 400, message: 'No limit id is provided' });
                 return
             }
             httpPatchRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersLimitsAPI + limitId + '/', data).then(function (res) {
@@ -4301,11 +4311,11 @@ function Rehive(config) {
     this.admin.groups.tiers.limits.delete = function (name,tierId,limitId) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
-                reject('No  tier id is provided');
+                reject({ status: 400, message: 'No  tier id is provided' });
                 return
             }
             if (!limitId) {
-                reject('No  limit id is provided');
+                reject({ status: 400, message: 'No  limit id is provided' });
                 return
             }
             httpDeleteRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminTiersLimitsAPI + limitId + '/').then(function (res) {
@@ -4319,7 +4329,7 @@ function Rehive(config) {
     this.admin.groups.tiers.settings.get = function (name,tierId) {
         return new Promise(function (resolve, reject) {
             if (!name) {
-                reject('No group name has been given');
+                reject({ status: 400, message: 'No group name has been given' });
                 return;
             }
 
@@ -4333,7 +4343,7 @@ function Rehive(config) {
 
     this.admin.groups.tiers.settings.update = function (name,tierId, data) {
         if (!name) {
-            reject('No group name has been given');
+            reject({ status: 400, message: 'No group name has been given' });
             return;
         }
 
@@ -4383,7 +4393,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -4402,7 +4412,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -4420,7 +4430,7 @@ function Rehive(config) {
     this.admin.groups.accountConfigurations.update = function (name, accConfigName, data) {
         return new Promise(function (resolve, reject) {
             if (!name) {
-                reject('No group name has been given');
+                reject({ status: 400, message: 'No group name has been given' });
                 return;
             }
 
@@ -4435,7 +4445,7 @@ function Rehive(config) {
     this.admin.groups.accountConfigurations.delete = function (name, accConfigName) {
         return new Promise(function (resolve, reject) {
             if (!name) {
-                reject('No group name has been given');
+                reject({ status: 400, message: 'No group name has been given' });
                 return;
             }
 
@@ -4484,7 +4494,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -4503,7 +4513,7 @@ function Rehive(config) {
                     reject(error);
                 });
             } else {
-                reject('Not allowed');
+                reject({ status: 400, message: 'Not allowed' });
             }
         });
     };
@@ -4521,7 +4531,7 @@ function Rehive(config) {
     this.admin.groups.accountConfigurations.currencies.delete = function (name, accConfigName,currencyCode) {
         return new Promise(function (resolve, reject) {
             if (!name) {
-                reject('No group name has been given');
+                reject({ status: 400, message: 'No group name has been given' });
                 return;
             }
 
