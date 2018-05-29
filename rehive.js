@@ -1106,7 +1106,7 @@ function Rehive(config) {
             var url,
                 error = {status: 'error', message: 'Email address id is required'};
 
-            if (emailId && (typeof(emailId) == 'string')) {
+            if (emailId && data) {
                 url = userEmailAddressesAPI + emailId;
             } else {
                 reject(error, null);
@@ -1125,7 +1125,7 @@ function Rehive(config) {
             var url,
                 error = {status: 'error', message: 'Email address id is required'};
 
-            if (id && (typeof(id) == 'string')) {
+            if (id) {
                 url = userEmailAddressesAPI + id + '/';
             } else {
                 reject(error);
@@ -1174,7 +1174,7 @@ function Rehive(config) {
             var url,
                 error = {status: 'error', message: 'Mobile number id is required'};
 
-            if (mobileNumberId && (typeof(mobileNumberId) == 'string')) {
+            if (mobileNumberId && data) {
                 url = userMobileNumbersAPI + mobileNumberId;
             } else {
                 reject(error);
@@ -1193,7 +1193,7 @@ function Rehive(config) {
             var url,
                 error = {status: 'error', message: 'Mobile number id is required'};
 
-            if (id && (typeof(id) == 'string')) {
+            if (id) {
                 url = userMobileNumbersAPI + id + '/';
             } else {
                 reject(error);
