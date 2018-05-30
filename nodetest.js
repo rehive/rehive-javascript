@@ -24,9 +24,16 @@ r.auth.login({
 }).then(function (data) {
 	console.log("DATA", data);
 	
-	// GET USER PROFILE
+	// GET COMPANY BANK ACCOUNTS
 	r.admin.bankAccounts.currencies.get(145).then(function (user) {
 		console.log("FROM BANK ACCOUT CURRENCIES METHOD", user);
+
+	}, function (err) {
+		console.log(err);
+    });
+    
+    r.admin.bankAccounts.currencies.create(145, { "currency": "XBT"}).then(function (user) {
+		console.log("FROM BANK ACCOUT CURRENCIES CREATE METHOD", user);
 
 	}, function (err) {
 		console.log(err);

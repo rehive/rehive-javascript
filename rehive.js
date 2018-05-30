@@ -3471,6 +3471,20 @@ function Rehive(config) {
         });
     };
 
+    this.admin.bankAccounts.currencies.create = function (bankId, data) {
+        if (!data.currency) {
+            reject({ status: 400, message: 'No currency has been given' });
+            return;
+        }
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(adminBankAccountsAPI + bankId + '/currencies/', data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
     this.admin.webhooks.get = function (obj) {
         var url,filters;
 
