@@ -3484,7 +3484,7 @@ function Rehive(config) {
 
     this.admin.bankAccounts.currencies.delete = function (bankId, currency) {
         if (!bankId) {
-            reject({ status: 400, message: 'No bank IDå has been given' });
+            reject({ status: 400, message: 'No bank ID has been given' });
             return;
         }
 
