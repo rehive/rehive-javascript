@@ -3469,6 +3469,46 @@ function Rehive(config) {
         });
     };
 
+    this.admin.bankAccounts.currencies.getNext = function () {
+        return new Promise(function (resolve, reject) {
+            var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    if (response.next) {
+                        saveFilter(response);
+                    }
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.bankAccounts.currencies.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
     this.admin.bankAccounts.currencies.create = function (bankId, data) {
         if (!data.currency) {
             reject({ status: 400, message: 'No currency has been given' });
