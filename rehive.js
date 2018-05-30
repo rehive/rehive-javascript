@@ -65,8 +65,8 @@ function Rehive(config) {
             permissions: {},
             groups: {}
         },
-        transactions: {
-        },
+        requests: {},
+        transactions: {},
         accounts: {
             currencies: {
                 limits: {},
@@ -186,6 +186,7 @@ function Rehive(config) {
         adminBankAccountsAPI = 'admin/bank-accounts/',
         adminServicesAPI = 'admin/services/',
         adminGroupsAPI = 'admin/groups/',
+        adminRequestsAPI = 'admin/requests/',
         adminGroupsPermissionsAPI = '/permissions/',
         adminGroupsSettingsAPI = '/settings/',
         adminGroupsTiersAPI = '/tiers/',
@@ -3890,6 +3891,68 @@ function Rehive(config) {
             }, function (error) {
                 reject(error);
             });
+        });
+    };
+
+    this.admin.requests.get = function (id) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+
+            if(id){
+                url = adminRequestsAPI + id;
+            } else {
+                url = adminRequestsAPI;
+            }
+
+
+            httpGetRehive(url).then(function (response) {
+                if (response.next) {
+                    saveFilter(response);
+                }
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.requests.getNext = function () {
+        return new Promise(function (resolve, reject) {
+            var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    if (response.next) {
+                        saveFilter(response);
+                    }
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.requests.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
         });
     };
 

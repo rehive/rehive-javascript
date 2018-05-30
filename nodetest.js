@@ -24,10 +24,11 @@ r.auth.login({
 }).then(function (data) {
 	console.log("DATA", data);
 	
-	// GET COMPANY BANK ACCOUNTS
-	r.admin.bankAccounts.currencies.get(145).then(function (user) {
-		console.log("FROM BANK ACCOUT CURRENCIES METHOD", user);
+	// GET ADMIN REQUESTS
+	r.admin.requests.get(11233625).then(function (user) {
+		console.log("FROM ADMIN REQUESTS METHOD", user);
 
+       
 	}, function (err) {
 		console.log(err);
     });
