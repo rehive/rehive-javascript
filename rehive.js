@@ -3446,20 +3446,17 @@ function Rehive(config) {
         });
     };
 
-    this.admin.bankAccounts.currencies.get = function (bankId, obj) {
+    this.admin.bankAccounts.currencies.get = function (bankId, currency) {
         return new Promise(function (resolve, reject) {
             if (!bankId) {
                 reject({ status: 400, message: 'No bank ID has been given' });
                 return;
             }
 
-            var url, filters;
+            var url = adminBankAccountsAPI + bankId + '/currencies/';
 
-            if(obj && obj.filters){
-                filters = '?' + serialize(obj.filters);
-                url = adminBankAccountsAPI + bankId + '/currencies/' + filters;
-            } else {
-                url = adminBankAccountsAPI + bankId + '/currencies/';
+            if (currency) {
+                url += currency
             }
 
             httpGetRehive(url).then(function (response) {
@@ -3478,6 +3475,26 @@ function Rehive(config) {
         }
         return new Promise(function (resolve, reject) {
             httpPostRehive(adminBankAccountsAPI + bankId + '/currencies/', data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.bankAccounts.currencies.delete = function (bankId, currency) {
+        if (!bankId) {
+            reject({ status: 400, message: 'No bank IDå has been given' });
+            return;
+        }
+
+        if (!currency) {
+            reject({ status: 400, message: 'No currency has been given' });
+            return;
+        }
+
+        return new Promise(function (resolve, reject) {
+            httpDeleteRehive(adminBankAccountsAPI + bankId + '/currencies/' + currency, {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);

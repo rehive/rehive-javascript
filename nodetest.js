@@ -32,12 +32,12 @@ r.auth.login({
 		console.log(err);
     });
     
-    r.admin.bankAccounts.currencies.create(145, { "currency": "XBT"}).then(function (user) {
-		console.log("FROM BANK ACCOUT CURRENCIES CREATE METHOD", user);
+    // r.admin.bankAccounts.currencies.create(145, { "currency": "XBT"}).then(function (user) {
+	// 	console.log("FROM BANK ACCOUT CURRENCIES CREATE METHOD", user);
 
-	}, function (err) {
-		console.log(err);
-	});
+	// }, function (err) {
+	// 	console.log(err);
+	// });
 
 	// // GET TRANSACTIONS
 	// r.transactions.get().then(function (tx) {
