@@ -82,7 +82,9 @@ function Rehive(config) {
             settings: {},
             address: {}
         },
-        bankAccounts: {},
+        bankAccounts: {
+            currencies: {}
+        },
         webhooks: {},
         subtypes: {},
         notifications: {},
@@ -3437,6 +3439,31 @@ function Rehive(config) {
     this.admin.bankAccounts.delete = function (id) {
         return new Promise(function (resolve, reject) {
             httpDeleteRehive(adminBankAccountsAPI + id + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.bankAccounts.currencies.get = function (bankId, obj) {
+        return new Promise(function (resolve, reject) {
+            if (!bankId) {
+                reject({ status: 400, message: 'No bank ID has been given' });
+                return;
+            }
+
+            var url, filters;
+
+            if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminBankAccountsAPI + bankId + '/currencies/' + filters;
+            } else {
+                url = adminBankAccountsAPI + bankId + '/currencies/';
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
