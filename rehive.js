@@ -3934,21 +3934,22 @@ function Rehive(config) {
         });
     };
 
-    this.admin.requests.get = function (id) {
+    this.admin.requests.get = function (obj) {
         return new Promise(function (resolve, reject) {
             var url,filters;
 
-            if(id){
-                url = adminRequestsAPI + id;
+            if(obj && obj.id) {
+                url = adminRequestsAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminRequestsAPI + filters;
             } else {
                 url = adminRequestsAPI;
             }
 
 
             httpGetRehive(url).then(function (response) {
-                if (response.next) {
-                    saveFilter(response);
-                }
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
