@@ -387,11 +387,18 @@ function Rehive(config) {
             } else {
                 delete headers['Authorization'];
             }
+            
+            if (data instanceof FormData) {
+                delete headers['Content-Type']
+            } else {
+                headers['Content-Type'] = 'application/json'
+                data = JSON.stringify(data)
+            }
 
             fetch(baseAPI + url, {
                 method: 'PATCH',
                 headers: headers,
-                body: JSON.stringify(data)
+                body: data
             })
                 .then(parseJSON)
                 .then(function (response) {
@@ -1795,10 +1802,16 @@ function Rehive(config) {
                 delete headers['Authorization'];
             }
 
+            if (data instanceof FormData) {
+                delete headers['Content-Type']
+            } else {
+                data = JSON.stringify(data)
+            }
+
             fetch(baseAPI + adminUsersAPI, {
                 method: 'POST',
                 headers: headers,
-                body: JSON.stringify(data)
+                body: data
             })
             .then(parseJSON)
                 .then(function (response) {

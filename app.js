@@ -984,7 +984,6 @@ function createUser(first_name, last_name, email, id_number, language, nationali
     var fileSelected = document.getElementById("userProfile").files[0],
         formData = new FormData();
 
-    console.log(metadata);
 
     formData.append('profile', fileSelected);
     formData.append('first_name', first_name);
@@ -997,7 +996,7 @@ function createUser(first_name, last_name, email, id_number, language, nationali
     formData.append('mobile_number', mobile_number);
     formData.append('timezone', timezone);
 
-
+    
     rehive.admin.users.create(formData).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
