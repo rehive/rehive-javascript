@@ -25,7 +25,7 @@ r.auth.login({
 	console.log("DATA", data);
 	
 	// GET ADMIN REQUESTS
-	r.admin.requests.get(11233625).then(function (user) {
+	r.company.bankAccounts.get().then(function (user) {
 		console.log("FROM ADMIN REQUESTS METHOD", user);
 
        

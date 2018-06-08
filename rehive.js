@@ -143,7 +143,7 @@ function Rehive(config) {
         accountCurrenciesAPI = '/currencies/',
         companyAPI = 'company/',
         companyCurrenciesAPI = 'company/currencies/',
-        companyBanksAPI = 'company/bank-account/',
+        companyBanksAPI = 'company/bank-accounts/',
         permissionsAPI = 'permissions/',
         groupsAPI = 'groups/',
         headers = {'Content-Type': 'application/json'};
