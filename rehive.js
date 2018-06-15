@@ -149,6 +149,7 @@ function Rehive(config) {
         headers = {'Content-Type': 'application/json'};
 
     var adminUsersAPI = 'admin/users/',
+        adminUserKYCAPI = '/kyc/',
         adminUsersSettingsAPI = '/settings/',
         adminUsersOverviewAPI = 'admin/users/overview/',
         adminUserPermissionsAPI = '/permissions/',
@@ -1708,6 +1709,21 @@ function Rehive(config) {
 
         return new Promise(function (resolve, reject) {
             httpGetRehive(adminUsersAPI + identifier + adminUsersSettingsAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.kyc.get = function (identifier) {
+        if(!identifier){
+            reject({ status: 400, message: 'No identifier has been given' });
+            return;
+        }
+
+        return new Promise(function (resolve, reject) {
+            httpGetRehive(adminUsersAPI + identifier + adminUserKYCAPI).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
