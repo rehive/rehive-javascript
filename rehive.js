@@ -1716,6 +1716,21 @@ function Rehive(config) {
         });
     };
 
+    this.admin.users.settings.update = function (identifier,data) {
+        if(!identifier){
+            reject({ status: 400, message: 'No identifier has been given' });
+            return;
+        }
+
+        return new Promise(function (resolve, reject) {
+            httpPatchRehive(adminUsersAPI + identifier + adminUsersSettingsAPI,data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
     this.admin.users.kyc.get = function (identifier) {
         if(!identifier){
             reject({ status: 400, message: 'No identifier has been given' });
@@ -1731,14 +1746,14 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.settings.update = function (identifier,data) {
+    this.admin.users.kyc.update = function (identifier,data) {
         if(!identifier){
             reject({ status: 400, message: 'No identifier has been given' });
             return;
         }
 
         return new Promise(function (resolve, reject) {
-            httpPatchRehive(adminUsersAPI + identifier + adminUsersSettingsAPI,data).then(function (response) {
+            httpPatchRehive(adminUsersAPI + identifier + adminUserKYCAPI,data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
