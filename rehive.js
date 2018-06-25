@@ -1702,12 +1702,11 @@ function Rehive(config) {
     };
 
     this.admin.users.settings.get = function (identifier) {
-        if(!identifier){
-            reject({ status: 400, message: 'No identifier has been given' });
-            return;
-        }
-
         return new Promise(function (resolve, reject) {
+            if(!identifier){
+                reject({ status: 400, message: 'No identifier has been given' });
+                return;
+            }
             httpGetRehive(adminUsersAPI + identifier + adminUsersSettingsAPI).then(function (response) {
                 resolve(response);
             }, function (error) {
@@ -1717,12 +1716,11 @@ function Rehive(config) {
     };
 
     this.admin.users.settings.update = function (identifier,data) {
-        if(!identifier){
-            reject({ status: 400, message: 'No identifier has been given' });
-            return;
-        }
-
         return new Promise(function (resolve, reject) {
+            if(!identifier){
+                reject({ status: 400, message: 'No identifier has been given' });
+                return;
+            }
             httpPatchRehive(adminUsersAPI + identifier + adminUsersSettingsAPI,data).then(function (response) {
                 resolve(response);
             }, function (error) {
@@ -1732,12 +1730,11 @@ function Rehive(config) {
     };
 
     this.admin.users.kyc.get = function (identifier) {
-        if(!identifier){
-            reject({ status: 400, message: 'No identifier has been given' });
-            return;
-        }
-
         return new Promise(function (resolve, reject) {
+            if(!identifier){
+                reject({ status: 400, message: 'No identifier has been given' });
+                return;
+            }
             httpGetRehive(adminUsersAPI + identifier + adminUserKYCAPI).then(function (response) {
                 resolve(response);
             }, function (error) {
@@ -1747,12 +1744,11 @@ function Rehive(config) {
     };
 
     this.admin.users.kyc.update = function (identifier,data) {
-        if(!identifier){
-            reject({ status: 400, message: 'No identifier has been given' });
-            return;
-        }
-
         return new Promise(function (resolve, reject) {
+            if(!identifier){
+                reject({ status: 400, message: 'No identifier has been given' });
+                return;
+            }
             httpPatchRehive(adminUsersAPI + identifier + adminUserKYCAPI,data).then(function (response) {
                 resolve(response);
             }, function (error) {
