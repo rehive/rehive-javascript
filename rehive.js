@@ -63,7 +63,8 @@ function Rehive(config) {
             emails: {},
             mobiles: {},
             permissions: {},
-            groups: {}
+            groups: {},
+            kyc: {}
         },
         requests: {},
         transactions: {},
