@@ -2798,7 +2798,9 @@ function Rehive(config) {
         return new Promise(function (resolve, reject) {
             var url,filters;
 
-             if(obj && obj.filters){
+            if(obj && obj.id) {
+                url = adminTransactionsAPI + obj.id + '/';
+            } else if(obj && obj.filters){
                 filters = '?' + serialize(obj.filters);
                 url = adminTransactionsSetsAPI + filters;
             } else {
@@ -2850,6 +2852,31 @@ function Rehive(config) {
             } else {
                 reject({ status: 400, message: 'Not allowed' });
             }
+        });
+    };
+
+    this.admin.transactions.sets.create = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(adminTransactionsSetsAPI + '/', data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transactions.sets.delete = function (id) {
+        return new Promise(function (resolve, reject) {
+            if (!id) {
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+
+            httpDeleteRehive(adminTransactionsSetsAPI + id + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
         });
     };
 
