@@ -67,7 +67,9 @@ function Rehive(config) {
             kyc: {}
         },
         requests: {},
-        transactions: {},
+        transactions: {
+            sets: {}
+        },
         accounts: {
             currencies: {
                 limits: {},
@@ -166,6 +168,7 @@ function Rehive(config) {
         adminCreditTransactionsAPI = 'admin/transactions/credit/',
         adminDebitTransactionsAPI = 'admin/transactions/debit/',
         adminTransferTransactionsAPI = 'admin/transactions/transfer/',
+        adminTransactionsSetsAPI = 'admin/transactions/sets/',
         adminAccountsAPI = 'admin/accounts/',
         adminAccountsCurrenciesAPI = '/currencies/',
         adminAccountsCurrencyLimitsAPI = '/limits/',
@@ -2773,6 +2776,65 @@ function Rehive(config) {
     };
 
     this.admin.transactions.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+						var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.transactions.sets.get = function (obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+
+             if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminTransactionsSetsAPI + filters;
+            } else {
+                url = adminTransactionsSetsAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveFilter(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transactions.sets.getNext = function () {
+        return new Promise(function (resolve, reject) {
+
+						var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.transactions.sets.getPrevious = function () {
         return new Promise(function (resolve, reject) {
 						var url = previousFilterForLists, mainUrl;
             if (url) {

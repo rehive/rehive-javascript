@@ -22,11 +22,14 @@ r.auth.login({
 	company: 'test_company_1',
 	password: 'test1234'
 }).then(function (data) {
-	console.log("DATA", data);
 	
 	// GET ADMIN REQUESTS
-	r.company.bankAccounts.get().then(function (user) {
-		console.log("FROM ADMIN REQUESTS METHOD", user);
+	r.admin.transactions.sets.get().then(function (sets) {
+		r.admin.transactions.sets.getNext()
+		.then(res => {
+			console.log("NEXT RES", res);
+			
+		})
 
        
 	}, function (err) {
