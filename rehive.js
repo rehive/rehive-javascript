@@ -2799,7 +2799,7 @@ function Rehive(config) {
             var url,filters;
 
             if(obj && obj.id) {
-                url = adminTransactionsAPI + obj.id + '/';
+                url = adminTransactionsSetsAPI + obj.id + '/';
             } else if(obj && obj.filters){
                 filters = '?' + serialize(obj.filters);
                 url = adminTransactionsSetsAPI + filters;
