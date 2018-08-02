@@ -7,10 +7,12 @@ if (typeof module !== 'undefined' && module.exports) {
 	module.exports = Rehive;
 	isNode = true;
 	fetch = require('node-fetch');
-} else {
+} else if (window) {
 	window.this
 	isNode = false;
 	fetch = window.fetch;
+} else {
+    fetch = global.fetch
 }
 
 
