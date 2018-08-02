@@ -4,17 +4,18 @@ var isNode = false;
 var fetch;
 
 if (typeof module !== 'undefined' && module.exports) {
-	module.exports = Rehive;
-	isNode = true;
-	fetch = require('node-fetch');
-} else if (window) {
-	window.this
-	isNode = false;
-	fetch = window.fetch;
-} else {
-    fetch = global.fetch
-}
-
+    module.exports = Rehive;
+    isNode = true;
+    if (global.fetch && !process.env.IS_BROWSER) {
+      fetch = global.fetch;
+    } else {
+      fetch = require('node-fetch');
+    }
+  } else {
+    window.this;
+    isNode = false;
+    fetch = window.fetch;
+  }
 
 function Rehive(config) {
     this.auth = {
