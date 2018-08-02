@@ -2801,7 +2801,7 @@ function Rehive(config) {
             var url,filters;
 
             if(obj && obj.id) {
-                url = adminTransactionsAPI + obj.id + '/';
+                url = adminTransactionsSetsAPI + obj.id + '/';
             } else if(obj && obj.filters){
                 filters = '?' + serialize(obj.filters);
                 url = adminTransactionsSetsAPI + filters;
@@ -2859,7 +2859,7 @@ function Rehive(config) {
 
     this.admin.transactions.sets.create = function (data) {
         return new Promise(function (resolve, reject) {
-            httpPostRehive(adminTransactionsSetsAPI + '/', data).then(function (response) {
+            httpPostRehive(adminTransactionsSetsAPI, data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
