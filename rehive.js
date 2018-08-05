@@ -152,7 +152,7 @@ function Rehive(config) {
         companyBanksAPI = 'company/bank-accounts/',
         permissionsAPI = 'permissions/',
         groupsAPI = 'groups/',
-        headers = {'Content-Type': 'application/json'};
+        headers = {'Content-Type': 'application/json', 'Accept': 'application/json'};
 
     var adminUsersAPI = 'admin/users/',
         adminUserKYCAPI = '/kyc/',
