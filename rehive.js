@@ -396,7 +396,7 @@ function Rehive(config) {
                 delete headers['Authorization'];
             }
             
-            if (data instanceof FormData) {
+            if (!isNode && data instanceof FormData) {
                 delete headers['Content-Type']
             } else {
                 headers['Content-Type'] = 'application/json'
@@ -1836,7 +1836,7 @@ function Rehive(config) {
                 delete headers['Authorization'];
             }
 
-            if (data instanceof FormData) {
+            if (!isNode && data instanceof FormData) {
                 delete headers['Content-Type']
             } else {
                 data = JSON.stringify(data)
