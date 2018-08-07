@@ -24,12 +24,18 @@ r.auth.login({
 }).then(function (data) {
 	
 	// GET ADMIN REQUESTS
-	r.admin.transactions.sets.get().then(function (sets) {
-		r.admin.transactions.sets.getNext()
-		.then(res => {
-			console.log("NEXT RES", res);
-			
-		})
+	r.user.addresses.get().then(function (addresses) {
+		console.log("ADDRESSES", addresses);
+		
+
+       
+	}, function (err) {
+		console.log(err);
+	});
+	
+	r.user.addresses.get('1').then(function (address) {
+		console.log("ADDRESS", address);
+		
 
        
 	}, function (err) {

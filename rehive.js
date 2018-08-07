@@ -31,7 +31,7 @@ function Rehive(config) {
     };
 
     this.user = {
-        address: {},
+        addresses: [],
         bankAccounts: {},
         cryptoAccounts: {},
         documents: {},
@@ -134,7 +134,7 @@ function Rehive(config) {
         tokensAPI = 'auth/tokens/',
         tokensVerifyAPI = 'auth/tokens/verify/',
         userProfileAPI = 'user/',
-        userAddressAPI = 'user/address/',
+        userAddressAPI = 'user/addresses/',
         userBankAccountsAPI = 'user/bank-accounts/',
         userCryptoAccountsAPI = 'user/crypto-accounts/',
         userCreateDocumentAPI = 'user/documents/',
@@ -841,9 +841,15 @@ function Rehive(config) {
         });
     };
 
-    this.user.address.get = function () {
+    this.user.addresses.get = function (id) {
         return new Promise(function (resolve, reject) {
-            httpGetRehive(userAddressAPI).then(function (response) {
+            var url
+            if (id) {
+                url = userAddressAPI + id;
+            } else {
+                url = userAddressAPI;
+            }
+            httpGetRehive(url).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -851,7 +857,7 @@ function Rehive(config) {
         });
     };
 
-    this.user.address.update = function (data) {
+    this.user.addresses.update = function (data) {
         return new Promise(function (resolve, reject) {
             httpPatchRehive(userAddressAPI, data).then(function (response) {
                 resolve(response);
