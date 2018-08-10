@@ -4073,6 +4073,31 @@ function Rehive(config) {
         });
     };
 
+    this.admin.services.create = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(adminServicesAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.services.delete = function (id) {
+        return new Promise(function (resolve, reject) {
+            if (!id) {
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+
+            httpDeleteRehive(adminServicesAPI + id + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
     this.admin.requests.get = function (obj) {
         return new Promise(function (resolve, reject) {
             var url,filters;
