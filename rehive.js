@@ -867,6 +867,31 @@ function Rehive(config) {
         });
     };
 
+    this.users.addresses.create = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(userAddressAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.users.addresses.delete = function (id) {
+        return new Promise(function (resolve, reject) {
+            if (!id) {
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+
+            httpDeleteRehive(userAddressAPI + id + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
     this.user.bankAccounts.get = function (bankId) {
         return new Promise(function (resolve, reject) {
             var url;
