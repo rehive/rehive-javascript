@@ -859,12 +859,13 @@ function Rehive(config) {
 
     this.user.addresses.update = function (data) {
         return new Promise(function (resolve, reject) {
+            var url
             if (data.id) {
                 url = userAddressAPI + data.id;
             } else {
                 reject({ status: 400, message: 'No id has been given' });
             }
-            httpPatchRehive(userAddressAPI, data).then(function (response) {
+            httpPatchRehive(url, data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
