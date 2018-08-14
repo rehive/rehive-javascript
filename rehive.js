@@ -71,7 +71,8 @@ function Rehive(config) {
         },
         requests: {},
         transactions: {
-            sets: {}
+            sets: {},
+            totals: {}
         },
         accounts: {
             currencies: {
@@ -1323,7 +1324,7 @@ function Rehive(config) {
         });
     };
 
-    this.transactions.getTotals = function (filters) {
+    this.transactions.totals.get = function (filters) {
         return new Promise(function (resolve, reject) {
             if (filters) {
                 filters = '?' + serialize(filters);
@@ -2920,7 +2921,7 @@ function Rehive(config) {
         });
     };
 
-    this.admin.transactions.getTotals = function (obj) {
+    this.admin.transactions.totals.get = function (obj) {
         return new Promise(function (resolve, reject) {
             var filter;
 

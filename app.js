@@ -633,7 +633,7 @@ function getTransactionListPrevious() {
 }
 
 function getTotalTransactionsList(filters) {
-    rehive.transactions.getTotals(filters).then(function (res) {
+    rehive.transactions.totals.get(filters).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
@@ -1639,7 +1639,7 @@ function getAdminTransactionsListPrevious() {
 }
 
 function getAdminTransactionsTotal(filter) {
-    rehive.admin.transactions.getTotals(filter).then(function (res) {
+    rehive.admin.transactions.totals.get(filter).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
