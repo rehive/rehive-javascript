@@ -39,7 +39,9 @@ function Rehive(config) {
         mobiles: {}
     };
 
-    this.transactions = {};
+    this.transactions = {
+        totals: {}
+    };
 
     this.accounts = {
         currencies: {}
