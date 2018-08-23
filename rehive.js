@@ -1,8 +1,5 @@
 "use strict";
-require('whatwg-fetch')
-
 var isNode = false;
-
 var fetch;
 
 if (typeof module !== 'undefined' && module.exports) {
@@ -157,7 +154,7 @@ function Rehive(config) {
         companyBanksAPI = 'company/bank-accounts/',
         permissionsAPI = 'permissions/',
         groupsAPI = 'groups/',
-        headers = {'Content-Type': 'application/json', 'Accept': 'application/json', mode: 'cors'};
+        headers = {'Content-Type': 'application/json', 'Accept': 'application/json' };
 
     var adminUsersAPI = 'admin/users/',
         adminUserKYCAPI = '/kyc/',
