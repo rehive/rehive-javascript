@@ -5,8 +5,7 @@
   "main": "rehive.js",
   "dependencies": {
     "node-fetch": "^2.1.2",
-    "node-minify": "^2.4.2",
-    "whatwg-fetch": "^2.0.4"
+    "node-minify": "^2.4.2"
   },
   "devDependencies": {},
   "scripts": {
