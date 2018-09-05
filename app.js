@@ -76,6 +76,11 @@ function logout() {
     });
 }
 
+function removeToken() {
+    console.log(rehive.removeToken());
+    
+}
+
 function logoutAll() {
     rehive.auth.logoutAll()
         .then(function (res) {

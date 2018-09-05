@@ -473,6 +473,17 @@ function Rehive(config) {
 
     //public functions
 
+    this.removeToken = function () {
+        if (config && config.storageMethod === 'local') {
+            token = localStorage.removeItem('token');
+        } else if (config && config.storageMethod === 'session') {
+            token = sessionStorage.removeItem('token');
+        }
+        delete headers['Authorization'];
+        token = '';
+        return "Token removed"
+    }
+
     this.auth.register = function (credentials) {
         return new Promise(function (resolve, reject) {
             fetch(baseAPI + registerAPI, {
