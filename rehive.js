@@ -1758,13 +1758,13 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.settings.get = function (identifier) {
+    this.admin.users.settings.get = function (id) {
         return new Promise(function (resolve, reject) {
-            if(!identifier){
-                reject({ status: 400, message: 'No identifier has been given' });
+            if(!id){
+                reject({ status: 400, message: 'No id has been given' });
                 return;
             }
-            httpGetRehive(adminUsersAPI + identifier + adminUsersSettingsAPI).then(function (response) {
+            httpGetRehive(adminUsersAPI + id + adminUsersSettingsAPI).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1772,13 +1772,13 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.settings.update = function (identifier,data) {
+    this.admin.users.settings.update = function (id,data) {
         return new Promise(function (resolve, reject) {
-            if(!identifier){
-                reject({ status: 400, message: 'No identifier has been given' });
+            if(!id){
+                reject({ status: 400, message: 'No id has been given' });
                 return;
             }
-            httpPatchRehive(adminUsersAPI + identifier + adminUsersSettingsAPI,data).then(function (response) {
+            httpPatchRehive(adminUsersAPI + id + adminUsersSettingsAPI,data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1786,13 +1786,13 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.kyc.get = function (identifier) {
+    this.admin.users.kyc.get = function (id) {
         return new Promise(function (resolve, reject) {
-            if(!identifier){
-                reject({ status: 400, message: 'No identifier has been given' });
+            if(!id){
+                reject({ status: 400, message: 'No id has been given' });
                 return;
             }
-            httpGetRehive(adminUsersAPI + identifier + adminUserKYCAPI).then(function (response) {
+            httpGetRehive(adminUsersAPI + id + adminUserKYCAPI).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1800,13 +1800,13 @@ function Rehive(config) {
         });
     };
 
-    this.admin.users.kyc.update = function (identifier,data) {
+    this.admin.users.kyc.update = function (id,data) {
         return new Promise(function (resolve, reject) {
-            if(!identifier){
-                reject({ status: 400, message: 'No identifier has been given' });
+            if(!id){
+                reject({ status: 400, message: 'No id has been given' });
                 return;
             }
-            httpPatchRehive(adminUsersAPI + identifier + adminUserKYCAPI,data).then(function (response) {
+            httpPatchRehive(adminUsersAPI + id + adminUserKYCAPI,data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1819,8 +1819,8 @@ function Rehive(config) {
 
             var url,filters;
 
-            if(obj && obj.identifier) {
-                url = adminUsersAPI + obj.identifier + '/';
+            if(obj && obj.id) {
+                url = adminUsersAPI + obj.id + '/';
             } else if(obj && obj.filters){
                 filters = '?' + serialize(obj.filters);
                 url = adminUsersAPI + filters;
@@ -1922,7 +1922,7 @@ function Rehive(config) {
     this.admin.users.update = function (uuid, data) {
         return new Promise(function (resolve, reject) {
             if (!uuid) {
-                reject({ status: 400, message: 'No identifier has been given' });
+                reject({ status: 400, message: 'No id has been given' });
                 return;
             }
 
@@ -1964,7 +1964,7 @@ function Rehive(config) {
     this.admin.users.permissions.get = function (uuid, obj) {
         return new Promise(function (resolve, reject) {
             if (!uuid) {
-                reject({ status: 400, message: 'No identifier has been given' });
+                reject({ status: 400, message: 'No id has been given' });
                 return;
             }
 
@@ -2049,7 +2049,7 @@ function Rehive(config) {
     this.admin.users.groups.get = function (uuid,obj) {
         return new Promise(function (resolve, reject) {
             if (!uuid) {
-                reject({ status: 400, message: 'No identifier has been given' });
+                reject({ status: 400, message: 'No id has been given' });
                 return;
             }
 
