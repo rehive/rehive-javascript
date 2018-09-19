@@ -4,11 +4,11 @@ var fetch;
 
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = Rehive;
-    isNode = true;
     if (global.fetch && !process.env.IS_BROWSER) {
       fetch = global.fetch;
     } else {
       fetch = require('node-fetch');
+      isNode = true;
     }
   } else {
     window.this;
