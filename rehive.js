@@ -399,7 +399,7 @@ function Rehive(config) {
             }
             
             if (!isNode && data instanceof FormData) {
-                delete headers['Content-Type']
+                headers['Content-Type'] = 'multipart/form-data'
             } else {
                 headers['Content-Type'] = 'application/json'
                 data = JSON.stringify(data)
@@ -1887,7 +1887,7 @@ function Rehive(config) {
             }
 
             if (!isNode && data instanceof FormData) {
-                delete headers['Content-Type']
+                headers['Content-Type'] = 'multipart/form-data'
             } else {
                 data = JSON.stringify(data)
             }

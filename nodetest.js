@@ -17,6 +17,7 @@ const r = new Rehive({ apiToken: ''})
 	
 // })
 
+const EMAIL = ""
 r.auth.login({
 	user: 'test1@rehive.com',
 	company: 'test_company_1',
@@ -24,23 +25,37 @@ r.auth.login({
 }).then(function (data) {
 	
 	// GET ADMIN REQUESTS
-	r.user.addresses.get().then(function (addresses) {
-		console.log("ADDRESSES", addresses);
+	r.admin.users.create({
+		email: EMAIL
+	}).then(function (res) {
+		console.log("create user res", res);
 		
+		r.admin.accounts.get({ filters: { user: EMAIL, name: 'default'}}).then(function (accRes) {
+			console.log("ACCOUNTS RES", accRes.results[0].reference);
+			
+
+			r.admin.transactions.createCredit(
+				{
+					user: res.email,
+					amount: 1,
+					currency: "XBT",
+					account: accRes.results[0].reference
+				}).then(function (credRes) {
+					console.log("CRED RES", credRes);
+				}, function (err) {
+					console.log("CRED ERR", err);
+				});
+
+		}, function (err) {
+			console.log("ERR", err);
+			
+		})
 
        
 	}, function (err) {
 		console.log(err);
 	});
 	
-	r.user.addresses.get('1').then(function (address) {
-		console.log("ADDRESS", address);
-		
-
-       
-	}, function (err) {
-		console.log(err);
-    });
     
     // r.admin.bankAccounts.currencies.create(145, { "currency": "XBT"}).then(function (user) {
 	// 	console.log("FROM BANK ACCOUT CURRENCIES CREATE METHOD", user);
