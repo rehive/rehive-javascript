@@ -399,7 +399,7 @@ function Rehive(config) {
             }
             
             if (!isNode && data instanceof FormData) {
-                headers['Content-Type'] = 'multipart/form-data'
+                delete headers['Content-Type']
             } else {
                 headers['Content-Type'] = 'application/json'
                 data = JSON.stringify(data)
@@ -412,6 +412,7 @@ function Rehive(config) {
             })
                 .then(parseJSON)
                 .then(function (response) {
+                    headers['Content-Type'] = 'application/json'
                     if (response.status == 'success') {
                         if (response.data && response.data.data) {
                             resolve(response.data.data);
@@ -1887,7 +1888,7 @@ function Rehive(config) {
             }
 
             if (!isNode && data instanceof FormData) {
-                headers['Content-Type'] = 'multipart/form-data'
+                delete headers['Content-Type']
             } else {
                 data = JSON.stringify(data)
             }
@@ -1899,6 +1900,7 @@ function Rehive(config) {
             })
             .then(parseJSON)
                 .then(function (response) {
+                    headers['Content-Type'] = 'application/json'
                     if (response.status == 'success') {
                         if (response.data && response.data.data) {
                             resolve(response.data.data);
