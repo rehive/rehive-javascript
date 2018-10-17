@@ -1011,7 +1011,7 @@ function Rehive(config) {
                 error = {status: 'error', message: 'Crypto account id is required'};
 
             if (accountId) {
-                url = userCryptoAccountsAPI + accountId;
+                url = userCryptoAccountsAPI + accountId + '/';
             } else {
                 reject(error);
                 return;
@@ -1176,7 +1176,7 @@ function Rehive(config) {
                 error = {status: 'error', message: 'Email address id is required'};
 
             if (emailId && data) {
-                url = userEmailAddressesAPI + emailId;
+                url = userEmailAddressesAPI + emailId + '/';
             } else {
                 reject(error, null);
                 return;
@@ -1244,7 +1244,7 @@ function Rehive(config) {
                 error = {status: 'error', message: 'Mobile number id is required'};
 
             if (mobileNumberId && data) {
-                url = userMobileNumbersAPI + mobileNumberId;
+                url = userMobileNumbersAPI + mobileNumberId + '/';
             } else {
                 reject(error);
                 return;
