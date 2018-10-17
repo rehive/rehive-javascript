@@ -875,7 +875,7 @@ function Rehive(config) {
         return new Promise(function (resolve, reject) {
             var url
             if (data.id) {
-                url = userAddressAPI + data.id;
+                url = userAddressAPI + data.id + '/';
             } else {
                 reject({ status: 400, message: 'No id has been given' });
             }
@@ -945,7 +945,7 @@ function Rehive(config) {
                 error = {status: 'error', message: 'Account id is required'};
 
             if (bankId) {
-                url = userBankAccountsAPI + bankId;
+                url = userBankAccountsAPI + bankId + '/';
             } else {
                 reject(error);
                 return;
