@@ -119,7 +119,7 @@ function Rehive(config) {
     };
 
     var apiVersion = '3',
-        publicCompaniesAPI = 'public.companies/',
+        publicCompaniesAPI = 'public/companies/',
         registerAPI = 'auth/register/',
         registerCompanyAPI = 'auth/company/register/',
         loginAPI = 'auth/login/',
@@ -476,7 +476,7 @@ function Rehive(config) {
         });
     };
 
-    //public functions
+    
 
     this.removeToken = function () {
         if (config && config.storageMethod === 'local') {
@@ -488,6 +488,19 @@ function Rehive(config) {
         token = '';
         return "Token removed"
     }
+
+    //public functions
+
+    this.public.companies.get = function () {
+        return new Promise(function (resolve, reject) {
+            httpGetRehive(publicCompaniesAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
 
     this.auth.register = function (credentials) {
         return new Promise(function (resolve, reject) {
