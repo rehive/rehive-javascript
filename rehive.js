@@ -119,6 +119,7 @@ function Rehive(config) {
     };
 
     var apiVersion = '3',
+        publicCompaniesAPI = 'public.companies/',
         registerAPI = 'auth/register/',
         registerCompanyAPI = 'auth/company/register/',
         loginAPI = 'auth/login/',
