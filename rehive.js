@@ -17,6 +17,9 @@ if (typeof module !== 'undefined' && module.exports) {
   }
 
 function Rehive(config) {
+    this.public = {
+        companies: []
+    }
     this.auth = {
         password: {},
         email: {},
