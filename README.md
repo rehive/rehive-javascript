@@ -68,6 +68,21 @@ Example:
 
 ```
 
+### Custom API url
+
+To use this SDK with a custom API url, your `config` object should contain `customAPIURL`
+
+Example:
+
+```
+	var config = {
+		...,
+		customAPIURL: "https://whatever.stuff/
+	}
+
+```
+
+
 
 ### Documentation and usage
 

@@ -208,28 +208,37 @@ function Rehive(config) {
         adminGroupsAccountConfigurationsCurrenciesAPI = '/currencies/',
         adminGroupsTiersSettingsAPI = '/settings/';
 
+    var baseAPI;
+
     if(!config){
         config = {};
     }
 
     if (Object.keys(config).length > 0) {
-        config.apiVersion ? apiVersion = config.apiVersion : apiVersion = '3';
-        config.apiToken ? setToken(config.apiToken) : null // setToken('');
-        config.network ? (config.network == 'staging' ?
-            config.network = 'api.staging.rehive.com' : config.network = 'api.rehive.com') : config.network = 'api.rehive.com';
-    } else {
-				apiVersion = '3';
-				config.network = 'api.rehive.com'
-        // setToken('');
-		}
+        if (config.customAPIURL) {
+            baseAPI = customAPIURL;
+        } else {
+            config.apiVersion ? apiVersion = config.apiVersion : apiVersion = '3';
+            config.apiToken ? setToken(config.apiToken) : null // setToken('');
 
-		var baseAPI = 'https://' + config.network + '/' + apiVersion + '/';
-		
-		var token,
-				nextFilterForLists,
-				previousFilterForLists,
-				nextFilter = {},
-				previousFilter = {};
+            config.network ? (config.network == 'staging' ?
+            config.network = 'api.staging.rehive.com' : config.network = 'api.rehive.com') : config.network = 'api.rehive.com';
+    
+            baseAPI = 'https://' + config.network + '/' + apiVersion + '/';
+        }
+    } else {
+        apiVersion = '3';
+        config.network = 'api.rehive.com'
+        baseAPI = 'https://' + config.network + '/' + apiVersion + '/';
+    // setToken('');
+    }
+
+    
+    var token,
+        nextFilterForLists,
+        previousFilterForLists,
+        nextFilter = {},
+        previousFilter = {};
 
     function serialize(obj) {
         var str = [];
