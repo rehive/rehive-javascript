@@ -59,6 +59,7 @@ function Rehive(config) {
     this.permissions = {};
 
     this.admin = {
+        accessControlRules: {},
         users: {
             overview: {},
             tiers: {},
@@ -161,6 +162,7 @@ function Rehive(config) {
         headers = {'Content-Type': 'application/json', 'Accept': 'application/json' };
 
     var adminUsersAPI = 'admin/users/',
+        adminAccessControlRulesAPI = 'admin/access-control-rules/',
         adminUserKYCAPI = '/kyc/',
         adminUsersSettingsAPI = '/settings/',
         adminUsersOverviewAPI = 'admin/users/overview/',
@@ -1763,6 +1765,21 @@ function Rehive(config) {
             } else {
                 reject({ status: 400, message: 'Not allowed' });
             }
+        });
+    };
+
+    this.admin.accessControlRules.get = function (id) {
+        return new Promise(function (resolve, reject) {
+            if(id) {
+                url = adminAccessControlRulesAPI + id + '/';
+            } else {
+                url = adminAccessControlRulesAPI;
+            }
+            httpGetRehive(url).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
         });
     };
 
