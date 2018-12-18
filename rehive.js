@@ -1732,7 +1732,7 @@ function Rehive(config) {
 
     this.groups.getNext = function () {
         return new Promise(function (resolve, reject) {
-						var url = nextFilter['Groups'], mainUrl;
+			var url = nextFilter['Groups'], mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -1751,7 +1751,7 @@ function Rehive(config) {
 
     this.groups.getPrevious = function () {
         return new Promise(function (resolve, reject) {
-					var url = previousFilter['Groups'], mainUrl;
+			var url = previousFilter['Groups'], mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
@@ -1777,12 +1777,52 @@ function Rehive(config) {
                 url = adminAccessControlRulesAPI;
             }
             httpGetRehive(url).then(function (response) {
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
             });
         });
     };
+
+    this.admin.accessControlRules.getNext = function () {
+        return new Promise(function (resolve, reject) {
+			var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.accessControlRules.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
 
     this.admin.accessControlRules.create = function (data) {
         return new Promise(function (resolve, reject) {

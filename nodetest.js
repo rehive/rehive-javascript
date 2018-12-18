@@ -20,20 +20,20 @@ const r = new Rehive({ apiToken: ''})
 // 	password: 'test1234'
 // }).then(function (data) {
 
-// 	r.admin.accessControlRules.get()
-// 	.then(data => {
-// 		console.log("ADMIN ACCESS CONTROL RES", data);
-// 		r.admin.accessControlRules.update(6, {
-// 			"label": "testfanta",
-// 		})
-// 		.then(createRes => {
-// 			console.log("UPDATE ACCESS CONTROL RULE TEST RES", createRes);
-			
-// 		})
+	// r.admin.accessControlRules.get()
+	// .then(data => {
+	// 	console.log("ADMIN ACCESS CONTROL RES", data);
 		
-// 	})
+	// 	r.admin.accessControlRules.getNext()
+	// 	.then(data => {
+	// 		console.log("NEXT ADMIN ACCESS CONTROL RES", data);
+			
+			
+	// 	})
+		
+	// })
 	
-	// // GET ADMIN REQUESTS
+	// GET ADMIN REQUESTS
 	// r.admin.users.create({
 	// 	email: EMAIL
 	// }).then(function (res) {
