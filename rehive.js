@@ -1770,12 +1770,27 @@ function Rehive(config) {
 
     this.admin.accessControlRules.get = function (id) {
         return new Promise(function (resolve, reject) {
+            var url
             if(id) {
                 url = adminAccessControlRulesAPI + id + '/';
             } else {
                 url = adminAccessControlRulesAPI;
             }
             httpGetRehive(url).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accessControlRules.update = function (id,data) {
+        return new Promise(function (resolve, reject) {
+            if(!id){
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+            httpPatchRehive(adminAccessControlRulesAPI + id, data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);

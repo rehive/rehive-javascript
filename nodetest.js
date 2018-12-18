@@ -2,55 +2,61 @@ const Rehive = require('./rehive')
 
 const r = new Rehive({ apiToken: ''})
 
-r.public.companies.get().then(function(data){
-	console.log("public companies", data);
-}, function(err) {
-	console.log("err", err);
+// r.public.companies.get().then(function(data){
+// 	console.log("public companies", data);
+// }, function(err) {
+// 	console.log("err", err);
 	
-})
-.catch(err => {
-	console.log("ERR", err);
+// })
+// .catch(err => {
+// 	console.log("ERR", err);
 	
-})
+// })
 
 // const EMAIL = ""
-// r.auth.login({
-// 	user: 'test1@rehive.com',
-// 	company: 'test_company_1',
-// 	password: 'test1234'
-// }).then(function (data) {
-	
-// 	// GET ADMIN REQUESTS
-// 	r.admin.users.create({
-// 		email: EMAIL
-// 	}).then(function (res) {
-// 		console.log("create user res", res);
+r.auth.login({
+	user: 'test1@rehive.com',
+	company: 'test_company_1',
+	password: 'test1234'
+}).then(function (data) {
+
+	r.admin.accessControlRules.get()
+	.then(data => {
+		console.log("ADMIN ACCESS CONTROL RES", data);
 		
-// 		r.admin.accounts.get({ filters: { user: EMAIL, name: 'default'}}).then(function (accRes) {
-// 			console.log("ACCOUNTS RES", accRes.results[0].reference);
+	})
+	
+	// // GET ADMIN REQUESTS
+	// r.admin.users.create({
+	// 	email: EMAIL
+	// }).then(function (res) {
+	// 	console.log("create user res", res);
+		
+	// 	r.admin.accounts.get({ filters: { user: EMAIL, name: 'default'}}).then(function (accRes) {
+	// 		console.log("ACCOUNTS RES", accRes.results[0].reference);
 			
 
-// 			r.admin.transactions.createCredit(
-// 				{
-// 					user: res.email,
-// 					amount: 1,
-// 					currency: "XBT",
-// 					account: accRes.results[0].reference
-// 				}).then(function (credRes) {
-// 					console.log("CRED RES", credRes);
-// 				}, function (err) {
-// 					console.log("CRED ERR", err);
-// 				});
+	// 		r.admin.transactions.createCredit(
+	// 			{
+	// 				user: res.email,
+	// 				amount: 1,
+	// 				currency: "XBT",
+	// 				account: accRes.results[0].reference
+	// 			}).then(function (credRes) {
+	// 				console.log("CRED RES", credRes);
+	// 			}, function (err) {
+	// 				console.log("CRED ERR", err);
+	// 			});
 
-// 		}, function (err) {
-// 			console.log("ERR", err);
+	// 	}, function (err) {
+	// 		console.log("ERR", err);
 			
-// 		})
+	// 	})
 
        
-// 	}, function (err) {
-// 		console.log(err);
-// 	});
+	}, function (err) {
+		console.log(err);
+	});
 	
     
     // r.admin.bankAccounts.currencies.create(145, { "currency": "XBT"}).then(function (user) {
