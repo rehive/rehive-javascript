@@ -1798,6 +1798,20 @@ function Rehive(config) {
         });
     };
 
+    this.admin.accessControlRules.delete = function (id) {
+        return new Promise(function (resolve, reject) {
+            if(!id){
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+            httpDeleteRehive(adminAccessControlRulesAPI + id + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
     this.admin.users.overview.get = function (obj) {
         return new Promise(function (resolve, reject) {
              var url,filters;
