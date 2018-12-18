@@ -1784,6 +1784,20 @@ function Rehive(config) {
         });
     };
 
+    this.admin.accessControlRules.create = function (data) {
+        return new Promise(function (resolve, reject) {
+            if(!data){
+                reject({ status: 400, message: 'No data has been given' });
+                return;
+            }
+            httpPostRehive(adminAccessControlRulesAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
     this.admin.accessControlRules.update = function (id,data) {
         return new Promise(function (resolve, reject) {
             if(!id){

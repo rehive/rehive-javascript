@@ -14,17 +14,24 @@ const r = new Rehive({ apiToken: ''})
 // })
 
 // const EMAIL = ""
-r.auth.login({
-	user: 'test1@rehive.com',
-	company: 'test_company_1',
-	password: 'test1234'
-}).then(function (data) {
+// r.auth.login({
+// 	user: 'test1@rehive.com',
+// 	company: 'test_company_1',
+// 	password: 'test1234'
+// }).then(function (data) {
 
-	r.admin.accessControlRules.get()
-	.then(data => {
-		console.log("ADMIN ACCESS CONTROL RES", data);
+// 	r.admin.accessControlRules.get()
+// 	.then(data => {
+// 		console.log("ADMIN ACCESS CONTROL RES", data);
+// 		r.admin.accessControlRules.update(6, {
+// 			"label": "testfanta",
+// 		})
+// 		.then(createRes => {
+// 			console.log("UPDATE ACCESS CONTROL RULE TEST RES", createRes);
+			
+// 		})
 		
-	})
+// 	})
 	
 	// // GET ADMIN REQUESTS
 	// r.admin.users.create({
@@ -54,9 +61,9 @@ r.auth.login({
 	// 	})
 
        
-	}, function (err) {
-		console.log(err);
-	});
+	// }, function (err) {
+	// 	console.log(err);
+	// });
 	
     
     // r.admin.bankAccounts.currencies.create(145, { "currency": "XBT"}).then(function (user) {
