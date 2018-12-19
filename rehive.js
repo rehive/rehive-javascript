@@ -1768,14 +1768,20 @@ function Rehive(config) {
         });
     };
 
-    this.admin.accessControlRules.get = function (id) {
+    this.admin.accessControlRules.get = function (obj) {
         return new Promise(function (resolve, reject) {
-            var url
-            if(id) {
-                url = adminAccessControlRulesAPI + id + '/';
+
+            var url,filters;
+
+            if(obj && obj.id) {
+                url = adminAccessControlRulesAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminAccessControlRulesAPI + filters;
             } else {
                 url = adminAccessControlRulesAPI;
             }
+
             httpGetRehive(url).then(function (response) {
                 saveFilter(response);
                 resolve(response);
@@ -1966,7 +1972,7 @@ function Rehive(config) {
 
     this.admin.users.getNext = function () {
         return new Promise(function (resolve, reject) {
-						var url = nextFilterForLists, mainUrl;
+            var url = nextFilterForLists, mainUrl;
             if (url) {
                 var urlArray = url.split(baseAPI);
                 mainUrl = urlArray[1];
