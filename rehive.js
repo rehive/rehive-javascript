@@ -164,6 +164,7 @@ function Rehive(config) {
     var adminUsersAPI = 'admin/users/',
         adminAccessControlRulesAPI = 'admin/access-control-rules/',
         adminUserKYCAPI = '/kyc/',
+        adminUserMFAAPI = '/mfa/',
         adminUsersSettingsAPI = '/settings/',
         adminUsersOverviewAPI = 'admin/users/overview/',
         adminUserPermissionsAPI = '/permissions/',
@@ -2913,6 +2914,20 @@ function Rehive(config) {
             }
 
             httpDeleteRehive(adminUserMobilesAPI + id + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.mfa.get = function (id) {
+        return new Promise(function (resolve, reject) {
+            if(!id){
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+            httpGetRehive(adminUsersAPI + id + adminUserMFAAPI).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
