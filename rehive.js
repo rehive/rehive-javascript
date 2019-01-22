@@ -165,6 +165,8 @@ function Rehive(config) {
         adminAccessControlRulesAPI = 'admin/access-control-rules/',
         adminUserKYCAPI = '/kyc/',
         adminUserMFAAPI = '/mfa/',
+        adminUserMFASMSAPI = '/mfa/sms/',
+        adminUserMFATokenAPI = '/mfa/token/',
         adminUsersSettingsAPI = '/settings/',
         adminUsersOverviewAPI = 'admin/users/overview/',
         adminUserPermissionsAPI = '/permissions/',
@@ -2934,6 +2936,37 @@ function Rehive(config) {
             });
         });
     };
+
+    this.admin.users.mfa.sms.delete = function (id) {
+        return new Promise(function (resolve, reject) {
+            if (!id) {
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+
+            httpDeleteRehive(adminUsersAPI + id + adminUserMFASMSAPI, {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.mfa.token.delete = function (id) {
+        return new Promise(function (resolve, reject) {
+            if (!id) {
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+
+            httpDeleteRehive(adminUsersAPI + id + adminUserMFATokenAPI, {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
 
     this.admin.transactions.get = function (obj) {
         return new Promise(function (resolve, reject) {
