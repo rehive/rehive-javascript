@@ -507,7 +507,13 @@ function Rehive(config) {
 
     this.public.companies.get = function () {
         return new Promise(function (resolve, reject) {
-            httpGetRehive(publicCompaniesAPI).then(function (response) {
+            var url
+            if (id) {
+                url = publicCompaniesAPI + id + '/';
+            } else {
+                url = publicCompaniesAPI;
+            }
+            httpGetRehive(url).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
