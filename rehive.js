@@ -72,7 +72,8 @@ function Rehive(config) {
             mobiles: {},
             permissions: {},
             groups: {},
-            kyc: {}
+            kyc: {},
+            mfa: {}
         },
         requests: {},
         transactions: {
