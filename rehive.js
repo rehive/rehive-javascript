@@ -509,7 +509,7 @@ function Rehive(config) {
 
     //public functions
 
-    this.public.companies.get = function () {
+    this.public.companies.get = function (id) {
         return new Promise(function (resolve, reject) {
             var url
             if (id) {
