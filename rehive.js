@@ -73,7 +73,10 @@ function Rehive(config) {
             permissions: {},
             groups: {},
             kyc: {},
-            mfa: {}
+            mfa: {
+                token: {},
+                sms: {}
+            }
         },
         requests: {},
         transactions: {
