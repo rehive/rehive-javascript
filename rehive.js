@@ -225,7 +225,7 @@ function Rehive(config) {
 
     if (Object.keys(config).length > 0) {
         if (config.customAPIURL) {
-            baseAPI = customAPIURL;
+            baseAPI = config.customAPIURL;
         } else {
             config.apiVersion ? apiVersion = config.apiVersion : apiVersion = '3';
             config.apiToken ? setToken(config.apiToken) : null // setToken('');
