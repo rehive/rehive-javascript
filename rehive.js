@@ -193,6 +193,7 @@ function Rehive(config) {
         adminAccountsCurrencyLimitsAPI = '/limits/',
         adminAccountsCurrencyFeesAPI = '/fees/',
         adminAccountsCurrencySettingsAPI = '/settings/',
+        adminAccountSetsAPI = 'admin/accounts/exports/',
         adminCurrenciesAPI = 'admin/currencies/',
         adminCurrenciesBankAccountsAPI = '/bank-accounts/',
         adminCurrenciesOverviewAPI = '/overview/',
@@ -3247,6 +3248,94 @@ function Rehive(config) {
             } else {
                 reject({ status: 400, message: 'Not allowed' });
             }
+        });
+    };
+
+    this.admin.accounts.sets.get = function(obj){
+        return new Promise(function(resolve, reject){
+            var url,filters;
+            if(obj && obj.id){
+                url = adminAccountSetsAPI + obj.id + '/';
+            }
+            else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminAccountSetsAPI + filters;
+            }
+            else {
+                url = adminAccountSetsAPI;
+            }
+
+            httpGetRehive(url).then(function (response){
+                saveFilter(response);
+                resolve(response);
+            }, function(error){
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.sets.getNext = function(){
+        return new Promise(function(resolve, reject){
+            var url = nextFilterForLists, mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function(response){
+                    saveFilter(response);
+                    resolve(response);
+                }, function(error){
+                    reject(error);
+                });
+            }
+            else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.accounts.sets.getPrevious = function(){
+        return new Promise(function (resolve, reject){
+            var url = previousFilterForLists, mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response){
+                    saveFilter(response);
+                    resolve(response);
+                }, function(error) {
+                    reject(error);
+                });
+            }
+            else{
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.accounts.sets.create = function (data){
+        return new Promise(function(resolve, reject){
+            httpPostRehive(adminAccountSetsAPI, data).then(function(response){
+                resolve(response);
+            }, function(error){
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.accounts.sets.delete = function(id){
+        return new Promise(function(resolve, reject){
+            if(!id){
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+
+            httpDeleteRehive(adminAccountSetsAPI + id + '/', {}).then(function(response){
+                resolve(response);
+            }, function(error){
+                reject(error);
+            });
         });
     };
 
