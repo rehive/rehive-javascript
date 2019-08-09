@@ -88,7 +88,8 @@ function Rehive(config) {
                 limits: {},
                 fees: {},
                 settings: {}
-            }
+            },
+            sets: {}
         },
         currencies: {
             overview: {},
