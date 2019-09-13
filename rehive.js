@@ -91,6 +91,11 @@ function Rehive(config) {
             },
             sets: {}
         },
+        accounts: {
+            currencies: {
+                sets: {},
+            }
+        },
         currencies: {
             overview: {},
             bankAccounts: {}
