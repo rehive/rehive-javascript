@@ -190,11 +190,13 @@ function Rehive(config) {
         // adminTransactionsSetsAPI = 'admin/transactions/sets/',
         adminTransactionsSetsAPI = 'admin/transactions/exports/',
         adminAccountsAPI = 'admin/accounts/',
+        adminAccountSetsAPI = 'admin/accounts/exports/',
         adminAccountsCurrenciesAPI = '/currencies/',
         adminAccountsCurrencyLimitsAPI = '/limits/',
         adminAccountsCurrencyFeesAPI = '/fees/',
         adminAccountsCurrencySettingsAPI = '/settings/',
-        adminAccountSetsAPI = 'admin/accounts/exports/',
+        adminAccountExportCurrenciesAPI = 'admin/account-currencies/';
+        adminAccountExportCurrencySetsAPI = 'admin/account-currencies/exports/';
         adminCurrenciesAPI = 'admin/currencies/',
         adminCurrenciesBankAccountsAPI = '/bank-accounts/',
         adminCurrenciesOverviewAPI = '/overview/',
@@ -3333,6 +3335,154 @@ function Rehive(config) {
             }
 
             httpDeleteRehive(adminAccountSetsAPI + id + '/', {}).then(function(response){
+                resolve(response);
+            }, function(error){
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.account.currencies.get = function (obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+
+            if(obj && obj.reference) {
+                url = adminAccountExportCurrenciesAPI + obj.reference + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminAccountExportCurrenciesAPI + filters;
+            } else {
+                url = adminAccountExportCurrenciesAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveFilter(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.account.currencies.getNext = function () {
+        return new Promise(function (resolve, reject) {
+						var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.account.currencies.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.account.currencies.sets.get = function(obj){
+        return new Promise(function(resolve, reject){
+            var url,filters;
+            if(obj && obj.id){
+                url = adminAccountExportCurrencySetsAPI + obj.id + '/';
+            }
+            else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminAccountExportCurrencySetsAPI + filters;
+            }
+            else {
+                url = adminAccountExportCurrencySetsAPI;
+            }
+
+            httpGetRehive(url).then(function (response){
+                saveFilter(response);
+                resolve(response);
+            }, function(error){
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.account.currencies.sets.getNext = function(){
+        return new Promise(function(resolve, reject){
+            var url = nextFilterForLists, mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function(response){
+                    saveFilter(response);
+                    resolve(response);
+                }, function(error){
+                    reject(error);
+                });
+            }
+            else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.account.currencies.sets.getPrevious = function(){
+        return new Promise(function (resolve, reject){
+            var url = previousFilterForLists, mainUrl;
+            if(url){
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response){
+                    saveFilter(response);
+                    resolve(response);
+                }, function(error) {
+                    reject(error);
+                });
+            }
+            else{
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.account.currencies.sets.create = function (data){
+        return new Promise(function(resolve, reject){
+            httpPostRehive(adminAccountExportCurrencySetsAPI, data).then(function(response){
+                resolve(response);
+            }, function(error){
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.account.currencies.sets.delete = function(id){
+        return new Promise(function(resolve, reject){
+            if(!id){
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+
+            httpDeleteRehive(adminAccountExportCurrencySetsAPI + id + '/', {}).then(function(response){
                 resolve(response);
             }, function(error){
                 reject(error);
