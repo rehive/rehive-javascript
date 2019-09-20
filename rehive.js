@@ -2120,11 +2120,11 @@ function Rehive(config) {
 
     this.admin.users.delete = function (uuid) {
         return new Promise(function (resolve, reject) {
-            if(!id){
+            if(!uuid){
                 reject({ status: 400, message: 'No id has been given' });
                 return;
             }
-            httpDeleteRehive(baseAPI + adminUsersAPI + uuid + '/', {}).then(function (response) {
+            httpDeleteRehive(adminUsersAPI + uuid + '/', {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
