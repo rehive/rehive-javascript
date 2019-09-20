@@ -91,7 +91,7 @@ function Rehive(config) {
             },
             sets: {}
         },
-        accounts: {
+        account: {
             currencies: {
                 sets: {},
             }
