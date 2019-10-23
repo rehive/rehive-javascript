@@ -345,11 +345,11 @@ function Rehive(config) {
         }
     }
 
-    var httpPostRehive = function (url, data) {
+    var httpPostRehive = function (url, data, noAuth = false) {
         return new Promise(function (resolve, reject) {
             var token = getToken();
 
-            if (token) {
+            if (token && !noAuth) {
                 headers['Authorization'] = 'Token ' + token;
             } else {
                 delete headers['Authorization'];
@@ -683,7 +683,7 @@ function Rehive(config) {
 
     this.auth.password.reset = function (data) {
         return new Promise(function (resolve, reject) {
-            httpPostRehive(resetPasswordAPI, data).then(function (response) {
+            httpPostRehive(resetPasswordAPI, data, true).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -693,7 +693,7 @@ function Rehive(config) {
 
     this.auth.password.resetConfirm = function (data) {
         return new Promise(function (resolve, reject) {
-            httpPostRehive(resetConfirmPasswordAPI, data).then(function (response) {
+            httpPostRehive(resetConfirmPasswordAPI, data, true).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -703,7 +703,7 @@ function Rehive(config) {
 
     this.auth.email.resendEmailVerification = function (data) {
         return new Promise(function (resolve, reject) {
-            httpPostRehive(resendEmailVerificationAPI, data).then(function (response) {
+            httpPostRehive(resendEmailVerificationAPI, data, true).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
