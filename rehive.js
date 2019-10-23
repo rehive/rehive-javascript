@@ -345,7 +345,7 @@ function Rehive(config) {
         }
     }
 
-    var httpPostRehive = function (url, data, noAuth = false) {
+    var httpPostRehive = function (url, data, noAuth) {
         return new Promise(function (resolve, reject) {
             var token = getToken();
 
