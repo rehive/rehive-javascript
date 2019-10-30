@@ -200,8 +200,8 @@ function Rehive(config) {
         adminAccountsCurrencyLimitsAPI = '/limits/',
         adminAccountsCurrencyFeesAPI = '/fees/',
         adminAccountsCurrencySettingsAPI = '/settings/',
-        adminAccountExportCurrenciesAPI = 'admin/account-currencies/';
-        adminAccountExportCurrencySetsAPI = 'admin/account-currencies/exports/';
+        adminAccountExportCurrenciesAPI = 'admin/account-currencies/',
+        adminAccountExportCurrencySetsAPI = 'admin/account-currencies/exports/',
         adminCurrenciesAPI = 'admin/currencies/',
         adminCurrenciesBankAccountsAPI = '/bank-accounts/',
         adminCurrenciesOverviewAPI = '/overview/',
