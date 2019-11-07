@@ -45,6 +45,8 @@ function Rehive(config) {
         totals: {}
     };
 
+    this.transaction_collections = {};
+
     this.accounts = {
         currencies: {}
     };
@@ -83,6 +85,7 @@ function Rehive(config) {
             sets: {},
             totals: {}
         },
+        transaction_collections: {},
         accounts: {
             currencies: {
                 limits: {},
@@ -159,6 +162,7 @@ function Rehive(config) {
         userMobileNumbersAPI = 'user/mobiles/',
         transactionsAPI = 'transactions/',
         totalTransactionsListAPI = 'totals/',
+        transactionCollectionsAPI = 'transaction-collections/',
         debitAPI = 'transactions/debit/',
         creditAPI = 'transactions/credit/',
         transferAPI = 'transactions/transfer/',
@@ -194,6 +198,7 @@ function Rehive(config) {
         adminTransferTransactionsAPI = 'admin/transactions/transfer/',
         // adminTransactionsSetsAPI = 'admin/transactions/sets/',
         adminTransactionsSetsAPI = 'admin/transactions/exports/',
+        adminTransactionCollectionsAPI = 'admin/transaction-collections/',
         adminAccountsAPI = 'admin/accounts/',
         adminAccountSetsAPI = 'admin/accounts/exports/',
         adminAccountsCurrenciesAPI = '/currencies/',
@@ -503,9 +508,7 @@ function Rehive(config) {
                 });
         });
     };
-
-    
-
+ 
     this.removeToken = function () {
         if (config && config.storageMethod === 'local') {
             token = localStorage.removeItem('token');
@@ -1278,7 +1281,6 @@ function Rehive(config) {
         });
     };
 
-
     this.user.mobiles.create = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(userMobileNumbersAPI, data).then(function (response) {
@@ -1426,6 +1428,76 @@ function Rehive(config) {
     this.transactions.createTransfer = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(transferAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.transaction_collections.get = function (obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+
+            if(obj && obj.id) {
+                url = transactionCollectionsAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = transactionCollectionsAPI + filters;
+            } else {
+                url = transactionCollectionsAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveUserApiFilter(response, 'Transaction Collection');
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.transaction_collections.getNext = function () {
+        return new Promise(function (resolve, reject) {
+						var url = nextFilter['Transaction Collection'], mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveUserApiFilter(response, 'Transaction Collection');
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.transaction_collections.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+						var url = previousFilter['Transaction Collection'], mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveUserApiFilter(response, 'Transaction Collection')
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.transaction_collections.create = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(transactionCollectionsAPI, data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1852,7 +1924,6 @@ function Rehive(config) {
         });
     };
 
-
     this.admin.accessControlRules.create = function (data) {
         return new Promise(function (resolve, reject) {
             if(!data){
@@ -2074,7 +2145,6 @@ function Rehive(config) {
                 });
         });
     };
-
 
     this.admin.users.update = function (uuid, data) {
         return new Promise(function (resolve, reject) {
@@ -3001,7 +3071,6 @@ function Rehive(config) {
         });
     };
 
-
     this.admin.transactions.get = function (obj) {
         return new Promise(function (resolve, reject) {
             var url,filters;
@@ -3213,6 +3282,107 @@ function Rehive(config) {
         });
     };
 
+    this.admin.transaction_collections.get = function (obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+
+            if(obj && obj.id) {
+                url = adminTransactionCollectionsAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminTransactionCollectionsAPI + filters;
+            } else {
+                url = adminTransactionCollectionsAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveFilter(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transaction_collections.getNext = function () {
+        return new Promise(function (resolve, reject) {
+
+						var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.transaction_collections.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+						var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.transaction_collections.create = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(adminTransactionCollectionsAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transaction_collections.update = function (reference, data) {
+        return new Promise(function (resolve, reject) {
+            if (!reference) {
+                reject({ status: 400, message: 'No reference has been given' });
+                return;
+            }
+
+            httpPatchRehive(adminTransactionCollectionsAPI + reference + '/', data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transaction_collections.delete = function(id){
+        return new Promise(function(resolve, reject){
+            if(!id){
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+
+            httpDeleteRehive(adminTransactionCollectionsAPI + id + '/', {}).then(function(response){
+                resolve(response);
+            }, function(error){
+                reject(error);
+            });
+        });
+    };
+   
     this.admin.accounts.get = function (obj) {
         return new Promise(function (resolve, reject) {
             var url,filters;
