@@ -601,7 +601,8 @@ function Rehive(config) {
                         setToken(response.data.token);
                         resolve({
                             user: response.data.user,
-                            token: response.data.token
+                            token: response.data.token,
+                            mfa: response.data.mfa !== undefined ? response.data.mfa : null
                         });
                     } else if (response.status == 'error') {
                         if (response.data) {
