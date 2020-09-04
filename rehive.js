@@ -388,9 +388,9 @@ function Rehive(config) {
         });
     };
 
-    var httpGetRehive = function (url) {
+    var httpGetRehive = function (url, customToken) {
         return new Promise(function (resolve, reject) {
-            var token = getToken();
+            var token = customToken ? customToken : getToken();
 
             if (token) {
                 headers['Authorization'] = 'Token ' + token;
@@ -790,9 +790,9 @@ function Rehive(config) {
         });
     };
 
-    this.auth.tokens.verify = function (data) {
+    this.auth.tokens.verify = function (token) {
         return new Promise(function (resolve, reject) {
-            httpPostRehive(tokensVerifyAPI, data).then(function (response) {
+            httpGetRehive(tokensVerifyAPI, token).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
