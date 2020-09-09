@@ -152,7 +152,7 @@ function Rehive(config) {
         multiFactorApiTokenAPI = 'auth/mfa/token/',
         multiFactorAuthVerifyAPI = 'auth/mfa/verify/',
         tokensAPI = 'auth/tokens/',
-        tokensVerifyAPI = 'auth/tokens/verify/',
+        tokensVerifyAPI = 'auth/',
         userProfileAPI = 'user/',
         userAddressAPI = 'user/addresses/',
         userBankAccountsAPI = 'user/bank-accounts/',
