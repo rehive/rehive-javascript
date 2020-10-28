@@ -97,6 +97,11 @@ function Rehive(config) {
         account: {
             currencies: {
                 sets: {},
+            },
+            definitions: {
+                groups: {
+                    currencies: {}
+                }
             }
         },
         currencies: {
@@ -207,6 +212,7 @@ function Rehive(config) {
         adminAccountsCurrencySettingsAPI = '/settings/',
         adminAccountExportCurrenciesAPI = 'admin/account-currencies/',
         adminAccountExportCurrencySetsAPI = 'admin/account-currencies/exports/',
+        adminAccountDefinitionsAPI = 'admin/account-definitions/',
         adminCurrenciesAPI = 'admin/currencies/',
         adminCurrenciesBankAccountsAPI = '/bank-accounts/',
         adminCurrenciesOverviewAPI = '/overview/',
@@ -3525,6 +3531,350 @@ function Rehive(config) {
             }
 
             httpDeleteRehive(adminAccountSetsAPI + id + '/', {}).then(function(response){
+                resolve(response);
+            }, function(error){
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.account.definitions.get = function (obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+
+            if(obj && obj.name) {
+                url = adminAccountDefinitionsAPI + obj.name + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminAccountDefinitionsAPI + filters;
+            } else {
+                url = adminAccountDefinitionsAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveFilter(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.account.definitions.getNext = function () {
+        return new Promise(function (resolve, reject) {
+            var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.account.definitions.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.account.definitions.create = function (data){
+        return new Promise(function(resolve, reject){
+            httpPostRehive(adminAccountDefinitionsAPI, data).then(function(response){
+                resolve(response);
+            }, function(error){
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.account.definitions.update = function (accountName, data) {
+        return new Promise(function (resolve, reject) {
+            if (!accountName) {
+                reject({ status: 400, message: 'No account name has been given' });
+                return;
+            }
+
+            httpPatchRehive(adminAccountDefinitionsAPI + accountName + '/', data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.account.definitions.delete = function(accountName){
+        return new Promise(function(resolve, reject){
+            if(!accountName){
+                reject({ status: 400, message: 'No account name has been given' });
+                return;
+            }
+
+            httpDeleteRehive(adminAccountDefinitionsAPI + accountName + '/', {}).then(function(response){
+                resolve(response);
+            }, function(error){
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.account.definitions.groups.get = function (accountName, obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+            if(!accountName){
+                reject({ status: 400, message: 'No account name has been given' });
+                return;
+            }
+
+            if(obj && obj.name) {
+                url = adminAccountDefinitionsAPI + accountName + '/groups/' + obj.name + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminAccountDefinitionsAPI + accountName + '/groups/' + filters;
+            } else {
+                url = adminAccountDefinitionsAPI + accountName + '/groups/';
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveFilter(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.account.definitions.groups.getNext = function () {
+        return new Promise(function (resolve, reject) {
+            var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.account.definitions.groups.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.account.definitions.groups.create = function (accountName, data){
+        return new Promise(function(resolve, reject){
+            if(!accountName){
+                reject({ status: 400, message: 'No account name has been given' });
+                return;
+            }
+            var url = adminAccountDefinitionsAPI + accountName + '/groups/';
+            httpPostRehive(url, data).then(function(response){
+                resolve(response);
+            }, function(error){
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.account.definitions.groups.update = function (accountName, groupName, data) {
+        return new Promise(function (resolve, reject) {
+            if (!accountName) {
+                reject({ status: 400, message: 'No account name has been given' });
+                return;
+            } else if (!groupName) {
+                reject({ status: 400, message: 'No group name has been given' });
+                return;
+            }
+            var url = adminAccountDefinitionsAPI + accountName + '/groups/' + groupName + '/';
+            httpPatchRehive(url, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.account.definitions.groups.delete = function(accountName, groupName){
+        return new Promise(function(resolve, reject){
+            if (!accountName) {
+                reject({ status: 400, message: 'No account name has been given' });
+                return;
+            } else if (!groupName) {
+                reject({ status: 400, message: 'No group name has been given' });
+                return;
+            }
+            var url = adminAccountDefinitionsAPI + accountName + '/groups/' + groupName + '/';
+            httpDeleteRehive(url, {}).then(function(response){
+                resolve(response);
+            }, function(error){
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.account.definitions.groups.currencies.get = function (accountName, groupName, obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+            if(!accountName){
+                reject({ status: 400, message: 'No account name has been given' });
+                return;
+            }
+            if(!groupName){
+                reject({ status: 400, message: 'No group name has been given' });
+                return;
+            }
+
+            if(obj && obj.code) {
+                url = adminAccountDefinitionsAPI + accountName + '/groups/' + groupName + '/currencies/' + obj.code + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminAccountDefinitionsAPI + accountName + '/groups/' + groupName + '/currencies/' + filters;
+            } else {
+                url = adminAccountDefinitionsAPI + accountName + '/groups/' + groupName + '/currencies/';
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveFilter(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.account.definitions.groups.currencies.getNext = function () {
+        return new Promise(function (resolve, reject) {
+            var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.account.definitions.groups.currencies.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.account.definitions.groups.currencies.create = function (accountName, groupName, data){
+        return new Promise(function(resolve, reject){
+            if(!accountName){
+                reject({ status: 400, message: 'No account name has been given' });
+                return;
+            }
+            if(!groupName){
+                reject({ status: 400, message: 'No group name has been given' });
+                return;
+            }
+            var url = adminAccountDefinitionsAPI + accountName + '/groups/' + groupName + '/currencies/';
+            httpPostRehive(url, data).then(function(response){
+                resolve(response);
+            }, function(error){
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.account.definitions.groups.currencies.update = function (accountName, groupName, currencyCode, data) {
+        return new Promise(function (resolve, reject) {
+            if (!accountName) {
+                reject({ status: 400, message: 'No account name has been given' });
+                return;
+            } else if (!groupName) {
+                reject({ status: 400, message: 'No group name has been given' });
+                return;
+            } else if (!currencyCode) {
+                reject({ status: 400, message: 'No currency code has been given' });
+                return;
+            }
+            var url = adminAccountDefinitionsAPI + accountName + '/groups/' + groupName + '/currencies/' + currencyCode + '/';
+            httpPatchRehive(url, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.account.definitions.groups.currencies.delete = function(accountName, groupName, currencyCode){
+        return new Promise(function(resolve, reject){
+            if (!accountName) {
+                reject({ status: 400, message: 'No account name has been given' });
+                return;
+            } else if (!groupName) {
+                reject({ status: 400, message: 'No group name has been given' });
+                return;
+            } else if (!currencyCode) {
+                reject({ status: 400, message: 'No currency code has been given' });
+                return;
+            }
+            var url = adminAccountDefinitionsAPI + accountName + '/groups/' + groupName + '/currencies/' + currencyCode + '/';
+            httpDeleteRehive(url, {}).then(function(response){
                 resolve(response);
             }, function(error){
                 reject(error);
