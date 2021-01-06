@@ -1,6 +1,6 @@
 {
   "name": "rehive",
-  "version": "1.25.0",
+  "version": "1.25.1",
   "description": "Javascript sdk for rehive APIs",
   "main": "rehive.js",
   "dependencies": {
@@ -10,7 +10,8 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node minify.js"
+    "build": "node minify.js",
+    "publish": "npm publish --access=public"
   },
   "repository": {
     "type": "git",
