@@ -82,7 +82,6 @@ function Rehive(config) {
         },
         requests: {},
         transactions: {
-            sets: {},
             totals: {}
         },
         transaction_collections: {},
@@ -91,13 +90,10 @@ function Rehive(config) {
                 limits: {},
                 fees: {},
                 settings: {}
-            },
-            sets: {}
+            }
         },
         account: {
-            currencies: {
-                sets: {},
-            },
+            currencies: {},
             definitions: {
                 groups: {
                     currencies: {}
@@ -134,6 +130,9 @@ function Rehive(config) {
         },
         webhookTasks: {
             requests: {}
+        },
+        exports: {
+            sets: {}
         }
     };
 
@@ -201,17 +200,17 @@ function Rehive(config) {
         adminCreditTransactionsAPI = 'admin/transactions/credit/',
         adminDebitTransactionsAPI = 'admin/transactions/debit/',
         adminTransferTransactionsAPI = 'admin/transactions/transfer/',
-        // adminTransactionsSetsAPI = 'admin/transactions/sets/',
-        adminTransactionsSetsAPI = 'admin/transactions/exports/',
+        adminExportSetsAPI = 'admin/exports/',
+        // adminTransactionsSetsAPI = 'admin/transactions/exports/',
+        // adminAccountSetsAPI = 'admin/accounts/exports/',
+        // adminAccountExportCurrencySetsAPI = 'admin/account-currencies/exports/',
         adminTransactionCollectionsAPI = 'admin/transaction-collections/',
         adminAccountsAPI = 'admin/accounts/',
-        adminAccountSetsAPI = 'admin/accounts/exports/',
         adminAccountsCurrenciesAPI = '/currencies/',
         adminAccountsCurrencyLimitsAPI = '/limits/',
         adminAccountsCurrencyFeesAPI = '/fees/',
         adminAccountsCurrencySettingsAPI = '/settings/',
         adminAccountExportCurrenciesAPI = 'admin/account-currencies/',
-        adminAccountExportCurrencySetsAPI = 'admin/account-currencies/exports/',
         adminAccountDefinitionsAPI = 'admin/account-definitions/',
         adminCurrenciesAPI = 'admin/currencies/',
         adminCurrenciesBankAccountsAPI = '/bank-accounts/',
@@ -270,6 +269,7 @@ function Rehive(config) {
         nextFilter = {},
         previousFilter = {};
 
+    //#region Common methods
     function serialize(obj) {
         var str = [];
         for (var p in obj) {
@@ -525,8 +525,9 @@ function Rehive(config) {
         token = '';
         return "Token removed"
     }
+    //#endregion
 
-    //public functions
+    //#region Public methods
 
     this.public.companies.get = function (id) {
         return new Promise(function (resolve, reject) {
@@ -543,7 +544,6 @@ function Rehive(config) {
             });
         });
     };
-
 
     this.auth.register = function (credentials) {
         return new Promise(function (resolve, reject) {
@@ -889,447 +889,6 @@ function Rehive(config) {
     this.auth.mfa.verify = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(multiFactorAuthVerifyAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.get = function () {
-        return new Promise(function (resolve, reject) {
-            httpGetRehive(userProfileAPI).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.update = function (data) {
-        return new Promise(function (resolve, reject) {
-            httpPatchRehive(userProfileAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.addresses.get = function (id) {
-        return new Promise(function (resolve, reject) {
-            var url
-            if (id) {
-                url = userAddressAPI + id;
-            } else {
-                url = userAddressAPI;
-            }
-            httpGetRehive(url).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.addresses.update = function (data) {
-        return new Promise(function (resolve, reject) {
-            var url
-            if (data.id) {
-                url = userAddressAPI + data.id + '/';
-            } else {
-                reject({ status: 400, message: 'No id has been given' });
-            }
-            httpPatchRehive(url, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.addresses.create = function (data) {
-        return new Promise(function (resolve, reject) {
-            httpPostRehive(userAddressAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.addresses.delete = function (id) {
-        return new Promise(function (resolve, reject) {
-            if (!id) {
-                reject({ status: 400, message: 'No id has been given' });
-                return;
-            }
-
-            httpDeleteRehive(userAddressAPI + id + '/', {}).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.bankAccounts.get = function (bankId) {
-        return new Promise(function (resolve, reject) {
-            var url;
-
-            if (bankId) {
-                url = userBankAccountsAPI + bankId + '/';
-            } else {
-                url = userBankAccountsAPI;
-            }
-            httpGetRehive(url).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.bankAccounts.create = function (data) {
-        return new Promise(function (resolve, reject) {
-            httpPostRehive(userBankAccountsAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.bankAccounts.update = function (bankId, data) {
-        return new Promise(function (resolve, reject) {
-            var url,
-                error = {status: 'error', message: 'Account id is required'};
-
-            if (bankId) {
-                url = userBankAccountsAPI + bankId + '/';
-            } else {
-                reject(error);
-                return;
-            }
-            httpPatchRehive(url, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.bankAccounts.delete = function(bankId) {
-        return new Promise(function (resolve, reject) {
-            var url,
-                error = {status: 'error', message: 'Bank id is required'};
-
-            if (bankId) {
-                url = userBankAccountsAPI + bankId + '/';
-            } else {
-                reject(error);
-                return;
-            }
-
-            httpDeleteRehive(url, {}).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.cryptoAccounts.get = function (cryptoAccountId) {
-        return new Promise(function (resolve, reject) {
-            var url;
-
-            if (cryptoAccountId) {
-                url = userCryptoAccountsAPI + cryptoAccountId + '/';
-            } else {
-                url = userCryptoAccountsAPI;
-            }
-            httpGetRehive(url).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.cryptoAccounts.create = function (data) {
-        return new Promise(function (resolve, reject) {
-            httpPostRehive(userCryptoAccountsAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.cryptoAccounts.update = function (accountId, data) {
-        return new Promise(function (resolve, reject) {
-            var url,
-                error = {status: 'error', message: 'Crypto account id is required'};
-
-            if (accountId) {
-                url = userCryptoAccountsAPI + accountId + '/';
-            } else {
-                reject(error);
-                return;
-            }
-
-            httpPatchRehive(url, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.cryptoAccounts.delete = function (id) {
-        return new Promise(function (resolve, reject) {
-            var url,
-                error = {status: 'error', message: 'Crypto account id is required'};
-
-            if (id) {
-                url = userCryptoAccountsAPI + id + '/';
-            } else {
-                reject(error);
-                return;
-            }
-
-            httpDeleteRehive(url, {}).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.documents.get = function (obj) {
-        return new Promise(function (resolve, reject) {
-            var url,filters;
-
-            if(obj && obj.id) {
-                url = userCreateDocumentAPI + obj.id + '/';
-            } else if(obj && obj.filters){
-                filters = '?' + serialize(obj.filters);
-                url = userCreateDocumentAPI + filters;
-            } else {
-                url = userCreateDocumentAPI;
-            }
-
-            httpGetRehive(url).then(function (response) {
-                saveUserApiFilter(response, 'Documents');
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.documents.getNext = function () {
-        return new Promise(function (resolve, reject) {
-						var url = nextFilter['Documents'], mainUrl;
-            if (url) {
-                var urlArray = url.split(baseAPI);
-                mainUrl = urlArray[1];
-
-                httpGetRehive(mainUrl).then(function (response) {
-                    saveUserApiFilter(response, 'Documents');
-                    resolve(response);
-                }, function (error) {
-                    reject(error);
-                });
-            } else {
-                reject({ status: 400, message: 'Not allowed' });
-            }
-        });
-    };
-
-    this.user.documents.getPrevious = function () {
-        return new Promise(function (resolve, reject) {
-						var url = previousFilter['Documents'], mainUrl;
-            if (url) {
-                var urlArray = url.split(baseAPI);
-                mainUrl = urlArray[1];
-
-                httpGetRehive(mainUrl).then(function (response) {
-                    saveUserApiFilter(response, 'Documents');
-                    resolve(response);
-                }, function (error) {
-                    reject(error);
-                });
-            } else {
-                reject({ status: 400, message: 'Not allowed' });
-            }
-        });
-    };
-
-    this.user.documents.create = function (data) {
-        return new Promise(function (resolve, reject) {
-            var token = getToken();
-            var header = {};
-
-            if (token) {
-                header['Authorization'] = 'Token ' + token;
-            } else {
-                delete header['Authorization'];
-            }
-
-            fetch(baseAPI + userCreateDocumentAPI, {
-                method: 'POST',
-                headers: header,
-                body: data
-            })
-                .then(parseJSON)
-                .then(function (response) {
-                    if (response.status == 'success') {
-                        if (response.data && response.data.data) {
-                            resolve(response.data.data);
-                        } else if (response.data) {
-                            resolve(response.data);
-                        } else {
-                            resolve(response);
-                        }
-                    } else if (response.status == 'error') {
-                        if (response.data) {
-                            reject(response.data);
-                        } else {
-                            reject({ status: response.status_code, message: response.message});
-                        }
-                    }
-                });
-        });
-    };
-
-    this.user.emails.get = function (id) {
-        return new Promise(function (resolve, reject) {
-            var url;
-
-            if (id) {
-                url = userEmailAddressesAPI + id + '/';
-            } else {
-                url = userEmailAddressesAPI;
-            }
-
-            httpGetRehive(url).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.emails.create = function (data) {
-        return new Promise(function (resolve, reject) {
-            httpPostRehive(userEmailAddressesAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.emails.update = function (emailId, data) {
-        return new Promise(function (resolve, reject) {
-            var url,
-                error = {status: 'error', message: 'Email address id is required'};
-
-            if (emailId && data) {
-                url = userEmailAddressesAPI + emailId + '/';
-            } else {
-                reject(error, null);
-                return;
-            }
-            httpPatchRehive(url, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.emails.delete = function (id) {
-        return new Promise(function (resolve, reject) {
-            var url,
-                error = {status: 'error', message: 'Email address id is required'};
-
-            if (id) {
-                url = userEmailAddressesAPI + id + '/';
-            } else {
-                reject(error);
-                return;
-            }
-
-            httpDeleteRehive(url, {}).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.mobiles.get = function (id) {
-        return new Promise(function (resolve, reject) {
-            var url;
-
-            if (id) {
-                url = userMobileNumbersAPI + id + '/';
-            } else {
-                url = userMobileNumbersAPI;
-            }
-
-            httpGetRehive(url).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.mobiles.create = function (data) {
-        return new Promise(function (resolve, reject) {
-            httpPostRehive(userMobileNumbersAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.mobiles.update = function (mobileNumberId, data) {
-        return new Promise(function (resolve, reject) {
-            var url,
-                error = {status: 'error', message: 'Mobile number id is required'};
-
-            if (mobileNumberId && data) {
-                url = userMobileNumbersAPI + mobileNumberId + '/';
-            } else {
-                reject(error);
-                return;
-            }
-            httpPatchRehive(url, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.user.mobiles.delete = function (id) {
-        return new Promise(function (resolve, reject) {
-            var url,
-                error = {status: 'error', message: 'Mobile number id is required'};
-
-            if (id) {
-                url = userMobileNumbersAPI + id + '/';
-            } else {
-                reject(error);
-                return;
-            }
-
-            httpDeleteRehive(url, {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -1869,7 +1428,540 @@ function Rehive(config) {
             }
         });
     };
+    //#endregion
 
+    //#region Public User methods
+    this.user.get = function () {
+        return new Promise(function (resolve, reject) {
+            httpGetRehive(userProfileAPI).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.update = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPatchRehive(userProfileAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.addresses.get = function (id) {
+        return new Promise(function (resolve, reject) {
+            var url
+            if (id) {
+                url = userAddressAPI + id;
+            } else {
+                url = userAddressAPI;
+            }
+            httpGetRehive(url).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.addresses.update = function (data) {
+        return new Promise(function (resolve, reject) {
+            var url
+            if (data.id) {
+                url = userAddressAPI + data.id + '/';
+            } else {
+                reject({ status: 400, message: 'No id has been given' });
+            }
+            httpPatchRehive(url, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.addresses.create = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(userAddressAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.addresses.delete = function (id) {
+        return new Promise(function (resolve, reject) {
+            if (!id) {
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+
+            httpDeleteRehive(userAddressAPI + id + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.bankAccounts.get = function (bankId) {
+        return new Promise(function (resolve, reject) {
+            var url;
+
+            if (bankId) {
+                url = userBankAccountsAPI + bankId + '/';
+            } else {
+                url = userBankAccountsAPI;
+            }
+            httpGetRehive(url).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.bankAccounts.create = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(userBankAccountsAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.bankAccounts.update = function (bankId, data) {
+        return new Promise(function (resolve, reject) {
+            var url,
+                error = {status: 'error', message: 'Account id is required'};
+
+            if (bankId) {
+                url = userBankAccountsAPI + bankId + '/';
+            } else {
+                reject(error);
+                return;
+            }
+            httpPatchRehive(url, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.bankAccounts.delete = function(bankId) {
+        return new Promise(function (resolve, reject) {
+            var url,
+                error = {status: 'error', message: 'Bank id is required'};
+
+            if (bankId) {
+                url = userBankAccountsAPI + bankId + '/';
+            } else {
+                reject(error);
+                return;
+            }
+
+            httpDeleteRehive(url, {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.cryptoAccounts.get = function (cryptoAccountId) {
+        return new Promise(function (resolve, reject) {
+            var url;
+
+            if (cryptoAccountId) {
+                url = userCryptoAccountsAPI + cryptoAccountId + '/';
+            } else {
+                url = userCryptoAccountsAPI;
+            }
+            httpGetRehive(url).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.cryptoAccounts.create = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(userCryptoAccountsAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.cryptoAccounts.update = function (accountId, data) {
+        return new Promise(function (resolve, reject) {
+            var url,
+                error = {status: 'error', message: 'Crypto account id is required'};
+
+            if (accountId) {
+                url = userCryptoAccountsAPI + accountId + '/';
+            } else {
+                reject(error);
+                return;
+            }
+
+            httpPatchRehive(url, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.cryptoAccounts.delete = function (id) {
+        return new Promise(function (resolve, reject) {
+            var url,
+                error = {status: 'error', message: 'Crypto account id is required'};
+
+            if (id) {
+                url = userCryptoAccountsAPI + id + '/';
+            } else {
+                reject(error);
+                return;
+            }
+
+            httpDeleteRehive(url, {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.documents.get = function (obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+
+            if(obj && obj.id) {
+                url = userCreateDocumentAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = userCreateDocumentAPI + filters;
+            } else {
+                url = userCreateDocumentAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveUserApiFilter(response, 'Documents');
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.documents.getNext = function () {
+        return new Promise(function (resolve, reject) {
+						var url = nextFilter['Documents'], mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveUserApiFilter(response, 'Documents');
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.user.documents.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+						var url = previousFilter['Documents'], mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveUserApiFilter(response, 'Documents');
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.user.documents.create = function (data) {
+        return new Promise(function (resolve, reject) {
+            var token = getToken();
+            var header = {};
+
+            if (token) {
+                header['Authorization'] = 'Token ' + token;
+            } else {
+                delete header['Authorization'];
+            }
+
+            fetch(baseAPI + userCreateDocumentAPI, {
+                method: 'POST',
+                headers: header,
+                body: data
+            })
+                .then(parseJSON)
+                .then(function (response) {
+                    if (response.status == 'success') {
+                        if (response.data && response.data.data) {
+                            resolve(response.data.data);
+                        } else if (response.data) {
+                            resolve(response.data);
+                        } else {
+                            resolve(response);
+                        }
+                    } else if (response.status == 'error') {
+                        if (response.data) {
+                            reject(response.data);
+                        } else {
+                            reject({ status: response.status_code, message: response.message});
+                        }
+                    }
+                });
+        });
+    };
+
+    this.user.emails.get = function (id) {
+        return new Promise(function (resolve, reject) {
+            var url;
+
+            if (id) {
+                url = userEmailAddressesAPI + id + '/';
+            } else {
+                url = userEmailAddressesAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.emails.create = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(userEmailAddressesAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.emails.update = function (emailId, data) {
+        return new Promise(function (resolve, reject) {
+            var url,
+                error = {status: 'error', message: 'Email address id is required'};
+
+            if (emailId && data) {
+                url = userEmailAddressesAPI + emailId + '/';
+            } else {
+                reject(error, null);
+                return;
+            }
+            httpPatchRehive(url, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.emails.delete = function (id) {
+        return new Promise(function (resolve, reject) {
+            var url,
+                error = {status: 'error', message: 'Email address id is required'};
+
+            if (id) {
+                url = userEmailAddressesAPI + id + '/';
+            } else {
+                reject(error);
+                return;
+            }
+
+            httpDeleteRehive(url, {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.mobiles.get = function (id) {
+        return new Promise(function (resolve, reject) {
+            var url;
+
+            if (id) {
+                url = userMobileNumbersAPI + id + '/';
+            } else {
+                url = userMobileNumbersAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.mobiles.create = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(userMobileNumbersAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.mobiles.update = function (mobileNumberId, data) {
+        return new Promise(function (resolve, reject) {
+            var url,
+                error = {status: 'error', message: 'Mobile number id is required'};
+
+            if (mobileNumberId && data) {
+                url = userMobileNumbersAPI + mobileNumberId + '/';
+            } else {
+                reject(error);
+                return;
+            }
+            httpPatchRehive(url, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.mobiles.delete = function (id) {
+        return new Promise(function (resolve, reject) {
+            var url,
+                error = {status: 'error', message: 'Mobile number id is required'};
+
+            if (id) {
+                url = userMobileNumbersAPI + id + '/';
+            } else {
+                reject(error);
+                return;
+            }
+
+            httpDeleteRehive(url, {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+    //#endregion
+
+    //#region Admin methods
+    //#region Admin Export methods
+    this.admin.exports.sets.get = function (obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+
+            if(obj && obj.id) {
+                url = adminExportSetsAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminExportSetsAPI + filters;
+            } else {
+                url = adminExportSetsAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveFilter(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.exports.sets.getNext = function () {
+        return new Promise(function (resolve, reject) {
+			var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.exports.sets.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.exports.sets.create = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(adminExportSetsAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.exports.sets.delete = function (id) {
+        return new Promise(function (resolve, reject) {
+            if (!id) {
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+
+            httpDeleteRehive(adminExportSetsAPI + id + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    //#endregion
+    //#region Admin Access control methods
     this.admin.accessControlRules.get = function (obj) {
         return new Promise(function (resolve, reject) {
 
@@ -1972,7 +2064,9 @@ function Rehive(config) {
             });
         });
     };
+    //#endregion
 
+    //#region Admin user methods
     this.admin.users.overview.get = function (obj) {
         return new Promise(function (resolve, reject) {
              var url,filters;
@@ -3077,7 +3171,9 @@ function Rehive(config) {
             });
         });
     };
+    //#endregion
 
+    //#region Admin Transaction methods
     this.admin.transactions.get = function (obj) {
         return new Promise(function (resolve, reject) {
             var url,filters;
@@ -3136,92 +3232,6 @@ function Rehive(config) {
             } else {
                 reject({ status: 400, message: 'Not allowed' });
             }
-        });
-    };
-
-    this.admin.transactions.sets.get = function (obj) {
-        return new Promise(function (resolve, reject) {
-            var url,filters;
-
-            if(obj && obj.id) {
-                url = adminTransactionsSetsAPI + obj.id + '/';
-            } else if(obj && obj.filters){
-                filters = '?' + serialize(obj.filters);
-                url = adminTransactionsSetsAPI + filters;
-            } else {
-                url = adminTransactionsSetsAPI;
-            }
-
-            httpGetRehive(url).then(function (response) {
-                saveFilter(response);
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.transactions.sets.getNext = function () {
-        return new Promise(function (resolve, reject) {
-
-						var url = nextFilterForLists, mainUrl;
-            if (url) {
-                var urlArray = url.split(baseAPI);
-                mainUrl = urlArray[1];
-
-                httpGetRehive(mainUrl).then(function (response) {
-                    saveFilter(response);
-                    resolve(response);
-                }, function (error) {
-                    reject(error);
-                });
-            } else {
-                reject({ status: 400, message: 'Not allowed' });
-            }
-        });
-    };
-
-    this.admin.transactions.sets.getPrevious = function () {
-        return new Promise(function (resolve, reject) {
-						var url = previousFilterForLists, mainUrl;
-            if (url) {
-                var urlArray = url.split(baseAPI);
-                mainUrl = urlArray[1];
-
-                httpGetRehive(mainUrl).then(function (response) {
-                    saveFilter(response)
-                    resolve(response);
-                }, function (error) {
-                    reject(error);
-                });
-            } else {
-                reject({ status: 400, message: 'Not allowed' });
-            }
-        });
-    };
-
-    this.admin.transactions.sets.create = function (data) {
-        return new Promise(function (resolve, reject) {
-            httpPostRehive(adminTransactionsSetsAPI, data).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.transactions.sets.delete = function (id) {
-        return new Promise(function (resolve, reject) {
-            if (!id) {
-                reject({ status: 400, message: 'No id has been given' });
-                return;
-            }
-
-            httpDeleteRehive(adminTransactionsSetsAPI + id + '/', {}).then(function (response) {
-                resolve(response);
-            }, function (error) {
-                reject(error);
-            });
         });
     };
 
@@ -3389,7 +3399,9 @@ function Rehive(config) {
             });
         });
     };
+    //#endregion
    
+    //#region Admin Accounts methods
     this.admin.accounts.get = function (obj) {
         return new Promise(function (resolve, reject) {
             var url,filters;
@@ -3449,95 +3461,9 @@ function Rehive(config) {
             }
         });
     };
+    //#endregion
 
-    this.admin.accounts.sets.get = function(obj){
-        return new Promise(function(resolve, reject){
-            var url,filters;
-            if(obj && obj.id){
-                url = adminAccountSetsAPI + obj.id + '/';
-            }
-            else if(obj && obj.filters){
-                filters = '?' + serialize(obj.filters);
-                url = adminAccountSetsAPI + filters;
-            }
-            else {
-                url = adminAccountSetsAPI;
-            }
-
-            httpGetRehive(url).then(function (response){
-                saveFilter(response);
-                resolve(response);
-            }, function(error){
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.accounts.sets.getNext = function(){
-        return new Promise(function(resolve, reject){
-            var url = nextFilterForLists, mainUrl;
-            if(url){
-                var urlArray = url.split(baseAPI);
-                mainUrl = urlArray[1];
-
-                httpGetRehive(mainUrl).then(function(response){
-                    saveFilter(response);
-                    resolve(response);
-                }, function(error){
-                    reject(error);
-                });
-            }
-            else {
-                reject({ status: 400, message: 'Not allowed' });
-            }
-        });
-    };
-
-    this.admin.accounts.sets.getPrevious = function(){
-        return new Promise(function (resolve, reject){
-            var url = previousFilterForLists, mainUrl;
-            if(url){
-                var urlArray = url.split(baseAPI);
-                mainUrl = urlArray[1];
-
-                httpGetRehive(mainUrl).then(function (response){
-                    saveFilter(response);
-                    resolve(response);
-                }, function(error) {
-                    reject(error);
-                });
-            }
-            else{
-                reject({ status: 400, message: 'Not allowed' });
-            }
-        });
-    };
-
-    this.admin.accounts.sets.create = function (data){
-        return new Promise(function(resolve, reject){
-            httpPostRehive(adminAccountSetsAPI, data).then(function(response){
-                resolve(response);
-            }, function(error){
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.accounts.sets.delete = function(id){
-        return new Promise(function(resolve, reject){
-            if(!id){
-                reject({ status: 400, message: 'No id has been given' });
-                return;
-            }
-
-            httpDeleteRehive(adminAccountSetsAPI + id + '/', {}).then(function(response){
-                resolve(response);
-            }, function(error){
-                reject(error);
-            });
-        });
-    };
-
+    //#region Admin Single account methods
     this.admin.account.definitions.get = function (obj) {
         return new Promise(function (resolve, reject) {
             var url,filters;
@@ -3942,94 +3868,6 @@ function Rehive(config) {
         });
     };
 
-    this.admin.account.currencies.sets.get = function(obj){
-        return new Promise(function(resolve, reject){
-            var url,filters;
-            if(obj && obj.id){
-                url = adminAccountExportCurrencySetsAPI + obj.id + '/';
-            }
-            else if(obj && obj.filters){
-                filters = '?' + serialize(obj.filters);
-                url = adminAccountExportCurrencySetsAPI + filters;
-            }
-            else {
-                url = adminAccountExportCurrencySetsAPI;
-            }
-
-            httpGetRehive(url).then(function (response){
-                saveFilter(response);
-                resolve(response);
-            }, function(error){
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.account.currencies.sets.getNext = function(){
-        return new Promise(function(resolve, reject){
-            var url = nextFilterForLists, mainUrl;
-            if(url){
-                var urlArray = url.split(baseAPI);
-                mainUrl = urlArray[1];
-
-                httpGetRehive(mainUrl).then(function(response){
-                    saveFilter(response);
-                    resolve(response);
-                }, function(error){
-                    reject(error);
-                });
-            }
-            else {
-                reject({ status: 400, message: 'Not allowed' });
-            }
-        });
-    };
-
-    this.admin.account.currencies.sets.getPrevious = function(){
-        return new Promise(function (resolve, reject){
-            var url = previousFilterForLists, mainUrl;
-            if(url){
-                var urlArray = url.split(baseAPI);
-                mainUrl = urlArray[1];
-
-                httpGetRehive(mainUrl).then(function (response){
-                    saveFilter(response);
-                    resolve(response);
-                }, function(error) {
-                    reject(error);
-                });
-            }
-            else{
-                reject({ status: 400, message: 'Not allowed' });
-            }
-        });
-    };
-
-    this.admin.account.currencies.sets.create = function (data){
-        return new Promise(function(resolve, reject){
-            httpPostRehive(adminAccountExportCurrencySetsAPI, data).then(function(response){
-                resolve(response);
-            }, function(error){
-                reject(error);
-            });
-        });
-    };
-
-    this.admin.account.currencies.sets.delete = function(id){
-        return new Promise(function(resolve, reject){
-            if(!id){
-                reject({ status: 400, message: 'No id has been given' });
-                return;
-            }
-
-            httpDeleteRehive(adminAccountExportCurrencySetsAPI + id + '/', {}).then(function(response){
-                resolve(response);
-            }, function(error){
-                reject(error);
-            });
-        });
-    };
-
     this.admin.accounts.create = function (data) {
         return new Promise(function (resolve, reject) {
             httpPostRehive(adminAccountsAPI, data).then(function (response) {
@@ -4300,7 +4138,9 @@ function Rehive(config) {
             });
         });
     };
+    //#endregion
 
+    //#region Admin Currencies methods
     this.admin.currencies.get = function (obj) {
         return new Promise(function (resolve, reject) {
             var url,filters;
@@ -4494,7 +4334,9 @@ function Rehive(config) {
             });
         });
     };
+    //#endregion
 
+    //#region Admin Company methods
     this.admin.company.get = function () {
         return new Promise(function (resolve, reject) {
             httpGetRehive(adminCompanyAPI).then(function (response) {
@@ -4554,7 +4396,9 @@ function Rehive(config) {
             });
         });
     };
+    //#endregion
 
+    //#region Admin Bankaccount methods
     this.admin.bankAccounts.get = function (obj) {
         var url;
 
@@ -4698,7 +4542,9 @@ function Rehive(config) {
             });
         });
     };
+    //#endregion
 
+    //#region Admin Webhook methods
     this.admin.webhooks.get = function (obj) {
         var url,filters;
 
@@ -4842,8 +4688,6 @@ function Rehive(config) {
         }
     };
 
-
-
     this.admin.webhookTasks.getNext = function () {
         return new Promise(function (resolve, reject) {
 						var url = nextFilterForLists, mainUrl;
@@ -4941,7 +4785,9 @@ function Rehive(config) {
             }
         });
     };
+    //#endregion
 
+    //#region Admin Subtype methods
     this.admin.subtypes.get = function (obj) {
         var url;
 
@@ -4989,7 +4835,9 @@ function Rehive(config) {
             });
         });
     };
+    //#endregion
 
+    //#region Admin Notifications methods
     this.admin.notifications.get = function (obj) {
         var url;
 
@@ -5008,7 +4856,6 @@ function Rehive(config) {
         })
     };
 
-
     this.admin.notifications.update = function (notificationId, data) {
         return new Promise(function (resolve, reject) {
             httpPatchRehive(adminNotificationsAPI + notificationId + '/', data).then(function (response) {
@@ -5018,7 +4865,9 @@ function Rehive(config) {
             });
         })
     };
+    //#endregion
 
+    //#region Admin Service methods
     this.admin.services.get = function (obj) {
         return new Promise(function (resolve, reject) {
             var url,filters;
@@ -5031,7 +4880,6 @@ function Rehive(config) {
             } else {
                 url = adminServicesAPI;
             }
-
 
             httpGetRehive(url).then(function (response) {
                 saveFilter(response);
@@ -5114,7 +4962,9 @@ function Rehive(config) {
             });
         });
     };
+    //#endregion
 
+    //#region Admin Request methods
     this.admin.requests.get = function (obj) {
         return new Promise(function (resolve, reject) {
             var url,filters;
@@ -5177,7 +5027,9 @@ function Rehive(config) {
             }
         });
     };
+    //#endregion
 
+    //#region Admin Groups methods
     this.admin.groups.get = function (obj) {
         return new Promise(function (resolve, reject) {
             var url,filters;
@@ -5448,7 +5300,6 @@ function Rehive(config) {
         })
     };
 
-
     this.admin.groups.tiers.requirements.get = function (name,tierId,obj) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
@@ -5521,7 +5372,6 @@ function Rehive(config) {
             })
         })
     };
-
 
     this.admin.groups.tiers.fees.get = function (name,tierId,obj) {
         return new Promise(function (resolve, reject) {
@@ -5885,8 +5735,8 @@ function Rehive(config) {
             });
         });
     };
-
-    //public functions end
+    //#endregion
+    //#endregion
 }
 
 
