@@ -1,10 +1,10 @@
 {
   "name": "rehive",
-  "version": "1.26.0",
+  "version": "1.26.1",
   "description": "Javascript sdk for rehive APIs",
   "main": "rehive.js",
   "dependencies": {
-    "node-fetch": "^2.1.2",
+    "node-fetch": "^2.6.1",
     "node-minify": "^2.4.2"
   },
   "devDependencies": {},
