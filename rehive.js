@@ -61,6 +61,10 @@ function Rehive(config) {
     this.permissions = {};
 
     this.admin = {
+        auth: {
+            login: {},
+            register: {}
+        },
         accessControlRules: {},
         users: {
             overview: {},
@@ -238,6 +242,8 @@ function Rehive(config) {
         adminGroupsAccountConfigurationsAPI = '/account-configurations/',
         adminGroupsAccountConfigurationsCurrenciesAPI = '/currencies/',
         adminGroupsTiersSettingsAPI = '/settings/';
+        adminAuthLoginAPI = 'admin/auth/login/';
+        adminAuthRegisterAPI = 'admin/auth/register/';
 
     var baseAPI;
 
@@ -1876,6 +1882,29 @@ function Rehive(config) {
     //#endregion
 
     //#region Admin methods
+    //#region Admin Auth methods
+    this.admin.auth.login = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(adminAuthLoginAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.auth.register = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(adminAuthRegisterAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    //#endregion
+
     //#region Admin Export methods
     this.admin.exports.sets.get = function (obj) {
         return new Promise(function (resolve, reject) {
