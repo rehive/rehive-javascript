@@ -241,8 +241,8 @@ function Rehive(config) {
         adminGroupsTiersAPI = '/tiers/',
         adminGroupsAccountConfigurationsAPI = '/account-configurations/',
         adminGroupsAccountConfigurationsCurrenciesAPI = '/currencies/',
-        adminGroupsTiersSettingsAPI = '/settings/';
-        adminAuthLoginAPI = 'admin/auth/login/';
+        adminGroupsTiersSettingsAPI = '/settings/',
+        adminAuthLoginAPI = 'admin/auth/login/',
         adminAuthRegisterAPI = 'admin/auth/register/';
 
     var baseAPI;
