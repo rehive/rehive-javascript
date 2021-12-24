@@ -139,6 +139,9 @@ function Rehive(config) {
         },
         exports: {
             sets: {}
+        },
+        metrics: {
+            points: {}
         }
     };
 
@@ -243,7 +246,8 @@ function Rehive(config) {
         adminGroupsAccountConfigurationsCurrenciesAPI = '/currencies/',
         adminGroupsTiersSettingsAPI = '/settings/',
         adminAuthLoginAPI = 'admin/auth/login/',
-        adminAuthRegisterAPI = 'admin/auth/register/';
+        adminAuthRegisterAPI = 'admin/auth/register/',
+        adminMetricsAPI = 'admin/metrics/';
 
     var baseAPI;
 
@@ -1903,6 +1907,107 @@ function Rehive(config) {
         });
     };
 
+    //#endregion
+
+    //#region Admin Metrics methods
+    this.admin.metrics.get = function (obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+
+            if(obj && obj.id) {
+                url = adminMetricsAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminMetricsAPI + filters;
+            } else {
+                url = adminMetricsAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveFilter(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.metrics.getNext = function () {
+        return new Promise(function (resolve, reject) {
+			var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.metrics.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.metrics.create = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(adminMetricsAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.metrics.delete = function (id) {
+        return new Promise(function (resolve, reject) {
+            if (!id) {
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+
+            httpDeleteRehive(adminMetricsAPI + id + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.metrics.points.get = function (id) {
+        return new Promise(function (resolve, reject) {
+            if(!id){
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+            httpGetRehive(adminMetricsAPI + id + '/points/').then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
     //#endregion
 
     //#region Admin Export methods
