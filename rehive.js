@@ -1994,18 +1994,66 @@ function Rehive(config) {
             });
         });
     };
-
-    this.admin.metrics.points.get = function (id) {
+    
+    this.admin.metrics.points.get = function (obj) {
         return new Promise(function (resolve, reject) {
-            if(!id){
+            var url,filters;
+            if(!obj.id && (!obj.filters || (obj.filters && !obj.filters.id))){
                 reject({ status: 400, message: 'No id has been given' });
                 return;
             }
-            httpGetRehive(adminMetricsAPI + id + '/points/').then(function (response) {
+
+            if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminMetricsAPI + obj.filters.id + '/points/' + filters;
+            } else {
+                url = adminMetricsAPI + obj.id + '/points/';
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveFilter(response);
                 resolve(response);
             }, function (error) {
                 reject(error);
             });
+        });
+    };
+
+    this.admin.metrics.points.getNext = function () {
+        return new Promise(function (resolve, reject) {
+			var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.metrics.points.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
         });
     };
     //#endregion
