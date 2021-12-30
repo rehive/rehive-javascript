@@ -1995,19 +1995,18 @@ function Rehive(config) {
         });
     };
     
-    this.admin.metrics.points.get = function (obj) {
+    this.admin.metrics.points.get = function (id, obj) {
         return new Promise(function (resolve, reject) {
             var url,filters;
-            if(!obj.id && (!obj.filters || (obj.filters && !obj.filters.id))){
+            if(!id){
                 reject({ status: 400, message: 'No id has been given' });
                 return;
             }
 
-            if(obj && obj.filters){
+            url = adminMetricsAPI + id + '/points/';
+            if(obj.filters){
                 filters = '?' + serialize(obj.filters);
-                url = adminMetricsAPI + obj.filters.id + '/points/' + filters;
-            } else {
-                url = adminMetricsAPI + obj.id + '/points/';
+                url += filters;
             }
 
             httpGetRehive(url).then(function (response) {
