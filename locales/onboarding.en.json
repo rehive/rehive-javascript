@@ -1,0 +1,24 @@
+{
+  "individual_onboarding_message": "Onboarding progress",
+
+  "basic_info_title": "Personal details",
+  "basic_info_description": "Complete this onboarding process to start using ({company}). Let's start with basic details.",
+
+  "central_bank_number_title": "Central bank number",
+  "central_bank_number_description": "",
+
+  "verify_mobile_title": "Mobile number",
+  "verify_mobile_description": "Verify your mobile number",
+
+  "address_title": "Address",
+  "address_description": "Please enter your permanent address, which we require to verify your identity.",
+
+  "address_verification_title": "Proof of address",
+  "address_verification_description": "It must contain your address.",
+
+  "identity_title": "Proof of identity",
+  "identity_description": "It must contain an official photo ID.",
+
+  "finances_title": "Proof of income",
+  "finances_description": "Choose a document to upload as proof of income"
+}
