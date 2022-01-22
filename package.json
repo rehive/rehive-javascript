@@ -4,7 +4,7 @@
   "description": "Javascript sdk for rehive APIs",
   "main": "rehive.js",
   "dependencies": {
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^3.1.1",
     "node-minify": "^3.6.0"
   },
   "devDependencies": {},
