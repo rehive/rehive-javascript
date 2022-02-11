@@ -16,8 +16,11 @@
   "stellar_empty": "No stellar accounts added yet",
   "ethereum_empty": "No ethereum accounts added yet",
 
+  "add_bank_account": "Add bank account",
+
   "skip": "Skip",
   "continue": "Continue",
+  "confirm": "Confirm",
   "cancel": "Cancel",
 
   "settings": "Settings",
@@ -46,12 +49,51 @@
   "contact_support": "Contact support",
   "faqs": "FAQs",
   "about": "About",
+  "save": "Save",
 
   "help_disclaimer_title": "Who is managing my funds?",
-  "help_disclaimer_description": `**Important dislaimer:** {{company.name ?? company.id}} is powered by the Rehive App. All funds, activities and support queries are administered by {{company.name ?? company.id}}$$. Rehive is not responsible for any possible loss of funds that may occur through mismanagement by {{company.name ?? company.id}}$$.'`,
+  "help_disclaimer_description": "**Important disclaimer:** {{company.name ?? company.id}} is powered by the Rehive App. All funds, activities and support queries are administered by {{company.name ?? company.id}}$$. Rehive is not responsible for any possible loss of funds that may occur through mismanagement by {{company.name ?? company.id}}$$.",
 
   "warning_banner": "**Warning:** This is a test project. This is not real money.",
 
   "tap_to_close": "Tap to close",
-  "close": "Close"
+  "close": "Close",
+  "success": "Success",
+  "fail": "Fail",
+  "error": "Error",
+  "try_again": "Try again",
+  "update": "Update",
+
+  "info_prefix": "Info: ",
+  "alert_prefix": "Alert: ",
+  "warning_prefix": "Warning: ",
+  "success_prefix": "Success: ",
+
+  "edit": "Edit",
+  "delete": "Delete",
+  "verify": "Verify",
+  "primary": "Set as primary",
+  "done": "Done",
+  "disable": "Disable",
+  "accept": "Accept",
+  "remove": "Remove",
+  "reset": "Reset",
+
+  "suspended_company_banner": "This project has been suspended. Please contact the project administrator.",
+  "test_company_banner": "This is a test project with test money. This is not real money.",
+  "camera": "Camera",
+  "gallery": "Gallery",
+  "max_file_size_5mb": "Max file size 5 MB",
+  "unable_to_display_preview_of_file": "Unable to display preview of file",
+  "confirm_and_upload": "Confirm & upload",
+  "choose_new": "Choose new",
+  "refer_a_friend": "Refer a friend",
+  "and_earn_rewards": " and earn rewards",
+  "optional": "Optional",
+  "send_us_a_mail": "Send us a mail",
+  "frequently_asked_questions": "Frequently asked questions",
+  "still_stuck": "Still stuck? Send us a mail",
+  "not_yet_provided": "Not yet provided",
+
+  "picker_placeholder": "Select an item..."
 }

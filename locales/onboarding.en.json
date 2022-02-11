@@ -2,7 +2,7 @@
   "individual_onboarding_message": "Onboarding progress",
 
   "basic_info_title": "Personal details",
-  "basic_info_description": "Complete this onboarding process to start using ({company}). Let's start with basic details.",
+  "basic_info_description": "Complete this onboarding process to start using {{company.name}}. Let's start with basic details.",
 
   "central_bank_number_title": "Central bank number",
   "central_bank_number_description": "",
