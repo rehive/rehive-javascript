@@ -1,0 +1,15 @@
+{
+    "rewards": "Récompenses",
+    "pending": "En attente",
+    "earned": "Gagné",
+    "reward_empty": "Pas de récompenses",
+    "campaign_empty": "Aucune récompense disponible",
+    "rewards_subtitle": "Gagnez des points tout en obtenant des récompenses",
+    "referal_rewards_banner": "**Récommander à un ami** et gagner des récompenses",
+    "_empty": "Aucun élément ajouté pour le moment",
+    "claim": "Réclamation",
+    "request": "Requête",
+    "earn": "Gagnez {{montant}}",
+    "date_claimed": "Date de la réclamation"
+  }
+  

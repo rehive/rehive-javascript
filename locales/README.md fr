@@ -1,0 +1,78 @@
+# Rehive app translations : Traductions de l'application Rehive
+
+The rehive app uses i18n standard json language files along with i18next to manage translations in the app. These language files are divided into the following different namespaces: L'application rehive utilise les fichiers de langue standard ainsi que pour gérer les traductions dans l'application. Ces fichiers de langue sont divisés en différents espaces de noms :
+
+- Common : Commun
+- Accounts : Comptes
+- Authentification : Authentification
+- Onboarding : Inscription
+- PoS : Pds
+- Products : Produits
+- Profile : Profil
+- Rewards : Récompenses
+- Settings : Paramètres
+
+## Language files: ## Fichiers de langue
+
+### Variables : ### Variables
+
+Variables can be included in the strings using `{{variable_name}}`. The list of available variables in each namespace will be added soon. : Les variables peuvent être inclus dans les chaînes de caractères en utilisant `{{nom du variable}}`. La liste des variables disponibles dans chaque espace de noms sera bientôt ajoutée.
+
+### Formatting : ### Formatage
+
+(Not yet implemented, but this is the intended usage) : (Pas encore implémenté, mais c'est l'usage prévu)
+
+The following formatting identifiers are available: Les identifiants de formatage suivants sont disponibles :
+
+
+- `**text**` for Bold : - `**text**` pour Bold
+
+## Usage : ## Usage
+
+These base translations are hard coded on the app. However each one of these can be overwritten ~~using the locales section of the app service in the dashboard (forthcoming) or~~ using the [App service directly](#app-service).. :Ces traductions de base sont fortement codées dans l'application. Cependant, chacune d'entre elles peut être modifiée ~~ en utilisant la section locale du service d'application dans le tableau de bord (à venir) ou~~ en utilisant le [service d'application directement](#Service de l'app-).... 
+
+### Config : ### Configurer
+
+Above the fixed content in the app, there is also client generated app content such as home screen prompts/alerts, group names/descriptions, fee names, etc. These can also be localized by providing a key as the text/label field in the dashboard and then adding the related translations to the app service. : Outre le contenu fixe de l'application, il existe également un contenu généré par le client, comme les invites/alertes sur l'écran d'accueil, les noms/descriptions des groupes, les noms des frais, etc. Ces éléments peuvent également être localisés en fournissant une clé comme champ texte/étiquette dans le tableau de bord, puis en ajoutant les traductions correspondantes au service d'application.
+
+### Localize : ### Localiser
+
+To be added : Doit être ajouté
+
+## App service : ## Service de l'app
+
+Currently translations have to be added through the wallet service API/swagger (while the dashboard UI for managing locales is being completed). This can be accessed at https://wallet.services.rehive.io/swagger/ (base URL: wallet.services.rehive.io/api). Note: remember to authorize by adding `Token <admin_token>` by click the green Authorize button top right of the screen. : Actuellement, les traductions doivent être ajoutées par le biais de l'API/swagger du service de portefeuille (tandis que l'interface utilisateur du tableau de bord pour la gestion des locales est en cours d'achèvement). Vous pouvez y accéder à l'adresse https://wallet.services.rehive.io/swagger/ (URL de base : wallet.services.rehive.io/api). Note : n'oubliez pas d'autoriser en ajoutant `Token <admin_token>` en cliquant sur le bouton vert Autoriser en haut à droite de l'écran.
+
+Traduit avec www.DeepL.com/Translator (version gratuite)
+
+### Adding a new translation : ### Ajouter une nouvelle traduction
+
+
+
+This is done by making a new POST request to `/admin/locales/` with the following information: Ceci est fait en faisant une nouvelle demande POST à `/admin/locales/` avec les informations suivantes :
+
+```json : ```json
+{
+  "id": "string", : "id": "string",
+  "translation": {}, : "traduction": {},
+  "name": "string" :  "nom": "string"
+}
+```
+
+where `id` is the language code (i.e. `en-US`), `name` is the language name (English (US)) and `translation` is a nested json object of each locale file for example: où `id` est le code de langue (i.e. `en-US`), `name` est le nom de la langue (English (US)) et `translation` est un objet json imbriqué de chaque fichier de locale par exemple :
+
+```json : ```json
+{
+  "translation": { : "traduction": {
+    "accounts": { ... }, : "comptes": { ... },
+    "auth": { ... }, :  "auth": { ... }, :
+    
+    "common": { ... }, :   "commun": { ... },
+    ...
+  },
+}
+```
+
+### Updating translations : ### mise à jour des traductions
+
+This is done by making a PUT/PATCH request to `/admin/locales/{locales_id}/` where `locales_id` is the `id` / language code used above (i.e. `en-US`). When updating the locales please ensure to include the entire new translations object. :Pour ce faire, il suffit d'envoyer une requête PUT/PATCH à `/admin/locales/{locales_id}/` où `locales_id` est le `id` / code de langue utilisé ci-dessus (c'est-à-dire `en-US`). Lorsque vous mettez à jour les locales, veillez à inclure l'intégralité du nouvel objet de traduction. 
