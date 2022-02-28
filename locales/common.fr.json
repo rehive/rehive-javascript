@@ -1,0 +1,100 @@
+{
+    "first_name": "Prénom",
+    "last_name": "Nom de famille",
+    "nationality": "Nationalité",
+    "birth_date": "Date de naissance",
+    "id_number": "Numéro d'identification",
+    "language": "Langue",
+    "email_address": "Adresse électronique",
+    "mobile_number": "Numéro de téléphone mobile",
+    "email_addresses": "Adresses électroniques",
+    "mobile_numbers": "Numéros de téléphone mobile",
+    "address": "Adresse",
+    "bank_account": "Compte bancaire",
+    "crypto_empty": "Aucun compte crypto n'a encore été ajouté",
+    "bitcoin_empty": "Aucun compte bitcoin n'a encore été ajouté",
+    "stellar_empty": "Aucun compte stellaire n'a encore été ajouté",
+    "ethereum_empty": "Aucun compte ethereum n'a encore été ajouté",
+  
+    "add_bank_account": "Ajouter un compte bancaire",
+  
+    "skip": "Passer à",
+    "continue": "Continuer",
+    "confirm": "Confirmer",
+    "cancel": "Annuler",
+  
+    "settings": "Paramètres",
+    "password": "Mot de passe",
+    "logout": "Déconnexion",
+  
+    "button.add_new": "AJOUTER NOUVEAU",
+  
+    "sms": "SMS",
+    "email": "Courrier électronique",
+    "push": "Pousser",
+  
+    "scan_qr_helper": "Scanner le code QR pour payer",
+    "awaiting_payment": "En attente de paiement",
+    "empty_custom_pos_products": "Aucun produit n'a été ajouté à la facture. Cliquez sur le bouton ‘Plus’ icône pour ajouter un produit",
+  
+    "custom_sale_description": "Appuyez sur le panier en haut à droite pour passer à la caisse.",
+  
+    "reward_empty": "Aucune récompense disponible",
+    "campaign_empty": "Aucune récompense disponible",
+  
+    "using_subtitle": "Vous utilisez {{company.name ?? company.id}} app.",
+    "about_link": "À propos de
+    {{company.name ?? company.id}} app.",
+  
+    "help_center": "Centre d'aide",
+    "contact_support": "Contacter l'assistance",
+    "faqs": "FAQs",
+    "about": "À propos de",
+    "save": "Sauvegarder",
+  
+    "help_disclaimer_title": "Qui gère mes fonds?",
+    "help_disclaimer_description": "**:*Avis important* {{company.name ?? company.id}} est alimenté par l'application Rehive. Tous les fonds, activités et demandes de soutien sont administrés par {{company.name ?? company.id}}$$. Rehive n'est pas responsable de toute perte de fonds qui pourrait survenir à la suite d'une mauvaise gestion de la part des personnes suivantes {{company.name ?? company.id}}$$.",
+  
+    "warning_banner": "**Avertissement:** Il s'agit d'un projet de test. Ce n'est pas de l'argent réel.",
+  
+    "tap_to_close": "Appuyez pour fermer",
+    "close": "Fermer",
+    "success": "Succès",
+    "fail": "Échec",
+    "error": "Erreur",
+    "try_again": "Essayez à nouveau",
+    "update": "Mise à jour",
+  
+    "info_prefix": "Information: ",
+    "alert_prefix": "Alerte: ",
+    "warning_prefix": "Avertissement: ",
+    "success_prefix": "Succès: ",
+  
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "verify": "Vérifier",
+    "primary": "Définir comme principal",
+    "done": "Terminé",
+    "disable": "Désactiver",
+    "accept": "Accepter",
+    "remove": "Supprimer",
+    "reset": "Réinitialiser",
+  
+    "suspended_company_banner": "Ce projet a été suspendu. Veuillez contacter l'administrateur du projet.",
+    "test_company_banner": "Il s'agit d'un projet de test avec de l'argent de test. Il ne s'agit pas d'argent réel..",
+    "camera": "Caméra",
+    "gallery": "Galerie",
+    "max_file_size_5mb": "Taille maximale du fichier 5 MB",
+    "unable_to_display_preview_of_file": "Impossible d'afficher l'aperçu du fichier",
+    "confirm_and_upload": "Confirmer et télécharger",
+    "choose_new": "Choisir un nouveau",
+    "refer_a_friend": "Recommandez un ami",
+    "and_earn_rewards": " et gagnez des récompenses",
+    "optional": "Optionnel",
+    "send_us_a_mail": "Envoyez-nous un e-mail",
+    "frequently_asked_questions": "Questions fréquemment posées",
+    "still_stuck": "Toujours bloqué ? Envoyez-nous un message",
+    "not_yet_provided": "Pas encore fourni",
+  
+    "picker_placeholder": "Sélectionnez un élément..."
+  }

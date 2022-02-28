@@ -1,0 +1,25 @@
+{
+    "individual_onboarding_message": "Progression de l'intégration",
+  
+    "basic_info_title": "Données personnelles",
+    "basic_info_description": "Complétez ce processus d'intégration pour commencer à utiliser {{company.name}}. Commençons par les détails de base.",
+  
+    "central_bank_number_title": "Numéro de la banque centrale",
+    "central_bank_number_description": "",
+  
+    "verify_mobile_title": "Numéro de téléphone mobile",
+    "verify_mobile_description": "Vérifiez votre numéro de téléphone mobile",
+  
+    "address_title": "Adresse",
+    "address_description": "Veuillez indiquer votre adresse permanente, dont nous avons besoin pour vérifier votre identité..",
+  
+    "address_verification_title": "Justificatif d'adresse",
+    "address_verification_description": "Il doit contenir votre adresse.",
+  
+    "identity_title": "Pièce d'identité",
+    "identity_description": "Elle doit contenir une pièce d'identité officielle avec photo.",
+  
+    "finances_title": "Justificatif de revenus",
+    "finances_description": "Choisissez un document à télécharger comme justificatif de revenus"
+  }
+  
