@@ -9,7 +9,7 @@
     "_empty": "Aucun élément ajouté pour le moment",
     "claim": "Réclamation",
     "request": "Requête",
-    "earn": "Gagnez {{montant}}",
+    "earn": "Gagnez {{amount}}",
     "date_claimed": "Date de la réclamation"
   }
   
