@@ -1,0 +1,14 @@
+{
+  "rewards": "Rewards",
+  "pending": "Pending",
+  "earned": "Earned",
+  "reward_empty": "No rewards",
+  "campaign_empty": "No available rewards",
+  "rewards_subtitle": "Earn points while earning rewards",
+  "referal_rewards_banner": "**Refer a friend** and earn rewards",
+  "_empty": "No items added yet",
+  "claim": "Claim",
+  "request": "Request",
+  "earn": "Earn {{amount}}",
+  "date_claimed": "Date claimed"
+}
