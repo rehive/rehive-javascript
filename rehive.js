@@ -112,7 +112,8 @@ function Rehive(config) {
         },
         company: {
             settings: {},
-            address: {}
+            address: {},
+            links: {}
         },
         bankAccounts: {
             currencies: {}
@@ -225,6 +226,7 @@ function Rehive(config) {
         adminCurrenciesBankAccountsAPI = '/bank-accounts/',
         adminCurrenciesOverviewAPI = '/overview/',
         adminCompanyAPI = 'admin/company/',
+        adminCompanyLinksAPI = 'admin/company/links/',
         adminCompanySettingsAPI = 'settings/',
         adminCompanyAddressAPI = 'address/',
         adminWebhooksAPI = 'admin/webhooks/',
@@ -4686,6 +4688,106 @@ function Rehive(config) {
     this.admin.company.address.update = function (data) {
         return new Promise(function (resolve, reject) {
             httpPatchRehive(adminCompanyAPI + adminCompanyAddressAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.company.links.get = function (obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+
+            if(obj && obj.id) {
+                url = adminCompanyLinksAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminCompanyLinksAPI + filters;
+            } else {
+                url = adminCompanyLinksAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveFilter(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.company.links.getNext = function () {
+        return new Promise(function (resolve, reject) {
+						var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.company.links.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.company.links.create = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(adminCompanyLinksAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.company.links.update = function (id, data) {
+        return new Promise(function (resolve, reject) {
+            if (!id) {
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+
+            httpPatchRehive(adminCompanyLinksAPI + id + '/', data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.company.links.delete = function (id) {
+        return new Promise(function (resolve, reject) {
+            if (!id) {
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+
+            httpDeleteRehive(adminCompanyLinksAPI + id + '/', {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
