@@ -38,7 +38,10 @@ function Rehive(config) {
         cryptoAccounts: {},
         documents: {},
         emails: {},
-        mobiles: {}
+        mobiles: {},
+        legalTerms: {
+            versions: {}
+        }
     };
 
     this.transactions = {
@@ -174,6 +177,7 @@ function Rehive(config) {
         userCreateDocumentAPI = 'user/documents/',
         userEmailAddressesAPI = 'user/emails/',
         userMobileNumbersAPI = 'user/mobiles/',
+        userLegalTermsAPI = 'user/legal-terms/',
         transactionsAPI = 'transactions/',
         totalTransactionsListAPI = 'totals/',
         transactionCollectionsAPI = 'transaction-collections/',
@@ -1879,6 +1883,149 @@ function Rehive(config) {
             }
 
             httpDeleteRehive(url, {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.legalTerms.get = function (obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+
+            if(obj && obj.id) {
+                url = userLegalTermsAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = userLegalTermsAPI + filters;
+            } else {
+                url = userLegalTermsAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveFilter(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.legalTerms.getNext = function () {
+        return new Promise(function (resolve, reject) {
+			var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.user.legalTerms.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.user.legalTerms.versions.get = function (termId, obj) {
+        return new Promise(function (resolve, reject) {
+            if (!termId) {
+                reject({ status: 400, message: 'No term ID has been given' });
+                return;
+            }
+
+            var url = userLegalTermsAPI + termId + '/versions/';
+
+            if(obj && obj.id) {
+                url += obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url += filters;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveFilter(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.user.legalTerms.versions.getNext = function () {
+        return new Promise(function (resolve, reject) {
+            var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    if (response.next) {
+                        saveFilter(response);
+                    }
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.user.legalTerms.versions.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.user.legalTerms.versions.update = function (termId, versionId, data) {
+        return new Promise(function (resolve, reject) {
+            if (!termId) {
+                reject({ status: 400, message: 'No term ID has been given' });
+                return;
+            } else if (!versionId) {
+                reject({ status: 400, message: 'No version ID has been given' });
+                return;
+            }
+            var url = userLegalTermsAPI + termId + '/versions/' + versionId + '/';
+            httpPatchRehive(url, data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
