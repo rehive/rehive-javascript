@@ -5338,6 +5338,9 @@ function Rehive(config) {
 
         if(obj && obj.id) {
             url = adminSubtypesAPI + obj.id + '/';
+        } else if(obj && obj.filters){
+            filters = '?' + serialize(obj.filters);
+            url = adminSubtypesAPI + filters;
         } else {
             url = adminSubtypesAPI;
         }
@@ -5348,6 +5351,44 @@ function Rehive(config) {
             }, function (error) {
                 reject(error);
             });
+        });
+    };
+
+    this.admin.subtypes.getNext = function () {
+        return new Promise(function (resolve, reject) {
+						var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.subtypes.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
         });
     };
 
