@@ -132,6 +132,7 @@ function Rehive(config) {
                 fees: {},
                 settings: {}
             },
+            fees: {},
             permissions: {},
             accountConfigurations: {
                 currencies: {}
@@ -5710,6 +5711,123 @@ function Rehive(config) {
             }
 
             httpDeleteRehive(adminGroupsAPI + name + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.groups.fees.get = function (groupName, obj) {
+        return new Promise(function (resolve, reject) {
+            if (!groupName) {
+                reject({ status: 400, message: 'No group name has been given' });
+                return;
+            }
+            var url,filters;
+            url = adminGroupsAPI + groupName + '/fees/';
+
+            if(obj && obj.id) {
+                url += obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url += filters;
+            }
+
+
+            httpGetRehive(url).then(function (response) {
+                saveFilter(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.groups.fees.getNext = function () {
+        return new Promise(function (resolve, reject) {
+						var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.groups.fees.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.groups.fees.create = function (groupName, data) {
+        return new Promise(function (resolve, reject) {
+            if (!groupName) {
+                reject({ status: 400, message: 'No group name has been given' });
+                return;
+            }
+            var url = adminGroupsAPI + groupName + '/fees/';
+            httpPostRehive(url, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.groups.fees.update = function (groupName, feeId, data) {
+        return new Promise(function (resolve, reject) {
+            if (!groupName) {
+                reject({ status: 400, message: 'No group name has been given' });
+                return;
+            }
+            if (!feeId) {
+                reject({ status: 400, message: 'No fee id has been given' });
+                return;
+            }
+            var url = adminGroupsAPI + groupName + '/fees/' + feeId + '/';
+            httpPatchRehive(url, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.groups.fees.delete = function (groupName, feeId) {
+        return new Promise(function (resolve, reject) {
+            if (!groupName) {
+                reject({ status: 400, message: 'No group name has been given' });
+                return;
+            }
+            if (!feeId) {
+                reject({ status: 400, message: 'No fee id has been given' });
+                return;
+            }
+            var url = adminGroupsAPI + groupName + '/fees/' + feeId + '/';
+            httpDeleteRehive(url, {}).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
