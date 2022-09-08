@@ -1,8 +1,6 @@
 # Rehive Javascript SDK
 
-### About
-
-This is the Javascript SDK for the Rehive API.
+A Javascript SDK for the Rehive Platform API.
 
 ## Installation
 
