@@ -1,8 +1,8 @@
-# Rehive Javascript SDK
-
-### About
-
-This is the Javascript SDK for the Rehive API.
+<p align="center">
+  <img width="64" src="https://avatars2.githubusercontent.com/u/22204821?s=200&v=4" alt="Rehive Logo">
+  <h1 align="center">Rehive Javascript SDK</h1>
+  <p align="center">A Javascript SDK for the Rehive Platform API.</p>
+</p>
 
 ## Installation
 
