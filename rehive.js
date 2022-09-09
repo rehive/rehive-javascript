@@ -91,6 +91,7 @@ function Rehive(config) {
         },
         requests: {},
         transactions: {
+            messages: {},
             totals: {}
         },
         transaction_collections: {},
@@ -3744,6 +3745,86 @@ function Rehive(config) {
             });
         });
     };
+
+    this.admin.transactions.messages.get = function (txnId, obj) {
+        return new Promise(function (resolve, reject) {
+            if(!txnId) {
+                reject({ status: 400, message: 'Transaction ID not found.' });
+            }
+            var url = adminTransactionsAPI + txnId + '/messages/',
+            filters;
+
+            if(obj && obj.id) {
+                url += obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url += filters;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveFilter(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.transactions.messages.getNext = function () {
+        return new Promise(function (resolve, reject) {
+
+						var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.transactions.messages.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+						var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.transactions.messages.create = function (txnId, data) {
+        return new Promise(function (resolve, reject) {
+            if(!txnId) {
+                reject({ status: 400, message: 'Transaction ID not found.' });
+            }
+            
+            httpPostRehive(adminTransactionsAPI + txnId + '/messages/', data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+    //#endregion
+
+    //#region Transaction collections endpoints
 
     this.admin.transaction_collections.get = function (obj) {
         return new Promise(function (resolve, reject) {
