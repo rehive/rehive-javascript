@@ -662,7 +662,7 @@ function Rehive(config) {
                         resolve({});
                     } else if (response.status == 'error') {
                         if (response.data) {
-                            reject(response.data);
+                            reject({ status: response.status_code, message: response.message, data: response.data});
                         } else {
                             reject({ status: response.status_code, message: response.message});
                         }
@@ -1749,7 +1749,7 @@ function Rehive(config) {
                         }
                     } else if (response.status == 'error') {
                         if (response.data) {
-                            reject(response.data);
+                            reject({ status: response.status_code, message: response.message, data: response.data});
                         } else {
                             reject({ status: response.status_code, message: response.message});
                         }
@@ -2572,7 +2572,7 @@ function Rehive(config) {
                         }
                     } else if (response.status == 'error') {
                         if (response.data) {
-                            reject(response.data);
+                            reject({ status: response.status_code, message: response.message, data: response.data});
                         } else {
                             reject({ status: response.status_code, message: response.message});
                         }
@@ -2614,7 +2614,7 @@ function Rehive(config) {
                         }
                     } else if (response.status == 'error') {
                         if (response.data) {
-                            reject(response.data);
+                            reject({ status: response.status_code, message: response.message, data: response.data});
                         } else {
                             reject({ status: response.status_code, message: response.message});
                         }
@@ -3309,7 +3309,7 @@ function Rehive(config) {
                         }
                     } else if (response.status == 'error') {
                         if (response.data) {
-                            reject(response.data);
+                            reject({ status: response.status_code, message: response.message, data: response.data});
                         } else {
                             reject({ status: response.status_code, message: response.message});
                         }
@@ -3351,7 +3351,7 @@ function Rehive(config) {
                         }
                     } else if (response.status == 'error') {
                         if (response.data) {
-                            reject(response.data);
+                            reject({ status: response.status_code, message: response.message, data: response.data});
                         } else {
                             reject({ status: response.status_code, message: response.message});
                         }
@@ -5296,7 +5296,7 @@ function Rehive(config) {
                             }
                         } else if (response.status == 'error') {
                             if (response.data) {
-                                reject(response.data);
+                                reject({ status: response.status_code, message: response.message, data: response.data});
                             } else {
                                 reject({ status: response.status_code, message: response.message});
                             }
