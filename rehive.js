@@ -82,6 +82,7 @@ function Rehive(config) {
             emails: {},
             mobiles: {},
             permissions: {},
+            messages: {},
             groups: {},
             kyc: {},
             mfa: {
@@ -2715,6 +2716,83 @@ function Rehive(config) {
     this.admin.users.permissions.delete = function (uuid, id) {
         return new Promise(function (resolve, reject) {
             httpDeleteRehive(adminUsersAPI + uuid + adminUserPermissionsAPI + id + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.messages.get = function (uuid, obj) {
+        return new Promise(function (resolve, reject) {
+            if(!uuid) {
+                reject({ status: 400, message: 'User ID not found.' });
+            }
+            var url = adminUsersAPI + uuid + '/messages/',
+            filters;
+
+            if(obj && obj.id) {
+                url += obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url += filters;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveFilter(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.messages.getNext = function () {
+        return new Promise(function (resolve, reject) {
+
+						var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.users.messages.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+						var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.users.messages.create = function (uuid, data) {
+        return new Promise(function (resolve, reject) {
+            if(!uuid) {
+                reject({ status: 400, message: 'User ID not found.' });
+            }
+            
+            httpPostRehive(adminUsersAPI + uuid + '/messages/', data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
