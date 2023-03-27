@@ -265,11 +265,11 @@ function Rehive(config) {
     }
 
     if (Object.keys(config).length > 0) {
+        config.apiToken ? setToken(config.apiToken) : null // setToken('');
         if (config.customAPIURL) {
             baseAPI = config.customAPIURL;
         } else {
             config.apiVersion ? apiVersion = config.apiVersion : apiVersion = '3';
-            config.apiToken ? setToken(config.apiToken) : null // setToken('');
 
             config.network ? (config.network == 'staging' ?
             config.network = 'api.staging.rehive.com' : config.network = 'api.rehive.com') : config.network = 'api.rehive.com';
