@@ -1,6 +1,6 @@
 {
   "name": "rehive",
-  "version": "1.34.1",
+  "version": "1.34.2",
   "description": "Javascript sdk for rehive APIs",
   "main": "rehive.js",
   "dependencies": {
