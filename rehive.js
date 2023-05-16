@@ -629,6 +629,7 @@ function Rehive(config) {
                         resolve({
                             user: response.data.user,
                             token: response.data.token,
+                            challenges: response.data.challenges,
                             mfa: response.data.mfa !== undefined ? response.data.mfa : null
                         });
                     } else if (response.status == 'error') {
