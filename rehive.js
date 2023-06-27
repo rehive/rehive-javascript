@@ -28,7 +28,8 @@ function Rehive(config) {
         mfa: {
             sms: {},
             token: {},
-            status: {}
+            status: {},
+            authenticators: {}
         }
     };
 
@@ -87,7 +88,8 @@ function Rehive(config) {
             kyc: {},
             mfa: {
                 token: {},
-                sms: {}
+                sms: {},
+                authenticators: {}
             }
         },
         requests: {},
@@ -171,6 +173,8 @@ function Rehive(config) {
         multiFactorAuthSendSmsAPI = 'auth/mfa/sms/send/',
         multiFactorApiTokenAPI = 'auth/mfa/token/',
         multiFactorAuthVerifyAPI = 'auth/mfa/verify/',
+        multiFactorAuthenticatorsAPI = 'auth/mfa/authenticators/',
+        multiFactorAuthDeliverAPI = 'auth/mfa/deliver/',
         tokensAPI = 'auth/tokens/',
         tokensVerifyAPI = 'auth/',
         userProfileAPI = 'user/',
@@ -200,6 +204,7 @@ function Rehive(config) {
         adminAccessControlRulesAPI = 'admin/access-control-rules/',
         adminUserKYCAPI = '/kyc/',
         adminUserMFAAPI = '/mfa/',
+        adminUserMFAAuthenticatorsAPI = 'admin/users/mfa/authenticators/',
         adminUserMFASMSAPI = '/mfa/sms/',
         adminUserMFATokenAPI = '/mfa/token/',
         adminUsersSettingsAPI = '/settings/',
@@ -821,6 +826,99 @@ function Rehive(config) {
     this.auth.tokens.verify = function (token) {
         return new Promise(function (resolve, reject) {
             httpGetRehive(tokensVerifyAPI, token).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.auth.mfa.authenticators.get = function (obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+
+            if(obj && obj.id) {
+                url = multiFactorAuthenticatorsAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = multiFactorAuthenticatorsAPI + filters;
+            } else {
+                url = multiFactorAuthenticatorsAPI;
+            }
+            httpGetRehive(url).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.auth.mfa.authenticators.getNext = function () {
+        return new Promise(function (resolve, reject) {
+			var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.auth.mfa.authenticators.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.auth.mfa.authenticators.create = function(data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(multiFactorAuthenticatorsAPI, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.auth.mfa.authenticators.delete = function (id) {
+        return new Promise(function (resolve, reject) {
+            if (!id) {
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+
+            httpDeleteRehive(multiFactorAuthenticatorsAPI + id + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.auth.mfa.deliver = function(data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(multiFactorAuthDeliverAPI, data).then(function (response) {
                 resolve(response);
             }, function (error) {
                 reject(error);
@@ -3653,7 +3751,80 @@ function Rehive(config) {
             });
         });
     };
+    
+    this.admin.users.mfa.authenticators.get = function(obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
 
+            if(obj && obj.id) {
+                url = adminUserMFAAuthenticatorsAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminUserMFAAuthenticatorsAPI + filters;
+            } else {
+                url = adminUserMFAAuthenticatorsAPI;
+            }
+            httpGetRehive(url).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.mfa.authenticators.getNext = function () {
+        return new Promise(function (resolve, reject) {
+			var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.users.mfa.authenticators.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response)
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.users.mfa.authenticators.delete = function (authId) {
+        return new Promise(function (resolve, reject) {
+            if (!authId) {
+                reject({ status: 400, message: 'No authenticator id has been given' });
+                return;
+            }
+
+            httpDeleteRehive(adminUserMFAAuthenticatorsAPI + authId + '/', {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+    
     this.admin.users.mfa.get = function (id) {
         return new Promise(function (resolve, reject) {
             if(!id){
