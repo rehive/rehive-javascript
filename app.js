@@ -929,6 +929,60 @@ function getGroup(nameObj) {
     });
 }
 
+function getGroupTierRequirementSetsList(name,tierId) {
+    rehive.groups.tiers.requirementSets.get(name,tierId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function getGroupTierRequirementSet(name,tierId, requirementIdObj) {
+    rehive.groups.tiers.requirementSets.get(name,tierId, requirementIdObj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function getGroupTierRequirementSetItemsList(groupName,tierId,requirementSetId) {
+    rehive.groups.tiers.requirements.items.get(groupName,tierId,requirementSetId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function getGroupTierRequirementSetItem(groupName,tierId, requirementSetId,itemId) {
+    rehive.groups.tiers.requirementSets.items.get(groupName,tierId, requirementSetId, itemId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function getDocumentTypesList() {
+    rehive.documentTypes.get().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function getDocumentType(typeId) {
+    rehive.documentTypes.get(typeId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
 function getAdminUsersOverview() {
     rehive.admin.users.overview.get().then(function (res) {
         console.log(res);
@@ -2693,6 +2747,15 @@ function getAdminGroupTiersRequirementsList(name,tierId) {
     });
 }
 
+function getAdminGroupTierRequirement(name,tierId, requirementIdObj) {
+    rehive.admin.groups.tiers.requirements.get(name,tierId, requirementIdObj).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
 function createAdminGroupTierRequirements(name,tierId, requirement) {
     rehive.admin.groups.tiers.requirements.create(name,tierId, {
         requirement: requirement
@@ -2701,15 +2764,6 @@ function createAdminGroupTierRequirements(name,tierId, requirement) {
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
         console.log(err);
-    });
-}
-
-function getAdminGroupTierRequirement(name,tierId, requirementIdObj) {
-    rehive.admin.groups.tiers.requirements.get(name,tierId, requirementIdObj).then(function (res) {
-        console.log(res);
-        document.getElementById('result').innerHTML = convertToText(res);
-    }, function (error) {
-        console.log(error);
     });
 }
 
@@ -2731,6 +2785,86 @@ function deleteAdminGroupTierRequirement(name,tierId,requirementId) {
     });
 }
 
+function getAdminGroupTierRequirementSetsList(groupName,tierId) {
+    rehive.admin.groups.tiers.requirements.get(groupName,tierId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function getAdminGroupTierRequirementSet(groupName,tierId, requirementSetId) {
+    rehive.admin.groups.tiers.requirementSets.get(groupName,tierId, requirementSetId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function createAdminGroupTierRequirementSets(groupName,tierId,data) {
+    rehive.admin.groups.tiers.requirementSets.create(groupName,tierId,data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function updateAdminGroupTierRequirementSet(groupName,tierId, requirementSetId, data) {
+    rehive.admin.groups.tiers.requirementSets.update(groupName,tierId, requirementSetId, data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function deleteAdminGroupTierRequirementSet(groupName,tierId,requirementSetId) {
+    rehive.admin.groups.tiers.requirementSets.delete(groupName,tierId,requirementSetId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function getAdminGroupTierRequirementSetItemsList(groupName,tierId,requirementSetId) {
+    rehive.admin.groups.tiers.requirements.items.get(groupName,tierId,requirementSetId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function getAdminGroupTierRequirementSetItem(groupName,tierId, requirementSetId,itemId) {
+    rehive.admin.groups.tiers.requirementSets.items.get(groupName,tierId, requirementSetId, itemId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function createAdminGroupTierRequirementSetItems(groupName,tierId,requirementSetId,data) {
+    rehive.admin.groups.tiers.requirementSets.items.create(groupName,tierId,requirementSetId,data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function deleteAdminGroupTierRequirementSetItem(groupName,tierId,requirementSetId,itemId) {
+    rehive.admin.groups.tiers.requirementSets.items.delete(groupName,tierId,requirementSetId,itemId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
 
 function getAdminGroupTiersLimitsList(name,tierId) {
     rehive.admin.groups.tiers.limits.get(name,tierId).then(function (res) {
@@ -2782,7 +2916,6 @@ function deleteAdminGroupTierLimit(name,tierId, limitId) {
         console.log(error);
     });
 }
-
 
 function getAdminGroupTiersFeesList(name,tierId) {
     rehive.admin.groups.tiers.fees.get(name,tierId).then(function (res) {
@@ -2982,5 +3115,50 @@ function deleteAdminGroupAccountConfigurationCurrency(name,accConfigName,currenc
         document.getElementById('result').innerHTML = convertToText(res);
     }, function (err) {
         console.log(err);
+    });
+}
+
+function getAdminDocumentTypesList() {
+    rehive.admin.documentTypes.get().then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function getAdminDocumentType(typeId) {
+    rehive.admin.documentTypes.get(typeId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function createAdminDocumentTypes(data) {
+    rehive.admin.documentTypes.create(data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (err) {
+        console.log(err);
+    });
+}
+
+function updateAdminDocumentType(typeId, data) {
+    rehive.admin.documentTypes.update(typeId, data).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
+    });
+}
+
+function deleteAdminDocumentType(typeId) {
+    rehive.admin.documentTypes.delete(typeId).then(function (res) {
+        console.log(res);
+        document.getElementById('result').innerHTML = convertToText(res);
+    }, function (error) {
+        console.log(error);
     });
 }
