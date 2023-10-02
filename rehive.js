@@ -214,7 +214,7 @@ function Rehive(config) {
         groupsTiersAPI = '/tiers/',
         tiersRequirementSetsAPI='/requirement-sets/',
         tiersRequirementSetItemAPI='/items/',
-        documentTypesAPI = '/document-types/',
+        documentTypesAPI = 'document-types/',
         headers = {'Content-Type': 'application/json', 'Accept': 'application/json' };
 
     var adminUsersAPI = 'admin/users/',
