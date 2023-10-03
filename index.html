@@ -119,6 +119,13 @@
 <button onclick="getGroupsListNext()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Groups List Next</button>
 <button onclick="getGroupsListPrevious()" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Groups List Previous</button>
 <button onclick="getGroup({name: 'test'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Group</button>
+<button onclick="getGroupTierRequirementSetsList('test','22')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Group Tiers Requirement Sets List</button>
+<button onclick="getGroupTierRequirementSet('test','22',{id: '34'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Group Tier Requirement Set</button>
+<button onclick="getGroupTierRequirementSetItemsList('test','22')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Group Tiers Requirement Set Items List</button>
+<button onclick="getGroupTierRequirementSetItem('test','22',{id: '34'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Group Tier Requirement Set Item</button>
+
+<button onclick="getDocumentTypesList('test','22')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Document Types List</button>
+<button onclick="getDocumentType('test','22',{id: '34'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Document Type</button>
 
 <div style="margin: 20px 0">
     <pre id="result"></pre>
@@ -352,6 +359,17 @@
 <button onclick="updateAdminGroupTierRequirement('test','22','34',{requirement: 'last_name'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Group Tier Requirement</button>
 <button onclick="deleteAdminGroupTierRequirement('test','22','34')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Group Tier Requirement</button>
 
+<button onclick="getAdminGroupTierRequirementSetsList('test','22')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Tier Requirement Sets List</button>
+<button onclick="createAdminGroupTierRequirementSets('test','22','first_name')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Group Tier Requirement Set</button>
+<button onclick="getAdminGroupTierRequirementSet('test','22',{id: '34'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Tier Requirement Set</button>
+<button onclick="updateAdminGroupTierRequirementSet('test','22','34',{requirement: 'last_name'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Group Tier Requirement Set</button>
+<button onclick="deleteAdminGroupTierRequirementSet('test','22','34')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Group Tier Requirement Set</button>
+
+<button onclick="getAdminGroupTierRequirementSetItemsList('test','22')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Tier Requirement Set items List</button>
+<button onclick="createAdminGroupTierRequirementSetItems('test','22','first_name')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Group Tier Requirement Set items</button>
+<button onclick="getAdminGroupTierRequirementSetItem('test','22',{id: '34'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Tier Requirement Set item</button>
+<button onclick="deleteAdminGroupTierRequirementSetItem('test','22','34')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Group Tier Requirement Set item</button>
+
 <button onclick="getAdminGroupTiersLimitsList('test','22')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Group Tiers Limits List</button>
 <button onclick="createAdminGroupTierLimit('test','22','ZAR','1000','max','debit',null)" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Create Admin Group Tier Limit</button>
 <button onclick="getAdminGroupTierLimit('test','22',{id: '10'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-warning">Get Admin Group Tier Limit</button>
@@ -381,5 +399,11 @@
 <button onclick="createAdminGroupAccountConfigurationCurrency('test','purchase','ZAR')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Group Account Configuration Currency</button>
 <button onclick="getAdminGroupAccountConfigurationCurrency('test','purchase',{code: 'ZAR'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Group Account Configuration Currency</button>
 <button onclick="deleteAdminGroupAccountConfigurationCurrency('test','purchase','ZAR')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Group Account Configuration Currency</button>
+
+<button onclick="getAdminDocumentTypesList('test','22')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Document Types List</button>
+<button onclick="createAdminDocumentTypes('test','22','first_name')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Create Admin Document Type</button>
+<button onclick="getAdminDocumentType('test','22',{id: '34'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Get Admin Document Type</button>
+<button onclick="updateAdminDocumentType('test','22','34',{requirement: 'last_name'})" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Update Admin Document Type</button>
+<button onclick="deleteAdminDocumentType('test','22','34')" style="margin: 20px 0 0 20px" class="btn btn-lg btn-primary">Delete Admin Document Type</button>
 </body>
 </html>

@@ -16,6 +16,7 @@ if (typeof module !== 'undefined' && module.exports) {
     fetch = window.fetch;
   }
 
+
 function Rehive(config) {
     this.public = {
         companies: []
@@ -60,9 +61,17 @@ function Rehive(config) {
         bankAccounts: {}
     };
 
-    this.groups = {};
+    this.groups = {
+        tiers: {
+            requirementSets: {
+                items: {}
+            }
+        }
+    };
 
     this.permissions = {};
+
+    this.documentTypes = {};
 
     this.admin = {
         auth: {
@@ -134,7 +143,10 @@ function Rehive(config) {
                 requirements: {},
                 limits: {},
                 fees: {},
-                settings: {}
+                settings: {},
+                requirementSets: {
+                    items: {}
+                }
             },
             fees: {},
             permissions: {},
@@ -151,7 +163,8 @@ function Rehive(config) {
         },
         metrics: {
             points: {}
-        }
+        },
+        documentTypes: {}
     };
 
     var apiVersion = '3',
@@ -198,6 +211,10 @@ function Rehive(config) {
         companyBanksAPI = 'company/bank-accounts/',
         permissionsAPI = 'permissions/',
         groupsAPI = 'groups/',
+        groupsTiersAPI = '/tiers/',
+        tiersRequirementSetsAPI='/requirement-sets/',
+        tiersRequirementSetItemAPI='/items/',
+        documentTypesAPI = 'document-types/',
         headers = {'Content-Type': 'application/json', 'Accept': 'application/json' };
 
     var adminUsersAPI = 'admin/users/',
@@ -261,7 +278,8 @@ function Rehive(config) {
         adminGroupsTiersSettingsAPI = '/settings/',
         adminAuthLoginAPI = 'admin/auth/login/',
         adminAuthRegisterAPI = 'admin/auth/register/',
-        adminMetricsAPI = 'admin/metrics/';
+        adminMetricsAPI = 'admin/metrics/',
+        adminDocumentTypesAPI = 'admin/document-types/';
 
     var baseAPI;
 
@@ -1548,6 +1566,70 @@ function Rehive(config) {
             }
         });
     };
+
+    this.groups.tiers.requirementSets.get = function (groupName,tierId,requirementSetId) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject({ status: 400, message: 'No tier id is provided' });
+                return
+            }
+
+            var url;
+
+            if(requirementSetId) {
+                url = groupsAPI + groupName + groupsTiersAPI + tierId + tiersRequirementSetsAPI + requirementSetId + '/';
+            } else {
+                url = groupsAPI + groupName + groupsTiersAPI + tierId + tiersRequirementSetsAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                resolve(response)
+            }, function (err) {
+                reject(err)
+            })
+        })
+    };
+
+    this.groups.tiers.requirementSets.items.get = function (groupName,tierId,requirementSetId,itemId) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject({ status: 400, message: 'No tier id is provided' });
+                return
+            }
+
+            var url;
+
+            if(requirementSetId) {
+                url = groupsAPI + groupName + groupsTiersAPI + tierId + tiersRequirementSetsAPI + requirementSetId + tiersRequirementSetItemAPI + itemId + '/';
+            } else {
+                url = groupsAPI + groupName + groupsTiersAPI + tierId + tiersRequirementSetsAPI + requirementSetId + tiersRequirementSetItemAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                resolve(response)
+            }, function (err) {
+                reject(err)
+            })
+        })
+    };
+
+    this.documentTypes.get = function (typeId) {
+        return new Promise(function (resolve, reject) {
+            var url;
+
+            if(typeId) {
+                url = documentTypesAPI + typeId + '/';
+            } else {
+                url = documentTypesAPI;
+            }
+            httpGetRehive(url).then(function (response) {
+                resolve(response)
+            }, function (err) {
+                reject(err)
+            })
+        })
+    };
+
     //#endregion
 
     //#region Public User methods
@@ -6408,6 +6490,142 @@ function Rehive(config) {
         })
     };
 
+    this.admin.groups.tiers.requirementSets.get = function (groupName,tierId,requirementSetId) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject({ status: 400, message: 'No tier id is provided' });
+                return
+            }
+
+            var url;
+
+            if(requirementSetId) {
+                url = adminGroupsAPI + groupName + adminGroupsTiersAPI + tierId + tiersRequirementSetsAPI + requirementSetId + '/';
+            } else {
+                url = adminGroupsAPI + groupName + adminGroupsTiersAPI + tierId + tiersRequirementSetsAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                resolve(response)
+            }, function (err) {
+                reject(err)
+            })
+        })
+    };
+
+    this.admin.groups.tiers.requirementSets.create = function (groupName,tiersId,data) {
+        return new Promise(function (resolve, reject) {
+            if (!tiersId) {
+                reject({ status: 400, message: 'No tier id is provided' });
+                return
+            }
+            httpPostRehive(adminGroupsAPI + groupName + adminGroupsTiersAPI + tiersId + tiersRequirementSetsAPI, data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
+
+    this.admin.groups.tiers.requirementSets.update = function (groupName,tierId, requirementSetId, data) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject({ status: 400, message: 'No tier id is provided' });
+                return
+            }
+            if (!requirementSetId) {
+                reject({ status: 400, message: 'No requirement set id is provided' });
+                return
+            }
+            httpPatchRehive(adminGroupsAPI + groupName + adminGroupsTiersAPI + tierId + tiersRequirementSetsAPI + requirementSetId + '/', data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
+
+    this.admin.groups.tiers.requirementSets.delete = function (groupName,tierId,requirementSetId) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject({ status: 400, message: 'No tier id is provided' });
+                return
+            }
+            if (!requirementSetId) {
+                reject({ status: 400, message: 'No requirement set id is provided' });
+                return
+            }
+            httpDeleteRehive(adminGroupsAPI + groupName + adminGroupsTiersAPI + tierId + tiersRequirementSetsAPI + requirementSetId + '/').then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
+
+    this.admin.groups.tiers.requirementSets.items.get = function (groupName,tierId,requirementSetId,itemId) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject({ status: 400, message: 'No tier id is provided' });
+                return
+            }
+
+            var url;
+
+            if(requirementSetId) {
+                url = adminGroupsAPI + groupName + adminGroupsTiersAPI + tierId + tiersRequirementSetsAPI + requirementSetId + tiersRequirementSetItemAPI + itemId + '/';
+            } else {
+                url = adminGroupsAPI + groupName + adminGroupsTiersAPI + tierId + tiersRequirementSetsAPI + requirementSetId + tiersRequirementSetItemAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                resolve(response)
+            }, function (err) {
+                reject(err)
+            })
+        })
+    };
+
+    this.admin.groups.tiers.requirementSets.items.create = function (groupName,tiersId,requirementSetId,data) {
+        return new Promise(function (resolve, reject) {
+            if (!tiersId) {
+                reject({ status: 400, message: 'No tier id is provided' });
+                return
+            }
+            if (!requirementSetId) {
+                reject({ status: 400, message: 'No requirement set id is provided' });
+                return
+            }
+            httpPostRehive(adminGroupsAPI + groupName + adminGroupsTiersAPI + tiersId + tiersRequirementSetsAPI + requirementSetId + tiersRequirementSetItemAPI, data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
+
+    this.admin.groups.tiers.requirementSets.items.delete = function (groupName,tierId,requirementSetId,itemId) {
+        return new Promise(function (resolve, reject) {
+            if (!tierId) {
+                reject({ status: 400, message: 'No tier id is provided' });
+                return
+            }
+            if (!requirementSetId) {
+                reject({ status: 400, message: 'No requirement set id is provided' });
+                return
+            }
+            if (!itemId) {
+                reject({ status: 400, message: 'No item id is provided' });
+                return
+            }
+            httpDeleteRehive(adminGroupsAPI + groupName + adminGroupsTiersAPI + tierId + tiersRequirementSetsAPI + requirementSetId + tiersRequirementSetItemAPI + itemId + '/').then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
+
     this.admin.groups.tiers.fees.get = function (name,tierId,obj) {
         return new Promise(function (resolve, reject) {
             if (!tierId) {
@@ -6771,6 +6989,64 @@ function Rehive(config) {
         });
     };
     //#endregion
+
+    //#region Admin document types methods
+    this.admin.documentTypes.get = function (typeId) {
+        return new Promise(function (resolve, reject) {
+            var url;
+
+            if(typeId) {
+                url = adminDocumentTypesAPI + typeId + '/';
+            } else {
+                url = adminDocumentTypesAPI;
+            }
+            httpGetRehive(url).then(function (response) {
+                resolve(response)
+            }, function (err) {
+                reject(err)
+            })
+        })
+    };
+
+    this.admin.documentTypes.create = function (data) {
+        return new Promise(function (resolve, reject) {
+            httpPostRehive(adminDocumentTypesAPI, data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
+
+    this.admin.documentTypes.update = function (typeId, data) {
+        return new Promise(function (resolve, reject) {
+            if (!typeId) {
+                reject({ status: 400, message: 'No document type id is provided' });
+                return
+            }
+            httpPatchRehive(adminDocumentTypesAPI + typeId + '/', data).then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
+
+    this.admin.documentTypes.delete = function (typeId) {
+        return new Promise(function (resolve, reject) {
+            if (!typeId) {
+                reject({ status: 400, message: 'No document type id is provided' });
+                return
+            }
+            httpDeleteRehive(adminDocumentTypesAPI + typeId + '/').then(function (res) {
+                resolve(res)
+            }, function (error) {
+                reject(error)
+            })
+        })
+    };
+    //#endregion
+
     //#endregion
 }
 
