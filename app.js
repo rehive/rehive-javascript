@@ -18,15 +18,14 @@ function convertToText(data) {
     return dataString;
 }
 
-function register(first_name, last_name, email, company, password1, password2,terms_and_conditions) {
+function register(first_name, last_name, email, company, password, terms_and_conditions) {
     rehive.auth.register(
         {
             first_name: first_name,
             last_name: last_name,
             email: email,
             company: company,
-            password1: password1,
-            password2: password2,
+            password: password,
             terms_and_conditions: terms_and_conditions
         }).then(function (user) {
         console.log(user);
@@ -36,15 +35,14 @@ function register(first_name, last_name, email, company, password1, password2,te
     });
 }
 
-function registerCompany(first_name, last_name, email, company, password1, password2,terms_and_conditions) {
+function registerCompany(first_name, last_name, email, company, password, terms_and_conditions) {
     rehive.auth.registerCompany(
         {
             first_name: first_name,
             last_name: last_name,
             email: email,
             company: company,
-            password1: password1,
-            password2: password2,
+            password: password,
             terms_and_conditions: terms_and_conditions
         }).then(function (user) {
         console.log(user);
@@ -91,12 +89,11 @@ function logoutAll() {
         });
 }
 
-function changePassword(old_password, new_password1, new_password2) {
+function changePassword(old_password, new_password) {
     rehive.auth.password.change(
         {
             old_password: old_password,
-            new_password1: new_password1,
-            new_password2: new_password2
+            new_password: new_password
         }).then(function (res) {
         console.log(res);
         document.getElementById('result').innerHTML = convertToText(res.message);
@@ -118,11 +115,10 @@ function resetPassword(user, company) {
     });
 }
 
-function resetConfirmPassword(new_password1, new_password2, uid, token) {
+function resetConfirmPassword(new_password, uid, token) {
     rehive.auth.password.resetConfirm(
         {
-            new_password1: new_password1,
-            new_password2: new_password2,
+            new_password: new_password,
             uid: uid,
             token: token
         }).then(function (res) {
