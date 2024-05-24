@@ -79,12 +79,14 @@ function Rehive(config) {
             register: {}
         },
         accessControlRules: {},
+        accountCurrencies: {},
         users: {
             overview: {},
             tiers: {},
             addresses: {},
             bankAccounts: {
-                currencies: {}
+                currencies: {},
+                accountCurrencies: {}
             },
             settings: {},
             cryptoAccounts: {},
@@ -132,7 +134,7 @@ function Rehive(config) {
             links: {}
         },
         bankAccounts: {
-            currencies: {}
+            currencies: {},
         },
         webhooks: {},
         subtypes: {},
@@ -245,6 +247,7 @@ function Rehive(config) {
         // adminAccountExportCurrencySetsAPI = 'admin/account-currencies/exports/',
         adminTransactionCollectionsAPI = 'admin/transaction-collections/',
         adminAccountsAPI = 'admin/accounts/',
+        adminAccountCurrenciesAPI = 'admin/account-currencies/',
         adminAccountsCurrenciesAPI = '/currencies/',
         adminAccountsCurrencyLimitsAPI = '/limits/',
         adminAccountsCurrencyFeesAPI = '/fees/',
@@ -7046,6 +7049,121 @@ function Rehive(config) {
         })
     };
     //#endregion
+
+    //#region Admin bank-accounts account-currencies methods
+    this.admin.accountCurrencies.get = function (obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+
+            if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminAccountCurrenciesAPI + filters;
+            } else {
+                url = adminUserBankAccountsAPI;
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveFilter(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+    this.admin.users.bankAccounts.accountCurrencies.get = function (id, obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+
+            if(obj && obj.accountCurrencyId) {
+                url = adminUserBankAccountsAPI + id + '/account-currencies/' + obj.accountCurrencyId + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminUserBankAccountsAPI + id + '/account-currencies/' + filters;
+            } else {
+                url = adminUserBankAccountsAPI + id + '/account-currencies/';
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveFilter(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.bankAccounts.accountCurrencies.getNext = function () {
+        return new Promise(function (resolve, reject) {
+						var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.users.bankAccounts.accountCurrencies.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.users.bankAccounts.accountCurrencies.create = function (id, data) {        
+        return new Promise(function (resolve, reject) {
+            if (!id) {
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+            var url = adminUserBankAccountsAPI + id + '/account-currencies/';
+            httpPostRehive(url, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.bankAccounts.accountCurrencies.delete = function (id, accCurrId) {
+        return new Promise(function (resolve, reject) {
+            if (!id) {
+                reject({ status: 400, message: 'No bank account id has been given' });
+                return;
+            }
+            if (!accCurrId) {
+                reject({ status: 400, message: 'No currency id has been given' });
+                return;
+            }
+            var url = adminUserBankAccountsAPI + id + '/account-currencies/' + accCurrId + '/';
+            httpDeleteRehive(url, {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+    //endregion
 
     //#endregion
 }
