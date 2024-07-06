@@ -89,7 +89,10 @@ function Rehive(config) {
                 accountCurrencies: {}
             },
             settings: {},
-            cryptoAccounts: {},
+            cryptoAccounts: {
+                currencies: {},
+                accountCurrencies: {}
+            },
             documents: {},
             emails: {},
             mobiles: {},
@@ -7156,6 +7159,198 @@ function Rehive(config) {
                 return;
             }
             var url = adminUserBankAccountsAPI + id + '/account-currencies/' + accCurrId + '/';
+            httpDeleteRehive(url, {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+    //endregion
+
+    //#region Admin crypto-accounts currencies methods
+
+
+    this.admin.users.cryptoAccounts.currencies.get = function (id, obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+
+            if(obj && obj.code) {
+                url = adminUserCryptoAccountsAPI + id + '/currencies/' + obj.code + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminUserCryptoAccountsAPI + id + '/currencies/' + filters;
+            } else {
+                url = adminUserCryptoAccountsAPI + id + '/currencies/';
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveFilter(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.cryptoAccounts.currencies.getNext = function () {
+        return new Promise(function (resolve, reject) {
+						var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.users.cryptoAccounts.currencies.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.users.cryptoAccounts.currencies.create = function (id, data) {        
+        return new Promise(function (resolve, reject) {
+            if (!id) {
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+            var url = adminUserCryptoAccountsAPI + id + '/currencies/';
+            httpPostRehive(url, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.cryptoAccounts.currencies.delete = function (id, currCode) {
+        return new Promise(function (resolve, reject) {
+            if (!id) {
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+            if (!currCode) {
+                reject({ status: 400, message: 'No currency code has been given' });
+                return;
+            }
+            var url = adminUserCryptoAccountsAPI + id + '/currencies/' + currCode + '/';
+            httpDeleteRehive(url, {}).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.cryptoAccounts.accountCurrencies.get = function (id, obj) {
+        return new Promise(function (resolve, reject) {
+            var url,filters;
+
+            if(obj && obj.accountCurrencyId) {
+                url = adminUserCryptoAccountsAPI + id + '/account-currencies/' + obj.accountCurrencyId + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminUserCryptoAccountsAPI + id + '/account-currencies/' + filters;
+            } else {
+                url = adminUserCryptoAccountsAPI + id + '/account-currencies/';
+            }
+
+            httpGetRehive(url).then(function (response) {
+                saveFilter(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.cryptoAccounts.accountCurrencies.getNext = function () {
+        return new Promise(function (resolve, reject) {
+						var url = nextFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.users.cryptoAccounts.accountCurrencies.getPrevious = function () {
+        return new Promise(function (resolve, reject) {
+            var url = previousFilterForLists, mainUrl;
+            if (url) {
+                var urlArray = url.split(baseAPI);
+                mainUrl = urlArray[1];
+
+                httpGetRehive(mainUrl).then(function (response) {
+                    saveFilter(response);
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            } else {
+                reject({ status: 400, message: 'Not allowed' });
+            }
+        });
+    };
+
+    this.admin.users.cryptoAccounts.accountCurrencies.create = function (id, data) {        
+        return new Promise(function (resolve, reject) {
+            if (!id) {
+                reject({ status: 400, message: 'No id has been given' });
+                return;
+            }
+            var url = adminUserCryptoAccountsAPI + id + '/account-currencies/';
+            httpPostRehive(url, data).then(function (response) {
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
+        });
+    };
+
+    this.admin.users.cryptoAccounts.accountCurrencies.delete = function (id, accCurrId) {
+        return new Promise(function (resolve, reject) {
+            if (!id) {
+                reject({ status: 400, message: 'No crypto account id has been given' });
+                return;
+            }
+            if (!accCurrId) {
+                reject({ status: 400, message: 'No currency id has been given' });
+                return;
+            }
+            var url = adminUserCryptoAccountsAPI + id + '/account-currencies/' + accCurrId + '/';
             httpDeleteRehive(url, {}).then(function (response) {
                 resolve(response);
             }, function (error) {
