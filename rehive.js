@@ -1,21 +1,37 @@
 "use strict";
-var isNode = false;
+var isNode = typeof window === 'undefined';
 var fetch;
+
+if (isNode) {
+    // Node.js or server-side Next.js environment
+    if (typeof global.fetch === 'function') {
+        // Node.js v18+ or environments with global fetch
+        fetch = global.fetch;
+    } else {
+        try {
+            // For earlier Node.js versions, prefer undici
+            fetch = require('undici').fetch;
+        } catch (e) {
+            try {
+                // Fallback to node-fetch if undici is not available
+                fetch = require('node-fetch');
+            } catch (e) {
+                throw new Error("Fetch is not available. Please use Node.js v18+, or install 'undici' or 'node-fetch' as a dependency.");
+            }
+        }
+    }
+} else {
+    // Browser or client-side Next.js environment
+    if (typeof window.fetch === 'function') {
+        fetch = window.fetch;
+    } else {
+        throw new Error("Fetch is not available in this environment. Please use a modern browser or ensure fetch is polyfilled.");
+    }
+}
 
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = Rehive;
-    if (global.fetch && !process.env.IS_BROWSER) {
-      fetch = global.fetch;
-    } else {
-      fetch = require('node-fetch');
-      isNode = true;
-    }
-  } else {
-    window.this;
-    isNode = false;
-    fetch = window.fetch;
-  }
-
+}
 
 function Rehive(config) {
     this.public = {

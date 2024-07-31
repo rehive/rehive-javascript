@@ -30,7 +30,7 @@ or
 
 Your `config` object should contain:
 
-* `storageMethod` - Options are `session` for `sessionStorage` and `local` for `localStorage`
+* `storageMethod` - Options are `session` for `sessionStorage` and `local` for `localStorage`, the default is `undefined` which means the SDK will store the token in memory and not in persistent storage.
 
 * `apiVersion` - Default is `3` (Version 3 is the only currently supported version)
 
