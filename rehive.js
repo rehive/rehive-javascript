@@ -6997,20 +6997,25 @@ function Rehive(config) {
     //#endregion
 
     //#region Admin document types methods
-    this.admin.documentTypes.get = function (typeId) {
+    this.admin.documentTypes.get = function (obj) {
         return new Promise(function (resolve, reject) {
-            var url;
+            var url,filters;
 
-            if(typeId) {
-                url = adminDocumentTypesAPI + typeId + '/';
+            if(obj && obj.id) {
+                url = adminDocumentTypesAPI + obj.id + '/';
+            } else if(obj && obj.filters){
+                filters = '?' + serialize(obj.filters);
+                url = adminDocumentTypesAPI + filters;
             } else {
                 url = adminDocumentTypesAPI;
             }
+
             httpGetRehive(url).then(function (response) {
-                resolve(response)
-            }, function (err) {
-                reject(err)
-            })
+                saveFilter(response);
+                resolve(response);
+            }, function (error) {
+                reject(error);
+            });
         })
     };
 
