@@ -1,16 +1,14 @@
-var compressor = require('node-minify');
- 
-// Using UglifyJS
-compressor.minify({
-  compressor: 'uglifyjs',
-  input: ['./promisePolyfill.js','./fetch.js','./rehive.js'],
+const minify = require('@node-minify/core');
+const uglifyJS = require('@node-minify/uglify-js');
+
+minify({
+  compressor: uglifyJS,
+  input: './rehive.js',
   output: 'build/rehive.min.js',
-  callback: function (err, min) {
-    if (err) {
-      console.log("ERROR", err);
-    }
+})
+  .then(min => {
     console.log(min);
-    
-  }
-});
- 
+  })
+  .catch(err => {
+    console.log("ERROR", err);
+  });

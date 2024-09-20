@@ -1,13 +1,8 @@
 {
   "name": "rehive",
-  "version": "1.38.0",
+  "version": "2.0.0",
   "description": "Javascript SDK for rehive APIs",
   "main": "rehive.js",
-  "dependencies": {
-    "node-fetch": "^2.6.1",
-    "node-minify": "^3.6.0"
-  },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node minify.js"
@@ -24,5 +19,9 @@
   "bugs": {
     "url": "https://github.com/rehive/rehive-javascript/issues"
   },
-  "homepage": "https://github.com/rehive/rehive-javascript"
+  "homepage": "https://github.com/rehive/rehive-javascript",
+  "devDependencies": {
+    "@node-minify/core": "^8.0.6",
+    "@node-minify/uglify-js": "^8.0.6"
+  }
 }
