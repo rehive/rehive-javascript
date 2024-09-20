@@ -1,4 +1,5 @@
 "use strict";
+/* eslint-disable no-unused-expressions */
 var isNode = typeof window === 'undefined';
 var fetch;
 
@@ -2162,7 +2163,7 @@ function Rehive(config) {
             if(obj && obj.id) {
                 url += obj.id + '/';
             } else if(obj && obj.filters){
-                filters = '?' + serialize(obj.filters);
+                var filters = '?' + serialize(obj.filters);
                 url += filters;
             }
 
@@ -5088,7 +5089,7 @@ function Rehive(config) {
 
     this.admin.currencies.update = function (code, data) {
         return new Promise(function (resolve, reject) {
-            if (!code) {currencies.update
+            if (!code) {
                 reject({ status: 400, message: 'No code has been given' });
                 return;
             }
@@ -5485,11 +5486,11 @@ function Rehive(config) {
     };
 
     this.admin.bankAccounts.currencies.create = function (bankId, data) {
-        if (!data.currency) {
+        return new Promise(function (resolve, reject) {
+            if (!data.currency) {
             reject({ status: 400, message: 'No currency has been given' });
             return;
-        }
-        return new Promise(function (resolve, reject) {
+            }
             httpPostRehive(adminBankAccountsAPI + bankId + '/currencies/', data).then(function (response) {
                 resolve(response);
             }, function (error) {
@@ -5499,6 +5500,7 @@ function Rehive(config) {
     };
 
     this.admin.bankAccounts.currencies.delete = function (bankId, currency) {
+        return new Promise(function (resolve, reject) {
         if (!bankId) {
             reject({ status: 400, message: 'No bank ID has been given' });
             return;
@@ -5508,8 +5510,6 @@ function Rehive(config) {
             reject({ status: 400, message: 'No currency has been given' });
             return;
         }
-
-        return new Promise(function (resolve, reject) {
             httpDeleteRehive(adminBankAccountsAPI + bankId + '/currencies/' + currency, {}).then(function (response) {
                 resolve(response);
             }, function (error) {
@@ -5769,7 +5769,7 @@ function Rehive(config) {
         if(obj && obj.id) {
             url = adminSubtypesAPI + obj.id + '/';
         } else if(obj && obj.filters){
-            filters = '?' + serialize(obj.filters);
+            var filters = '?' + serialize(obj.filters);
             url = adminSubtypesAPI + filters;
         } else {
             url = adminSubtypesAPI;
@@ -6371,12 +6371,12 @@ function Rehive(config) {
     };
 
     this.admin.groups.settings.update = function (name, data) {
-        if (!name) {
+    
+        return new Promise(function (resolve, reject) {
+            if (!name) {
             reject({ status: 400, message: 'No group name has been given' });
             return;
-        }
-
-        return new Promise(function (resolve, reject) {
+            }
             httpPatchRehive(adminGroupsAPI + name + adminGroupsSettingsAPI, data).then(function (response) {
                 resolve(response);
             }, function (error) {
@@ -6804,12 +6804,13 @@ function Rehive(config) {
     };
 
     this.admin.groups.tiers.settings.update = function (name,tierId, data) {
-        if (!name) {
-            reject({ status: 400, message: 'No group name has been given' });
-            return;
-        }
 
         return new Promise(function (resolve, reject) {
+            if (!name) {
+            reject({ status: 400, message: 'No group name has been given' });
+            return;
+            }
+
             httpPatchRehive(adminGroupsAPI + name + adminGroupsTiersAPI + tierId + adminGroupsTiersSettingsAPI, data).then(function (response) {
                 resolve(response);
             }, function (error) {
