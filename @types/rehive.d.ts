@@ -746,33 +746,35 @@ declare module "rehive" {
 				delete(id: string): Promise<ApiResponse>;
 			};
 			mobiles: {
-				get(id?: string): Promise<AllEmailResponse | EmailResponse>;
+				get(id?: string): Promise<AllMobileResponse | MobileResponse>;
 				create(data: { number: "string" }): Promise<MobileResponse>;
 				update(
 					mobileNumberId: string,
 					data: { primary: boolean },
-				): Promise<any>;
+				): Promise<MobileResponse>;
 				delete(id: string): Promise<ApiResponse>;
 			};
 			legalTerms: {
 				get(obj?: {
 					id?: string;
 					filters?: Record<string, any>;
-				}): Promise<any>;
-				getNext(): Promise<any>;
-				getPrevious(): Promise<any>;
+				}): Promise<LegalTermResponse | PaginatedLegalTermsResponse>;
+				getNext(): Promise<PaginatedLegalTermsResponse>;
+				getPrevious(): Promise<PaginatedLegalTermsResponse>;
 				versions: {
 					get(
 						termId: string,
 						obj?: { id?: string; filters?: Record<string, any> },
-					): Promise<any>;
-					getNext(): Promise<any>;
-					getPrevious(): Promise<any>;
+					): Promise<VersionResponse | PaginatedVersionResponse>;
+					getNext(): Promise<PaginatedVersionResponse>;
+					getPrevious(): Promise<PaginatedVersionResponse>;
 					update(
 						termId: string,
 						versionId: string,
-						data: any,
-					): Promise<any>;
+						data: {
+							accepted: boolean;
+						},
+					): Promise<VersionResponse>;
 				};
 			};
 		};
