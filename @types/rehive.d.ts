@@ -7,16 +7,12 @@ declare module "rehive" {
 		storageMethod?: "local" | "session" | undefined;
 	}
 
-	interface Headers {
-		"Content-Type"?: string;
-		Accept: string;
-		Authorization?: string;
-	}
 	interface ApiResponse {
 		status_code?: number;
 		ok?: boolean;
 		status: "success" | "error";
 		message?: string;
+		data?: any;
 		[key: string]: any;
 	}
 
@@ -324,8 +320,237 @@ declare module "rehive" {
 	interface Filters {
 		[key: string]: any;
 	}
-	interface LimitObj {
-		id?: string;
+	interface UpdateUserData {
+		username: string;
+		first_name?: string;
+		middle_name?: string;
+		last_name?: string;
+		profile?: string;
+		id_number?: string;
+		birth_date?: string; // ISO format 'YYYY-MM-DD'
+		language?: string;
+		nationality?: string; // Country code (e.g., 'AF')
+		residency?: string; // Country code (e.g., 'AF')
+		gender?: "male" | "female" | "other";
+		title?: "mr" | "mrs" | "ms" | "dr";
+		marital_status?: "single" | "married" | "divorced" | "widowed";
+		fathers_name?: string;
+		mothers_name?: string;
+		grandfathers_name?: string;
+		grandmothers_name?: string;
+		central_bank_number?: string;
+		timezone?: string;
+		website?: string;
+		business_name?: string;
+	}
+	interface Address {
+		id?: number;
+		type: "permanent" | "temporary";
+		line_1: string;
+		line_2?: string;
+		city: string;
+		state_province: string;
+		country: string;
+		postal_code: string;
+		status?: string;
+		created?: number;
+		updated?: number;
+	}
+
+	interface GetAllAddressApiResponse {
+		status: "success" | "error";
+		data: Address[];
+	}
+	interface GetSingleAddressApiResponse {
+		status: "success" | "error";
+		data: Address;
+	}
+
+	interface Owner {
+		first_name: string;
+		middle_name?: string; // Optional
+		last_name: string;
+		phone_number: string;
+		email_address: string;
+		company_name: string;
+		ein_tin: string;
+		address: Address;
+		cpf_cpnj: string;
+	}
+
+	interface Currency {
+		code: string;
+		display_code: string;
+		description: string;
+		symbol: string;
+		unit: string;
+		divisibility: number;
+		icon: string;
+	}
+
+	interface AccountCurrency {
+		id: string;
+		balance: number;
+		available_balance: number;
+		account: {
+			reference: string;
+			name: string;
+			label: string;
+			primary: boolean;
+		};
+		currency: Currency;
+		active: boolean;
+	}
+
+	interface BankAccount {
+		id: number;
+		name: string;
+		number: string;
+		type: string;
+		beneficiary_type: "individual" | "company";
+		clabe: string;
+		owner: Owner;
+		bank_name: string;
+		bank_code: string;
+		branch_code: string;
+		branch_address: Address;
+		routing_number: string;
+		swift: string;
+		iban: string;
+		bic: string;
+		code: string;
+		metadata: {
+			property1: any;
+			property2: any;
+		};
+		status: string;
+		currencies: Currency[];
+		account_currencies: AccountCurrency[];
+		action: string;
+		created: number;
+		updated: number;
+	}
+	interface GetAllBankAccountsApiResponse {
+		status: "success" | "error";
+		data: BankAccount[];
+	}
+	interface GetSingleBankAccountApiResponse {
+		status: "success" | "error";
+		data: BankAccount;
+	}
+	interface DocumentCreateData {
+		file: string;
+		type: number;
+		metadata?: Metadata;
+		expires?: number;
+	}
+	interface FileType {
+		id: number;
+		name: string;
+		description: string;
+	}
+
+	interface DocumentCreateResponse {
+		status: "success" | "error";
+		data: {
+			id: number;
+			file: string;
+			type: FileType;
+			status: string;
+			metadata: Metadata;
+			note?: string;
+			expires?: number;
+			created?: number;
+			updated?: number;
+		};
+	}
+	interface Email {
+		id: number;
+		email: string;
+		primary: boolean;
+		verified: boolean;
+		created: number;
+		updated: number;
+	}
+	interface EmailResponse {
+		status: "success" | "error";
+
+		data: Email;
+	}
+	interface AllEmailResponse {
+		status: "success" | "error";
+
+		data: Email[];
+	}
+	interface Mobile {
+		id: number;
+		number: "string";
+		primary: true;
+		verified: true;
+		created: number;
+		updated: number;
+	}
+	interface MobileResponse {
+		status: "success" | "error";
+
+		data: Mobile;
+	}
+	interface AllMobileResponse {
+		status: "success" | "error";
+
+		data: Mobile[];
+	}
+
+	interface LegalTerms {
+		id: number;
+		type: string;
+		name: string;
+		description: string;
+		versions: {
+			id: number;
+			version: number;
+			accepted: boolean;
+			created: number;
+			updated: number;
+		}[];
+		created: number;
+		updated: number;
+	}
+	interface PaginatedLegalTermsResponse {
+		status: "success" | "error";
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: LegalTerms[];
+		};
+	}
+	interface LegalTermResponse {
+		status: "success" | "error";
+		data: LegalTerms;
+	}
+	interface Version {
+		id: number;
+		version: number;
+		accepted: boolean;
+		accepted_date: number;
+		note: string;
+		content: string;
+		created: number;
+		updated: number;
+	}
+	interface VersionResponse {
+		status: "success" | "error";
+		data: Version;
+	}
+	interface PaginatedVersionResponse {
+		status: "success" | "error";
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: Version[];
+		};
 	}
 
 	class Rehive {
@@ -344,23 +569,28 @@ declare module "rehive" {
 				last_name: string;
 			}): Promise<any>;
 			registerCompany(credentials: any): Promise<any>;
-			login(credentials: { email: string; password: string }): Promise<any>;
+			login(credentials: {
+				email: string;
+				password: string;
+			}): Promise<any>;
 			logout(): Promise<void>;
 			logoutAll(): Promise<void>;
 			password: {
 				change(data: AuthPasswordChangeData): Promise<AuthResponse>;
 				reset(data: AuthPasswordResetData): Promise<AuthResponse>;
-				resetConfirm(data: AuthPasswordResetConfirmData): Promise<AuthResponse>;
+				resetConfirm(
+					data: AuthPasswordResetConfirmData,
+				): Promise<AuthResponse>;
 			};
 			email: {
 				resendEmailVerification(
-					data: AuthEmailResendVerificationData
+					data: AuthEmailResendVerificationData,
 				): Promise<AuthResponse>;
 				verify(data: AuthEmailVerifyData): Promise<AuthResponse>;
 			};
 			mobile: {
 				resendMobileVerification(
-					data: AuthMobileResendVerificationData
+					data: AuthMobileResendVerificationData,
 				): Promise<AuthResponse>;
 				verify(data: AuthMobileVerifyData): Promise<AuthResponse>;
 			};
@@ -374,7 +604,10 @@ declare module "rehive" {
 				verify(data: AuthMFAData): Promise<AuthResponse>;
 				deliver(data: AuthMFAData): Promise<AuthResponse>;
 				authenticators: {
-					get(obj?: { id?: string; filters?: any }): Promise<AuthMFAResponse>;
+					get(obj?: {
+						id?: string;
+						filters?: any;
+					}): Promise<AuthMFAResponse>;
 					getNext(): Promise<AuthMFAResponse>;
 					getPrevious(): Promise<AuthMFAResponse>;
 					create(data: AuthMFACreateData): Promise<AuthMFAResponse>;
@@ -397,19 +630,36 @@ declare module "rehive" {
 			};
 		};
 		user: {
-			get(): Promise<any>;
-			update(data: Partial<any>): Promise<any>;
+			get(): Promise<ApiResponse>;
+			update(id: string, data: UpdateUserData): Promise<ApiResponse>;
 			addresses: {
-				get(id?: string): Promise<any>;
-				update(data: any): Promise<any>;
-				create(data: any): Promise<any>;
-				delete(id: string): Promise<any>;
+				get(
+					id?: string,
+				): Promise<
+					GetAllAddressApiResponse | GetSingleAddressApiResponse
+				>;
+				update(
+					id: string,
+					data: Address,
+				): Promise<GetSingleAddressApiResponse>;
+				create(data: Address): Promise<GetSingleAddressApiResponse>;
+				delete(id: string): Promise<ApiResponse>;
 			};
 			bankAccounts: {
-				get(bankId?: string): Promise<any>;
-				create(data: any): Promise<any>;
-				update(bankId: string, data: any): Promise<any>;
-				delete(bankId: string): Promise<any>;
+				get(
+					bankId?: string,
+				): Promise<
+					| GetSingleBankAccountApiResponse
+					| GetAllBankAccountsApiResponse
+				>;
+				create(
+					data: BankAccount,
+				): Promise<GetSingleBankAccountApiResponse>;
+				update(
+					bankId: string,
+					data: BankAccount,
+				): Promise<GetSingleBankAccountApiResponse>;
+				delete(bankId: string): Promise<ApiResponse>;
 			};
 			cryptoAccounts: {
 				get(cryptoAccountId?: string): Promise<any>;
@@ -418,34 +668,57 @@ declare module "rehive" {
 				delete(id: string): Promise<any>;
 			};
 			documents: {
-				get(obj?: { id?: string; filters?: Record<string, any> }): Promise<any>;
+				get(obj?: {
+					id?: string;
+					filters?: Record<string, any>;
+				}): Promise<any>;
 				getPrevious(): Promise<any>;
-				create(data: any): Promise<any>;
+				create(
+					data: DocumentCreateData,
+				): Promise<DocumentCreateResponse>;
 			};
 			emails: {
-				get(id?: string): Promise<any>;
-				create(data: any): Promise<any>;
-				update(emailId: string, data: any): Promise<any>;
-				delete(id: string): Promise<any>;
+				get(id?: string): Promise<EmailResponse | AllEmailResponse>;
+				create(data: {
+					email: string;
+					primary: boolean;
+				}): Promise<EmailResponse>;
+				update(
+					emailId: string,
+					data: { primary: boolean },
+				): Promise<EmailResponse>;
+				delete(id: string): Promise<ApiResponse>;
 			};
 			mobiles: {
-				get(id?: string): Promise<any>;
-				create(data: any): Promise<any>;
-				update(mobileNumberId: string, data: any): Promise<any>;
-				delete(id: string): Promise<any>;
+				get(id?: string): Promise<AllEmailResponse | EmailResponse>;
+				create(data: { number: "string" }): Promise<MobileResponse>;
+				update(
+					mobileNumberId: string,
+					data: { primary: boolean },
+				): Promise<any>;
+				delete(id: string): Promise<ApiResponse>;
 			};
 			legalTerms: {
-				get(obj?: { id?: string; filters?: Record<string, any> }): Promise<any>;
-				getNext(): Promise<any>;
-				getPrevious(): Promise<any>;
+				get(obj?: {
+					id?: string;
+					filters?: Record<string, any>;
+				}): Promise<LegalTermResponse | PaginatedLegalTermsResponse>;
+				getNext(): Promise<PaginatedLegalTermsResponse>;
+				getPrevious(): Promise<PaginatedLegalTermsResponse>;
 				versions: {
 					get(
 						termId: string,
-						obj?: { id?: string; filters?: Record<string, any> }
-					): Promise<any>;
-					getNext(): Promise<any>;
-					getPrevious(): Promise<any>;
-					update(termId: string, versionId: string, data: any): Promise<any>;
+						obj?: { id?: string; filters?: Record<string, any> },
+					): Promise<VersionResponse | PaginatedVersionResponse>;
+					getNext(): Promise<PaginatedVersionResponse>;
+					getPrevious(): Promise<PaginatedVersionResponse>;
+					update(
+						termId: string,
+						versionId: string,
+						data: {
+							accepted: boolean;
+						},
+					): Promise<VersionResponse>;
 				};
 			};
 		};
@@ -473,7 +746,7 @@ declare module "rehive" {
 				permissions: {
 					get: (
 						uuid: string,
-						obj?: { id?: string; filters?: UserFilters }
+						obj?: { id?: string; filters?: UserFilters },
 					) => Promise<any>;
 					getNext: () => Promise<any>;
 					getPrevious: () => Promise<any>;
@@ -483,7 +756,7 @@ declare module "rehive" {
 				messages: {
 					get: (
 						uuid: string,
-						obj?: { id?: string; filters?: UserFilters }
+						obj?: { id?: string; filters?: UserFilters },
 					) => Promise<any>;
 					getNext: () => Promise<any>;
 					getPrevious: () => Promise<any>;
@@ -496,7 +769,10 @@ declare module "rehive" {
 					delete: (uuid: string, name: string) => Promise<any>;
 				};
 				addresses: {
-					get: (obj?: { id?: string; filters?: UserFilters }) => Promise<any>;
+					get: (obj?: {
+						id?: string;
+						filters?: UserFilters;
+					}) => Promise<any>;
 					getNext: () => Promise<any>;
 					getPrevious: () => Promise<any>;
 					create: (data: any) => Promise<any>;
@@ -510,12 +786,16 @@ declare module "rehive" {
 					currencies: {
 						get: (
 							id: string,
-							obj?: { code?: string; filters?: any }
+							obj?: { code?: string; filters?: any },
 						) => Promise<any>;
 						getNext: () => Promise<any>;
 						getPrevious: () => Promise<any>;
 						create: (id: string, data: any) => Promise<any>;
-						update: (id: string, currCode: string, data: any) => Promise<any>;
+						update: (
+							id: string,
+							currCode: string,
+							data: any,
+						) => Promise<any>;
 						delete: (id: string, currCode: string) => Promise<any>;
 					};
 					accountCurrencies: {
@@ -574,7 +854,10 @@ declare module "rehive" {
 				};
 				mfa: {
 					authenticators: {
-						get: (obj?: { id?: string; filters?: any }) => Promise<any>;
+						get: (obj?: {
+							id?: string;
+							filters?: any;
+						}) => Promise<any>;
 						getNext: () => Promise<any>;
 						getPrevious: () => Promise<any>;
 						delete: (authId: string) => Promise<any>;
@@ -596,7 +879,9 @@ declare module "rehive" {
 				getNext(): Promise<any>;
 				getPrevious(): Promise<any>;
 				totals: {
-					get(obj?: { filters?: Record<string, string> }): Promise<any>;
+					get(obj?: {
+						filters?: Record<string, string>;
+					}): Promise<any>;
 				};
 				update(id: string, data: Record<string, any>): Promise<any>;
 				createCredit(data: Record<string, any>): Promise<any>;
@@ -605,11 +890,14 @@ declare module "rehive" {
 				messages: {
 					get(
 						txnId: string,
-						obj?: { id?: string; filters?: Record<string, string> }
+						obj?: { id?: string; filters?: Record<string, string> },
 					): Promise<any>;
 					getNext(): Promise<any>;
 					getPrevious(): Promise<any>;
-					create(txnId: string, data: Record<string, any>): Promise<any>;
+					create(
+						txnId: string,
+						data: Record<string, any>,
+					): Promise<any>;
 				};
 			};
 			transaction_collections: {
@@ -620,7 +908,10 @@ declare module "rehive" {
 				getNext(): Promise<any>;
 				getPrevious(): Promise<any>;
 				create(data: Record<string, any>): Promise<any>;
-				update(reference: string, data: Record<string, any>): Promise<any>;
+				update(
+					reference: string,
+					data: Record<string, any>,
+				): Promise<any>;
 				delete(id: string): Promise<any>;
 			};
 
@@ -638,43 +929,55 @@ declare module "rehive" {
 					getNext: () => Promise<any>;
 					getPrevious: () => Promise<any>;
 					create: (reference: string, data: any) => Promise<any>;
-					update: (reference: string, code: string, data: any) => Promise<any>;
+					update: (
+						reference: string,
+						code: string,
+						data: any,
+					) => Promise<any>;
 					limits: {
-						get: (reference: string, code: string, obj?: any) => Promise<any>;
+						get: (
+							reference: string,
+							code: string,
+							obj?: any,
+						) => Promise<any>;
 						create: (
 							reference: string,
 							code: string,
-							data: any
+							data: any,
 						) => Promise<any>;
 						update: (
 							reference: string,
 							code: string,
 							id: string,
-							data: any
+							data: any,
 						) => Promise<any>;
 						delete: (
 							reference: string,
 							code: string,
-							id: string
+							id: string,
 						) => Promise<any>;
 					};
 					fees: {
-						get: (reference: string, code: string, obj?: any) => Promise<any>;
+						get: (
+							reference: string,
+							code: string,
+							obj?: any,
+						) => Promise<any>;
 						create: (
 							reference: string,
 							code: string,
-							data: any
+							data: any,
 						) => Promise<any>;
 						update: (
 							reference: string,
 							code: string,
 							id: string,
-							data: any
+							data: any,
 						) => Promise<any>;
 						delete: (
 							reference: string,
 							code: string,
-							id: string
+							id: string,
 						) => Promise<any>;
 					};
 					settings: {
@@ -682,7 +985,7 @@ declare module "rehive" {
 						update: (
 							reference: string,
 							code: string,
-							data: any
+							data: any,
 						) => Promise<any>;
 					};
 				};
@@ -702,41 +1005,53 @@ declare module "rehive" {
 					groups: {
 						get: (
 							accountName: string,
-							obj?: { name?: string; filters?: Record<string, string> }
+							obj?: {
+								name?: string;
+								filters?: Record<string, string>;
+							},
 						) => Promise<any>;
 						getNext: () => Promise<any>;
 						getPrevious: () => Promise<any>;
-						create: (accountName: string, data: any) => Promise<any>;
+						create: (
+							accountName: string,
+							data: any,
+						) => Promise<any>;
 						update: (
 							accountName: string,
 							groupName: string,
-							data: any
+							data: any,
 						) => Promise<any>;
-						delete: (accountName: string, groupName: string) => Promise<any>;
+						delete: (
+							accountName: string,
+							groupName: string,
+						) => Promise<any>;
 
 						currencies: {
 							get: (
 								accountName: string,
 								groupName: string,
-								obj?: { code?: string; filters?: Record<string, string> }
+								obj?: {
+									code?: string;
+									filters?: Record<string, string>;
+								},
 							) => Promise<any>;
 							getNext: () => Promise<any>;
 							getPrevious: () => Promise<any>;
 							create: (
 								accountName: string,
 								groupName: string,
-								data: any
+								data: any,
 							) => Promise<any>;
 							update: (
 								accountName: string,
 								groupName: string,
 								currencyCode: string,
-								data: any
+								data: any,
 							) => Promise<any>;
 							delete: (
 								accountName: string,
 								groupName: string,
-								currencyCode: string
+								currencyCode: string,
 							) => Promise<any>;
 						};
 					};
@@ -751,7 +1066,10 @@ declare module "rehive" {
 				};
 			};
 			auth: {
-				login: (data: { email: string; password: string }) => Promise<any>;
+				login: (data: {
+					email: string;
+					password: string;
+				}) => Promise<any>;
 				register: (data: {
 					email: string;
 					password: string;
@@ -895,16 +1213,23 @@ declare module "rehive" {
 				fees: {
 					get(
 						groupName: string,
-						obj?: { id?: string; filters?: any }
+						obj?: { id?: string; filters?: any },
 					): Promise<any>;
 					getNext(): Promise<any>;
 					getPrevious(): Promise<any>;
 					create(groupName: string, data: any): Promise<any>;
-					update(groupName: string, feeId: string, data: any): Promise<any>;
+					update(
+						groupName: string,
+						feeId: string,
+						data: any,
+					): Promise<any>;
 					delete(groupName: string, feeId: string): Promise<any>;
 				};
 				permissions: {
-					get(name: string, obj?: { id?: string; filters?: any }): Promise<any>;
+					get(
+						name: string,
+						obj?: { id?: string; filters?: any },
+					): Promise<any>;
 					getNext(): Promise<any>;
 					getPrevious(): Promise<any>;
 					create(name: string, data: any): Promise<any>;
@@ -919,7 +1244,11 @@ declare module "rehive" {
 				tiers: {
 					get(name: string, obj?: { id?: string }): Promise<any>;
 					create(name: string, data: any): Promise<any>;
-					update(name: string, tierId: string, data: any): Promise<any>;
+					update(
+						name: string,
+						tierId: string,
+						data: any,
+					): Promise<any>;
 					delete(name: string, tierId: string): Promise<any>;
 					get(name: string, tierId: string): Promise<any>;
 
@@ -927,119 +1256,155 @@ declare module "rehive" {
 						get(
 							name: string,
 							tierId: string,
-							obj?: { id?: string }
+							obj?: { id?: string },
 						): Promise<any>;
-						create(name: string, tierId: string, data: any): Promise<any>;
+						create(
+							name: string,
+							tierId: string,
+							data: any,
+						): Promise<any>;
 						update(
 							name: string,
 							tierId: string,
 							feeId: string,
-							data: any
+							data: any,
 						): Promise<any>;
-						delete(name: string, tierId: string, feeId: string): Promise<any>;
+						delete(
+							name: string,
+							tierId: string,
+							feeId: string,
+						): Promise<any>;
 					};
 
 					limits: {
 						get(
 							name: string,
 							tierId: string,
-							obj?: { id?: string }
+							obj?: { id?: string },
 						): Promise<any>;
-						create(name: string, tierId: string, data: any): Promise<any>;
+						create(
+							name: string,
+							tierId: string,
+							data: any,
+						): Promise<any>;
 						update(
 							name: string,
 							tierId: string,
 							limitId: string,
-							data: any
+							data: any,
 						): Promise<any>;
-						delete(name: string, tierId: string, limitId: string): Promise<any>;
+						delete(
+							name: string,
+							tierId: string,
+							limitId: string,
+						): Promise<any>;
 					};
 
 					requirements: {
 						get(
 							name: string,
 							tierId: string,
-							obj?: { id?: string }
+							obj?: { id?: string },
 						): Promise<any>;
-						create(name: string, tierId: string, data: any): Promise<any>;
+						create(
+							name: string,
+							tierId: string,
+							data: any,
+						): Promise<any>;
 						update(
 							name: string,
 							tierId: string,
 							requirementId: string,
-							data: any
+							data: any,
 						): Promise<any>;
 						delete(
 							name: string,
 							tierId: string,
-							requirementId: string
+							requirementId: string,
 						): Promise<any>;
 					};
 					requirementSets: {
 						get(
 							groupName: string,
 							tierId: string,
-							requirementSetId?: string
+							requirementSetId?: string,
 						): Promise<any>;
-						create(groupName: string, tiersId: string, data: any): Promise<any>;
+						create(
+							groupName: string,
+							tiersId: string,
+							data: any,
+						): Promise<any>;
 						update(
 							groupName: string,
 							tierId: string,
 							requirementSetId: string,
-							data: any
+							data: any,
 						): Promise<any>;
 						delete(
 							groupName: string,
 							tierId: string,
-							requirementSetId: string
+							requirementSetId: string,
 						): Promise<any>;
 						items: {
 							get(
 								groupName: string,
 								tierId: string,
 								requirementSetId?: string,
-								itemId?: string
+								itemId?: string,
 							): Promise<any>;
 							create(
 								groupName: string,
 								tiersId: string,
 								requirementSetId: string,
-								data: any
+								data: any,
 							): Promise<any>;
 							delete(
 								groupName: string,
 								tierId: string,
 								requirementSetId: string,
-								itemId: string
+								itemId: string,
 							): Promise<any>;
 						};
 					};
 					settings: {
 						get(name: string, tierId: string): Promise<any>;
-						update(name: string, tierId: string, data: any): Promise<any>;
+						update(
+							name: string,
+							tierId: string,
+							data: any,
+						): Promise<any>;
 					};
 				};
 				accountConfigurations: {
 					get(
 						name: string,
-						obj?: { name?: string; filters?: any }
+						obj?: { name?: string; filters?: any },
 					): Promise<any>;
 					getNext(): Promise<any>;
 					getPrevious(): Promise<any>;
 					create(name: string, data: any): Promise<any>;
-					update(name: string, accConfigName: string, data: any): Promise<any>;
+					update(
+						name: string,
+						accConfigName: string,
+						data: any,
+					): Promise<any>;
 					currencies: {
-						get(name: string, accConfigName: string, obj?: any): Promise<any>;
+						get(
+							name: string,
+							accConfigName: string,
+							obj?: any,
+						): Promise<any>;
 						getNext(): Promise<any>;
 						getPrevious(): Promise<any>;
 						create(
 							name: string,
 							accConfigName: string,
-							data: any
+							data: any,
 						): Promise<any>;
 						delete(
 							name: string,
 							accConfigName: string,
-							currencyCode: string
+							currencyCode: string,
 						): Promise<any>;
 					};
 				};
@@ -1090,14 +1455,14 @@ declare module "rehive" {
 			currencies: {
 				get(
 					reference: string,
-					obj?: { code?: string; filters?: any }
+					obj?: { code?: string; filters?: any },
 				): Promise<any>;
 				getNext(): Promise<any>;
 				getPrevious(): Promise<any>;
 				update(
 					reference: string,
 					currencyCode: string,
-					data: any
+					data: any,
 				): Promise<any>;
 			};
 		};
@@ -1121,14 +1486,14 @@ declare module "rehive" {
 					get(
 						groupName: string,
 						tierId: string,
-						requirementSetId?: string
+						requirementSetId?: string,
 					): Promise<any>;
 					items: {
 						get(
 							groupName: string,
 							tierId: string,
 							requirementSetId?: string,
-							itemId?: string
+							itemId?: string,
 						): Promise<any>;
 					};
 				};
