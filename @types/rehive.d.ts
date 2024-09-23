@@ -375,6 +375,238 @@ declare module "rehive" {
 		id?: string;
 	}
 	type ClearSessionOption = "all" | "temporary" | "none";
+	interface UpdateUserData {
+		username: string;
+		first_name?: string;
+		middle_name?: string;
+		last_name?: string;
+		profile?: string;
+		id_number?: string;
+		birth_date?: string; // ISO format 'YYYY-MM-DD'
+		language?: string;
+		nationality?: string; // Country code (e.g., 'AF')
+		residency?: string; // Country code (e.g., 'AF')
+		gender?: "male" | "female" | "other";
+		title?: "mr" | "mrs" | "ms" | "dr";
+		marital_status?: "single" | "married" | "divorced" | "widowed";
+		fathers_name?: string;
+		mothers_name?: string;
+		grandfathers_name?: string;
+		grandmothers_name?: string;
+		central_bank_number?: string;
+		timezone?: string;
+		website?: string;
+		business_name?: string;
+	}
+	interface Address {
+		id?: number;
+		type: "permanent" | "temporary";
+		line_1: string;
+		line_2?: string;
+		city: string;
+		state_province: string;
+		country: string;
+		postal_code: string;
+		status?: string;
+		created?: number;
+		updated?: number;
+	}
+
+	interface GetAllAddressApiResponse {
+		status: "success" | "error";
+		data: Address[];
+	}
+	interface GetSingleAddressApiResponse {
+		status: "success" | "error";
+		data: Address;
+	}
+
+	interface Owner {
+		first_name: string;
+		middle_name?: string; // Optional
+		last_name: string;
+		phone_number: string;
+		email_address: string;
+		company_name: string;
+		ein_tin: string;
+		address: Address;
+		cpf_cpnj: string;
+	}
+
+	interface Currency {
+		code: string;
+		display_code: string;
+		description: string;
+		symbol: string;
+		unit: string;
+		divisibility: number;
+		icon: string;
+	}
+
+	interface AccountCurrency {
+		id: string;
+		balance: number;
+		available_balance: number;
+		account: {
+			reference: string;
+			name: string;
+			label: string;
+			primary: boolean;
+		};
+		currency: Currency;
+		active: boolean;
+	}
+
+	interface BankAccount {
+		id: number;
+		name: string;
+		number: string;
+		type: string;
+		beneficiary_type: "individual" | "company";
+		clabe: string;
+		owner: Owner;
+		bank_name: string;
+		bank_code: string;
+		branch_code: string;
+		branch_address: Address;
+		routing_number: string;
+		swift: string;
+		iban: string;
+		bic: string;
+		code: string;
+		metadata: {
+			property1: any;
+			property2: any;
+		};
+		status: string;
+		currencies: Currency[];
+		account_currencies: AccountCurrency[];
+		action: string;
+		created: number;
+		updated: number;
+	}
+	interface GetAllBankAccountsApiResponse {
+		status: "success" | "error";
+		data: BankAccount[];
+	}
+	interface GetSingleBankAccountApiResponse {
+		status: "success" | "error";
+		data: BankAccount;
+	}
+	interface DocumentCreateData {
+		file: string;
+		type: number;
+		metadata?: Metadata;
+		expires?: number;
+	}
+	interface FileType {
+		id: number;
+		name: string;
+		description: string;
+	}
+
+	interface DocumentCreateResponse {
+		status: "success" | "error";
+		data: {
+			id: number;
+			file: string;
+			type: FileType;
+			status: string;
+			metadata: Metadata;
+			note?: string;
+			expires?: number;
+			created?: number;
+			updated?: number;
+		};
+	}
+	interface Email {
+		id: number;
+		email: string;
+		primary: boolean;
+		verified: boolean;
+		created: number;
+		updated: number;
+	}
+	interface EmailResponse {
+		status: "success" | "error";
+
+		data: Email;
+	}
+	interface AllEmailResponse {
+		status: "success" | "error";
+
+		data: Email[];
+	}
+	interface Mobile {
+		id: number;
+		number: "string";
+		primary: true;
+		verified: true;
+		created: number;
+		updated: number;
+	}
+	interface MobileResponse {
+		status: "success" | "error";
+
+		data: Mobile;
+	}
+	interface AllMobileResponse {
+		status: "success" | "error";
+
+		data: Mobile[];
+	}
+
+	interface LegalTerms {
+		id: number;
+		type: string;
+		name: string;
+		description: string;
+		versions: {
+			id: number;
+			version: number;
+			accepted: boolean;
+			created: number;
+			updated: number;
+		}[];
+		created: number;
+		updated: number;
+	}
+	interface PaginatedLegalTermsResponse {
+		status: "success" | "error";
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: LegalTerms[];
+		};
+	}
+	interface LegalTermResponse {
+		status: "success" | "error";
+		data: LegalTerms;
+	}
+	interface Version {
+		id: number;
+		version: number;
+		accepted: boolean;
+		accepted_date: number;
+		note: string;
+		content: string;
+		created: number;
+		updated: number;
+	}
+	interface VersionResponse {
+		status: "success" | "error";
+		data: Version;
+	}
+	interface PaginatedVersionResponse {
+		status: "success" | "error";
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: Version[];
+		};
+	}
 	class Rehive {
 		constructor(config?: RehiveConfig);
 		public: {
