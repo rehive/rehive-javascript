@@ -116,6 +116,23 @@ declare module "rehive" {
 		password: string;
 		terms_and_conditions: boolean;
 	}
+	interface RegisterResponse {
+		status: string;
+		data: {
+			token: string;
+			user: User;
+			challenges: Challenge[];
+			expires: number;
+			created: number;
+		};
+	}
+	interface Challenge {
+		id: string;
+		type: "authentication";
+		durability: "ephemeral" | "persistent";
+		authenticator_types: string[];
+		created: number;
+	}
 
 	interface LoginResponse {
 		status: "success" | "error";
@@ -124,8 +141,7 @@ declare module "rehive" {
 		data?: {
 			token: string;
 			user: User;
-			challenges?: any;
-			mfa?: any;
+			challenges?: Challenge[];
 		};
 	}
 
@@ -205,45 +221,59 @@ declare module "rehive" {
 		message?: string;
 		data?: any;
 	}
+	type AuthMethod = "cookie" | "token";
 
-	interface AuthTokenData {
-		[key: string]: any;
+	interface CreateAuthTokenData {
+		password: "string";
+		duration?: number | null;
+		auth_method?: AuthMethod;
 	}
 
 	interface AuthPasswordChangeData {
 		old_password: string;
 		new_password: string;
+		clear_session_option?: ClearSessionOption;
 	}
 
 	interface AuthPasswordResetData {
-		email: string;
+		force?: boolean;
+		user: string;
+		company: string;
 	}
 
 	interface AuthPasswordResetConfirmData {
-		token: string;
-		new_password: string;
+		new_password: "string";
+		uid: "string";
+		token: "string";
+		clear_session_option?: ClearSessionOption;
 	}
 
 	interface AuthEmailResendVerificationData {
-		email: string;
+		email: "user@example.com";
+		company: "string";
 	}
 
 	interface AuthMobileResendVerificationData {
-		mobile_number: string;
+		mobile: "string";
+		company: "string";
 	}
 
 	interface AuthMobileVerifyData {
-		mobile_number: string;
-		verification_code: string;
+		otp: "string";
 	}
 
 	interface AuthEmailVerifyData {
-		email: string;
-		verification_code: string;
+		key: "string";
 	}
 
-	interface AuthMFAData {
-		[key: string]: any;
+	interface AuthMFADeliverData {
+		challenge?: "string";
+		authenticator?: "string";
+	}
+	interface AuthMFAVerifyData {
+		token: "string";
+		challenge?: "string";
+		authenticator?: "string";
 	}
 
 	interface AuthMFAStatus {
@@ -255,12 +285,32 @@ declare module "rehive" {
 	}
 
 	interface AuthTokenGetResponse {
-		tokens: AuthTokenData[];
+		tokens: CreateAuthTokenData[];
 	}
 
 	interface AuthMFAResponse {
 		status: string;
 		data?: any;
+	}
+	interface AuthenticatorDetails {
+		name: string;
+		algorithm: string;
+		otpauth_url: string;
+		issuer: string;
+		account: string;
+		key: string;
+	}
+
+	interface AuthenticatorResponse {
+		status: string;
+		data: {
+			id: string;
+			type: AuthenticatorType;
+			details: AuthenticatorDetails;
+			verified: boolean;
+			created: number;
+			updated: number;
+		};
 	}
 
 	interface AuthMFACreateData {
@@ -286,6 +336,7 @@ declare module "rehive" {
 	interface AuthMFATokenEnableData {
 		token: string;
 	}
+	type AuthenticatorType = "totp" | "sms" | "static";
 
 	interface AuthMFATokenDisableData {}
 	interface UserFilters {
@@ -320,239 +371,10 @@ declare module "rehive" {
 	interface Filters {
 		[key: string]: any;
 	}
-	interface UpdateUserData {
-		username: string;
-		first_name?: string;
-		middle_name?: string;
-		last_name?: string;
-		profile?: string;
-		id_number?: string;
-		birth_date?: string; // ISO format 'YYYY-MM-DD'
-		language?: string;
-		nationality?: string; // Country code (e.g., 'AF')
-		residency?: string; // Country code (e.g., 'AF')
-		gender?: "male" | "female" | "other";
-		title?: "mr" | "mrs" | "ms" | "dr";
-		marital_status?: "single" | "married" | "divorced" | "widowed";
-		fathers_name?: string;
-		mothers_name?: string;
-		grandfathers_name?: string;
-		grandmothers_name?: string;
-		central_bank_number?: string;
-		timezone?: string;
-		website?: string;
-		business_name?: string;
+	interface LimitObj {
+		id?: string;
 	}
-	interface Address {
-		id?: number;
-		type: "permanent" | "temporary";
-		line_1: string;
-		line_2?: string;
-		city: string;
-		state_province: string;
-		country: string;
-		postal_code: string;
-		status?: string;
-		created?: number;
-		updated?: number;
-	}
-
-	interface GetAllAddressApiResponse {
-		status: "success" | "error";
-		data: Address[];
-	}
-	interface GetSingleAddressApiResponse {
-		status: "success" | "error";
-		data: Address;
-	}
-
-	interface Owner {
-		first_name: string;
-		middle_name?: string; // Optional
-		last_name: string;
-		phone_number: string;
-		email_address: string;
-		company_name: string;
-		ein_tin: string;
-		address: Address;
-		cpf_cpnj: string;
-	}
-
-	interface Currency {
-		code: string;
-		display_code: string;
-		description: string;
-		symbol: string;
-		unit: string;
-		divisibility: number;
-		icon: string;
-	}
-
-	interface AccountCurrency {
-		id: string;
-		balance: number;
-		available_balance: number;
-		account: {
-			reference: string;
-			name: string;
-			label: string;
-			primary: boolean;
-		};
-		currency: Currency;
-		active: boolean;
-	}
-
-	interface BankAccount {
-		id: number;
-		name: string;
-		number: string;
-		type: string;
-		beneficiary_type: "individual" | "company";
-		clabe: string;
-		owner: Owner;
-		bank_name: string;
-		bank_code: string;
-		branch_code: string;
-		branch_address: Address;
-		routing_number: string;
-		swift: string;
-		iban: string;
-		bic: string;
-		code: string;
-		metadata: {
-			property1: any;
-			property2: any;
-		};
-		status: string;
-		currencies: Currency[];
-		account_currencies: AccountCurrency[];
-		action: string;
-		created: number;
-		updated: number;
-	}
-	interface GetAllBankAccountsApiResponse {
-		status: "success" | "error";
-		data: BankAccount[];
-	}
-	interface GetSingleBankAccountApiResponse {
-		status: "success" | "error";
-		data: BankAccount;
-	}
-	interface DocumentCreateData {
-		file: string;
-		type: number;
-		metadata?: Metadata;
-		expires?: number;
-	}
-	interface FileType {
-		id: number;
-		name: string;
-		description: string;
-	}
-
-	interface DocumentCreateResponse {
-		status: "success" | "error";
-		data: {
-			id: number;
-			file: string;
-			type: FileType;
-			status: string;
-			metadata: Metadata;
-			note?: string;
-			expires?: number;
-			created?: number;
-			updated?: number;
-		};
-	}
-	interface Email {
-		id: number;
-		email: string;
-		primary: boolean;
-		verified: boolean;
-		created: number;
-		updated: number;
-	}
-	interface EmailResponse {
-		status: "success" | "error";
-
-		data: Email;
-	}
-	interface AllEmailResponse {
-		status: "success" | "error";
-
-		data: Email[];
-	}
-	interface Mobile {
-		id: number;
-		number: "string";
-		primary: true;
-		verified: true;
-		created: number;
-		updated: number;
-	}
-	interface MobileResponse {
-		status: "success" | "error";
-
-		data: Mobile;
-	}
-	interface AllMobileResponse {
-		status: "success" | "error";
-
-		data: Mobile[];
-	}
-
-	interface LegalTerms {
-		id: number;
-		type: string;
-		name: string;
-		description: string;
-		versions: {
-			id: number;
-			version: number;
-			accepted: boolean;
-			created: number;
-			updated: number;
-		}[];
-		created: number;
-		updated: number;
-	}
-	interface PaginatedLegalTermsResponse {
-		status: "success" | "error";
-		data: {
-			count: number;
-			next: string | null;
-			previous: string | null;
-			results: LegalTerms[];
-		};
-	}
-	interface LegalTermResponse {
-		status: "success" | "error";
-		data: LegalTerms;
-	}
-	interface Version {
-		id: number;
-		version: number;
-		accepted: boolean;
-		accepted_date: number;
-		note: string;
-		content: string;
-		created: number;
-		updated: number;
-	}
-	interface VersionResponse {
-		status: "success" | "error";
-		data: Version;
-	}
-	interface PaginatedVersionResponse {
-		status: "success" | "error";
-		data: {
-			count: number;
-			next: string | null;
-			previous: string | null;
-			results: Version[];
-		};
-	}
-
+	type ClearSessionOption = "all" | "temporary" | "none";
 	class Rehive {
 		constructor(config?: RehiveConfig);
 		public: {
@@ -561,19 +383,19 @@ declare module "rehive" {
 			};
 		};
 		auth: {
-			register(credentials: {
-				email: string;
-				password: string;
-				company: string;
-				first_name: string;
-				last_name: string;
-			}): Promise<any>;
-			registerCompany(credentials: any): Promise<any>;
+			register(
+				credentials: RegisterCredentials,
+			): Promise<RegisterResponse>;
+			registerCompany(
+				credentials: RegisterCredentials,
+			): Promise<RegisterResponse>;
 			login(credentials: {
 				email: string;
 				password: string;
-			}): Promise<any>;
-			logout(): Promise<void>;
+			}): Promise<LoginResponse>;
+			logout(
+				clearSessionOption?: ClearSessionOption,
+			): Promise<AuthResponse>;
 			logoutAll(): Promise<void>;
 			password: {
 				change(data: AuthPasswordChangeData): Promise<AuthResponse>;
@@ -595,23 +417,25 @@ declare module "rehive" {
 				verify(data: AuthMobileVerifyData): Promise<AuthResponse>;
 			};
 			tokens: {
-				get(tokenKey?: string): Promise<AuthTokenGetResponse>;
-				create(data: AuthTokenData): Promise<AuthResponse>;
+				get(tokenKey: string): Promise<AuthTokenGetResponse>;
+				create(data: CreateAuthTokenData): Promise<RegisterResponse>;
 				delete(tokenKey: string): Promise<AuthResponse>;
 				verify(token: string): Promise<AuthResponse>;
 			};
 			mfa: {
-				verify(data: AuthMFAData): Promise<AuthResponse>;
-				deliver(data: AuthMFAData): Promise<AuthResponse>;
+				verify(data: AuthMFAVerifyData): Promise<AuthResponse>;
+				deliver(data: AuthMFADeliverData): Promise<AuthResponse>;
 				authenticators: {
 					get(obj?: {
 						id?: string;
 						filters?: any;
-					}): Promise<AuthMFAResponse>;
+					}): Promise<AuthenticatorResponse>;
 					getNext(): Promise<AuthMFAResponse>;
 					getPrevious(): Promise<AuthMFAResponse>;
-					create(data: AuthMFACreateData): Promise<AuthMFAResponse>;
-					delete(id: string): Promise<AuthMFAResponse>;
+					create(data: {
+						type: AuthenticatorType;
+					}): Promise<AuthenticatorResponse>;
+					delete(id: string): Promise<AuthenticatorResponse>;
 				};
 				status: {
 					get(): Promise<AuthMFAStatus>;
@@ -623,8 +447,8 @@ declare module "rehive" {
 					disable(data: AuthMFADisableData): Promise<AuthResponse>;
 				};
 				token: {
-					get(): Promise<AuthMFATokenGetResponse>;
-					enable(data: AuthMFATokenEnableData): Promise<AuthResponse>;
+					get(): Promise<{ token: string }>;
+					enable(data: { token: string }): Promise<AuthResponse>;
 					disable(): Promise<AuthResponse>;
 				};
 			};
@@ -702,23 +526,21 @@ declare module "rehive" {
 				get(obj?: {
 					id?: string;
 					filters?: Record<string, any>;
-				}): Promise<LegalTermResponse | PaginatedLegalTermsResponse>;
-				getNext(): Promise<PaginatedLegalTermsResponse>;
-				getPrevious(): Promise<PaginatedLegalTermsResponse>;
+				}): Promise<any>;
+				getNext(): Promise<any>;
+				getPrevious(): Promise<any>;
 				versions: {
 					get(
 						termId: string,
 						obj?: { id?: string; filters?: Record<string, any> },
-					): Promise<VersionResponse | PaginatedVersionResponse>;
-					getNext(): Promise<PaginatedVersionResponse>;
-					getPrevious(): Promise<PaginatedVersionResponse>;
+					): Promise<any>;
+					getNext(): Promise<any>;
+					getPrevious(): Promise<any>;
 					update(
 						termId: string,
 						versionId: string,
-						data: {
-							accepted: boolean;
-						},
-					): Promise<VersionResponse>;
+						data: any,
+					): Promise<any>;
 				};
 			};
 		};
