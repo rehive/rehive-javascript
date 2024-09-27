@@ -53,8 +53,8 @@ declare module "rehive" {
 	}
 
 	interface DisallowedTransactionSubtype {
-		subtype: TransactionSubtype;
-		currency: Currency;
+		subtype: TransactionSubtype | number;
+		currency: Currency | string;
 	}
 
 	interface Settings {
@@ -62,6 +62,15 @@ declare module "rehive" {
 		allow_debit_transactions: boolean;
 		allow_credit_transactions: boolean;
 		disallowed_transaction_subtypes: DisallowedTransactionSubtype[];
+	}
+	interface UpdateSettingResponse {
+		status: "success";
+		data: {
+			allow_transactions: boolean;
+			allow_debit_transactions: boolean;
+			allow_credit_transactions: boolean;
+			disallowed_transaction_subtypes: DisallowedTransactionSubtype[];
+		};
 	}
 
 	interface Verification {
@@ -103,10 +112,72 @@ declare module "rehive" {
 		website: string;
 		business_name: string;
 		verification: Verification;
-		status: "active" | "inactive" | "obsolete";
+		status: statusType;
 		created: number; // Unix timestamp
 		updated: number; // Unix timestamp
 		settings: Settings;
+		[key: string]: any;
+	}
+	interface PaginatedUserResponse {
+		status: "success";
+		data: {
+			count: number;
+			next: string;
+			previous: string;
+			results: UserInAdminData[];
+		};
+	}
+	interface UserResponse {
+		status: "success";
+		data: UserInAdminData;
+	}
+
+	interface UserInAdminData {
+		id: string;
+		username: string;
+		email: string;
+		mobile: string;
+		first_name: string;
+		middle_name: string;
+		last_name: string;
+		profile: string;
+		groups: Group[];
+		temporary: boolean;
+		id_number: string;
+		birth_date: string; // 'YYYY-MM-DD'
+		currency: Currency;
+		account: string;
+		balance: number;
+		available_balance: number;
+		company: string;
+		owner: boolean;
+		language: string;
+		nationality: string; // Country code
+		residency: string; // Country code
+		gender: "male" | "female" | "other";
+		title: "mr" | "mrs" | "ms" | "dr";
+		marital_status: "single" | "married" | "divorced" | "widowed";
+		fathers_name: string;
+		mothers_name: string;
+		grandfathers_name: string;
+		grandmothers_name: string;
+		central_bank_number: string;
+		metadata: {
+			property1: null;
+			property2: null;
+		};
+		timezone: string;
+		website: string;
+		business_name: string;
+		verified: boolean;
+		verification: Verification;
+		status: statusType;
+		created: number;
+		updated: number;
+		deactivated: boolean;
+		retention_state: string;
+		archived: boolean;
+		last_login: number;
 	}
 	interface RegisterCredentials {
 		first_name: string;
@@ -224,7 +295,7 @@ declare module "rehive" {
 	type AuthMethod = "cookie" | "token";
 
 	interface CreateAuthTokenData {
-		password: "string";
+		password: string;
 		duration?: number | null;
 		auth_method?: AuthMethod;
 	}
@@ -242,46 +313,42 @@ declare module "rehive" {
 	}
 
 	interface AuthPasswordResetConfirmData {
-		new_password: "string";
-		uid: "string";
-		token: "string";
+		new_password: string;
+		uid: string;
+		token: string;
 		clear_session_option?: ClearSessionOption;
 	}
 
 	interface AuthEmailResendVerificationData {
-		email: "user@example.com";
-		company: "string";
+		email: string;
+		company: string;
 	}
 
 	interface AuthMobileResendVerificationData {
-		mobile: "string";
-		company: "string";
+		mobile: string;
+		company: string;
 	}
 
 	interface AuthMobileVerifyData {
-		otp: "string";
+		otp: string;
 	}
 
 	interface AuthEmailVerifyData {
-		key: "string";
+		key: string;
 	}
 
 	interface AuthMFADeliverData {
-		challenge?: "string";
-		authenticator?: "string";
+		challenge?: string;
+		authenticator?: string;
 	}
 	interface AuthMFAVerifyData {
-		token: "string";
-		challenge?: "string";
-		authenticator?: "string";
+		token: string;
+		challenge?: string;
+		authenticator?: string;
 	}
 
 	interface AuthMFAStatus {
 		status: string;
-	}
-
-	interface AuthMFAUpdateData {
-		[key: string]: any;
 	}
 
 	interface AuthTokenGetResponse {
@@ -313,14 +380,6 @@ declare module "rehive" {
 		};
 	}
 
-	interface AuthMFACreateData {
-		[key: string]: any;
-	}
-
-	interface AuthMFADeleteData {
-		id: string;
-	}
-
 	interface AuthMFAEnableData {
 		[key: string]: any;
 	}
@@ -329,39 +388,603 @@ declare module "rehive" {
 		[key: string]: any;
 	}
 
-	interface AuthMFATokenGetResponse {
-		token: string;
-	}
-
-	interface AuthMFATokenEnableData {
-		token: string;
-	}
 	type AuthenticatorType = "totp" | "sms" | "static";
 
-	interface AuthMFATokenDisableData {}
 	interface UserFilters {
 		id?: string;
 		filters?: { [key: string]: string };
 	}
-
-	interface PermissionFilters {
-		id?: string;
-		filters?: { [key: string]: string };
+	interface PaginatedUserPermissions {
+		status: "success";
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: AdminUserPermission[];
+		};
 	}
 
-	interface MessageFilters {
-		id?: string;
-		filters?: { [key: string]: string };
+	interface AdminUserPermission {
+		id: number;
+		section: "system" | "admin" | "user";
+		type:
+			| "accesscontrolrule"
+			| "account"
+			| "accountdefinition"
+			| "address"
+			| "currency"
+			| "bankaccount"
+			| "company"
+			| "cryptoaccount"
+			| "device"
+			| "document"
+			| "email"
+			| "group"
+			| "legalterm"
+			| "mfa"
+			| "mfarule"
+			| "mobile"
+			| "notification"
+			| "permission"
+			| "request"
+			| "service"
+			| "token"
+			| "transaction"
+			| "transactionsubtypes"
+			| "user"
+			| "webhook";
+		level: "view" | "add" | "change" | "delete";
+		properties?: { [key: string]: any } | null;
+	}
+	interface UserPermissionCreateResponse {
+		status: string;
+		data: {
+			permissions: AdminUserPermission[];
+		};
+	}
+	interface UserPermissionResponse {
+		status: string;
+		data: {
+			permissions: AdminUserPermission[];
+		};
+	}
+	interface AuthorGroup {
+		name: string;
+		label: string;
+		section: "system" | "admin" | "user";
 	}
 
-	interface UserGroupFilters {
-		name?: string;
-		filters?: { [key: string]: string };
+	interface Author {
+		id: string;
+		username: string;
+		email: string;
+		mobile: string;
+		first_name: string;
+		middle_name: string;
+		last_name: string;
+		profile: string;
+		groups: AuthorGroup[];
+		temporary: boolean;
 	}
-	type Serialize = (filters: { [key: string]: string }) => string;
+	type sectionType = "system" | "admin" | "user";
+	type levelType = "info" | "warning" | "error";
+	interface MessageResult {
+		id: number;
+		section: sectionType;
+		level: levelType;
+		message: string;
+		archived: boolean;
+		author: Author;
+		created: number;
+		updated: number;
+	}
 
-	interface LimitObj {
-		id?: string;
+	interface PaginatedMessageResponse {
+		status: string;
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: MessageResult[];
+		};
+	}
+	interface MessageResponse {
+		status: string;
+		data: MessageResult;
+	}
+	interface MessageData {
+		section: sectionType;
+		level: levelType;
+		message: string;
+		archived: boolean;
+	}
+	interface TierLimit {
+		id: number;
+		value: number;
+		type: string; // "max" or others
+		tx_type: string; // "credit" or "debit"
+		subtype: string;
+		account_definition: string;
+		currency: string;
+	}
+
+	interface TierFee {
+		id: number;
+		name: string;
+		tx_type: string; // "credit" or "debit"
+		subtype: string;
+		account_definition: string;
+		currency: string;
+		value: number;
+		percentage: number;
+		description: string;
+	}
+
+	interface Subtype {
+		id: number;
+		name: string;
+		label: string;
+		tx_type: string; // "credit" or "debit"
+	}
+
+	interface Currency {
+		code: string;
+		display_code: string;
+		description: string;
+		symbol: string;
+		unit: string;
+		divisibility: number;
+		icon: string;
+	}
+
+	interface TierSettings {
+		allow_transactions: boolean;
+		allow_debit_transactions: boolean;
+		allow_credit_transactions: boolean;
+		disallowed_transaction_subtypes: DisallowedTransactionSubtype[];
+	}
+
+	interface Tier {
+		id: number;
+		level: number;
+		name: string;
+		description: string;
+		limits: TierLimit[];
+		fees: TierFee[];
+		settings: TierSettings;
+		archived: boolean;
+		created: number;
+		updated: number;
+	}
+
+	interface Settings {
+		allow_transactions: boolean;
+		allow_debit_transactions: boolean;
+		allow_credit_transactions: boolean;
+		disallowed_transaction_subtypes: DisallowedTransactionSubtype[];
+		password_reset_url: string;
+		password_set_url: string;
+		email_verification_url: string;
+		deactivate_verification_url: string;
+		request_delete_verification_url: string;
+	}
+
+	interface Data {
+		name: string;
+		label: string;
+		description: string;
+		icon: string;
+		default: boolean;
+		public: boolean;
+		listed: boolean;
+		permissions: number;
+		tier: Tier;
+		tiers: {
+			id: number;
+			level: number;
+			name: string;
+			description: string;
+		}[];
+		settings: Settings;
+		archived: boolean;
+		created: number;
+		updated: number;
+	}
+
+	interface GroupsResponse {
+		status: string;
+		data: Data;
+	}
+	interface PaginatedGroupsResponse {
+		status: string;
+		data: Data[];
+	}
+	interface Group {
+		name: string;
+		label: string;
+		section: string;
+	}
+
+	type addressType =
+		| "permanent"
+		| "contact"
+		| "shipping"
+		| "billing"
+		| "business";
+	type statusType =
+		| "obsolete"
+		| "declined"
+		| "pending"
+		| "incomplete"
+		| "verified";
+	interface AddressResult {
+		id: number;
+		type: addressType; // "permanent" or other types
+		user: User;
+		line_1: string;
+		line_2: string;
+		city: string;
+		state_province: string;
+		country: string; // ISO 3166 country code e.g., "AF"
+		postal_code: string;
+		status: statusType; // e.g., "obsolete"
+		archived: boolean;
+		created: number;
+		updated: number;
+	}
+
+	interface PaginatedAddressResponse {
+		count: number;
+		next: string | null;
+		previous: string | null;
+		results: AddressResult[];
+	}
+
+	interface AddressResponse {
+		status: string;
+		data: AddressResult;
+	}
+	interface Owner {
+		first_name: string;
+		middle_name?: string;
+		last_name: string;
+		phone_number: string;
+		email_address: string;
+		company_name: string;
+		ein_tin: string;
+		address: Address;
+		cpf_cpnj: string;
+	}
+
+	interface Currency {
+		code: string;
+		display_code: string;
+		description: string;
+		symbol: string;
+		unit: string;
+		divisibility: number;
+		icon: string;
+	}
+
+	interface BankAccount {
+		id: number;
+		user: User;
+		name: string;
+		owner: Owner;
+		number: string;
+		type: string;
+		beneficiary_type: "individual" | "company";
+		clabe: string;
+		bank_name: string;
+		bank_code: string;
+		branch_code: string;
+		branch_address: Address;
+		routing_number: string;
+		swift: string;
+		iban: string;
+		bic: string;
+		code: string;
+		status: statusType; // e.g., "obsolete"
+		metadata: Record<string, any>; // or specific metadata fields
+		archived: boolean;
+		currencies: Currency[];
+		action: string; // e.g., "withdraw"
+		created: number;
+		updated: number;
+	}
+
+	interface BankAccountListResponse {
+		status: string;
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: BankAccount[];
+		};
+	}
+
+	interface BankAccountResponse {
+		status: string;
+		data: BankAccount;
+	}
+
+	interface CreateBankAccountPayload {
+		user: string;
+		name: string;
+		owner: Owner;
+		number: string;
+		type: string;
+		beneficiary_type: string;
+		clabe: string;
+		bank_name: string;
+		bank_code: string;
+		branch_code: string;
+		branch_address: Address;
+		routing_number: string;
+		swift: string;
+		iban: string;
+		bic: string;
+		status: string;
+		metadata: Record<string, any>;
+		archived: boolean;
+		action: string;
+	}
+	interface Account {
+		reference: string;
+		name: string;
+		label: string;
+		primary: boolean;
+	}
+	interface BankAccountCurrency {
+		id: string;
+		balance: number;
+		available_balance: number;
+		account: Account;
+		currency: Currency;
+		active: boolean;
+		archived: boolean;
+	}
+	interface AllBankAccountCurrencyResponse {
+		status: string;
+		data: BankAccountCurrency[];
+	}
+	interface GetBankAccountCurrencyResponse {
+		status: string;
+		data: BankAccountCurrency;
+	}
+
+	interface CryptoAccount {
+		id: number;
+		address: string;
+		name: string;
+		code: string;
+		crypto_type: string;
+		network: string;
+		metadata: Metadata;
+		user: User;
+		status: string;
+		currencies: Currency[];
+		account_currencies: BankAccountCurrency[];
+		archived: boolean;
+		action: string;
+		created: number;
+		updated: number;
+	}
+
+	interface PaginatedCryptoAccountListResponse {
+		status: string;
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: CryptoAccount[];
+		};
+	}
+	interface CryptoAccountListResponse {
+		status: string;
+		data: CryptoAccount;
+	}
+	interface CryptoAccountData {
+		address: string;
+		name: string;
+		crypto_type: string;
+		network: string;
+		metadata?: Metadata;
+		user: string;
+		status: string;
+		archived: boolean;
+		action: string;
+	}
+	interface FileType {
+		id: number;
+		name: string;
+		description: string;
+	}
+	interface UserDocument {
+		id: number;
+		user: User;
+		file: string;
+		type: FileType;
+		status: statusType;
+		metadata: Metadata;
+		note: string;
+		archived: boolean;
+		expires: number;
+		created: number;
+		updated: number;
+	}
+	interface UserDocumentPayload {
+		user: string;
+		file: string;
+		type: number;
+		status: statusType;
+		metadata: Metadata;
+		note: string;
+		archived: boolean;
+		expires: number;
+	}
+	interface PaginatedUserDocuments {
+		status: string;
+		data: {
+			count: number;
+			next: string;
+			previous: string;
+			results: UserDocument[];
+		};
+	}
+	interface UserDocuments {
+		status: string;
+		data: UserDocument;
+	}
+	interface EmailResult {
+		user: User;
+		id: number;
+		email: string;
+		primary: boolean;
+		verified: boolean;
+		archived: boolean;
+		temporary: boolean;
+		created: number;
+		updated: number;
+	}
+	interface EmailCreatePayload {
+		user: string;
+		email: string;
+		primary: boolean;
+		verified: boolean;
+	}
+
+	interface PaginatedEmailListResponse {
+		status: string;
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: EmailResult[];
+		};
+	}
+	interface SingleEmailResponse {
+		status: string;
+		data: EmailResult;
+	}
+	interface MobileListResponse {
+		status: string;
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: MobileDetails[];
+		};
+	}
+	interface SingleMobileResponse {
+		status: string;
+		data: MobileDetails;
+	}
+	interface MobileNumberPayload {
+		user: string;
+		number: string;
+		primary: boolean;
+		verified: boolean;
+		archived: boolean;
+	}
+
+	interface MobileDetails {
+		user: User;
+		id: number;
+		number: string;
+		primary: boolean;
+		verified: boolean;
+		archived: boolean;
+		temporary: boolean;
+		created: number;
+		updated: number;
+	}
+	interface TransactionListResponse {
+		status: string;
+		data: {
+			count: number;
+			next: string;
+			previous: string;
+			results: Transaction[];
+		};
+	}
+	interface TransactionTotal {
+		status: string;
+		data: {
+			total_amount: number;
+			amount: number;
+			fees: number;
+			count: number;
+			currency: string;
+		};
+	}
+	interface SingleTransactionResponse {
+		status: string;
+		data: Transaction;
+	}
+
+	type TransactionStatus =
+		| "Initiating"
+		| "Quoted"
+		| "Pending"
+		| "Complete"
+		| "Failed";
+
+	interface TransactionPayload {
+		transactions: Transaction[];
+	}
+
+	interface Transaction {
+		id: string;
+		collection: string;
+		parent: string;
+		partner: Partner;
+		index: number;
+		tx_type: string;
+		subtype: string;
+		note: string;
+		metadata: Metadata;
+
+		status: TransactionStatus;
+		reference: string;
+		amount: number;
+		fee: number;
+		total_amount: number;
+		balance: number;
+		account: string;
+		label: string;
+		currency: Currency | string;
+		user: User;
+		inclusive: boolean;
+		archived: boolean;
+		executed: number;
+		expires: number;
+		created: number;
+		updated: number;
+	}
+	interface TransactionCreditOrDebitPayload {
+		id: string;
+		amount: number;
+		currency: string;
+		account: string;
+		subtype: string;
+		reference: string;
+		note: string;
+		metadata: Metadata;
+		user: string;
+		inclusive: boolean;
+		status: TransactionStatus;
+		fees: Array<{
+			description: string;
+			amount: number;
+		}>;
+		expires: number;
+	}
+
+	interface Partner {
+		id: string;
+		user: User;
+		account: string;
 	}
 
 	interface MetricObj {
@@ -371,9 +994,7 @@ declare module "rehive" {
 	interface Filters {
 		[key: string]: any;
 	}
-	interface LimitObj {
-		id?: string;
-	}
+
 	type ClearSessionOption = "all" | "temporary" | "none";
 	interface UpdateUserData {
 		username: string;
@@ -474,11 +1095,8 @@ declare module "rehive" {
 		iban: string;
 		bic: string;
 		code: string;
-		metadata: {
-			property1: any;
-			property2: any;
-		};
-		status: string;
+		metadata: Record<string, any>; // or specific metadata fields
+		status: statusType;
 		currencies: Currency[];
 		account_currencies: AccountCurrency[];
 		action: string;
@@ -528,7 +1146,7 @@ declare module "rehive" {
 		updated: number;
 	}
 	interface EmailResponse {
-		status: "success" | "error";
+		status: string;
 
 		data: Email;
 	}
@@ -539,7 +1157,7 @@ declare module "rehive" {
 	}
 	interface Mobile {
 		id: number;
-		number: "string";
+		number: string;
 		primary: true;
 		verified: true;
 		created: number;
@@ -607,6 +1225,100 @@ declare module "rehive" {
 			results: Version[];
 		};
 	}
+
+	interface TransactionCollection {
+		id: string;
+		transactions: Array<{
+			id: string;
+			parent: string;
+			partner: string;
+			index: number;
+			inferred: boolean;
+			tx_type: "credit" | "debit";
+			subtype: string;
+			note: string;
+			metadata: Metadata;
+			status: TransactionStatus;
+			reference: string;
+			amount: number;
+			fee: number;
+			total_amount: number;
+			balance: number;
+			account: string;
+			label: string;
+			currency: Currency;
+			user: User;
+			inclusive: boolean;
+			archived: boolean;
+			executed: number;
+			created: number;
+			updated: number;
+			expires: number;
+		}>;
+		status: TransactionStatus;
+		archived: boolean;
+		created: number;
+		updated: number;
+	}
+
+	interface TransactionCollectionResponse {
+		status: "success" | "error";
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: TransactionCollection[];
+		};
+	}
+	interface SingleTransactionCollectionResponse {
+		status: "success" | "error";
+		data: TransactionCollection;
+	}
+	interface UpdateCollectionPayload {
+		status: "Quoted" | "Pending" | "Complete" | "Failed";
+		checks: Array<"type" | "verification" | "limits" | "balance"> | null;
+		archived: boolean;
+	}
+
+	interface AccountResponse {
+		status: "success";
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: CurrencyAccount[];
+		};
+	}
+	interface SingleAccountResponse {
+		status: "success";
+		data: CurrencyAccount;
+	}
+
+	interface CurrencyAccount {
+		reference: string;
+		name: string;
+		definition: string;
+		label: string;
+		primary: boolean;
+		recon: boolean;
+		user: User;
+		currencies: Currency[];
+		metadata: Record<string, any>;
+		archived: boolean;
+		created: number;
+		updated: number;
+	}
+	interface CreateCurrencyAccountPayload {
+		reference: string;
+		name: string;
+		label: string;
+		primary: boolean;
+		recon: boolean;
+		user: string;
+		metadata: Metadata;
+		archived: boolean;
+	}
+
 	class Rehive {
 		constructor(config?: RehiveConfig);
 		public: {
@@ -727,8 +1439,8 @@ declare module "rehive" {
 				get(obj?: {
 					id?: string;
 					filters?: Record<string, any>;
-				}): Promise<any>;
-				getPrevious(): Promise<any>;
+				}): Promise<DocumentCreateResponse>;
+				getPrevious(): Promise<DocumentCreateResponse>;
 				create(
 					data: DocumentCreateData,
 				): Promise<DocumentCreateResponse>;
@@ -747,7 +1459,7 @@ declare module "rehive" {
 			};
 			mobiles: {
 				get(id?: string): Promise<AllMobileResponse | MobileResponse>;
-				create(data: { number: "string" }): Promise<MobileResponse>;
+				create(data: { number: string }): Promise<MobileResponse>;
 				update(
 					mobileNumberId: string,
 					data: { primary: boolean },
@@ -781,18 +1493,27 @@ declare module "rehive" {
 
 		admin: {
 			users: {
-				get: (obj?: { id?: string; filters?: Filters }) => Promise<any>;
-				getNext: () => Promise<any>;
-				getPrevious: () => Promise<any>;
-				create: (data: any) => Promise<any>;
-				update: (id: string, data: any) => Promise<any>;
-				delete: (id: string) => Promise<any>;
+				get: (obj?: {
+					id?: string;
+					filters?: Filters;
+				}) => Promise<UserResponse | PaginatedUserResponse>;
+				getNext: () => Promise<PaginatedUserResponse>;
+				getPrevious: () => Promise<PaginatedUserResponse>;
+				create: (data: UserInAdminData) => Promise<UserResponse>;
+				update: (
+					id: string,
+					data: UserInAdminData,
+				) => Promise<UserResponse>;
+				delete: (id: string) => Promise<ApiResponse>;
 				overview: {
-					get: (obj?: { filters?: Filters }) => Promise<any>;
+					get: (obj?: { filters?: Filters }) => Promise<ApiResponse>;
 				};
 				settings: {
-					get: (id: string) => Promise<any>;
-					update: (id: string, data: any) => Promise<any>;
+					get: (id: string) => Promise<Settings>;
+					update: (
+						id: string,
+						data: Settings,
+					) => Promise<UpdateSettingResponse>;
 				};
 				kyc: {
 					get: (id: string) => Promise<any>;
@@ -801,185 +1522,219 @@ declare module "rehive" {
 
 				permissions: {
 					get: (
-						uuid: string,
+						per_id?: string,
 						obj?: { id?: string; filters?: UserFilters },
-					) => Promise<any>;
-					getNext: () => Promise<any>;
-					getPrevious: () => Promise<any>;
-					create: (uuid: string, data: any) => Promise<any>;
+					) => Promise<
+						PaginatedUserPermissions | UserPermissionResponse
+					>;
+					getNext: () => Promise<PaginatedUserPermissions>;
+					getPrevious: () => Promise<PaginatedUserPermissions>;
+					create: (
+						uuid: string,
+						data: AdminUserPermission,
+					) => Promise<UserPermissionResponse>;
 					delete: (uuid: string, id: string) => Promise<any>;
 				};
 				messages: {
 					get: (
 						uuid: string,
 						obj?: { id?: string; filters?: UserFilters },
-					) => Promise<any>;
-					getNext: () => Promise<any>;
-					getPrevious: () => Promise<any>;
-					create: (uuid: string, data: any) => Promise<any>;
+					) => Promise<PaginatedMessageResponse | MessageResponse>;
+					getNext: () => Promise<PaginatedMessageResponse>;
+					getPrevious: () => Promise<PaginatedMessageResponse>;
+					create: (
+						uuid: string,
+						data: MessageData,
+					) => Promise<MessageResponse>;
 				};
 				groups: {
-					getNext: () => Promise<any>;
-					getPrevious: () => Promise<any>;
-					create: (uuid: string, data: any) => Promise<any>;
-					delete: (uuid: string, name: string) => Promise<any>;
+					get: (
+						id: string,
+						groupName?: string,
+					) => Promise<PaginatedGroupsResponse | GroupsResponse>;
+					getNext: () => Promise<PaginatedGroupsResponse>;
+					getPrevious: () => Promise<PaginatedGroupsResponse>;
+					create: (
+						uuid: string,
+						data: any,
+					) => Promise<GroupsResponse>;
+					delete: (
+						uuid: string,
+						name: string,
+					) => Promise<ApiResponse>;
 				};
 				addresses: {
 					get: (obj?: {
 						id?: string;
 						filters?: UserFilters;
-					}) => Promise<any>;
-					getNext: () => Promise<any>;
-					getPrevious: () => Promise<any>;
-					create: (data: any) => Promise<any>;
-					update: (id: string, data: any) => Promise<any>;
-					delete: (id: string) => Promise<any>;
+					}) => Promise<PaginatedAddressResponse | AddressResponse>;
+					getNext: () => Promise<PaginatedAddressResponse>;
+					getPrevious: () => Promise<PaginatedAddressResponse>;
+					create: (data: AddressResult) => Promise<AddressResponse>;
+					update: (
+						id: string,
+						data: AddressResult,
+					) => Promise<AddressResponse>;
+					delete: (id: string) => Promise<ApiResponse>;
 				};
 				bankAccounts: {
-					create: (data: any) => Promise<any>;
-					update: (id: string, data: any) => Promise<any>;
-					delete: (id: string) => Promise<any>;
+					get(id: string): Promise<BankAccountListResponse>;
+					create(
+						data: CreateBankAccountPayload,
+					): Promise<BankAccountResponse>;
+					update(
+						id: string,
+						data: Partial<CreateBankAccountPayload>,
+					): Promise<BankAccountResponse>;
+					delete(id: string): Promise<ApiResponse>;
 					currencies: {
-						get: (
+						get(
 							id: string,
 							obj?: { code?: string; filters?: any },
-						) => Promise<any>;
-						getNext: () => Promise<any>;
-						getPrevious: () => Promise<any>;
-						create: (id: string, data: any) => Promise<any>;
-						update: (
+						): Promise<
+							| AllBankAccountCurrencyResponse
+							| GetBankAccountCurrencyResponse
+						>;
+						getNext(): Promise<AllBankAccountCurrencyResponse>;
+						getPrevious(): Promise<AllBankAccountCurrencyResponse>;
+						create(
+							id: string,
+						): Promise<GetBankAccountCurrencyResponse>;
+						delete(
 							id: string,
 							currCode: string,
-							data: any,
-						) => Promise<any>;
-						delete: (id: string, currCode: string) => Promise<any>;
-					};
-					accountCurrencies: {
-						get(id: string, obj?: any): Promise<any>;
-						getNext(): Promise<any>;
-						getPrevious(): Promise<any>;
-						create(id: string, data: any): Promise<any>;
-						delete(id: string, accCurrId: string): Promise<any>;
+						): Promise<ApiResponse>;
 					};
 				};
 				cryptoAccounts: {
-					get: (obj?: { id?: string; filters?: any }) => Promise<any>;
-					getNext: () => Promise<any>;
-					getPrevious: () => Promise<any>;
-					create: (data: any) => Promise<any>;
-					update: (id: string, data: any) => Promise<any>;
-					delete: (id: string) => Promise<any>;
-					currencies: {
-						get(id: string, obj?: any): Promise<any>;
-						getNext(): Promise<any>;
-						getPrevious(): Promise<any>;
-						create(id: string, data: any): Promise<any>;
-						delete(id: string, currCode: string): Promise<any>;
-					};
-					accountCurrencies: {
-						get(id: string, obj?: any): Promise<any>;
-						getNext(): Promise<any>;
-						getPrevious(): Promise<any>;
-						create(id: string, data: any): Promise<any>;
-						delete(id: string, accCurrId: string): Promise<any>;
-					};
+					get: (obj?: {
+						id?: string;
+						filters?: any;
+					}) => Promise<
+						| PaginatedCryptoAccountListResponse
+						| CryptoAccountListResponse
+					>;
+					getNext: () => Promise<PaginatedCryptoAccountListResponse>;
+					getPrevious: () => Promise<PaginatedCryptoAccountListResponse>;
+					create: (data: any) => Promise<CryptoAccountListResponse>;
+					update: (
+						id: string,
+						data: CryptoAccountData,
+					) => Promise<CryptoAccountListResponse>;
+					delete: (id: string) => Promise<ApiResponse>;
 				};
 				documents: {
-					get: (obj?: { id?: string; filters?: any }) => Promise<any>;
-					getNext: () => Promise<any>;
-					getPrevious: () => Promise<any>;
-					create: (data: any) => Promise<any>;
-					update: (id: string, data: any) => Promise<any>;
-					delete: (id: string) => Promise<any>;
+					get: (obj?: {
+						id?: string;
+						filters?: any;
+					}) => Promise<PaginatedUserDocuments | UserDocuments>;
+					getNext: () => Promise<PaginatedUserDocuments>;
+					getPrevious: () => Promise<PaginatedUserDocuments>;
+					create: (
+						data: UserDocumentPayload,
+					) => Promise<UserDocuments>;
+					update: (
+						id: string,
+						data: UserDocumentPayload,
+					) => Promise<any>;
+					delete: (id: string) => Promise<ApiResponse>;
 				};
 				emails: {
-					get: (obj?: { id?: string; filters?: any }) => Promise<any>;
-					getNext: () => Promise<any>;
-					getPrevious: () => Promise<any>;
-					create: (data: any) => Promise<any>;
-					update: (id: string, data: any) => Promise<any>;
-					delete: (id: string) => Promise<any>;
+					get: (obj?: {
+						id?: string;
+						filters?: any;
+					}) => Promise<
+						PaginatedEmailListResponse | SingleEmailResponse
+					>;
+					getNext: () => Promise<PaginatedEmailListResponse>;
+					getPrevious: () => Promise<PaginatedEmailListResponse>;
+					create: (
+						data: EmailCreatePayload,
+					) => Promise<SingleEmailResponse>;
+					update: (
+						id: string,
+						data: EmailCreatePayload,
+					) => Promise<SingleEmailResponse>;
+					delete: (id: string) => Promise<ApiResponse>;
 				};
 				mobiles: {
-					get: (obj?: { id?: string; filters?: any }) => Promise<any>;
-					getNext: () => Promise<any>;
-					getPrevious: () => Promise<any>;
-					create: (data: any) => Promise<any>;
-					update: (id: string, data: any) => Promise<any>;
-					delete: (id: string) => Promise<any>;
-				};
-				mfa: {
-					authenticators: {
-						get: (obj?: {
-							id?: string;
-							filters?: any;
-						}) => Promise<any>;
-						getNext: () => Promise<any>;
-						getPrevious: () => Promise<any>;
-						delete: (authId: string) => Promise<any>;
-					};
-					get: (id: string) => Promise<any>;
-					sms: {
-						delete: (id: string) => Promise<any>;
-					};
-					token: {
-						delete: (id: string) => Promise<any>;
-					};
+					get: (obj?: {
+						id?: string;
+						filters?: any;
+					}) => Promise<MobileListResponse | SingleMobileResponse>;
+					getNext: () => Promise<PaginatedMessageResponse>;
+					getPrevious: () => Promise<PaginatedMessageResponse>;
+					create: (
+						data: MobileNumberPayload,
+					) => Promise<SingleMobileResponse>;
+					update: (
+						id: string,
+						data: MobileNumberPayload,
+					) => Promise<SingleMobileResponse>;
+					delete: (id: string) => Promise<ApiResponse>;
 				};
 			};
 			transactions: {
 				get(obj?: {
 					id?: string;
 					filters?: Record<string, string>;
-				}): Promise<any>;
-				getNext(): Promise<any>;
-				getPrevious(): Promise<any>;
+				}): Promise<
+					TransactionListResponse | SingleTransactionResponse
+				>;
+				getNext(): Promise<TransactionListResponse>;
+				getPrevious(): Promise<TransactionListResponse>;
 				totals: {
 					get(obj?: {
 						filters?: Record<string, string>;
-					}): Promise<any>;
+					}): Promise<TransactionTotal>;
 				};
-				update(id: string, data: Record<string, any>): Promise<any>;
-				createCredit(data: Record<string, any>): Promise<any>;
-				createDebit(data: Record<string, any>): Promise<any>;
+				update(
+					id: string,
+					data: TransactionPayload,
+				): Promise<SingleTransactionResponse>;
+				createCredit(
+					data: TransactionCreditOrDebitPayload,
+				): Promise<SingleTransactionResponse>;
+				createDebit(
+					data: TransactionCreditOrDebitPayload,
+				): Promise<any>;
 				createTransfer(data: Record<string, any>): Promise<any>;
-				messages: {
-					get(
-						txnId: string,
-						obj?: { id?: string; filters?: Record<string, string> },
-					): Promise<any>;
-					getNext(): Promise<any>;
-					getPrevious(): Promise<any>;
-					create(
-						txnId: string,
-						data: Record<string, any>,
-					): Promise<any>;
-				};
 			};
 			transaction_collections: {
 				get(obj?: {
 					id?: string;
 					filters?: Record<string, string>;
-				}): Promise<any>;
-				getNext(): Promise<any>;
-				getPrevious(): Promise<any>;
-				create(data: Record<string, any>): Promise<any>;
+				}): Promise<
+					| TransactionCollectionResponse
+					| SingleTransactionCollectionResponse
+				>;
+				getNext(): Promise<TransactionCollectionResponse>;
+				getPrevious(): Promise<TransactionCollectionResponse>;
+				create(
+					data: TransactionCollection,
+				): Promise<SingleTransactionCollectionResponse>;
 				update(
 					reference: string,
-					data: Record<string, any>,
-				): Promise<any>;
-				delete(id: string): Promise<any>;
+					data: UpdateCollectionPayload,
+				): Promise<SingleTransactionCollectionResponse>;
+				delete(id: string): Promise<ApiResponse>;
 			};
 
 			accounts: {
-				create: (data: any) => Promise<any>;
-				update: (reference: string, data: any) => Promise<any>;
+				create: (
+					data: CreateCurrencyAccountPayload,
+				) => Promise<SingleAccountResponse | AccountResponse>;
+				update: (
+					reference: string,
+					data: CreateCurrencyAccountPayload,
+				) => Promise<SingleAccountResponse>;
 				get(obj?: {
 					reference?: string;
 					filters?: Record<string, string>;
-				}): Promise<any>;
-				getNext(): Promise<any>;
-				getPrevious(): Promise<any>;
+				}): Promise<SingleAccountResponse | AccountResponse>;
+				getNext(): Promise<AccountResponse>;
+				getPrevious(): Promise<AccountResponse>;
+				// ei porjonto done
 				currencies: {
 					get: (reference: string, obj?: any) => Promise<any>;
 					getNext: () => Promise<any>;
@@ -1474,7 +2229,6 @@ declare module "rehive" {
 				update(typeId: string, data: any): Promise<any>;
 				delete(typeId: string): Promise<any>;
 			};
-			// ..
 		};
 		documentTypes: {
 			get(typeId: string): Promise<any>;
