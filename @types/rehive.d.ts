@@ -1293,7 +1293,532 @@ declare module "rehive" {
 		status: "success";
 		data: CurrencyAccount;
 	}
+	interface Limit {
+		id: number;
+		value: number;
+		type: string;
+		tx_type: string;
+		subtype: string;
+		created: number;
+		updated: number;
+	}
 
+	interface Fee {
+		id: number;
+		name: string;
+		description: string;
+		value: number;
+		percentage: number;
+		tx_type: string;
+		subtype: string;
+		created: number;
+		updated: number;
+		account: string;
+		asset: string;
+		debit_account: string;
+		credit_account: string;
+		debit_subtype: string;
+		credit_subtype: string;
+		inferred: boolean;
+		archived: boolean;
+	}
+
+	interface AccountAdminCurrency {
+		id: string;
+		balance: number;
+		available_balance: number;
+		currency: Currency;
+		limits: Limit[];
+		fees: Fee[];
+		active: boolean;
+		settings: Settings;
+		subtypes: Subtype[];
+		archived: boolean;
+		created: number;
+		updated: number;
+	}
+	interface AllAdminCurrencyResponse {
+		status: string;
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: Account[];
+		};
+	}
+	interface GetSingleAdminCurrencyResponse {
+		status: string;
+		data: Account;
+	}
+	interface CreateAdminCurrencyPayload {
+		reference: string;
+		name: string;
+		label: string;
+		primary: boolean;
+		recon: boolean;
+		user: string;
+		metadata: {
+			property1: any;
+			property2: any;
+		};
+		archived: boolean;
+	}
+	interface UpdateAdminCurrencyPayload {
+		name?: string;
+		label?: string;
+		primary?: boolean;
+		recon?: boolean;
+		user?: string;
+		metadata?: {
+			property1?: any;
+			property2?: any;
+		};
+		archived?: boolean;
+	}
+	interface CurrencyLimit {
+		id: number;
+		value: number;
+		type: string;
+		tx_type: string;
+		subtype: string;
+		created: number;
+		updated: number;
+	}
+
+	interface AllCurrencyLimitResponse {
+		status: string;
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: CurrencyLimit[];
+		};
+	}
+	interface SingleCurrencyLimitResponse {
+		status: string;
+		data: CurrencyLimit;
+	}
+	interface CurrencyLimitCreationPayload {
+		value: number;
+		type: string;
+		tx_type: string;
+		subtype: string;
+	}
+
+	interface AccountCurrencyFee {
+		id: number;
+		name: string;
+		description: string;
+		value: number;
+		percentage: number;
+		tx_type: string;
+		subtype: string;
+		created: number;
+		updated: number;
+		account: string;
+		asset: string;
+		debit_account: string;
+		credit_account: string;
+		debit_subtype: string;
+		credit_subtype: string;
+		inferred: boolean;
+		archived: boolean;
+	}
+
+	interface AllAccountCurrencyFeesResponse {
+		status: string;
+		data: AccountCurrencyFee[];
+	}
+	interface SingleAccountCurrencyFeesResponse {
+		status: string;
+		data: AccountCurrencyFee;
+	}
+	interface AccountCurrencyFeeCreationPayload {
+		name: string;
+		value: number;
+		percentage: number;
+		tx_type: string;
+		subtype: string;
+		description: string;
+		debit_account: string;
+		credit_account: string;
+		debit_subtype: string;
+		credit_subtype: string;
+		inferred: boolean;
+	}
+	interface DisallowedCurrencyTransactionSubtype {
+		id: number;
+		name: string;
+		label: string;
+		tx_type: string;
+	}
+	interface CurrencyListSettings {
+		allow_transactions: boolean;
+		allow_debit_transactions: boolean;
+		allow_credit_transactions: boolean;
+		disallowed_transaction_subtypes: DisallowedCurrencyTransactionSubtype[];
+	}
+
+	interface CurrencyListSettingsResponse {
+		status: string;
+		data: CurrencyListSettings;
+	}
+	interface UpdateCurrencySettingsPayload {
+		allow_transactions: boolean;
+		allow_debit_transactions: boolean;
+		allow_credit_transactions: boolean;
+		disallowed_transaction_subtypes: number[];
+	}
+
+	interface AccountGroup {
+		group: {
+			name: string;
+			label: string;
+			section: string;
+		};
+		default: boolean;
+		primary: boolean;
+		currencies: AccountCurrency[];
+		archived: boolean;
+		created: number;
+		updated: number;
+	}
+
+	interface AccountDefinition {
+		name: string;
+		label: string;
+		recon: boolean;
+		groups: AccountGroup[];
+		archived: boolean;
+		created: number;
+		updated: number;
+	}
+
+	interface AllAccountDefinitionResponse {
+		status: string;
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: AccountDefinition[];
+		};
+	}
+	interface SingleAccountDefinitionResponse {
+		status: string;
+		data: AccountDefinition;
+	}
+	interface CreateDefinitionPayload {
+		name: string;
+		label: string;
+		recon: boolean;
+		archived: boolean;
+	}
+
+	interface CurrencyInfo {
+		currency: Currency;
+		archived: boolean;
+		created: number;
+		updated: number;
+	}
+
+	interface Group {
+		name: string;
+		label: string;
+		section: string;
+	}
+
+	interface AccountDefinitionGroup {
+		group: Group;
+		default: boolean;
+		primary: boolean;
+		currencies: CurrencyInfo[];
+		archived: boolean;
+		created: number;
+		updated: number;
+	}
+
+	interface AccountDefinitionsGroupsResponse {
+		status: string;
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: AccountDefinitionGroup[];
+		};
+	}
+	interface SingleAccountDefinitionsGroupsResponse {
+		status: string;
+		data: AccountDefinitionGroup;
+	}
+	interface AccountGroupPayload {
+		group: string;
+		default: boolean;
+		primary: boolean;
+		currencies: string[];
+		archived: boolean;
+	}
+
+	interface GroupCurrency {
+		currency: Currency;
+		archived: boolean;
+		created: number;
+		updated: number;
+	}
+
+	interface AccountDefinitionGroupCurrenciesResponse {
+		status: string;
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: GroupCurrency[];
+		};
+	}
+	interface SingleAccountDefinitionGroupCurrenciesResponse {
+		status: string;
+		data: GroupCurrency;
+	}
+	interface Query {
+		property1: any;
+		property2: any;
+	}
+	interface Metric {
+		id: string;
+		name: string;
+		slug: string;
+		metadata: Metadata;
+		type: string;
+		currency: Currency;
+		timezone: string;
+		query: Query;
+		method: string;
+		created: number;
+		updated: number;
+		user: User;
+		section: string;
+		archived: boolean;
+	}
+
+	interface AllAdminListMetricsResponse {
+		status: string;
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: Metric[];
+		};
+	}
+	interface SingleAdminListMetricsResponse {
+		status: string;
+		data: Metric;
+	}
+	type methodType = "accumulate" | "set";
+	type MetricType =
+		| "account_count"
+		| "transaction_count"
+		| "transaction_complete_count"
+		| "transaction_failed_count"
+		| "transaction_pending_count"
+		| "transaction_complete_sum"
+		| "transaction_failed_sum"
+		| "transaction_pending_sum"
+		| "transaction_balance_sum"
+		| "transaction_available_balance_sum"
+		| "user_count"
+		| "user_active_count"
+		| "user_transacted_in_30days_count";
+	interface CreateMetricsPayload {
+		name: string;
+		slug: string;
+		type: MetricType;
+		method: methodType;
+		currency: string;
+		timezone: string;
+		query: Query;
+		metadata: Metadata;
+		user: string;
+		section: "admin";
+	}
+	interface MetricPoint {
+		id: number;
+		value: number;
+		date: number;
+	}
+
+	interface MetricPointsListResponse {
+		status: string;
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: MetricPoint[];
+		};
+	}
+
+	interface ExportResult {
+		id: string;
+		section: string;
+		resource: string;
+		query: Query;
+		status: string;
+		progress: number;
+		count: number;
+		page_size: number;
+		file_format: string;
+		created: number;
+		updated: number;
+		user: User;
+		archived: boolean;
+	}
+
+	interface AllExportsResponse {
+		status: string;
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: ExportResult[];
+		};
+	}
+	interface SingleExportsResponse {
+		status: string;
+		data: ExportResult;
+	}
+	type resourceType = "account" | "account_currency" | "transaction" | "user";
+	interface CreateExportPayload {
+		resource: resourceType;
+		page_size: number;
+		query: {
+			property1: any | null;
+			property2: any | null;
+		};
+		file_format: "json" | "csv";
+		user: string;
+		section: string; // Section name, e.g., "admin" or "user"
+	}
+	type actionType = "allow" | "deny";
+	interface AccessControlRule {
+		id: number;
+		action: actionType;
+		type: "ip" | string;
+		value: string;
+		label: string;
+		user: User;
+		group: Group;
+		created: number;
+		updated: number;
+	}
+	interface CreateAccessControlRulePayload {
+		action: actionType;
+		type: "ip" | string;
+		value: string;
+		label: string;
+		user: string;
+		group: string;
+	}
+
+	interface AllAccessControlRulesResponse {
+		status: string;
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: AccessControlRule[];
+		};
+	}
+	interface SingleAccessControlRulesResponse {
+		status: string;
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: AccessControlRule[];
+		};
+	}
+	interface AdminCurrency {
+		code: string;
+		display_code: string;
+		description: string;
+		symbol: string;
+		unit: string;
+		divisibility: number;
+		icon: string;
+		manager: {
+			id: string;
+			first_name: string;
+			middle_name?: string;
+			last_name: string;
+			service: {
+				id: number;
+				slug: string;
+				name: string;
+				url: string;
+				type: "system" | "custom";
+			};
+		};
+		manager_conditions: Array<{
+			property1: any;
+			property2: any;
+		}>;
+		metadata: {
+			property1: any;
+			property2: any;
+		};
+		archived: boolean;
+		created: number;
+		updated: number;
+	}
+
+	interface AdminCurrencyListResponse {
+		status: "success" | "error";
+		data: {
+			count: number;
+			next: string | null;
+			previous: string | null;
+			results: AdminCurrency[];
+		};
+	}
+	interface SingleAdminCurrencyResponse {
+		status: "success" | "error";
+		data: AdminCurrency;
+	}
+	interface CreateCurrencyPayload {
+		code: string;
+		display_code: string;
+		description: string;
+		symbol: string;
+		unit: string;
+		divisibility: number;
+		icon: string;
+		manager: string;
+		manager_conditions: Metadata[];
+		metadata: Metadata;
+		archived: boolean;
+	}
+	interface CurrencyOverviewResponse {
+		status: string;
+		data: CurrencyOverviewData;
+	}
+
+	interface CurrencyOverviewData {
+		balance_total: number;
+		available_balance_total: number;
+		count_total: number;
+		count_debits_pending: number;
+		count_debits_complete: number;
+		count_credits_pending: number;
+		count_credits_complete: number;
+		sum_debits_pending: number;
+		sum_debits_complete: number;
+		sum_credits_pending: number;
+		sum_credits_complete: number;
+		balance_24h: number;
+		count_24h: number;
+		sum_24h_debits_pending: number;
+		sum_24h_debits_complete: number;
+		sum_24h_credits_pending: number;
+		sum_24h_credits_complete: number;
+	}
 	interface CurrencyAccount {
 		reference: string;
 		name: string;
@@ -1734,70 +2259,87 @@ declare module "rehive" {
 				}): Promise<SingleAccountResponse | AccountResponse>;
 				getNext(): Promise<AccountResponse>;
 				getPrevious(): Promise<AccountResponse>;
-				// ei porjonto done
 				currencies: {
-					get: (reference: string, obj?: any) => Promise<any>;
-					getNext: () => Promise<any>;
-					getPrevious: () => Promise<any>;
-					create: (reference: string, data: any) => Promise<any>;
+					get: (
+						reference: string,
+						obj?: any,
+					) => Promise<
+						| GetSingleAdminCurrencyResponse
+						| AllAdminCurrencyResponse
+					>;
+					getNext: () => Promise<AllAdminCurrencyResponse>;
+					getPrevious: () => Promise<AllAdminCurrencyResponse>;
+					create: (
+						reference: string,
+						data: CreateAdminCurrencyPayload,
+					) => Promise<GetSingleAdminCurrencyResponse>;
 					update: (
 						reference: string,
 						code: string,
-						data: any,
-					) => Promise<any>;
+						data: UpdateAdminCurrencyPayload,
+					) => Promise<GetSingleAdminCurrencyResponse>;
 					limits: {
 						get: (
 							reference: string,
 							code: string,
 							obj?: any,
-						) => Promise<any>;
+						) => Promise<
+							| SingleCurrencyLimitResponse
+							| AllCurrencyLimitResponse
+						>;
 						create: (
 							reference: string,
 							code: string,
-							data: any,
-						) => Promise<any>;
+							data: CurrencyLimitCreationPayload,
+						) => Promise<SingleCurrencyLimitResponse>;
 						update: (
 							reference: string,
 							code: string,
 							id: string,
-							data: any,
-						) => Promise<any>;
+							data: CurrencyLimitCreationPayload,
+						) => Promise<SingleCurrencyLimitResponse>;
 						delete: (
 							reference: string,
 							code: string,
 							id: string,
-						) => Promise<any>;
+						) => Promise<ApiResponse>;
 					};
 					fees: {
 						get: (
 							reference: string,
 							code: string,
 							obj?: any,
-						) => Promise<any>;
+						) => Promise<
+							| SingleAccountCurrencyFeesResponse
+							| AllAccountCurrencyFeesResponse
+						>;
 						create: (
 							reference: string,
 							code: string,
-							data: any,
-						) => Promise<any>;
+							data: AccountCurrencyFeeCreationPayload,
+						) => Promise<SingleAccountCurrencyFeesResponse>;
 						update: (
 							reference: string,
 							code: string,
 							id: string,
-							data: any,
-						) => Promise<any>;
+							data: AccountCurrencyFeeCreationPayload,
+						) => Promise<SingleAccountCurrencyFeesResponse>;
 						delete: (
 							reference: string,
 							code: string,
 							id: string,
-						) => Promise<any>;
+						) => Promise<ApiResponse>;
 					};
 					settings: {
-						get: (reference: string, code: string) => Promise<any>;
+						get: (
+							reference: string,
+							code: string,
+						) => Promise<CurrencyListSettingsResponse>;
 						update: (
 							reference: string,
 							code: string,
-							data: any,
-						) => Promise<any>;
+							data: UpdateCurrencySettingsPayload,
+						) => Promise<CurrencyListSettingsResponse>;
 					};
 				};
 			};
@@ -1806,12 +2348,20 @@ declare module "rehive" {
 					get: (obj?: {
 						name?: string;
 						filters?: Record<string, string>;
-					}) => Promise<any>;
-					getNext: () => Promise<any>;
-					getPrevious: () => Promise<any>;
-					create: (data: any) => Promise<any>;
-					update: (accountName: string, data: any) => Promise<any>;
-					delete: (accountName: string) => Promise<any>;
+					}) => Promise<
+						| AllAccountDefinitionResponse
+						| SingleAccountDefinitionResponse
+					>;
+					getNext: () => Promise<AllAccountDefinitionResponse>;
+					getPrevious: () => Promise<AllAccountDefinitionResponse>;
+					create: (
+						data: CreateDefinitionPayload,
+					) => Promise<SingleAccountDefinitionResponse>;
+					update: (
+						accountName: string,
+						data: CreateDefinitionPayload,
+					) => Promise<SingleAccountDefinitionResponse>;
+					delete: (accountName: string) => Promise<ApiResponse>;
 
 					groups: {
 						get: (
@@ -1820,22 +2370,25 @@ declare module "rehive" {
 								name?: string;
 								filters?: Record<string, string>;
 							},
-						) => Promise<any>;
-						getNext: () => Promise<any>;
-						getPrevious: () => Promise<any>;
+						) => Promise<
+							| SingleAccountDefinitionsGroupsResponse
+							| AccountDefinitionsGroupsResponse
+						>;
+						getNext: () => Promise<AccountDefinitionsGroupsResponse>;
+						getPrevious: () => Promise<AccountDefinitionsGroupsResponse>;
 						create: (
 							accountName: string,
-							data: any,
-						) => Promise<any>;
+							data: AccountGroupPayload,
+						) => Promise<SingleAccountDefinitionsGroupsResponse>;
 						update: (
 							accountName: string,
 							groupName: string,
-							data: any,
-						) => Promise<any>;
+							data: AccountGroupPayload,
+						) => Promise<SingleAccountDefinitionsGroupsResponse>;
 						delete: (
 							accountName: string,
 							groupName: string,
-						) => Promise<any>;
+						) => Promise<ApiResponse>;
 
 						currencies: {
 							get: (
@@ -1845,87 +2398,115 @@ declare module "rehive" {
 									code?: string;
 									filters?: Record<string, string>;
 								},
-							) => Promise<any>;
-							getNext: () => Promise<any>;
-							getPrevious: () => Promise<any>;
+							) => Promise<
+								| AccountDefinitionGroupCurrenciesResponse
+								| SingleAccountDefinitionGroupCurrenciesResponse
+							>;
+							getNext: () => Promise<AccountDefinitionGroupCurrenciesResponse>;
+							getPrevious: () => Promise<AccountDefinitionGroupCurrenciesResponse>;
 							create: (
 								accountName: string,
 								groupName: string,
-								data: any,
-							) => Promise<any>;
+								data: {
+									currency: string;
+									archived: boolean;
+								},
+							) => Promise<SingleAccountDefinitionGroupCurrenciesResponse>;
 							update: (
 								accountName: string,
 								groupName: string,
 								currencyCode: string,
-								data: any,
-							) => Promise<any>;
+								data: {
+									archived: boolean;
+								},
+							) => Promise<SingleAccountDefinitionGroupCurrenciesResponse>;
 							delete: (
 								accountName: string,
 								groupName: string,
 								currencyCode: string,
-							) => Promise<any>;
+							) => Promise<ApiResponse>;
 						};
 					};
-				};
-				currencies: {
-					get: (obj?: {
-						reference?: string;
-						filters?: Record<string, string>;
-					}) => Promise<any>;
-					getNext: () => Promise<any>;
-					getPrevious: () => Promise<any>;
 				};
 			};
 			auth: {
 				login: (data: {
 					email: string;
 					password: string;
-				}) => Promise<any>;
-				register: (data: {
-					email: string;
-					password: string;
-					company: string;
-					first_name: string;
-					last_name: string;
-				}) => Promise<any>;
+					session_duration: number;
+				}) => Promise<LoginResponse>;
+				register: (
+					data: RegisterCredentials,
+				) => Promise<RegisterResponse>;
 			};
 			metrics: {
-				get: (obj?: MetricObj) => Promise<any>;
-				getNext: () => Promise<any>;
-				create: (data: any) => Promise<any>;
-				delete: (id: string) => Promise<any>;
+				get: (
+					obj?: MetricObj,
+				) => Promise<
+					AllAdminListMetricsResponse | SingleAdminListMetricsResponse
+				>;
+				getNext: () => Promise<AllAdminListMetricsResponse>;
+				create: (
+					data: CreateMetricsPayload,
+				) => Promise<SingleAdminListMetricsResponse>;
+				delete: (id: string) => Promise<ApiResponse>;
 				points: {
-					get: (id: string, obj?: MetricObj) => Promise<any>;
-					getNext: () => Promise<any>;
-					getPrevious: () => Promise<any>;
+					get: (
+						id: string,
+						obj?: MetricObj,
+					) => Promise<MetricPointsListResponse>;
+					getNext: () => Promise<MetricPointsListResponse>;
+					getPrevious: () => Promise<MetricPointsListResponse>;
 				};
 			};
 			exports: {
 				sets: {
-					get: (obj?: MetricObj) => Promise<any>;
-					getNext: () => Promise<any>;
-					getPrevious: () => Promise<any>;
-					create: (data: any) => Promise<any>;
-					delete: (id: string) => Promise<any>;
+					get: (
+						obj?: MetricObj,
+					) => Promise<AllExportsResponse | SingleExportsResponse>;
+					getNext: () => Promise<AllExportsResponse>;
+					getPrevious: () => Promise<AllExportsResponse>;
+					create: (
+						data: CreateExportPayload,
+					) => Promise<SingleExportsResponse>;
+					delete: (id: string) => Promise<ApiResponse>;
 				};
 			};
-			accessControlRules: {
-				get: (obj?: MetricObj) => Promise<any>;
-				getNext: () => Promise<any>;
-				getPrevious: () => Promise<any>;
-				create: (data: any) => Promise<any>;
-				update: (id: string, data: any) => Promise<any>;
-				delete: (id: string) => Promise<any>;
+			access_control_rules: {
+				get: (
+					obj?: MetricObj,
+				) => Promise<
+					| SingleAccessControlRulesResponse
+					| AllAccessControlRulesResponse
+				>;
+				getNext: () => Promise<AllAccessControlRulesResponse>;
+				getPrevious: () => Promise<AllAccessControlRulesResponse>;
+				create: (data: CreateAccessControlRulePayload) => Promise<any>;
+				update: (
+					id: string,
+					data: CreateAccessControlRulePayload,
+				) => Promise<any>;
+				delete: (id: string) => Promise<ApiResponse>;
 			};
 			currencies: {
-				get: (obj?: any) => Promise<any>;
-				getNext: () => Promise<any>;
-				getPrevious: () => Promise<any>;
-				create: (data: any) => Promise<any>;
-				update: (code: string, data: any) => Promise<any>;
-				delete: (code: string) => Promise<any>;
+				get: (
+					obj?: any,
+				) => Promise<
+					AdminCurrencyListResponse | SingleAdminCurrencyResponse
+				>;
+				getNext: () => Promise<AdminCurrencyListResponse>;
+				getPrevious: () => Promise<AdminCurrencyListResponse>;
+				create: (
+					data: CreateCurrencyPayload,
+				) => Promise<SingleAdminCurrencyResponse>;
+				update: (
+					code: string,
+					data: CreateCurrencyPayload,
+				) => Promise<SingleAdminCurrencyResponse>;
+				delete: (code: string) => Promise<ApiResponse>;
 				overview: {
-					get: (code: string) => Promise<any>;
+					get: (code: string) => Promise<CurrencyOverviewResponse>;
+					//done
 				};
 				bankAccounts: {
 					get: (code: string, obj?: any) => Promise<any>;
