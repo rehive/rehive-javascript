@@ -1,6 +1,6 @@
 {
   "name": "rehive",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Javascript SDK for rehive APIs",
   "main": "rehive.js",
   "scripts": {
@@ -11,6 +11,7 @@
     "type": "git",
     "url": "https://github.com/rehive/rehive-javascript"
   },
+  "types": "./@types/rehive.d.ts",
   "engines": {
     "node": ">=6.9.1"
   },
@@ -22,6 +23,7 @@
   "homepage": "https://github.com/rehive/rehive-javascript",
   "devDependencies": {
     "@node-minify/core": "^8.0.6",
-    "@node-minify/uglify-js": "^8.0.6"
+    "@node-minify/uglify-js": "^8.0.6",
+    "typescript": "^5.6.2"
   }
 }

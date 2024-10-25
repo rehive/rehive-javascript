@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "allowJs": true,
+    "checkJs": false,
+    "outDir": "dist",
+    "rootDir": ".",
+    "declaration": true,
+  },
+  "typeRoots": [
+    "./@types"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
+  "include": [
+    "./*",
+    "@types/rehive.d.ts"
+  ]
+}
