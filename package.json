@@ -1,0 +1,92 @@
+{
+  "name": "@rehive/sdk",
+  "version": "1.0.0",
+  "description": "Comprehensive SDK for Rehive Platform and Extensions",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "npm run build:core && npm run build:react",
+    "build:core": "tsup src/index.ts --format cjs,esm --dts --minify --out-dir dist",
+    "build:react": "tsup src/react.tsx --format cjs,esm --dts --minify --out-dir dist",
+    "dev": "npm run build:core -- --watch & npm run build:react -- --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "keywords": [
+    "rehive",
+    "sdk",
+    "platform",
+    "authentication",
+    "conversion",
+    "react",
+    "react-native"
+  ],
+  "author": "Rehive",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.0",
+    "@testing-library/react": "^14.0.0",
+    "@types/jest": "^29.5.0",
+    "@types/react": "^18.0.0",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
+    "react": "^18.0.0",
+    "ts-jest": "^29.1.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "dist",
+    "src/extensions",
+    "src/platform"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.mjs",
+      "require": "./dist/react.js"
+    },
+    "./extensions/conversion": {
+      "types": "./src/extensions/conversion/index.ts",
+      "import": "./src/extensions/conversion/index.js",
+      "require": "./src/extensions/conversion/index.js"
+    },
+    "./extensions/conversion/*": {
+      "types": "./src/extensions/conversion/*.ts",
+      "import": "./src/extensions/conversion/*.js",
+      "require": "./src/extensions/conversion/*.js"
+    },
+    "./extensions/*/": {
+      "types": "./src/extensions/*/",
+      "import": "./src/extensions/*/",
+      "require": "./src/extensions/*/"
+    },
+    "./platform/user/*": {
+      "types": "./src/platform/user/*.ts",
+      "import": "./src/platform/user/*.js",
+      "require": "./src/platform/user/*.js"
+    },
+    "./platform/admin/*": {
+      "types": "./src/platform/admin/*.ts",
+      "import": "./src/platform/admin/*.js", 
+      "require": "./src/platform/admin/*.js"
+    }
+  }
+}
