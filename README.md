@@ -17,7 +17,12 @@ Perfect for backend services, webhooks, and admin operations:
 ```typescript
 import { RehiveClient } from '@rehive/sdk';
 
-// Initialize with permanent token
+// Initialize with permanent token (baseUrl defaults to https://api.rehive.com)
+const rehive = new RehiveClient({
+  token: 'your-permanent-admin-token'
+});
+
+// Or explicitly specify the baseUrl
 const rehive = new RehiveClient({
   baseUrl: 'https://api.rehive.com',
   token: 'your-permanent-admin-token'
@@ -41,7 +46,10 @@ Perfect for web and mobile applications:
 ```typescript
 import { RehiveClient } from '@rehive/sdk';
 
-// Initialize without token
+// Initialize without token (baseUrl defaults to https://api.rehive.com)
+const rehive = new RehiveClient();
+
+// Or explicitly specify the baseUrl
 const rehive = new RehiveClient({
   baseUrl: 'https://api.rehive.com'
 });
@@ -66,27 +74,31 @@ await rehive.auth.logout();
 All extension APIs work the same way with automatic token synchronization:
 
 ```typescript
-// Conversion extension
+// All extensions work the same way - no imports needed
 const conversion = rehive.extensions.conversion();
 await conversion.user.userConversionPairsList({});
 await conversion.admin.adminConversionRatesList({});
 
-// Other extensions (provide the API class)
-import { Api as RewardsApi } from '@rehive/sdk/extensions/rewards';
-const rewards = rehive.extensions.rewards(RewardsApi);
+const rewards = rehive.extensions.rewards();
 await rewards.user.userRewardsList({});
 
-// Custom environment URLs
+const products = rehive.extensions.products();
+await products.user.userProductsList({});
+
+const notifications = rehive.extensions.notifications();
+await notifications.user.userNotificationsList({});
+
+// Custom environment URLs (same pattern for all extensions)
 const stagingConversion = rehive.extensions.conversion({
-  baseUrl: 'https://staging-conversion.services.rehive.com/api/'
+  baseUrl: 'https://onversion.services.rehive.com/api/'
+});
+
+const stagingRewards = rehive.extensions.rewards({
+  baseUrl: 'https://rewards.services.rehive.com/api/'
 });
 ```
 
 ## Key Features
-
-### ✅ Clean API Structure
-- **Direct property access**: `rehive.user` and `rehive.admin` instead of getter methods
-- **Unified namespace**: All APIs accessible from single client instance
 
 ### ✅ Smart Token Management
 - **Automatic refresh**: Tokens refresh 30 seconds before expiration
