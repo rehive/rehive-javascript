@@ -69,6 +69,78 @@ const accounts = await rehive.user.userAccountsList({});
 await rehive.auth.logout();
 ```
 
+## React Integration
+
+For a complete working example, see the [interactive demo](./demo).
+
+```typescript
+import { useState } from 'react';
+import { AuthProvider, useAuth } from '@rehive/sdk/react';
+
+function App() {
+  return (
+    <AuthProvider config={{ baseUrl: 'https://api.rehive.com' }}>
+      <UserDashboard />
+    </AuthProvider>
+  );
+}
+
+function UserDashboard() {
+  const { login, logout, session, loading, rehive } = useAuth();
+  const [userDetails, setUserDetails] = useState(null);
+  const [isLoadingDetails, setIsLoadingDetails] = useState(false);
+
+  const handleLogin = async () => {
+    await login({
+      user: 'email@example.com',
+      password: 'password',
+      company: 'my-company'
+    });
+  };
+
+  const fetchUserDetails = async () => {
+    setIsLoadingDetails(true);
+    try {
+      const response = await rehive.user.userRetrieve();
+      setUserDetails(response.data);
+    } catch (error) {
+      console.error('Failed to fetch user details:', error);
+    } finally {
+      setIsLoadingDetails(false);
+    }
+  };
+
+  if (loading) return <div>Loading...</div>;
+
+  if (!session) {
+    return <button onClick={handleLogin}>Login</button>;
+  }
+
+  return (
+    <div>
+      <h2>Welcome, {session.user.email}</h2>
+      <button onClick={logout}>Logout</button>
+      
+      <div>
+        <button onClick={fetchUserDetails} disabled={isLoadingDetails}>
+          {isLoadingDetails ? 'Loading...' : 'Fetch User Details'}
+        </button>
+        
+        {userDetails && (
+          <div>
+            <h3>User Details</h3>
+            <p>ID: {userDetails.id}</p>
+            <p>Name: {userDetails.first_name} {userDetails.last_name}</p>
+            <p>Status: {userDetails.status}</p>
+            <p>Verified: {userDetails.verified ? 'Yes' : 'No'}</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+```
+
 ## Extension APIs
 
 All extension APIs work the same way with automatic token synchronization:
@@ -126,8 +198,6 @@ const response = await rehive.extensions.fetch('https://api.external-service.com
 - **Token refresh**: Automatically refreshes expired tokens 
 - **Works anywhere**: Use with any HTTP endpoint, not just Rehive services
 - **Standard fetch API**: Same interface as native `fetch()` with auth handling
-
-```
 
 ## API Responses and Error Handling
 
@@ -323,37 +393,6 @@ src/
 📋 [View complete API overview](./docs/api-methods-overview.md)
 
 ## Advanced Usage
-
-### React Integration
-
-```typescript
-import { AuthProvider, useAuth } from '@rehive/sdk/react';
-
-function App() {
-  return (
-    <AuthProvider config={{ baseUrl: 'https://api.rehive.com' }}>
-      <LoginComponent />
-    </AuthProvider>
-  );
-}
-
-function LoginComponent() {
-  const { login, session, loading } = useAuth();
-
-  const handleLogin = async () => {
-    await login({
-      user: 'email@example.com',
-      password: 'password',
-      company: 'my-company'
-    });
-  };
-
-  if (loading) return <div>Loading...</div>;
-  if (session) return <div>Welcome, {session.user.email}</div>;
-
-  return <button onClick={handleLogin}>Login</button>;
-}
-```
 
 ### Error Handling
 
