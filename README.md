@@ -98,6 +98,37 @@ const stagingRewards = rehive.extensions.rewards({
 });
 ```
 
+### Custom Extensions and Ad-hoc API Calls
+
+For custom extensions or one-off API calls, use the authenticated fetch method:
+
+```typescript
+// GET request to custom extension
+const response = await rehive.extensions.fetch('https://my-custom.services.rehive.com/api/users');
+const users = await response.json();
+
+// POST request with data
+const response = await rehive.extensions.fetch('https://my-custom.services.rehive.com/api/orders', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ product_id: 123, quantity: 2 })
+});
+
+// Works with any HTTP endpoint - automatically handles authentication
+const response = await rehive.extensions.fetch('https://api.external-service.com/data', {
+  method: 'GET',
+  headers: { 'X-Custom-Header': 'value' }
+});
+```
+
+**Key Benefits:**
+- **Automatic authentication**: Attaches current user token to requests
+- **Token refresh**: Automatically refreshes expired tokens 
+- **Works anywhere**: Use with any HTTP endpoint, not just Rehive services
+- **Standard fetch API**: Same interface as native `fetch()` with auth handling
+
+```
+
 ## API Responses and Error Handling
 
 ### Response Structure
