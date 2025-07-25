@@ -327,22 +327,31 @@ src/
 ### React Integration
 
 ```typescript
-import { RehiveClient } from '@rehive/sdk/react';
+import { AuthProvider, useAuth } from '@rehive/sdk/react';
 
 function App() {
-  const [rehive] = useState(() => new RehiveClient({
-    baseUrl: 'https://api.rehive.com'
-  }));
+  return (
+    <AuthProvider config={{ baseUrl: 'https://api.rehive.com' }}>
+      <LoginComponent />
+    </AuthProvider>
+  );
+}
+
+function LoginComponent() {
+  const { login, session, loading } = useAuth();
 
   const handleLogin = async () => {
-    await rehive.auth.login({
-      user: email,
-      password: password,
+    await login({
+      user: 'email@example.com',
+      password: 'password',
       company: 'my-company'
     });
   };
 
-  return <div>...</div>;
+  if (loading) return <div>Loading...</div>;
+  if (session) return <div>Welcome, {session.user.email}</div>;
+
+  return <button onClick={handleLogin}>Login</button>;
 }
 ```
 
