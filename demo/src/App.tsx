@@ -14,8 +14,7 @@ function App() {
     <AuthProvider 
       config={{
         baseUrl: 'https://api.rehive.com',
-        storage: new WebStorageAdapter(),
-        enableCrossTabSync: false
+        storage: new WebStorageAdapter()
       }}
     >
       <div className="app">
