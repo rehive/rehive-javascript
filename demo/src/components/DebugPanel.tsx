@@ -1,4 +1,4 @@
-import { useAuth } from '@rehive/sdk/react'
+import { useAuth } from 'rehive/react'
 
 export function DebugPanel() {
   const { authUser, authLoading, authError } = useAuth()

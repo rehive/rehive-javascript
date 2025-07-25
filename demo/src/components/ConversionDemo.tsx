@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useAuth } from '@rehive/sdk/react'
+import { useAuth } from 'rehive/react'
 
 export function ConversionDemo() {
   const { rehive, authUser } = useAuth()

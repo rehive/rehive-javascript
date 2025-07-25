@@ -1,6 +1,6 @@
 {
-  "name": "@rehive/sdk",
-  "version": "1.0.0",
+  "name": "rehive",
+  "version": "3.0.0",
   "description": "Comprehensive SDK for Rehive Platform and Extensions",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",

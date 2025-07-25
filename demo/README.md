@@ -39,8 +39,8 @@ The demo is configured to use:
 ### Basic Authentication Flow
 
 ```typescript
-import { AuthProvider, useAuth } from '@rehive/sdk/react'
-import { MemoryStorageAdapter } from '@rehive/sdk'
+import { AuthProvider, useAuth } from 'rehive/react'
+import { MemoryStorageAdapter } from 'rehive'
 
 // Wrap your app with AuthProvider
 function App() {
@@ -80,7 +80,7 @@ import {
   MemoryStorageAdapter,    // In-memory (not persisted)
   WebStorageAdapter,       // localStorage (browser only)
   AsyncStorageAdapter      // For React Native
-} from '@rehive/sdk'
+} from 'rehive'
 
 // Use localStorage for persistence
 storage: new WebStorageAdapter()

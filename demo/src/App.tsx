@@ -1,5 +1,5 @@
-import { AuthProvider } from '@rehive/sdk/react'
-import { WebStorageAdapter } from '@rehive/sdk'
+import { AuthProvider } from 'rehive/react'
+import { WebStorageAdapter } from 'rehive'
 import { LoginForm } from './components/LoginForm'
 import { TOTPFlow } from './components/TOTPFlow'
 import { UserDetails } from './components/UserDetails'

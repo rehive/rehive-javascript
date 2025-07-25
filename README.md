@@ -5,7 +5,7 @@ A modern TypeScript SDK for the Rehive platform and extension APIs, providing a 
 ## Installation
 
 ```bash
-npm install @rehive/sdk
+npm install rehive
 ```
 
 ## Quick Start
@@ -15,7 +15,7 @@ npm install @rehive/sdk
 Perfect for backend services, webhooks, and admin operations:
 
 ```typescript
-import { RehiveClient } from '@rehive/sdk';
+import { RehiveClient } from 'rehive';
 
 // Initialize with permanent token (baseUrl defaults to https://api.rehive.com)
 const rehive = new RehiveClient({
@@ -44,7 +44,7 @@ const userProfile = await rehive.user.userRetrieve();
 Perfect for web and mobile applications:
 
 ```typescript
-import { RehiveClient } from '@rehive/sdk';
+import { RehiveClient } from 'rehive';
 
 // Initialize without token (baseUrl defaults to https://api.rehive.com)
 const rehive = new RehiveClient();
@@ -75,7 +75,7 @@ For a complete working example, see the [interactive demo](./demo).
 
 ```typescript
 import { useState } from 'react';
-import { AuthProvider, useAuth } from '@rehive/sdk/react';
+import { AuthProvider, useAuth } from 'rehive/react';
 
 function App() {
   return (
@@ -232,7 +232,7 @@ console.log(accounts.data.results); // Access account list
 The SDK provides comprehensive error handling through the `ApiError` class:
 
 ```typescript
-import { RehiveClient, ApiError } from '@rehive/sdk';
+import { RehiveClient, ApiError } from 'rehive';
 
 try {
   const user = await rehive.user.authRetrieve();
@@ -418,7 +418,7 @@ const unsubscribeSession = rehive.auth.subscribeToSession((session) => {
 ### Custom Storage
 
 ```typescript
-import { RehiveClient, MemoryStorageAdapter } from '@rehive/sdk';
+import { RehiveClient, MemoryStorageAdapter } from 'rehive';
 
 const rehive = new RehiveClient({
   baseUrl: 'https://api.rehive.com',
@@ -432,7 +432,7 @@ const rehive = new RehiveClient({
 The SDK is fully typed with comprehensive TypeScript support:
 
 ```typescript
-import { RehiveClient, type RehiveConfig, type UserSession } from '@rehive/sdk';
+import { RehiveClient, type RehiveConfig, type UserSession } from 'rehive';
 
 const config: RehiveConfig = {
   baseUrl: 'https://api.rehive.com',

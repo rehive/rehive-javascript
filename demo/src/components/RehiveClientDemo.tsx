@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useAuth } from '@rehive/sdk/react'
+import { useAuth } from 'rehive/react'
 
 export function RehiveClientDemo() {
   const { rehive, authUser } = useAuth()
@@ -48,7 +48,7 @@ export function RehiveClientDemo() {
 
     try {
       // Create server-side client with permanent token
-      const { RehiveClient } = require('@rehive/sdk')
+      const { RehiveClient } = require('rehive')
       const serverClient = new RehiveClient({
         baseUrl: 'https://api.rehive.com',
         token: serverToken.trim()

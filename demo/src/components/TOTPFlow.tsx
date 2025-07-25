@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useAuth } from '@rehive/sdk/react'
+import { useAuth } from 'rehive/react'
 import QRCode from 'qrcode'
 
 export function TOTPFlow() {
