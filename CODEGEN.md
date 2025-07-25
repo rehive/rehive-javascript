@@ -47,6 +47,7 @@ npm install -g swagger-typescript-api
 Generate the files from the swagger spec:
 ```bash
 npx swagger-typescript-api generate \
+  --templates ./swagger-templates \
   --path https://api.rehive.com/schema.json \
   --output src/platform/user/ \
   --name rehive-platform-user-api \
@@ -60,6 +61,7 @@ npx swagger-typescript-api generate \
 Generate the files from the swagger spec:
 ```bash
 npx swagger-typescript-api generate \
+  --templates ./swagger-templates \
   --path https://api.rehive.com/admin/schema.json \
   --output src/platform/admin/ \
   --name rehive-platform-admin-api \
@@ -75,6 +77,7 @@ For each extension, create directory `src/extensions/{extension-name}/` and gene
 #### Conversion Extension
 ```bash
 npx swagger-typescript-api generate \
+  --templates ./swagger-templates \
   --path https://conversion.services.rehive.com/schema.json \
   --output src/extensions/conversion/ \
   --name rehive-conversion-api \
@@ -86,6 +89,7 @@ npx swagger-typescript-api generate \
 #### Mass Send Extension
 ```bash
 npx swagger-typescript-api generate \
+  --templates ./swagger-templates \
   --path https://mass-send.services.rehive.com/schema.json \
   --output src/extensions/mass-send/ \
   --name rehive-mass-send-api \
@@ -97,6 +101,7 @@ npx swagger-typescript-api generate \
 #### Notifications Extension
 ```bash
 npx swagger-typescript-api generate \
+  --templates ./swagger-templates \
   --path https://notification.services.rehive.com/schema.json \
   --output src/extensions/notifications/ \
   --name rehive-notifications-api \
@@ -108,6 +113,7 @@ npx swagger-typescript-api generate \
 #### Products Extension
 ```bash
 npx swagger-typescript-api generate \
+  --templates ./swagger-templates \
   --path https://product.services.rehive.com/schema.json \
   --output src/extensions/products/ \
   --name rehive-products-api \
@@ -119,6 +125,7 @@ npx swagger-typescript-api generate \
 #### Rewards Extension
 ```bash
 npx swagger-typescript-api generate \
+  --templates ./swagger-templates \
   --path https://reward.services.rehive.com/schema.json \
   --output src/extensions/rewards/ \
   --name rehive-rewards-api \
@@ -130,6 +137,7 @@ npx swagger-typescript-api generate \
 #### Stellar Mainnet Extension
 ```bash
 npx swagger-typescript-api generate \
+  --templates ./swagger-templates \
   --path "https://stellar.services.rehive.com/swagger/?format=openapi" \
   --output src/extensions/stellar/ \
   --name rehive-stellar-api \
@@ -141,6 +149,7 @@ npx swagger-typescript-api generate \
 #### Stellar Testnet Extension
 ```bash
 npx swagger-typescript-api generate \
+  --templates ./swagger-templates \
   --path "https://stellar-testnet.services.rehive.com/swagger/?format=openapi" \
   --output src/extensions/stellar-testnet/ \
   --name rehive-stellar-testnet-api \
@@ -152,6 +161,7 @@ npx swagger-typescript-api generate \
 #### Business Extension
 ```bash
 npx swagger-typescript-api generate \
+  --templates ./swagger-templates \
   --path https://business.services.rehive.com/schema.json \
   --output src/extensions/business/ \
   --name rehive-business-api \
@@ -163,6 +173,7 @@ npx swagger-typescript-api generate \
 #### Payment Requests Extension
 ```bash
 npx swagger-typescript-api generate \
+  --templates ./swagger-templates \
   --path https://payment-requests.services.rehive.com/schema.json \
   --output src/extensions/payment-requests/ \
   --name rehive-payment-requests-api \
@@ -174,6 +185,7 @@ npx swagger-typescript-api generate \
 #### Bridge Extension
 ```bash
 npx swagger-typescript-api generate \
+  --templates ./swagger-templates \
   --path https://bridge.services.rehive.com/schema.json \
   --output src/extensions/bridge/ \
   --name rehive-bridge-api \

@@ -522,9 +522,8 @@ export class RehiveClient {
         throw new Error('Response data is missing');
       }
 
-      // The response.data contains the full API response {status, data}
-      // The actual login data is in response.data.data
-      const loginResponseData = response.data.data;
+      // With our custom templates, response.data contains the login data directly
+      const loginResponseData = response.data;
       
       const newSession: UserSession = {
         user: loginResponseData.user,
@@ -582,9 +581,8 @@ export class RehiveClient {
         throw new Error('Response data is missing');
       }
 
-      // The response.data contains the full API response {status, data}
-      // The actual register data is in response.data.data
-      const registerResponseData = response.data.data;
+      // With our custom templates, response.data contains the register data directly
+      const registerResponseData = response.data;
       
       const newSession: UserSession = {
         user: registerResponseData.user,
@@ -655,9 +653,8 @@ export class RehiveClient {
           throw new Error('Refresh response data is missing');
         }
 
-        // The response.data contains the full API response {status, data}
-        // The actual refresh data is in response.data.data
-        const refreshResponseData = response.data.data;
+        // With our custom templates, response.data contains the refresh data directly
+        const refreshResponseData = response.data;
         
         const updatedSessions = [...currentAuthState.sessions];
         updatedSessions[activeSessionIndex] = {

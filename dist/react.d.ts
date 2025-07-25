@@ -1,6 +1,61 @@
 import * as react_jsx_runtime from 'react/jsx-runtime';
 import { ReactNode } from 'react';
 
+type QueryParamsType$b = Record<string | number, any>;
+type ResponseFormat$b = keyof Omit<Body, "body" | "bodyUsed">;
+interface FullRequestParams$b extends Omit<RequestInit, "body"> {
+    /** set parameter to `true` for call `securityWorker` for this request */
+    secure?: boolean;
+    /** request path */
+    path: string;
+    /** content type of request body */
+    type?: ContentType$b;
+    /** query params */
+    query?: QueryParamsType$b;
+    /** format of response (i.e. response.json() -> format: "json") */
+    format?: ResponseFormat$b;
+    /** request body */
+    body?: unknown;
+    /** base url */
+    baseUrl?: string;
+    /** request cancellation token */
+    cancelToken?: CancelToken$b;
+}
+type RequestParams$c = Omit<FullRequestParams$b, "body" | "method" | "query" | "path">;
+interface ApiConfig$b<SecurityDataType = unknown> {
+    baseUrl?: string;
+    baseApiParams?: Omit<RequestParams$c, "baseUrl" | "cancelToken" | "signal">;
+    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$c | void> | RequestParams$c | void;
+    customFetch?: typeof fetch;
+}
+type CancelToken$b = Symbol | string | number;
+declare enum ContentType$b {
+    Json = "application/json",
+    FormData = "multipart/form-data",
+    UrlEncoded = "application/x-www-form-urlencoded",
+    Text = "text/plain"
+}
+declare class HttpClient$b<SecurityDataType = unknown> {
+    baseUrl: string;
+    private securityData;
+    private securityWorker?;
+    private abortControllers;
+    private customFetch;
+    private baseApiParams;
+    constructor(apiConfig?: ApiConfig$b<SecurityDataType>);
+    setSecurityData: (data: SecurityDataType | null) => void;
+    protected encodeQueryParam(key: string, value: any): string;
+    protected addQueryParam(query: QueryParamsType$b, key: string): string;
+    protected addArrayQueryParam(query: QueryParamsType$b, key: string): any;
+    protected toQueryString(rawQuery?: QueryParamsType$b): string;
+    protected addQueryParams(rawQuery?: QueryParamsType$b): string;
+    private contentFormatters;
+    protected mergeRequestParams(params1: RequestParams$c, params2?: RequestParams$c): RequestParams$c;
+    protected createAbortSignal: (cancelToken: CancelToken$b) => AbortSignal | undefined;
+    abortRequest: (cancelToken: CancelToken$b) => void;
+    request: <T = any>({ body, secure, path, type, query, format, baseUrl, cancelToken, ...params }: FullRequestParams$b) => Promise<T>;
+}
+
 /**
  * A ModelSerializer that takes additional arguments for
  * "fields", "omit" and "expand" in order to
@@ -10753,65 +10808,6 @@ interface UserWalletAccountsCurrenciesListParams {
     /** @pattern ^\d+$ */
     id: string;
 }
-type QueryParamsType$b = Record<string | number, any>;
-type ResponseFormat$b = keyof Omit<Body, "body" | "bodyUsed">;
-interface FullRequestParams$b extends Omit<RequestInit, "body"> {
-    /** set parameter to `true` for call `securityWorker` for this request */
-    secure?: boolean;
-    /** request path */
-    path: string;
-    /** content type of request body */
-    type?: ContentType$b;
-    /** query params */
-    query?: QueryParamsType$b;
-    /** format of response (i.e. response.json() -> format: "json") */
-    format?: ResponseFormat$b;
-    /** request body */
-    body?: unknown;
-    /** base url */
-    baseUrl?: string;
-    /** request cancellation token */
-    cancelToken?: CancelToken$b;
-}
-type RequestParams$b = Omit<FullRequestParams$b, "body" | "method" | "query" | "path">;
-interface ApiConfig$b<SecurityDataType = unknown> {
-    baseUrl?: string;
-    baseApiParams?: Omit<RequestParams$b, "baseUrl" | "cancelToken" | "signal">;
-    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$b | void> | RequestParams$b | void;
-    customFetch?: typeof fetch;
-}
-interface HttpResponse$b<D extends unknown, E extends unknown = unknown> extends Response {
-    data: D;
-    error: E;
-}
-type CancelToken$b = Symbol | string | number;
-declare enum ContentType$b {
-    Json = "application/json",
-    JsonApi = "application/vnd.api+json",
-    FormData = "multipart/form-data",
-    UrlEncoded = "application/x-www-form-urlencoded",
-    Text = "text/plain"
-}
-declare class HttpClient$b<SecurityDataType = unknown> {
-    baseUrl: string;
-    private securityData;
-    private securityWorker?;
-    private abortControllers;
-    private customFetch;
-    private baseApiParams;
-    constructor(apiConfig?: ApiConfig$b<SecurityDataType>);
-    setSecurityData: (data: SecurityDataType | null) => void;
-    protected encodeQueryParam(key: string, value: any): string;
-    protected addQueryParam(query: QueryParamsType$b, key: string): string;
-    protected addArrayQueryParam(query: QueryParamsType$b, key: string): any;
-    protected toQueryString(rawQuery?: QueryParamsType$b): string;
-    protected addQueryParams(rawQuery?: QueryParamsType$b): string;
-    private contentFormatters;
-    protected mergeRequestParams(params1: RequestParams$b, params2?: RequestParams$b): RequestParams$b;
-    protected createAbortSignal: (cancelToken: CancelToken$b) => AbortSignal | undefined;
-    abortRequest: (cancelToken: CancelToken$b) => void;
-    request: <T = any, E = any>({ body, secure, path, type, query, format, baseUrl, cancelToken, ...params }: FullRequestParams$b) => Promise<HttpResponse$b<T, E>>;
-}
 /**
  * @title Platform API
  * @version 3 (3)
@@ -10842,7 +10838,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/account-currencies/
          * @secure
          */
-        accountCurrenciesList: (query: AccountCurrenciesListParams$1, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedAccountAssetListResponse, any>>;
+        accountCurrenciesList: (query: AccountCurrenciesListParams$1, params?: RequestParams) => Promise<PaginatedAccountAssetListResponse>;
         /**
          * No description
          *
@@ -10852,7 +10848,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/account-definitions/
          * @secure
          */
-        accountDefinitionsList: (query: AccountDefinitionsListParams$1, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedAccountDefinitionListResponse, any>>;
+        accountDefinitionsList: (query: AccountDefinitionsListParams$1, params?: RequestParams) => Promise<PaginatedAccountDefinitionListResponse>;
         /**
          * No description
          *
@@ -10862,7 +10858,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/account-definitions/{definition_name}/
          * @secure
          */
-        accountDefinitionsRetrieve: (definitionName: string, params?: RequestParams$b) => Promise<HttpResponse$b<AccountDefinitionResponse, any>>;
+        accountDefinitionsRetrieve: (definitionName: string, params?: RequestParams) => Promise<AccountDefinitionResponse>;
         /**
          * No description
          *
@@ -10872,7 +10868,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/accounts/
          * @secure
          */
-        accountsList: (query: AccountsListParams$1, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedAccountListResponse, any>>;
+        accountsList: (query: AccountsListParams$1, params?: RequestParams) => Promise<PaginatedAccountListResponse>;
         /**
          * No description
          *
@@ -10882,7 +10878,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/accounts/
          * @secure
          */
-        accountsCreate: (data: Account, params?: RequestParams$b) => Promise<HttpResponse$b<AccountResponse, any>>;
+        accountsCreate: (data: Account, params?: RequestParams) => Promise<AccountResponse>;
         /**
          * No description
          *
@@ -10892,7 +10888,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/accounts/{reference}/
          * @secure
          */
-        accountsRetrieve: (reference: string, params?: RequestParams$b) => Promise<HttpResponse$b<ExtendedAccountResponse, any>>;
+        accountsRetrieve: (reference: string, params?: RequestParams) => Promise<ExtendedAccountResponse>;
         /**
          * No description
          *
@@ -10902,7 +10898,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/accounts/{reference}/currencies/
          * @secure
          */
-        accountsCurrenciesList: ({ reference, ...query }: AccountsCurrenciesListParams$1, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedAccountAccountAssetListResponse, any>>;
+        accountsCurrenciesList: ({ reference, ...query }: AccountsCurrenciesListParams$1, params?: RequestParams) => Promise<PaginatedAccountAccountAssetListResponse>;
         /**
          * No description
          *
@@ -10912,7 +10908,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/accounts/{reference}/currencies/
          * @secure
          */
-        accountsCurrenciesCreate: (reference: string, data: CreateAccountAccountAsset, params?: RequestParams$b) => Promise<HttpResponse$b<AccountAccountAssetResponse, any>>;
+        accountsCurrenciesCreate: (reference: string, data: CreateAccountAccountAsset, params?: RequestParams) => Promise<AccountAccountAssetResponse>;
         /**
          * No description
          *
@@ -10922,7 +10918,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/accounts/{reference}/currencies/{code}/
          * @secure
          */
-        accountsCurrenciesRetrieve: (code: string, reference: string, params?: RequestParams$b) => Promise<HttpResponse$b<AccountAccountAssetResponse, any>>;
+        accountsCurrenciesRetrieve: (code: string, reference: string, params?: RequestParams) => Promise<AccountAccountAssetResponse>;
         /**
          * No description
          *
@@ -10932,7 +10928,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PUT:/3/accounts/{reference}/currencies/{code}/
          * @secure
          */
-        accountsCurrenciesUpdate: (code: string, reference: string, data: AccountAccountAsset, params?: RequestParams$b) => Promise<HttpResponse$b<AccountAccountAssetResponse, any>>;
+        accountsCurrenciesUpdate: (code: string, reference: string, data: AccountAccountAsset, params?: RequestParams) => Promise<AccountAccountAssetResponse>;
         /**
          * No description
          *
@@ -10942,7 +10938,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PATCH:/3/accounts/{reference}/currencies/{code}/
          * @secure
          */
-        accountsCurrenciesPartialUpdate: (code: string, reference: string, data: PatchedAccountAccountAsset, params?: RequestParams$b) => Promise<HttpResponse$b<AccountAccountAssetResponse, any>>;
+        accountsCurrenciesPartialUpdate: (code: string, reference: string, data: PatchedAccountAccountAsset, params?: RequestParams) => Promise<AccountAccountAssetResponse>;
         /**
          * No description
          *
@@ -10952,7 +10948,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/accounts/{reference}/currencies/{code}/fees/
          * @secure
          */
-        accountsCurrenciesFeesList: ({ code, reference, ...query }: AccountsCurrenciesFeesListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedAccountAssetFeeListResponse, any>>;
+        accountsCurrenciesFeesList: ({ code, reference, ...query }: AccountsCurrenciesFeesListParams, params?: RequestParams) => Promise<PaginatedAccountAssetFeeListResponse>;
         /**
          * No description
          *
@@ -10962,7 +10958,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/accounts/{reference}/currencies/{code}/fees/{fee_id}/
          * @secure
          */
-        accountsCurrenciesFeesRetrieve: (code: string, feeId: string, reference: string, params?: RequestParams$b) => Promise<HttpResponse$b<AdminAccountAssetFeeResponse$1, any>>;
+        accountsCurrenciesFeesRetrieve: (code: string, feeId: string, reference: string, params?: RequestParams) => Promise<AdminAccountAssetFeeResponse$1>;
         /**
          * No description
          *
@@ -10972,7 +10968,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/accounts/{reference}/currencies/{code}/limits/
          * @secure
          */
-        accountsCurrenciesLimitsList: ({ code, reference, ...query }: AccountsCurrenciesLimitsListParams$1, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedAccountAssetLimitListResponse, any>>;
+        accountsCurrenciesLimitsList: ({ code, reference, ...query }: AccountsCurrenciesLimitsListParams$1, params?: RequestParams) => Promise<PaginatedAccountAssetLimitListResponse>;
         /**
          * No description
          *
@@ -10982,7 +10978,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/accounts/{reference}/currencies/{code}/limits/{limit_id}/
          * @secure
          */
-        accountsCurrenciesLimitsRetrieve: (code: string, limitId: string, reference: string, params?: RequestParams$b) => Promise<HttpResponse$b<AccountAssetLimitResponse, any>>;
+        accountsCurrenciesLimitsRetrieve: (code: string, limitId: string, reference: string, params?: RequestParams) => Promise<AccountAssetLimitResponse>;
         /**
          * No description
          *
@@ -10992,7 +10988,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/auth/
          * @secure
          */
-        authRetrieve: (params?: RequestParams$b) => Promise<HttpResponse$b<AuthResponse, any>>;
+        authRetrieve: (params?: RequestParams) => Promise<AuthResponse>;
         /**
          * No description
          *
@@ -11002,7 +10998,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/company/register/
          * @secure
          */
-        authRegisterCompany: (data: RegisterCompany, params?: RequestParams$b) => Promise<HttpResponse$b<ExtendedAuthenticatedResponse$1, any>>;
+        authRegisterCompany: (data: RegisterCompany, params?: RequestParams) => Promise<ExtendedAuthenticatedResponse$1>;
         /**
          * No description
          *
@@ -11012,7 +11008,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/deactivate/
          * @secure
          */
-        authDeactivate: (data: Deactivate$a, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        authDeactivate: (data: Deactivate$a, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -11022,7 +11018,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/deactivate/verify/
          * @secure
          */
-        authDeactivateVerify: (data: VerifyDeactivate$1, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        authDeactivateVerify: (data: VerifyDeactivate$1, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -11032,7 +11028,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/email/verify/
          * @secure
          */
-        authEmailVerify: (data: VerifyEmail, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        authEmailVerify: (data: VerifyEmail, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -11042,7 +11038,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/email/verify/resend/
          * @secure
          */
-        authEmailVerifyResend: (data: ResendVerifyEmail, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        authEmailVerifyResend: (data: ResendVerifyEmail, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -11051,7 +11047,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/jwt/
          * @secure
          */
-        authJwtCreate: (data: CreateJWT, params?: RequestParams$b) => Promise<HttpResponse$b<JWTResponse, any>>;
+        authJwtCreate: (data: CreateJWT, params?: RequestParams) => Promise<JWTResponse>;
         /**
          * No description
          *
@@ -11061,7 +11057,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/login/
          * @secure
          */
-        authLogin: (data: Login, params?: RequestParams$b) => Promise<HttpResponse$b<AuthenticatedResponse$1, any>>;
+        authLogin: (data: Login, params?: RequestParams) => Promise<AuthenticatedResponse$1>;
         /**
          * No description
          *
@@ -11071,7 +11067,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/logout/
          * @secure
          */
-        authLogout: (data: Logout, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        authLogout: (data: Logout, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -11081,7 +11077,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/auth/mfa/authenticators/
          * @secure
          */
-        authMfaAuthenticatorsList: (query: AuthMfaAuthenticatorsListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedMaskedMFAAuthenticatorListResponse, any>>;
+        authMfaAuthenticatorsList: (query: AuthMfaAuthenticatorsListParams, params?: RequestParams) => Promise<PaginatedMaskedMFAAuthenticatorListResponse>;
         /**
          * No description
          *
@@ -11091,7 +11087,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/mfa/authenticators/
          * @secure
          */
-        authMfaAuthenticatorsCreate: (data: CreateMFAAuthenticator, params?: RequestParams$b) => Promise<HttpResponse$b<MFAAuthenticatorResponse, any>>;
+        authMfaAuthenticatorsCreate: (data: CreateMFAAuthenticator, params?: RequestParams) => Promise<MFAAuthenticatorResponse>;
         /**
          * No description
          *
@@ -11101,7 +11097,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/auth/mfa/authenticators/{identifier}/
          * @secure
          */
-        authMfaAuthenticatorsRetrieve: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$b<MaskedMFAAuthenticatorResponse, any>>;
+        authMfaAuthenticatorsRetrieve: (identifier: string, params?: RequestParams) => Promise<MaskedMFAAuthenticatorResponse>;
         /**
          * No description
          *
@@ -11111,7 +11107,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/auth/mfa/authenticators/{identifier}/
          * @secure
          */
-        authMfaAuthenticatorsDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        authMfaAuthenticatorsDestroy: (identifier: string, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -11121,7 +11117,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/mfa/deliver/
          * @secure
          */
-        authMfaDeliver: (data: MFADeliver, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        authMfaDeliver: (data: MFADeliver, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -11131,7 +11127,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/mfa/verify/
          * @secure
          */
-        authMfaVerify: (data: MFAVerify, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        authMfaVerify: (data: MFAVerify, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -11141,7 +11137,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/mobile/verify/
          * @secure
          */
-        authMobileVerify: (data: VerifyMobile, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        authMobileVerify: (data: VerifyMobile, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -11151,7 +11147,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/mobile/verify/resend/
          * @secure
          */
-        authMobileVerifyResend: (data: ResendVerifyMobile, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        authMobileVerifyResend: (data: ResendVerifyMobile, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -11160,7 +11156,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/oauth/authorize/
          * @secure
          */
-        authOauthAuthorizeCreate: (data: OauthAuthorize, params?: RequestParams$b) => Promise<HttpResponse$b<OauthAuthorizeResponse, any>>;
+        authOauthAuthorizeCreate: (data: OauthAuthorize, params?: RequestParams) => Promise<OauthAuthorizeResponse>;
         /**
          * No description
          *
@@ -11169,7 +11165,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/oauth/login/
          * @secure
          */
-        authOauthLoginCreate: (data: OauthLogin, params?: RequestParams$b) => Promise<HttpResponse$b<AuthenticatedResponse$1, any>>;
+        authOauthLoginCreate: (data: OauthLogin, params?: RequestParams) => Promise<AuthenticatedResponse$1>;
         /**
          * No description
          *
@@ -11178,7 +11174,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/oauth/register/
          * @secure
          */
-        authOauthRegisterCreate: (data: OauthRegister, params?: RequestParams$b) => Promise<HttpResponse$b<ExtendedAuthenticatedResponse$1, any>>;
+        authOauthRegisterCreate: (data: OauthRegister, params?: RequestParams) => Promise<ExtendedAuthenticatedResponse$1>;
         /**
          * No description
          *
@@ -11187,7 +11183,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/oauth/session/
          * @secure
          */
-        authOauthSessionCreate: (data: OauthSession, params?: RequestParams$b) => Promise<HttpResponse$b<OauthSessionResponse, any>>;
+        authOauthSessionCreate: (data: OauthSession, params?: RequestParams) => Promise<OauthSessionResponse>;
         /**
          * No description
          *
@@ -11196,7 +11192,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/oauth/verify/
          * @secure
          */
-        authOauthVerifyCreate: (data: OauthVerify, params?: RequestParams$b) => Promise<HttpResponse$b<OauthVerifyResponse, any>>;
+        authOauthVerifyCreate: (data: OauthVerify, params?: RequestParams) => Promise<OauthVerifyResponse>;
         /**
          * No description
          *
@@ -11206,7 +11202,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/password/change/
          * @secure
          */
-        authPasswordChange: (data: PasswordChange, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        authPasswordChange: (data: PasswordChange, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -11216,7 +11212,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/password/reset/
          * @secure
          */
-        authPasswordReset: (data: PasswordReset, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        authPasswordReset: (data: PasswordReset, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -11226,7 +11222,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/password/reset/confirm/
          * @secure
          */
-        authPasswordResetConfirm: (data: PasswordResetConfirm$1, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        authPasswordResetConfirm: (data: PasswordResetConfirm$1, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -11235,7 +11231,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/refresh/
          * @secure
          */
-        authRefreshCreate: (data: Refresh, params?: RequestParams$b) => Promise<HttpResponse$b<RefreshedResponse, any>>;
+        authRefreshCreate: (data: Refresh, params?: RequestParams) => Promise<RefreshedResponse>;
         /**
          * No description
          *
@@ -11245,7 +11241,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/register/
          * @secure
          */
-        authRegister: (data: Register, params?: RequestParams$b) => Promise<HttpResponse$b<ExtendedAuthenticatedResponse$1, any>>;
+        authRegister: (data: Register, params?: RequestParams) => Promise<ExtendedAuthenticatedResponse$1>;
         /**
          * No description
          *
@@ -11255,7 +11251,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/request-delete/
          * @secure
          */
-        authRequestDelete: (data: RequestDelete, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        authRequestDelete: (data: RequestDelete, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -11265,7 +11261,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/request-delete/verify/
          * @secure
          */
-        authRequestDeleteVerify: (data: VerifyRequestDelete$1, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        authRequestDeleteVerify: (data: VerifyRequestDelete$1, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -11275,7 +11271,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/auth/tokens/
          * @secure
          */
-        authTokensList: (query: AuthTokensListParams, params?: RequestParams$b) => Promise<HttpResponse$b<AuthTokenListResponse, any>>;
+        authTokensList: (query: AuthTokensListParams, params?: RequestParams) => Promise<AuthTokenListResponse>;
         /**
          * No description
          *
@@ -11285,7 +11281,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/tokens/
          * @secure
          */
-        authTokensCreate: (data: CreateAuthToken, params?: RequestParams$b) => Promise<HttpResponse$b<ExtendedAuthenticatedResponse$1, any>>;
+        authTokensCreate: (data: CreateAuthToken, params?: RequestParams) => Promise<ExtendedAuthenticatedResponse$1>;
         /**
          * No description
          *
@@ -11295,7 +11291,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/auth/tokens/
          * @secure
          */
-        authTokensListDestroy: (params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        authTokensListDestroy: (params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -11305,7 +11301,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/auth/tokens/{token_key}/
          * @secure
          */
-        authTokensRetrieve: (tokenKey: string, params?: RequestParams$b) => Promise<HttpResponse$b<AuthTokenResponse, any>>;
+        authTokensRetrieve: (tokenKey: string, params?: RequestParams) => Promise<AuthTokenResponse>;
         /**
          * No description
          *
@@ -11315,7 +11311,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/auth/tokens/{token_key}/
          * @secure
          */
-        authTokensDestroy: (tokenKey: string, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        authTokensDestroy: (tokenKey: string, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -11325,7 +11321,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/company/
          * @secure
          */
-        companyRetrieve: (params?: RequestParams$b) => Promise<HttpResponse$b<CompanyResponse$1, any>>;
+        companyRetrieve: (params?: RequestParams) => Promise<CompanyResponse$1>;
         /**
          * No description
          *
@@ -11335,7 +11331,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/company/bank-accounts/
          * @secure
          */
-        companyBankAccountsList: (query: CompanyBankAccountsListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedCompanyBankAccountListResponse, any>>;
+        companyBankAccountsList: (query: CompanyBankAccountsListParams, params?: RequestParams) => Promise<PaginatedCompanyBankAccountListResponse>;
         /**
          * No description
          *
@@ -11345,7 +11341,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/company/currencies/
          * @secure
          */
-        companyCurrenciesList: (query: CompanyCurrenciesListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedAssetListResponse, any>>;
+        companyCurrenciesList: (query: CompanyCurrenciesListParams, params?: RequestParams) => Promise<PaginatedAssetListResponse>;
         /**
          * No description
          *
@@ -11355,7 +11351,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/company/currencies/{code}/
          * @secure
          */
-        companyCurrenciesRetrieve: (code: string, params?: RequestParams$b) => Promise<HttpResponse$b<AssetResponse, any>>;
+        companyCurrenciesRetrieve: (code: string, params?: RequestParams) => Promise<AssetResponse>;
         /**
          * No description
          *
@@ -11365,7 +11361,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/company/wallet-accounts/
          * @secure
          */
-        companyWalletAccountsList: (query: CompanyWalletAccountsListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedCompanyWalletAccountListResponse, any>>;
+        companyWalletAccountsList: (query: CompanyWalletAccountsListParams, params?: RequestParams) => Promise<PaginatedCompanyWalletAccountListResponse>;
         /**
          * No description
          *
@@ -11375,7 +11371,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/document-types/
          * @secure
          */
-        documentTypesList: (query: DocumentTypesListParams$1, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedDocumentTypeListResponse, any>>;
+        documentTypesList: (query: DocumentTypesListParams$1, params?: RequestParams) => Promise<PaginatedDocumentTypeListResponse>;
         /**
          * No description
          *
@@ -11385,7 +11381,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/document-types/{id}/
          * @secure
          */
-        documentTypesRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<DocumentTypeResponse, any>>;
+        documentTypesRetrieve: (id: string, params?: RequestParams) => Promise<DocumentTypeResponse>;
         /**
          * No description
          *
@@ -11395,7 +11391,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/exports/
          * @secure
          */
-        exportsList: (query: ExportsListParams$1, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedExportListResponse, any>>;
+        exportsList: (query: ExportsListParams$1, params?: RequestParams) => Promise<PaginatedExportListResponse>;
         /**
          * No description
          *
@@ -11405,7 +11401,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/exports/
          * @secure
          */
-        exportsCreate: (data: CreateExport, params?: RequestParams$b) => Promise<HttpResponse$b<ExportResponse, any>>;
+        exportsCreate: (data: CreateExport, params?: RequestParams) => Promise<ExportResponse>;
         /**
          * No description
          *
@@ -11415,7 +11411,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/exports/{identifier}/
          * @secure
          */
-        exportsRetrieve: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$b<ExtendedExportResponse, any>>;
+        exportsRetrieve: (identifier: string, params?: RequestParams) => Promise<ExtendedExportResponse>;
         /**
          * No description
          *
@@ -11425,7 +11421,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/groups/
          * @secure
          */
-        groupsList: (query: GroupsListParams$1, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedUserGroupListResponse, any>>;
+        groupsList: (query: GroupsListParams$1, params?: RequestParams) => Promise<PaginatedUserGroupListResponse>;
         /**
          * No description
          *
@@ -11435,7 +11431,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/groups/{group_name}/
          * @secure
          */
-        groupsRetrieve: (groupName: string, params?: RequestParams$b) => Promise<HttpResponse$b<UserGroupResponse, any>>;
+        groupsRetrieve: (groupName: string, params?: RequestParams) => Promise<UserGroupResponse>;
         /**
          * No description
          *
@@ -11445,7 +11441,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/groups/{group_name}/fees/
          * @secure
          */
-        groupsFeesList: ({ groupName, ...query }: GroupsFeesListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedGroupFeeListResponse, any>>;
+        groupsFeesList: ({ groupName, ...query }: GroupsFeesListParams, params?: RequestParams) => Promise<PaginatedGroupFeeListResponse>;
         /**
          * No description
          *
@@ -11455,7 +11451,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/groups/{group_name}/fees/{fee_id}/
          * @secure
          */
-        groupsFeesRetrieve: (feeId: string, groupName: string, params?: RequestParams$b) => Promise<HttpResponse$b<GroupFeeResponse, any>>;
+        groupsFeesRetrieve: (feeId: string, groupName: string, params?: RequestParams) => Promise<GroupFeeResponse>;
         /**
          * No description
          *
@@ -11465,7 +11461,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/groups/{group_name}/permissions/
          * @secure
          */
-        groupsPermissionsList: ({ groupName, ...query }: GroupsPermissionsListParams$1, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedGroupPermissionListResponse$1, any>>;
+        groupsPermissionsList: ({ groupName, ...query }: GroupsPermissionsListParams$1, params?: RequestParams) => Promise<PaginatedGroupPermissionListResponse$1>;
         /**
          * No description
          *
@@ -11475,7 +11471,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/groups/{group_name}/permissions/{permission_id}/
          * @secure
          */
-        groupsPermissionsRetrieve: (groupName: string, permissionId: string, params?: RequestParams$b) => Promise<HttpResponse$b<GroupPermissionResponse, any>>;
+        groupsPermissionsRetrieve: (groupName: string, permissionId: string, params?: RequestParams) => Promise<GroupPermissionResponse>;
         /**
          * No description
          *
@@ -11485,7 +11481,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/groups/{group_name}/tiers/
          * @secure
          */
-        groupsTiersList: ({ groupName, ...query }: GroupsTiersListParams$1, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedGroupTierListResponse, any>>;
+        groupsTiersList: ({ groupName, ...query }: GroupsTiersListParams$1, params?: RequestParams) => Promise<PaginatedGroupTierListResponse>;
         /**
          * No description
          *
@@ -11495,7 +11491,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/groups/{group_name}/tiers/{tier_id}/
          * @secure
          */
-        groupsTiersRetrieve: (groupName: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$b<ExtendedGroupTierResponse, any>>;
+        groupsTiersRetrieve: (groupName: string, tierId: string, params?: RequestParams) => Promise<ExtendedGroupTierResponse>;
         /**
          * No description
          *
@@ -11505,7 +11501,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/groups/{group_name}/tiers/{tier_id}/fees/
          * @secure
          */
-        groupsTiersFeesList: ({ groupName, tierId, ...query }: GroupsTiersFeesListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedGroupTierFeeListResponse, any>>;
+        groupsTiersFeesList: ({ groupName, tierId, ...query }: GroupsTiersFeesListParams, params?: RequestParams) => Promise<PaginatedGroupTierFeeListResponse>;
         /**
          * No description
          *
@@ -11515,7 +11511,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/groups/{group_name}/tiers/{tier_id}/fees/{fee_id}/
          * @secure
          */
-        groupsTiersFeesRetrieve: (feeId: string, groupName: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$b<GroupTierFeeResponse, any>>;
+        groupsTiersFeesRetrieve: (feeId: string, groupName: string, tierId: string, params?: RequestParams) => Promise<GroupTierFeeResponse>;
         /**
          * No description
          *
@@ -11525,7 +11521,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/groups/{group_name}/tiers/{tier_id}/limits/
          * @secure
          */
-        groupsTiersLimitsList: ({ groupName, tierId, ...query }: GroupsTiersLimitsListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedGroupTierLimitListResponse, any>>;
+        groupsTiersLimitsList: ({ groupName, tierId, ...query }: GroupsTiersLimitsListParams, params?: RequestParams) => Promise<PaginatedGroupTierLimitListResponse>;
         /**
          * No description
          *
@@ -11535,7 +11531,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/groups/{group_name}/tiers/{tier_id}/limits/{limit_id}/
          * @secure
          */
-        groupsTiersLimitsRetrieve: (groupName: string, limitId: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$b<GroupTierLimitResponse, any>>;
+        groupsTiersLimitsRetrieve: (groupName: string, limitId: string, tierId: string, params?: RequestParams) => Promise<GroupTierLimitResponse>;
         /**
          * No description
          *
@@ -11545,7 +11541,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/groups/{group_name}/tiers/{tier_id}/requirement-sets/
          * @secure
          */
-        groupsTiersRequirementSetsList: ({ groupName, tierId, ...query }: GroupsTiersRequirementSetsListParams$1, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedGroupTierRequirementSetListResponse$1, any>>;
+        groupsTiersRequirementSetsList: ({ groupName, tierId, ...query }: GroupsTiersRequirementSetsListParams$1, params?: RequestParams) => Promise<PaginatedGroupTierRequirementSetListResponse$1>;
         /**
          * No description
          *
@@ -11555,7 +11551,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/groups/{group_name}/tiers/{tier_id}/requirement-sets/{req_set_id}/
          * @secure
          */
-        groupsTiersRequirementSetsRetrieve: (groupName: string, reqSetId: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$b<GroupTierRequirementSetResponse$1, any>>;
+        groupsTiersRequirementSetsRetrieve: (groupName: string, reqSetId: string, tierId: string, params?: RequestParams) => Promise<GroupTierRequirementSetResponse$1>;
         /**
          * No description
          *
@@ -11565,7 +11561,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/groups/{group_name}/tiers/{tier_id}/requirement-sets/{req_set_id}/items/
          * @secure
          */
-        groupsTiersRequirementSetsItemsList: ({ groupName, reqSetId, tierId, ...query }: GroupsTiersRequirementSetsItemsListParams$1, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedGroupTierRequirementSetItemListResponse$1, any>>;
+        groupsTiersRequirementSetsItemsList: ({ groupName, reqSetId, tierId, ...query }: GroupsTiersRequirementSetsItemsListParams$1, params?: RequestParams) => Promise<PaginatedGroupTierRequirementSetItemListResponse$1>;
         /**
          * No description
          *
@@ -11575,7 +11571,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/groups/{group_name}/tiers/{tier_id}/requirement-sets/{req_set_id}/items/{req_item_id}/
          * @secure
          */
-        groupsTiersRequirementSetsItemsRetrieve: (groupName: string, reqItemId: string, reqSetId: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$b<GroupTierRequirementSetItemResponse$1, any>>;
+        groupsTiersRequirementSetsItemsRetrieve: (groupName: string, reqItemId: string, reqSetId: string, tierId: string, params?: RequestParams) => Promise<GroupTierRequirementSetItemResponse$1>;
         /**
          * No description
          *
@@ -11585,7 +11581,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/metrics/
          * @secure
          */
-        metricsList: (query: MetricsListParams$1, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedMetricListResponse, any>>;
+        metricsList: (query: MetricsListParams$1, params?: RequestParams) => Promise<PaginatedMetricListResponse>;
         /**
          * No description
          *
@@ -11595,7 +11591,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/metrics/
          * @secure
          */
-        metricsCreate: (data: CreateMetric, params?: RequestParams$b) => Promise<HttpResponse$b<MetricResponse, any>>;
+        metricsCreate: (data: CreateMetric, params?: RequestParams) => Promise<MetricResponse>;
         /**
          * No description
          *
@@ -11605,7 +11601,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/metrics/{identifier}/
          * @secure
          */
-        metricsRetrieve: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$b<MetricResponse, any>>;
+        metricsRetrieve: (identifier: string, params?: RequestParams) => Promise<MetricResponse>;
         /**
          * No description
          *
@@ -11615,7 +11611,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/metrics/{identifier}/
          * @secure
          */
-        metricsDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        metricsDestroy: (identifier: string, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -11625,7 +11621,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/metrics/{identifier}/points/
          * @secure
          */
-        metricsPointsList: ({ identifier, ...query }: MetricsPointsListParams$1, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedMetricPointListResponse, any>>;
+        metricsPointsList: ({ identifier, ...query }: MetricsPointsListParams$1, params?: RequestParams) => Promise<PaginatedMetricPointListResponse>;
         /**
          * No description
          *
@@ -11635,7 +11631,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/permissions/
          * @secure
          */
-        permissionsList: (query: PermissionsListParams$1, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedUserPermissionListResponse$1, any>>;
+        permissionsList: (query: PermissionsListParams$1, params?: RequestParams) => Promise<PaginatedUserPermissionListResponse$1>;
         /**
          * No description
          *
@@ -11645,7 +11641,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/permissions/{permission_id}/
          * @secure
          */
-        permissionsRetrieve: (permissionId: string, params?: RequestParams$b) => Promise<HttpResponse$b<UserPermissionResponse, any>>;
+        permissionsRetrieve: (permissionId: string, params?: RequestParams) => Promise<UserPermissionResponse>;
         /**
          * No description
          *
@@ -11655,7 +11651,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/public/companies/
          * @secure
          */
-        publicCompaniesList: (query: PublicCompaniesListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedPublicCompanyListResponse, any>>;
+        publicCompaniesList: (query: PublicCompaniesListParams, params?: RequestParams) => Promise<PaginatedPublicCompanyListResponse>;
         /**
          * No description
          *
@@ -11665,7 +11661,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/public/companies/{id}/
          * @secure
          */
-        publicCompaniesRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<PublicCompanyResponse, any>>;
+        publicCompaniesRetrieve: (id: string, params?: RequestParams) => Promise<PublicCompanyResponse>;
         /**
          * No description
          *
@@ -11675,7 +11671,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/public/companies/{id}/groups/
          * @secure
          */
-        publicCompaniesGroupsList: ({ id, ...query }: PublicCompaniesGroupsListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedPublicGroupListResponse, any>>;
+        publicCompaniesGroupsList: ({ id, ...query }: PublicCompaniesGroupsListParams, params?: RequestParams) => Promise<PaginatedPublicGroupListResponse>;
         /**
          * No description
          *
@@ -11685,7 +11681,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/public/companies/{id}/groups/{group_name}/
          * @secure
          */
-        publicCompaniesGroupsRetrieve: (groupName: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$b<PublicGroupResponse, any>>;
+        publicCompaniesGroupsRetrieve: (groupName: string, id: string, params?: RequestParams) => Promise<PublicGroupResponse>;
         /**
          * No description
          *
@@ -11695,7 +11691,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/public/companies/{id}/legal-terms/
          * @secure
          */
-        publicCompaniesLegalTermsList: ({ id, ...query }: PublicCompaniesLegalTermsListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedPublicCompanyLegalTermListResponse, any>>;
+        publicCompaniesLegalTermsList: ({ id, ...query }: PublicCompaniesLegalTermsListParams, params?: RequestParams) => Promise<PaginatedPublicCompanyLegalTermListResponse>;
         /**
          * No description
          *
@@ -11705,7 +11701,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/public/companies/{id}/legal-terms/{term_id}/
          * @secure
          */
-        publicCompaniesLegalTermsRetrieve: (id: string, termId: string, params?: RequestParams$b) => Promise<HttpResponse$b<PublicCompanyLegalTermResponse, any>>;
+        publicCompaniesLegalTermsRetrieve: (id: string, termId: string, params?: RequestParams) => Promise<PublicCompanyLegalTermResponse>;
         /**
          * No description
          *
@@ -11715,7 +11711,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/public/companies/{id}/legal-terms/{term_id}/versions/
          * @secure
          */
-        publicCompaniesLegalTermsVersionsList: ({ id, termId, ...query }: PublicCompaniesLegalTermsVersionsListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedPublicCompanyLegalTermVersionListResponse, any>>;
+        publicCompaniesLegalTermsVersionsList: ({ id, termId, ...query }: PublicCompaniesLegalTermsVersionsListParams, params?: RequestParams) => Promise<PaginatedPublicCompanyLegalTermVersionListResponse>;
         /**
          * No description
          *
@@ -11725,7 +11721,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/public/companies/{id}/legal-terms/{term_id}/versions/{version_id}/
          * @secure
          */
-        publicCompaniesLegalTermsVersionsRetrieve: (id: string, termId: string, versionId: string, params?: RequestParams$b) => Promise<HttpResponse$b<PublicCompanyLegalTermVersionResponse, any>>;
+        publicCompaniesLegalTermsVersionsRetrieve: (id: string, termId: string, versionId: string, params?: RequestParams) => Promise<PublicCompanyLegalTermVersionResponse>;
         /**
          * No description
          *
@@ -11734,7 +11730,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/public/companies/{id}/oauth-clients/
          * @secure
          */
-        publicCompaniesOauthClientsList: ({ id, ...query }: PublicCompaniesOauthClientsListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedOauthClientListResponse, any>>;
+        publicCompaniesOauthClientsList: ({ id, ...query }: PublicCompaniesOauthClientsListParams, params?: RequestParams) => Promise<PaginatedOauthClientListResponse>;
         /**
          * No description
          *
@@ -11743,7 +11739,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/public/companies/{id}/oauth-clients/{identifier}/
          * @secure
          */
-        publicCompaniesOauthClientsRetrieve: (id: string, identifier: string, params?: RequestParams$b) => Promise<HttpResponse$b<OauthClientResponse, any>>;
+        publicCompaniesOauthClientsRetrieve: (id: string, identifier: string, params?: RequestParams) => Promise<OauthClientResponse>;
         /**
          * No description
          *
@@ -11753,7 +11749,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/public/legal-terms/
          * @secure
          */
-        publicLegalTermsList: (query: PublicLegalTermsListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedPublicLegalTermListResponse, any>>;
+        publicLegalTermsList: (query: PublicLegalTermsListParams, params?: RequestParams) => Promise<PaginatedPublicLegalTermListResponse>;
         /**
          * No description
          *
@@ -11763,7 +11759,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/public/legal-terms/{term_id}/
          * @secure
          */
-        publicLegalTermsRetrieve: (termId: string, params?: RequestParams$b) => Promise<HttpResponse$b<PublicLegalTermResponse, any>>;
+        publicLegalTermsRetrieve: (termId: string, params?: RequestParams) => Promise<PublicLegalTermResponse>;
         /**
          * No description
          *
@@ -11773,7 +11769,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/public/legal-terms/{term_id}/versions/
          * @secure
          */
-        publicLegalTermsVersionsList: ({ termId, ...query }: PublicLegalTermsVersionsListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedPublicLegalTermVersionListResponse, any>>;
+        publicLegalTermsVersionsList: ({ termId, ...query }: PublicLegalTermsVersionsListParams, params?: RequestParams) => Promise<PaginatedPublicLegalTermVersionListResponse>;
         /**
          * No description
          *
@@ -11783,7 +11779,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/public/legal-terms/{term_id}/versions/{version_id}/
          * @secure
          */
-        publicLegalTermsVersionsRetrieve: (termId: string, versionId: string, params?: RequestParams$b) => Promise<HttpResponse$b<PublicLegalTermVersionResponse, any>>;
+        publicLegalTermsVersionsRetrieve: (termId: string, versionId: string, params?: RequestParams) => Promise<PublicLegalTermVersionResponse>;
         /**
          * No description
          *
@@ -11792,7 +11788,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/statements/
          * @secure
          */
-        statementsList: (query: StatementsListParams$1, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedStatementListResponse, any>>;
+        statementsList: (query: StatementsListParams$1, params?: RequestParams) => Promise<PaginatedStatementListResponse>;
         /**
          * No description
          *
@@ -11801,7 +11797,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/statements/
          * @secure
          */
-        statementsCreate: (data: CreateStatement, params?: RequestParams$b) => Promise<HttpResponse$b<StatementResponse, any>>;
+        statementsCreate: (data: CreateStatement, params?: RequestParams) => Promise<StatementResponse>;
         /**
          * No description
          *
@@ -11810,7 +11806,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/statements/{identifier}/
          * @secure
          */
-        statementsRetrieve: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$b<StatementResponse, any>>;
+        statementsRetrieve: (identifier: string, params?: RequestParams) => Promise<StatementResponse>;
         /**
          * No description
          *
@@ -11819,7 +11815,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/statements/{identifier}/
          * @secure
          */
-        statementsDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        statementsDestroy: (identifier: string, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -11829,7 +11825,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/subtypes/
          * @secure
          */
-        subtypesList: (query: SubtypesListParams$1, params?: RequestParams$b) => Promise<HttpResponse$b<TransactionSubtypeListResponse, any>>;
+        subtypesList: (query: SubtypesListParams$1, params?: RequestParams) => Promise<TransactionSubtypeListResponse>;
         /**
          * No description
          *
@@ -11839,7 +11835,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/subtypes/{id}/
          * @secure
          */
-        subtypesRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<TransactionSubtypeResponse, any>>;
+        subtypesRetrieve: (id: string, params?: RequestParams) => Promise<TransactionSubtypeResponse>;
         /**
          * No description
          *
@@ -11849,7 +11845,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/transaction-collections/
          * @secure
          */
-        transactionCollectionsList: (query: TransactionCollectionsListParams$1, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedTransactionCollectionListResponse, any>>;
+        transactionCollectionsList: (query: TransactionCollectionsListParams$1, params?: RequestParams) => Promise<PaginatedTransactionCollectionListResponse>;
         /**
          * No description
          *
@@ -11859,7 +11855,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/transaction-collections/
          * @secure
          */
-        transactionCollectionsCreate: (data: CreateTransactionCollection, params?: RequestParams$b) => Promise<HttpResponse$b<TransactionCollectionResponse, any>>;
+        transactionCollectionsCreate: (data: CreateTransactionCollection, params?: RequestParams) => Promise<TransactionCollectionResponse>;
         /**
          * No description
          *
@@ -11869,7 +11865,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/transaction-collections/{identifier}/
          * @secure
          */
-        transactionCollectionsRetrieve: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$b<TransactionCollectionResponse, any>>;
+        transactionCollectionsRetrieve: (identifier: string, params?: RequestParams) => Promise<TransactionCollectionResponse>;
         /**
          * No description
          *
@@ -11879,7 +11875,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/transactions/
          * @secure
          */
-        transactionsList: (query: TransactionsListParams$3, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedTransactionListResponse, any>>;
+        transactionsList: (query: TransactionsListParams$3, params?: RequestParams) => Promise<PaginatedTransactionListResponse>;
         /**
          * No description
          *
@@ -11889,7 +11885,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/transactions/
          * @secure
          */
-        transactionsCreate: (data: CreateMultiTransaction, params?: RequestParams$b) => Promise<HttpResponse$b<MultiTransactionResponse, any>>;
+        transactionsCreate: (data: CreateMultiTransaction, params?: RequestParams) => Promise<MultiTransactionResponse>;
         /**
          * No description
          *
@@ -11899,7 +11895,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/transactions/{tx_code}/
          * @secure
          */
-        transactionsRetrieve: (txCode: string, params?: RequestParams$b) => Promise<HttpResponse$b<ExtendedTransactionResponse, any>>;
+        transactionsRetrieve: (txCode: string, params?: RequestParams) => Promise<ExtendedTransactionResponse>;
         /**
          * No description
          *
@@ -11909,7 +11905,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PUT:/3/transactions/{tx_code}/
          * @secure
          */
-        transactionsUpdate: (txCode: string, data: UpdateExtendedTransaction, params?: RequestParams$b) => Promise<HttpResponse$b<ExtendedTransactionResponse, any>>;
+        transactionsUpdate: (txCode: string, data: UpdateExtendedTransaction, params?: RequestParams) => Promise<ExtendedTransactionResponse>;
         /**
          * No description
          *
@@ -11919,7 +11915,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PATCH:/3/transactions/{tx_code}/
          * @secure
          */
-        transactionsPartialUpdate: (txCode: string, data: PatchedUpdateExtendedTransaction, params?: RequestParams$b) => Promise<HttpResponse$b<ExtendedTransactionResponse, any>>;
+        transactionsPartialUpdate: (txCode: string, data: PatchedUpdateExtendedTransaction, params?: RequestParams) => Promise<ExtendedTransactionResponse>;
         /**
          * No description
          *
@@ -11929,7 +11925,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/transactions/{tx_code}/messages/
          * @secure
          */
-        transactionsMessagesList: ({ txCode, ...query }: TransactionsMessagesListParams$1, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedTransactionMessageListResponse, any>>;
+        transactionsMessagesList: ({ txCode, ...query }: TransactionsMessagesListParams$1, params?: RequestParams) => Promise<PaginatedTransactionMessageListResponse>;
         /**
          * No description
          *
@@ -11939,7 +11935,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/transactions/{tx_code}/messages/{id}/
          * @secure
          */
-        transactionsMessagesRetrieve: (id: string, txCode: string, params?: RequestParams$b) => Promise<HttpResponse$b<TransactionMessageResponse, any>>;
+        transactionsMessagesRetrieve: (id: string, txCode: string, params?: RequestParams) => Promise<TransactionMessageResponse>;
         /**
          * No description
          *
@@ -11949,7 +11945,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/transactions/credit/
          * @secure
          */
-        transactionsCreditCreate: (data: CreateCreditTransaction, params?: RequestParams$b) => Promise<HttpResponse$b<ExtendedTransactionResponse, any>>;
+        transactionsCreditCreate: (data: CreateCreditTransaction, params?: RequestParams) => Promise<ExtendedTransactionResponse>;
         /**
          * No description
          *
@@ -11959,7 +11955,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/transactions/debit/
          * @secure
          */
-        transactionsDebitCreate: (data: CreateDebitTransaction, params?: RequestParams$b) => Promise<HttpResponse$b<ExtendedTransactionResponse, any>>;
+        transactionsDebitCreate: (data: CreateDebitTransaction, params?: RequestParams) => Promise<ExtendedTransactionResponse>;
         /**
          * No description
          *
@@ -11969,7 +11965,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/transactions/totals/
          * @secure
          */
-        transactionTotalsRetrieve: (params?: RequestParams$b) => Promise<HttpResponse$b<TotalTransactionResponse$1, any>>;
+        transactionTotalsRetrieve: (params?: RequestParams) => Promise<TotalTransactionResponse$1>;
         /**
          * No description
          *
@@ -11979,7 +11975,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/transactions/transfer/
          * @secure
          */
-        transactionsTransferCreate: (data: CreateTransferTransaction, params?: RequestParams$b) => Promise<HttpResponse$b<ExtendedTransactionResponse, any>>;
+        transactionsTransferCreate: (data: CreateTransferTransaction, params?: RequestParams) => Promise<ExtendedTransactionResponse>;
         /**
          * No description
          *
@@ -11989,7 +11985,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/
          * @secure
          */
-        userRetrieve: (params?: RequestParams$b) => Promise<HttpResponse$b<ExtendedUserInfoResponse, any>>;
+        userRetrieve: (params?: RequestParams) => Promise<ExtendedUserInfoResponse>;
         /**
          * No description
          *
@@ -11999,7 +11995,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PUT:/3/user/
          * @secure
          */
-        userUpdate: (data: ExtendedUserInfo$1, params?: RequestParams$b) => Promise<HttpResponse$b<ExtendedUserInfoResponse, any>>;
+        userUpdate: (data: ExtendedUserInfo$1, params?: RequestParams) => Promise<ExtendedUserInfoResponse>;
         /**
          * No description
          *
@@ -12009,7 +12005,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PATCH:/3/user/
          * @secure
          */
-        userPartialUpdate: (data: PatchedExtendedUserInfo, params?: RequestParams$b) => Promise<HttpResponse$b<ExtendedUserInfoResponse, any>>;
+        userPartialUpdate: (data: PatchedExtendedUserInfo, params?: RequestParams) => Promise<ExtendedUserInfoResponse>;
         /**
          * No description
          *
@@ -12019,7 +12015,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/addresses/
          * @secure
          */
-        userAddressesList: (params?: RequestParams$b) => Promise<HttpResponse$b<UserAddressListResponse, any>>;
+        userAddressesList: (params?: RequestParams) => Promise<UserAddressListResponse>;
         /**
          * No description
          *
@@ -12029,7 +12025,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/user/addresses/
          * @secure
          */
-        userAddressesCreate: (data: UserAddress, params?: RequestParams$b) => Promise<HttpResponse$b<UserAddressResponse, any>>;
+        userAddressesCreate: (data: UserAddress, params?: RequestParams) => Promise<UserAddressResponse>;
         /**
          * No description
          *
@@ -12039,7 +12035,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/addresses/{id}/
          * @secure
          */
-        userAddressesRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<UserAddressResponse, any>>;
+        userAddressesRetrieve: (id: string, params?: RequestParams) => Promise<UserAddressResponse>;
         /**
          * No description
          *
@@ -12049,7 +12045,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PUT:/3/user/addresses/{id}/
          * @secure
          */
-        userAddressesUpdate: (id: string, data: UserAddress, params?: RequestParams$b) => Promise<HttpResponse$b<UserAddressResponse, any>>;
+        userAddressesUpdate: (id: string, data: UserAddress, params?: RequestParams) => Promise<UserAddressResponse>;
         /**
          * No description
          *
@@ -12059,7 +12055,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PATCH:/3/user/addresses/{id}/
          * @secure
          */
-        userAddressesPartialUpdate: (id: string, data: PatchedUserAddress, params?: RequestParams$b) => Promise<HttpResponse$b<UserAddressResponse, any>>;
+        userAddressesPartialUpdate: (id: string, data: PatchedUserAddress, params?: RequestParams) => Promise<UserAddressResponse>;
         /**
          * No description
          *
@@ -12069,7 +12065,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/addresses/{id}/
          * @secure
          */
-        userAddressesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        userAddressesDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -12079,7 +12075,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/bank-accounts/
          * @secure
          */
-        userBankAccountsList: (query: UserBankAccountsListParams, params?: RequestParams$b) => Promise<HttpResponse$b<UserBankAccountListResponse, any>>;
+        userBankAccountsList: (query: UserBankAccountsListParams, params?: RequestParams) => Promise<UserBankAccountListResponse>;
         /**
          * No description
          *
@@ -12089,7 +12085,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/user/bank-accounts/
          * @secure
          */
-        userBankAccountsCreate: (data: UserCreateBankAccount, params?: RequestParams$b) => Promise<HttpResponse$b<UserBankAccountResponse, any>>;
+        userBankAccountsCreate: (data: UserCreateBankAccount, params?: RequestParams) => Promise<UserBankAccountResponse>;
         /**
          * No description
          *
@@ -12099,7 +12095,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/bank-accounts/{id}/
          * @secure
          */
-        userBankAccountsRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<UserBankAccountResponse, any>>;
+        userBankAccountsRetrieve: (id: string, params?: RequestParams) => Promise<UserBankAccountResponse>;
         /**
          * No description
          *
@@ -12109,7 +12105,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PUT:/3/user/bank-accounts/{id}/
          * @secure
          */
-        userBankAccountsUpdate: (id: string, data: UserBankAccount, params?: RequestParams$b) => Promise<HttpResponse$b<UserBankAccountResponse, any>>;
+        userBankAccountsUpdate: (id: string, data: UserBankAccount, params?: RequestParams) => Promise<UserBankAccountResponse>;
         /**
          * No description
          *
@@ -12119,7 +12115,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PATCH:/3/user/bank-accounts/{id}/
          * @secure
          */
-        userBankAccountsPartialUpdate: (id: string, data: PatchedUserBankAccount, params?: RequestParams$b) => Promise<HttpResponse$b<UserBankAccountResponse, any>>;
+        userBankAccountsPartialUpdate: (id: string, data: PatchedUserBankAccount, params?: RequestParams) => Promise<UserBankAccountResponse>;
         /**
          * No description
          *
@@ -12129,7 +12125,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/bank-accounts/{id}/
          * @secure
          */
-        userBankAccountsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        userBankAccountsDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -12139,7 +12135,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/bank-accounts/{id}/account-currencies/
          * @secure
          */
-        userBankAccountsAccountCurrenciesList: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<ReducedAccountAssetListResponse, any>>;
+        userBankAccountsAccountCurrenciesList: (id: string, params?: RequestParams) => Promise<ReducedAccountAssetListResponse>;
         /**
          * No description
          *
@@ -12149,7 +12145,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/user/bank-accounts/{id}/account-currencies/
          * @secure
          */
-        userBankAccountsAccountCurrenciesCreate: (id: string, data: CreateUserBankAccountAccountAsset, params?: RequestParams$b) => Promise<HttpResponse$b<ReducedAccountAssetResponse, any>>;
+        userBankAccountsAccountCurrenciesCreate: (id: string, data: CreateUserBankAccountAccountAsset, params?: RequestParams) => Promise<ReducedAccountAssetResponse>;
         /**
          * No description
          *
@@ -12159,7 +12155,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/bank-accounts/{id}/account-currencies/{account_currency_id}/
          * @secure
          */
-        userBankAccountsAccountCurrenciesRetrieve: (accountCurrencyId: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$b<AccountAssetResponse$1, any>>;
+        userBankAccountsAccountCurrenciesRetrieve: (accountCurrencyId: string, id: string, params?: RequestParams) => Promise<AccountAssetResponse$1>;
         /**
          * No description
          *
@@ -12169,7 +12165,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/bank-accounts/{id}/account-currencies/{account_currency_id}/
          * @secure
          */
-        userBankAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        userBankAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -12180,7 +12176,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @deprecated
          * @secure
          */
-        userBankAccountsCurrenciesList: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<UserBankAccountAssetListResponse, any>>;
+        userBankAccountsCurrenciesList: (id: string, params?: RequestParams) => Promise<UserBankAccountAssetListResponse>;
         /**
          * No description
          *
@@ -12191,7 +12187,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @deprecated
          * @secure
          */
-        userBankAccountsCurrenciesCreate: (id: string, data: CreateUserBankAccountAsset, params?: RequestParams$b) => Promise<HttpResponse$b<UserBankAccountAssetResponse, any>>;
+        userBankAccountsCurrenciesCreate: (id: string, data: CreateUserBankAccountAsset, params?: RequestParams) => Promise<UserBankAccountAssetResponse>;
         /**
          * No description
          *
@@ -12202,7 +12198,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @deprecated
          * @secure
          */
-        userBankAccountsCurrenciesRetrieve: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$b<UserBankAccountAssetResponse, any>>;
+        userBankAccountsCurrenciesRetrieve: (code: string, id: string, params?: RequestParams) => Promise<UserBankAccountAssetResponse>;
         /**
          * No description
          *
@@ -12213,7 +12209,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @deprecated
          * @secure
          */
-        userBankAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        userBankAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -12223,7 +12219,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/crypto-accounts/
          * @secure
          */
-        userCryptoAccountsList: (query: UserCryptoAccountsListParams, params?: RequestParams$b) => Promise<HttpResponse$b<CryptoAccountListResponse, any>>;
+        userCryptoAccountsList: (query: UserCryptoAccountsListParams, params?: RequestParams) => Promise<CryptoAccountListResponse>;
         /**
          * No description
          *
@@ -12233,7 +12229,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/user/crypto-accounts/
          * @secure
          */
-        userCryptoAccountsCreate: (data: CreateCryptoAccount, params?: RequestParams$b) => Promise<HttpResponse$b<CryptoAccountResponse, any>>;
+        userCryptoAccountsCreate: (data: CreateCryptoAccount, params?: RequestParams) => Promise<CryptoAccountResponse>;
         /**
          * No description
          *
@@ -12243,7 +12239,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/crypto-accounts/{id}/
          * @secure
          */
-        userCryptoAccountsRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<CryptoAccountResponse, any>>;
+        userCryptoAccountsRetrieve: (id: string, params?: RequestParams) => Promise<CryptoAccountResponse>;
         /**
          * No description
          *
@@ -12253,7 +12249,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PUT:/3/user/crypto-accounts/{id}/
          * @secure
          */
-        userCryptoAccountsUpdate: (id: string, data: CryptoAccount, params?: RequestParams$b) => Promise<HttpResponse$b<CryptoAccountResponse, any>>;
+        userCryptoAccountsUpdate: (id: string, data: CryptoAccount, params?: RequestParams) => Promise<CryptoAccountResponse>;
         /**
          * No description
          *
@@ -12263,7 +12259,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PATCH:/3/user/crypto-accounts/{id}/
          * @secure
          */
-        userCryptoAccountsPartialUpdate: (id: string, data: PatchedCryptoAccount, params?: RequestParams$b) => Promise<HttpResponse$b<CryptoAccountResponse, any>>;
+        userCryptoAccountsPartialUpdate: (id: string, data: PatchedCryptoAccount, params?: RequestParams) => Promise<CryptoAccountResponse>;
         /**
          * No description
          *
@@ -12273,7 +12269,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/crypto-accounts/{id}/
          * @secure
          */
-        userCryptoAccountsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        userCryptoAccountsDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -12283,7 +12279,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/crypto-accounts/{id}/account-currencies/
          * @secure
          */
-        userCryptoAccountsAccountCurrenciesList: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<ReducedAccountAssetListResponse, any>>;
+        userCryptoAccountsAccountCurrenciesList: (id: string, params?: RequestParams) => Promise<ReducedAccountAssetListResponse>;
         /**
          * No description
          *
@@ -12293,7 +12289,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/user/crypto-accounts/{id}/account-currencies/
          * @secure
          */
-        userCryptoAccountsAccountCurrenciesCreate: (id: string, data: CreateCryptoAccountAccountAsset, params?: RequestParams$b) => Promise<HttpResponse$b<ReducedAccountAssetResponse, any>>;
+        userCryptoAccountsAccountCurrenciesCreate: (id: string, data: CreateCryptoAccountAccountAsset, params?: RequestParams) => Promise<ReducedAccountAssetResponse>;
         /**
          * No description
          *
@@ -12303,7 +12299,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/crypto-accounts/{id}/account-currencies/{account_currency_id}/
          * @secure
          */
-        userCryptoAccountsAccountCurrenciesRetrieve: (accountCurrencyId: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$b<AccountAssetResponse$1, any>>;
+        userCryptoAccountsAccountCurrenciesRetrieve: (accountCurrencyId: string, id: string, params?: RequestParams) => Promise<AccountAssetResponse$1>;
         /**
          * No description
          *
@@ -12313,7 +12309,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/crypto-accounts/{id}/account-currencies/{account_currency_id}/
          * @secure
          */
-        userCryptoAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        userCryptoAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -12324,7 +12320,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @deprecated
          * @secure
          */
-        userCryptoAccountsCurrenciesList: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<CryptoAccountAssetListResponse, any>>;
+        userCryptoAccountsCurrenciesList: (id: string, params?: RequestParams) => Promise<CryptoAccountAssetListResponse>;
         /**
          * No description
          *
@@ -12335,7 +12331,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @deprecated
          * @secure
          */
-        userCryptoAccountsCurrenciesCreate: (id: string, data: CreateCryptoAccountAsset, params?: RequestParams$b) => Promise<HttpResponse$b<CryptoAccountAssetResponse, any>>;
+        userCryptoAccountsCurrenciesCreate: (id: string, data: CreateCryptoAccountAsset, params?: RequestParams) => Promise<CryptoAccountAssetResponse>;
         /**
          * No description
          *
@@ -12346,7 +12342,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @deprecated
          * @secure
          */
-        userCryptoAccountsCurrenciesRetrieve: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$b<CryptoAccountAssetResponse, any>>;
+        userCryptoAccountsCurrenciesRetrieve: (code: string, id: string, params?: RequestParams) => Promise<CryptoAccountAssetResponse>;
         /**
          * No description
          *
@@ -12357,7 +12353,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @deprecated
          * @secure
          */
-        userCryptoAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        userCryptoAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -12367,7 +12363,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/devices/
          * @secure
          */
-        userDevicesList: (query: UserDevicesListParams, params?: RequestParams$b) => Promise<HttpResponse$b<DeviceListResponse, any>>;
+        userDevicesList: (query: UserDevicesListParams, params?: RequestParams) => Promise<DeviceListResponse>;
         /**
          * No description
          *
@@ -12377,7 +12373,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/user/devices/
          * @secure
          */
-        userDevicesCreate: (data: CreateDevice, params?: RequestParams$b) => Promise<HttpResponse$b<DeviceResponse, any>>;
+        userDevicesCreate: (data: CreateDevice, params?: RequestParams) => Promise<DeviceResponse>;
         /**
          * No description
          *
@@ -12387,7 +12383,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/devices/{device_id}/apps/{app_id}/
          * @secure
          */
-        userDevicesAppsRetrieve: (appId: string, deviceId: string, params?: RequestParams$b) => Promise<HttpResponse$b<DeviceAppResponse, any>>;
+        userDevicesAppsRetrieve: (appId: string, deviceId: string, params?: RequestParams) => Promise<DeviceAppResponse>;
         /**
          * No description
          *
@@ -12397,7 +12393,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PUT:/3/user/devices/{device_id}/apps/{app_id}/
          * @secure
          */
-        userDevicesAppsUpdate: (appId: string, deviceId: string, data: DeviceApp$1, params?: RequestParams$b) => Promise<HttpResponse$b<DeviceAppResponse, any>>;
+        userDevicesAppsUpdate: (appId: string, deviceId: string, data: DeviceApp$1, params?: RequestParams) => Promise<DeviceAppResponse>;
         /**
          * No description
          *
@@ -12407,7 +12403,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PATCH:/3/user/devices/{device_id}/apps/{app_id}/
          * @secure
          */
-        userDevicesAppsPartialUpdate: (appId: string, deviceId: string, data: PatchedDeviceApp, params?: RequestParams$b) => Promise<HttpResponse$b<DeviceAppResponse, any>>;
+        userDevicesAppsPartialUpdate: (appId: string, deviceId: string, data: PatchedDeviceApp, params?: RequestParams) => Promise<DeviceAppResponse>;
         /**
          * No description
          *
@@ -12417,7 +12413,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/devices/{device_id}/apps/{app_id}/
          * @secure
          */
-        userDevicesAppsDestroy: (appId: string, deviceId: string, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        userDevicesAppsDestroy: (appId: string, deviceId: string, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -12427,7 +12423,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/devices/{id}/
          * @secure
          */
-        userDevicesRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<DeviceResponse, any>>;
+        userDevicesRetrieve: (id: string, params?: RequestParams) => Promise<DeviceResponse>;
         /**
          * No description
          *
@@ -12437,7 +12433,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PUT:/3/user/devices/{id}/
          * @secure
          */
-        userDevicesUpdate: (id: string, data: Device, params?: RequestParams$b) => Promise<HttpResponse$b<DeviceResponse, any>>;
+        userDevicesUpdate: (id: string, data: Device, params?: RequestParams) => Promise<DeviceResponse>;
         /**
          * No description
          *
@@ -12447,7 +12443,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PATCH:/3/user/devices/{id}/
          * @secure
          */
-        userDevicesPartialUpdate: (id: string, data: PatchedDevice, params?: RequestParams$b) => Promise<HttpResponse$b<DeviceResponse, any>>;
+        userDevicesPartialUpdate: (id: string, data: PatchedDevice, params?: RequestParams) => Promise<DeviceResponse>;
         /**
          * No description
          *
@@ -12457,7 +12453,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/devices/{id}/
          * @secure
          */
-        userDevicesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        userDevicesDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -12467,7 +12463,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/devices/{id}/apps/
          * @secure
          */
-        userDevicesAppsList: ({ id, ...query }: UserDevicesAppsListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedDeviceAppListResponse, any>>;
+        userDevicesAppsList: ({ id, ...query }: UserDevicesAppsListParams, params?: RequestParams) => Promise<PaginatedDeviceAppListResponse>;
         /**
          * No description
          *
@@ -12477,7 +12473,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/user/devices/{id}/apps/
          * @secure
          */
-        userDevicesAppsCreate: (id: string, data: CreateDeviceApp, params?: RequestParams$b) => Promise<HttpResponse$b<DeviceAppResponse, any>>;
+        userDevicesAppsCreate: (id: string, data: CreateDeviceApp, params?: RequestParams) => Promise<DeviceAppResponse>;
         /**
          * No description
          *
@@ -12487,7 +12483,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/documents/
          * @secure
          */
-        userDocumentsList: (query: UserDocumentsListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedUserDocumentListResponse, any>>;
+        userDocumentsList: (query: UserDocumentsListParams, params?: RequestParams) => Promise<PaginatedUserDocumentListResponse>;
         /**
          * No description
          *
@@ -12497,7 +12493,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/user/documents/
          * @secure
          */
-        userDocumentsCreate: (data: UserCreateDocument, params?: RequestParams$b) => Promise<HttpResponse$b<UserDocumentResponse, any>>;
+        userDocumentsCreate: (data: UserCreateDocument, params?: RequestParams) => Promise<UserDocumentResponse>;
         /**
          * No description
          *
@@ -12507,7 +12503,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/documents/{id}/
          * @secure
          */
-        userDocumentsRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<UserDocumentResponse, any>>;
+        userDocumentsRetrieve: (id: string, params?: RequestParams) => Promise<UserDocumentResponse>;
         /**
          * No description
          *
@@ -12516,7 +12512,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/documents/{id}/
          * @secure
          */
-        userDocumentsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        userDocumentsDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -12526,7 +12522,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/emails/
          * @secure
          */
-        userEmailsList: (params?: RequestParams$b) => Promise<HttpResponse$b<EmailListResponse, any>>;
+        userEmailsList: (params?: RequestParams) => Promise<EmailListResponse>;
         /**
          * No description
          *
@@ -12536,7 +12532,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/user/emails/
          * @secure
          */
-        userEmailsCreate: (data: CreateEmail, params?: RequestParams$b) => Promise<HttpResponse$b<EmailResponse, any>>;
+        userEmailsCreate: (data: CreateEmail, params?: RequestParams) => Promise<EmailResponse>;
         /**
          * No description
          *
@@ -12546,7 +12542,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/emails/{id}/
          * @secure
          */
-        userEmailsRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<EmailResponse, any>>;
+        userEmailsRetrieve: (id: string, params?: RequestParams) => Promise<EmailResponse>;
         /**
          * No description
          *
@@ -12556,7 +12552,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PUT:/3/user/emails/{id}/
          * @secure
          */
-        userEmailsUpdate: (id: string, data: Email, params?: RequestParams$b) => Promise<HttpResponse$b<EmailResponse, any>>;
+        userEmailsUpdate: (id: string, data: Email, params?: RequestParams) => Promise<EmailResponse>;
         /**
          * No description
          *
@@ -12566,7 +12562,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PATCH:/3/user/emails/{id}/
          * @secure
          */
-        userEmailsPartialUpdate: (id: string, data: PatchedEmail, params?: RequestParams$b) => Promise<HttpResponse$b<EmailResponse, any>>;
+        userEmailsPartialUpdate: (id: string, data: PatchedEmail, params?: RequestParams) => Promise<EmailResponse>;
         /**
          * No description
          *
@@ -12576,7 +12572,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/emails/{id}/
          * @secure
          */
-        userEmailsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        userEmailsDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -12586,7 +12582,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/legal-terms/
          * @secure
          */
-        userLegalTermsList: (query: UserLegalTermsListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedLegalTermListResponse, any>>;
+        userLegalTermsList: (query: UserLegalTermsListParams, params?: RequestParams) => Promise<PaginatedLegalTermListResponse>;
         /**
          * No description
          *
@@ -12596,7 +12592,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/legal-terms/{id}/
          * @secure
          */
-        userLegalTermsRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<LegalTermResponse, any>>;
+        userLegalTermsRetrieve: (id: string, params?: RequestParams) => Promise<LegalTermResponse>;
         /**
          * No description
          *
@@ -12606,7 +12602,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/legal-terms/{id}/versions/
          * @secure
          */
-        userLegalTermsVersionsList: ({ id, ...query }: UserLegalTermsVersionsListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedLegalTermVersionListResponse, any>>;
+        userLegalTermsVersionsList: ({ id, ...query }: UserLegalTermsVersionsListParams, params?: RequestParams) => Promise<PaginatedLegalTermVersionListResponse>;
         /**
          * No description
          *
@@ -12616,7 +12612,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/legal-terms/{term_id}/versions/{version_id}/
          * @secure
          */
-        userLegalTermsVersionsRetrieve: (termId: string, versionId: string, params?: RequestParams$b) => Promise<HttpResponse$b<LegalTermVersionResponse, any>>;
+        userLegalTermsVersionsRetrieve: (termId: string, versionId: string, params?: RequestParams) => Promise<LegalTermVersionResponse>;
         /**
          * No description
          *
@@ -12626,7 +12622,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PUT:/3/user/legal-terms/{term_id}/versions/{version_id}/
          * @secure
          */
-        userLegalTermsVersionsUpdate: (termId: string, versionId: string, data: UpdateLegalTermVersion, params?: RequestParams$b) => Promise<HttpResponse$b<LegalTermVersionResponse, any>>;
+        userLegalTermsVersionsUpdate: (termId: string, versionId: string, data: UpdateLegalTermVersion, params?: RequestParams) => Promise<LegalTermVersionResponse>;
         /**
          * No description
          *
@@ -12636,7 +12632,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PATCH:/3/user/legal-terms/{term_id}/versions/{version_id}/
          * @secure
          */
-        userLegalTermsVersionsPartialUpdate: (termId: string, versionId: string, data: PatchedUpdateLegalTermVersion, params?: RequestParams$b) => Promise<HttpResponse$b<LegalTermVersionResponse, any>>;
+        userLegalTermsVersionsPartialUpdate: (termId: string, versionId: string, data: PatchedUpdateLegalTermVersion, params?: RequestParams) => Promise<LegalTermVersionResponse>;
         /**
          * No description
          *
@@ -12646,7 +12642,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/messages/
          * @secure
          */
-        userMessagesList: (query: UserMessagesListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedUserMessageListResponse, any>>;
+        userMessagesList: (query: UserMessagesListParams, params?: RequestParams) => Promise<PaginatedUserMessageListResponse>;
         /**
          * No description
          *
@@ -12656,7 +12652,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/messages/{id}/
          * @secure
          */
-        userMessagesRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<UserMessageResponse, any>>;
+        userMessagesRetrieve: (id: string, params?: RequestParams) => Promise<UserMessageResponse>;
         /**
          * No description
          *
@@ -12666,7 +12662,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/mobiles/
          * @secure
          */
-        userMobilesList: (params?: RequestParams$b) => Promise<HttpResponse$b<MobileListResponse, any>>;
+        userMobilesList: (params?: RequestParams) => Promise<MobileListResponse>;
         /**
          * No description
          *
@@ -12676,7 +12672,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/user/mobiles/
          * @secure
          */
-        userMobilesCreate: (data: CreateMobile, params?: RequestParams$b) => Promise<HttpResponse$b<MobileResponse, any>>;
+        userMobilesCreate: (data: CreateMobile, params?: RequestParams) => Promise<MobileResponse>;
         /**
          * No description
          *
@@ -12686,7 +12682,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/mobiles/{id}/
          * @secure
          */
-        userMobilesRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<MobileResponse, any>>;
+        userMobilesRetrieve: (id: string, params?: RequestParams) => Promise<MobileResponse>;
         /**
          * No description
          *
@@ -12696,7 +12692,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PUT:/3/user/mobiles/{id}/
          * @secure
          */
-        userMobilesUpdate: (id: string, data: Mobile, params?: RequestParams$b) => Promise<HttpResponse$b<MobileResponse, any>>;
+        userMobilesUpdate: (id: string, data: Mobile, params?: RequestParams) => Promise<MobileResponse>;
         /**
          * No description
          *
@@ -12706,7 +12702,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PATCH:/3/user/mobiles/{id}/
          * @secure
          */
-        userMobilesPartialUpdate: (id: string, data: PatchedMobile, params?: RequestParams$b) => Promise<HttpResponse$b<MobileResponse, any>>;
+        userMobilesPartialUpdate: (id: string, data: PatchedMobile, params?: RequestParams) => Promise<MobileResponse>;
         /**
          * No description
          *
@@ -12716,7 +12712,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/mobiles/{id}/
          * @secure
          */
-        userMobilesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        userMobilesDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -12726,7 +12722,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/wallet-accounts/
          * @secure
          */
-        userWalletAccountsList: (query: UserWalletAccountsListParams, params?: RequestParams$b) => Promise<HttpResponse$b<UserWalletAccountListResponse, any>>;
+        userWalletAccountsList: (query: UserWalletAccountsListParams, params?: RequestParams) => Promise<UserWalletAccountListResponse>;
         /**
          * No description
          *
@@ -12736,7 +12732,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/user/wallet-accounts/
          * @secure
          */
-        userWalletAccountsCreate: (data: UserCreateWalletAccount, params?: RequestParams$b) => Promise<HttpResponse$b<UserWalletAccountResponse, any>>;
+        userWalletAccountsCreate: (data: UserCreateWalletAccount, params?: RequestParams) => Promise<UserWalletAccountResponse>;
         /**
          * No description
          *
@@ -12746,7 +12742,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/wallet-accounts/{id}/
          * @secure
          */
-        userWalletAccountsRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<UserWalletAccountResponse, any>>;
+        userWalletAccountsRetrieve: (id: string, params?: RequestParams) => Promise<UserWalletAccountResponse>;
         /**
          * No description
          *
@@ -12756,7 +12752,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PUT:/3/user/wallet-accounts/{id}/
          * @secure
          */
-        userWalletAccountsUpdate: (id: string, data: UserWalletAccount, params?: RequestParams$b) => Promise<HttpResponse$b<UserWalletAccountResponse, any>>;
+        userWalletAccountsUpdate: (id: string, data: UserWalletAccount, params?: RequestParams) => Promise<UserWalletAccountResponse>;
         /**
          * No description
          *
@@ -12766,7 +12762,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request PATCH:/3/user/wallet-accounts/{id}/
          * @secure
          */
-        userWalletAccountsPartialUpdate: (id: string, data: PatchedUserWalletAccount, params?: RequestParams$b) => Promise<HttpResponse$b<UserWalletAccountResponse, any>>;
+        userWalletAccountsPartialUpdate: (id: string, data: PatchedUserWalletAccount, params?: RequestParams) => Promise<UserWalletAccountResponse>;
         /**
          * No description
          *
@@ -12776,7 +12772,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/wallet-accounts/{id}/
          * @secure
          */
-        userWalletAccountsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        userWalletAccountsDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -12786,7 +12782,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/wallet-accounts/{id}/account-currencies/
          * @secure
          */
-        userWalletAccountsAccountCurrenciesList: (id: string, params?: RequestParams$b) => Promise<HttpResponse$b<ReducedAccountAssetListResponse, any>>;
+        userWalletAccountsAccountCurrenciesList: (id: string, params?: RequestParams) => Promise<ReducedAccountAssetListResponse>;
         /**
          * No description
          *
@@ -12796,7 +12792,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/user/wallet-accounts/{id}/account-currencies/
          * @secure
          */
-        userWalletAccountsAccountCurrenciesCreate: (id: string, data: CreateUserWalletAccountAccountAsset, params?: RequestParams$b) => Promise<HttpResponse$b<ReducedAccountAssetResponse, any>>;
+        userWalletAccountsAccountCurrenciesCreate: (id: string, data: CreateUserWalletAccountAccountAsset, params?: RequestParams) => Promise<ReducedAccountAssetResponse>;
         /**
          * No description
          *
@@ -12806,7 +12802,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/user/wallet-accounts/{id}/account-currencies/{account_currency_id}/
          * @secure
          */
-        userWalletAccountsAccountCurrenciesRetrieve: (accountCurrencyId: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$b<AccountAssetResponse$1, any>>;
+        userWalletAccountsAccountCurrenciesRetrieve: (accountCurrencyId: string, id: string, params?: RequestParams) => Promise<AccountAssetResponse$1>;
         /**
          * No description
          *
@@ -12816,7 +12812,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/wallet-accounts/{id}/account-currencies/{account_currency_id}/
          * @secure
          */
-        userWalletAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        userWalletAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams) => Promise<ActionResponse$9>;
         /**
          * No description
          *
@@ -12827,7 +12823,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @deprecated
          * @secure
          */
-        userWalletAccountsCurrenciesList: ({ id, ...query }: UserWalletAccountsCurrenciesListParams, params?: RequestParams$b) => Promise<HttpResponse$b<PaginatedUserWalletAccountAssetListResponse, any>>;
+        userWalletAccountsCurrenciesList: ({ id, ...query }: UserWalletAccountsCurrenciesListParams, params?: RequestParams) => Promise<PaginatedUserWalletAccountAssetListResponse>;
         /**
          * No description
          *
@@ -12838,7 +12834,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @deprecated
          * @secure
          */
-        userWalletAccountsCurrenciesCreate: (id: string, data: CreateUserWalletAccountAsset, params?: RequestParams$b) => Promise<HttpResponse$b<UserWalletAccountAssetResponse, any>>;
+        userWalletAccountsCurrenciesCreate: (id: string, data: CreateUserWalletAccountAsset, params?: RequestParams) => Promise<UserWalletAccountAssetResponse>;
         /**
          * No description
          *
@@ -12849,7 +12845,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @deprecated
          * @secure
          */
-        userWalletAccountsCurrenciesRetrieve: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$b<UserWalletAccountAssetResponse, any>>;
+        userWalletAccountsCurrenciesRetrieve: (code: string, id: string, params?: RequestParams) => Promise<UserWalletAccountAssetResponse>;
         /**
          * No description
          *
@@ -12860,7 +12856,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @deprecated
          * @secure
          */
-        userWalletAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$b<ActionResponse$9, any>>;
+        userWalletAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams) => Promise<ActionResponse$9>;
     };
 }
 
@@ -29780,11 +29776,11 @@ interface FullRequestParams$a extends Omit<RequestInit, "body"> {
     /** request cancellation token */
     cancelToken?: CancelToken$a;
 }
-type RequestParams$a = Omit<FullRequestParams$a, "body" | "method" | "query" | "path">;
+type RequestParams$b = Omit<FullRequestParams$a, "body" | "method" | "query" | "path">;
 interface ApiConfig$a<SecurityDataType = unknown> {
     baseUrl?: string;
-    baseApiParams?: Omit<RequestParams$a, "baseUrl" | "cancelToken" | "signal">;
-    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$a | void> | RequestParams$a | void;
+    baseApiParams?: Omit<RequestParams$b, "baseUrl" | "cancelToken" | "signal">;
+    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$b | void> | RequestParams$b | void;
     customFetch?: typeof fetch;
 }
 interface HttpResponse$a<D extends unknown, E extends unknown = unknown> extends Response {
@@ -29814,7 +29810,7 @@ declare class HttpClient$a<SecurityDataType = unknown> {
     protected toQueryString(rawQuery?: QueryParamsType$a): string;
     protected addQueryParams(rawQuery?: QueryParamsType$a): string;
     private contentFormatters;
-    protected mergeRequestParams(params1: RequestParams$a, params2?: RequestParams$a): RequestParams$a;
+    protected mergeRequestParams(params1: RequestParams$b, params2?: RequestParams$b): RequestParams$b;
     protected createAbortSignal: (cancelToken: CancelToken$a) => AbortSignal | undefined;
     abortRequest: (cancelToken: CancelToken$a) => void;
     request: <T = any, E = any>({ body, secure, path, type, query, format, baseUrl, cancelToken, ...params }: FullRequestParams$a) => Promise<HttpResponse$a<T, E>>;
@@ -29849,7 +29845,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/access-control-rules/
          * @secure
          */
-        accessControlRulesList: (query: AccessControlRulesListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminAccessControlRuleListResponse, any>>;
+        accessControlRulesList: (query: AccessControlRulesListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminAccessControlRuleListResponse, any>>;
         /**
          * No description
          *
@@ -29859,7 +29855,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/access-control-rules/
          * @secure
          */
-        accessControlRulesCreate: (data: AdminCreateAccessControlRule, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccessControlRuleResponse, any>>;
+        accessControlRulesCreate: (data: AdminCreateAccessControlRule, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccessControlRuleResponse, any>>;
         /**
          * No description
          *
@@ -29869,7 +29865,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/access-control-rules/{id}/
          * @secure
          */
-        accessControlRulesRetrieve: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccessControlRuleResponse, any>>;
+        accessControlRulesRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccessControlRuleResponse, any>>;
         /**
          * No description
          *
@@ -29879,7 +29875,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/access-control-rules/{id}/
          * @secure
          */
-        accessControlRulesUpdate: (id: string, data: AdminCreateAccessControlRule, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccessControlRuleResponse, any>>;
+        accessControlRulesUpdate: (id: string, data: AdminCreateAccessControlRule, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccessControlRuleResponse, any>>;
         /**
          * No description
          *
@@ -29889,7 +29885,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/access-control-rules/{id}/
          * @secure
          */
-        accessControlRulesPartialUpdate: (id: string, data: PatchedAdminCreateAccessControlRule, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccessControlRuleResponse, any>>;
+        accessControlRulesPartialUpdate: (id: string, data: PatchedAdminCreateAccessControlRule, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccessControlRuleResponse, any>>;
         /**
          * No description
          *
@@ -29899,7 +29895,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/access-control-rules/{id}/
          * @secure
          */
-        accessControlRulesDestroy: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        accessControlRulesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -29909,7 +29905,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/account-currencies/
          * @secure
          */
-        accountCurrenciesList: (query: AccountCurrenciesListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminAccountAssetListResponse, any>>;
+        accountCurrenciesList: (query: AccountCurrenciesListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminAccountAssetListResponse, any>>;
         /**
          * No description
          *
@@ -29919,7 +29915,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/account-definitions/
          * @secure
          */
-        accountDefinitionsList: (query: AccountDefinitionsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminAccountDefinitionListResponse, any>>;
+        accountDefinitionsList: (query: AccountDefinitionsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminAccountDefinitionListResponse, any>>;
         /**
          * No description
          *
@@ -29929,7 +29925,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/account-definitions/
          * @secure
          */
-        accountDefinitionsCreate: (data: AdminCreateUpdateAccountDefinition, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountDefinitionResponse, any>>;
+        accountDefinitionsCreate: (data: AdminCreateUpdateAccountDefinition, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountDefinitionResponse, any>>;
         /**
          * No description
          *
@@ -29939,7 +29935,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/account-definitions/{definition_name}/
          * @secure
          */
-        accountDefinitionsRetrieve: (definitionName: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountDefinitionResponse, any>>;
+        accountDefinitionsRetrieve: (definitionName: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountDefinitionResponse, any>>;
         /**
          * No description
          *
@@ -29949,7 +29945,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/account-definitions/{definition_name}/
          * @secure
          */
-        accountDefinitionsUpdate: (definitionName: string, data: AdminCreateUpdateAccountDefinition, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountDefinitionResponse, any>>;
+        accountDefinitionsUpdate: (definitionName: string, data: AdminCreateUpdateAccountDefinition, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountDefinitionResponse, any>>;
         /**
          * No description
          *
@@ -29959,7 +29955,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/account-definitions/{definition_name}/
          * @secure
          */
-        accountDefinitionsPartialUpdate: (definitionName: string, data: PatchedAdminCreateUpdateAccountDefinition, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountDefinitionResponse, any>>;
+        accountDefinitionsPartialUpdate: (definitionName: string, data: PatchedAdminCreateUpdateAccountDefinition, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountDefinitionResponse, any>>;
         /**
          * No description
          *
@@ -29969,7 +29965,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/account-definitions/{definition_name}/groups/
          * @secure
          */
-        accountDefinitionsGroupsList: ({ definitionName, ...query }: AccountDefinitionsGroupsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminAccountDefinitionGroupListResponse, any>>;
+        accountDefinitionsGroupsList: ({ definitionName, ...query }: AccountDefinitionsGroupsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminAccountDefinitionGroupListResponse, any>>;
         /**
          * No description
          *
@@ -29979,7 +29975,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/account-definitions/{definition_name}/groups/
          * @secure
          */
-        accountDefinitionsGroupsCreate: (definitionName: string, data: AdminCreateAccountDefinitionGroup, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountDefinitionGroupResponse, any>>;
+        accountDefinitionsGroupsCreate: (definitionName: string, data: AdminCreateAccountDefinitionGroup, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountDefinitionGroupResponse, any>>;
         /**
          * No description
          *
@@ -29989,7 +29985,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/account-definitions/{definition_name}/groups/{definition_group_name}/
          * @secure
          */
-        accountDefinitionsGroupsRetrieve: (definitionGroupName: string, definitionName: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountDefinitionGroupResponse, any>>;
+        accountDefinitionsGroupsRetrieve: (definitionGroupName: string, definitionName: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountDefinitionGroupResponse, any>>;
         /**
          * No description
          *
@@ -29999,7 +29995,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/account-definitions/{definition_name}/groups/{definition_group_name}/
          * @secure
          */
-        accountDefinitionsGroupsUpdate: (definitionGroupName: string, definitionName: string, data: AdminUpdateAccountDefinitionGroup, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountDefinitionGroupResponse, any>>;
+        accountDefinitionsGroupsUpdate: (definitionGroupName: string, definitionName: string, data: AdminUpdateAccountDefinitionGroup, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountDefinitionGroupResponse, any>>;
         /**
          * No description
          *
@@ -30009,7 +30005,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/account-definitions/{definition_name}/groups/{definition_group_name}/
          * @secure
          */
-        accountDefinitionsGroupsPartialUpdate: (definitionGroupName: string, definitionName: string, data: PatchedAdminUpdateAccountDefinitionGroup, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountDefinitionGroupResponse, any>>;
+        accountDefinitionsGroupsPartialUpdate: (definitionGroupName: string, definitionName: string, data: PatchedAdminUpdateAccountDefinitionGroup, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountDefinitionGroupResponse, any>>;
         /**
          * No description
          *
@@ -30019,7 +30015,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/account-definitions/{definition_name}/groups/{definition_group_name}/currencies/
          * @secure
          */
-        accountDefinitionsGroupsCurrenciesList: ({ definitionGroupName, definitionName, ...query }: AccountDefinitionsGroupsCurrenciesListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminAccountDefinitionGroupAssetListResponse, any>>;
+        accountDefinitionsGroupsCurrenciesList: ({ definitionGroupName, definitionName, ...query }: AccountDefinitionsGroupsCurrenciesListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminAccountDefinitionGroupAssetListResponse, any>>;
         /**
          * No description
          *
@@ -30029,7 +30025,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/account-definitions/{definition_name}/groups/{definition_group_name}/currencies/
          * @secure
          */
-        accountDefinitionsGroupsCurrenciesCreate: (definitionGroupName: string, definitionName: string, data: AdminCreateAccountDefinitionGroupAsset, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountDefinitionGroupAssetResponse, any>>;
+        accountDefinitionsGroupsCurrenciesCreate: (definitionGroupName: string, definitionName: string, data: AdminCreateAccountDefinitionGroupAsset, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountDefinitionGroupAssetResponse, any>>;
         /**
          * No description
          *
@@ -30039,7 +30035,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/account-definitions/{definition_name}/groups/{definition_group_name}/currencies/{currency_code}/
          * @secure
          */
-        accountDefinitionsGroupsCurrenciesRetrieve: (currencyCode: string, definitionGroupName: string, definitionName: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountDefinitionGroupAssetResponse, any>>;
+        accountDefinitionsGroupsCurrenciesRetrieve: (currencyCode: string, definitionGroupName: string, definitionName: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountDefinitionGroupAssetResponse, any>>;
         /**
          * No description
          *
@@ -30049,7 +30045,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/account-definitions/{definition_name}/groups/{definition_group_name}/currencies/{currency_code}/
          * @secure
          */
-        accountDefinitionsGroupsCurrenciesUpdate: (currencyCode: string, definitionGroupName: string, definitionName: string, data: AdminUpdateAccountDefinitionGroupAsset, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountDefinitionGroupAssetResponse, any>>;
+        accountDefinitionsGroupsCurrenciesUpdate: (currencyCode: string, definitionGroupName: string, definitionName: string, data: AdminUpdateAccountDefinitionGroupAsset, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountDefinitionGroupAssetResponse, any>>;
         /**
          * No description
          *
@@ -30059,7 +30055,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/account-definitions/{definition_name}/groups/{definition_group_name}/currencies/{currency_code}/
          * @secure
          */
-        accountDefinitionsGroupsCurrenciesPartialUpdate: (currencyCode: string, definitionGroupName: string, definitionName: string, data: PatchedAdminUpdateAccountDefinitionGroupAsset, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountDefinitionGroupAssetResponse, any>>;
+        accountDefinitionsGroupsCurrenciesPartialUpdate: (currencyCode: string, definitionGroupName: string, definitionName: string, data: PatchedAdminUpdateAccountDefinitionGroupAsset, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountDefinitionGroupAssetResponse, any>>;
         /**
          * No description
          *
@@ -30069,7 +30065,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/accounts/
          * @secure
          */
-        accountsList: (query: AccountsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminAccountListResponse, any>>;
+        accountsList: (query: AccountsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminAccountListResponse, any>>;
         /**
          * No description
          *
@@ -30079,7 +30075,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/accounts/
          * @secure
          */
-        accountsCreate: (data: AdminCreateAccount, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountResponse, any>>;
+        accountsCreate: (data: AdminCreateAccount, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountResponse, any>>;
         /**
          * No description
          *
@@ -30089,7 +30085,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/accounts/{reference}/
          * @secure
          */
-        accountsRetrieve: (reference: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedAccountResponse, any>>;
+        accountsRetrieve: (reference: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedAccountResponse, any>>;
         /**
          * No description
          *
@@ -30099,7 +30095,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/accounts/{reference}/
          * @secure
          */
-        accountsUpdate: (reference: string, data: AdminUpdateExtendedAccount, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedAccountResponse, any>>;
+        accountsUpdate: (reference: string, data: AdminUpdateExtendedAccount, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedAccountResponse, any>>;
         /**
          * No description
          *
@@ -30109,7 +30105,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/accounts/{reference}/
          * @secure
          */
-        accountsPartialUpdate: (reference: string, data: PatchedAdminUpdateExtendedAccount, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedAccountResponse, any>>;
+        accountsPartialUpdate: (reference: string, data: PatchedAdminUpdateExtendedAccount, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedAccountResponse, any>>;
         /**
          * No description
          *
@@ -30119,7 +30115,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/accounts/{reference}/currencies/
          * @secure
          */
-        accountsCurrenciesList: ({ reference, ...query }: AccountsCurrenciesListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminAccountAccountAssetListResponse, any>>;
+        accountsCurrenciesList: ({ reference, ...query }: AccountsCurrenciesListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminAccountAccountAssetListResponse, any>>;
         /**
          * No description
          *
@@ -30129,7 +30125,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/accounts/{reference}/currencies/
          * @secure
          */
-        accountsCurrenciesCreate: (reference: string, data: AdminCreateAccountAccountAsset, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountAccountAssetResponse, any>>;
+        accountsCurrenciesCreate: (reference: string, data: AdminCreateAccountAccountAsset, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountAccountAssetResponse, any>>;
         /**
          * No description
          *
@@ -30139,7 +30135,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/accounts/{reference}/currencies/{code}/
          * @secure
          */
-        accountsCurrenciesRetrieve: (code: string, reference: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountAccountAssetResponse, any>>;
+        accountsCurrenciesRetrieve: (code: string, reference: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountAccountAssetResponse, any>>;
         /**
          * No description
          *
@@ -30149,7 +30145,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/accounts/{reference}/currencies/{code}/
          * @secure
          */
-        accountsCurrenciesUpdate: (code: string, reference: string, data: AdminAccountAccountAsset, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountAccountAssetResponse, any>>;
+        accountsCurrenciesUpdate: (code: string, reference: string, data: AdminAccountAccountAsset, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountAccountAssetResponse, any>>;
         /**
          * No description
          *
@@ -30159,7 +30155,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/accounts/{reference}/currencies/{code}/
          * @secure
          */
-        accountsCurrenciesPartialUpdate: (code: string, reference: string, data: PatchedAdminAccountAccountAsset, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountAccountAssetResponse, any>>;
+        accountsCurrenciesPartialUpdate: (code: string, reference: string, data: PatchedAdminAccountAccountAsset, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountAccountAssetResponse, any>>;
         /**
          * No description
          *
@@ -30169,7 +30165,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/accounts/{reference}/currencies/{code}/fees/
          * @secure
          */
-        accountsCurrenciesFeesList: (code: string, reference: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountAssetFeeListResponse, any>>;
+        accountsCurrenciesFeesList: (code: string, reference: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountAssetFeeListResponse, any>>;
         /**
          * No description
          *
@@ -30179,7 +30175,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/accounts/{reference}/currencies/{code}/fees/
          * @secure
          */
-        accountsCurrenciesFeesCreate: (code: string, reference: string, data: AdminCreateAccountAccountAssetFee, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountAssetFeeResponse, any>>;
+        accountsCurrenciesFeesCreate: (code: string, reference: string, data: AdminCreateAccountAccountAssetFee, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountAssetFeeResponse, any>>;
         /**
          * No description
          *
@@ -30189,7 +30185,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/accounts/{reference}/currencies/{code}/fees/{fee_id}/
          * @secure
          */
-        accountsCurrenciesFeesRetrieve: (code: string, feeId: string, reference: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountAssetFeeResponse, any>>;
+        accountsCurrenciesFeesRetrieve: (code: string, feeId: string, reference: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountAssetFeeResponse, any>>;
         /**
          * No description
          *
@@ -30199,7 +30195,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/accounts/{reference}/currencies/{code}/fees/{fee_id}/
          * @secure
          */
-        accountsCurrenciesFeesUpdate: (code: string, feeId: string, reference: string, data: AdminCreateAccountAccountAssetFee, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountAssetFeeResponse, any>>;
+        accountsCurrenciesFeesUpdate: (code: string, feeId: string, reference: string, data: AdminCreateAccountAccountAssetFee, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountAssetFeeResponse, any>>;
         /**
          * No description
          *
@@ -30209,7 +30205,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/accounts/{reference}/currencies/{code}/fees/{fee_id}/
          * @secure
          */
-        accountsCurrenciesFeesPartialUpdate: (code: string, feeId: string, reference: string, data: PatchedAdminCreateAccountAccountAssetFee, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountAssetFeeResponse, any>>;
+        accountsCurrenciesFeesPartialUpdate: (code: string, feeId: string, reference: string, data: PatchedAdminCreateAccountAccountAssetFee, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountAssetFeeResponse, any>>;
         /**
          * No description
          *
@@ -30219,7 +30215,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/accounts/{reference}/currencies/{code}/fees/{fee_id}/
          * @secure
          */
-        accountsCurrenciesFeesDestroy: (code: string, feeId: string, reference: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        accountsCurrenciesFeesDestroy: (code: string, feeId: string, reference: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -30229,7 +30225,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/accounts/{reference}/currencies/{code}/limits/
          * @secure
          */
-        accountsCurrenciesLimitsList: ({ code, reference, ...query }: AccountsCurrenciesLimitsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminAccountAssetLimitListResponse, any>>;
+        accountsCurrenciesLimitsList: ({ code, reference, ...query }: AccountsCurrenciesLimitsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminAccountAssetLimitListResponse, any>>;
         /**
          * No description
          *
@@ -30239,7 +30235,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/accounts/{reference}/currencies/{code}/limits/
          * @secure
          */
-        accountsCurrenciesLimitsCreate: (code: string, reference: string, data: AdminCreateAccountAccountAssetLimit, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountAssetLimitResponse, any>>;
+        accountsCurrenciesLimitsCreate: (code: string, reference: string, data: AdminCreateAccountAccountAssetLimit, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountAssetLimitResponse, any>>;
         /**
          * No description
          *
@@ -30249,7 +30245,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/accounts/{reference}/currencies/{code}/limits/{limit_id}/
          * @secure
          */
-        accountsCurrenciesLimitsRetrieve: (code: string, limitId: string, reference: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountAssetLimitResponse, any>>;
+        accountsCurrenciesLimitsRetrieve: (code: string, limitId: string, reference: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountAssetLimitResponse, any>>;
         /**
          * No description
          *
@@ -30259,7 +30255,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/accounts/{reference}/currencies/{code}/limits/{limit_id}/
          * @secure
          */
-        accountsCurrenciesLimitsUpdate: (code: string, limitId: string, reference: string, data: AdminCreateAccountAccountAssetLimit, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountAssetLimitResponse, any>>;
+        accountsCurrenciesLimitsUpdate: (code: string, limitId: string, reference: string, data: AdminCreateAccountAccountAssetLimit, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountAssetLimitResponse, any>>;
         /**
          * No description
          *
@@ -30269,7 +30265,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/accounts/{reference}/currencies/{code}/limits/{limit_id}/
          * @secure
          */
-        accountsCurrenciesLimitsPartialUpdate: (code: string, limitId: string, reference: string, data: PatchedAdminCreateAccountAccountAssetLimit, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAccountAssetLimitResponse, any>>;
+        accountsCurrenciesLimitsPartialUpdate: (code: string, limitId: string, reference: string, data: PatchedAdminCreateAccountAccountAssetLimit, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAccountAssetLimitResponse, any>>;
         /**
          * No description
          *
@@ -30279,7 +30275,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/accounts/{reference}/currencies/{code}/limits/{limit_id}/
          * @secure
          */
-        accountsCurrenciesLimitsDestroy: (code: string, limitId: string, reference: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        accountsCurrenciesLimitsDestroy: (code: string, limitId: string, reference: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -30289,7 +30285,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/accounts/{reference}/currencies/{code}/settings/
          * @secure
          */
-        accountsCurrenciesSettingsRetrieve: (code: string, reference: string, params?: RequestParams$a) => Promise<HttpResponse$a<AccountAssetSettingsResponse, any>>;
+        accountsCurrenciesSettingsRetrieve: (code: string, reference: string, params?: RequestParams$b) => Promise<HttpResponse$a<AccountAssetSettingsResponse, any>>;
         /**
          * No description
          *
@@ -30299,7 +30295,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/accounts/{reference}/currencies/{code}/settings/
          * @secure
          */
-        accountsCurrenciesSettingsUpdate: (code: string, reference: string, data: AdminAccountAccountAssetSettingsUpdate, params?: RequestParams$a) => Promise<HttpResponse$a<AccountAssetSettingsResponse, any>>;
+        accountsCurrenciesSettingsUpdate: (code: string, reference: string, data: AdminAccountAccountAssetSettingsUpdate, params?: RequestParams$b) => Promise<HttpResponse$a<AccountAssetSettingsResponse, any>>;
         /**
          * No description
          *
@@ -30309,7 +30305,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/accounts/{reference}/currencies/{code}/settings/
          * @secure
          */
-        accountsCurrenciesSettingsPartialUpdate: (code: string, reference: string, data: PatchedAdminAccountAccountAssetSettingsUpdate, params?: RequestParams$a) => Promise<HttpResponse$a<AccountAssetSettingsResponse, any>>;
+        accountsCurrenciesSettingsPartialUpdate: (code: string, reference: string, data: PatchedAdminAccountAccountAssetSettingsUpdate, params?: RequestParams$b) => Promise<HttpResponse$a<AccountAssetSettingsResponse, any>>;
         /**
          * No description
          *
@@ -30319,7 +30315,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/auth/deactivate/
          * @secure
          */
-        authDeactivateCreate: (data: AdminDeactivate, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        authDeactivateCreate: (data: AdminDeactivate, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -30329,7 +30325,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/auth/deactivate/verify/
          * @secure
          */
-        authDeactivateVerifyCreate: (data: VerifyDeactivate, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        authDeactivateVerifyCreate: (data: VerifyDeactivate, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -30339,7 +30335,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/auth/login/
          * @secure
          */
-        authLoginCreate: (data: AdminLogin, params?: RequestParams$a) => Promise<HttpResponse$a<AuthenticatedResponse, any>>;
+        authLoginCreate: (data: AdminLogin, params?: RequestParams$b) => Promise<HttpResponse$a<AuthenticatedResponse, any>>;
         /**
          * No description
          *
@@ -30349,7 +30345,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/auth/password/reset/
          * @secure
          */
-        authPasswordResetCreate: (data: AdminPasswordReset, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        authPasswordResetCreate: (data: AdminPasswordReset, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -30359,7 +30355,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/auth/password/reset/confirm/
          * @secure
          */
-        authPasswordResetConfirmCreate: (data: PasswordResetConfirm, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        authPasswordResetConfirmCreate: (data: PasswordResetConfirm, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -30369,7 +30365,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/auth/register/
          * @secure
          */
-        authRegisterCreate: (data: AdminRegister, params?: RequestParams$a) => Promise<HttpResponse$a<ExtendedAuthenticatedResponse, any>>;
+        authRegisterCreate: (data: AdminRegister, params?: RequestParams$b) => Promise<HttpResponse$a<ExtendedAuthenticatedResponse, any>>;
         /**
          * No description
          *
@@ -30379,7 +30375,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/auth/request-delete/
          * @secure
          */
-        authRequestDeleteCreate: (data: AdminRequestDelete, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        authRequestDeleteCreate: (data: AdminRequestDelete, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -30389,7 +30385,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/auth/request-delete/verify/
          * @secure
          */
-        authRequestDeleteVerifyCreate: (data: VerifyRequestDelete, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        authRequestDeleteVerifyCreate: (data: VerifyRequestDelete, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -30399,7 +30395,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/authenticator-rules/
          * @secure
          */
-        authenticatorRulesList: (query: AuthenticatorRulesListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminAuthenticatorRuleListResponse, any>>;
+        authenticatorRulesList: (query: AuthenticatorRulesListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminAuthenticatorRuleListResponse, any>>;
         /**
          * No description
          *
@@ -30409,7 +30405,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/authenticator-rules/
          * @secure
          */
-        authenticatorRulesCreate: (data: AdminCreateAuthenticatorRule, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAuthenticatorRuleResponse, any>>;
+        authenticatorRulesCreate: (data: AdminCreateAuthenticatorRule, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAuthenticatorRuleResponse, any>>;
         /**
          * No description
          *
@@ -30419,7 +30415,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/authenticator-rules/{identifier}/
          * @secure
          */
-        authenticatorRulesRetrieve: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAuthenticatorRuleResponse, any>>;
+        authenticatorRulesRetrieve: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAuthenticatorRuleResponse, any>>;
         /**
          * No description
          *
@@ -30429,7 +30425,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/authenticator-rules/{identifier}/
          * @secure
          */
-        authenticatorRulesUpdate: (identifier: string, data: AdminUpdateAuthenticatorRule, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAuthenticatorRuleResponse, any>>;
+        authenticatorRulesUpdate: (identifier: string, data: AdminUpdateAuthenticatorRule, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAuthenticatorRuleResponse, any>>;
         /**
          * No description
          *
@@ -30439,7 +30435,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/authenticator-rules/{identifier}/
          * @secure
          */
-        authenticatorRulesPartialUpdate: (identifier: string, data: PatchedAdminUpdateAuthenticatorRule, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAuthenticatorRuleResponse, any>>;
+        authenticatorRulesPartialUpdate: (identifier: string, data: PatchedAdminUpdateAuthenticatorRule, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAuthenticatorRuleResponse, any>>;
         /**
          * No description
          *
@@ -30449,7 +30445,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/authenticator-rules/{identifier}/
          * @secure
          */
-        authenticatorRulesDestroy: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        authenticatorRulesDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -30459,7 +30455,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/bank-accounts/
          * @secure
          */
-        bankAccountsList: (query: BankAccountsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminCompanyBankAccountListResponse, any>>;
+        bankAccountsList: (query: BankAccountsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminCompanyBankAccountListResponse, any>>;
         /**
          * No description
          *
@@ -30469,7 +30465,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/bank-accounts/
          * @secure
          */
-        bankAccountsCreate: (data: AdminCompanyBankAccount, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyBankAccountResponse, any>>;
+        bankAccountsCreate: (data: AdminCompanyBankAccount, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyBankAccountResponse, any>>;
         /**
          * No description
          *
@@ -30479,7 +30475,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/bank-accounts/{id}/
          * @secure
          */
-        bankAccountsRetrieve: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyBankAccountResponse, any>>;
+        bankAccountsRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyBankAccountResponse, any>>;
         /**
          * No description
          *
@@ -30489,7 +30485,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/bank-accounts/{id}/
          * @secure
          */
-        bankAccountsUpdate: (id: string, data: AdminCompanyBankAccount, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyBankAccountResponse, any>>;
+        bankAccountsUpdate: (id: string, data: AdminCompanyBankAccount, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyBankAccountResponse, any>>;
         /**
          * No description
          *
@@ -30499,7 +30495,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/bank-accounts/{id}/
          * @secure
          */
-        bankAccountsPartialUpdate: (id: string, data: PatchedAdminCompanyBankAccount, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyBankAccountResponse, any>>;
+        bankAccountsPartialUpdate: (id: string, data: PatchedAdminCompanyBankAccount, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyBankAccountResponse, any>>;
         /**
          * No description
          *
@@ -30509,7 +30505,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/bank-accounts/{id}/
          * @secure
          */
-        bankAccountsDestroy: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        bankAccountsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -30519,7 +30515,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/bank-accounts/{id}/currencies/
          * @secure
          */
-        bankAccountsCurrenciesList: ({ id, ...query }: BankAccountsCurrenciesListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminCompanyBankAccountAssetListResponse, any>>;
+        bankAccountsCurrenciesList: ({ id, ...query }: BankAccountsCurrenciesListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminCompanyBankAccountAssetListResponse, any>>;
         /**
          * No description
          *
@@ -30529,7 +30525,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/bank-accounts/{id}/currencies/
          * @secure
          */
-        bankAccountsCurrenciesCreate: (id: string, data: AdminCreateCompanyBankAccountAsset, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyBankAccountAssetResponse, any>>;
+        bankAccountsCurrenciesCreate: (id: string, data: AdminCreateCompanyBankAccountAsset, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyBankAccountAssetResponse, any>>;
         /**
          * No description
          *
@@ -30539,7 +30535,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/bank-accounts/{id}/currencies/{code}/
          * @secure
          */
-        bankAccountsCurrenciesRetrieve: (code: string, id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyBankAccountAssetResponse, any>>;
+        bankAccountsCurrenciesRetrieve: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyBankAccountAssetResponse, any>>;
         /**
          * No description
          *
@@ -30549,7 +30545,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/bank-accounts/{id}/currencies/{code}/
          * @secure
          */
-        bankAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        bankAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -30559,7 +30555,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/company/
          * @secure
          */
-        companyRetrieve: (params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyResponse$8, any>>;
+        companyRetrieve: (params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyResponse$8, any>>;
         /**
          * No description
          *
@@ -30569,7 +30565,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/company/
          * @secure
          */
-        companyUpdate: (data: AdminCompany$8, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyResponse$8, any>>;
+        companyUpdate: (data: AdminCompany$8, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyResponse$8, any>>;
         /**
          * No description
          *
@@ -30579,7 +30575,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/company/
          * @secure
          */
-        companyPartialUpdate: (data: PatchedAdminCompany$6, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyResponse$8, any>>;
+        companyPartialUpdate: (data: PatchedAdminCompany$6, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyResponse$8, any>>;
         /**
          * No description
          *
@@ -30589,7 +30585,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/company/address/
          * @secure
          */
-        companyAddressRetrieve: (params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyAddressResponse, any>>;
+        companyAddressRetrieve: (params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyAddressResponse, any>>;
         /**
          * No description
          *
@@ -30599,7 +30595,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/company/address/
          * @secure
          */
-        companyAddressUpdate: (data: AdminCompanyAddress, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyAddressResponse, any>>;
+        companyAddressUpdate: (data: AdminCompanyAddress, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyAddressResponse, any>>;
         /**
          * No description
          *
@@ -30609,7 +30605,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/company/address/
          * @secure
          */
-        companyAddressPartialUpdate: (data: PatchedAdminCompanyAddress, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyAddressResponse, any>>;
+        companyAddressPartialUpdate: (data: PatchedAdminCompanyAddress, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyAddressResponse, any>>;
         /**
          * No description
          *
@@ -30619,7 +30615,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/company/links/
          * @secure
          */
-        companyLinksList: (query: CompanyLinksListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminCompanyLinkListResponse, any>>;
+        companyLinksList: (query: CompanyLinksListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminCompanyLinkListResponse, any>>;
         /**
          * No description
          *
@@ -30629,7 +30625,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/company/links/
          * @secure
          */
-        companyLinksCreate: (data: AdminCreateCompanyLink, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyLinkResponse, any>>;
+        companyLinksCreate: (data: AdminCreateCompanyLink, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyLinkResponse, any>>;
         /**
          * No description
          *
@@ -30639,7 +30635,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/company/links/{id}/
          * @secure
          */
-        companyLinksRetrieve: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyLinkResponse, any>>;
+        companyLinksRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyLinkResponse, any>>;
         /**
          * No description
          *
@@ -30649,7 +30645,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/company/links/{id}/
          * @secure
          */
-        companyLinksUpdate: (id: string, data: AdminUpdateCompanyLink, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyLinkResponse, any>>;
+        companyLinksUpdate: (id: string, data: AdminUpdateCompanyLink, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyLinkResponse, any>>;
         /**
          * No description
          *
@@ -30659,7 +30655,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/company/links/{id}/
          * @secure
          */
-        companyLinksPartialUpdate: (id: string, data: PatchedAdminUpdateCompanyLink, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyLinkResponse, any>>;
+        companyLinksPartialUpdate: (id: string, data: PatchedAdminUpdateCompanyLink, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyLinkResponse, any>>;
         /**
          * No description
          *
@@ -30669,7 +30665,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/company/links/{id}/
          * @secure
          */
-        companyLinksDestroy: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        companyLinksDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -30679,7 +30675,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/company/settings/
          * @secure
          */
-        companySettingsRetrieve: (params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanySettingsResponse, any>>;
+        companySettingsRetrieve: (params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanySettingsResponse, any>>;
         /**
          * No description
          *
@@ -30689,7 +30685,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/company/settings/
          * @secure
          */
-        companySettingsUpdate: (data: AdminUpdateCompanySettings, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanySettingsResponse, any>>;
+        companySettingsUpdate: (data: AdminUpdateCompanySettings, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanySettingsResponse, any>>;
         /**
          * No description
          *
@@ -30699,7 +30695,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/company/settings/
          * @secure
          */
-        companySettingsPartialUpdate: (data: PatchedAdminUpdateCompanySettings, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanySettingsResponse, any>>;
+        companySettingsPartialUpdate: (data: PatchedAdminUpdateCompanySettings, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanySettingsResponse, any>>;
         /**
          * No description
          *
@@ -30709,7 +30705,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/currencies/
          * @secure
          */
-        currenciesList: (query: CurrenciesListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminAssetListResponse, any>>;
+        currenciesList: (query: CurrenciesListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminAssetListResponse, any>>;
         /**
          * No description
          *
@@ -30719,7 +30715,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/currencies/
          * @secure
          */
-        currenciesCreate: (data: AdminCreateAsset$2, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAssetResponse, any>>;
+        currenciesCreate: (data: AdminCreateAsset$2, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAssetResponse, any>>;
         /**
          * No description
          *
@@ -30729,7 +30725,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/currencies/{code}/
          * @secure
          */
-        currenciesRetrieve: (code: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAssetResponse, any>>;
+        currenciesRetrieve: (code: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAssetResponse, any>>;
         /**
          * No description
          *
@@ -30739,7 +30735,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/currencies/{code}/
          * @secure
          */
-        currenciesUpdate: (code: string, data: AdminUpdateAsset, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAssetResponse, any>>;
+        currenciesUpdate: (code: string, data: AdminUpdateAsset, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAssetResponse, any>>;
         /**
          * No description
          *
@@ -30749,7 +30745,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/currencies/{code}/
          * @secure
          */
-        currenciesPartialUpdate: (code: string, data: PatchedAdminUpdateAsset, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAssetResponse, any>>;
+        currenciesPartialUpdate: (code: string, data: PatchedAdminUpdateAsset, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAssetResponse, any>>;
         /**
          * No description
          *
@@ -30759,7 +30755,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/currencies/{code}/overview/
          * @secure
          */
-        currenciesOverviewRetrieve: (code: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminOverviewAssetResponse, any>>;
+        currenciesOverviewRetrieve: (code: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminOverviewAssetResponse, any>>;
         /**
          * No description
          *
@@ -30769,7 +30765,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/document-types/
          * @secure
          */
-        documentTypesList: (query: DocumentTypesListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminDocumentTypeListResponse, any>>;
+        documentTypesList: (query: DocumentTypesListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminDocumentTypeListResponse, any>>;
         /**
          * No description
          *
@@ -30779,7 +30775,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/document-types/
          * @secure
          */
-        documentTypesCreate: (data: AdminDocumentType, params?: RequestParams$a) => Promise<HttpResponse$a<AdminDocumentTypeResponse, any>>;
+        documentTypesCreate: (data: AdminDocumentType, params?: RequestParams$b) => Promise<HttpResponse$a<AdminDocumentTypeResponse, any>>;
         /**
          * No description
          *
@@ -30789,7 +30785,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/document-types/{id}/
          * @secure
          */
-        documentTypesRetrieve: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminDocumentTypeResponse, any>>;
+        documentTypesRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminDocumentTypeResponse, any>>;
         /**
          * No description
          *
@@ -30799,7 +30795,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/document-types/{id}/
          * @secure
          */
-        documentTypesUpdate: (id: string, data: AdminDocumentType, params?: RequestParams$a) => Promise<HttpResponse$a<AdminDocumentTypeResponse, any>>;
+        documentTypesUpdate: (id: string, data: AdminDocumentType, params?: RequestParams$b) => Promise<HttpResponse$a<AdminDocumentTypeResponse, any>>;
         /**
          * No description
          *
@@ -30809,7 +30805,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/document-types/{id}/
          * @secure
          */
-        documentTypesPartialUpdate: (id: string, data: PatchedAdminDocumentType, params?: RequestParams$a) => Promise<HttpResponse$a<AdminDocumentTypeResponse, any>>;
+        documentTypesPartialUpdate: (id: string, data: PatchedAdminDocumentType, params?: RequestParams$b) => Promise<HttpResponse$a<AdminDocumentTypeResponse, any>>;
         /**
          * No description
          *
@@ -30819,7 +30815,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/document-types/{id}/
          * @secure
          */
-        documentTypesDestroy: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        documentTypesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -30829,7 +30825,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/exports/
          * @secure
          */
-        exportsList: (query: ExportsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminExportListResponse, any>>;
+        exportsList: (query: ExportsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminExportListResponse, any>>;
         /**
          * No description
          *
@@ -30839,7 +30835,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/exports/
          * @secure
          */
-        exportsCreate: (data: AdminCreateExport, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExportResponse, any>>;
+        exportsCreate: (data: AdminCreateExport, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExportResponse, any>>;
         /**
          * No description
          *
@@ -30849,7 +30845,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/exports/{identifier}/
          * @secure
          */
-        exportsRetrieve: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedExportResponse, any>>;
+        exportsRetrieve: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedExportResponse, any>>;
         /**
          * No description
          *
@@ -30859,7 +30855,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/exports/{identifier}/
          * @secure
          */
-        exportsDestroy: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        exportsDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -30869,7 +30865,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/groups/
          * @secure
          */
-        groupsList: (query: GroupsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminGroupListResponse, any>>;
+        groupsList: (query: GroupsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminGroupListResponse, any>>;
         /**
          * No description
          *
@@ -30879,7 +30875,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/groups/
          * @secure
          */
-        groupsCreate: (data: AdminCreateGroup, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupResponse, any>>;
+        groupsCreate: (data: AdminCreateGroup, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupResponse, any>>;
         /**
          * No description
          *
@@ -30889,7 +30885,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/groups/{group_name}/
          * @secure
          */
-        groupsRetrieve: (groupName: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUpdateGroupResponse, any>>;
+        groupsRetrieve: (groupName: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUpdateGroupResponse, any>>;
         /**
          * No description
          *
@@ -30899,7 +30895,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/groups/{group_name}/
          * @secure
          */
-        groupsUpdate: (groupName: string, data: AdminUpdateGroup, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUpdateGroupResponse, any>>;
+        groupsUpdate: (groupName: string, data: AdminUpdateGroup, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUpdateGroupResponse, any>>;
         /**
          * No description
          *
@@ -30909,7 +30905,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/groups/{group_name}/
          * @secure
          */
-        groupsPartialUpdate: (groupName: string, data: PatchedAdminUpdateGroup, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUpdateGroupResponse, any>>;
+        groupsPartialUpdate: (groupName: string, data: PatchedAdminUpdateGroup, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUpdateGroupResponse, any>>;
         /**
          * No description
          *
@@ -30919,7 +30915,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/groups/{group_name}/fees/
          * @secure
          */
-        groupsFeesList: (groupName: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupFeeListResponse, any>>;
+        groupsFeesList: (groupName: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupFeeListResponse, any>>;
         /**
          * No description
          *
@@ -30929,7 +30925,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/groups/{group_name}/fees/
          * @secure
          */
-        groupsFeesCreate: (groupName: string, data: AdminCreateGroupFee, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupFeeResponse, any>>;
+        groupsFeesCreate: (groupName: string, data: AdminCreateGroupFee, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupFeeResponse, any>>;
         /**
          * No description
          *
@@ -30939,7 +30935,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/groups/{group_name}/fees/{fee_id}/
          * @secure
          */
-        groupsFeesRetrieve: (feeId: string, groupName: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupFeeResponse, any>>;
+        groupsFeesRetrieve: (feeId: string, groupName: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupFeeResponse, any>>;
         /**
          * No description
          *
@@ -30949,7 +30945,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/groups/{group_name}/fees/{fee_id}/
          * @secure
          */
-        groupsFeesUpdate: (feeId: string, groupName: string, data: AdminUpdateGroupFee, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupFeeResponse, any>>;
+        groupsFeesUpdate: (feeId: string, groupName: string, data: AdminUpdateGroupFee, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupFeeResponse, any>>;
         /**
          * No description
          *
@@ -30959,7 +30955,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/groups/{group_name}/fees/{fee_id}/
          * @secure
          */
-        groupsFeesPartialUpdate: (feeId: string, groupName: string, data: PatchedAdminUpdateGroupFee, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupFeeResponse, any>>;
+        groupsFeesPartialUpdate: (feeId: string, groupName: string, data: PatchedAdminUpdateGroupFee, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupFeeResponse, any>>;
         /**
          * No description
          *
@@ -30969,7 +30965,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/groups/{group_name}/fees/{fee_id}/
          * @secure
          */
-        groupsFeesDestroy: (feeId: string, groupName: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        groupsFeesDestroy: (feeId: string, groupName: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -30979,7 +30975,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/groups/{group_name}/permissions/
          * @secure
          */
-        groupsPermissionsList: ({ groupName, ...query }: GroupsPermissionsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedGroupPermissionListResponse, any>>;
+        groupsPermissionsList: ({ groupName, ...query }: GroupsPermissionsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedGroupPermissionListResponse, any>>;
         /**
          * No description
          *
@@ -30989,7 +30985,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/groups/{group_name}/permissions/
          * @secure
          */
-        groupsPermissionsCreate: (groupName: string, data: AdminCreateMultiGroupPermission, params?: RequestParams$a) => Promise<HttpResponse$a<AdminMultiGroupPermissionResponse, any>>;
+        groupsPermissionsCreate: (groupName: string, data: AdminCreateMultiGroupPermission, params?: RequestParams$b) => Promise<HttpResponse$a<AdminMultiGroupPermissionResponse, any>>;
         /**
          * No description
          *
@@ -30999,7 +30995,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/groups/{group_name}/permissions/{permission_id}/
          * @secure
          */
-        groupsPermissionsRetrieve: (groupName: string, permissionId: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupPermissionResponse, any>>;
+        groupsPermissionsRetrieve: (groupName: string, permissionId: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupPermissionResponse, any>>;
         /**
          * No description
          *
@@ -31009,7 +31005,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/groups/{group_name}/permissions/{permission_id}/
          * @secure
          */
-        groupsPermissionsUpdate: (groupName: string, permissionId: string, data: AdminGroupPermission, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupPermissionResponse, any>>;
+        groupsPermissionsUpdate: (groupName: string, permissionId: string, data: AdminGroupPermission, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupPermissionResponse, any>>;
         /**
          * No description
          *
@@ -31019,7 +31015,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/groups/{group_name}/permissions/{permission_id}/
          * @secure
          */
-        groupsPermissionsPartialUpdate: (groupName: string, permissionId: string, data: PatchedAdminGroupPermission, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupPermissionResponse, any>>;
+        groupsPermissionsPartialUpdate: (groupName: string, permissionId: string, data: PatchedAdminGroupPermission, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupPermissionResponse, any>>;
         /**
          * No description
          *
@@ -31029,7 +31025,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/groups/{group_name}/permissions/{permission_id}/
          * @secure
          */
-        groupsPermissionsDestroy: (groupName: string, permissionId: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        groupsPermissionsDestroy: (groupName: string, permissionId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -31039,7 +31035,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/groups/{group_name}/settings/
          * @secure
          */
-        groupsSettingsRetrieve: (groupName: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupSettingsResponse, any>>;
+        groupsSettingsRetrieve: (groupName: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupSettingsResponse, any>>;
         /**
          * No description
          *
@@ -31049,7 +31045,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/groups/{group_name}/settings/
          * @secure
          */
-        groupsSettingsUpdate: (groupName: string, data: AdminUpdateGroupSettings, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupSettingsResponse, any>>;
+        groupsSettingsUpdate: (groupName: string, data: AdminUpdateGroupSettings, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupSettingsResponse, any>>;
         /**
          * No description
          *
@@ -31059,7 +31055,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/groups/{group_name}/settings/
          * @secure
          */
-        groupsSettingsPartialUpdate: (groupName: string, data: PatchedAdminUpdateGroupSettings, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupSettingsResponse, any>>;
+        groupsSettingsPartialUpdate: (groupName: string, data: PatchedAdminUpdateGroupSettings, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupSettingsResponse, any>>;
         /**
          * No description
          *
@@ -31069,7 +31065,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/groups/{group_name}/tiers/
          * @secure
          */
-        groupsTiersList: ({ groupName, ...query }: GroupsTiersListParams, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupTierListResponse, any>>;
+        groupsTiersList: ({ groupName, ...query }: GroupsTiersListParams, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupTierListResponse, any>>;
         /**
          * No description
          *
@@ -31079,7 +31075,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/groups/{group_name}/tiers/
          * @secure
          */
-        groupsTiersCreate: (groupName: string, data: AdminGroupTier, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupTierResponse, any>>;
+        groupsTiersCreate: (groupName: string, data: AdminGroupTier, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupTierResponse, any>>;
         /**
          * No description
          *
@@ -31089,7 +31085,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/groups/{group_name}/tiers/{tier_id}/
          * @secure
          */
-        groupsTiersRetrieve: (groupName: string, tierId: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedGroupTierResponse, any>>;
+        groupsTiersRetrieve: (groupName: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedGroupTierResponse, any>>;
         /**
          * No description
          *
@@ -31099,7 +31095,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/groups/{group_name}/tiers/{tier_id}/
          * @secure
          */
-        groupsTiersUpdate: (groupName: string, tierId: string, data: AdminExtendedGroupTier, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedGroupTierResponse, any>>;
+        groupsTiersUpdate: (groupName: string, tierId: string, data: AdminExtendedGroupTier, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedGroupTierResponse, any>>;
         /**
          * No description
          *
@@ -31109,7 +31105,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/groups/{group_name}/tiers/{tier_id}/
          * @secure
          */
-        groupsTiersPartialUpdate: (groupName: string, tierId: string, data: PatchedAdminExtendedGroupTier, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedGroupTierResponse, any>>;
+        groupsTiersPartialUpdate: (groupName: string, tierId: string, data: PatchedAdminExtendedGroupTier, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedGroupTierResponse, any>>;
         /**
          * No description
          *
@@ -31119,7 +31115,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/groups/{group_name}/tiers/{tier_id}/
          * @secure
          */
-        groupsTiersDestroy: (groupName: string, tierId: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        groupsTiersDestroy: (groupName: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -31129,7 +31125,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/groups/{group_name}/tiers/{tier_id}/fees/
          * @secure
          */
-        groupsTiersFeesList: (groupName: string, tierId: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupTierFeeListResponse, any>>;
+        groupsTiersFeesList: (groupName: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupTierFeeListResponse, any>>;
         /**
          * No description
          *
@@ -31139,7 +31135,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/groups/{group_name}/tiers/{tier_id}/fees/
          * @secure
          */
-        groupsTiersFeesCreate: (groupName: string, tierId: string, data: AdminCreateGroupTierFee, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupTierFeeResponse, any>>;
+        groupsTiersFeesCreate: (groupName: string, tierId: string, data: AdminCreateGroupTierFee, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupTierFeeResponse, any>>;
         /**
          * No description
          *
@@ -31149,7 +31145,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/groups/{group_name}/tiers/{tier_id}/fees/{fee_id}/
          * @secure
          */
-        groupsTiersFeesRetrieve: (feeId: string, groupName: string, tierId: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupTierFeeResponse, any>>;
+        groupsTiersFeesRetrieve: (feeId: string, groupName: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupTierFeeResponse, any>>;
         /**
          * No description
          *
@@ -31159,7 +31155,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/groups/{group_name}/tiers/{tier_id}/fees/{fee_id}/
          * @secure
          */
-        groupsTiersFeesUpdate: (feeId: string, groupName: string, tierId: string, data: AdminUpdateGroupTierFee, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupTierFeeResponse, any>>;
+        groupsTiersFeesUpdate: (feeId: string, groupName: string, tierId: string, data: AdminUpdateGroupTierFee, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupTierFeeResponse, any>>;
         /**
          * No description
          *
@@ -31169,7 +31165,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/groups/{group_name}/tiers/{tier_id}/fees/{fee_id}/
          * @secure
          */
-        groupsTiersFeesPartialUpdate: (feeId: string, groupName: string, tierId: string, data: PatchedAdminUpdateGroupTierFee, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupTierFeeResponse, any>>;
+        groupsTiersFeesPartialUpdate: (feeId: string, groupName: string, tierId: string, data: PatchedAdminUpdateGroupTierFee, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupTierFeeResponse, any>>;
         /**
          * No description
          *
@@ -31179,7 +31175,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/groups/{group_name}/tiers/{tier_id}/fees/{fee_id}/
          * @secure
          */
-        groupsTiersFeesDestroy: (feeId: string, groupName: string, tierId: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        groupsTiersFeesDestroy: (feeId: string, groupName: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -31189,7 +31185,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/groups/{group_name}/tiers/{tier_id}/limits/
          * @secure
          */
-        groupsTiersLimitsList: (groupName: string, tierId: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupTierLimitListResponse, any>>;
+        groupsTiersLimitsList: (groupName: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupTierLimitListResponse, any>>;
         /**
          * No description
          *
@@ -31199,7 +31195,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/groups/{group_name}/tiers/{tier_id}/limits/
          * @secure
          */
-        groupsTiersLimitsCreate: (groupName: string, tierId: string, data: AdminCreateGroupTierLimit, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupTierLimitResponse, any>>;
+        groupsTiersLimitsCreate: (groupName: string, tierId: string, data: AdminCreateGroupTierLimit, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupTierLimitResponse, any>>;
         /**
          * No description
          *
@@ -31209,7 +31205,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/groups/{group_name}/tiers/{tier_id}/limits/{limit_id}/
          * @secure
          */
-        groupsTiersLimitsRetrieve: (groupName: string, limitId: string, tierId: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupTierLimitResponse, any>>;
+        groupsTiersLimitsRetrieve: (groupName: string, limitId: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupTierLimitResponse, any>>;
         /**
          * No description
          *
@@ -31219,7 +31215,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/groups/{group_name}/tiers/{tier_id}/limits/{limit_id}/
          * @secure
          */
-        groupsTiersLimitsUpdate: (groupName: string, limitId: string, tierId: string, data: AdminUpdateGroupTierLimit, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupTierLimitResponse, any>>;
+        groupsTiersLimitsUpdate: (groupName: string, limitId: string, tierId: string, data: AdminUpdateGroupTierLimit, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupTierLimitResponse, any>>;
         /**
          * No description
          *
@@ -31229,7 +31225,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/groups/{group_name}/tiers/{tier_id}/limits/{limit_id}/
          * @secure
          */
-        groupsTiersLimitsPartialUpdate: (groupName: string, limitId: string, tierId: string, data: PatchedAdminUpdateGroupTierLimit, params?: RequestParams$a) => Promise<HttpResponse$a<AdminGroupTierLimitResponse, any>>;
+        groupsTiersLimitsPartialUpdate: (groupName: string, limitId: string, tierId: string, data: PatchedAdminUpdateGroupTierLimit, params?: RequestParams$b) => Promise<HttpResponse$a<AdminGroupTierLimitResponse, any>>;
         /**
          * No description
          *
@@ -31239,7 +31235,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/groups/{group_name}/tiers/{tier_id}/limits/{limit_id}/
          * @secure
          */
-        groupsTiersLimitsDestroy: (groupName: string, limitId: string, tierId: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        groupsTiersLimitsDestroy: (groupName: string, limitId: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -31249,7 +31245,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/groups/{group_name}/tiers/{tier_id}/requirement-sets/
          * @secure
          */
-        groupsTiersRequirementSetsList: ({ groupName, tierId, ...query }: GroupsTiersRequirementSetsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedGroupTierRequirementSetListResponse, any>>;
+        groupsTiersRequirementSetsList: ({ groupName, tierId, ...query }: GroupsTiersRequirementSetsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedGroupTierRequirementSetListResponse, any>>;
         /**
          * No description
          *
@@ -31259,7 +31255,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/groups/{group_name}/tiers/{tier_id}/requirement-sets/
          * @secure
          */
-        groupsTiersRequirementSetsCreate: (groupName: string, tierId: string, data: CreateUpdateGroupTierRequirementSet, params?: RequestParams$a) => Promise<HttpResponse$a<GroupTierRequirementSetResponse, any>>;
+        groupsTiersRequirementSetsCreate: (groupName: string, tierId: string, data: CreateUpdateGroupTierRequirementSet, params?: RequestParams$b) => Promise<HttpResponse$a<GroupTierRequirementSetResponse, any>>;
         /**
          * No description
          *
@@ -31269,7 +31265,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/groups/{group_name}/tiers/{tier_id}/requirement-sets/{req_set_id}/
          * @secure
          */
-        groupsTiersRequirementSetsRetrieve: (groupName: string, reqSetId: string, tierId: string, params?: RequestParams$a) => Promise<HttpResponse$a<GroupTierRequirementSetResponse, any>>;
+        groupsTiersRequirementSetsRetrieve: (groupName: string, reqSetId: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<GroupTierRequirementSetResponse, any>>;
         /**
          * No description
          *
@@ -31279,7 +31275,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/groups/{group_name}/tiers/{tier_id}/requirement-sets/{req_set_id}/
          * @secure
          */
-        groupsTiersRequirementSetsUpdate: (groupName: string, reqSetId: string, tierId: string, data: CreateUpdateGroupTierRequirementSet, params?: RequestParams$a) => Promise<HttpResponse$a<GroupTierRequirementSetResponse, any>>;
+        groupsTiersRequirementSetsUpdate: (groupName: string, reqSetId: string, tierId: string, data: CreateUpdateGroupTierRequirementSet, params?: RequestParams$b) => Promise<HttpResponse$a<GroupTierRequirementSetResponse, any>>;
         /**
          * No description
          *
@@ -31289,7 +31285,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/groups/{group_name}/tiers/{tier_id}/requirement-sets/{req_set_id}/
          * @secure
          */
-        groupsTiersRequirementSetsPartialUpdate: (groupName: string, reqSetId: string, tierId: string, data: PatchedCreateUpdateGroupTierRequirementSet, params?: RequestParams$a) => Promise<HttpResponse$a<GroupTierRequirementSetResponse, any>>;
+        groupsTiersRequirementSetsPartialUpdate: (groupName: string, reqSetId: string, tierId: string, data: PatchedCreateUpdateGroupTierRequirementSet, params?: RequestParams$b) => Promise<HttpResponse$a<GroupTierRequirementSetResponse, any>>;
         /**
          * No description
          *
@@ -31299,7 +31295,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/groups/{group_name}/tiers/{tier_id}/requirement-sets/{req_set_id}/
          * @secure
          */
-        groupsTiersRequirementSetsDestroy: (groupName: string, reqSetId: string, tierId: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        groupsTiersRequirementSetsDestroy: (groupName: string, reqSetId: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -31309,7 +31305,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/groups/{group_name}/tiers/{tier_id}/requirement-sets/{req_set_id}/items/
          * @secure
          */
-        groupsTiersRequirementSetsItemsList: ({ groupName, reqSetId, tierId, ...query }: GroupsTiersRequirementSetsItemsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedGroupTierRequirementSetItemListResponse, any>>;
+        groupsTiersRequirementSetsItemsList: ({ groupName, reqSetId, tierId, ...query }: GroupsTiersRequirementSetsItemsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedGroupTierRequirementSetItemListResponse, any>>;
         /**
          * No description
          *
@@ -31319,7 +31315,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/groups/{group_name}/tiers/{tier_id}/requirement-sets/{req_set_id}/items/
          * @secure
          */
-        groupsTiersRequirementSetsItemsCreate: (groupName: string, reqSetId: string, tierId: string, data: CreateGroupTierRequirementSetItem, params?: RequestParams$a) => Promise<HttpResponse$a<GroupTierRequirementSetItemResponse, any>>;
+        groupsTiersRequirementSetsItemsCreate: (groupName: string, reqSetId: string, tierId: string, data: CreateGroupTierRequirementSetItem, params?: RequestParams$b) => Promise<HttpResponse$a<GroupTierRequirementSetItemResponse, any>>;
         /**
          * No description
          *
@@ -31329,7 +31325,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/groups/{group_name}/tiers/{tier_id}/requirement-sets/{req_set_id}/items/{req_item_id}/
          * @secure
          */
-        groupsTiersRequirementSetsItemsRetrieve: (groupName: string, reqItemId: string, reqSetId: string, tierId: string, params?: RequestParams$a) => Promise<HttpResponse$a<GroupTierRequirementSetItemResponse, any>>;
+        groupsTiersRequirementSetsItemsRetrieve: (groupName: string, reqItemId: string, reqSetId: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<GroupTierRequirementSetItemResponse, any>>;
         /**
          * No description
          *
@@ -31339,7 +31335,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/groups/{group_name}/tiers/{tier_id}/requirement-sets/{req_set_id}/items/{req_item_id}/
          * @secure
          */
-        groupsTiersRequirementSetsItemsUpdate: (groupName: string, reqItemId: string, reqSetId: string, tierId: string, data: GroupTierRequirementSetItem, params?: RequestParams$a) => Promise<HttpResponse$a<GroupTierRequirementSetItemResponse, any>>;
+        groupsTiersRequirementSetsItemsUpdate: (groupName: string, reqItemId: string, reqSetId: string, tierId: string, data: GroupTierRequirementSetItem, params?: RequestParams$b) => Promise<HttpResponse$a<GroupTierRequirementSetItemResponse, any>>;
         /**
          * No description
          *
@@ -31349,7 +31345,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/groups/{group_name}/tiers/{tier_id}/requirement-sets/{req_set_id}/items/{req_item_id}/
          * @secure
          */
-        groupsTiersRequirementSetsItemsPartialUpdate: (groupName: string, reqItemId: string, reqSetId: string, tierId: string, data: PatchedGroupTierRequirementSetItem, params?: RequestParams$a) => Promise<HttpResponse$a<GroupTierRequirementSetItemResponse, any>>;
+        groupsTiersRequirementSetsItemsPartialUpdate: (groupName: string, reqItemId: string, reqSetId: string, tierId: string, data: PatchedGroupTierRequirementSetItem, params?: RequestParams$b) => Promise<HttpResponse$a<GroupTierRequirementSetItemResponse, any>>;
         /**
          * No description
          *
@@ -31359,7 +31355,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/groups/{group_name}/tiers/{tier_id}/requirement-sets/{req_set_id}/items/{req_item_id}/
          * @secure
          */
-        groupsTiersRequirementSetsItemsDestroy: (groupName: string, reqItemId: string, reqSetId: string, tierId: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        groupsTiersRequirementSetsItemsDestroy: (groupName: string, reqItemId: string, reqSetId: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -31369,7 +31365,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/groups/{group_name}/tiers/{tier_id}/settings/
          * @secure
          */
-        groupsTiersSettingsRetrieve: (groupName: string, tierId: string, params?: RequestParams$a) => Promise<HttpResponse$a<GroupTierSettingsResponse, any>>;
+        groupsTiersSettingsRetrieve: (groupName: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<GroupTierSettingsResponse, any>>;
         /**
          * No description
          *
@@ -31379,7 +31375,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/groups/{group_name}/tiers/{tier_id}/settings/
          * @secure
          */
-        groupsTiersSettingsUpdate: (groupName: string, tierId: string, data: AdminUpdateGroupTierSettings, params?: RequestParams$a) => Promise<HttpResponse$a<GroupTierSettingsResponse, any>>;
+        groupsTiersSettingsUpdate: (groupName: string, tierId: string, data: AdminUpdateGroupTierSettings, params?: RequestParams$b) => Promise<HttpResponse$a<GroupTierSettingsResponse, any>>;
         /**
          * No description
          *
@@ -31389,7 +31385,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/groups/{group_name}/tiers/{tier_id}/settings/
          * @secure
          */
-        groupsTiersSettingsPartialUpdate: (groupName: string, tierId: string, data: PatchedAdminUpdateGroupTierSettings, params?: RequestParams$a) => Promise<HttpResponse$a<GroupTierSettingsResponse, any>>;
+        groupsTiersSettingsPartialUpdate: (groupName: string, tierId: string, data: PatchedAdminUpdateGroupTierSettings, params?: RequestParams$b) => Promise<HttpResponse$a<GroupTierSettingsResponse, any>>;
         /**
          * No description
          *
@@ -31399,7 +31395,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/legal-terms/
          * @secure
          */
-        legalTermsList: (query: LegalTermsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminLegalTermListResponse, any>>;
+        legalTermsList: (query: LegalTermsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminLegalTermListResponse, any>>;
         /**
          * No description
          *
@@ -31409,7 +31405,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/legal-terms/
          * @secure
          */
-        legalTermsCreate: (data: AdminCreateUpdateLegalTerm, params?: RequestParams$a) => Promise<HttpResponse$a<AdminLegalTermResponse, any>>;
+        legalTermsCreate: (data: AdminCreateUpdateLegalTerm, params?: RequestParams$b) => Promise<HttpResponse$a<AdminLegalTermResponse, any>>;
         /**
          * No description
          *
@@ -31419,7 +31415,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/legal-terms/{id}/
          * @secure
          */
-        legalTermsRetrieve: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminLegalTermResponse, any>>;
+        legalTermsRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminLegalTermResponse, any>>;
         /**
          * No description
          *
@@ -31429,7 +31425,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/legal-terms/{id}/
          * @secure
          */
-        legalTermsUpdate: (id: string, data: AdminCreateUpdateLegalTerm, params?: RequestParams$a) => Promise<HttpResponse$a<AdminLegalTermResponse, any>>;
+        legalTermsUpdate: (id: string, data: AdminCreateUpdateLegalTerm, params?: RequestParams$b) => Promise<HttpResponse$a<AdminLegalTermResponse, any>>;
         /**
          * No description
          *
@@ -31439,7 +31435,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/legal-terms/{id}/
          * @secure
          */
-        legalTermsPartialUpdate: (id: string, data: PatchedAdminCreateUpdateLegalTerm, params?: RequestParams$a) => Promise<HttpResponse$a<AdminLegalTermResponse, any>>;
+        legalTermsPartialUpdate: (id: string, data: PatchedAdminCreateUpdateLegalTerm, params?: RequestParams$b) => Promise<HttpResponse$a<AdminLegalTermResponse, any>>;
         /**
          * No description
          *
@@ -31449,7 +31445,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/legal-terms/{id}/
          * @secure
          */
-        legalTermsDestroy: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        legalTermsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -31459,7 +31455,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/legal-terms/{id}/versions/
          * @secure
          */
-        legalTermsVersionsList: ({ id, ...query }: LegalTermsVersionsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminLegalTermVersionListResponse, any>>;
+        legalTermsVersionsList: ({ id, ...query }: LegalTermsVersionsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminLegalTermVersionListResponse, any>>;
         /**
          * No description
          *
@@ -31469,7 +31465,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/legal-terms/{id}/versions/
          * @secure
          */
-        legalTermsVersionsCreate: (id: string, data: AdminLegalTermVersion, params?: RequestParams$a) => Promise<HttpResponse$a<AdminLegalTermVersionResponse, any>>;
+        legalTermsVersionsCreate: (id: string, data: AdminLegalTermVersion, params?: RequestParams$b) => Promise<HttpResponse$a<AdminLegalTermVersionResponse, any>>;
         /**
          * No description
          *
@@ -31479,7 +31475,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/legal-terms/{term_id}/versions/{version_id}/
          * @secure
          */
-        legalTermsVersionsRetrieve: (termId: string, versionId: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminLegalTermVersionResponse, any>>;
+        legalTermsVersionsRetrieve: (termId: string, versionId: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminLegalTermVersionResponse, any>>;
         /**
          * No description
          *
@@ -31489,7 +31485,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/legal-terms/{term_id}/versions/{version_id}/
          * @secure
          */
-        legalTermsVersionsUpdate: (termId: string, versionId: string, data: AdminLegalTermVersion, params?: RequestParams$a) => Promise<HttpResponse$a<AdminLegalTermVersionResponse, any>>;
+        legalTermsVersionsUpdate: (termId: string, versionId: string, data: AdminLegalTermVersion, params?: RequestParams$b) => Promise<HttpResponse$a<AdminLegalTermVersionResponse, any>>;
         /**
          * No description
          *
@@ -31499,7 +31495,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/legal-terms/{term_id}/versions/{version_id}/
          * @secure
          */
-        legalTermsVersionsPartialUpdate: (termId: string, versionId: string, data: PatchedAdminLegalTermVersion, params?: RequestParams$a) => Promise<HttpResponse$a<AdminLegalTermVersionResponse, any>>;
+        legalTermsVersionsPartialUpdate: (termId: string, versionId: string, data: PatchedAdminLegalTermVersion, params?: RequestParams$b) => Promise<HttpResponse$a<AdminLegalTermVersionResponse, any>>;
         /**
          * No description
          *
@@ -31509,7 +31505,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/legal-terms/{term_id}/versions/{version_id}/
          * @secure
          */
-        legalTermsVersionsDestroy: (termId: string, versionId: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        legalTermsVersionsDestroy: (termId: string, versionId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -31519,7 +31515,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/metrics/
          * @secure
          */
-        metricsList: (query: MetricsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminMetricListResponse, any>>;
+        metricsList: (query: MetricsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminMetricListResponse, any>>;
         /**
          * No description
          *
@@ -31529,7 +31525,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/metrics/
          * @secure
          */
-        metricsCreate: (data: AdminCreateMetric, params?: RequestParams$a) => Promise<HttpResponse$a<AdminMetricResponse, any>>;
+        metricsCreate: (data: AdminCreateMetric, params?: RequestParams$b) => Promise<HttpResponse$a<AdminMetricResponse, any>>;
         /**
          * No description
          *
@@ -31539,7 +31535,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/metrics/{identifier}/
          * @secure
          */
-        metricsRetrieve: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminMetricResponse, any>>;
+        metricsRetrieve: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminMetricResponse, any>>;
         /**
          * No description
          *
@@ -31549,7 +31545,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/metrics/{identifier}/
          * @secure
          */
-        metricsDestroy: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        metricsDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -31559,7 +31555,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/metrics/{identifier}/points/
          * @secure
          */
-        metricsPointsList: ({ identifier, ...query }: MetricsPointsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminMetricPointListResponse, any>>;
+        metricsPointsList: ({ identifier, ...query }: MetricsPointsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminMetricPointListResponse, any>>;
         /**
          * No description
          *
@@ -31568,7 +31564,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/oauth-clients/
          * @secure
          */
-        oauthClientsList: (query: OauthClientsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminOauthClientListResponse, any>>;
+        oauthClientsList: (query: OauthClientsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminOauthClientListResponse, any>>;
         /**
          * No description
          *
@@ -31577,7 +31573,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/oauth-clients/
          * @secure
          */
-        oauthClientsCreate: (data: AdminOauthClient, params?: RequestParams$a) => Promise<HttpResponse$a<AdminOauthClientResponse, any>>;
+        oauthClientsCreate: (data: AdminOauthClient, params?: RequestParams$b) => Promise<HttpResponse$a<AdminOauthClientResponse, any>>;
         /**
          * No description
          *
@@ -31586,7 +31582,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/oauth-clients/{identifier}/
          * @secure
          */
-        oauthClientsRetrieve: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminOauthClientResponse, any>>;
+        oauthClientsRetrieve: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminOauthClientResponse, any>>;
         /**
          * No description
          *
@@ -31595,7 +31591,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/oauth-clients/{identifier}/
          * @secure
          */
-        oauthClientsUpdate: (identifier: string, data: AdminUpdateOauthClient, params?: RequestParams$a) => Promise<HttpResponse$a<AdminOauthClientResponse, any>>;
+        oauthClientsUpdate: (identifier: string, data: AdminUpdateOauthClient, params?: RequestParams$b) => Promise<HttpResponse$a<AdminOauthClientResponse, any>>;
         /**
          * No description
          *
@@ -31604,7 +31600,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/oauth-clients/{identifier}/
          * @secure
          */
-        oauthClientsPartialUpdate: (identifier: string, data: PatchedAdminUpdateOauthClient, params?: RequestParams$a) => Promise<HttpResponse$a<AdminOauthClientResponse, any>>;
+        oauthClientsPartialUpdate: (identifier: string, data: PatchedAdminUpdateOauthClient, params?: RequestParams$b) => Promise<HttpResponse$a<AdminOauthClientResponse, any>>;
         /**
          * No description
          *
@@ -31613,7 +31609,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/oauth-clients/{identifier}/
          * @secure
          */
-        oauthClientsDestroy: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        oauthClientsDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -31623,7 +31619,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/permissions/
          * @secure
          */
-        permissionsList: (query: PermissionsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedPermissionListResponse, any>>;
+        permissionsList: (query: PermissionsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedPermissionListResponse, any>>;
         /**
          * No description
          *
@@ -31633,7 +31629,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/permissions/{permission_id}/
          * @secure
          */
-        permissionsRetrieve: (permissionId: string, params?: RequestParams$a) => Promise<HttpResponse$a<PermissionResponse, any>>;
+        permissionsRetrieve: (permissionId: string, params?: RequestParams$b) => Promise<HttpResponse$a<PermissionResponse, any>>;
         /**
          * No description
          *
@@ -31643,7 +31639,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/requests/
          * @secure
          */
-        requestsList: (query: RequestsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminRequestListResponse, any>>;
+        requestsList: (query: RequestsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminRequestListResponse, any>>;
         /**
          * No description
          *
@@ -31653,7 +31649,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/requests/{request_id}/
          * @secure
          */
-        requestsRetrieve: (requestId: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedRequestResponse, any>>;
+        requestsRetrieve: (requestId: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedRequestResponse, any>>;
         /**
          * No description
          *
@@ -31663,7 +31659,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/search/
          * @secure
          */
-        searchRetrieve: (query: SearchRetrieveParams, params?: RequestParams$a) => Promise<HttpResponse$a<SearchRetrieveData, any>>;
+        searchRetrieve: (query: SearchRetrieveParams, params?: RequestParams$b) => Promise<HttpResponse$a<SearchRetrieveData, any>>;
         /**
          * No description
          *
@@ -31673,7 +31669,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/services/
          * @secure
          */
-        servicesList: (query: ServicesListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminServiceListResponse, any>>;
+        servicesList: (query: ServicesListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminServiceListResponse, any>>;
         /**
          * No description
          *
@@ -31683,7 +31679,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/services/
          * @secure
          */
-        servicesCreate: (data: AdminService, params?: RequestParams$a) => Promise<HttpResponse$a<AdminServiceResponse, any>>;
+        servicesCreate: (data: AdminService, params?: RequestParams$b) => Promise<HttpResponse$a<AdminServiceResponse, any>>;
         /**
          * No description
          *
@@ -31693,7 +31689,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/services/{service_id}/
          * @secure
          */
-        servicesRetrieve: (serviceId: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminServiceResponse, any>>;
+        servicesRetrieve: (serviceId: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminServiceResponse, any>>;
         /**
          * No description
          *
@@ -31703,7 +31699,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/services/{service_id}/
          * @secure
          */
-        servicesUpdate: (serviceId: string, data: AdminUpdateService, params?: RequestParams$a) => Promise<HttpResponse$a<AdminServiceResponse, any>>;
+        servicesUpdate: (serviceId: string, data: AdminUpdateService, params?: RequestParams$b) => Promise<HttpResponse$a<AdminServiceResponse, any>>;
         /**
          * No description
          *
@@ -31713,7 +31709,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/services/{service_id}/
          * @secure
          */
-        servicesPartialUpdate: (serviceId: string, data: PatchedAdminUpdateService, params?: RequestParams$a) => Promise<HttpResponse$a<AdminServiceResponse, any>>;
+        servicesPartialUpdate: (serviceId: string, data: PatchedAdminUpdateService, params?: RequestParams$b) => Promise<HttpResponse$a<AdminServiceResponse, any>>;
         /**
          * No description
          *
@@ -31723,7 +31719,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/services/{service_id}/
          * @secure
          */
-        servicesDestroy: (serviceId: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        servicesDestroy: (serviceId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -31733,7 +31729,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/services/{service_id}/permissions/
          * @secure
          */
-        servicesPermissionsList: ({ serviceId, ...query }: ServicesPermissionsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedPermissionListResponse, any>>;
+        servicesPermissionsList: ({ serviceId, ...query }: ServicesPermissionsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedPermissionListResponse, any>>;
         /**
          * No description
          *
@@ -31743,7 +31739,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/services/{service_id}/permissions/
          * @secure
          */
-        servicesPermissionsCreate: (serviceId: string, data: AdminCreateServicePermission, params?: RequestParams$a) => Promise<HttpResponse$a<AdminMultiPermissionResponse, any>>;
+        servicesPermissionsCreate: (serviceId: string, data: AdminCreateServicePermission, params?: RequestParams$b) => Promise<HttpResponse$a<AdminMultiPermissionResponse, any>>;
         /**
          * No description
          *
@@ -31753,7 +31749,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/services/{service_id}/permissions/{permission_id}/
          * @secure
          */
-        servicesPermissionsRetrieve: (permissionId: string, serviceId: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUpdateServicePermissionResponse, any>>;
+        servicesPermissionsRetrieve: (permissionId: string, serviceId: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUpdateServicePermissionResponse, any>>;
         /**
          * No description
          *
@@ -31763,7 +31759,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/services/{service_id}/permissions/{permission_id}/
          * @secure
          */
-        servicesPermissionsDestroy: (permissionId: string, serviceId: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        servicesPermissionsDestroy: (permissionId: string, serviceId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -31772,7 +31768,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/statements/
          * @secure
          */
-        statementsList: (query: StatementsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminStatementListResponse, any>>;
+        statementsList: (query: StatementsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminStatementListResponse, any>>;
         /**
          * No description
          *
@@ -31781,7 +31777,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/statements/
          * @secure
          */
-        statementsCreate: (data: AdminCreateStatement, params?: RequestParams$a) => Promise<HttpResponse$a<AdminStatementResponse, any>>;
+        statementsCreate: (data: AdminCreateStatement, params?: RequestParams$b) => Promise<HttpResponse$a<AdminStatementResponse, any>>;
         /**
          * No description
          *
@@ -31790,7 +31786,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/statements/{identifier}/
          * @secure
          */
-        statementsRetrieve: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminStatementResponse, any>>;
+        statementsRetrieve: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminStatementResponse, any>>;
         /**
          * No description
          *
@@ -31799,7 +31795,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/statements/{identifier}/
          * @secure
          */
-        statementsDestroy: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        statementsDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -31809,7 +31805,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/subtypes/
          * @secure
          */
-        subtypesList: (query: SubtypesListParams, params?: RequestParams$a) => Promise<HttpResponse$a<AdminTransactionSubtypeListResponse, any>>;
+        subtypesList: (query: SubtypesListParams, params?: RequestParams$b) => Promise<HttpResponse$a<AdminTransactionSubtypeListResponse, any>>;
         /**
          * No description
          *
@@ -31819,7 +31815,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/subtypes/
          * @secure
          */
-        subtypesCreate: (data: AdminCreateTransactionSubtype, params?: RequestParams$a) => Promise<HttpResponse$a<AdminTransactionSubtypeResponse, any>>;
+        subtypesCreate: (data: AdminCreateTransactionSubtype, params?: RequestParams$b) => Promise<HttpResponse$a<AdminTransactionSubtypeResponse, any>>;
         /**
          * No description
          *
@@ -31829,7 +31825,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/subtypes/{id}/
          * @secure
          */
-        subtypesRetrieve: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminTransactionSubtypeResponse, any>>;
+        subtypesRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminTransactionSubtypeResponse, any>>;
         /**
          * No description
          *
@@ -31839,7 +31835,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/subtypes/{id}/
          * @secure
          */
-        subtypesUpdate: (id: string, data: AdminUpdateTransactionSubtype, params?: RequestParams$a) => Promise<HttpResponse$a<AdminTransactionSubtypeResponse, any>>;
+        subtypesUpdate: (id: string, data: AdminUpdateTransactionSubtype, params?: RequestParams$b) => Promise<HttpResponse$a<AdminTransactionSubtypeResponse, any>>;
         /**
          * No description
          *
@@ -31849,7 +31845,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/subtypes/{id}/
          * @secure
          */
-        subtypesPartialUpdate: (id: string, data: PatchedAdminUpdateTransactionSubtype, params?: RequestParams$a) => Promise<HttpResponse$a<AdminTransactionSubtypeResponse, any>>;
+        subtypesPartialUpdate: (id: string, data: PatchedAdminUpdateTransactionSubtype, params?: RequestParams$b) => Promise<HttpResponse$a<AdminTransactionSubtypeResponse, any>>;
         /**
          * No description
          *
@@ -31859,7 +31855,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/subtypes/{id}/
          * @secure
          */
-        subtypesDestroy: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        subtypesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -31869,7 +31865,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/transaction-collections/
          * @secure
          */
-        transactionCollectionsList: (query: TransactionCollectionsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminTransactionCollectionListResponse, any>>;
+        transactionCollectionsList: (query: TransactionCollectionsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminTransactionCollectionListResponse, any>>;
         /**
          * No description
          *
@@ -31879,7 +31875,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/transaction-collections/
          * @secure
          */
-        transactionCollectionsCreate: (data: AdminCreateTransactionCollection, params?: RequestParams$a) => Promise<HttpResponse$a<AdminTransactionCollectionResponse, any>>;
+        transactionCollectionsCreate: (data: AdminCreateTransactionCollection, params?: RequestParams$b) => Promise<HttpResponse$a<AdminTransactionCollectionResponse, any>>;
         /**
          * No description
          *
@@ -31889,7 +31885,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/transaction-collections/{identifier}/
          * @secure
          */
-        transactionCollectionsRetrieve: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminTransactionCollectionResponse, any>>;
+        transactionCollectionsRetrieve: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminTransactionCollectionResponse, any>>;
         /**
          * No description
          *
@@ -31899,7 +31895,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/transaction-collections/{identifier}/
          * @secure
          */
-        transactionCollectionsUpdate: (identifier: string, data: AdminUpdateTransactionCollection, params?: RequestParams$a) => Promise<HttpResponse$a<AdminTransactionCollectionResponse, any>>;
+        transactionCollectionsUpdate: (identifier: string, data: AdminUpdateTransactionCollection, params?: RequestParams$b) => Promise<HttpResponse$a<AdminTransactionCollectionResponse, any>>;
         /**
          * No description
          *
@@ -31909,7 +31905,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/transaction-collections/{identifier}/
          * @secure
          */
-        transactionCollectionsPartialUpdate: (identifier: string, data: PatchedAdminUpdateTransactionCollection, params?: RequestParams$a) => Promise<HttpResponse$a<AdminTransactionCollectionResponse, any>>;
+        transactionCollectionsPartialUpdate: (identifier: string, data: PatchedAdminUpdateTransactionCollection, params?: RequestParams$b) => Promise<HttpResponse$a<AdminTransactionCollectionResponse, any>>;
         /**
          * No description
          *
@@ -31919,7 +31915,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/transaction-collections/{identifier}/transactions/
          * @secure
          */
-        transactionCollectionsTransactionsList: ({ identifier, ...query }: TransactionCollectionsTransactionsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminTransactionCollectionTransactionListResponse, any>>;
+        transactionCollectionsTransactionsList: ({ identifier, ...query }: TransactionCollectionsTransactionsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminTransactionCollectionTransactionListResponse, any>>;
         /**
          * No description
          *
@@ -31929,7 +31925,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/transaction-collections/{identifier}/transactions/
          * @secure
          */
-        transactionCollectionsTransactionsCreate: (identifier: string, data: AdminAppendTransactionCollectionMultiTransaction, params?: RequestParams$a) => Promise<HttpResponse$a<AdminTransactionCollectionTransactionResponse, any>>;
+        transactionCollectionsTransactionsCreate: (identifier: string, data: AdminAppendTransactionCollectionMultiTransaction, params?: RequestParams$b) => Promise<HttpResponse$a<AdminTransactionCollectionTransactionResponse, any>>;
         /**
          * No description
          *
@@ -31939,7 +31935,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/transaction-transitions/
          * @secure
          */
-        transactionTransitionsList: (query: TransactionTransitionsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminTransactionTransitionListResponse, any>>;
+        transactionTransitionsList: (query: TransactionTransitionsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminTransactionTransitionListResponse, any>>;
         /**
          * No description
          *
@@ -31949,7 +31945,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/transaction-transitions/{identifier}/
          * @secure
          */
-        transactionTransitionsRetrieve: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedTransactionTransitionResponse, any>>;
+        transactionTransitionsRetrieve: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedTransactionTransitionResponse, any>>;
         /**
          * No description
          *
@@ -31959,7 +31955,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/transaction-transitions/{identifier}/
          * @secure
          */
-        transactionTransitionsUpdate: (identifier: string, data: AdminUpdateTransactionTransition, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedTransactionTransitionResponse, any>>;
+        transactionTransitionsUpdate: (identifier: string, data: AdminUpdateTransactionTransition, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedTransactionTransitionResponse, any>>;
         /**
          * No description
          *
@@ -31969,7 +31965,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/transaction-transitions/{identifier}/
          * @secure
          */
-        transactionTransitionsPartialUpdate: (identifier: string, data: PatchedAdminUpdateTransactionTransition, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedTransactionTransitionResponse, any>>;
+        transactionTransitionsPartialUpdate: (identifier: string, data: PatchedAdminUpdateTransactionTransition, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedTransactionTransitionResponse, any>>;
         /**
          * No description
          *
@@ -31979,7 +31975,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/transactions/
          * @secure
          */
-        transactionsList: (query: TransactionsListParams$2, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminTransactionListResponse, any>>;
+        transactionsList: (query: TransactionsListParams$2, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminTransactionListResponse, any>>;
         /**
          * No description
          *
@@ -31989,7 +31985,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/transactions/
          * @secure
          */
-        transactionsCreate: (data: AdminCreateMultiTransaction, params?: RequestParams$a) => Promise<HttpResponse$a<AdminMultiTransactionResponse, any>>;
+        transactionsCreate: (data: AdminCreateMultiTransaction, params?: RequestParams$b) => Promise<HttpResponse$a<AdminMultiTransactionResponse, any>>;
         /**
          * No description
          *
@@ -31999,7 +31995,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/transactions/{tx_code}/
          * @secure
          */
-        transactionsRetrieve: (txCode: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedTransactionResponse, any>>;
+        transactionsRetrieve: (txCode: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedTransactionResponse, any>>;
         /**
          * No description
          *
@@ -32009,7 +32005,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/transactions/{tx_code}/
          * @secure
          */
-        transactionsUpdate: (txCode: string, data: AdminUpdateExtendedTransaction, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedTransactionResponse, any>>;
+        transactionsUpdate: (txCode: string, data: AdminUpdateExtendedTransaction, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedTransactionResponse, any>>;
         /**
          * No description
          *
@@ -32019,7 +32015,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/transactions/{tx_code}/
          * @secure
          */
-        transactionsPartialUpdate: (txCode: string, data: PatchedAdminUpdateExtendedTransaction, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedTransactionResponse, any>>;
+        transactionsPartialUpdate: (txCode: string, data: PatchedAdminUpdateExtendedTransaction, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedTransactionResponse, any>>;
         /**
          * No description
          *
@@ -32029,7 +32025,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/transactions/{tx_code}/messages/
          * @secure
          */
-        transactionsMessagesList: ({ txCode, ...query }: TransactionsMessagesListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminTransactionMessageListResponse, any>>;
+        transactionsMessagesList: ({ txCode, ...query }: TransactionsMessagesListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminTransactionMessageListResponse, any>>;
         /**
          * No description
          *
@@ -32039,7 +32035,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/transactions/{tx_code}/messages/
          * @secure
          */
-        transactionsMessagesCreate: (txCode: string, data: AdminCreateTransactionMessage, params?: RequestParams$a) => Promise<HttpResponse$a<AdminTransactionMessageResponse, any>>;
+        transactionsMessagesCreate: (txCode: string, data: AdminCreateTransactionMessage, params?: RequestParams$b) => Promise<HttpResponse$a<AdminTransactionMessageResponse, any>>;
         /**
          * No description
          *
@@ -32049,7 +32045,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/transactions/{tx_code}/messages/{id}/
          * @secure
          */
-        transactionsMessagesRetrieve: (id: string, txCode: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminTransactionMessageResponse, any>>;
+        transactionsMessagesRetrieve: (id: string, txCode: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminTransactionMessageResponse, any>>;
         /**
          * No description
          *
@@ -32059,7 +32055,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/transactions/credit/
          * @secure
          */
-        transactionsCreditCreate: (data: AdminCreateCreditTransaction, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedTransactionResponse, any>>;
+        transactionsCreditCreate: (data: AdminCreateCreditTransaction, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedTransactionResponse, any>>;
         /**
          * No description
          *
@@ -32069,7 +32065,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/transactions/debit/
          * @secure
          */
-        transactionsDebitCreate: (data: AdminCreateDebitTransaction, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedTransactionResponse, any>>;
+        transactionsDebitCreate: (data: AdminCreateDebitTransaction, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedTransactionResponse, any>>;
         /**
          * No description
          *
@@ -32079,7 +32075,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/transactions/totals/
          * @secure
          */
-        transactionsTotalsRetrieve: (params?: RequestParams$a) => Promise<HttpResponse$a<TotalTransactionResponse, any>>;
+        transactionsTotalsRetrieve: (params?: RequestParams$b) => Promise<HttpResponse$a<TotalTransactionResponse, any>>;
         /**
          * No description
          *
@@ -32089,7 +32085,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/transactions/transfer/
          * @secure
          */
-        transactionsTransferCreate: (data: AdminCreateTransferTransaction, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedTransactionResponse, any>>;
+        transactionsTransferCreate: (data: AdminCreateTransferTransaction, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedTransactionResponse, any>>;
         /**
          * No description
          *
@@ -32099,7 +32095,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/
          * @secure
          */
-        usersList: (query: UsersListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminUserInfoListResponse, any>>;
+        usersList: (query: UsersListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminUserInfoListResponse, any>>;
         /**
          * No description
          *
@@ -32109,7 +32105,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/users/
          * @secure
          */
-        usersCreate: (data: AdminCreateUserInfo, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedUserInfoResponse, any>>;
+        usersCreate: (data: AdminCreateUserInfo, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedUserInfoResponse, any>>;
         /**
          * No description
          *
@@ -32119,7 +32115,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/{identifier}/
          * @secure
          */
-        usersRetrieve: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedUserInfoResponse, any>>;
+        usersRetrieve: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedUserInfoResponse, any>>;
         /**
          * No description
          *
@@ -32129,7 +32125,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/users/{identifier}/
          * @secure
          */
-        usersUpdate: (identifier: string, data: AdminUpdateUserInfo, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedUserInfoResponse, any>>;
+        usersUpdate: (identifier: string, data: AdminUpdateUserInfo, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedUserInfoResponse, any>>;
         /**
          * No description
          *
@@ -32139,7 +32135,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/users/{identifier}/
          * @secure
          */
-        usersPartialUpdate: (identifier: string, data: PatchedAdminUpdateUserInfo, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedUserInfoResponse, any>>;
+        usersPartialUpdate: (identifier: string, data: PatchedAdminUpdateUserInfo, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedUserInfoResponse, any>>;
         /**
          * No description
          *
@@ -32149,7 +32145,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/{identifier}/groups/
          * @secure
          */
-        usersGroupsList: ({ identifier, ...query }: UsersGroupsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminUserGroupListResponse, any>>;
+        usersGroupsList: ({ identifier, ...query }: UsersGroupsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminUserGroupListResponse, any>>;
         /**
          * No description
          *
@@ -32159,7 +32155,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/users/{identifier}/groups/
          * @secure
          */
-        usersGroupsCreate: (identifier: string, data: AdminCreateUserGroup, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserGroupResponse, any>>;
+        usersGroupsCreate: (identifier: string, data: AdminCreateUserGroup, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserGroupResponse, any>>;
         /**
          * No description
          *
@@ -32169,7 +32165,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/{identifier}/groups/{group_name}/
          * @secure
          */
-        usersGroupsRetrieve: (groupName: string, identifier: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserGroupResponse, any>>;
+        usersGroupsRetrieve: (groupName: string, identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserGroupResponse, any>>;
         /**
          * No description
          *
@@ -32179,7 +32175,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/{identifier}/groups/{group_name}/
          * @secure
          */
-        usersGroupsDestroy: (groupName: string, identifier: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersGroupsDestroy: (groupName: string, identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -32189,7 +32185,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/{identifier}/legal-terms/
          * @secure
          */
-        usersLegalTermsList: ({ identifier, ...query }: UsersLegalTermsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminUserLegalTermListResponse, any>>;
+        usersLegalTermsList: ({ identifier, ...query }: UsersLegalTermsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminUserLegalTermListResponse, any>>;
         /**
          * No description
          *
@@ -32199,7 +32195,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/{identifier}/legal-terms/{term_id}/
          * @secure
          */
-        usersLegalTermsRetrieve: (identifier: string, termId: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserLegalTermResponse, any>>;
+        usersLegalTermsRetrieve: (identifier: string, termId: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserLegalTermResponse, any>>;
         /**
          * No description
          *
@@ -32209,7 +32205,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/{identifier}/legal-terms/{term_id}/versions/
          * @secure
          */
-        usersLegalTermsVersionsList: ({ identifier, termId, ...query }: UsersLegalTermsVersionsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminUserLegalTermVersionListResponse, any>>;
+        usersLegalTermsVersionsList: ({ identifier, termId, ...query }: UsersLegalTermsVersionsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminUserLegalTermVersionListResponse, any>>;
         /**
          * No description
          *
@@ -32219,7 +32215,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/{identifier}/legal-terms/{term_id}/versions/{version_id}/
          * @secure
          */
-        usersLegalTermsVersionsRetrieve: (identifier: string, termId: string, versionId: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserLegalTermVersionResponse, any>>;
+        usersLegalTermsVersionsRetrieve: (identifier: string, termId: string, versionId: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserLegalTermVersionResponse, any>>;
         /**
          * No description
          *
@@ -32229,7 +32225,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/{identifier}/messages/
          * @secure
          */
-        usersMessagesList: ({ identifier, ...query }: UsersMessagesListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminUserMessageListResponse, any>>;
+        usersMessagesList: ({ identifier, ...query }: UsersMessagesListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminUserMessageListResponse, any>>;
         /**
          * No description
          *
@@ -32239,7 +32235,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/users/{identifier}/messages/
          * @secure
          */
-        usersMessagesCreate: (identifier: string, data: AdminCreateUserMessage, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserMessageResponse, any>>;
+        usersMessagesCreate: (identifier: string, data: AdminCreateUserMessage, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserMessageResponse, any>>;
         /**
          * No description
          *
@@ -32249,7 +32245,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/{identifier}/messages/{id}/
          * @secure
          */
-        usersMessagesRetrieve: (id: string, identifier: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserMessageResponse, any>>;
+        usersMessagesRetrieve: (id: string, identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserMessageResponse, any>>;
         /**
          * No description
          *
@@ -32259,7 +32255,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/{identifier}/permissions/
          * @secure
          */
-        usersPermissionsList: ({ identifier, ...query }: UsersPermissionsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedUserPermissionListResponse, any>>;
+        usersPermissionsList: ({ identifier, ...query }: UsersPermissionsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedUserPermissionListResponse, any>>;
         /**
          * No description
          *
@@ -32269,7 +32265,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/users/{identifier}/permissions/
          * @secure
          */
-        usersPermissionsCreate: (identifier: string, data: AdminCreateMultiUserPermission, params?: RequestParams$a) => Promise<HttpResponse$a<AdminMultiUserPermissionResponse, any>>;
+        usersPermissionsCreate: (identifier: string, data: AdminCreateMultiUserPermission, params?: RequestParams$b) => Promise<HttpResponse$a<AdminMultiUserPermissionResponse, any>>;
         /**
          * No description
          *
@@ -32279,7 +32275,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/{identifier}/permissions/{permission_id}/
          * @secure
          */
-        usersPermissionsRetrieve: (identifier: string, permissionId: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserPermissionResponse, any>>;
+        usersPermissionsRetrieve: (identifier: string, permissionId: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserPermissionResponse, any>>;
         /**
          * No description
          *
@@ -32289,7 +32285,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/users/{identifier}/permissions/{permission_id}/
          * @secure
          */
-        usersPermissionsUpdate: (identifier: string, permissionId: string, data: AdminUserPermission, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserPermissionResponse, any>>;
+        usersPermissionsUpdate: (identifier: string, permissionId: string, data: AdminUserPermission, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserPermissionResponse, any>>;
         /**
          * No description
          *
@@ -32299,7 +32295,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/users/{identifier}/permissions/{permission_id}/
          * @secure
          */
-        usersPermissionsPartialUpdate: (identifier: string, permissionId: string, data: PatchedAdminUserPermission, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserPermissionResponse, any>>;
+        usersPermissionsPartialUpdate: (identifier: string, permissionId: string, data: PatchedAdminUserPermission, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserPermissionResponse, any>>;
         /**
          * No description
          *
@@ -32309,7 +32305,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/{identifier}/permissions/{permission_id}/
          * @secure
          */
-        usersPermissionsDestroy: (identifier: string, permissionId: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersPermissionsDestroy: (identifier: string, permissionId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -32319,7 +32315,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/{identifier}/settings/
          * @secure
          */
-        usersSettingsRetrieve: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$a<UserSettingsResponse$1, any>>;
+        usersSettingsRetrieve: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<UserSettingsResponse$1, any>>;
         /**
          * No description
          *
@@ -32329,7 +32325,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/users/{identifier}/settings/
          * @secure
          */
-        usersSettingsUpdate: (identifier: string, data: AdminUpdateUserSettings, params?: RequestParams$a) => Promise<HttpResponse$a<UserSettingsResponse$1, any>>;
+        usersSettingsUpdate: (identifier: string, data: AdminUpdateUserSettings, params?: RequestParams$b) => Promise<HttpResponse$a<UserSettingsResponse$1, any>>;
         /**
          * No description
          *
@@ -32339,7 +32335,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/users/{identifier}/settings/
          * @secure
          */
-        usersSettingsPartialUpdate: (identifier: string, data: PatchedAdminUpdateUserSettings, params?: RequestParams$a) => Promise<HttpResponse$a<UserSettingsResponse$1, any>>;
+        usersSettingsPartialUpdate: (identifier: string, data: PatchedAdminUpdateUserSettings, params?: RequestParams$b) => Promise<HttpResponse$a<UserSettingsResponse$1, any>>;
         /**
          * No description
          *
@@ -32349,7 +32345,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/addresses/
          * @secure
          */
-        usersAddressesList: (query: UsersAddressesListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminUserAddressListResponse, any>>;
+        usersAddressesList: (query: UsersAddressesListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminUserAddressListResponse, any>>;
         /**
          * No description
          *
@@ -32359,7 +32355,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/users/addresses/
          * @secure
          */
-        usersAddressesCreate: (data: AdminCreateUserAddress, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserAddressResponse, any>>;
+        usersAddressesCreate: (data: AdminCreateUserAddress, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserAddressResponse, any>>;
         /**
          * No description
          *
@@ -32369,7 +32365,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/addresses/{id}/
          * @secure
          */
-        usersAddressesRetrieve: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserAddressResponse, any>>;
+        usersAddressesRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserAddressResponse, any>>;
         /**
          * No description
          *
@@ -32379,7 +32375,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/users/addresses/{id}/
          * @secure
          */
-        usersAddressesUpdate: (id: string, data: AdminUserAddress, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserAddressResponse, any>>;
+        usersAddressesUpdate: (id: string, data: AdminUserAddress, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserAddressResponse, any>>;
         /**
          * No description
          *
@@ -32389,7 +32385,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/users/addresses/{id}/
          * @secure
          */
-        usersAddressesPartialUpdate: (id: string, data: PatchedAdminUserAddress, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserAddressResponse, any>>;
+        usersAddressesPartialUpdate: (id: string, data: PatchedAdminUserAddress, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserAddressResponse, any>>;
         /**
          * No description
          *
@@ -32399,7 +32395,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/addresses/{id}/
          * @secure
          */
-        usersAddressesDestroy: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersAddressesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -32409,7 +32405,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/bank-accounts/
          * @secure
          */
-        usersBankAccountsList: (query: UsersBankAccountsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminUserBankAccountListResponse, any>>;
+        usersBankAccountsList: (query: UsersBankAccountsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminUserBankAccountListResponse, any>>;
         /**
          * No description
          *
@@ -32419,7 +32415,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/users/bank-accounts/
          * @secure
          */
-        usersBankAccountsCreate: (data: AdminCreateUserBankAccount, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserBankAccountResponse, any>>;
+        usersBankAccountsCreate: (data: AdminCreateUserBankAccount, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserBankAccountResponse, any>>;
         /**
          * No description
          *
@@ -32429,7 +32425,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/bank-accounts/{id}/
          * @secure
          */
-        usersBankAccountsRetrieve: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserBankAccountResponse, any>>;
+        usersBankAccountsRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserBankAccountResponse, any>>;
         /**
          * No description
          *
@@ -32439,7 +32435,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/users/bank-accounts/{id}/
          * @secure
          */
-        usersBankAccountsUpdate: (id: string, data: AdminUserBankAccount, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserBankAccountResponse, any>>;
+        usersBankAccountsUpdate: (id: string, data: AdminUserBankAccount, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserBankAccountResponse, any>>;
         /**
          * No description
          *
@@ -32449,7 +32445,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/users/bank-accounts/{id}/
          * @secure
          */
-        usersBankAccountsPartialUpdate: (id: string, data: PatchedAdminUserBankAccount, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserBankAccountResponse, any>>;
+        usersBankAccountsPartialUpdate: (id: string, data: PatchedAdminUserBankAccount, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserBankAccountResponse, any>>;
         /**
          * No description
          *
@@ -32459,7 +32455,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/bank-accounts/{id}/
          * @secure
          */
-        usersBankAccountsDestroy: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersBankAccountsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -32469,7 +32465,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/bank-accounts/{id}/account-currencies/
          * @secure
          */
-        usersBankAccountsAccountCurrenciesList: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminReducedAccountAssetListResponse, any>>;
+        usersBankAccountsAccountCurrenciesList: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminReducedAccountAssetListResponse, any>>;
         /**
          * No description
          *
@@ -32479,7 +32475,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/users/bank-accounts/{id}/account-currencies/
          * @secure
          */
-        usersBankAccountsAccountCurrenciesCreate: (id: string, data: AdminCreateUserBankAccountAccountAsset, params?: RequestParams$a) => Promise<HttpResponse$a<AdminReducedAccountAssetResponse, any>>;
+        usersBankAccountsAccountCurrenciesCreate: (id: string, data: AdminCreateUserBankAccountAccountAsset, params?: RequestParams$b) => Promise<HttpResponse$a<AdminReducedAccountAssetResponse, any>>;
         /**
          * No description
          *
@@ -32489,7 +32485,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/bank-accounts/{id}/account-currencies/{account_currency_id}/
          * @secure
          */
-        usersBankAccountsAccountCurrenciesRetrieve: (accountCurrencyId: string, id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AccountAssetResponse, any>>;
+        usersBankAccountsAccountCurrenciesRetrieve: (accountCurrencyId: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AccountAssetResponse, any>>;
         /**
          * No description
          *
@@ -32499,7 +32495,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/bank-accounts/{id}/account-currencies/{account_currency_id}/
          * @secure
          */
-        usersBankAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersBankAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -32510,7 +32506,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @deprecated
          * @secure
          */
-        usersBankAccountsCurrenciesList: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserBankAccountAssetListResponse, any>>;
+        usersBankAccountsCurrenciesList: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserBankAccountAssetListResponse, any>>;
         /**
          * No description
          *
@@ -32521,7 +32517,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @deprecated
          * @secure
          */
-        usersBankAccountsCurrenciesCreate: (id: string, data: AdminCreateUserBankAccountAsset, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserBankAccountAssetResponse, any>>;
+        usersBankAccountsCurrenciesCreate: (id: string, data: AdminCreateUserBankAccountAsset, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserBankAccountAssetResponse, any>>;
         /**
          * No description
          *
@@ -32532,7 +32528,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @deprecated
          * @secure
          */
-        usersBankAccountsCurrenciesRetrieve: (code: string, id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserBankAccountAssetResponse, any>>;
+        usersBankAccountsCurrenciesRetrieve: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserBankAccountAssetResponse, any>>;
         /**
          * No description
          *
@@ -32543,7 +32539,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @deprecated
          * @secure
          */
-        usersBankAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersBankAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -32553,7 +32549,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/crypto-accounts/
          * @secure
          */
-        usersCryptoAccountsList: (query: UsersCryptoAccountsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminCryptoAccountListResponse, any>>;
+        usersCryptoAccountsList: (query: UsersCryptoAccountsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminCryptoAccountListResponse, any>>;
         /**
          * No description
          *
@@ -32563,7 +32559,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/users/crypto-accounts/
          * @secure
          */
-        usersCryptoAccountsCreate: (data: AdminCreateCryptoAccount, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCryptoAccountResponse, any>>;
+        usersCryptoAccountsCreate: (data: AdminCreateCryptoAccount, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCryptoAccountResponse, any>>;
         /**
          * No description
          *
@@ -32573,7 +32569,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/crypto-accounts/{id}/
          * @secure
          */
-        usersCryptoAccountsRetrieve: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCryptoAccountResponse, any>>;
+        usersCryptoAccountsRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCryptoAccountResponse, any>>;
         /**
          * No description
          *
@@ -32583,7 +32579,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/users/crypto-accounts/{id}/
          * @secure
          */
-        usersCryptoAccountsUpdate: (id: string, data: AdminCryptoAccount, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCryptoAccountResponse, any>>;
+        usersCryptoAccountsUpdate: (id: string, data: AdminCryptoAccount, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCryptoAccountResponse, any>>;
         /**
          * No description
          *
@@ -32593,7 +32589,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/users/crypto-accounts/{id}/
          * @secure
          */
-        usersCryptoAccountsPartialUpdate: (id: string, data: PatchedAdminCryptoAccount, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCryptoAccountResponse, any>>;
+        usersCryptoAccountsPartialUpdate: (id: string, data: PatchedAdminCryptoAccount, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCryptoAccountResponse, any>>;
         /**
          * No description
          *
@@ -32603,7 +32599,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/crypto-accounts/{id}/
          * @secure
          */
-        usersCryptoAccountsDestroy: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersCryptoAccountsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -32613,7 +32609,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/crypto-accounts/{id}/account-currencies/
          * @secure
          */
-        usersCryptoAccountsAccountCurrenciesList: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminReducedAccountAssetListResponse, any>>;
+        usersCryptoAccountsAccountCurrenciesList: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminReducedAccountAssetListResponse, any>>;
         /**
          * No description
          *
@@ -32623,7 +32619,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/users/crypto-accounts/{id}/account-currencies/
          * @secure
          */
-        usersCryptoAccountsAccountCurrenciesCreate: (id: string, data: AdminCreateCryptoAccountAccountAsset, params?: RequestParams$a) => Promise<HttpResponse$a<AdminReducedAccountAssetResponse, any>>;
+        usersCryptoAccountsAccountCurrenciesCreate: (id: string, data: AdminCreateCryptoAccountAccountAsset, params?: RequestParams$b) => Promise<HttpResponse$a<AdminReducedAccountAssetResponse, any>>;
         /**
          * No description
          *
@@ -32633,7 +32629,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/crypto-accounts/{id}/account-currencies/{account_currency_id}/
          * @secure
          */
-        usersCryptoAccountsAccountCurrenciesRetrieve: (accountCurrencyId: string, id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AccountAssetResponse, any>>;
+        usersCryptoAccountsAccountCurrenciesRetrieve: (accountCurrencyId: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AccountAssetResponse, any>>;
         /**
          * No description
          *
@@ -32643,7 +32639,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/crypto-accounts/{id}/account-currencies/{account_currency_id}/
          * @secure
          */
-        usersCryptoAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersCryptoAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -32654,7 +32650,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @deprecated
          * @secure
          */
-        usersCryptoAccountsCurrenciesList: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCryptoAccountAssetListResponse, any>>;
+        usersCryptoAccountsCurrenciesList: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCryptoAccountAssetListResponse, any>>;
         /**
          * No description
          *
@@ -32665,7 +32661,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @deprecated
          * @secure
          */
-        usersCryptoAccountsCurrenciesCreate: (id: string, data: AdminCreateCryptoAccountAsset, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCryptoAccountAssetResponse, any>>;
+        usersCryptoAccountsCurrenciesCreate: (id: string, data: AdminCreateCryptoAccountAsset, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCryptoAccountAssetResponse, any>>;
         /**
          * No description
          *
@@ -32676,7 +32672,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @deprecated
          * @secure
          */
-        usersCryptoAccountsCurrenciesRetrieve: (code: string, id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCryptoAccountAssetResponse, any>>;
+        usersCryptoAccountsCurrenciesRetrieve: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCryptoAccountAssetResponse, any>>;
         /**
          * No description
          *
@@ -32687,7 +32683,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @deprecated
          * @secure
          */
-        usersCryptoAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersCryptoAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -32697,7 +32693,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/devices/
          * @secure
          */
-        usersDevicesList: (query: UsersDevicesListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminDeviceListResponse, any>>;
+        usersDevicesList: (query: UsersDevicesListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminDeviceListResponse, any>>;
         /**
          * No description
          *
@@ -32707,7 +32703,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/users/devices/
          * @secure
          */
-        usersDevicesCreate: (data: AdminCreateDevice, params?: RequestParams$a) => Promise<HttpResponse$a<AdminDeviceResponse, any>>;
+        usersDevicesCreate: (data: AdminCreateDevice, params?: RequestParams$b) => Promise<HttpResponse$a<AdminDeviceResponse, any>>;
         /**
          * No description
          *
@@ -32717,7 +32713,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/devices/{device_id}/apps/{app_id}/
          * @secure
          */
-        usersDevicesAppsRetrieve: (appId: string, deviceId: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminDeviceAppResponse, any>>;
+        usersDevicesAppsRetrieve: (appId: string, deviceId: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminDeviceAppResponse, any>>;
         /**
          * No description
          *
@@ -32727,7 +32723,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/users/devices/{device_id}/apps/{app_id}/
          * @secure
          */
-        usersDevicesAppsUpdate: (appId: string, deviceId: string, data: AdminDeviceApp, params?: RequestParams$a) => Promise<HttpResponse$a<AdminDeviceAppResponse, any>>;
+        usersDevicesAppsUpdate: (appId: string, deviceId: string, data: AdminDeviceApp, params?: RequestParams$b) => Promise<HttpResponse$a<AdminDeviceAppResponse, any>>;
         /**
          * No description
          *
@@ -32737,7 +32733,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/users/devices/{device_id}/apps/{app_id}/
          * @secure
          */
-        usersDevicesAppsPartialUpdate: (appId: string, deviceId: string, data: PatchedAdminDeviceApp, params?: RequestParams$a) => Promise<HttpResponse$a<AdminDeviceAppResponse, any>>;
+        usersDevicesAppsPartialUpdate: (appId: string, deviceId: string, data: PatchedAdminDeviceApp, params?: RequestParams$b) => Promise<HttpResponse$a<AdminDeviceAppResponse, any>>;
         /**
          * No description
          *
@@ -32747,7 +32743,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/devices/{device_id}/apps/{app_id}/
          * @secure
          */
-        usersDevicesAppsDestroy: (appId: string, deviceId: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersDevicesAppsDestroy: (appId: string, deviceId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -32757,7 +32753,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/devices/{id}/
          * @secure
          */
-        usersDevicesRetrieve: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminDeviceResponse, any>>;
+        usersDevicesRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminDeviceResponse, any>>;
         /**
          * No description
          *
@@ -32767,7 +32763,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/users/devices/{id}/
          * @secure
          */
-        usersDevicesUpdate: (id: string, data: AdminDevice, params?: RequestParams$a) => Promise<HttpResponse$a<AdminDeviceResponse, any>>;
+        usersDevicesUpdate: (id: string, data: AdminDevice, params?: RequestParams$b) => Promise<HttpResponse$a<AdminDeviceResponse, any>>;
         /**
          * No description
          *
@@ -32777,7 +32773,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/users/devices/{id}/
          * @secure
          */
-        usersDevicesPartialUpdate: (id: string, data: PatchedAdminDevice, params?: RequestParams$a) => Promise<HttpResponse$a<AdminDeviceResponse, any>>;
+        usersDevicesPartialUpdate: (id: string, data: PatchedAdminDevice, params?: RequestParams$b) => Promise<HttpResponse$a<AdminDeviceResponse, any>>;
         /**
          * No description
          *
@@ -32787,7 +32783,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/devices/{id}/
          * @secure
          */
-        usersDevicesDestroy: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersDevicesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -32797,7 +32793,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/devices/{id}/apps/
          * @secure
          */
-        usersDevicesAppsList: ({ id, ...query }: UsersDevicesAppsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminDeviceAppListResponse, any>>;
+        usersDevicesAppsList: ({ id, ...query }: UsersDevicesAppsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminDeviceAppListResponse, any>>;
         /**
          * No description
          *
@@ -32807,7 +32803,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/users/devices/{id}/apps/
          * @secure
          */
-        usersDevicesAppsCreate: (id: string, data: AdminCreateDeviceApp, params?: RequestParams$a) => Promise<HttpResponse$a<AdminDeviceAppResponse, any>>;
+        usersDevicesAppsCreate: (id: string, data: AdminCreateDeviceApp, params?: RequestParams$b) => Promise<HttpResponse$a<AdminDeviceAppResponse, any>>;
         /**
          * No description
          *
@@ -32817,7 +32813,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/documents/
          * @secure
          */
-        usersDocumentsList: (query: UsersDocumentsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminUserDocumentListResponse, any>>;
+        usersDocumentsList: (query: UsersDocumentsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminUserDocumentListResponse, any>>;
         /**
          * No description
          *
@@ -32827,7 +32823,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/users/documents/
          * @secure
          */
-        usersDocumentsCreate: (data: AdminCreateUserDocument, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserDocumentResponse, any>>;
+        usersDocumentsCreate: (data: AdminCreateUserDocument, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserDocumentResponse, any>>;
         /**
          * No description
          *
@@ -32837,7 +32833,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/documents/{id}/
          * @secure
          */
-        usersDocumentsRetrieve: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserDocumentResponse, any>>;
+        usersDocumentsRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserDocumentResponse, any>>;
         /**
          * No description
          *
@@ -32847,7 +32843,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/users/documents/{id}/
          * @secure
          */
-        usersDocumentsUpdate: (id: string, data: AdminUpdateUserDocument, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserDocumentResponse, any>>;
+        usersDocumentsUpdate: (id: string, data: AdminUpdateUserDocument, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserDocumentResponse, any>>;
         /**
          * No description
          *
@@ -32857,7 +32853,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/users/documents/{id}/
          * @secure
          */
-        usersDocumentsPartialUpdate: (id: string, data: PatchedAdminUpdateUserDocument, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserDocumentResponse, any>>;
+        usersDocumentsPartialUpdate: (id: string, data: PatchedAdminUpdateUserDocument, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserDocumentResponse, any>>;
         /**
          * No description
          *
@@ -32867,7 +32863,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/documents/{id}/
          * @secure
          */
-        usersDocumentsDestroy: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersDocumentsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -32877,7 +32873,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/emails/
          * @secure
          */
-        usersEmailsList: (query: UsersEmailsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminEmailListResponse, any>>;
+        usersEmailsList: (query: UsersEmailsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminEmailListResponse, any>>;
         /**
          * No description
          *
@@ -32887,7 +32883,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/users/emails/
          * @secure
          */
-        usersEmailsCreate: (data: AdminCreateEmail, params?: RequestParams$a) => Promise<HttpResponse$a<AdminEmailResponse, any>>;
+        usersEmailsCreate: (data: AdminCreateEmail, params?: RequestParams$b) => Promise<HttpResponse$a<AdminEmailResponse, any>>;
         /**
          * No description
          *
@@ -32897,7 +32893,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/emails/{id}/
          * @secure
          */
-        usersEmailsRetrieve: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminEmailResponse, any>>;
+        usersEmailsRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminEmailResponse, any>>;
         /**
          * No description
          *
@@ -32907,7 +32903,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/users/emails/{id}/
          * @secure
          */
-        usersEmailsUpdate: (id: string, data: AdminEmail, params?: RequestParams$a) => Promise<HttpResponse$a<AdminEmailResponse, any>>;
+        usersEmailsUpdate: (id: string, data: AdminEmail, params?: RequestParams$b) => Promise<HttpResponse$a<AdminEmailResponse, any>>;
         /**
          * No description
          *
@@ -32917,7 +32913,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/users/emails/{id}/
          * @secure
          */
-        usersEmailsPartialUpdate: (id: string, data: PatchedAdminEmail, params?: RequestParams$a) => Promise<HttpResponse$a<AdminEmailResponse, any>>;
+        usersEmailsPartialUpdate: (id: string, data: PatchedAdminEmail, params?: RequestParams$b) => Promise<HttpResponse$a<AdminEmailResponse, any>>;
         /**
          * No description
          *
@@ -32927,7 +32923,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/emails/{id}/
          * @secure
          */
-        usersEmailsDestroy: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersEmailsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -32937,7 +32933,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/mfa/authenticators/
          * @secure
          */
-        usersMfaAuthenticatorsList: (query: UsersMfaAuthenticatorsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminMFAAuthenticatorListResponse, any>>;
+        usersMfaAuthenticatorsList: (query: UsersMfaAuthenticatorsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminMFAAuthenticatorListResponse, any>>;
         /**
          * No description
          *
@@ -32947,7 +32943,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/mfa/authenticators/{identifier}/
          * @secure
          */
-        usersMfaAuthenticatorsRetrieve: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminMFAAuthenticatorResponse, any>>;
+        usersMfaAuthenticatorsRetrieve: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminMFAAuthenticatorResponse, any>>;
         /**
          * No description
          *
@@ -32957,7 +32953,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/mfa/authenticators/{identifier}/
          * @secure
          */
-        usersMfaAuthenticatorsDestroy: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersMfaAuthenticatorsDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -32967,7 +32963,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/mobiles/
          * @secure
          */
-        usersMobilesList: (query: UsersMobilesListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminMobileListResponse, any>>;
+        usersMobilesList: (query: UsersMobilesListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminMobileListResponse, any>>;
         /**
          * No description
          *
@@ -32977,7 +32973,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/users/mobiles/
          * @secure
          */
-        usersMobilesCreate: (data: AdminCreateMobile, params?: RequestParams$a) => Promise<HttpResponse$a<AdminMobileResponse, any>>;
+        usersMobilesCreate: (data: AdminCreateMobile, params?: RequestParams$b) => Promise<HttpResponse$a<AdminMobileResponse, any>>;
         /**
          * No description
          *
@@ -32987,7 +32983,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/mobiles/{id}/
          * @secure
          */
-        usersMobilesRetrieve: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminMobileResponse, any>>;
+        usersMobilesRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminMobileResponse, any>>;
         /**
          * No description
          *
@@ -32997,7 +32993,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/users/mobiles/{id}/
          * @secure
          */
-        usersMobilesUpdate: (id: string, data: AdminMobile, params?: RequestParams$a) => Promise<HttpResponse$a<AdminMobileResponse, any>>;
+        usersMobilesUpdate: (id: string, data: AdminMobile, params?: RequestParams$b) => Promise<HttpResponse$a<AdminMobileResponse, any>>;
         /**
          * No description
          *
@@ -33007,7 +33003,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/users/mobiles/{id}/
          * @secure
          */
-        usersMobilesPartialUpdate: (id: string, data: PatchedAdminMobile, params?: RequestParams$a) => Promise<HttpResponse$a<AdminMobileResponse, any>>;
+        usersMobilesPartialUpdate: (id: string, data: PatchedAdminMobile, params?: RequestParams$b) => Promise<HttpResponse$a<AdminMobileResponse, any>>;
         /**
          * No description
          *
@@ -33017,7 +33013,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/mobiles/{id}/
          * @secure
          */
-        usersMobilesDestroy: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersMobilesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -33027,7 +33023,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/overview/
          * @secure
          */
-        usersOverviewRetrieve: (params?: RequestParams$a) => Promise<HttpResponse$a<AdminOverviewUserResponse, any>>;
+        usersOverviewRetrieve: (params?: RequestParams$b) => Promise<HttpResponse$a<AdminOverviewUserResponse, any>>;
         /**
          * No description
          *
@@ -33037,7 +33033,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/tokens/
          * @secure
          */
-        usersTokensList: (query: UsersTokensListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminAuthTokenListResponse, any>>;
+        usersTokensList: (query: UsersTokensListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminAuthTokenListResponse, any>>;
         /**
          * No description
          *
@@ -33047,7 +33043,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/users/tokens/
          * @secure
          */
-        usersTokensCreate: (data: AdminCreateAuthToken, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedAuthTokenResponse, any>>;
+        usersTokensCreate: (data: AdminCreateAuthToken, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedAuthTokenResponse, any>>;
         /**
          * No description
          *
@@ -33057,7 +33053,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/tokens/
          * @secure
          */
-        adminUsersTokensListDestroy: (params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        adminUsersTokensListDestroy: (params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -33067,7 +33063,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/tokens/{token_key}/
          * @secure
          */
-        usersTokensRetrieve: (tokenKey: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAuthTokenResponse, any>>;
+        usersTokensRetrieve: (tokenKey: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAuthTokenResponse, any>>;
         /**
          * No description
          *
@@ -33077,7 +33073,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/users/tokens/{token_key}/
          * @secure
          */
-        usersTokensUpdate: (tokenKey: string, data: AdminUpdateAuthToken, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAuthTokenResponse, any>>;
+        usersTokensUpdate: (tokenKey: string, data: AdminUpdateAuthToken, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAuthTokenResponse, any>>;
         /**
          * No description
          *
@@ -33087,7 +33083,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/users/tokens/{token_key}/
          * @secure
          */
-        usersTokensPartialUpdate: (tokenKey: string, data: PatchedAdminUpdateAuthToken, params?: RequestParams$a) => Promise<HttpResponse$a<AdminAuthTokenResponse, any>>;
+        usersTokensPartialUpdate: (tokenKey: string, data: PatchedAdminUpdateAuthToken, params?: RequestParams$b) => Promise<HttpResponse$a<AdminAuthTokenResponse, any>>;
         /**
          * No description
          *
@@ -33097,7 +33093,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/tokens/{token_key}/
          * @secure
          */
-        usersTokensDestroy: (tokenKey: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersTokensDestroy: (tokenKey: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -33107,7 +33103,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/wallet-accounts/
          * @secure
          */
-        usersWalletAccountsList: (query: UsersWalletAccountsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminUserWalletAccountListResponse, any>>;
+        usersWalletAccountsList: (query: UsersWalletAccountsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminUserWalletAccountListResponse, any>>;
         /**
          * No description
          *
@@ -33117,7 +33113,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/users/wallet-accounts/
          * @secure
          */
-        usersWalletAccountsCreate: (data: AdminCreateUserWalletAccount, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserWalletAccountResponse, any>>;
+        usersWalletAccountsCreate: (data: AdminCreateUserWalletAccount, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserWalletAccountResponse, any>>;
         /**
          * No description
          *
@@ -33127,7 +33123,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/wallet-accounts/{id}/
          * @secure
          */
-        usersWalletAccountsRetrieve: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserWalletAccountResponse, any>>;
+        usersWalletAccountsRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserWalletAccountResponse, any>>;
         /**
          * No description
          *
@@ -33137,7 +33133,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/users/wallet-accounts/{id}/
          * @secure
          */
-        usersWalletAccountsUpdate: (id: string, data: AdminUserWalletAccount, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserWalletAccountResponse, any>>;
+        usersWalletAccountsUpdate: (id: string, data: AdminUserWalletAccount, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserWalletAccountResponse, any>>;
         /**
          * No description
          *
@@ -33147,7 +33143,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/users/wallet-accounts/{id}/
          * @secure
          */
-        usersWalletAccountsPartialUpdate: (id: string, data: PatchedAdminUserWalletAccount, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserWalletAccountResponse, any>>;
+        usersWalletAccountsPartialUpdate: (id: string, data: PatchedAdminUserWalletAccount, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserWalletAccountResponse, any>>;
         /**
          * No description
          *
@@ -33157,7 +33153,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/wallet-accounts/{id}/
          * @secure
          */
-        usersWalletAccountsDestroy: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersWalletAccountsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -33167,7 +33163,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/wallet-accounts/{id}/account-currencies/
          * @secure
          */
-        usersWalletAccountsAccountCurrenciesList: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminReducedAccountAssetListResponse, any>>;
+        usersWalletAccountsAccountCurrenciesList: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminReducedAccountAssetListResponse, any>>;
         /**
          * No description
          *
@@ -33177,7 +33173,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/users/wallet-accounts/{id}/account-currencies/
          * @secure
          */
-        usersWalletAccountsAccountCurrenciesCreate: (id: string, data: AdminCreateUserWalletAccountAccountAsset, params?: RequestParams$a) => Promise<HttpResponse$a<AdminReducedAccountAssetResponse, any>>;
+        usersWalletAccountsAccountCurrenciesCreate: (id: string, data: AdminCreateUserWalletAccountAccountAsset, params?: RequestParams$b) => Promise<HttpResponse$a<AdminReducedAccountAssetResponse, any>>;
         /**
          * No description
          *
@@ -33187,7 +33183,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/users/wallet-accounts/{id}/account-currencies/{account_currency_id}/
          * @secure
          */
-        usersWalletAccountsAccountCurrenciesRetrieve: (accountCurrencyId: string, id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AccountAssetResponse, any>>;
+        usersWalletAccountsAccountCurrenciesRetrieve: (accountCurrencyId: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AccountAssetResponse, any>>;
         /**
          * No description
          *
@@ -33197,7 +33193,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/wallet-accounts/{id}/account-currencies/{account_currency_id}/
          * @secure
          */
-        usersWalletAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersWalletAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -33208,7 +33204,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @deprecated
          * @secure
          */
-        usersWalletAccountsCurrenciesList: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserWalletAccountAssetListResponse, any>>;
+        usersWalletAccountsCurrenciesList: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserWalletAccountAssetListResponse, any>>;
         /**
          * No description
          *
@@ -33219,7 +33215,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @deprecated
          * @secure
          */
-        usersWalletAccountsCurrenciesCreate: (id: string, data: AdminCreateUserWalletAccountAsset, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserWalletAccountAssetResponse, any>>;
+        usersWalletAccountsCurrenciesCreate: (id: string, data: AdminCreateUserWalletAccountAsset, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserWalletAccountAssetResponse, any>>;
         /**
          * No description
          *
@@ -33230,7 +33226,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @deprecated
          * @secure
          */
-        usersWalletAccountsCurrenciesRetrieve: (code: string, id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminUserWalletAccountAssetResponse, any>>;
+        usersWalletAccountsCurrenciesRetrieve: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminUserWalletAccountAssetResponse, any>>;
         /**
          * No description
          *
@@ -33241,7 +33237,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @deprecated
          * @secure
          */
-        usersWalletAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersWalletAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -33251,7 +33247,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/wallet-accounts/
          * @secure
          */
-        walletAccountsList: (query: WalletAccountsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminCompanyWalletAccountListResponse, any>>;
+        walletAccountsList: (query: WalletAccountsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminCompanyWalletAccountListResponse, any>>;
         /**
          * No description
          *
@@ -33261,7 +33257,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/wallet-accounts/
          * @secure
          */
-        walletAccountsCreate: (data: AdminCompanyWalletAccount, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyWalletAccountResponse, any>>;
+        walletAccountsCreate: (data: AdminCompanyWalletAccount, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyWalletAccountResponse, any>>;
         /**
          * No description
          *
@@ -33271,7 +33267,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/wallet-accounts/{id}/
          * @secure
          */
-        walletAccountsRetrieve: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyWalletAccountResponse, any>>;
+        walletAccountsRetrieve: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyWalletAccountResponse, any>>;
         /**
          * No description
          *
@@ -33281,7 +33277,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/wallet-accounts/{id}/
          * @secure
          */
-        walletAccountsUpdate: (id: string, data: AdminCompanyWalletAccount, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyWalletAccountResponse, any>>;
+        walletAccountsUpdate: (id: string, data: AdminCompanyWalletAccount, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyWalletAccountResponse, any>>;
         /**
          * No description
          *
@@ -33291,7 +33287,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/wallet-accounts/{id}/
          * @secure
          */
-        walletAccountsPartialUpdate: (id: string, data: PatchedAdminCompanyWalletAccount, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyWalletAccountResponse, any>>;
+        walletAccountsPartialUpdate: (id: string, data: PatchedAdminCompanyWalletAccount, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyWalletAccountResponse, any>>;
         /**
          * No description
          *
@@ -33301,7 +33297,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/wallet-accounts/{id}/
          * @secure
          */
-        walletAccountsDestroy: (id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        walletAccountsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -33311,7 +33307,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/wallet-accounts/{id}/currencies/
          * @secure
          */
-        walletAccountsCurrenciesList: ({ id, ...query }: WalletAccountsCurrenciesListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminCompanyWalletAccountAssetListResponse, any>>;
+        walletAccountsCurrenciesList: ({ id, ...query }: WalletAccountsCurrenciesListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminCompanyWalletAccountAssetListResponse, any>>;
         /**
          * No description
          *
@@ -33321,7 +33317,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/wallet-accounts/{id}/currencies/
          * @secure
          */
-        walletAccountsCurrenciesCreate: (id: string, data: AdminCreateCompanyWalletAccountAsset, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyWalletAccountAssetResponse, any>>;
+        walletAccountsCurrenciesCreate: (id: string, data: AdminCreateCompanyWalletAccountAsset, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyWalletAccountAssetResponse, any>>;
         /**
          * No description
          *
@@ -33331,7 +33327,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/wallet-accounts/{id}/currencies/{code}/
          * @secure
          */
-        walletAccountsCurrenciesRetrieve: (code: string, id: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminCompanyWalletAccountAssetResponse, any>>;
+        walletAccountsCurrenciesRetrieve: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyWalletAccountAssetResponse, any>>;
         /**
          * No description
          *
@@ -33341,7 +33337,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/wallet-accounts/{id}/currencies/{code}/
          * @secure
          */
-        walletAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        walletAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
         /**
          * No description
          *
@@ -33351,7 +33347,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/webhook-tasks/
          * @secure
          */
-        webhookTasksList: (query: WebhookTasksListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminWebhookTaskListResponse, any>>;
+        webhookTasksList: (query: WebhookTasksListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminWebhookTaskListResponse, any>>;
         /**
          * No description
          *
@@ -33361,7 +33357,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/webhook-tasks/{webhhook_task_id}/
          * @secure
          */
-        webhookTasksRetrieve: (webhhookTaskId: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminExtendedWebhookTaskResponse, any>>;
+        webhookTasksRetrieve: (webhhookTaskId: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminExtendedWebhookTaskResponse, any>>;
         /**
          * No description
          *
@@ -33371,7 +33367,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/webhook-tasks/{webhhook_task_id}/requests/
          * @secure
          */
-        webhookTasksRequestsList: ({ webhhookTaskId, ...query }: WebhookTasksRequestsListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminWebhookRequestListResponse, any>>;
+        webhookTasksRequestsList: ({ webhhookTaskId, ...query }: WebhookTasksRequestsListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminWebhookRequestListResponse, any>>;
         /**
          * No description
          *
@@ -33381,7 +33377,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/webhook-tasks/{webhhook_task_id}/requests/{webhook_request_id}/
          * @secure
          */
-        webhookTasksRequestsRetrieve: (webhhookTaskId: string, webhookRequestId: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminWebhookRequestResponse, any>>;
+        webhookTasksRequestsRetrieve: (webhhookTaskId: string, webhookRequestId: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminWebhookRequestResponse, any>>;
         /**
          * No description
          *
@@ -33391,7 +33387,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/webhooks/
          * @secure
          */
-        webhooksList: (query: WebhooksListParams, params?: RequestParams$a) => Promise<HttpResponse$a<PaginatedAdminWebhookListResponse$1, any>>;
+        webhooksList: (query: WebhooksListParams, params?: RequestParams$b) => Promise<HttpResponse$a<PaginatedAdminWebhookListResponse$1, any>>;
         /**
          * No description
          *
@@ -33401,7 +33397,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/webhooks/
          * @secure
          */
-        webhooksCreate: (data: AdminWebhook$1, params?: RequestParams$a) => Promise<HttpResponse$a<AdminWebhookResponse$1, any>>;
+        webhooksCreate: (data: AdminWebhook$1, params?: RequestParams$b) => Promise<HttpResponse$a<AdminWebhookResponse$1, any>>;
         /**
          * No description
          *
@@ -33411,7 +33407,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/webhooks/{webhhook_id}/
          * @secure
          */
-        webhooksRetrieve: (webhhookId: string, params?: RequestParams$a) => Promise<HttpResponse$a<AdminWebhookResponse$1, any>>;
+        webhooksRetrieve: (webhhookId: string, params?: RequestParams$b) => Promise<HttpResponse$a<AdminWebhookResponse$1, any>>;
         /**
          * No description
          *
@@ -33421,7 +33417,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/webhooks/{webhhook_id}/
          * @secure
          */
-        webhooksUpdate: (webhhookId: string, data: AdminWebhook$1, params?: RequestParams$a) => Promise<HttpResponse$a<AdminWebhookResponse$1, any>>;
+        webhooksUpdate: (webhhookId: string, data: AdminWebhook$1, params?: RequestParams$b) => Promise<HttpResponse$a<AdminWebhookResponse$1, any>>;
         /**
          * No description
          *
@@ -33431,7 +33427,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/webhooks/{webhhook_id}/
          * @secure
          */
-        webhooksPartialUpdate: (webhhookId: string, data: PatchedAdminWebhook$1, params?: RequestParams$a) => Promise<HttpResponse$a<AdminWebhookResponse$1, any>>;
+        webhooksPartialUpdate: (webhhookId: string, data: PatchedAdminWebhook$1, params?: RequestParams$b) => Promise<HttpResponse$a<AdminWebhookResponse$1, any>>;
         /**
          * No description
          *
@@ -33441,7 +33437,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/webhooks/{webhhook_id}/
          * @secure
          */
-        webhooksDestroy: (webhhookId: string, params?: RequestParams$a) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        webhooksDestroy: (webhhookId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
     };
 }
 
@@ -34744,11 +34740,11 @@ interface FullRequestParams$9 extends Omit<RequestInit, "body"> {
     /** request cancellation token */
     cancelToken?: CancelToken$9;
 }
-type RequestParams$9 = Omit<FullRequestParams$9, "body" | "method" | "query" | "path">;
+type RequestParams$a = Omit<FullRequestParams$9, "body" | "method" | "query" | "path">;
 interface ApiConfig$9<SecurityDataType = unknown> {
     baseUrl?: string;
-    baseApiParams?: Omit<RequestParams$9, "baseUrl" | "cancelToken" | "signal">;
-    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$9 | void> | RequestParams$9 | void;
+    baseApiParams?: Omit<RequestParams$a, "baseUrl" | "cancelToken" | "signal">;
+    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$a | void> | RequestParams$a | void;
     customFetch?: typeof fetch;
 }
 interface HttpResponse$9<D extends unknown, E extends unknown = unknown> extends Response {
@@ -34778,7 +34774,7 @@ declare class HttpClient$9<SecurityDataType = unknown> {
     protected toQueryString(rawQuery?: QueryParamsType$9): string;
     protected addQueryParams(rawQuery?: QueryParamsType$9): string;
     private contentFormatters;
-    protected mergeRequestParams(params1: RequestParams$9, params2?: RequestParams$9): RequestParams$9;
+    protected mergeRequestParams(params1: RequestParams$a, params2?: RequestParams$a): RequestParams$a;
     protected createAbortSignal: (cancelToken: CancelToken$9) => AbortSignal | undefined;
     abortRequest: (cancelToken: CancelToken$9) => void;
     request: <T = any, E = any>({ body, secure, path, type, query, format, baseUrl, cancelToken, ...params }: FullRequestParams$9) => Promise<HttpResponse$9<T, E>>;
@@ -34806,7 +34802,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request POST:/activate/
          * @secure
          */
-        activateCreate: (data: Activate$9, params?: RequestParams$9) => Promise<HttpResponse$9<ActionResponse$7, any>>;
+        activateCreate: (data: Activate$9, params?: RequestParams$a) => Promise<HttpResponse$9<ActionResponse$7, any>>;
     };
     admin: {
         /**
@@ -34818,7 +34814,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/admin/company/
          * @secure
          */
-        adminCompanyRetrieve: (params?: RequestParams$9) => Promise<HttpResponse$9<AdminCompanyResponse$7, any>>;
+        adminCompanyRetrieve: (params?: RequestParams$a) => Promise<HttpResponse$9<AdminCompanyResponse$7, any>>;
         /**
          * No description
          *
@@ -34828,7 +34824,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PUT:/admin/company/
          * @secure
          */
-        adminCompanyUpdate: (data: AdminCompany$7, params?: RequestParams$9) => Promise<HttpResponse$9<AdminCompanyResponse$7, any>>;
+        adminCompanyUpdate: (data: AdminCompany$7, params?: RequestParams$a) => Promise<HttpResponse$9<AdminCompanyResponse$7, any>>;
         /**
          * No description
          *
@@ -34838,7 +34834,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PATCH:/admin/company/
          * @secure
          */
-        adminCompanyPartialUpdate: (data: PatchedAdminCompany$5, params?: RequestParams$9) => Promise<HttpResponse$9<AdminCompanyResponse$7, any>>;
+        adminCompanyPartialUpdate: (data: PatchedAdminCompany$5, params?: RequestParams$a) => Promise<HttpResponse$9<AdminCompanyResponse$7, any>>;
         /**
          * No description
          *
@@ -34848,7 +34844,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/admin/conversion-pairs/
          * @secure
          */
-        adminConversionPairsList: (query: AdminConversionPairsListParams, params?: RequestParams$9) => Promise<HttpResponse$9<PaginatedAdminConversionPairListResponse, any>>;
+        adminConversionPairsList: (query: AdminConversionPairsListParams, params?: RequestParams$a) => Promise<HttpResponse$9<PaginatedAdminConversionPairListResponse, any>>;
         /**
          * No description
          *
@@ -34858,7 +34854,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request POST:/admin/conversion-pairs/
          * @secure
          */
-        adminConversionPairsCreate: (data: AdminCreateConversionPair, params?: RequestParams$9) => Promise<HttpResponse$9<AdminConversionPairResponse, any>>;
+        adminConversionPairsCreate: (data: AdminCreateConversionPair, params?: RequestParams$a) => Promise<HttpResponse$9<AdminConversionPairResponse, any>>;
         /**
          * No description
          *
@@ -34868,7 +34864,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/admin/conversion-pairs/{identifier}/
          * @secure
          */
-        adminConversionPairsRetrieve: (identifier: string, params?: RequestParams$9) => Promise<HttpResponse$9<AdminConversionPairResponse, any>>;
+        adminConversionPairsRetrieve: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$9<AdminConversionPairResponse, any>>;
         /**
          * No description
          *
@@ -34878,7 +34874,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PUT:/admin/conversion-pairs/{identifier}/
          * @secure
          */
-        adminConversionPairsUpdate: (identifier: string, data: AdminConversionPair, params?: RequestParams$9) => Promise<HttpResponse$9<AdminConversionPairResponse, any>>;
+        adminConversionPairsUpdate: (identifier: string, data: AdminConversionPair, params?: RequestParams$a) => Promise<HttpResponse$9<AdminConversionPairResponse, any>>;
         /**
          * No description
          *
@@ -34888,7 +34884,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PATCH:/admin/conversion-pairs/{identifier}/
          * @secure
          */
-        adminConversionPairsPartialUpdate: (identifier: string, data: PatchedAdminUpdateConversionPair, params?: RequestParams$9) => Promise<HttpResponse$9<AdminConversionPairResponse, any>>;
+        adminConversionPairsPartialUpdate: (identifier: string, data: PatchedAdminUpdateConversionPair, params?: RequestParams$a) => Promise<HttpResponse$9<AdminConversionPairResponse, any>>;
         /**
          * No description
          *
@@ -34898,7 +34894,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request DELETE:/admin/conversion-pairs/{identifier}/
          * @secure
          */
-        adminConversionPairsDestroy: (identifier: string, params?: RequestParams$9) => Promise<HttpResponse$9<AdminConversionPairResponse, any>>;
+        adminConversionPairsDestroy: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$9<AdminConversionPairResponse, any>>;
         /**
          * No description
          *
@@ -34908,7 +34904,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/admin/conversions/
          * @secure
          */
-        adminConversionsList: (query: AdminConversionsListParams, params?: RequestParams$9) => Promise<HttpResponse$9<PaginatedAdminConversionListResponse, any>>;
+        adminConversionsList: (query: AdminConversionsListParams, params?: RequestParams$a) => Promise<HttpResponse$9<PaginatedAdminConversionListResponse, any>>;
         /**
          * No description
          *
@@ -34918,7 +34914,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request POST:/admin/conversions/
          * @secure
          */
-        adminConversionsCreate: (data: AdminCreateConversion, params?: RequestParams$9) => Promise<HttpResponse$9<AdminConversionResponse, any>>;
+        adminConversionsCreate: (data: AdminCreateConversion, params?: RequestParams$a) => Promise<HttpResponse$9<AdminConversionResponse, any>>;
         /**
          * No description
          *
@@ -34928,7 +34924,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/admin/conversions/{identifier}/
          * @secure
          */
-        adminConversionsRetrieve: (identifier: string, params?: RequestParams$9) => Promise<HttpResponse$9<AdminConversionResponse, any>>;
+        adminConversionsRetrieve: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$9<AdminConversionResponse, any>>;
         /**
          * No description
          *
@@ -34938,7 +34934,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PUT:/admin/conversions/{identifier}/
          * @secure
          */
-        adminConversionsUpdate: (identifier: string, data: AdminUpdateConversion, params?: RequestParams$9) => Promise<HttpResponse$9<AdminConversionResponse, any>>;
+        adminConversionsUpdate: (identifier: string, data: AdminUpdateConversion, params?: RequestParams$a) => Promise<HttpResponse$9<AdminConversionResponse, any>>;
         /**
          * No description
          *
@@ -34948,7 +34944,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PATCH:/admin/conversions/{identifier}/
          * @secure
          */
-        adminConversionsPartialUpdate: (identifier: string, data: PatchedAdminUpdateConversion, params?: RequestParams$9) => Promise<HttpResponse$9<AdminConversionResponse, any>>;
+        adminConversionsPartialUpdate: (identifier: string, data: PatchedAdminUpdateConversion, params?: RequestParams$a) => Promise<HttpResponse$9<AdminConversionResponse, any>>;
         /**
          * No description
          *
@@ -34958,7 +34954,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/admin/currencies/
          * @secure
          */
-        adminCurrenciesList: (query: AdminCurrenciesListParams$4, params?: RequestParams$9) => Promise<HttpResponse$9<PaginatedAdminCurrencyListResponse$1, any>>;
+        adminCurrenciesList: (query: AdminCurrenciesListParams$4, params?: RequestParams$a) => Promise<HttpResponse$9<PaginatedAdminCurrencyListResponse$1, any>>;
         /**
          * No description
          *
@@ -34968,7 +34964,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request POST:/admin/currencies/
          * @secure
          */
-        adminCurrenciesCreate: (data: AdminCurrency$1, params?: RequestParams$9) => Promise<HttpResponse$9<AdminCurrencyResponse$1, any>>;
+        adminCurrenciesCreate: (data: AdminCurrency$1, params?: RequestParams$a) => Promise<HttpResponse$9<AdminCurrencyResponse$1, any>>;
         /**
          * No description
          *
@@ -34978,7 +34974,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/admin/currencies/{code}/
          * @secure
          */
-        adminCurrenciesRetrieve: (code: string, params?: RequestParams$9) => Promise<HttpResponse$9<AdminCurrencyResponse$1, any>>;
+        adminCurrenciesRetrieve: (code: string, params?: RequestParams$a) => Promise<HttpResponse$9<AdminCurrencyResponse$1, any>>;
         /**
          * No description
          *
@@ -34988,7 +34984,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PUT:/admin/currencies/{code}/
          * @secure
          */
-        adminCurrenciesUpdate: (code: string, data: AdminCurrency$1, params?: RequestParams$9) => Promise<HttpResponse$9<AdminCurrencyResponse$1, any>>;
+        adminCurrenciesUpdate: (code: string, data: AdminCurrency$1, params?: RequestParams$a) => Promise<HttpResponse$9<AdminCurrencyResponse$1, any>>;
         /**
          * No description
          *
@@ -34998,7 +34994,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PATCH:/admin/currencies/{code}/
          * @secure
          */
-        adminCurrenciesPartialUpdate: (code: string, data: PatchedAdminCurrency$1, params?: RequestParams$9) => Promise<HttpResponse$9<AdminCurrencyResponse$1, any>>;
+        adminCurrenciesPartialUpdate: (code: string, data: PatchedAdminCurrency$1, params?: RequestParams$a) => Promise<HttpResponse$9<AdminCurrencyResponse$1, any>>;
         /**
          * No description
          *
@@ -35008,7 +35004,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/admin/integrations/
          * @secure
          */
-        adminIntegrationsList: (query: AdminIntegrationsListParams$1, params?: RequestParams$9) => Promise<HttpResponse$9<PaginatedAdminIntegrationListResponse$1, any>>;
+        adminIntegrationsList: (query: AdminIntegrationsListParams$1, params?: RequestParams$a) => Promise<HttpResponse$9<PaginatedAdminIntegrationListResponse$1, any>>;
         /**
          * No description
          *
@@ -35018,7 +35014,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request POST:/admin/integrations/
          * @secure
          */
-        adminIntegrationsCreate: (data: AdminIntegration$1, params?: RequestParams$9) => Promise<HttpResponse$9<AdminIntegrationResponse$1, any>>;
+        adminIntegrationsCreate: (data: AdminIntegration$1, params?: RequestParams$a) => Promise<HttpResponse$9<AdminIntegrationResponse$1, any>>;
         /**
          * No description
          *
@@ -35028,7 +35024,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/admin/integrations/{identifier}/
          * @secure
          */
-        adminIntegrationsRetrieve: (identifier: string, params?: RequestParams$9) => Promise<HttpResponse$9<AdminIntegrationResponse$1, any>>;
+        adminIntegrationsRetrieve: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$9<AdminIntegrationResponse$1, any>>;
         /**
          * No description
          *
@@ -35038,7 +35034,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PUT:/admin/integrations/{identifier}/
          * @secure
          */
-        adminIntegrationsUpdate: (identifier: string, data: AdminIntegration$1, params?: RequestParams$9) => Promise<HttpResponse$9<AdminIntegrationResponse$1, any>>;
+        adminIntegrationsUpdate: (identifier: string, data: AdminIntegration$1, params?: RequestParams$a) => Promise<HttpResponse$9<AdminIntegrationResponse$1, any>>;
         /**
          * No description
          *
@@ -35048,7 +35044,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PATCH:/admin/integrations/{identifier}/
          * @secure
          */
-        adminIntegrationsPartialUpdate: (identifier: string, data: PatchedAdminIntegration$1, params?: RequestParams$9) => Promise<HttpResponse$9<AdminIntegrationResponse$1, any>>;
+        adminIntegrationsPartialUpdate: (identifier: string, data: PatchedAdminIntegration$1, params?: RequestParams$a) => Promise<HttpResponse$9<AdminIntegrationResponse$1, any>>;
         /**
          * No description
          *
@@ -35058,7 +35054,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request DELETE:/admin/integrations/{identifier}/
          * @secure
          */
-        adminIntegrationsDestroy: (identifier: string, params?: RequestParams$9) => Promise<HttpResponse$9<AdminIntegrationResponse$1, any>>;
+        adminIntegrationsDestroy: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$9<AdminIntegrationResponse$1, any>>;
         /**
          * No description
          *
@@ -35068,7 +35064,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/admin/integrations/{identifier}/webhooks/
          * @secure
          */
-        adminIntegrationsWebhooksList: ({ identifier, ...query }: AdminIntegrationsWebhooksListParams$1, params?: RequestParams$9) => Promise<HttpResponse$9<PaginatedAdminIntegrationWebhookListResponse$1, any>>;
+        adminIntegrationsWebhooksList: ({ identifier, ...query }: AdminIntegrationsWebhooksListParams$1, params?: RequestParams$a) => Promise<HttpResponse$9<PaginatedAdminIntegrationWebhookListResponse$1, any>>;
         /**
          * No description
          *
@@ -35078,7 +35074,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request POST:/admin/integrations/{identifier}/webhooks/
          * @secure
          */
-        adminIntegrationsWebhooksCreate: (identifier: string, data: AdminIntegrationWebhook$1, params?: RequestParams$9) => Promise<HttpResponse$9<AdminIntegrationWebhookResponse$1, any>>;
+        adminIntegrationsWebhooksCreate: (identifier: string, data: AdminIntegrationWebhook$1, params?: RequestParams$a) => Promise<HttpResponse$9<AdminIntegrationWebhookResponse$1, any>>;
         /**
          * No description
          *
@@ -35088,7 +35084,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/admin/integrations/{integration_id}/webhooks/{webhook_id}/
          * @secure
          */
-        adminIntegrationsWebhooksRetrieve: (integrationId: string, webhookId: string, params?: RequestParams$9) => Promise<HttpResponse$9<AdminIntegrationWebhookResponse$1, any>>;
+        adminIntegrationsWebhooksRetrieve: (integrationId: string, webhookId: string, params?: RequestParams$a) => Promise<HttpResponse$9<AdminIntegrationWebhookResponse$1, any>>;
         /**
          * No description
          *
@@ -35098,7 +35094,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PUT:/admin/integrations/{integration_id}/webhooks/{webhook_id}/
          * @secure
          */
-        adminIntegrationsWebhooksUpdate: (integrationId: string, webhookId: string, data: AdminIntegrationWebhook$1, params?: RequestParams$9) => Promise<HttpResponse$9<AdminIntegrationWebhookResponse$1, any>>;
+        adminIntegrationsWebhooksUpdate: (integrationId: string, webhookId: string, data: AdminIntegrationWebhook$1, params?: RequestParams$a) => Promise<HttpResponse$9<AdminIntegrationWebhookResponse$1, any>>;
         /**
          * No description
          *
@@ -35108,7 +35104,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PATCH:/admin/integrations/{integration_id}/webhooks/{webhook_id}/
          * @secure
          */
-        adminIntegrationsWebhooksPartialUpdate: (integrationId: string, webhookId: string, data: PatchedAdminIntegrationWebhook$1, params?: RequestParams$9) => Promise<HttpResponse$9<AdminIntegrationWebhookResponse$1, any>>;
+        adminIntegrationsWebhooksPartialUpdate: (integrationId: string, webhookId: string, data: PatchedAdminIntegrationWebhook$1, params?: RequestParams$a) => Promise<HttpResponse$9<AdminIntegrationWebhookResponse$1, any>>;
         /**
          * No description
          *
@@ -35118,7 +35114,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request DELETE:/admin/integrations/{integration_id}/webhooks/{webhook_id}/
          * @secure
          */
-        adminIntegrationsWebhooksDestroy: (integrationId: string, webhookId: string, params?: RequestParams$9) => Promise<HttpResponse$9<AdminIntegrationWebhookResponse$1, any>>;
+        adminIntegrationsWebhooksDestroy: (integrationId: string, webhookId: string, params?: RequestParams$a) => Promise<HttpResponse$9<AdminIntegrationWebhookResponse$1, any>>;
         /**
          * No description
          *
@@ -35128,7 +35124,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/admin/rate-pairs/
          * @secure
          */
-        adminRatePairsList: (query: AdminRatePairsListParams, params?: RequestParams$9) => Promise<HttpResponse$9<PaginatedAdminRatePairListResponse, any>>;
+        adminRatePairsList: (query: AdminRatePairsListParams, params?: RequestParams$a) => Promise<HttpResponse$9<PaginatedAdminRatePairListResponse, any>>;
         /**
          * No description
          *
@@ -35138,7 +35134,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request POST:/admin/rate-pairs/
          * @secure
          */
-        adminRatePairsCreate: (data: AdminCreateRatePair, params?: RequestParams$9) => Promise<HttpResponse$9<AdminRatePairResponse, any>>;
+        adminRatePairsCreate: (data: AdminCreateRatePair, params?: RequestParams$a) => Promise<HttpResponse$9<AdminRatePairResponse, any>>;
         /**
          * No description
          *
@@ -35148,7 +35144,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/admin/rate-pairs/{identifier}/
          * @secure
          */
-        adminRatePairsRetrieve: (identifier: string, params?: RequestParams$9) => Promise<HttpResponse$9<AdminRatePairResponse, any>>;
+        adminRatePairsRetrieve: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$9<AdminRatePairResponse, any>>;
         /**
          * No description
          *
@@ -35158,7 +35154,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PUT:/admin/rate-pairs/{identifier}/
          * @secure
          */
-        adminRatePairsUpdate: (identifier: string, data: AdminRatePair, params?: RequestParams$9) => Promise<HttpResponse$9<AdminRatePairResponse, any>>;
+        adminRatePairsUpdate: (identifier: string, data: AdminRatePair, params?: RequestParams$a) => Promise<HttpResponse$9<AdminRatePairResponse, any>>;
         /**
          * No description
          *
@@ -35168,7 +35164,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PATCH:/admin/rate-pairs/{identifier}/
          * @secure
          */
-        adminRatePairsPartialUpdate: (identifier: string, data: PatchedAdminRatePair, params?: RequestParams$9) => Promise<HttpResponse$9<AdminRatePairResponse, any>>;
+        adminRatePairsPartialUpdate: (identifier: string, data: PatchedAdminRatePair, params?: RequestParams$a) => Promise<HttpResponse$9<AdminRatePairResponse, any>>;
         /**
          * No description
          *
@@ -35178,7 +35174,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request DELETE:/admin/rate-pairs/{identifier}/
          * @secure
          */
-        adminRatePairsDestroy: (identifier: string, params?: RequestParams$9) => Promise<HttpResponse$9<AdminRatePairResponse, any>>;
+        adminRatePairsDestroy: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$9<AdminRatePairResponse, any>>;
         /**
          * No description
          *
@@ -35188,7 +35184,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/admin/users/
          * @secure
          */
-        adminUsersList: (query: AdminUsersListParams$4, params?: RequestParams$9) => Promise<HttpResponse$9<PaginatedAdminUserListResponse$2, any>>;
+        adminUsersList: (query: AdminUsersListParams$4, params?: RequestParams$a) => Promise<HttpResponse$9<PaginatedAdminUserListResponse$2, any>>;
         /**
          * No description
          *
@@ -35198,7 +35194,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/admin/users/{identifier}/
          * @secure
          */
-        adminUsersRetrieve: (identifier: string, params?: RequestParams$9) => Promise<HttpResponse$9<AdminUserResponse$2, any>>;
+        adminUsersRetrieve: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$9<AdminUserResponse$2, any>>;
         /**
          * No description
          *
@@ -35208,7 +35204,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PUT:/admin/users/{identifier}/
          * @secure
          */
-        adminUsersUpdate: (identifier: string, data: AdminUser$4, params?: RequestParams$9) => Promise<HttpResponse$9<AdminUserResponse$2, any>>;
+        adminUsersUpdate: (identifier: string, data: AdminUser$4, params?: RequestParams$a) => Promise<HttpResponse$9<AdminUserResponse$2, any>>;
         /**
          * No description
          *
@@ -35218,7 +35214,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PATCH:/admin/users/{identifier}/
          * @secure
          */
-        adminUsersPartialUpdate: (identifier: string, data: PatchedAdminUser$1, params?: RequestParams$9) => Promise<HttpResponse$9<AdminUserResponse$2, any>>;
+        adminUsersPartialUpdate: (identifier: string, data: PatchedAdminUser$1, params?: RequestParams$a) => Promise<HttpResponse$9<AdminUserResponse$2, any>>;
     };
     deactivate: {
         /**
@@ -35230,7 +35226,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request POST:/deactivate/
          * @secure
          */
-        deactivateCreate: (data: Deactivate$9, params?: RequestParams$9) => Promise<HttpResponse$9<ActionResponse$7, any>>;
+        deactivateCreate: (data: Deactivate$9, params?: RequestParams$a) => Promise<HttpResponse$9<ActionResponse$7, any>>;
     };
     user: {
         /**
@@ -35242,7 +35238,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/user/conversion-pairs/
          * @secure
          */
-        userConversionPairsList: (query: UserConversionPairsListParams, params?: RequestParams$9) => Promise<HttpResponse$9<PaginatedUserConversionPairListResponse, any>>;
+        userConversionPairsList: (query: UserConversionPairsListParams, params?: RequestParams$a) => Promise<HttpResponse$9<PaginatedUserConversionPairListResponse, any>>;
         /**
          * No description
          *
@@ -35252,7 +35248,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/user/conversion-pairs/{identifier}/
          * @secure
          */
-        userConversionPairsRetrieve: (identifier: string, params?: RequestParams$9) => Promise<HttpResponse$9<UserConversionPairResponse, any>>;
+        userConversionPairsRetrieve: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$9<UserConversionPairResponse, any>>;
         /**
          * No description
          *
@@ -35262,7 +35258,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/user/conversions/
          * @secure
          */
-        userConversionsList: (query: UserConversionsListParams, params?: RequestParams$9) => Promise<HttpResponse$9<PaginatedUserConversionListResponse, any>>;
+        userConversionsList: (query: UserConversionsListParams, params?: RequestParams$a) => Promise<HttpResponse$9<PaginatedUserConversionListResponse, any>>;
         /**
          * No description
          *
@@ -35272,7 +35268,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request POST:/user/conversions/
          * @secure
          */
-        userConversionsCreate: (data: UserCreateConversion, params?: RequestParams$9) => Promise<HttpResponse$9<UserConversionResponse, any>>;
+        userConversionsCreate: (data: UserCreateConversion, params?: RequestParams$a) => Promise<HttpResponse$9<UserConversionResponse, any>>;
         /**
          * No description
          *
@@ -35282,7 +35278,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/user/conversions/{identifier}/
          * @secure
          */
-        userConversionsRetrieve: (identifier: string, params?: RequestParams$9) => Promise<HttpResponse$9<UserConversionResponse, any>>;
+        userConversionsRetrieve: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$9<UserConversionResponse, any>>;
         /**
          * No description
          *
@@ -35292,7 +35288,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PUT:/user/conversions/{identifier}/
          * @secure
          */
-        userConversionsUpdate: (identifier: string, data: UserUpdateConversion, params?: RequestParams$9) => Promise<HttpResponse$9<UserConversionResponse, any>>;
+        userConversionsUpdate: (identifier: string, data: UserUpdateConversion, params?: RequestParams$a) => Promise<HttpResponse$9<UserConversionResponse, any>>;
         /**
          * No description
          *
@@ -35302,7 +35298,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PATCH:/user/conversions/{identifier}/
          * @secure
          */
-        userConversionsPartialUpdate: (identifier: string, data: PatchedUserUpdateConversion, params?: RequestParams$9) => Promise<HttpResponse$9<UserConversionResponse, any>>;
+        userConversionsPartialUpdate: (identifier: string, data: PatchedUserUpdateConversion, params?: RequestParams$a) => Promise<HttpResponse$9<UserConversionResponse, any>>;
         /**
          * No description
          *
@@ -35312,7 +35308,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/user/currencies/
          * @secure
          */
-        userCurrenciesList: (query: UserCurrenciesListParams, params?: RequestParams$9) => Promise<HttpResponse$9<PaginatedUserCurrencyListResponse, any>>;
+        userCurrenciesList: (query: UserCurrenciesListParams, params?: RequestParams$a) => Promise<HttpResponse$9<PaginatedUserCurrencyListResponse, any>>;
         /**
          * No description
          *
@@ -35322,7 +35318,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/user/currencies/{code}/
          * @secure
          */
-        userCurrenciesRetrieve: (code: string, params?: RequestParams$9) => Promise<HttpResponse$9<UserCurrencyResponse, any>>;
+        userCurrenciesRetrieve: (code: string, params?: RequestParams$a) => Promise<HttpResponse$9<UserCurrencyResponse, any>>;
         /**
          * No description
          *
@@ -35332,7 +35328,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/user/rates/
          * @secure
          */
-        userRatesList: (query: UserRatesListParams, params?: RequestParams$9) => Promise<HttpResponse$9<PaginatedUserRateListResponse, any>>;
+        userRatesList: (query: UserRatesListParams, params?: RequestParams$a) => Promise<HttpResponse$9<PaginatedUserRateListResponse, any>>;
         /**
          * No description
          *
@@ -35342,7 +35338,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/user/rates/{identifier}/
          * @secure
          */
-        userRatesRetrieve: (identifier: string, params?: RequestParams$9) => Promise<HttpResponse$9<UserRateResponse, any>>;
+        userRatesRetrieve: (identifier: string, params?: RequestParams$a) => Promise<HttpResponse$9<UserRateResponse, any>>;
         /**
          * No description
          *
@@ -35352,7 +35348,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/user/rates/snapshot/
          * @secure
          */
-        userRatesSnapshotRetrieve: (params?: RequestParams$9) => Promise<HttpResponse$9<UserSnapshotRateResponse, any>>;
+        userRatesSnapshotRetrieve: (params?: RequestParams$a) => Promise<HttpResponse$9<UserSnapshotRateResponse, any>>;
         /**
          * No description
          *
@@ -35362,7 +35358,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/user/rates/snapshots/
          * @secure
          */
-        userRatesSnapshotsList: (params?: RequestParams$9) => Promise<HttpResponse$9<NewSnapshotRateListResponse, any>>;
+        userRatesSnapshotsList: (params?: RequestParams$a) => Promise<HttpResponse$9<NewSnapshotRateListResponse, any>>;
         /**
          * No description
          *
@@ -35372,7 +35368,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/user/settings/
          * @secure
          */
-        userSettingsRetrieve: (params?: RequestParams$9) => Promise<HttpResponse$9<UserSettingsResponse, any>>;
+        userSettingsRetrieve: (params?: RequestParams$a) => Promise<HttpResponse$9<UserSettingsResponse, any>>;
         /**
          * No description
          *
@@ -35382,7 +35378,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PUT:/user/settings/
          * @secure
          */
-        userSettingsUpdate: (data: UserUpdateSettings, params?: RequestParams$9) => Promise<HttpResponse$9<UserSettingsResponse, any>>;
+        userSettingsUpdate: (data: UserUpdateSettings, params?: RequestParams$a) => Promise<HttpResponse$9<UserSettingsResponse, any>>;
         /**
          * No description
          *
@@ -35392,7 +35388,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PATCH:/user/settings/
          * @secure
          */
-        userSettingsPartialUpdate: (data: PatchedUserUpdateSettings, params?: RequestParams$9) => Promise<HttpResponse$9<UserSettingsResponse, any>>;
+        userSettingsPartialUpdate: (data: PatchedUserUpdateSettings, params?: RequestParams$a) => Promise<HttpResponse$9<UserSettingsResponse, any>>;
     };
     webhook: {
         /**
@@ -35404,7 +35400,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request POST:/webhook/
          * @secure
          */
-        webhookCreate: (data: Webhook$7, params?: RequestParams$9) => Promise<HttpResponse$9<ActionResponse$7, any>>;
+        webhookCreate: (data: Webhook$7, params?: RequestParams$a) => Promise<HttpResponse$9<ActionResponse$7, any>>;
     };
 }
 
@@ -35759,11 +35755,11 @@ interface FullRequestParams$8 extends Omit<RequestInit, "body"> {
     /** request cancellation token */
     cancelToken?: CancelToken$8;
 }
-type RequestParams$8 = Omit<FullRequestParams$8, "body" | "method" | "query" | "path">;
+type RequestParams$9 = Omit<FullRequestParams$8, "body" | "method" | "query" | "path">;
 interface ApiConfig$8<SecurityDataType = unknown> {
     baseUrl?: string;
-    baseApiParams?: Omit<RequestParams$8, "baseUrl" | "cancelToken" | "signal">;
-    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$8 | void> | RequestParams$8 | void;
+    baseApiParams?: Omit<RequestParams$9, "baseUrl" | "cancelToken" | "signal">;
+    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$9 | void> | RequestParams$9 | void;
     customFetch?: typeof fetch;
 }
 interface HttpResponse$8<D extends unknown, E extends unknown = unknown> extends Response {
@@ -35793,7 +35789,7 @@ declare class HttpClient$8<SecurityDataType = unknown> {
     protected toQueryString(rawQuery?: QueryParamsType$8): string;
     protected addQueryParams(rawQuery?: QueryParamsType$8): string;
     private contentFormatters;
-    protected mergeRequestParams(params1: RequestParams$8, params2?: RequestParams$8): RequestParams$8;
+    protected mergeRequestParams(params1: RequestParams$9, params2?: RequestParams$9): RequestParams$9;
     protected createAbortSignal: (cancelToken: CancelToken$8) => AbortSignal | undefined;
     abortRequest: (cancelToken: CancelToken$8) => void;
     request: <T = any, E = any>({ body, secure, path, type, query, format, baseUrl, cancelToken, ...params }: FullRequestParams$8) => Promise<HttpResponse$8<T, E>>;
@@ -35821,7 +35817,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request POST:/activate/
          * @secure
          */
-        activateCreate: (data: Activate$8, params?: RequestParams$8) => Promise<HttpResponse$8<ActionResponse$6, any>>;
+        activateCreate: (data: Activate$8, params?: RequestParams$9) => Promise<HttpResponse$8<ActionResponse$6, any>>;
     };
     admin: {
         /**
@@ -35833,7 +35829,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request GET:/admin/company/
          * @secure
          */
-        adminCompanyRetrieve: (params?: RequestParams$8) => Promise<HttpResponse$8<AdminCompanyResponse$6, any>>;
+        adminCompanyRetrieve: (params?: RequestParams$9) => Promise<HttpResponse$8<AdminCompanyResponse$6, any>>;
         /**
          * No description
          *
@@ -35843,7 +35839,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request PUT:/admin/company/
          * @secure
          */
-        adminCompanyUpdate: (data: AdminCompany$6, params?: RequestParams$8) => Promise<HttpResponse$8<AdminCompanyResponse$6, any>>;
+        adminCompanyUpdate: (data: AdminCompany$6, params?: RequestParams$9) => Promise<HttpResponse$8<AdminCompanyResponse$6, any>>;
         /**
          * No description
          *
@@ -35853,7 +35849,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request PATCH:/admin/company/
          * @secure
          */
-        adminCompanyPartialUpdate: (data: PatchedAdminCompany$4, params?: RequestParams$8) => Promise<HttpResponse$8<AdminCompanyResponse$6, any>>;
+        adminCompanyPartialUpdate: (data: PatchedAdminCompany$4, params?: RequestParams$9) => Promise<HttpResponse$8<AdminCompanyResponse$6, any>>;
         /**
          * No description
          *
@@ -35863,7 +35859,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request GET:/admin/uploads/
          * @secure
          */
-        adminUploadsList: (query: AdminUploadsListParams, params?: RequestParams$8) => Promise<HttpResponse$8<PaginatedAdminListCreateTransactionBatchListResponse, any>>;
+        adminUploadsList: (query: AdminUploadsListParams, params?: RequestParams$9) => Promise<HttpResponse$8<PaginatedAdminListCreateTransactionBatchListResponse, any>>;
         /**
          * No description
          *
@@ -35873,7 +35869,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request POST:/admin/uploads/
          * @secure
          */
-        adminUploadsCreate: (data: AdminListCreateTransactionBatch, params?: RequestParams$8) => Promise<HttpResponse$8<AdminListCreateTransactionBatchResponse, any>>;
+        adminUploadsCreate: (data: AdminListCreateTransactionBatch, params?: RequestParams$9) => Promise<HttpResponse$8<AdminListCreateTransactionBatchResponse, any>>;
         /**
          * No description
          *
@@ -35883,7 +35879,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request GET:/admin/uploads/{batch_id}/
          * @secure
          */
-        adminUploadsRetrieve: (batchId: string, params?: RequestParams$8) => Promise<HttpResponse$8<AdminListCreateTransactionBatchResponse, any>>;
+        adminUploadsRetrieve: (batchId: string, params?: RequestParams$9) => Promise<HttpResponse$8<AdminListCreateTransactionBatchResponse, any>>;
         /**
          * No description
          *
@@ -35893,7 +35889,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request PUT:/admin/uploads/{batch_id}/
          * @secure
          */
-        adminUploadsUpdate: (batchId: string, data: TransactionBatch, params?: RequestParams$8) => Promise<HttpResponse$8<AdminListCreateTransactionBatchResponse, any>>;
+        adminUploadsUpdate: (batchId: string, data: TransactionBatch, params?: RequestParams$9) => Promise<HttpResponse$8<AdminListCreateTransactionBatchResponse, any>>;
         /**
          * No description
          *
@@ -35903,7 +35899,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request PATCH:/admin/uploads/{batch_id}/
          * @secure
          */
-        adminUploadsPartialUpdate: (batchId: string, data: PatchedTransactionBatch, params?: RequestParams$8) => Promise<HttpResponse$8<AdminListCreateTransactionBatchResponse, any>>;
+        adminUploadsPartialUpdate: (batchId: string, data: PatchedTransactionBatch, params?: RequestParams$9) => Promise<HttpResponse$8<AdminListCreateTransactionBatchResponse, any>>;
         /**
          * No description
          *
@@ -35913,7 +35909,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request GET:/admin/uploads/{batch_id}/transactions/
          * @secure
          */
-        adminUploadsTransactionsList: ({ batchId, ...query }: AdminUploadsTransactionsListParams, params?: RequestParams$8) => Promise<HttpResponse$8<PaginatedListTransactionListResponse, any>>;
+        adminUploadsTransactionsList: ({ batchId, ...query }: AdminUploadsTransactionsListParams, params?: RequestParams$9) => Promise<HttpResponse$8<PaginatedListTransactionListResponse, any>>;
     };
     deactivate: {
         /**
@@ -35925,7 +35921,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request POST:/deactivate/
          * @secure
          */
-        deactivateCreate: (data: Deactivate$8, params?: RequestParams$8) => Promise<HttpResponse$8<ActionResponse$6, any>>;
+        deactivateCreate: (data: Deactivate$8, params?: RequestParams$9) => Promise<HttpResponse$8<ActionResponse$6, any>>;
     };
     uploads: {
         /**
@@ -35937,7 +35933,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request GET:/uploads/
          * @secure
          */
-        uploadsList: (query: UploadsListParams, params?: RequestParams$8) => Promise<HttpResponse$8<PaginatedListCreateTransactionBatchListResponse, any>>;
+        uploadsList: (query: UploadsListParams, params?: RequestParams$9) => Promise<HttpResponse$8<PaginatedListCreateTransactionBatchListResponse, any>>;
         /**
          * No description
          *
@@ -35947,7 +35943,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request POST:/uploads/
          * @secure
          */
-        uploadsCreate: (data: ListCreateTransactionBatch, params?: RequestParams$8) => Promise<HttpResponse$8<ListCreateTransactionBatchResponse, any>>;
+        uploadsCreate: (data: ListCreateTransactionBatch, params?: RequestParams$9) => Promise<HttpResponse$8<ListCreateTransactionBatchResponse, any>>;
         /**
          * No description
          *
@@ -35957,7 +35953,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request GET:/uploads/{batch_id}/
          * @secure
          */
-        uploadsRetrieve: (batchId: string, params?: RequestParams$8) => Promise<HttpResponse$8<TransactionBatchResponse, any>>;
+        uploadsRetrieve: (batchId: string, params?: RequestParams$9) => Promise<HttpResponse$8<TransactionBatchResponse, any>>;
         /**
          * No description
          *
@@ -35967,7 +35963,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request PUT:/uploads/{batch_id}/
          * @secure
          */
-        uploadsUpdate: (batchId: string, data: TransactionBatch, params?: RequestParams$8) => Promise<HttpResponse$8<TransactionBatchResponse, any>>;
+        uploadsUpdate: (batchId: string, data: TransactionBatch, params?: RequestParams$9) => Promise<HttpResponse$8<TransactionBatchResponse, any>>;
         /**
          * No description
          *
@@ -35977,7 +35973,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request PATCH:/uploads/{batch_id}/
          * @secure
          */
-        uploadsPartialUpdate: (batchId: string, data: PatchedTransactionBatch, params?: RequestParams$8) => Promise<HttpResponse$8<TransactionBatchResponse, any>>;
+        uploadsPartialUpdate: (batchId: string, data: PatchedTransactionBatch, params?: RequestParams$9) => Promise<HttpResponse$8<TransactionBatchResponse, any>>;
         /**
          * No description
          *
@@ -35987,7 +35983,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request GET:/uploads/{batch_id}/transactions/
          * @secure
          */
-        uploadsTransactionsList: ({ batchId, ...query }: UploadsTransactionsListParams, params?: RequestParams$8) => Promise<HttpResponse$8<PaginatedListTransactionListResponse, any>>;
+        uploadsTransactionsList: ({ batchId, ...query }: UploadsTransactionsListParams, params?: RequestParams$9) => Promise<HttpResponse$8<PaginatedListTransactionListResponse, any>>;
     };
     webhook: {
         /**
@@ -35999,7 +35995,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request POST:/webhook/
          * @secure
          */
-        webhookCreate: (data: Webhook$6, params?: RequestParams$8) => Promise<HttpResponse$8<ActionResponse$6, any>>;
+        webhookCreate: (data: Webhook$6, params?: RequestParams$9) => Promise<HttpResponse$8<ActionResponse$6, any>>;
     };
 }
 
@@ -36783,11 +36779,11 @@ interface FullRequestParams$7 extends Omit<RequestInit, "body"> {
     /** request cancellation token */
     cancelToken?: CancelToken$7;
 }
-type RequestParams$7 = Omit<FullRequestParams$7, "body" | "method" | "query" | "path">;
+type RequestParams$8 = Omit<FullRequestParams$7, "body" | "method" | "query" | "path">;
 interface ApiConfig$7<SecurityDataType = unknown> {
     baseUrl?: string;
-    baseApiParams?: Omit<RequestParams$7, "baseUrl" | "cancelToken" | "signal">;
-    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$7 | void> | RequestParams$7 | void;
+    baseApiParams?: Omit<RequestParams$8, "baseUrl" | "cancelToken" | "signal">;
+    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$8 | void> | RequestParams$8 | void;
     customFetch?: typeof fetch;
 }
 interface HttpResponse$7<D extends unknown, E extends unknown = unknown> extends Response {
@@ -36817,7 +36813,7 @@ declare class HttpClient$7<SecurityDataType = unknown> {
     protected toQueryString(rawQuery?: QueryParamsType$7): string;
     protected addQueryParams(rawQuery?: QueryParamsType$7): string;
     private contentFormatters;
-    protected mergeRequestParams(params1: RequestParams$7, params2?: RequestParams$7): RequestParams$7;
+    protected mergeRequestParams(params1: RequestParams$8, params2?: RequestParams$8): RequestParams$8;
     protected createAbortSignal: (cancelToken: CancelToken$7) => AbortSignal | undefined;
     abortRequest: (cancelToken: CancelToken$7) => void;
     request: <T = any, E = any>({ body, secure, path, type, query, format, baseUrl, cancelToken, ...params }: FullRequestParams$7) => Promise<HttpResponse$7<T, E>>;
@@ -36845,7 +36841,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request POST:/activate/
          * @secure
          */
-        activateCreate: (data: Activate$7, params?: RequestParams$7) => Promise<HttpResponse$7<ActionResponse$5, any>>;
+        activateCreate: (data: Activate$7, params?: RequestParams$8) => Promise<HttpResponse$7<ActionResponse$5, any>>;
     };
     admin: {
         /**
@@ -36857,7 +36853,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request GET:/admin/company/
          * @secure
          */
-        adminCompanyRetrieve: (params?: RequestParams$7) => Promise<HttpResponse$7<AdminCompanyResponse$5, any>>;
+        adminCompanyRetrieve: (params?: RequestParams$8) => Promise<HttpResponse$7<AdminCompanyResponse$5, any>>;
         /**
          * No description
          *
@@ -36867,7 +36863,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request PUT:/admin/company/
          * @secure
          */
-        adminCompanyUpdate: (data: AdminCompany$5, params?: RequestParams$7) => Promise<HttpResponse$7<AdminCompanyResponse$5, any>>;
+        adminCompanyUpdate: (data: AdminCompany$5, params?: RequestParams$8) => Promise<HttpResponse$7<AdminCompanyResponse$5, any>>;
         /**
          * No description
          *
@@ -36877,7 +36873,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request PATCH:/admin/company/
          * @secure
          */
-        adminCompanyPartialUpdate: (data: PatchedAdminCompany$3, params?: RequestParams$7) => Promise<HttpResponse$7<AdminCompanyResponse$5, any>>;
+        adminCompanyPartialUpdate: (data: PatchedAdminCompany$3, params?: RequestParams$8) => Promise<HttpResponse$7<AdminCompanyResponse$5, any>>;
         /**
          * No description
          *
@@ -36887,7 +36883,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request GET:/admin/credentials/
          * @secure
          */
-        adminCredentialsList: (query: AdminCredentialsListParams, params?: RequestParams$7) => Promise<HttpResponse$7<PaginatedAdminCredentialListResponse, any>>;
+        adminCredentialsList: (query: AdminCredentialsListParams, params?: RequestParams$8) => Promise<HttpResponse$7<PaginatedAdminCredentialListResponse, any>>;
         /**
          * No description
          *
@@ -36897,7 +36893,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request POST:/admin/credentials/
          * @secure
          */
-        adminCredentialsCreate: (data: AdminCredential, params?: RequestParams$7) => Promise<HttpResponse$7<AdminCredentialResponse, any>>;
+        adminCredentialsCreate: (data: AdminCredential, params?: RequestParams$8) => Promise<HttpResponse$7<AdminCredentialResponse, any>>;
         /**
          * No description
          *
@@ -36907,7 +36903,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request GET:/admin/credentials/{credential_id}/
          * @secure
          */
-        adminCredentialsRetrieve: (credentialId: string, params?: RequestParams$7) => Promise<HttpResponse$7<AdminCredentialResponse, any>>;
+        adminCredentialsRetrieve: (credentialId: string, params?: RequestParams$8) => Promise<HttpResponse$7<AdminCredentialResponse, any>>;
         /**
          * No description
          *
@@ -36917,7 +36913,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request PUT:/admin/credentials/{credential_id}/
          * @secure
          */
-        adminCredentialsUpdate: (credentialId: string, data: AdminCredential, params?: RequestParams$7) => Promise<HttpResponse$7<AdminCredentialResponse, any>>;
+        adminCredentialsUpdate: (credentialId: string, data: AdminCredential, params?: RequestParams$8) => Promise<HttpResponse$7<AdminCredentialResponse, any>>;
         /**
          * No description
          *
@@ -36927,7 +36923,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request PATCH:/admin/credentials/{credential_id}/
          * @secure
          */
-        adminCredentialsPartialUpdate: (credentialId: string, data: PatchedAdminCredential, params?: RequestParams$7) => Promise<HttpResponse$7<AdminCredentialResponse, any>>;
+        adminCredentialsPartialUpdate: (credentialId: string, data: PatchedAdminCredential, params?: RequestParams$8) => Promise<HttpResponse$7<AdminCredentialResponse, any>>;
         /**
          * No description
          *
@@ -36937,7 +36933,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request DELETE:/admin/credentials/{credential_id}/
          * @secure
          */
-        adminCredentialsDestroy: (credentialId: string, params?: RequestParams$7) => Promise<HttpResponse$7<AdminCredentialResponse, any>>;
+        adminCredentialsDestroy: (credentialId: string, params?: RequestParams$8) => Promise<HttpResponse$7<AdminCredentialResponse, any>>;
         /**
          * No description
          *
@@ -36947,7 +36943,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request GET:/admin/layout-templates/
          * @secure
          */
-        adminLayoutTemplatesList: (query: AdminLayoutTemplatesListParams, params?: RequestParams$7) => Promise<HttpResponse$7<PaginatedLayoutTemplateListResponse, any>>;
+        adminLayoutTemplatesList: (query: AdminLayoutTemplatesListParams, params?: RequestParams$8) => Promise<HttpResponse$7<PaginatedLayoutTemplateListResponse, any>>;
         /**
          * No description
          *
@@ -36957,7 +36953,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request GET:/admin/layout-templates/{id}/
          * @secure
          */
-        adminLayoutTemplatesRetrieve: (id: string, params?: RequestParams$7) => Promise<HttpResponse$7<LayoutTemplateResponse, any>>;
+        adminLayoutTemplatesRetrieve: (id: string, params?: RequestParams$8) => Promise<HttpResponse$7<LayoutTemplateResponse, any>>;
         /**
          * No description
          *
@@ -36967,7 +36963,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request GET:/admin/layouts/
          * @secure
          */
-        adminLayoutsList: (query: AdminLayoutsListParams, params?: RequestParams$7) => Promise<HttpResponse$7<PaginatedNotificationLayoutListResponse, any>>;
+        adminLayoutsList: (query: AdminLayoutsListParams, params?: RequestParams$8) => Promise<HttpResponse$7<PaginatedNotificationLayoutListResponse, any>>;
         /**
          * No description
          *
@@ -36977,7 +36973,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request POST:/admin/layouts/
          * @secure
          */
-        adminLayoutsCreate: (data: NotificationLayout, params?: RequestParams$7) => Promise<HttpResponse$7<NotificationLayoutResponse, any>>;
+        adminLayoutsCreate: (data: NotificationLayout, params?: RequestParams$8) => Promise<HttpResponse$7<NotificationLayoutResponse, any>>;
         /**
          * No description
          *
@@ -36987,7 +36983,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request GET:/admin/layouts/{id}/
          * @secure
          */
-        adminLayoutsRetrieve: (id: string, params?: RequestParams$7) => Promise<HttpResponse$7<NotificationLayoutResponse, any>>;
+        adminLayoutsRetrieve: (id: string, params?: RequestParams$8) => Promise<HttpResponse$7<NotificationLayoutResponse, any>>;
         /**
          * No description
          *
@@ -36997,7 +36993,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request PUT:/admin/layouts/{id}/
          * @secure
          */
-        adminLayoutsUpdate: (id: string, data: NotificationLayout, params?: RequestParams$7) => Promise<HttpResponse$7<NotificationLayoutResponse, any>>;
+        adminLayoutsUpdate: (id: string, data: NotificationLayout, params?: RequestParams$8) => Promise<HttpResponse$7<NotificationLayoutResponse, any>>;
         /**
          * No description
          *
@@ -37007,7 +37003,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request PATCH:/admin/layouts/{id}/
          * @secure
          */
-        adminLayoutsPartialUpdate: (id: string, data: PatchedNotificationLayout, params?: RequestParams$7) => Promise<HttpResponse$7<NotificationLayoutResponse, any>>;
+        adminLayoutsPartialUpdate: (id: string, data: PatchedNotificationLayout, params?: RequestParams$8) => Promise<HttpResponse$7<NotificationLayoutResponse, any>>;
         /**
          * No description
          *
@@ -37017,7 +37013,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request DELETE:/admin/layouts/{id}/
          * @secure
          */
-        adminLayoutsDestroy: (id: string, params?: RequestParams$7) => Promise<HttpResponse$7<NotificationLayoutResponse, any>>;
+        adminLayoutsDestroy: (id: string, params?: RequestParams$8) => Promise<HttpResponse$7<NotificationLayoutResponse, any>>;
         /**
          * No description
          *
@@ -37027,7 +37023,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request GET:/admin/logs/
          * @secure
          */
-        adminLogsList: (query: AdminLogsListParams, params?: RequestParams$7) => Promise<HttpResponse$7<PaginatedAdminLogListResponse, any>>;
+        adminLogsList: (query: AdminLogsListParams, params?: RequestParams$8) => Promise<HttpResponse$7<PaginatedAdminLogListResponse, any>>;
         /**
          * No description
          *
@@ -37037,7 +37033,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request GET:/admin/logs/{log_id}/
          * @secure
          */
-        adminLogsRetrieve: (logId: string, params?: RequestParams$7) => Promise<HttpResponse$7<AdminLogResponse, any>>;
+        adminLogsRetrieve: (logId: string, params?: RequestParams$8) => Promise<HttpResponse$7<AdminLogResponse, any>>;
         /**
          * No description
          *
@@ -37047,7 +37043,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request POST:/admin/logs/{log_id}/send/
          * @secure
          */
-        adminLogsSendCreate: (logId: string, data: AdminLogSend, params?: RequestParams$7) => Promise<HttpResponse$7<ActionResponse$5, any>>;
+        adminLogsSendCreate: (logId: string, data: AdminLogSend, params?: RequestParams$8) => Promise<HttpResponse$7<ActionResponse$5, any>>;
         /**
          * No description
          *
@@ -37057,7 +37053,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request GET:/admin/notifications/
          * @secure
          */
-        adminNotificationsList: (query: AdminNotificationsListParams, params?: RequestParams$7) => Promise<HttpResponse$7<PaginatedAdminNotificationListResponse, any>>;
+        adminNotificationsList: (query: AdminNotificationsListParams, params?: RequestParams$8) => Promise<HttpResponse$7<PaginatedAdminNotificationListResponse, any>>;
         /**
          * No description
          *
@@ -37067,7 +37063,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request POST:/admin/notifications/
          * @secure
          */
-        adminNotificationsCreate: (data: AdminCreateUpdateNotification, params?: RequestParams$7) => Promise<HttpResponse$7<AdminNotificationResponse, any>>;
+        adminNotificationsCreate: (data: AdminCreateUpdateNotification, params?: RequestParams$8) => Promise<HttpResponse$7<AdminNotificationResponse, any>>;
         /**
          * No description
          *
@@ -37077,7 +37073,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request GET:/admin/notifications/{notification_id}/
          * @secure
          */
-        adminNotificationsRetrieve: (notificationId: string, params?: RequestParams$7) => Promise<HttpResponse$7<AdminNotificationResponse, any>>;
+        adminNotificationsRetrieve: (notificationId: string, params?: RequestParams$8) => Promise<HttpResponse$7<AdminNotificationResponse, any>>;
         /**
          * No description
          *
@@ -37087,7 +37083,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request PUT:/admin/notifications/{notification_id}/
          * @secure
          */
-        adminNotificationsUpdate: (notificationId: string, data: AdminCreateUpdateNotification, params?: RequestParams$7) => Promise<HttpResponse$7<AdminNotificationResponse, any>>;
+        adminNotificationsUpdate: (notificationId: string, data: AdminCreateUpdateNotification, params?: RequestParams$8) => Promise<HttpResponse$7<AdminNotificationResponse, any>>;
         /**
          * No description
          *
@@ -37097,7 +37093,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request PATCH:/admin/notifications/{notification_id}/
          * @secure
          */
-        adminNotificationsPartialUpdate: (notificationId: string, data: PatchedAdminCreateUpdateNotification, params?: RequestParams$7) => Promise<HttpResponse$7<AdminNotificationResponse, any>>;
+        adminNotificationsPartialUpdate: (notificationId: string, data: PatchedAdminCreateUpdateNotification, params?: RequestParams$8) => Promise<HttpResponse$7<AdminNotificationResponse, any>>;
         /**
          * No description
          *
@@ -37107,7 +37103,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request DELETE:/admin/notifications/{notification_id}/
          * @secure
          */
-        adminNotificationsDestroy: (notificationId: string, params?: RequestParams$7) => Promise<HttpResponse$7<AdminNotificationResponse, any>>;
+        adminNotificationsDestroy: (notificationId: string, params?: RequestParams$8) => Promise<HttpResponse$7<AdminNotificationResponse, any>>;
         /**
          * No description
          *
@@ -37117,7 +37113,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request POST:/admin/notifications/{notification_id}/trigger/
          * @secure
          */
-        adminNotificationsTriggerCreate: (notificationId: string, data: AdminTriggerNotification, params?: RequestParams$7) => Promise<HttpResponse$7<ActionResponse$5, any>>;
+        adminNotificationsTriggerCreate: (notificationId: string, data: AdminTriggerNotification, params?: RequestParams$8) => Promise<HttpResponse$7<ActionResponse$5, any>>;
         /**
          * No description
          *
@@ -37127,7 +37123,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request GET:/admin/templates/
          * @secure
          */
-        adminTemplatesList: (query: AdminTemplatesListParams, params?: RequestParams$7) => Promise<HttpResponse$7<PaginatedAdminTemplateListResponse, any>>;
+        adminTemplatesList: (query: AdminTemplatesListParams, params?: RequestParams$8) => Promise<HttpResponse$7<PaginatedAdminTemplateListResponse, any>>;
         /**
          * No description
          *
@@ -37137,7 +37133,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request GET:/admin/templates/{template_id}/
          * @secure
          */
-        adminTemplatesRetrieve: (templateId: string, params?: RequestParams$7) => Promise<HttpResponse$7<AdminTemplateResponse, any>>;
+        adminTemplatesRetrieve: (templateId: string, params?: RequestParams$8) => Promise<HttpResponse$7<AdminTemplateResponse, any>>;
         /**
          * No description
          *
@@ -37146,7 +37142,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request POST:/admin/webhook/
          * @secure
          */
-        adminWebhookCreate: (data: Webhook$5, params?: RequestParams$7) => Promise<HttpResponse$7<ActionResponse$5, any>>;
+        adminWebhookCreate: (data: Webhook$5, params?: RequestParams$8) => Promise<HttpResponse$7<ActionResponse$5, any>>;
     };
     deactivate: {
         /**
@@ -37158,7 +37154,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request POST:/deactivate/
          * @secure
          */
-        deactivateCreate: (data: Deactivate$7, params?: RequestParams$7) => Promise<HttpResponse$7<ActionResponse$5, any>>;
+        deactivateCreate: (data: Deactivate$7, params?: RequestParams$8) => Promise<HttpResponse$7<ActionResponse$5, any>>;
     };
     user: {
         /**
@@ -37170,7 +37166,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request GET:/user/notifications/
          * @secure
          */
-        userNotificationsList: (query: UserNotificationsListParams, params?: RequestParams$7) => Promise<HttpResponse$7<PaginatedUserNotificationListResponse, any>>;
+        userNotificationsList: (query: UserNotificationsListParams, params?: RequestParams$8) => Promise<HttpResponse$7<PaginatedUserNotificationListResponse, any>>;
         /**
          * No description
          *
@@ -37180,7 +37176,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request GET:/user/notifications/{notification_id}/
          * @secure
          */
-        userNotificationsRetrieve: (notificationId: string, params?: RequestParams$7) => Promise<HttpResponse$7<UserNotificationResponse, any>>;
+        userNotificationsRetrieve: (notificationId: string, params?: RequestParams$8) => Promise<HttpResponse$7<UserNotificationResponse, any>>;
         /**
          * No description
          *
@@ -37190,7 +37186,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request PUT:/user/notifications/{notification_id}/
          * @secure
          */
-        userNotificationsUpdate: (notificationId: string, data: UserUpdateNotification, params?: RequestParams$7) => Promise<HttpResponse$7<UserNotificationResponse, any>>;
+        userNotificationsUpdate: (notificationId: string, data: UserUpdateNotification, params?: RequestParams$8) => Promise<HttpResponse$7<UserNotificationResponse, any>>;
         /**
          * No description
          *
@@ -37200,7 +37196,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request PATCH:/user/notifications/{notification_id}/
          * @secure
          */
-        userNotificationsPartialUpdate: (notificationId: string, data: PatchedUserUpdateNotification, params?: RequestParams$7) => Promise<HttpResponse$7<UserNotificationResponse, any>>;
+        userNotificationsPartialUpdate: (notificationId: string, data: PatchedUserUpdateNotification, params?: RequestParams$8) => Promise<HttpResponse$7<UserNotificationResponse, any>>;
     };
     webhook: {
         /**
@@ -37211,7 +37207,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request POST:/webhook/
          * @secure
          */
-        webhookCreate: (data: Webhook$5, params?: RequestParams$7) => Promise<HttpResponse$7<ActionResponse$5, any>>;
+        webhookCreate: (data: Webhook$5, params?: RequestParams$8) => Promise<HttpResponse$7<ActionResponse$5, any>>;
     };
 }
 
@@ -41608,11 +41604,11 @@ interface FullRequestParams$6 extends Omit<RequestInit, "body"> {
     /** request cancellation token */
     cancelToken?: CancelToken$6;
 }
-type RequestParams$6 = Omit<FullRequestParams$6, "body" | "method" | "query" | "path">;
+type RequestParams$7 = Omit<FullRequestParams$6, "body" | "method" | "query" | "path">;
 interface ApiConfig$6<SecurityDataType = unknown> {
     baseUrl?: string;
-    baseApiParams?: Omit<RequestParams$6, "baseUrl" | "cancelToken" | "signal">;
-    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$6 | void> | RequestParams$6 | void;
+    baseApiParams?: Omit<RequestParams$7, "baseUrl" | "cancelToken" | "signal">;
+    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$7 | void> | RequestParams$7 | void;
     customFetch?: typeof fetch;
 }
 interface HttpResponse$6<D extends unknown, E extends unknown = unknown> extends Response {
@@ -41642,7 +41638,7 @@ declare class HttpClient$6<SecurityDataType = unknown> {
     protected toQueryString(rawQuery?: QueryParamsType$6): string;
     protected addQueryParams(rawQuery?: QueryParamsType$6): string;
     private contentFormatters;
-    protected mergeRequestParams(params1: RequestParams$6, params2?: RequestParams$6): RequestParams$6;
+    protected mergeRequestParams(params1: RequestParams$7, params2?: RequestParams$7): RequestParams$7;
     protected createAbortSignal: (cancelToken: CancelToken$6) => AbortSignal | undefined;
     abortRequest: (cancelToken: CancelToken$6) => void;
     request: <T = any, E = any>({ body, secure, path, type, query, format, baseUrl, cancelToken, ...params }: FullRequestParams$6) => Promise<HttpResponse$6<T, E>>;
@@ -41670,7 +41666,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/activate/
          * @secure
          */
-        activateCreate: (data: Activate$6, params?: RequestParams$6) => Promise<HttpResponse$6<ActionResponse$4, any>>;
+        activateCreate: (data: Activate$6, params?: RequestParams$7) => Promise<HttpResponse$6<ActionResponse$4, any>>;
     };
     admin: {
         /**
@@ -41682,7 +41678,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/categories/
          * @secure
          */
-        adminCategoriesList: (query: AdminCategoriesListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedCategoryListResponse, any>>;
+        adminCategoriesList: (query: AdminCategoriesListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedCategoryListResponse, any>>;
         /**
          * No description
          *
@@ -41692,7 +41688,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/admin/categories/
          * @secure
          */
-        adminCategoriesCreate: (data: AdminCreateCategory, params?: RequestParams$6) => Promise<HttpResponse$6<CategoryResponse, any>>;
+        adminCategoriesCreate: (data: AdminCreateCategory, params?: RequestParams$7) => Promise<HttpResponse$6<CategoryResponse, any>>;
         /**
          * No description
          *
@@ -41702,7 +41698,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/categories/{identifier}/
          * @secure
          */
-        adminCategoriesRetrieve: (identifier: string, params?: RequestParams$6) => Promise<HttpResponse$6<CategoryResponse, any>>;
+        adminCategoriesRetrieve: (identifier: string, params?: RequestParams$7) => Promise<HttpResponse$6<CategoryResponse, any>>;
         /**
          * No description
          *
@@ -41712,7 +41708,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/admin/categories/{identifier}/
          * @secure
          */
-        adminCategoriesUpdate: (identifier: string, data: AdminCreateCategory, params?: RequestParams$6) => Promise<HttpResponse$6<CategoryResponse, any>>;
+        adminCategoriesUpdate: (identifier: string, data: AdminCreateCategory, params?: RequestParams$7) => Promise<HttpResponse$6<CategoryResponse, any>>;
         /**
          * No description
          *
@@ -41722,7 +41718,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/admin/categories/{identifier}/
          * @secure
          */
-        adminCategoriesPartialUpdate: (identifier: string, data: PatchedAdminCreateCategory, params?: RequestParams$6) => Promise<HttpResponse$6<CategoryResponse, any>>;
+        adminCategoriesPartialUpdate: (identifier: string, data: PatchedAdminCreateCategory, params?: RequestParams$7) => Promise<HttpResponse$6<CategoryResponse, any>>;
         /**
          * No description
          *
@@ -41732,7 +41728,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/admin/categories/{identifier}/
          * @secure
          */
-        adminCategoriesDestroy: (identifier: string, params?: RequestParams$6) => Promise<HttpResponse$6<CategoryResponse, any>>;
+        adminCategoriesDestroy: (identifier: string, params?: RequestParams$7) => Promise<HttpResponse$6<CategoryResponse, any>>;
         /**
          * No description
          *
@@ -41742,7 +41738,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/company/
          * @secure
          */
-        adminCompanyRetrieve: (params?: RequestParams$6) => Promise<HttpResponse$6<AdminCompanyResponse$4, any>>;
+        adminCompanyRetrieve: (params?: RequestParams$7) => Promise<HttpResponse$6<AdminCompanyResponse$4, any>>;
         /**
          * No description
          *
@@ -41752,7 +41748,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/admin/company/
          * @secure
          */
-        adminCompanyUpdate: (data: AdminCompany$4, params?: RequestParams$6) => Promise<HttpResponse$6<AdminCompanyResponse$4, any>>;
+        adminCompanyUpdate: (data: AdminCompany$4, params?: RequestParams$7) => Promise<HttpResponse$6<AdminCompanyResponse$4, any>>;
         /**
          * No description
          *
@@ -41762,7 +41758,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/admin/company/
          * @secure
          */
-        adminCompanyPartialUpdate: (data: PatchedAdminCompany$2, params?: RequestParams$6) => Promise<HttpResponse$6<AdminCompanyResponse$4, any>>;
+        adminCompanyPartialUpdate: (data: PatchedAdminCompany$2, params?: RequestParams$7) => Promise<HttpResponse$6<AdminCompanyResponse$4, any>>;
         /**
          * No description
          *
@@ -41772,7 +41768,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/currencies/
          * @secure
          */
-        adminCurrenciesList: (query: AdminCurrenciesListParams$3, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedCurrencyListResponse$2, any>>;
+        adminCurrenciesList: (query: AdminCurrenciesListParams$3, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedCurrencyListResponse$2, any>>;
         /**
          * No description
          *
@@ -41782,7 +41778,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/currencies/{code}/
          * @secure
          */
-        adminCurrenciesRetrieve: (code: string, params?: RequestParams$6) => Promise<HttpResponse$6<CurrencyResponse$2, any>>;
+        adminCurrenciesRetrieve: (code: string, params?: RequestParams$7) => Promise<HttpResponse$6<CurrencyResponse$2, any>>;
         /**
          * No description
          *
@@ -41792,7 +41788,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/integrations/
          * @secure
          */
-        adminIntegrationsList: (query: AdminIntegrationsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedAdminIntegrationListResponse, any>>;
+        adminIntegrationsList: (query: AdminIntegrationsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedAdminIntegrationListResponse, any>>;
         /**
          * No description
          *
@@ -41802,7 +41798,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/admin/integrations/
          * @secure
          */
-        adminIntegrationsCreate: (data: AdminIntegration, params?: RequestParams$6) => Promise<HttpResponse$6<AdminIntegrationResponse, any>>;
+        adminIntegrationsCreate: (data: AdminIntegration, params?: RequestParams$7) => Promise<HttpResponse$6<AdminIntegrationResponse, any>>;
         /**
          * No description
          *
@@ -41812,7 +41808,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/integrations/{identifier}/
          * @secure
          */
-        adminIntegrationsRetrieve: (identifier: string, params?: RequestParams$6) => Promise<HttpResponse$6<AdminIntegrationResponse, any>>;
+        adminIntegrationsRetrieve: (identifier: string, params?: RequestParams$7) => Promise<HttpResponse$6<AdminIntegrationResponse, any>>;
         /**
          * No description
          *
@@ -41822,7 +41818,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/admin/integrations/{identifier}/
          * @secure
          */
-        adminIntegrationsUpdate: (identifier: string, data: AdminIntegration, params?: RequestParams$6) => Promise<HttpResponse$6<AdminIntegrationResponse, any>>;
+        adminIntegrationsUpdate: (identifier: string, data: AdminIntegration, params?: RequestParams$7) => Promise<HttpResponse$6<AdminIntegrationResponse, any>>;
         /**
          * No description
          *
@@ -41832,7 +41828,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/admin/integrations/{identifier}/
          * @secure
          */
-        adminIntegrationsPartialUpdate: (identifier: string, data: PatchedAdminIntegration, params?: RequestParams$6) => Promise<HttpResponse$6<AdminIntegrationResponse, any>>;
+        adminIntegrationsPartialUpdate: (identifier: string, data: PatchedAdminIntegration, params?: RequestParams$7) => Promise<HttpResponse$6<AdminIntegrationResponse, any>>;
         /**
          * No description
          *
@@ -41842,7 +41838,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/admin/integrations/{identifier}/
          * @secure
          */
-        adminIntegrationsDestroy: (identifier: string, params?: RequestParams$6) => Promise<HttpResponse$6<AdminIntegrationResponse, any>>;
+        adminIntegrationsDestroy: (identifier: string, params?: RequestParams$7) => Promise<HttpResponse$6<AdminIntegrationResponse, any>>;
         /**
          * No description
          *
@@ -41852,7 +41848,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/integrations/{identifier}/webhooks/
          * @secure
          */
-        adminIntegrationsWebhooksList: ({ identifier, ...query }: AdminIntegrationsWebhooksListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedAdminIntegrationWebhookListResponse, any>>;
+        adminIntegrationsWebhooksList: ({ identifier, ...query }: AdminIntegrationsWebhooksListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedAdminIntegrationWebhookListResponse, any>>;
         /**
          * No description
          *
@@ -41862,7 +41858,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/admin/integrations/{identifier}/webhooks/
          * @secure
          */
-        adminIntegrationsWebhooksCreate: (identifier: string, data: AdminIntegrationWebhook, params?: RequestParams$6) => Promise<HttpResponse$6<AdminIntegrationWebhookResponse, any>>;
+        adminIntegrationsWebhooksCreate: (identifier: string, data: AdminIntegrationWebhook, params?: RequestParams$7) => Promise<HttpResponse$6<AdminIntegrationWebhookResponse, any>>;
         /**
          * No description
          *
@@ -41872,7 +41868,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/integrations/{integration_id}/webhooks{webhook_id}/
          * @secure
          */
-        adminIntegrationsWebhooksRetrieve: (integrationId: string, webhookId: string, params?: RequestParams$6) => Promise<HttpResponse$6<AdminIntegrationWebhookResponse, any>>;
+        adminIntegrationsWebhooksRetrieve: (integrationId: string, webhookId: string, params?: RequestParams$7) => Promise<HttpResponse$6<AdminIntegrationWebhookResponse, any>>;
         /**
          * No description
          *
@@ -41882,7 +41878,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/admin/integrations/{integration_id}/webhooks{webhook_id}/
          * @secure
          */
-        adminIntegrationsWebhooksUpdate: (integrationId: string, webhookId: string, data: AdminIntegrationWebhook, params?: RequestParams$6) => Promise<HttpResponse$6<AdminIntegrationWebhookResponse, any>>;
+        adminIntegrationsWebhooksUpdate: (integrationId: string, webhookId: string, data: AdminIntegrationWebhook, params?: RequestParams$7) => Promise<HttpResponse$6<AdminIntegrationWebhookResponse, any>>;
         /**
          * No description
          *
@@ -41892,7 +41888,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/admin/integrations/{integration_id}/webhooks{webhook_id}/
          * @secure
          */
-        adminIntegrationsWebhooksPartialUpdate: (integrationId: string, webhookId: string, data: PatchedAdminIntegrationWebhook, params?: RequestParams$6) => Promise<HttpResponse$6<AdminIntegrationWebhookResponse, any>>;
+        adminIntegrationsWebhooksPartialUpdate: (integrationId: string, webhookId: string, data: PatchedAdminIntegrationWebhook, params?: RequestParams$7) => Promise<HttpResponse$6<AdminIntegrationWebhookResponse, any>>;
         /**
          * No description
          *
@@ -41902,7 +41898,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/admin/integrations/{integration_id}/webhooks{webhook_id}/
          * @secure
          */
-        adminIntegrationsWebhooksDestroy: (integrationId: string, webhookId: string, params?: RequestParams$6) => Promise<HttpResponse$6<AdminIntegrationWebhookResponse, any>>;
+        adminIntegrationsWebhooksDestroy: (integrationId: string, webhookId: string, params?: RequestParams$7) => Promise<HttpResponse$6<AdminIntegrationWebhookResponse, any>>;
         /**
          * No description
          *
@@ -41912,7 +41908,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/orders/
          * @secure
          */
-        adminOrdersList: (query: AdminOrdersListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedOrderListResponse, any>>;
+        adminOrdersList: (query: AdminOrdersListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedOrderListResponse, any>>;
         /**
          * No description
          *
@@ -41922,7 +41918,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/admin/orders/
          * @secure
          */
-        adminOrdersCreate: (data: AdminCreateOrder, params?: RequestParams$6) => Promise<HttpResponse$6<OrderResponse, any>>;
+        adminOrdersCreate: (data: AdminCreateOrder, params?: RequestParams$7) => Promise<HttpResponse$6<OrderResponse, any>>;
         /**
          * No description
          *
@@ -41932,7 +41928,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/orders/{identifier}/
          * @secure
          */
-        adminOrdersRetrieve: (identifier: string, params?: RequestParams$6) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
+        adminOrdersRetrieve: (identifier: string, params?: RequestParams$7) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
         /**
          * No description
          *
@@ -41942,7 +41938,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/admin/orders/{identifier}/
          * @secure
          */
-        adminOrdersUpdate: (identifier: string, data: AdminUpdateOrder, params?: RequestParams$6) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
+        adminOrdersUpdate: (identifier: string, data: AdminUpdateOrder, params?: RequestParams$7) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
         /**
          * No description
          *
@@ -41952,7 +41948,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/admin/orders/{identifier}/
          * @secure
          */
-        adminOrdersPartialUpdate: (identifier: string, data: PatchedAdminUpdateOrder, params?: RequestParams$6) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
+        adminOrdersPartialUpdate: (identifier: string, data: PatchedAdminUpdateOrder, params?: RequestParams$7) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
         /**
          * No description
          *
@@ -41962,7 +41958,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/admin/orders/{identifier}/
          * @secure
          */
-        adminOrdersDestroy: (identifier: string, params?: RequestParams$6) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
+        adminOrdersDestroy: (identifier: string, params?: RequestParams$7) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
         /**
          * No description
          *
@@ -41972,7 +41968,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/orders/{identifier}/items/
          * @secure
          */
-        adminOrdersItemsList: ({ identifier, ...query }: AdminOrdersItemsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedOrderItemListResponse, any>>;
+        adminOrdersItemsList: ({ identifier, ...query }: AdminOrdersItemsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedOrderItemListResponse, any>>;
         /**
          * No description
          *
@@ -41982,7 +41978,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/admin/orders/{identifier}/items/
          * @secure
          */
-        adminOrdersItemsCreate: (identifier: string, data: AdminCreateOrderItem, params?: RequestParams$6) => Promise<HttpResponse$6<OrderItemResponse, any>>;
+        adminOrdersItemsCreate: (identifier: string, data: AdminCreateOrderItem, params?: RequestParams$7) => Promise<HttpResponse$6<OrderItemResponse, any>>;
         /**
          * No description
          *
@@ -41992,7 +41988,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/orders/{identifier}/payments/
          * @secure
          */
-        adminOrdersPaymentsList: ({ identifier, ...query }: AdminOrdersPaymentsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedAdminPaymentListResponse, any>>;
+        adminOrdersPaymentsList: ({ identifier, ...query }: AdminOrdersPaymentsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedAdminPaymentListResponse, any>>;
         /**
          * No description
          *
@@ -42002,7 +41998,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/admin/orders/{identifier}/payments/
          * @secure
          */
-        adminOrdersPaymentsCreate: (identifier: string, data: AdminCreatePayment, params?: RequestParams$6) => Promise<HttpResponse$6<AdminPaymentResponse, any>>;
+        adminOrdersPaymentsCreate: (identifier: string, data: AdminCreatePayment, params?: RequestParams$7) => Promise<HttpResponse$6<AdminPaymentResponse, any>>;
         /**
          * No description
          *
@@ -42012,7 +42008,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/orders/{identifier}/refunds/
          * @secure
          */
-        adminOrdersRefundsList: ({ identifier, ...query }: AdminOrdersRefundsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedAdminRefundListResponse, any>>;
+        adminOrdersRefundsList: ({ identifier, ...query }: AdminOrdersRefundsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedAdminRefundListResponse, any>>;
         /**
          * No description
          *
@@ -42022,7 +42018,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/admin/orders/{identifier}/refunds/
          * @secure
          */
-        adminOrdersRefundsCreate: (identifier: string, data: AdminCreateRefund, params?: RequestParams$6) => Promise<HttpResponse$6<AdminRefundResponse$1, any>>;
+        adminOrdersRefundsCreate: (identifier: string, data: AdminCreateRefund, params?: RequestParams$7) => Promise<HttpResponse$6<AdminRefundResponse$1, any>>;
         /**
          * No description
          *
@@ -42032,7 +42028,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/orders/{order_id}/items/{item_id}/
          * @secure
          */
-        adminOrdersItemsRetrieve: (itemId: string, orderId: string, params?: RequestParams$6) => Promise<HttpResponse$6<OrderItemResponse, any>>;
+        adminOrdersItemsRetrieve: (itemId: string, orderId: string, params?: RequestParams$7) => Promise<HttpResponse$6<OrderItemResponse, any>>;
         /**
          * No description
          *
@@ -42042,7 +42038,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/admin/orders/{order_id}/items/{item_id}/
          * @secure
          */
-        adminOrdersItemsUpdate: (itemId: string, orderId: string, data: AdminUpdateOrderItem, params?: RequestParams$6) => Promise<HttpResponse$6<OrderItemResponse, any>>;
+        adminOrdersItemsUpdate: (itemId: string, orderId: string, data: AdminUpdateOrderItem, params?: RequestParams$7) => Promise<HttpResponse$6<OrderItemResponse, any>>;
         /**
          * No description
          *
@@ -42052,7 +42048,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/admin/orders/{order_id}/items/{item_id}/
          * @secure
          */
-        adminOrdersItemsPartialUpdate: (itemId: string, orderId: string, data: PatchedAdminUpdateOrderItem, params?: RequestParams$6) => Promise<HttpResponse$6<OrderItemResponse, any>>;
+        adminOrdersItemsPartialUpdate: (itemId: string, orderId: string, data: PatchedAdminUpdateOrderItem, params?: RequestParams$7) => Promise<HttpResponse$6<OrderItemResponse, any>>;
         /**
          * No description
          *
@@ -42062,7 +42058,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/admin/orders/{order_id}/items/{item_id}/
          * @secure
          */
-        adminOrdersItemsDestroy: (itemId: string, orderId: string, params?: RequestParams$6) => Promise<HttpResponse$6<OrderItemResponse, any>>;
+        adminOrdersItemsDestroy: (itemId: string, orderId: string, params?: RequestParams$7) => Promise<HttpResponse$6<OrderItemResponse, any>>;
         /**
          * No description
          *
@@ -42072,7 +42068,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/orders/{order_id}/payments/{payment_id}/
          * @secure
          */
-        adminOrdersPaymentsRetrieve: (orderId: string, paymentId: string, params?: RequestParams$6) => Promise<HttpResponse$6<AdminPaymentResponse, any>>;
+        adminOrdersPaymentsRetrieve: (orderId: string, paymentId: string, params?: RequestParams$7) => Promise<HttpResponse$6<AdminPaymentResponse, any>>;
         /**
          * No description
          *
@@ -42082,7 +42078,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/admin/orders/{order_id}/payments/{payment_id}/
          * @secure
          */
-        adminOrdersPaymentsUpdate: (orderId: string, paymentId: string, data: AdminPayment, params?: RequestParams$6) => Promise<HttpResponse$6<AdminPaymentResponse, any>>;
+        adminOrdersPaymentsUpdate: (orderId: string, paymentId: string, data: AdminPayment, params?: RequestParams$7) => Promise<HttpResponse$6<AdminPaymentResponse, any>>;
         /**
          * No description
          *
@@ -42092,7 +42088,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/admin/orders/{order_id}/payments/{payment_id}/
          * @secure
          */
-        adminOrdersPaymentsPartialUpdate: (orderId: string, paymentId: string, data: PatchedAdminPayment, params?: RequestParams$6) => Promise<HttpResponse$6<AdminPaymentResponse, any>>;
+        adminOrdersPaymentsPartialUpdate: (orderId: string, paymentId: string, data: PatchedAdminPayment, params?: RequestParams$7) => Promise<HttpResponse$6<AdminPaymentResponse, any>>;
         /**
          * No description
          *
@@ -42102,7 +42098,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/orders/{order_id}/refunds/{refund_id}/
          * @secure
          */
-        adminOrdersRefundsRetrieve: (orderId: string, refundId: string, params?: RequestParams$6) => Promise<HttpResponse$6<AdminRefundResponse$1, any>>;
+        adminOrdersRefundsRetrieve: (orderId: string, refundId: string, params?: RequestParams$7) => Promise<HttpResponse$6<AdminRefundResponse$1, any>>;
         /**
          * No description
          *
@@ -42112,7 +42108,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/admin/orders/{order_id}/refunds/{refund_id}/
          * @secure
          */
-        adminOrdersRefundsUpdate: (orderId: string, refundId: string, data: AdminRefund$1, params?: RequestParams$6) => Promise<HttpResponse$6<AdminRefundResponse$1, any>>;
+        adminOrdersRefundsUpdate: (orderId: string, refundId: string, data: AdminRefund$1, params?: RequestParams$7) => Promise<HttpResponse$6<AdminRefundResponse$1, any>>;
         /**
          * No description
          *
@@ -42122,7 +42118,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/admin/orders/{order_id}/refunds/{refund_id}/
          * @secure
          */
-        adminOrdersRefundsPartialUpdate: (orderId: string, refundId: string, data: PatchedAdminRefund, params?: RequestParams$6) => Promise<HttpResponse$6<AdminRefundResponse$1, any>>;
+        adminOrdersRefundsPartialUpdate: (orderId: string, refundId: string, data: PatchedAdminRefund, params?: RequestParams$7) => Promise<HttpResponse$6<AdminRefundResponse$1, any>>;
         /**
          * No description
          *
@@ -42132,7 +42128,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/products/
          * @secure
          */
-        adminProductsList: (query: AdminProductsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedAdminProductListResponse, any>>;
+        adminProductsList: (query: AdminProductsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedAdminProductListResponse, any>>;
         /**
          * No description
          *
@@ -42142,7 +42138,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/admin/products/
          * @secure
          */
-        adminProductsCreate: (data: AdminCreateUpdateProduct, params?: RequestParams$6) => Promise<HttpResponse$6<AdminProductResponse, any>>;
+        adminProductsCreate: (data: AdminCreateUpdateProduct, params?: RequestParams$7) => Promise<HttpResponse$6<AdminProductResponse, any>>;
         /**
          * No description
          *
@@ -42152,7 +42148,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/products/{identifier}/
          * @secure
          */
-        adminProductsRetrieve: (identifier: string, params?: RequestParams$6) => Promise<HttpResponse$6<AdminProductResponse, any>>;
+        adminProductsRetrieve: (identifier: string, params?: RequestParams$7) => Promise<HttpResponse$6<AdminProductResponse, any>>;
         /**
          * No description
          *
@@ -42162,7 +42158,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/admin/products/{identifier}/
          * @secure
          */
-        adminProductsUpdate: (identifier: string, data: AdminCreateUpdateProduct, params?: RequestParams$6) => Promise<HttpResponse$6<AdminProductResponse, any>>;
+        adminProductsUpdate: (identifier: string, data: AdminCreateUpdateProduct, params?: RequestParams$7) => Promise<HttpResponse$6<AdminProductResponse, any>>;
         /**
          * No description
          *
@@ -42172,7 +42168,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/admin/products/{identifier}/
          * @secure
          */
-        adminProductsPartialUpdate: (identifier: string, data: PatchedAdminCreateUpdateProduct, params?: RequestParams$6) => Promise<HttpResponse$6<AdminProductResponse, any>>;
+        adminProductsPartialUpdate: (identifier: string, data: PatchedAdminCreateUpdateProduct, params?: RequestParams$7) => Promise<HttpResponse$6<AdminProductResponse, any>>;
         /**
          * No description
          *
@@ -42182,7 +42178,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/admin/products/{identifier}/
          * @secure
          */
-        adminProductsDestroy: (identifier: string, params?: RequestParams$6) => Promise<HttpResponse$6<AdminProductResponse, any>>;
+        adminProductsDestroy: (identifier: string, params?: RequestParams$7) => Promise<HttpResponse$6<AdminProductResponse, any>>;
         /**
          * No description
          *
@@ -42192,7 +42188,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/products/{identifier}/categories/
          * @secure
          */
-        adminProductsCategoriesList: ({ identifier, ...query }: AdminProductsCategoriesListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedCategoryListResponse, any>>;
+        adminProductsCategoriesList: ({ identifier, ...query }: AdminProductsCategoriesListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedCategoryListResponse, any>>;
         /**
          * No description
          *
@@ -42202,7 +42198,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/admin/products/{identifier}/categories/
          * @secure
          */
-        adminProductsCategoriesCreate: (identifier: string, data: AdminCreateProductCategory, params?: RequestParams$6) => Promise<HttpResponse$6<CategoryResponse, any>>;
+        adminProductsCategoriesCreate: (identifier: string, data: AdminCreateProductCategory, params?: RequestParams$7) => Promise<HttpResponse$6<CategoryResponse, any>>;
         /**
          * No description
          *
@@ -42212,7 +42208,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/products/{identifier}/options/
          * @secure
          */
-        adminProductsOptionsList: ({ identifier, ...query }: AdminProductsOptionsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedProductOptionListResponse, any>>;
+        adminProductsOptionsList: ({ identifier, ...query }: AdminProductsOptionsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedProductOptionListResponse, any>>;
         /**
          * No description
          *
@@ -42222,7 +42218,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/admin/products/{identifier}/options/
          * @secure
          */
-        adminProductsOptionsCreate: (identifier: string, data: AdminCreateProductOption, params?: RequestParams$6) => Promise<HttpResponse$6<ProductOptionResponse, any>>;
+        adminProductsOptionsCreate: (identifier: string, data: AdminCreateProductOption, params?: RequestParams$7) => Promise<HttpResponse$6<ProductOptionResponse, any>>;
         /**
          * No description
          *
@@ -42232,7 +42228,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/products/{identifier}/prices/
          * @secure
          */
-        adminProductsPricesList: ({ identifier, ...query }: AdminProductsPricesListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedProductPriceListResponse, any>>;
+        adminProductsPricesList: ({ identifier, ...query }: AdminProductsPricesListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedProductPriceListResponse, any>>;
         /**
          * No description
          *
@@ -42242,7 +42238,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/admin/products/{identifier}/prices/
          * @secure
          */
-        adminProductsPricesCreate: (identifier: string, data: AdminCreateProductPrice, params?: RequestParams$6) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
+        adminProductsPricesCreate: (identifier: string, data: AdminCreateProductPrice, params?: RequestParams$7) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
         /**
          * No description
          *
@@ -42252,7 +42248,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/products/{identifier}/variants/
          * @secure
          */
-        adminProductsVariantsList: ({ identifier, ...query }: AdminProductsVariantsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedProductVariantListResponse, any>>;
+        adminProductsVariantsList: ({ identifier, ...query }: AdminProductsVariantsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedProductVariantListResponse, any>>;
         /**
          * No description
          *
@@ -42262,7 +42258,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/admin/products/{identifier}/variants/
          * @secure
          */
-        adminProductsVariantsCreate: (identifier: string, data: AdminCreateProductVariant, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
+        adminProductsVariantsCreate: (identifier: string, data: AdminCreateProductVariant, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
         /**
          * No description
          *
@@ -42272,7 +42268,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/products/{product_id}/categories/{category_id}/
          * @secure
          */
-        adminProductsCategoriesRetrieve: (categoryId: string, productId: string, params?: RequestParams$6) => Promise<HttpResponse$6<CategoryResponse, any>>;
+        adminProductsCategoriesRetrieve: (categoryId: string, productId: string, params?: RequestParams$7) => Promise<HttpResponse$6<CategoryResponse, any>>;
         /**
          * No description
          *
@@ -42282,7 +42278,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/admin/products/{product_id}/categories/{category_id}/
          * @secure
          */
-        adminProductsCategoriesDestroy: (categoryId: string, productId: string, params?: RequestParams$6) => Promise<HttpResponse$6<CategoryResponse, any>>;
+        adminProductsCategoriesDestroy: (categoryId: string, productId: string, params?: RequestParams$7) => Promise<HttpResponse$6<CategoryResponse, any>>;
         /**
          * No description
          *
@@ -42292,7 +42288,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/products/{product_id}/images/
          * @secure
          */
-        adminProductsImagesList: ({ productId, ...query }: AdminProductsImagesListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedAdminListCreateProductImageListResponse, any>>;
+        adminProductsImagesList: ({ productId, ...query }: AdminProductsImagesListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedAdminListCreateProductImageListResponse, any>>;
         /**
          * No description
          *
@@ -42302,7 +42298,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/admin/products/{product_id}/images/
          * @secure
          */
-        adminProductsImagesCreate: (productId: string, data: AdminListCreateProductImage, params?: RequestParams$6) => Promise<HttpResponse$6<AdminListCreateProductImageResponse, any>>;
+        adminProductsImagesCreate: (productId: string, data: AdminListCreateProductImage, params?: RequestParams$7) => Promise<HttpResponse$6<AdminListCreateProductImageResponse, any>>;
         /**
          * No description
          *
@@ -42312,7 +42308,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/products/{product_id}/images/{image_id}/
          * @secure
          */
-        adminProductsImagesRetrieve: (imageId: string, productId: string, params?: RequestParams$6) => Promise<HttpResponse$6<AdminGetUpdateProductImageResponse, any>>;
+        adminProductsImagesRetrieve: (imageId: string, productId: string, params?: RequestParams$7) => Promise<HttpResponse$6<AdminGetUpdateProductImageResponse, any>>;
         /**
          * No description
          *
@@ -42322,7 +42318,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/admin/products/{product_id}/images/{image_id}/
          * @secure
          */
-        adminProductsImagesUpdate: (imageId: string, productId: string, data: AdminGetUpdateProductImage, params?: RequestParams$6) => Promise<HttpResponse$6<AdminGetUpdateProductImageResponse, any>>;
+        adminProductsImagesUpdate: (imageId: string, productId: string, data: AdminGetUpdateProductImage, params?: RequestParams$7) => Promise<HttpResponse$6<AdminGetUpdateProductImageResponse, any>>;
         /**
          * No description
          *
@@ -42332,7 +42328,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/admin/products/{product_id}/images/{image_id}/
          * @secure
          */
-        adminProductsImagesPartialUpdate: (imageId: string, productId: string, data: PatchedAdminGetUpdateProductImage, params?: RequestParams$6) => Promise<HttpResponse$6<AdminGetUpdateProductImageResponse, any>>;
+        adminProductsImagesPartialUpdate: (imageId: string, productId: string, data: PatchedAdminGetUpdateProductImage, params?: RequestParams$7) => Promise<HttpResponse$6<AdminGetUpdateProductImageResponse, any>>;
         /**
          * No description
          *
@@ -42342,7 +42338,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/admin/products/{product_id}/images/{image_id}/
          * @secure
          */
-        adminProductsImagesDestroy: (imageId: string, productId: string, params?: RequestParams$6) => Promise<HttpResponse$6<AdminGetUpdateProductImageResponse, any>>;
+        adminProductsImagesDestroy: (imageId: string, productId: string, params?: RequestParams$7) => Promise<HttpResponse$6<AdminGetUpdateProductImageResponse, any>>;
         /**
          * No description
          *
@@ -42352,7 +42348,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/products/{product_id}/options/{option_id}/
          * @secure
          */
-        adminProductsOptionsRetrieve: (optionId: string, productId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ProductOptionResponse, any>>;
+        adminProductsOptionsRetrieve: (optionId: string, productId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ProductOptionResponse, any>>;
         /**
          * No description
          *
@@ -42362,7 +42358,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/admin/products/{product_id}/options/{option_id}/
          * @secure
          */
-        adminProductsOptionsUpdate: (optionId: string, productId: string, data: AdminUpdateProductOption, params?: RequestParams$6) => Promise<HttpResponse$6<ProductOptionResponse, any>>;
+        adminProductsOptionsUpdate: (optionId: string, productId: string, data: AdminUpdateProductOption, params?: RequestParams$7) => Promise<HttpResponse$6<ProductOptionResponse, any>>;
         /**
          * No description
          *
@@ -42372,7 +42368,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/admin/products/{product_id}/options/{option_id}/
          * @secure
          */
-        adminProductsOptionsPartialUpdate: (optionId: string, productId: string, data: PatchedAdminUpdateProductOption, params?: RequestParams$6) => Promise<HttpResponse$6<ProductOptionResponse, any>>;
+        adminProductsOptionsPartialUpdate: (optionId: string, productId: string, data: PatchedAdminUpdateProductOption, params?: RequestParams$7) => Promise<HttpResponse$6<ProductOptionResponse, any>>;
         /**
          * No description
          *
@@ -42382,7 +42378,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/admin/products/{product_id}/options/{option_id}/
          * @secure
          */
-        adminProductsOptionsDestroy: (optionId: string, productId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ProductOptionResponse, any>>;
+        adminProductsOptionsDestroy: (optionId: string, productId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ProductOptionResponse, any>>;
         /**
          * No description
          *
@@ -42392,7 +42388,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/products/{product_id}/prices/{price_id}/
          * @secure
          */
-        adminProductsPricesRetrieve: (priceId: string, productId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
+        adminProductsPricesRetrieve: (priceId: string, productId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
         /**
          * No description
          *
@@ -42402,7 +42398,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/admin/products/{product_id}/prices/{price_id}/
          * @secure
          */
-        adminProductsPricesUpdate: (priceId: string, productId: string, data: AdminUpdateProductPrice, params?: RequestParams$6) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
+        adminProductsPricesUpdate: (priceId: string, productId: string, data: AdminUpdateProductPrice, params?: RequestParams$7) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
         /**
          * No description
          *
@@ -42412,7 +42408,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/admin/products/{product_id}/prices/{price_id}/
          * @secure
          */
-        adminProductsPricesPartialUpdate: (priceId: string, productId: string, data: PatchedAdminUpdateProductPrice, params?: RequestParams$6) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
+        adminProductsPricesPartialUpdate: (priceId: string, productId: string, data: PatchedAdminUpdateProductPrice, params?: RequestParams$7) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
         /**
          * No description
          *
@@ -42422,7 +42418,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/admin/products/{product_id}/prices/{price_id}/
          * @secure
          */
-        adminProductsPricesDestroy: (priceId: string, productId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
+        adminProductsPricesDestroy: (priceId: string, productId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
         /**
          * No description
          *
@@ -42432,7 +42428,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/products/{product_id}/variants/{variant_id}/
          * @secure
          */
-        adminProductsVariantsRetrieve: (productId: string, variantId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
+        adminProductsVariantsRetrieve: (productId: string, variantId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
         /**
          * No description
          *
@@ -42442,7 +42438,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/admin/products/{product_id}/variants/{variant_id}/
          * @secure
          */
-        adminProductsVariantsUpdate: (productId: string, variantId: string, data: AdminUpdateProductVariant, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
+        adminProductsVariantsUpdate: (productId: string, variantId: string, data: AdminUpdateProductVariant, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
         /**
          * No description
          *
@@ -42452,7 +42448,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/admin/products/{product_id}/variants/{variant_id}/
          * @secure
          */
-        adminProductsVariantsPartialUpdate: (productId: string, variantId: string, data: PatchedAdminUpdateProductVariant, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
+        adminProductsVariantsPartialUpdate: (productId: string, variantId: string, data: PatchedAdminUpdateProductVariant, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
         /**
          * No description
          *
@@ -42462,7 +42458,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/admin/products/{product_id}/variants/{variant_id}/
          * @secure
          */
-        adminProductsVariantsDestroy: (productId: string, variantId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
+        adminProductsVariantsDestroy: (productId: string, variantId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
         /**
          * No description
          *
@@ -42472,7 +42468,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/products/{product_id}/variants/{variant_id}/prices/
          * @secure
          */
-        adminProductsVariantsPricesList: ({ productId, variantId, ...query }: AdminProductsVariantsPricesListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedProductVariantPriceListResponse, any>>;
+        adminProductsVariantsPricesList: ({ productId, variantId, ...query }: AdminProductsVariantsPricesListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedProductVariantPriceListResponse, any>>;
         /**
          * No description
          *
@@ -42482,7 +42478,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/admin/products/{product_id}/variants/{variant_id}/prices/
          * @secure
          */
-        adminProductsVariantsPricesCreate: (productId: string, variantId: string, data: AdminCreateProductVariantPrice, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantPriceResponse, any>>;
+        adminProductsVariantsPricesCreate: (productId: string, variantId: string, data: AdminCreateProductVariantPrice, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantPriceResponse, any>>;
         /**
          * No description
          *
@@ -42492,7 +42488,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/products/{product_id}/variants/{variant_id}/prices/{price_id}/
          * @secure
          */
-        adminProductsVariantsPricesRetrieve: (priceId: string, productId: string, variantId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantPriceResponse, any>>;
+        adminProductsVariantsPricesRetrieve: (priceId: string, productId: string, variantId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantPriceResponse, any>>;
         /**
          * No description
          *
@@ -42502,7 +42498,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/admin/products/{product_id}/variants/{variant_id}/prices/{price_id}/
          * @secure
          */
-        adminProductsVariantsPricesUpdate: (priceId: string, productId: string, variantId: string, data: AdminUpdateProductVariantPrice, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantPriceResponse, any>>;
+        adminProductsVariantsPricesUpdate: (priceId: string, productId: string, variantId: string, data: AdminUpdateProductVariantPrice, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantPriceResponse, any>>;
         /**
          * No description
          *
@@ -42512,7 +42508,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/admin/products/{product_id}/variants/{variant_id}/prices/{price_id}/
          * @secure
          */
-        adminProductsVariantsPricesPartialUpdate: (priceId: string, productId: string, variantId: string, data: PatchedAdminUpdateProductVariantPrice, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantPriceResponse, any>>;
+        adminProductsVariantsPricesPartialUpdate: (priceId: string, productId: string, variantId: string, data: PatchedAdminUpdateProductVariantPrice, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantPriceResponse, any>>;
         /**
          * No description
          *
@@ -42522,7 +42518,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/admin/products/{product_id}/variants/{variant_id}/prices/{price_id}/
          * @secure
          */
-        adminProductsVariantsPricesDestroy: (priceId: string, productId: string, variantId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantPriceResponse, any>>;
+        adminProductsVariantsPricesDestroy: (priceId: string, productId: string, variantId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantPriceResponse, any>>;
         /**
          * No description
          *
@@ -42532,7 +42528,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/redemptions/
          * @secure
          */
-        adminRedemptionsList: (query: AdminRedemptionsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedRedemptionListResponse, any>>;
+        adminRedemptionsList: (query: AdminRedemptionsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedRedemptionListResponse, any>>;
         /**
          * No description
          *
@@ -42542,7 +42538,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/admin/redemptions/
          * @secure
          */
-        adminRedemptionsCreate: (data: AdminCreateRedemption, params?: RequestParams$6) => Promise<HttpResponse$6<RedemptionResponse, any>>;
+        adminRedemptionsCreate: (data: AdminCreateRedemption, params?: RequestParams$7) => Promise<HttpResponse$6<RedemptionResponse, any>>;
         /**
          * No description
          *
@@ -42552,7 +42548,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/redemptions/{action_id}/
          * @secure
          */
-        adminRedemptionsRetrieve: (actionId: string, params?: RequestParams$6) => Promise<HttpResponse$6<RedemptionResponse, any>>;
+        adminRedemptionsRetrieve: (actionId: string, params?: RequestParams$7) => Promise<HttpResponse$6<RedemptionResponse, any>>;
         /**
          * No description
          *
@@ -42562,7 +42558,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/sellers/
          * @secure
          */
-        adminSellersList: (query: AdminSellersListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedAdminSellerListResponse, any>>;
+        adminSellersList: (query: AdminSellersListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedAdminSellerListResponse, any>>;
         /**
          * No description
          *
@@ -42572,7 +42568,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/sellers/{identifier}/
          * @secure
          */
-        adminSellersRetrieve: (identifier: string, params?: RequestParams$6) => Promise<HttpResponse$6<AdminSellerResponse, any>>;
+        adminSellersRetrieve: (identifier: string, params?: RequestParams$7) => Promise<HttpResponse$6<AdminSellerResponse, any>>;
         /**
          * No description
          *
@@ -42582,7 +42578,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/admin/sellers/{identifier}/
          * @secure
          */
-        adminSellersUpdate: (identifier: string, data: AdminSeller, params?: RequestParams$6) => Promise<HttpResponse$6<AdminSellerResponse, any>>;
+        adminSellersUpdate: (identifier: string, data: AdminSeller, params?: RequestParams$7) => Promise<HttpResponse$6<AdminSellerResponse, any>>;
         /**
          * No description
          *
@@ -42592,7 +42588,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/admin/sellers/{identifier}/
          * @secure
          */
-        adminSellersPartialUpdate: (identifier: string, data: PatchedAdminSeller, params?: RequestParams$6) => Promise<HttpResponse$6<AdminSellerResponse, any>>;
+        adminSellersPartialUpdate: (identifier: string, data: PatchedAdminSeller, params?: RequestParams$7) => Promise<HttpResponse$6<AdminSellerResponse, any>>;
         /**
          * No description
          *
@@ -42602,7 +42598,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/voucher-imports/
          * @secure
          */
-        adminVoucherImportsList: (query: AdminVoucherImportsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedAdminCreateVoucherImportListResponse, any>>;
+        adminVoucherImportsList: (query: AdminVoucherImportsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedAdminCreateVoucherImportListResponse, any>>;
         /**
          * No description
          *
@@ -42612,7 +42608,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/admin/voucher-imports/
          * @secure
          */
-        adminVoucherImportsCreate: (data: AdminCreateVoucherImport, params?: RequestParams$6) => Promise<HttpResponse$6<AdminCreateVoucherImportResponse, any>>;
+        adminVoucherImportsCreate: (data: AdminCreateVoucherImport, params?: RequestParams$7) => Promise<HttpResponse$6<AdminCreateVoucherImportResponse, any>>;
         /**
          * No description
          *
@@ -42622,7 +42618,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/voucher-imports/{identifier}/
          * @secure
          */
-        adminVoucherImportsRetrieve: (identifier: string, params?: RequestParams$6) => Promise<HttpResponse$6<VoucherImportResponse, any>>;
+        adminVoucherImportsRetrieve: (identifier: string, params?: RequestParams$7) => Promise<HttpResponse$6<VoucherImportResponse, any>>;
         /**
          * No description
          *
@@ -42632,7 +42628,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/vouchers/
          * @secure
          */
-        adminVouchersList: (query: AdminVouchersListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedVoucherListResponse, any>>;
+        adminVouchersList: (query: AdminVouchersListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedVoucherListResponse, any>>;
         /**
          * No description
          *
@@ -42642,7 +42638,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/admin/vouchers/
          * @secure
          */
-        adminVouchersCreate: (data: AdminCreateVoucher, params?: RequestParams$6) => Promise<HttpResponse$6<VoucherResponse, any>>;
+        adminVouchersCreate: (data: AdminCreateVoucher, params?: RequestParams$7) => Promise<HttpResponse$6<VoucherResponse, any>>;
         /**
          * No description
          *
@@ -42652,7 +42648,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/vouchers/{identifier}/
          * @secure
          */
-        adminVouchersRetrieve: (identifier: string, params?: RequestParams$6) => Promise<HttpResponse$6<VoucherResponse, any>>;
+        adminVouchersRetrieve: (identifier: string, params?: RequestParams$7) => Promise<HttpResponse$6<VoucherResponse, any>>;
         /**
          * No description
          *
@@ -42662,7 +42658,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/admin/vouchers/{identifier}/
          * @secure
          */
-        adminVouchersUpdate: (identifier: string, data: AdminUpdateVoucher, params?: RequestParams$6) => Promise<HttpResponse$6<VoucherResponse, any>>;
+        adminVouchersUpdate: (identifier: string, data: AdminUpdateVoucher, params?: RequestParams$7) => Promise<HttpResponse$6<VoucherResponse, any>>;
         /**
          * No description
          *
@@ -42672,7 +42668,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/admin/vouchers/{identifier}/
          * @secure
          */
-        adminVouchersPartialUpdate: (identifier: string, data: PatchedAdminUpdateVoucher, params?: RequestParams$6) => Promise<HttpResponse$6<VoucherResponse, any>>;
+        adminVouchersPartialUpdate: (identifier: string, data: PatchedAdminUpdateVoucher, params?: RequestParams$7) => Promise<HttpResponse$6<VoucherResponse, any>>;
         /**
          * No description
          *
@@ -42682,7 +42678,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/admin/vouchers/{identifier}/
          * @secure
          */
-        adminVouchersDestroy: (identifier: string, params?: RequestParams$6) => Promise<HttpResponse$6<VoucherResponse, any>>;
+        adminVouchersDestroy: (identifier: string, params?: RequestParams$7) => Promise<HttpResponse$6<VoucherResponse, any>>;
         /**
          * No description
          *
@@ -42692,7 +42688,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/vouchers/{identifier}/actions/
          * @secure
          */
-        adminVouchersActionsList: ({ identifier, ...query }: AdminVouchersActionsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedVoucherActionListResponse, any>>;
+        adminVouchersActionsList: ({ identifier, ...query }: AdminVouchersActionsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedVoucherActionListResponse, any>>;
         /**
          * No description
          *
@@ -42702,7 +42698,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/vouchers/{voucher_id}/actions/{action_id}/
          * @secure
          */
-        adminVouchersActionsRetrieve: (actionId: string, voucherId: string, params?: RequestParams$6) => Promise<HttpResponse$6<VoucherActionResponse, any>>;
+        adminVouchersActionsRetrieve: (actionId: string, voucherId: string, params?: RequestParams$7) => Promise<HttpResponse$6<VoucherActionResponse, any>>;
         /**
          * No description
          *
@@ -42712,7 +42708,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/admin/vouchers/import/
          * @secure
          */
-        adminVouchersImportCreate: (data: AdminImportVoucher, params?: RequestParams$6) => Promise<HttpResponse$6<AdminImportVoucherResponse, any>>;
+        adminVouchersImportCreate: (data: AdminImportVoucher, params?: RequestParams$7) => Promise<HttpResponse$6<AdminImportVoucherResponse, any>>;
         /**
          * No description
          *
@@ -42722,7 +42718,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/admin/vouchers/query/
          * @secure
          */
-        adminVouchersQueryCreate: (data: AdminQueryVoucher, params?: RequestParams$6) => Promise<HttpResponse$6<VoucherResponse, any>>;
+        adminVouchersQueryCreate: (data: AdminQueryVoucher, params?: RequestParams$7) => Promise<HttpResponse$6<VoucherResponse, any>>;
     };
     deactivate: {
         /**
@@ -42734,7 +42730,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/deactivate/
          * @secure
          */
-        deactivateCreate: (data: Deactivate$6, params?: RequestParams$6) => Promise<HttpResponse$6<ActionResponse$4, any>>;
+        deactivateCreate: (data: Deactivate$6, params?: RequestParams$7) => Promise<HttpResponse$6<ActionResponse$4, any>>;
     };
     manager: {
         /**
@@ -42746,7 +42742,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/categories/
          * @secure
          */
-        managerCategoriesList: (query: ManagerCategoriesListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedCategoryListResponse, any>>;
+        managerCategoriesList: (query: ManagerCategoriesListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedCategoryListResponse, any>>;
         /**
          * No description
          *
@@ -42756,7 +42752,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/categories/{identifier}/
          * @secure
          */
-        managerCategoriesRetrieve: (identifier: string, params?: RequestParams$6) => Promise<HttpResponse$6<CategoryResponse, any>>;
+        managerCategoriesRetrieve: (identifier: string, params?: RequestParams$7) => Promise<HttpResponse$6<CategoryResponse, any>>;
         /**
          * No description
          *
@@ -42766,7 +42762,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/company/
          * @secure
          */
-        managerCompanyRetrieve: (params?: RequestParams$6) => Promise<HttpResponse$6<CompanyResponse, any>>;
+        managerCompanyRetrieve: (params?: RequestParams$7) => Promise<HttpResponse$6<CompanyResponse, any>>;
         /**
          * No description
          *
@@ -42776,7 +42772,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/currencies/
          * @secure
          */
-        managerCurrenciesList: (query: ManagerCurrenciesListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedCurrencyListResponse$2, any>>;
+        managerCurrenciesList: (query: ManagerCurrenciesListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedCurrencyListResponse$2, any>>;
         /**
          * No description
          *
@@ -42786,7 +42782,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/currencies/{code}/
          * @secure
          */
-        managerCurrenciesRetrieve: (code: string, params?: RequestParams$6) => Promise<HttpResponse$6<CurrencyResponse$2, any>>;
+        managerCurrenciesRetrieve: (code: string, params?: RequestParams$7) => Promise<HttpResponse$6<CurrencyResponse$2, any>>;
         /**
          * No description
          *
@@ -42796,7 +42792,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/
          * @secure
          */
-        managerSellersList: (query: ManagerSellersListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedManagerSellerListResponse, any>>;
+        managerSellersList: (query: ManagerSellersListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedManagerSellerListResponse, any>>;
         /**
          * No description
          *
@@ -42806,7 +42802,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/manager/sellers/
          * @secure
          */
-        managerSellersCreate: (data: ManagerCreateSeller, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerCreateSellerResponse, any>>;
+        managerSellersCreate: (data: ManagerCreateSeller, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerCreateSellerResponse, any>>;
         /**
          * No description
          *
@@ -42816,7 +42812,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{identifier}/
          * @secure
          */
-        managerSellersRetrieve: (identifier: string, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerSellerResponse, any>>;
+        managerSellersRetrieve: (identifier: string, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerSellerResponse, any>>;
         /**
          * No description
          *
@@ -42826,7 +42822,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/manager/sellers/{identifier}/
          * @secure
          */
-        managerSellersUpdate: (identifier: string, data: ManagerSeller, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerSellerResponse, any>>;
+        managerSellersUpdate: (identifier: string, data: ManagerSeller, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerSellerResponse, any>>;
         /**
          * No description
          *
@@ -42836,7 +42832,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/manager/sellers/{identifier}/
          * @secure
          */
-        managerSellersPartialUpdate: (identifier: string, data: PatchedManagerSeller, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerSellerResponse, any>>;
+        managerSellersPartialUpdate: (identifier: string, data: PatchedManagerSeller, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerSellerResponse, any>>;
         /**
          * No description
          *
@@ -42846,7 +42842,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{identifier}/integrations/
          * @secure
          */
-        managerSellersIntegrationsList: ({ identifier, ...query }: ManagerSellersIntegrationsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedManagerIntegrationListResponse, any>>;
+        managerSellersIntegrationsList: ({ identifier, ...query }: ManagerSellersIntegrationsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedManagerIntegrationListResponse, any>>;
         /**
          * No description
          *
@@ -42856,7 +42852,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/manager/sellers/{identifier}/integrations/
          * @secure
          */
-        managerSellersIntegrationsCreate: (identifier: string, data: ManagerIntegration, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerIntegrationResponse, any>>;
+        managerSellersIntegrationsCreate: (identifier: string, data: ManagerIntegration, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerIntegrationResponse, any>>;
         /**
          * No description
          *
@@ -42866,7 +42862,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/integrations/{identifier}/
          * @secure
          */
-        managerSellersIntegrationsRetrieve: (identifier: string, sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerIntegrationResponse, any>>;
+        managerSellersIntegrationsRetrieve: (identifier: string, sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerIntegrationResponse, any>>;
         /**
          * No description
          *
@@ -42876,7 +42872,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/manager/sellers/{seller_id}/integrations/{identifier}/
          * @secure
          */
-        managerSellersIntegrationsUpdate: (identifier: string, sellerId: string, data: ManagerIntegration, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerIntegrationResponse, any>>;
+        managerSellersIntegrationsUpdate: (identifier: string, sellerId: string, data: ManagerIntegration, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerIntegrationResponse, any>>;
         /**
          * No description
          *
@@ -42886,7 +42882,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/manager/sellers/{seller_id}/integrations/{identifier}/
          * @secure
          */
-        managerSellersIntegrationsPartialUpdate: (identifier: string, sellerId: string, data: PatchedManagerIntegration, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerIntegrationResponse, any>>;
+        managerSellersIntegrationsPartialUpdate: (identifier: string, sellerId: string, data: PatchedManagerIntegration, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerIntegrationResponse, any>>;
         /**
          * No description
          *
@@ -42896,7 +42892,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/manager/sellers/{seller_id}/integrations/{identifier}/
          * @secure
          */
-        managerSellersIntegrationsDestroy: (identifier: string, sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerIntegrationResponse, any>>;
+        managerSellersIntegrationsDestroy: (identifier: string, sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerIntegrationResponse, any>>;
         /**
          * No description
          *
@@ -42906,7 +42902,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/integrations/{identifier}/webhooks/
          * @secure
          */
-        managerSellersIntegrationsWebhooksList: ({ identifier, sellerId, ...query }: ManagerSellersIntegrationsWebhooksListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedManagerIntegrationWebhookListResponse, any>>;
+        managerSellersIntegrationsWebhooksList: ({ identifier, sellerId, ...query }: ManagerSellersIntegrationsWebhooksListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedManagerIntegrationWebhookListResponse, any>>;
         /**
          * No description
          *
@@ -42916,7 +42912,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/manager/sellers/{seller_id}/integrations/{identifier}/webhooks/
          * @secure
          */
-        managerSellersIntegrationsWebhooksCreate: (identifier: string, sellerId: string, data: ManagerIntegrationWebhook, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerIntegrationWebhookResponse, any>>;
+        managerSellersIntegrationsWebhooksCreate: (identifier: string, sellerId: string, data: ManagerIntegrationWebhook, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerIntegrationWebhookResponse, any>>;
         /**
          * No description
          *
@@ -42926,7 +42922,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/integrations/{integration_id}/webhooks/{webhook_id}/
          * @secure
          */
-        managerSellersIntegrationsWebhooksRetrieve: (integrationId: string, sellerId: string, webhookId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerIntegrationWebhookResponse, any>>;
+        managerSellersIntegrationsWebhooksRetrieve: (integrationId: string, sellerId: string, webhookId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerIntegrationWebhookResponse, any>>;
         /**
          * No description
          *
@@ -42936,7 +42932,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/manager/sellers/{seller_id}/integrations/{integration_id}/webhooks/{webhook_id}/
          * @secure
          */
-        managerSellersIntegrationsWebhooksUpdate: (integrationId: string, sellerId: string, webhookId: string, data: ManagerIntegrationWebhook, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerIntegrationWebhookResponse, any>>;
+        managerSellersIntegrationsWebhooksUpdate: (integrationId: string, sellerId: string, webhookId: string, data: ManagerIntegrationWebhook, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerIntegrationWebhookResponse, any>>;
         /**
          * No description
          *
@@ -42946,7 +42942,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/manager/sellers/{seller_id}/integrations/{integration_id}/webhooks/{webhook_id}/
          * @secure
          */
-        managerSellersIntegrationsWebhooksPartialUpdate: (integrationId: string, sellerId: string, webhookId: string, data: PatchedManagerIntegrationWebhook, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerIntegrationWebhookResponse, any>>;
+        managerSellersIntegrationsWebhooksPartialUpdate: (integrationId: string, sellerId: string, webhookId: string, data: PatchedManagerIntegrationWebhook, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerIntegrationWebhookResponse, any>>;
         /**
          * No description
          *
@@ -42956,7 +42952,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/manager/sellers/{seller_id}/integrations/{integration_id}/webhooks/{webhook_id}/
          * @secure
          */
-        managerSellersIntegrationsWebhooksDestroy: (integrationId: string, sellerId: string, webhookId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerIntegrationWebhookResponse, any>>;
+        managerSellersIntegrationsWebhooksDestroy: (integrationId: string, sellerId: string, webhookId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerIntegrationWebhookResponse, any>>;
         /**
          * No description
          *
@@ -42966,7 +42962,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/orders/
          * @secure
          */
-        managerSellersOrdersList: ({ sellerId, ...query }: ManagerSellersOrdersListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedOrderListResponse, any>>;
+        managerSellersOrdersList: ({ sellerId, ...query }: ManagerSellersOrdersListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedOrderListResponse, any>>;
         /**
          * No description
          *
@@ -42976,7 +42972,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/orders/{identifier}/
          * @secure
          */
-        managerSellersOrdersRetrieve: (identifier: string, sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
+        managerSellersOrdersRetrieve: (identifier: string, sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
         /**
          * No description
          *
@@ -42986,7 +42982,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/manager/sellers/{seller_id}/orders/{identifier}/
          * @secure
          */
-        managerSellersOrdersUpdate: (identifier: string, sellerId: string, data: ManagerUpdateOrder, params?: RequestParams$6) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
+        managerSellersOrdersUpdate: (identifier: string, sellerId: string, data: ManagerUpdateOrder, params?: RequestParams$7) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
         /**
          * No description
          *
@@ -42996,7 +42992,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/manager/sellers/{seller_id}/orders/{identifier}/
          * @secure
          */
-        managerSellersOrdersPartialUpdate: (identifier: string, sellerId: string, data: PatchedManagerUpdateOrder, params?: RequestParams$6) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
+        managerSellersOrdersPartialUpdate: (identifier: string, sellerId: string, data: PatchedManagerUpdateOrder, params?: RequestParams$7) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
         /**
          * No description
          *
@@ -43006,7 +43002,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/orders/{identifier}/items/
          * @secure
          */
-        managerSellersOrdersItemsList: ({ identifier, sellerId, ...query }: ManagerSellersOrdersItemsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedOrderItemListResponse, any>>;
+        managerSellersOrdersItemsList: ({ identifier, sellerId, ...query }: ManagerSellersOrdersItemsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedOrderItemListResponse, any>>;
         /**
          * No description
          *
@@ -43016,7 +43012,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/orders/{identifier}/payments/
          * @secure
          */
-        managerSellersOrdersPaymentsList: ({ identifier, sellerId, ...query }: ManagerSellersOrdersPaymentsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedManagerPaymentListResponse, any>>;
+        managerSellersOrdersPaymentsList: ({ identifier, sellerId, ...query }: ManagerSellersOrdersPaymentsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedManagerPaymentListResponse, any>>;
         /**
          * No description
          *
@@ -43026,7 +43022,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/orders/{identifier}/refunds/
          * @secure
          */
-        managerSellersOrdersRefundsList: ({ identifier, sellerId, ...query }: ManagerSellersOrdersRefundsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedManagerRefundListResponse, any>>;
+        managerSellersOrdersRefundsList: ({ identifier, sellerId, ...query }: ManagerSellersOrdersRefundsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedManagerRefundListResponse, any>>;
         /**
          * No description
          *
@@ -43036,7 +43032,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/manager/sellers/{seller_id}/orders/{identifier}/refunds/
          * @secure
          */
-        managerSellersOrdersRefundsCreate: (identifier: string, sellerId: string, data: ManagerCreateRefund, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerRefundResponse, any>>;
+        managerSellersOrdersRefundsCreate: (identifier: string, sellerId: string, data: ManagerCreateRefund, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerRefundResponse, any>>;
         /**
          * No description
          *
@@ -43046,7 +43042,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/orders/{order_id}/items/{item_id}/
          * @secure
          */
-        managerSellersOrdersItemsRetrieve: (itemId: string, orderId: string, sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<OrderItemResponse, any>>;
+        managerSellersOrdersItemsRetrieve: (itemId: string, orderId: string, sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<OrderItemResponse, any>>;
         /**
          * No description
          *
@@ -43056,7 +43052,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/manager/sellers/{seller_id}/orders/{order_id}/items/{item_id}/
          * @secure
          */
-        managerSellersOrdersItemsUpdate: (itemId: string, orderId: string, sellerId: string, data: ManagerUpdateOrderItem, params?: RequestParams$6) => Promise<HttpResponse$6<OrderItemResponse, any>>;
+        managerSellersOrdersItemsUpdate: (itemId: string, orderId: string, sellerId: string, data: ManagerUpdateOrderItem, params?: RequestParams$7) => Promise<HttpResponse$6<OrderItemResponse, any>>;
         /**
          * No description
          *
@@ -43066,7 +43062,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/manager/sellers/{seller_id}/orders/{order_id}/items/{item_id}/
          * @secure
          */
-        managerSellersOrdersItemsPartialUpdate: (itemId: string, orderId: string, sellerId: string, data: PatchedManagerUpdateOrderItem, params?: RequestParams$6) => Promise<HttpResponse$6<OrderItemResponse, any>>;
+        managerSellersOrdersItemsPartialUpdate: (itemId: string, orderId: string, sellerId: string, data: PatchedManagerUpdateOrderItem, params?: RequestParams$7) => Promise<HttpResponse$6<OrderItemResponse, any>>;
         /**
          * No description
          *
@@ -43076,7 +43072,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/orders/{order_id}/payments/{payment_id}/
          * @secure
          */
-        managerSellersOrdersPaymentsRetrieve: (orderId: string, paymentId: string, sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerPaymentResponse, any>>;
+        managerSellersOrdersPaymentsRetrieve: (orderId: string, paymentId: string, sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerPaymentResponse, any>>;
         /**
          * No description
          *
@@ -43086,7 +43082,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/manager/sellers/{seller_id}/orders/{order_id}/payments/{payment_id}/
          * @secure
          */
-        managerSellersOrdersPaymentsUpdate: (orderId: string, paymentId: string, sellerId: string, data: ManagerPayment, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerPaymentResponse, any>>;
+        managerSellersOrdersPaymentsUpdate: (orderId: string, paymentId: string, sellerId: string, data: ManagerPayment, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerPaymentResponse, any>>;
         /**
          * No description
          *
@@ -43096,7 +43092,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/manager/sellers/{seller_id}/orders/{order_id}/payments/{payment_id}/
          * @secure
          */
-        managerSellersOrdersPaymentsPartialUpdate: (orderId: string, paymentId: string, sellerId: string, data: PatchedManagerPayment, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerPaymentResponse, any>>;
+        managerSellersOrdersPaymentsPartialUpdate: (orderId: string, paymentId: string, sellerId: string, data: PatchedManagerPayment, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerPaymentResponse, any>>;
         /**
          * No description
          *
@@ -43106,7 +43102,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/orders/{order_id}/refunds/{refund_id}/
          * @secure
          */
-        managerSellersOrdersRefundsRetrieve: (orderId: string, refundId: string, sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerRefundResponse, any>>;
+        managerSellersOrdersRefundsRetrieve: (orderId: string, refundId: string, sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerRefundResponse, any>>;
         /**
          * No description
          *
@@ -43116,7 +43112,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/manager/sellers/{seller_id}/orders/{order_id}/refunds/{refund_id}/
          * @secure
          */
-        managerSellersOrdersRefundsUpdate: (orderId: string, refundId: string, sellerId: string, data: ManagerRefund, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerRefundResponse, any>>;
+        managerSellersOrdersRefundsUpdate: (orderId: string, refundId: string, sellerId: string, data: ManagerRefund, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerRefundResponse, any>>;
         /**
          * No description
          *
@@ -43126,7 +43122,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/manager/sellers/{seller_id}/orders/{order_id}/refunds/{refund_id}/
          * @secure
          */
-        managerSellersOrdersRefundsPartialUpdate: (orderId: string, refundId: string, sellerId: string, data: PatchedManagerRefund, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerRefundResponse, any>>;
+        managerSellersOrdersRefundsPartialUpdate: (orderId: string, refundId: string, sellerId: string, data: PatchedManagerRefund, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerRefundResponse, any>>;
         /**
          * No description
          *
@@ -43136,7 +43132,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/products/
          * @secure
          */
-        managerSellersProductsList: ({ sellerId, ...query }: ManagerSellersProductsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedManagerProductListResponse, any>>;
+        managerSellersProductsList: ({ sellerId, ...query }: ManagerSellersProductsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedManagerProductListResponse, any>>;
         /**
          * No description
          *
@@ -43146,7 +43142,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/manager/sellers/{seller_id}/products/
          * @secure
          */
-        managerSellersProductsCreate: (sellerId: string, data: ManagerCreateUpdateProduct, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerProductResponse, any>>;
+        managerSellersProductsCreate: (sellerId: string, data: ManagerCreateUpdateProduct, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerProductResponse, any>>;
         /**
          * No description
          *
@@ -43156,7 +43152,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/products/{identifier}/
          * @secure
          */
-        managerSellersProductsRetrieve: (identifier: string, sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerProductResponse, any>>;
+        managerSellersProductsRetrieve: (identifier: string, sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerProductResponse, any>>;
         /**
          * No description
          *
@@ -43166,7 +43162,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/manager/sellers/{seller_id}/products/{identifier}/
          * @secure
          */
-        managerSellersProductsUpdate: (identifier: string, sellerId: string, data: ManagerCreateUpdateProduct, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerProductResponse, any>>;
+        managerSellersProductsUpdate: (identifier: string, sellerId: string, data: ManagerCreateUpdateProduct, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerProductResponse, any>>;
         /**
          * No description
          *
@@ -43176,7 +43172,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/manager/sellers/{seller_id}/products/{identifier}/
          * @secure
          */
-        managerSellersProductsPartialUpdate: (identifier: string, sellerId: string, data: PatchedManagerCreateUpdateProduct, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerProductResponse, any>>;
+        managerSellersProductsPartialUpdate: (identifier: string, sellerId: string, data: PatchedManagerCreateUpdateProduct, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerProductResponse, any>>;
         /**
          * No description
          *
@@ -43186,7 +43182,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/manager/sellers/{seller_id}/products/{identifier}/
          * @secure
          */
-        managerSellersProductsDestroy: (identifier: string, sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerProductResponse, any>>;
+        managerSellersProductsDestroy: (identifier: string, sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerProductResponse, any>>;
         /**
          * No description
          *
@@ -43196,7 +43192,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/products/{identifier}/categories/
          * @secure
          */
-        managerSellersProductsCategoriesList: ({ identifier, sellerId, ...query }: ManagerSellersProductsCategoriesListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedCategoryListResponse, any>>;
+        managerSellersProductsCategoriesList: ({ identifier, sellerId, ...query }: ManagerSellersProductsCategoriesListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedCategoryListResponse, any>>;
         /**
          * No description
          *
@@ -43206,7 +43202,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/manager/sellers/{seller_id}/products/{identifier}/categories/
          * @secure
          */
-        managerSellersProductsCategoriesCreate: (identifier: string, sellerId: string, data: ManagerCreateProductCategory, params?: RequestParams$6) => Promise<HttpResponse$6<CategoryResponse, any>>;
+        managerSellersProductsCategoriesCreate: (identifier: string, sellerId: string, data: ManagerCreateProductCategory, params?: RequestParams$7) => Promise<HttpResponse$6<CategoryResponse, any>>;
         /**
          * No description
          *
@@ -43216,7 +43212,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/products/{identifier}/options/
          * @secure
          */
-        managerSellersProductsOptionsList: ({ identifier, sellerId, ...query }: ManagerSellersProductsOptionsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedProductOptionListResponse, any>>;
+        managerSellersProductsOptionsList: ({ identifier, sellerId, ...query }: ManagerSellersProductsOptionsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedProductOptionListResponse, any>>;
         /**
          * No description
          *
@@ -43226,7 +43222,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/manager/sellers/{seller_id}/products/{identifier}/options/
          * @secure
          */
-        managerSellersProductsOptionsCreate: (identifier: string, sellerId: string, data: ManagerCreateProductOption, params?: RequestParams$6) => Promise<HttpResponse$6<ProductOptionResponse, any>>;
+        managerSellersProductsOptionsCreate: (identifier: string, sellerId: string, data: ManagerCreateProductOption, params?: RequestParams$7) => Promise<HttpResponse$6<ProductOptionResponse, any>>;
         /**
          * No description
          *
@@ -43236,7 +43232,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/products/{identifier}/prices/
          * @secure
          */
-        managerSellersProductsPricesList: ({ identifier, sellerId, ...query }: ManagerSellersProductsPricesListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedProductPriceListResponse, any>>;
+        managerSellersProductsPricesList: ({ identifier, sellerId, ...query }: ManagerSellersProductsPricesListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedProductPriceListResponse, any>>;
         /**
          * No description
          *
@@ -43246,7 +43242,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/manager/sellers/{seller_id}/products/{identifier}/prices/
          * @secure
          */
-        managerSellersProductsPricesCreate: (identifier: string, sellerId: string, data: ManagerCreateProductPrice, params?: RequestParams$6) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
+        managerSellersProductsPricesCreate: (identifier: string, sellerId: string, data: ManagerCreateProductPrice, params?: RequestParams$7) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
         /**
          * No description
          *
@@ -43256,7 +43252,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/products/{identifier}/variants/
          * @secure
          */
-        managerSellersProductsVariantsList: ({ identifier, sellerId, ...query }: ManagerSellersProductsVariantsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedProductVariantListResponse, any>>;
+        managerSellersProductsVariantsList: ({ identifier, sellerId, ...query }: ManagerSellersProductsVariantsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedProductVariantListResponse, any>>;
         /**
          * No description
          *
@@ -43266,7 +43262,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/manager/sellers/{seller_id}/products/{identifier}/variants/
          * @secure
          */
-        managerSellersProductsVariantsCreate: (identifier: string, sellerId: string, data: ManagerCreateProductVariant, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
+        managerSellersProductsVariantsCreate: (identifier: string, sellerId: string, data: ManagerCreateProductVariant, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
         /**
          * No description
          *
@@ -43276,7 +43272,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/products/{product_id}/categories/{category_id}/
          * @secure
          */
-        managerSellersProductsCategoriesRetrieve: (categoryId: string, productId: string, sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<CategoryResponse, any>>;
+        managerSellersProductsCategoriesRetrieve: (categoryId: string, productId: string, sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<CategoryResponse, any>>;
         /**
          * No description
          *
@@ -43286,7 +43282,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/manager/sellers/{seller_id}/products/{product_id}/categories/{category_id}/
          * @secure
          */
-        managerSellersProductsCategoriesDestroy: (categoryId: string, productId: string, sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<CategoryResponse, any>>;
+        managerSellersProductsCategoriesDestroy: (categoryId: string, productId: string, sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<CategoryResponse, any>>;
         /**
          * No description
          *
@@ -43296,7 +43292,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/products/{product_id}/images/
          * @secure
          */
-        managerSellersProductsImagesList: ({ productId, sellerId, ...query }: ManagerSellersProductsImagesListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedManagerListCreateProductImageListResponse, any>>;
+        managerSellersProductsImagesList: ({ productId, sellerId, ...query }: ManagerSellersProductsImagesListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedManagerListCreateProductImageListResponse, any>>;
         /**
          * No description
          *
@@ -43306,7 +43302,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/manager/sellers/{seller_id}/products/{product_id}/images/
          * @secure
          */
-        managerSellersProductsImagesCreate: (productId: string, sellerId: string, data: ManagerListCreateProductImage, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerListCreateProductImageResponse, any>>;
+        managerSellersProductsImagesCreate: (productId: string, sellerId: string, data: ManagerListCreateProductImage, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerListCreateProductImageResponse, any>>;
         /**
          * No description
          *
@@ -43316,7 +43312,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/products/{product_id}/images/{image_id}/
          * @secure
          */
-        managerSellersProductsImagesRetrieve: (imageId: string, productId: string, sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerGetUpdateProductImageResponse, any>>;
+        managerSellersProductsImagesRetrieve: (imageId: string, productId: string, sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerGetUpdateProductImageResponse, any>>;
         /**
          * No description
          *
@@ -43326,7 +43322,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/manager/sellers/{seller_id}/products/{product_id}/images/{image_id}/
          * @secure
          */
-        managerSellersProductsImagesUpdate: (imageId: string, productId: string, sellerId: string, data: ManagerGetUpdateProductImage, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerGetUpdateProductImageResponse, any>>;
+        managerSellersProductsImagesUpdate: (imageId: string, productId: string, sellerId: string, data: ManagerGetUpdateProductImage, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerGetUpdateProductImageResponse, any>>;
         /**
          * No description
          *
@@ -43336,7 +43332,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/manager/sellers/{seller_id}/products/{product_id}/images/{image_id}/
          * @secure
          */
-        managerSellersProductsImagesPartialUpdate: (imageId: string, productId: string, sellerId: string, data: PatchedManagerGetUpdateProductImage, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerGetUpdateProductImageResponse, any>>;
+        managerSellersProductsImagesPartialUpdate: (imageId: string, productId: string, sellerId: string, data: PatchedManagerGetUpdateProductImage, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerGetUpdateProductImageResponse, any>>;
         /**
          * No description
          *
@@ -43346,7 +43342,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/manager/sellers/{seller_id}/products/{product_id}/images/{image_id}/
          * @secure
          */
-        managerSellersProductsImagesDestroy: (imageId: string, productId: string, sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerGetUpdateProductImageResponse, any>>;
+        managerSellersProductsImagesDestroy: (imageId: string, productId: string, sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerGetUpdateProductImageResponse, any>>;
         /**
          * No description
          *
@@ -43356,7 +43352,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/products/{product_id}/options/{option_id}/
          * @secure
          */
-        managerSellersProductsOptionsRetrieve: (optionId: string, productId: string, sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ProductOptionResponse, any>>;
+        managerSellersProductsOptionsRetrieve: (optionId: string, productId: string, sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ProductOptionResponse, any>>;
         /**
          * No description
          *
@@ -43366,7 +43362,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/manager/sellers/{seller_id}/products/{product_id}/options/{option_id}/
          * @secure
          */
-        managerSellersProductsOptionsUpdate: (optionId: string, productId: string, sellerId: string, data: ManagerUpdateProductOption, params?: RequestParams$6) => Promise<HttpResponse$6<ProductOptionResponse, any>>;
+        managerSellersProductsOptionsUpdate: (optionId: string, productId: string, sellerId: string, data: ManagerUpdateProductOption, params?: RequestParams$7) => Promise<HttpResponse$6<ProductOptionResponse, any>>;
         /**
          * No description
          *
@@ -43376,7 +43372,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/manager/sellers/{seller_id}/products/{product_id}/options/{option_id}/
          * @secure
          */
-        managerSellersProductsOptionsPartialUpdate: (optionId: string, productId: string, sellerId: string, data: PatchedManagerUpdateProductOption, params?: RequestParams$6) => Promise<HttpResponse$6<ProductOptionResponse, any>>;
+        managerSellersProductsOptionsPartialUpdate: (optionId: string, productId: string, sellerId: string, data: PatchedManagerUpdateProductOption, params?: RequestParams$7) => Promise<HttpResponse$6<ProductOptionResponse, any>>;
         /**
          * No description
          *
@@ -43386,7 +43382,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/manager/sellers/{seller_id}/products/{product_id}/options/{option_id}/
          * @secure
          */
-        managerSellersProductsOptionsDestroy: (optionId: string, productId: string, sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ProductOptionResponse, any>>;
+        managerSellersProductsOptionsDestroy: (optionId: string, productId: string, sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ProductOptionResponse, any>>;
         /**
          * No description
          *
@@ -43396,7 +43392,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/products/{product_id}/prices/{price_id}/
          * @secure
          */
-        managerSellersProductsPricesRetrieve: (priceId: string, productId: string, sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
+        managerSellersProductsPricesRetrieve: (priceId: string, productId: string, sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
         /**
          * No description
          *
@@ -43406,7 +43402,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/manager/sellers/{seller_id}/products/{product_id}/prices/{price_id}/
          * @secure
          */
-        managerSellersProductsPricesUpdate: (priceId: string, productId: string, sellerId: string, data: ManagerUpdateProductPrice, params?: RequestParams$6) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
+        managerSellersProductsPricesUpdate: (priceId: string, productId: string, sellerId: string, data: ManagerUpdateProductPrice, params?: RequestParams$7) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
         /**
          * No description
          *
@@ -43416,7 +43412,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/manager/sellers/{seller_id}/products/{product_id}/prices/{price_id}/
          * @secure
          */
-        managerSellersProductsPricesPartialUpdate: (priceId: string, productId: string, sellerId: string, data: PatchedManagerUpdateProductPrice, params?: RequestParams$6) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
+        managerSellersProductsPricesPartialUpdate: (priceId: string, productId: string, sellerId: string, data: PatchedManagerUpdateProductPrice, params?: RequestParams$7) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
         /**
          * No description
          *
@@ -43426,7 +43422,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/manager/sellers/{seller_id}/products/{product_id}/prices/{price_id}/
          * @secure
          */
-        managerSellersProductsPricesDestroy: (priceId: string, productId: string, sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
+        managerSellersProductsPricesDestroy: (priceId: string, productId: string, sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
         /**
          * No description
          *
@@ -43436,7 +43432,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/products/{product_id}/variants/{variant_id}/
          * @secure
          */
-        managerSellersProductsVariantsRetrieve: (productId: string, sellerId: string, variantId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
+        managerSellersProductsVariantsRetrieve: (productId: string, sellerId: string, variantId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
         /**
          * No description
          *
@@ -43446,7 +43442,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/manager/sellers/{seller_id}/products/{product_id}/variants/{variant_id}/
          * @secure
          */
-        managerSellersProductsVariantsUpdate: (productId: string, sellerId: string, variantId: string, data: ManagerUpdateProductVariant, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
+        managerSellersProductsVariantsUpdate: (productId: string, sellerId: string, variantId: string, data: ManagerUpdateProductVariant, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
         /**
          * No description
          *
@@ -43456,7 +43452,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/manager/sellers/{seller_id}/products/{product_id}/variants/{variant_id}/
          * @secure
          */
-        managerSellersProductsVariantsPartialUpdate: (productId: string, sellerId: string, variantId: string, data: PatchedManagerUpdateProductVariant, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
+        managerSellersProductsVariantsPartialUpdate: (productId: string, sellerId: string, variantId: string, data: PatchedManagerUpdateProductVariant, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
         /**
          * No description
          *
@@ -43466,7 +43462,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/manager/sellers/{seller_id}/products/{product_id}/variants/{variant_id}/
          * @secure
          */
-        managerSellersProductsVariantsDestroy: (productId: string, sellerId: string, variantId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
+        managerSellersProductsVariantsDestroy: (productId: string, sellerId: string, variantId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
         /**
          * No description
          *
@@ -43476,7 +43472,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/products/{product_id}/variants/{variant_id}/prices/
          * @secure
          */
-        managerSellersProductsVariantsPricesList: ({ productId, sellerId, variantId, ...query }: ManagerSellersProductsVariantsPricesListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedProductVariantPriceListResponse, any>>;
+        managerSellersProductsVariantsPricesList: ({ productId, sellerId, variantId, ...query }: ManagerSellersProductsVariantsPricesListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedProductVariantPriceListResponse, any>>;
         /**
          * No description
          *
@@ -43486,7 +43482,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/manager/sellers/{seller_id}/products/{product_id}/variants/{variant_id}/prices/
          * @secure
          */
-        managerSellersProductsVariantsPricesCreate: (productId: string, sellerId: string, variantId: string, data: ManagerCreateProductVariantPrice, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantPriceResponse, any>>;
+        managerSellersProductsVariantsPricesCreate: (productId: string, sellerId: string, variantId: string, data: ManagerCreateProductVariantPrice, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantPriceResponse, any>>;
         /**
          * No description
          *
@@ -43496,7 +43492,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/products/{product_id}/variants/{variant_id}/prices/{price_id}/
          * @secure
          */
-        managerSellersProductsVariantsPricesRetrieve: (priceId: string, productId: string, sellerId: string, variantId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantPriceResponse, any>>;
+        managerSellersProductsVariantsPricesRetrieve: (priceId: string, productId: string, sellerId: string, variantId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantPriceResponse, any>>;
         /**
          * No description
          *
@@ -43506,7 +43502,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/manager/sellers/{seller_id}/products/{product_id}/variants/{variant_id}/prices/{price_id}/
          * @secure
          */
-        managerSellersProductsVariantsPricesUpdate: (priceId: string, productId: string, sellerId: string, variantId: string, data: ManagerUpdateProductVariantPrice, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantPriceResponse, any>>;
+        managerSellersProductsVariantsPricesUpdate: (priceId: string, productId: string, sellerId: string, variantId: string, data: ManagerUpdateProductVariantPrice, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantPriceResponse, any>>;
         /**
          * No description
          *
@@ -43516,7 +43512,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/manager/sellers/{seller_id}/products/{product_id}/variants/{variant_id}/prices/{price_id}/
          * @secure
          */
-        managerSellersProductsVariantsPricesPartialUpdate: (priceId: string, productId: string, sellerId: string, variantId: string, data: PatchedManagerUpdateProductVariantPrice, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantPriceResponse, any>>;
+        managerSellersProductsVariantsPricesPartialUpdate: (priceId: string, productId: string, sellerId: string, variantId: string, data: PatchedManagerUpdateProductVariantPrice, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantPriceResponse, any>>;
         /**
          * No description
          *
@@ -43526,7 +43522,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/manager/sellers/{seller_id}/products/{product_id}/variants/{variant_id}/prices/{price_id}/
          * @secure
          */
-        managerSellersProductsVariantsPricesDestroy: (priceId: string, productId: string, sellerId: string, variantId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantPriceResponse, any>>;
+        managerSellersProductsVariantsPricesDestroy: (priceId: string, productId: string, sellerId: string, variantId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantPriceResponse, any>>;
         /**
          * No description
          *
@@ -43536,7 +43532,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/redemptions/
          * @secure
          */
-        managerSellersRedemptionsList: ({ sellerId, ...query }: ManagerSellersRedemptionsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedRedemptionListResponse, any>>;
+        managerSellersRedemptionsList: ({ sellerId, ...query }: ManagerSellersRedemptionsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedRedemptionListResponse, any>>;
         /**
          * No description
          *
@@ -43546,7 +43542,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/manager/sellers/{seller_id}/redemptions/
          * @secure
          */
-        managerSellersRedemptionsCreate: (sellerId: string, data: ManagerCreateRedemption, params?: RequestParams$6) => Promise<HttpResponse$6<RedemptionResponse, any>>;
+        managerSellersRedemptionsCreate: (sellerId: string, data: ManagerCreateRedemption, params?: RequestParams$7) => Promise<HttpResponse$6<RedemptionResponse, any>>;
         /**
          * No description
          *
@@ -43556,7 +43552,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/redemptions/{action_id}/
          * @secure
          */
-        managerSellersRedemptionsRetrieve: (actionId: string, sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<RedemptionResponse, any>>;
+        managerSellersRedemptionsRetrieve: (actionId: string, sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<RedemptionResponse, any>>;
         /**
          * No description
          *
@@ -43566,7 +43562,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/voucher-imports/
          * @secure
          */
-        managerSellersVoucherImportsList: ({ sellerId, ...query }: ManagerSellersVoucherImportsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedManagerCreateVoucherImportListResponse, any>>;
+        managerSellersVoucherImportsList: ({ sellerId, ...query }: ManagerSellersVoucherImportsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedManagerCreateVoucherImportListResponse, any>>;
         /**
          * No description
          *
@@ -43576,7 +43572,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/manager/sellers/{seller_id}/voucher-imports/
          * @secure
          */
-        managerSellersVoucherImportsCreate: (sellerId: string, data: ManagerCreateVoucherImport, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerCreateVoucherImportResponse, any>>;
+        managerSellersVoucherImportsCreate: (sellerId: string, data: ManagerCreateVoucherImport, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerCreateVoucherImportResponse, any>>;
         /**
          * No description
          *
@@ -43586,7 +43582,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/voucher-imports/{identifier}/
          * @secure
          */
-        managerSellersVoucherImportsRetrieve: (identifier: string, sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<VoucherImportResponse, any>>;
+        managerSellersVoucherImportsRetrieve: (identifier: string, sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<VoucherImportResponse, any>>;
         /**
          * No description
          *
@@ -43596,7 +43592,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/manager/sellers/{seller_id}/voucher/import/
          * @secure
          */
-        managerSellersVoucherImportCreate: (sellerId: string, data: ManagerImportVoucher, params?: RequestParams$6) => Promise<HttpResponse$6<ManagerImportVoucherResponse, any>>;
+        managerSellersVoucherImportCreate: (sellerId: string, data: ManagerImportVoucher, params?: RequestParams$7) => Promise<HttpResponse$6<ManagerImportVoucherResponse, any>>;
         /**
          * No description
          *
@@ -43606,7 +43602,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/vouchers/
          * @secure
          */
-        managerSellersVouchersList: ({ sellerId, ...query }: ManagerSellersVouchersListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedVoucherListResponse, any>>;
+        managerSellersVouchersList: ({ sellerId, ...query }: ManagerSellersVouchersListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedVoucherListResponse, any>>;
         /**
          * No description
          *
@@ -43616,7 +43612,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/manager/sellers/{seller_id}/vouchers/
          * @secure
          */
-        managerSellersVouchersCreate: (sellerId: string, data: ManagerCreateVoucher, params?: RequestParams$6) => Promise<HttpResponse$6<VoucherResponse, any>>;
+        managerSellersVouchersCreate: (sellerId: string, data: ManagerCreateVoucher, params?: RequestParams$7) => Promise<HttpResponse$6<VoucherResponse, any>>;
         /**
          * No description
          *
@@ -43626,7 +43622,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/vouchers/{identifier}/
          * @secure
          */
-        managerSellersVouchersRetrieve: (identifier: string, sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<VoucherResponse, any>>;
+        managerSellersVouchersRetrieve: (identifier: string, sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<VoucherResponse, any>>;
         /**
          * No description
          *
@@ -43636,7 +43632,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/manager/sellers/{seller_id}/vouchers/{identifier}/
          * @secure
          */
-        managerSellersVouchersUpdate: (identifier: string, sellerId: string, data: ManagerUpdateVoucher, params?: RequestParams$6) => Promise<HttpResponse$6<VoucherResponse, any>>;
+        managerSellersVouchersUpdate: (identifier: string, sellerId: string, data: ManagerUpdateVoucher, params?: RequestParams$7) => Promise<HttpResponse$6<VoucherResponse, any>>;
         /**
          * No description
          *
@@ -43646,7 +43642,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/manager/sellers/{seller_id}/vouchers/{identifier}/
          * @secure
          */
-        managerSellersVouchersPartialUpdate: (identifier: string, sellerId: string, data: PatchedManagerUpdateVoucher, params?: RequestParams$6) => Promise<HttpResponse$6<VoucherResponse, any>>;
+        managerSellersVouchersPartialUpdate: (identifier: string, sellerId: string, data: PatchedManagerUpdateVoucher, params?: RequestParams$7) => Promise<HttpResponse$6<VoucherResponse, any>>;
         /**
          * No description
          *
@@ -43656,7 +43652,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/manager/sellers/{seller_id}/vouchers/{identifier}/
          * @secure
          */
-        managerSellersVouchersDestroy: (identifier: string, sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<VoucherResponse, any>>;
+        managerSellersVouchersDestroy: (identifier: string, sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<VoucherResponse, any>>;
         /**
          * No description
          *
@@ -43666,7 +43662,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/vouchers/{voucher_id}/actions/
          * @secure
          */
-        managerSellersVouchersActionsList: ({ sellerId, voucherId, ...query }: ManagerSellersVouchersActionsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedVoucherActionListResponse, any>>;
+        managerSellersVouchersActionsList: ({ sellerId, voucherId, ...query }: ManagerSellersVouchersActionsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedVoucherActionListResponse, any>>;
         /**
          * No description
          *
@@ -43676,7 +43672,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/sellers/{seller_id}/vouchers/{voucher_id}/actions/{action_id}/
          * @secure
          */
-        managerSellersVouchersActionsRetrieve: (actionId: string, sellerId: string, voucherId: string, params?: RequestParams$6) => Promise<HttpResponse$6<VoucherActionResponse, any>>;
+        managerSellersVouchersActionsRetrieve: (actionId: string, sellerId: string, voucherId: string, params?: RequestParams$7) => Promise<HttpResponse$6<VoucherActionResponse, any>>;
         /**
          * No description
          *
@@ -43686,7 +43682,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/manager/sellers/{seller_id}/vouchers/query/
          * @secure
          */
-        managerSellersVouchersQueryCreate: (sellerId: string, data: ManagerQueryVoucher, params?: RequestParams$6) => Promise<HttpResponse$6<VoucherResponse, any>>;
+        managerSellersVouchersQueryCreate: (sellerId: string, data: ManagerQueryVoucher, params?: RequestParams$7) => Promise<HttpResponse$6<VoucherResponse, any>>;
     };
     user: {
         /**
@@ -43698,7 +43694,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/categories/
          * @secure
          */
-        userCategoriesList: (query: UserCategoriesListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedCategoryListResponse, any>>;
+        userCategoriesList: (query: UserCategoriesListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedCategoryListResponse, any>>;
         /**
          * No description
          *
@@ -43708,7 +43704,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/categories/{identifier}/
          * @secure
          */
-        userCategoriesRetrieve: (identifier: string, params?: RequestParams$6) => Promise<HttpResponse$6<CategoryResponse, any>>;
+        userCategoriesRetrieve: (identifier: string, params?: RequestParams$7) => Promise<HttpResponse$6<CategoryResponse, any>>;
         /**
          * No description
          *
@@ -43718,7 +43714,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/company/
          * @secure
          */
-        userCompanyRetrieve: (params?: RequestParams$6) => Promise<HttpResponse$6<CompanyResponse, any>>;
+        userCompanyRetrieve: (params?: RequestParams$7) => Promise<HttpResponse$6<CompanyResponse, any>>;
         /**
          * No description
          *
@@ -43728,7 +43724,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/orders/
          * @secure
          */
-        userOrdersList: (query: UserOrdersListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedOrderListResponse, any>>;
+        userOrdersList: (query: UserOrdersListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedOrderListResponse, any>>;
         /**
          * No description
          *
@@ -43738,7 +43734,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/user/orders/
          * @secure
          */
-        userOrdersCreate: (data: UserCreateOrder, params?: RequestParams$6) => Promise<HttpResponse$6<OrderResponse, any>>;
+        userOrdersCreate: (data: UserCreateOrder, params?: RequestParams$7) => Promise<HttpResponse$6<OrderResponse, any>>;
         /**
          * No description
          *
@@ -43748,7 +43744,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/orders/{identifier}/
          * @secure
          */
-        userOrdersRetrieve: (identifier: string, params?: RequestParams$6) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
+        userOrdersRetrieve: (identifier: string, params?: RequestParams$7) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
         /**
          * No description
          *
@@ -43758,7 +43754,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/user/orders/{identifier}/
          * @secure
          */
-        userOrdersUpdate: (identifier: string, data: UserUpdateOrder, params?: RequestParams$6) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
+        userOrdersUpdate: (identifier: string, data: UserUpdateOrder, params?: RequestParams$7) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
         /**
          * No description
          *
@@ -43768,7 +43764,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/user/orders/{identifier}/
          * @secure
          */
-        userOrdersPartialUpdate: (identifier: string, data: PatchedUserUpdateOrder, params?: RequestParams$6) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
+        userOrdersPartialUpdate: (identifier: string, data: PatchedUserUpdateOrder, params?: RequestParams$7) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
         /**
          * No description
          *
@@ -43778,7 +43774,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/user/orders/{identifier}/
          * @secure
          */
-        userOrdersDestroy: (identifier: string, params?: RequestParams$6) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
+        userOrdersDestroy: (identifier: string, params?: RequestParams$7) => Promise<HttpResponse$6<ExtendedOrderResponse, any>>;
         /**
          * No description
          *
@@ -43788,7 +43784,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/orders/{identifier}/items/
          * @secure
          */
-        userOrdersItemsList: ({ identifier, ...query }: UserOrdersItemsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedOrderItemListResponse, any>>;
+        userOrdersItemsList: ({ identifier, ...query }: UserOrdersItemsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedOrderItemListResponse, any>>;
         /**
          * No description
          *
@@ -43798,7 +43794,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/user/orders/{identifier}/items/
          * @secure
          */
-        userOrdersItemsCreate: (identifier: string, data: UserCreateOrderItem, params?: RequestParams$6) => Promise<HttpResponse$6<OrderItemResponse, any>>;
+        userOrdersItemsCreate: (identifier: string, data: UserCreateOrderItem, params?: RequestParams$7) => Promise<HttpResponse$6<OrderItemResponse, any>>;
         /**
          * No description
          *
@@ -43808,7 +43804,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/orders/{identifier}/payments/
          * @secure
          */
-        userOrdersPaymentsList: ({ identifier, ...query }: UserOrdersPaymentsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedPaymentListResponse, any>>;
+        userOrdersPaymentsList: ({ identifier, ...query }: UserOrdersPaymentsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedPaymentListResponse, any>>;
         /**
          * No description
          *
@@ -43818,7 +43814,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/user/orders/{identifier}/payments/
          * @secure
          */
-        userOrdersPaymentsCreate: (identifier: string, data: CreatePayment, params?: RequestParams$6) => Promise<HttpResponse$6<PaymentResponse, any>>;
+        userOrdersPaymentsCreate: (identifier: string, data: CreatePayment, params?: RequestParams$7) => Promise<HttpResponse$6<PaymentResponse, any>>;
         /**
          * No description
          *
@@ -43828,7 +43824,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/orders/{identifier}/refunds/
          * @secure
          */
-        userOrdersRefundsList: ({ identifier, ...query }: UserOrdersRefundsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedRefundListResponse$1, any>>;
+        userOrdersRefundsList: ({ identifier, ...query }: UserOrdersRefundsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedRefundListResponse$1, any>>;
         /**
          * No description
          *
@@ -43838,7 +43834,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/orders/{order_id}/items/{item_id}/
          * @secure
          */
-        userOrdersItemsRetrieve: (itemId: string, orderId: string, params?: RequestParams$6) => Promise<HttpResponse$6<OrderItemResponse, any>>;
+        userOrdersItemsRetrieve: (itemId: string, orderId: string, params?: RequestParams$7) => Promise<HttpResponse$6<OrderItemResponse, any>>;
         /**
          * No description
          *
@@ -43848,7 +43844,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/user/orders/{order_id}/items/{item_id}/
          * @secure
          */
-        userOrdersItemsUpdate: (itemId: string, orderId: string, data: UserUpdateOrderItem, params?: RequestParams$6) => Promise<HttpResponse$6<OrderItemResponse, any>>;
+        userOrdersItemsUpdate: (itemId: string, orderId: string, data: UserUpdateOrderItem, params?: RequestParams$7) => Promise<HttpResponse$6<OrderItemResponse, any>>;
         /**
          * No description
          *
@@ -43858,7 +43854,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/user/orders/{order_id}/items/{item_id}/
          * @secure
          */
-        userOrdersItemsPartialUpdate: (itemId: string, orderId: string, data: PatchedUserUpdateOrderItem, params?: RequestParams$6) => Promise<HttpResponse$6<OrderItemResponse, any>>;
+        userOrdersItemsPartialUpdate: (itemId: string, orderId: string, data: PatchedUserUpdateOrderItem, params?: RequestParams$7) => Promise<HttpResponse$6<OrderItemResponse, any>>;
         /**
          * No description
          *
@@ -43868,7 +43864,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request DELETE:/user/orders/{order_id}/items/{item_id}/
          * @secure
          */
-        userOrdersItemsDestroy: (itemId: string, orderId: string, params?: RequestParams$6) => Promise<HttpResponse$6<OrderItemResponse, any>>;
+        userOrdersItemsDestroy: (itemId: string, orderId: string, params?: RequestParams$7) => Promise<HttpResponse$6<OrderItemResponse, any>>;
         /**
          * No description
          *
@@ -43878,7 +43874,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/orders/{order_id}/payments/{payment_id}/
          * @secure
          */
-        userOrdersPaymentsRetrieve: (orderId: string, paymentId: string, params?: RequestParams$6) => Promise<HttpResponse$6<PaymentResponse, any>>;
+        userOrdersPaymentsRetrieve: (orderId: string, paymentId: string, params?: RequestParams$7) => Promise<HttpResponse$6<PaymentResponse, any>>;
         /**
          * No description
          *
@@ -43888,7 +43884,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/orders/{order_id}/refunds/{refund_id}/
          * @secure
          */
-        userOrdersRefundsRetrieve: (orderId: string, refundId: string, params?: RequestParams$6) => Promise<HttpResponse$6<RefundResponse, any>>;
+        userOrdersRefundsRetrieve: (orderId: string, refundId: string, params?: RequestParams$7) => Promise<HttpResponse$6<RefundResponse, any>>;
         /**
          * No description
          *
@@ -43898,7 +43894,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/products/
          * @secure
          */
-        userProductsList: (query: UserProductsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedProductListResponse, any>>;
+        userProductsList: (query: UserProductsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedProductListResponse, any>>;
         /**
          * No description
          *
@@ -43908,7 +43904,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/products/{identifier}/
          * @secure
          */
-        userProductsRetrieve: (identifier: string, params?: RequestParams$6) => Promise<HttpResponse$6<ProductResponse, any>>;
+        userProductsRetrieve: (identifier: string, params?: RequestParams$7) => Promise<HttpResponse$6<ProductResponse, any>>;
         /**
          * No description
          *
@@ -43918,7 +43914,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/products/{identifier}/prices/
          * @secure
          */
-        userProductsPricesList: ({ identifier, ...query }: UserProductsPricesListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedProductPriceListResponse, any>>;
+        userProductsPricesList: ({ identifier, ...query }: UserProductsPricesListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedProductPriceListResponse, any>>;
         /**
          * No description
          *
@@ -43928,7 +43924,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/products/{identifier}/variants/
          * @secure
          */
-        userProductsVariantsList: ({ identifier, ...query }: UserProductsVariantsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedProductVariantListResponse, any>>;
+        userProductsVariantsList: ({ identifier, ...query }: UserProductsVariantsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedProductVariantListResponse, any>>;
         /**
          * No description
          *
@@ -43938,7 +43934,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/products/{product_id}/images/
          * @secure
          */
-        userProductsImagesList: ({ productId, ...query }: UserProductsImagesListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedProductImageListResponse, any>>;
+        userProductsImagesList: ({ productId, ...query }: UserProductsImagesListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedProductImageListResponse, any>>;
         /**
          * No description
          *
@@ -43948,7 +43944,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/products/{product_id}/images/{image_id}/
          * @secure
          */
-        userProductsImagesRetrieve: (imageId: string, productId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ProductImageResponse, any>>;
+        userProductsImagesRetrieve: (imageId: string, productId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ProductImageResponse, any>>;
         /**
          * No description
          *
@@ -43958,7 +43954,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/products/{product_id}/prices/{price_id}/
          * @secure
          */
-        userProductsPricesRetrieve: (priceId: string, productId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
+        userProductsPricesRetrieve: (priceId: string, productId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ProductPriceResponse, any>>;
         /**
          * No description
          *
@@ -43968,7 +43964,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/products/{product_id}/variants/{variant_id}/
          * @secure
          */
-        userProductsVariantsRetrieve: (productId: string, variantId: string, params?: RequestParams$6) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
+        userProductsVariantsRetrieve: (productId: string, variantId: string, params?: RequestParams$7) => Promise<HttpResponse$6<ProductVariantResponse, any>>;
         /**
          * No description
          *
@@ -43978,7 +43974,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/redemptions/
          * @secure
          */
-        userRedemptionsList: (query: UserRedemptionsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedRedemptionListResponse, any>>;
+        userRedemptionsList: (query: UserRedemptionsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedRedemptionListResponse, any>>;
         /**
          * No description
          *
@@ -43988,7 +43984,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/user/redemptions/
          * @secure
          */
-        userRedemptionsCreate: (data: UserCreateRedemption, params?: RequestParams$6) => Promise<HttpResponse$6<RedemptionResponse, any>>;
+        userRedemptionsCreate: (data: UserCreateRedemption, params?: RequestParams$7) => Promise<HttpResponse$6<RedemptionResponse, any>>;
         /**
          * No description
          *
@@ -43998,7 +43994,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/redemptions/{action_id}/
          * @secure
          */
-        userRedemptionsRetrieve: (actionId: string, params?: RequestParams$6) => Promise<HttpResponse$6<RedemptionResponse, any>>;
+        userRedemptionsRetrieve: (actionId: string, params?: RequestParams$7) => Promise<HttpResponse$6<RedemptionResponse, any>>;
         /**
          * No description
          *
@@ -44008,7 +44004,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/sellers/
          * @secure
          */
-        userSellersList: (query: UserSellersListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedSellerListResponse, any>>;
+        userSellersList: (query: UserSellersListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedSellerListResponse, any>>;
         /**
          * No description
          *
@@ -44018,7 +44014,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/sellers/{seller_id}/
          * @secure
          */
-        userSellersRetrieve: (sellerId: string, params?: RequestParams$6) => Promise<HttpResponse$6<SellerResponse, any>>;
+        userSellersRetrieve: (sellerId: string, params?: RequestParams$7) => Promise<HttpResponse$6<SellerResponse, any>>;
         /**
          * No description
          *
@@ -44028,7 +44024,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/vouchers/
          * @secure
          */
-        userVouchersList: (query: UserVouchersListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedVoucherListResponse, any>>;
+        userVouchersList: (query: UserVouchersListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedVoucherListResponse, any>>;
         /**
          * No description
          *
@@ -44038,7 +44034,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/vouchers/{identifier}/
          * @secure
          */
-        userVouchersRetrieve: (identifier: string, params?: RequestParams$6) => Promise<HttpResponse$6<VoucherResponse, any>>;
+        userVouchersRetrieve: (identifier: string, params?: RequestParams$7) => Promise<HttpResponse$6<VoucherResponse, any>>;
         /**
          * No description
          *
@@ -44048,7 +44044,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/vouchers/{identifier}/actions/
          * @secure
          */
-        userVouchersActionsList: ({ identifier, ...query }: UserVouchersActionsListParams, params?: RequestParams$6) => Promise<HttpResponse$6<PaginatedVoucherActionListResponse, any>>;
+        userVouchersActionsList: ({ identifier, ...query }: UserVouchersActionsListParams, params?: RequestParams$7) => Promise<HttpResponse$6<PaginatedVoucherActionListResponse, any>>;
         /**
          * No description
          *
@@ -44058,7 +44054,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/vouchers/{voucher_id}/actions/{action_id}/
          * @secure
          */
-        userVouchersActionsRetrieve: (actionId: string, voucherId: string, params?: RequestParams$6) => Promise<HttpResponse$6<VoucherActionResponse, any>>;
+        userVouchersActionsRetrieve: (actionId: string, voucherId: string, params?: RequestParams$7) => Promise<HttpResponse$6<VoucherActionResponse, any>>;
         /**
          * No description
          *
@@ -44068,7 +44064,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/user/vouchers/query/
          * @secure
          */
-        userVouchersQueryCreate: (data: UserQueryVoucher, params?: RequestParams$6) => Promise<HttpResponse$6<VoucherResponse, any>>;
+        userVouchersQueryCreate: (data: UserQueryVoucher, params?: RequestParams$7) => Promise<HttpResponse$6<VoucherResponse, any>>;
     };
     webhook: {
         /**
@@ -44080,7 +44076,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/webhook/
          * @secure
          */
-        webhookCreate: (data: Webhook$4, params?: RequestParams$6) => Promise<HttpResponse$6<ActionResponse$4, any>>;
+        webhookCreate: (data: Webhook$4, params?: RequestParams$7) => Promise<HttpResponse$6<ActionResponse$4, any>>;
     };
 }
 
@@ -45096,11 +45092,11 @@ interface FullRequestParams$5 extends Omit<RequestInit, "body"> {
     /** request cancellation token */
     cancelToken?: CancelToken$5;
 }
-type RequestParams$5 = Omit<FullRequestParams$5, "body" | "method" | "query" | "path">;
+type RequestParams$6 = Omit<FullRequestParams$5, "body" | "method" | "query" | "path">;
 interface ApiConfig$5<SecurityDataType = unknown> {
     baseUrl?: string;
-    baseApiParams?: Omit<RequestParams$5, "baseUrl" | "cancelToken" | "signal">;
-    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$5 | void> | RequestParams$5 | void;
+    baseApiParams?: Omit<RequestParams$6, "baseUrl" | "cancelToken" | "signal">;
+    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$6 | void> | RequestParams$6 | void;
     customFetch?: typeof fetch;
 }
 interface HttpResponse$5<D extends unknown, E extends unknown = unknown> extends Response {
@@ -45130,7 +45126,7 @@ declare class HttpClient$5<SecurityDataType = unknown> {
     protected toQueryString(rawQuery?: QueryParamsType$5): string;
     protected addQueryParams(rawQuery?: QueryParamsType$5): string;
     private contentFormatters;
-    protected mergeRequestParams(params1: RequestParams$5, params2?: RequestParams$5): RequestParams$5;
+    protected mergeRequestParams(params1: RequestParams$6, params2?: RequestParams$6): RequestParams$6;
     protected createAbortSignal: (cancelToken: CancelToken$5) => AbortSignal | undefined;
     abortRequest: (cancelToken: CancelToken$5) => void;
     request: <T = any, E = any>({ body, secure, path, type, query, format, baseUrl, cancelToken, ...params }: FullRequestParams$5) => Promise<HttpResponse$5<T, E>>;
@@ -45158,7 +45154,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request POST:/activate/
          * @secure
          */
-        activateCreate: (data: Activate$5, params?: RequestParams$5) => Promise<HttpResponse$5<ActionResponse$3, any>>;
+        activateCreate: (data: Activate$5, params?: RequestParams$6) => Promise<HttpResponse$5<ActionResponse$3, any>>;
     };
     admin: {
         /**
@@ -45170,7 +45166,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request GET:/admin/campaigns/
          * @secure
          */
-        adminCampaignsList: (query: AdminCampaignsListParams, params?: RequestParams$5) => Promise<HttpResponse$5<PaginatedAdminCampaignListResponse, any>>;
+        adminCampaignsList: (query: AdminCampaignsListParams, params?: RequestParams$6) => Promise<HttpResponse$5<PaginatedAdminCampaignListResponse, any>>;
         /**
          * No description
          *
@@ -45180,7 +45176,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request POST:/admin/campaigns/
          * @secure
          */
-        adminCampaignsCreate: (data: AdminCreateUpdateCampaign, params?: RequestParams$5) => Promise<HttpResponse$5<AdminCampaignResponse, any>>;
+        adminCampaignsCreate: (data: AdminCreateUpdateCampaign, params?: RequestParams$6) => Promise<HttpResponse$5<AdminCampaignResponse, any>>;
         /**
          * No description
          *
@@ -45190,7 +45186,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request GET:/admin/campaigns/{id}/
          * @secure
          */
-        adminCampaignsRetrieve: (id: string, params?: RequestParams$5) => Promise<HttpResponse$5<AdminCampaignResponse, any>>;
+        adminCampaignsRetrieve: (id: string, params?: RequestParams$6) => Promise<HttpResponse$5<AdminCampaignResponse, any>>;
         /**
          * No description
          *
@@ -45200,7 +45196,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request PUT:/admin/campaigns/{id}/
          * @secure
          */
-        adminCampaignsUpdate: (id: string, data: AdminCreateUpdateCampaign, params?: RequestParams$5) => Promise<HttpResponse$5<AdminCampaignResponse, any>>;
+        adminCampaignsUpdate: (id: string, data: AdminCreateUpdateCampaign, params?: RequestParams$6) => Promise<HttpResponse$5<AdminCampaignResponse, any>>;
         /**
          * No description
          *
@@ -45210,7 +45206,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request PATCH:/admin/campaigns/{id}/
          * @secure
          */
-        adminCampaignsPartialUpdate: (id: string, data: PatchedAdminCreateUpdateCampaign, params?: RequestParams$5) => Promise<HttpResponse$5<AdminCampaignResponse, any>>;
+        adminCampaignsPartialUpdate: (id: string, data: PatchedAdminCreateUpdateCampaign, params?: RequestParams$6) => Promise<HttpResponse$5<AdminCampaignResponse, any>>;
         /**
          * No description
          *
@@ -45220,7 +45216,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request DELETE:/admin/campaigns/{id}/
          * @secure
          */
-        adminCampaignsDestroy: (id: string, params?: RequestParams$5) => Promise<HttpResponse$5<AdminCampaignResponse, any>>;
+        adminCampaignsDestroy: (id: string, params?: RequestParams$6) => Promise<HttpResponse$5<AdminCampaignResponse, any>>;
         /**
          * No description
          *
@@ -45230,7 +45226,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request GET:/admin/company/
          * @secure
          */
-        adminCompanyRetrieve: (params?: RequestParams$5) => Promise<HttpResponse$5<AdminCompanyResponse$3, any>>;
+        adminCompanyRetrieve: (params?: RequestParams$6) => Promise<HttpResponse$5<AdminCompanyResponse$3, any>>;
         /**
          * No description
          *
@@ -45240,7 +45236,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request PUT:/admin/company/
          * @secure
          */
-        adminCompanyUpdate: (data: AdminCompany$3, params?: RequestParams$5) => Promise<HttpResponse$5<AdminCompanyResponse$3, any>>;
+        adminCompanyUpdate: (data: AdminCompany$3, params?: RequestParams$6) => Promise<HttpResponse$5<AdminCompanyResponse$3, any>>;
         /**
          * No description
          *
@@ -45250,7 +45246,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request PATCH:/admin/company/
          * @secure
          */
-        adminCompanyPartialUpdate: (data: PatchedAdminCompany$1, params?: RequestParams$5) => Promise<HttpResponse$5<AdminCompanyResponse$3, any>>;
+        adminCompanyPartialUpdate: (data: PatchedAdminCompany$1, params?: RequestParams$6) => Promise<HttpResponse$5<AdminCompanyResponse$3, any>>;
         /**
          * No description
          *
@@ -45260,7 +45256,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request GET:/admin/currencies/
          * @secure
          */
-        adminCurrenciesList: (query: AdminCurrenciesListParams$2, params?: RequestParams$5) => Promise<HttpResponse$5<PaginatedCurrencyListResponse$1, any>>;
+        adminCurrenciesList: (query: AdminCurrenciesListParams$2, params?: RequestParams$6) => Promise<HttpResponse$5<PaginatedCurrencyListResponse$1, any>>;
         /**
          * No description
          *
@@ -45270,7 +45266,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request GET:/admin/currencies/{code}/
          * @secure
          */
-        adminCurrenciesRetrieve: (code: string, params?: RequestParams$5) => Promise<HttpResponse$5<CurrencyResponse$1, any>>;
+        adminCurrenciesRetrieve: (code: string, params?: RequestParams$6) => Promise<HttpResponse$5<CurrencyResponse$1, any>>;
         /**
          * No description
          *
@@ -45280,7 +45276,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request GET:/admin/rewards/
          * @secure
          */
-        adminRewardsList: (query: AdminRewardsListParams, params?: RequestParams$5) => Promise<HttpResponse$5<PaginatedAdminRewardListResponse, any>>;
+        adminRewardsList: (query: AdminRewardsListParams, params?: RequestParams$6) => Promise<HttpResponse$5<PaginatedAdminRewardListResponse, any>>;
         /**
          * No description
          *
@@ -45290,7 +45286,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request POST:/admin/rewards/
          * @secure
          */
-        adminRewardsCreate: (data: AdminCreateReward, params?: RequestParams$5) => Promise<HttpResponse$5<AdminRewardResponse, any>>;
+        adminRewardsCreate: (data: AdminCreateReward, params?: RequestParams$6) => Promise<HttpResponse$5<AdminRewardResponse, any>>;
         /**
          * No description
          *
@@ -45300,7 +45296,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request GET:/admin/rewards/{id}/
          * @secure
          */
-        adminRewardsRetrieve: (id: string, params?: RequestParams$5) => Promise<HttpResponse$5<AdminRewardResponse, any>>;
+        adminRewardsRetrieve: (id: string, params?: RequestParams$6) => Promise<HttpResponse$5<AdminRewardResponse, any>>;
         /**
          * No description
          *
@@ -45310,7 +45306,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request PUT:/admin/rewards/{id}/
          * @secure
          */
-        adminRewardsUpdate: (id: string, data: AdminReward, params?: RequestParams$5) => Promise<HttpResponse$5<AdminRewardResponse, any>>;
+        adminRewardsUpdate: (id: string, data: AdminReward, params?: RequestParams$6) => Promise<HttpResponse$5<AdminRewardResponse, any>>;
         /**
          * No description
          *
@@ -45320,7 +45316,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request PATCH:/admin/rewards/{id}/
          * @secure
          */
-        adminRewardsPartialUpdate: (id: string, data: PatchedAdminReward, params?: RequestParams$5) => Promise<HttpResponse$5<AdminRewardResponse, any>>;
+        adminRewardsPartialUpdate: (id: string, data: PatchedAdminReward, params?: RequestParams$6) => Promise<HttpResponse$5<AdminRewardResponse, any>>;
         /**
          * No description
          *
@@ -45330,7 +45326,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request GET:/admin/users/
          * @secure
          */
-        adminUsersList: (query: AdminUsersListParams$3, params?: RequestParams$5) => Promise<HttpResponse$5<PaginatedAdminUserListResponse$1, any>>;
+        adminUsersList: (query: AdminUsersListParams$3, params?: RequestParams$6) => Promise<HttpResponse$5<PaginatedAdminUserListResponse$1, any>>;
         /**
          * No description
          *
@@ -45340,7 +45336,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request GET:/admin/users/{id}/
          * @secure
          */
-        adminUsersRetrieve: (id: string, params?: RequestParams$5) => Promise<HttpResponse$5<AdminUserResponse$1, any>>;
+        adminUsersRetrieve: (id: string, params?: RequestParams$6) => Promise<HttpResponse$5<AdminUserResponse$1, any>>;
         /**
          * No description
          *
@@ -45350,7 +45346,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request POST:/admin/webhook/
          * @secure
          */
-        adminWebhookCreate: (data: Webhook$3, params?: RequestParams$5) => Promise<HttpResponse$5<ActionResponse$3, any>>;
+        adminWebhookCreate: (data: Webhook$3, params?: RequestParams$6) => Promise<HttpResponse$5<ActionResponse$3, any>>;
     };
     deactivate: {
         /**
@@ -45362,7 +45358,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request POST:/deactivate/
          * @secure
          */
-        deactivateCreate: (data: Deactivate$5, params?: RequestParams$5) => Promise<HttpResponse$5<ActionResponse$3, any>>;
+        deactivateCreate: (data: Deactivate$5, params?: RequestParams$6) => Promise<HttpResponse$5<ActionResponse$3, any>>;
     };
     user: {
         /**
@@ -45374,7 +45370,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request GET:/user/
          * @secure
          */
-        userRetrieve: (params?: RequestParams$5) => Promise<HttpResponse$5<UserResponse$1, any>>;
+        userRetrieve: (params?: RequestParams$6) => Promise<HttpResponse$5<UserResponse$1, any>>;
         /**
          * No description
          *
@@ -45384,7 +45380,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request PUT:/user/
          * @secure
          */
-        userUpdate: (data: UserUpdateReferral, params?: RequestParams$5) => Promise<HttpResponse$5<UserResponse$1, any>>;
+        userUpdate: (data: UserUpdateReferral, params?: RequestParams$6) => Promise<HttpResponse$5<UserResponse$1, any>>;
         /**
          * No description
          *
@@ -45394,7 +45390,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request PATCH:/user/
          * @secure
          */
-        userPartialUpdate: (data: PatchedUserUpdateReferral, params?: RequestParams$5) => Promise<HttpResponse$5<UserResponse$1, any>>;
+        userPartialUpdate: (data: PatchedUserUpdateReferral, params?: RequestParams$6) => Promise<HttpResponse$5<UserResponse$1, any>>;
         /**
          * No description
          *
@@ -45404,7 +45400,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request GET:/user/campaigns/
          * @secure
          */
-        userCampaignsList: (query: UserCampaignsListParams, params?: RequestParams$5) => Promise<HttpResponse$5<PaginatedUserCampaignListResponse, any>>;
+        userCampaignsList: (query: UserCampaignsListParams, params?: RequestParams$6) => Promise<HttpResponse$5<PaginatedUserCampaignListResponse, any>>;
         /**
          * No description
          *
@@ -45414,7 +45410,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request GET:/user/campaigns/{id}/
          * @secure
          */
-        userCampaignsRetrieve: (id: string, params?: RequestParams$5) => Promise<HttpResponse$5<UserCampaignResponse, any>>;
+        userCampaignsRetrieve: (id: string, params?: RequestParams$6) => Promise<HttpResponse$5<UserCampaignResponse, any>>;
         /**
          * No description
          *
@@ -45424,7 +45420,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request GET:/user/rewards/
          * @secure
          */
-        userRewardsList: (query: UserRewardsListParams, params?: RequestParams$5) => Promise<HttpResponse$5<PaginatedUserRewardListResponse, any>>;
+        userRewardsList: (query: UserRewardsListParams, params?: RequestParams$6) => Promise<HttpResponse$5<PaginatedUserRewardListResponse, any>>;
         /**
          * No description
          *
@@ -45434,7 +45430,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request POST:/user/rewards/
          * @secure
          */
-        userRewardsCreate: (data: UserCreateReward, params?: RequestParams$5) => Promise<HttpResponse$5<UserRewardResponse, any>>;
+        userRewardsCreate: (data: UserCreateReward, params?: RequestParams$6) => Promise<HttpResponse$5<UserRewardResponse, any>>;
         /**
          * No description
          *
@@ -45444,7 +45440,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request GET:/user/rewards/{id}/
          * @secure
          */
-        userRewardsRetrieve: (id: string, params?: RequestParams$5) => Promise<HttpResponse$5<UserRewardResponse, any>>;
+        userRewardsRetrieve: (id: string, params?: RequestParams$6) => Promise<HttpResponse$5<UserRewardResponse, any>>;
     };
     webhook: {
         /**
@@ -45456,7 +45452,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request POST:/webhook/
          * @secure
          */
-        webhookCreate: (data: Webhook$3, params?: RequestParams$5) => Promise<HttpResponse$5<ActionResponse$3, any>>;
+        webhookCreate: (data: Webhook$3, params?: RequestParams$6) => Promise<HttpResponse$5<ActionResponse$3, any>>;
     };
 }
 
@@ -47082,11 +47078,11 @@ interface FullRequestParams$4 extends Omit<RequestInit, "body"> {
     /** request cancellation token */
     cancelToken?: CancelToken$4;
 }
-type RequestParams$4 = Omit<FullRequestParams$4, "body" | "method" | "query" | "path">;
+type RequestParams$5 = Omit<FullRequestParams$4, "body" | "method" | "query" | "path">;
 interface ApiConfig$4<SecurityDataType = unknown> {
     baseUrl?: string;
-    baseApiParams?: Omit<RequestParams$4, "baseUrl" | "cancelToken" | "signal">;
-    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$4 | void> | RequestParams$4 | void;
+    baseApiParams?: Omit<RequestParams$5, "baseUrl" | "cancelToken" | "signal">;
+    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$5 | void> | RequestParams$5 | void;
     customFetch?: typeof fetch;
 }
 interface HttpResponse$4<D extends unknown, E extends unknown = unknown> extends Response {
@@ -47116,7 +47112,7 @@ declare class HttpClient$4<SecurityDataType = unknown> {
     protected toQueryString(rawQuery?: QueryParamsType$4): string;
     protected addQueryParams(rawQuery?: QueryParamsType$4): string;
     private contentFormatters;
-    protected mergeRequestParams(params1: RequestParams$4, params2?: RequestParams$4): RequestParams$4;
+    protected mergeRequestParams(params1: RequestParams$5, params2?: RequestParams$5): RequestParams$5;
     protected createAbortSignal: (cancelToken: CancelToken$4) => AbortSignal | undefined;
     abortRequest: (cancelToken: CancelToken$4) => void;
     request: <T = any, E = any>({ body, secure, path, type, query, format, baseUrl, cancelToken, ...params }: FullRequestParams$4) => Promise<HttpResponse$4<T, E>>;
@@ -47138,7 +47134,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/activate/
          * @secure
          */
-        activateCreate: (data: Activate$4, params?: RequestParams$4) => Promise<HttpResponse$4<Activate$4, any>>;
+        activateCreate: (data: Activate$4, params?: RequestParams$5) => Promise<HttpResponse$4<Activate$4, any>>;
     };
     admin: {
         /**
@@ -47149,7 +47145,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/asset/
          * @secure
          */
-        adminAssetList: (params?: RequestParams$4) => Promise<HttpResponse$4<AdminAssetListData$1, any>>;
+        adminAssetList: (params?: RequestParams$5) => Promise<HttpResponse$4<AdminAssetListData$1, any>>;
         /**
          * @description Add a new stellar asset to the service, or list existing assets. You'll need to include a valid stellar anchor issuing address and asset ID.
          *
@@ -47158,7 +47154,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/admin/asset/
          * @secure
          */
-        adminAssetCreate: (data: AdminCreateAsset$1, params?: RequestParams$4) => Promise<HttpResponse$4<AdminCreateAsset$1, any>>;
+        adminAssetCreate: (data: AdminCreateAsset$1, params?: RequestParams$5) => Promise<HttpResponse$4<AdminCreateAsset$1, any>>;
         /**
          * No description
          *
@@ -47167,7 +47163,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/asset/{id}/
          * @secure
          */
-        adminAssetRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$4<AdminAsset$1, any>>;
+        adminAssetRead: (id: string, params?: RequestParams$5) => Promise<HttpResponse$4<AdminAsset$1, any>>;
         /**
          * No description
          *
@@ -47176,7 +47172,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request PATCH:/admin/asset/{id}/
          * @secure
          */
-        adminAssetPartialUpdate: (id: string, data: AdminAsset$1, params?: RequestParams$4) => Promise<HttpResponse$4<AdminAsset$1, any>>;
+        adminAssetPartialUpdate: (id: string, data: AdminAsset$1, params?: RequestParams$5) => Promise<HttpResponse$4<AdminAsset$1, any>>;
         /**
          * @description A simple APIView for funding asset accounts.
          *
@@ -47185,7 +47181,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/admin/asset/{id}/authorise_holder/
          * @secure
          */
-        adminAssetAuthoriseHolderCreate: (id: string, data: AdminAuthAssetTrust$1, params?: RequestParams$4) => Promise<HttpResponse$4<AdminAuthAssetTrust$1, any>>;
+        adminAssetAuthoriseHolderCreate: (id: string, data: AdminAuthAssetTrust$1, params?: RequestParams$5) => Promise<HttpResponse$4<AdminAuthAssetTrust$1, any>>;
         /**
          * @description A simple APIView for funding asset accounts.
          *
@@ -47194,7 +47190,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/admin/asset/{id}/fund/
          * @secure
          */
-        adminAssetFundCreate: (id: string, data: AdminFundAsset$1, params?: RequestParams$4) => Promise<HttpResponse$4<AdminFundAsset$1, any>>;
+        adminAssetFundCreate: (id: string, data: AdminFundAsset$1, params?: RequestParams$5) => Promise<HttpResponse$4<AdminFundAsset$1, any>>;
         /**
          * No description
          *
@@ -47203,7 +47199,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/blacklisted-account/{id}/
          * @secure
          */
-        adminBlacklistedAccountRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$4<BlacklistedAccount$1, any>>;
+        adminBlacklistedAccountRead: (id: string, params?: RequestParams$5) => Promise<HttpResponse$4<BlacklistedAccount$1, any>>;
         /**
          * No description
          *
@@ -47212,7 +47208,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request PUT:/admin/blacklisted-account/{id}/
          * @secure
          */
-        adminBlacklistedAccountUpdate: (id: string, data: BlacklistedAccount$1, params?: RequestParams$4) => Promise<HttpResponse$4<BlacklistedAccount$1, any>>;
+        adminBlacklistedAccountUpdate: (id: string, data: BlacklistedAccount$1, params?: RequestParams$5) => Promise<HttpResponse$4<BlacklistedAccount$1, any>>;
         /**
          * No description
          *
@@ -47221,7 +47217,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request PATCH:/admin/blacklisted-account/{id}/
          * @secure
          */
-        adminBlacklistedAccountPartialUpdate: (id: string, data: BlacklistedAccount$1, params?: RequestParams$4) => Promise<HttpResponse$4<BlacklistedAccount$1, any>>;
+        adminBlacklistedAccountPartialUpdate: (id: string, data: BlacklistedAccount$1, params?: RequestParams$5) => Promise<HttpResponse$4<BlacklistedAccount$1, any>>;
         /**
          * No description
          *
@@ -47230,7 +47226,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request DELETE:/admin/blacklisted-account/{id}/
          * @secure
          */
-        adminBlacklistedAccountDelete: (id: string, params?: RequestParams$4) => Promise<HttpResponse$4<any, any>>;
+        adminBlacklistedAccountDelete: (id: string, params?: RequestParams$5) => Promise<HttpResponse$4<any, any>>;
         /**
          * No description
          *
@@ -47239,7 +47235,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/blacklisted-accounts/
          * @secure
          */
-        adminBlacklistedAccountsList: (params?: RequestParams$4) => Promise<HttpResponse$4<AdminBlacklistedAccountsListData$1, any>>;
+        adminBlacklistedAccountsList: (params?: RequestParams$5) => Promise<HttpResponse$4<AdminBlacklistedAccountsListData$1, any>>;
         /**
          * No description
          *
@@ -47248,7 +47244,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/admin/blacklisted-accounts/
          * @secure
          */
-        adminBlacklistedAccountsCreate: (data: BlacklistedAccount$1, params?: RequestParams$4) => Promise<HttpResponse$4<BlacklistedAccount$1, any>>;
+        adminBlacklistedAccountsCreate: (data: BlacklistedAccount$1, params?: RequestParams$5) => Promise<HttpResponse$4<BlacklistedAccount$1, any>>;
         /**
          * @description ### View coldstorage balance
          *
@@ -47257,7 +47253,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/coldstorage/
          * @secure
          */
-        adminColdstorageList: (query: AdminColdstorageListParams$1, params?: RequestParams$4) => Promise<HttpResponse$4<AdminColdstorageListData$1, any>>;
+        adminColdstorageList: (query: AdminColdstorageListParams$1, params?: RequestParams$5) => Promise<HttpResponse$4<AdminColdstorageListData$1, any>>;
         /**
          * @description ### List or create coldstorage accounts for monitoring
          *
@@ -47266,7 +47262,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/coldstorage/accounts/
          * @secure
          */
-        adminColdstorageAccountsList: (query: AdminColdstorageAccountsListParams$1, params?: RequestParams$4) => Promise<HttpResponse$4<AdminColdstorageAccountsListData$1, any>>;
+        adminColdstorageAccountsList: (query: AdminColdstorageAccountsListParams$1, params?: RequestParams$5) => Promise<HttpResponse$4<AdminColdstorageAccountsListData$1, any>>;
         /**
          * @description ### List or create coldstorage accounts for monitoring
          *
@@ -47275,7 +47271,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/admin/coldstorage/accounts/
          * @secure
          */
-        adminColdstorageAccountsCreate: (data: ColdstorageAccount$1, params?: RequestParams$4) => Promise<HttpResponse$4<ColdstorageAccount$1, any>>;
+        adminColdstorageAccountsCreate: (data: ColdstorageAccount$1, params?: RequestParams$5) => Promise<HttpResponse$4<ColdstorageAccount$1, any>>;
         /**
          * @description ### View or update a cold storage account
          *
@@ -47284,7 +47280,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/coldstorage/accounts/{id}/
          * @secure
          */
-        adminColdstorageAccountsRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$4<ColdstorageAccount$1, any>>;
+        adminColdstorageAccountsRead: (id: string, params?: RequestParams$5) => Promise<HttpResponse$4<ColdstorageAccount$1, any>>;
         /**
          * @description ### View or update a cold storage account
          *
@@ -47293,7 +47289,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request PATCH:/admin/coldstorage/accounts/{id}/
          * @secure
          */
-        adminColdstorageAccountsPartialUpdate: (id: string, data: ColdstorageAccount$1, params?: RequestParams$4) => Promise<HttpResponse$4<ColdstorageAccount$1, any>>;
+        adminColdstorageAccountsPartialUpdate: (id: string, data: ColdstorageAccount$1, params?: RequestParams$5) => Promise<HttpResponse$4<ColdstorageAccount$1, any>>;
         /**
          * @description Details of Rehive company that was added via the /activate/ endpoint.
          *
@@ -47302,7 +47298,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/company/
          * @secure
          */
-        adminCompanyList: (params?: RequestParams$4) => Promise<HttpResponse$4<AdminCompanyListData$1, any>>;
+        adminCompanyList: (params?: RequestParams$5) => Promise<HttpResponse$4<AdminCompanyListData$1, any>>;
         /**
          * @description Details of Rehive company that was added via the /activate/ endpoint.
          *
@@ -47311,7 +47307,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request PATCH:/admin/company/
          * @secure
          */
-        adminCompanyPartialUpdate: (data: CompanyAdmin$1, params?: RequestParams$4) => Promise<HttpResponse$4<CompanyAdmin$1, any>>;
+        adminCompanyPartialUpdate: (data: CompanyAdmin$1, params?: RequestParams$5) => Promise<HttpResponse$4<CompanyAdmin$1, any>>;
         /**
          * @description Details of Rehive company that was added via the /activate/ endpoint.
          *
@@ -47320,7 +47316,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/company/configuration/
          * @secure
          */
-        adminCompanyConfigurationList: (params?: RequestParams$4) => Promise<HttpResponse$4<AdminCompanyConfigurationListData$1, any>>;
+        adminCompanyConfigurationList: (params?: RequestParams$5) => Promise<HttpResponse$4<AdminCompanyConfigurationListData$1, any>>;
         /**
          * @description Details of Rehive company that was added via the /activate/ endpoint.
          *
@@ -47329,7 +47325,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request PUT:/admin/company/configuration/
          * @secure
          */
-        adminCompanyConfigurationUpdate: (data: CompanyConfiguration$2, params?: RequestParams$4) => Promise<HttpResponse$4<CompanyConfiguration$2, any>>;
+        adminCompanyConfigurationUpdate: (data: CompanyConfiguration$2, params?: RequestParams$5) => Promise<HttpResponse$4<CompanyConfiguration$2, any>>;
         /**
          * @description Details of Rehive company that was added via the /activate/ endpoint.
          *
@@ -47338,7 +47334,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request PATCH:/admin/company/configuration/
          * @secure
          */
-        adminCompanyConfigurationPartialUpdate: (data: CompanyConfiguration$2, params?: RequestParams$4) => Promise<HttpResponse$4<CompanyConfiguration$2, any>>;
+        adminCompanyConfigurationPartialUpdate: (data: CompanyConfiguration$2, params?: RequestParams$5) => Promise<HttpResponse$4<CompanyConfiguration$2, any>>;
         /**
          * @description Group/Account Pairs specified for the company
          *
@@ -47347,7 +47343,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/company/configuration/account-groups/
          * @secure
          */
-        adminCompanyConfigurationAccountGroupsList: (params?: RequestParams$4) => Promise<HttpResponse$4<AdminCompanyConfigurationAccountGroupsListData$1, any>>;
+        adminCompanyConfigurationAccountGroupsList: (params?: RequestParams$5) => Promise<HttpResponse$4<AdminCompanyConfigurationAccountGroupsListData$1, any>>;
         /**
          * @description Group/Account Pairs specified for the company
          *
@@ -47356,7 +47352,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/admin/company/configuration/account-groups/
          * @secure
          */
-        adminCompanyConfigurationAccountGroupsCreate: (data: DefaultGroupAccountPair$1, params?: RequestParams$4) => Promise<HttpResponse$4<DefaultGroupAccountPair$1, any>>;
+        adminCompanyConfigurationAccountGroupsCreate: (data: DefaultGroupAccountPair$1, params?: RequestParams$5) => Promise<HttpResponse$4<DefaultGroupAccountPair$1, any>>;
         /**
          * @description Details for a Group/Account pair
          *
@@ -47365,7 +47361,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/company/configuration/account-groups/{id}/
          * @secure
          */
-        adminCompanyConfigurationAccountGroupsRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$4<DefaultGroupAccountPair$1, any>>;
+        adminCompanyConfigurationAccountGroupsRead: (id: string, params?: RequestParams$5) => Promise<HttpResponse$4<DefaultGroupAccountPair$1, any>>;
         /**
          * @description Details for a Group/Account pair
          *
@@ -47374,7 +47370,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request PUT:/admin/company/configuration/account-groups/{id}/
          * @secure
          */
-        adminCompanyConfigurationAccountGroupsUpdate: (id: string, data: DefaultGroupAccountPair$1, params?: RequestParams$4) => Promise<HttpResponse$4<DefaultGroupAccountPair$1, any>>;
+        adminCompanyConfigurationAccountGroupsUpdate: (id: string, data: DefaultGroupAccountPair$1, params?: RequestParams$5) => Promise<HttpResponse$4<DefaultGroupAccountPair$1, any>>;
         /**
          * @description Details for a Group/Account pair
          *
@@ -47383,7 +47379,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request PATCH:/admin/company/configuration/account-groups/{id}/
          * @secure
          */
-        adminCompanyConfigurationAccountGroupsPartialUpdate: (id: string, data: DefaultGroupAccountPair$1, params?: RequestParams$4) => Promise<HttpResponse$4<DefaultGroupAccountPair$1, any>>;
+        adminCompanyConfigurationAccountGroupsPartialUpdate: (id: string, data: DefaultGroupAccountPair$1, params?: RequestParams$5) => Promise<HttpResponse$4<DefaultGroupAccountPair$1, any>>;
         /**
          * @description Details for a Group/Account pair
          *
@@ -47392,7 +47388,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request DELETE:/admin/company/configuration/account-groups/{id}/
          * @secure
          */
-        adminCompanyConfigurationAccountGroupsDelete: (id: string, params?: RequestParams$4) => Promise<HttpResponse$4<any, any>>;
+        adminCompanyConfigurationAccountGroupsDelete: (id: string, params?: RequestParams$5) => Promise<HttpResponse$4<any, any>>;
         /**
          * @description Details of Rehive company that was added via the /activate/ endpoint.
          *
@@ -47401,7 +47397,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/company/configuration/anchor_platform/
          * @secure
          */
-        adminCompanyConfigurationAnchorPlatformList: (params?: RequestParams$4) => Promise<HttpResponse$4<AdminCompanyConfigurationAnchorPlatformListData$1, any>>;
+        adminCompanyConfigurationAnchorPlatformList: (params?: RequestParams$5) => Promise<HttpResponse$4<AdminCompanyConfigurationAnchorPlatformListData$1, any>>;
         /**
          * @description Details of Rehive company that was added via the /activate/ endpoint.
          *
@@ -47410,7 +47406,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request PUT:/admin/company/configuration/anchor_platform/
          * @secure
          */
-        adminCompanyConfigurationAnchorPlatformUpdate: (data: AnchorPlatformConfiguration$1, params?: RequestParams$4) => Promise<HttpResponse$4<AnchorPlatformConfiguration$1, any>>;
+        adminCompanyConfigurationAnchorPlatformUpdate: (data: AnchorPlatformConfiguration$1, params?: RequestParams$5) => Promise<HttpResponse$4<AnchorPlatformConfiguration$1, any>>;
         /**
          * @description Details of Rehive company that was added via the /activate/ endpoint.
          *
@@ -47419,7 +47415,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request PATCH:/admin/company/configuration/anchor_platform/
          * @secure
          */
-        adminCompanyConfigurationAnchorPlatformPartialUpdate: (data: AnchorPlatformConfiguration$1, params?: RequestParams$4) => Promise<HttpResponse$4<AnchorPlatformConfiguration$1, any>>;
+        adminCompanyConfigurationAnchorPlatformPartialUpdate: (data: AnchorPlatformConfiguration$1, params?: RequestParams$5) => Promise<HttpResponse$4<AnchorPlatformConfiguration$1, any>>;
         /**
          * @description Create and sends back a link to a Stellar.toml file
          *
@@ -47428,7 +47424,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/company/stellar-toml/
          * @secure
          */
-        adminCompanyStellarTomlList: (params?: RequestParams$4) => Promise<HttpResponse$4<AdminCompanyStellarTomlListData$1, any>>;
+        adminCompanyStellarTomlList: (params?: RequestParams$5) => Promise<HttpResponse$4<AdminCompanyStellarTomlListData$1, any>>;
         /**
          * @description ### View or update a Stellar Account
          *
@@ -47437,7 +47433,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/federation/
          * @secure
          */
-        adminFederationList: (params?: RequestParams$4) => Promise<HttpResponse$4<AdminFederationListData$1, any>>;
+        adminFederationList: (params?: RequestParams$5) => Promise<HttpResponse$4<AdminFederationListData$1, any>>;
         /**
          * @description ### View or update a Stellar Account
          *
@@ -47446,7 +47442,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/admin/federation/
          * @secure
          */
-        adminFederationCreate: (data: Federation$1, params?: RequestParams$4) => Promise<HttpResponse$4<Federation$1, any>>;
+        adminFederationCreate: (data: Federation$1, params?: RequestParams$5) => Promise<HttpResponse$4<Federation$1, any>>;
         /**
          * @description ### View, create and update the hot wallet
          *
@@ -47455,7 +47451,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/hotwallet/
          * @secure
          */
-        adminHotwalletList: (params?: RequestParams$4) => Promise<HttpResponse$4<AdminHotwalletListData$1, any>>;
+        adminHotwalletList: (params?: RequestParams$5) => Promise<HttpResponse$4<AdminHotwalletListData$1, any>>;
         /**
          * @description ### View, create and update the hot wallet
          *
@@ -47464,7 +47460,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/admin/hotwallet/
          * @secure
          */
-        adminHotwalletCreate: (data: Hotwallet$1, params?: RequestParams$4) => Promise<HttpResponse$4<Hotwallet$1, any>>;
+        adminHotwalletCreate: (data: Hotwallet$1, params?: RequestParams$5) => Promise<HttpResponse$4<Hotwallet$1, any>>;
         /**
          * @description ### View, create and update the hot wallet
          *
@@ -47473,7 +47469,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request PATCH:/admin/hotwallet/
          * @secure
          */
-        adminHotwalletPartialUpdate: (data: Hotwallet$1, params?: RequestParams$4) => Promise<HttpResponse$4<Hotwallet$1, any>>;
+        adminHotwalletPartialUpdate: (data: Hotwallet$1, params?: RequestParams$5) => Promise<HttpResponse$4<Hotwallet$1, any>>;
         /**
          * @description ### View hotwallet balance
          *
@@ -47482,7 +47478,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/hotwallet/active/
          * @secure
          */
-        adminHotwalletActiveList: (params?: RequestParams$4) => Promise<HttpResponse$4<AdminHotwalletActiveListData$1, any>>;
+        adminHotwalletActiveList: (params?: RequestParams$5) => Promise<HttpResponse$4<AdminHotwalletActiveListData$1, any>>;
         /**
          * @description A simple APIView for funding asset accounts.
          *
@@ -47491,7 +47487,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/admin/hotwallet/enable_mss/
          * @secure
          */
-        adminHotwalletEnableMssCreate: (data: HotwalletFund$1, params?: RequestParams$4) => Promise<HttpResponse$4<HotwalletFund$1, any>>;
+        adminHotwalletEnableMssCreate: (data: HotwalletFund$1, params?: RequestParams$5) => Promise<HttpResponse$4<HotwalletFund$1, any>>;
         /**
          * @description ### View hotwallet balance
          *
@@ -47500,7 +47496,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/hotwallet/fees/
          * @secure
          */
-        adminHotwalletFeesList: (params?: RequestParams$4) => Promise<HttpResponse$4<AdminHotwalletFeesListData$1, any>>;
+        adminHotwalletFeesList: (params?: RequestParams$5) => Promise<HttpResponse$4<AdminHotwalletFeesListData$1, any>>;
         /**
          * @description View and update company. Authenticates requests using a token in the Authorization header.
          *
@@ -47509,7 +47505,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/hotwallet/fund/
          * @secure
          */
-        adminHotwalletFundList: (params?: RequestParams$4) => Promise<HttpResponse$4<AdminHotwalletFundListData$1, any>>;
+        adminHotwalletFundList: (params?: RequestParams$5) => Promise<HttpResponse$4<AdminHotwalletFundListData$1, any>>;
         /**
          * @description ### Merges and deletes the current hotwallet
          *
@@ -47518,7 +47514,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/admin/hotwallet/merge/
          * @secure
          */
-        adminHotwalletMergeCreate: (data: HotwalletMerge$1, params?: RequestParams$4) => Promise<HttpResponse$4<HotwalletMerge$1, any>>;
+        adminHotwalletMergeCreate: (data: HotwalletMerge$1, params?: RequestParams$5) => Promise<HttpResponse$4<HotwalletMerge$1, any>>;
         /**
          * @description ### Sends an onchain transactions directly from the Hotwallet
          *
@@ -47527,7 +47523,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/admin/hotwallet/send/
          * @secure
          */
-        adminHotwalletSendCreate: (data: HotwalletSend$1, params?: RequestParams$4) => Promise<HttpResponse$4<HotwalletSend$1, any>>;
+        adminHotwalletSendCreate: (data: HotwalletSend$1, params?: RequestParams$5) => Promise<HttpResponse$4<HotwalletSend$1, any>>;
         /**
          * No description
          *
@@ -47536,7 +47532,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/known-public-addresses/
          * @secure
          */
-        adminKnownPublicAddressesList: (params?: RequestParams$4) => Promise<HttpResponse$4<AdminKnownPublicAddressesListData$1, any>>;
+        adminKnownPublicAddressesList: (params?: RequestParams$5) => Promise<HttpResponse$4<AdminKnownPublicAddressesListData$1, any>>;
         /**
          * No description
          *
@@ -47545,7 +47541,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/admin/known-public-addresses/
          * @secure
          */
-        adminKnownPublicAddressesCreate: (data: KnownPublicAddresses$1, params?: RequestParams$4) => Promise<HttpResponse$4<KnownPublicAddresses$1, any>>;
+        adminKnownPublicAddressesCreate: (data: KnownPublicAddresses$1, params?: RequestParams$5) => Promise<HttpResponse$4<KnownPublicAddresses$1, any>>;
         /**
          * No description
          *
@@ -47554,7 +47550,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/known-public-addresses/{id}/
          * @secure
          */
-        adminKnownPublicAddressesRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$4<KnownPublicAddresses$1, any>>;
+        adminKnownPublicAddressesRead: (id: string, params?: RequestParams$5) => Promise<HttpResponse$4<KnownPublicAddresses$1, any>>;
         /**
          * No description
          *
@@ -47563,7 +47559,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request PUT:/admin/known-public-addresses/{id}/
          * @secure
          */
-        adminKnownPublicAddressesUpdate: (id: string, data: KnownPublicAddresses$1, params?: RequestParams$4) => Promise<HttpResponse$4<KnownPublicAddresses$1, any>>;
+        adminKnownPublicAddressesUpdate: (id: string, data: KnownPublicAddresses$1, params?: RequestParams$5) => Promise<HttpResponse$4<KnownPublicAddresses$1, any>>;
         /**
          * No description
          *
@@ -47572,7 +47568,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request PATCH:/admin/known-public-addresses/{id}/
          * @secure
          */
-        adminKnownPublicAddressesPartialUpdate: (id: string, data: KnownPublicAddresses$1, params?: RequestParams$4) => Promise<HttpResponse$4<KnownPublicAddresses$1, any>>;
+        adminKnownPublicAddressesPartialUpdate: (id: string, data: KnownPublicAddresses$1, params?: RequestParams$5) => Promise<HttpResponse$4<KnownPublicAddresses$1, any>>;
         /**
          * No description
          *
@@ -47581,7 +47577,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request DELETE:/admin/known-public-addresses/{id}/
          * @secure
          */
-        adminKnownPublicAddressesDelete: (id: string, params?: RequestParams$4) => Promise<HttpResponse$4<any, any>>;
+        adminKnownPublicAddressesDelete: (id: string, params?: RequestParams$5) => Promise<HttpResponse$4<any, any>>;
         /**
          * No description
          *
@@ -47590,7 +47586,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/memos/
          * @secure
          */
-        adminMemosList: (params?: RequestParams$4) => Promise<HttpResponse$4<AdminMemosListData$1, any>>;
+        adminMemosList: (params?: RequestParams$5) => Promise<HttpResponse$4<AdminMemosListData$1, any>>;
         /**
          * No description
          *
@@ -47599,7 +47595,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/admin/memos/
          * @secure
          */
-        adminMemosCreate: (data: AdminMemo$1, params?: RequestParams$4) => Promise<HttpResponse$4<AdminMemo$1, any>>;
+        adminMemosCreate: (data: AdminMemo$1, params?: RequestParams$5) => Promise<HttpResponse$4<AdminMemo$1, any>>;
         /**
          * @description ### List transactions
          *
@@ -47608,7 +47604,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/sep10-authenticated-accounts/
          * @secure
          */
-        adminSep10AuthenticatedAccountsList: (query: AdminSep10AuthenticatedAccountsListParams$1, params?: RequestParams$4) => Promise<HttpResponse$4<AdminSep10AuthenticatedAccountsListData$1, any>>;
+        adminSep10AuthenticatedAccountsList: (query: AdminSep10AuthenticatedAccountsListParams$1, params?: RequestParams$5) => Promise<HttpResponse$4<AdminSep10AuthenticatedAccountsListData$1, any>>;
         /**
          * @description ### GET a single SEP10AuthenticatedAccount object
          *
@@ -47617,7 +47613,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/sep10-authenticated-accounts/{id}/
          * @secure
          */
-        adminSep10AuthenticatedAccountsRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$4<AdminSEP10AuthenticatedAccount$1, any>>;
+        adminSep10AuthenticatedAccountsRead: (id: string, params?: RequestParams$5) => Promise<HttpResponse$4<AdminSEP10AuthenticatedAccount$1, any>>;
         /**
          * @description ### List all SEP24Transaction objects
          *
@@ -47626,7 +47622,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/sep24-transactions/
          * @secure
          */
-        adminSep24TransactionsList: (query: AdminSep24TransactionsListParams$1, params?: RequestParams$4) => Promise<HttpResponse$4<AdminSep24TransactionsListData$1, any>>;
+        adminSep24TransactionsList: (query: AdminSep24TransactionsListParams$1, params?: RequestParams$5) => Promise<HttpResponse$4<AdminSep24TransactionsListData$1, any>>;
         /**
          * @description ### GET a single SEP24Transaction object
          *
@@ -47635,7 +47631,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/sep24-transactions/{id}/
          * @secure
          */
-        adminSep24TransactionsRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$4<AdminSEP24Transaction$1, any>>;
+        adminSep24TransactionsRead: (id: string, params?: RequestParams$5) => Promise<HttpResponse$4<AdminSEP24Transaction$1, any>>;
         /**
          * @description ### List stellar accounts
          *
@@ -47644,7 +47640,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/stellar_accounts/
          * @secure
          */
-        adminStellarAccountsList: (query: AdminStellarAccountsListParams$1, params?: RequestParams$4) => Promise<HttpResponse$4<AdminStellarAccountsListData$1, any>>;
+        adminStellarAccountsList: (query: AdminStellarAccountsListParams$1, params?: RequestParams$5) => Promise<HttpResponse$4<AdminStellarAccountsListData$1, any>>;
         /**
          * @description ### View or update a Stellar Account
          *
@@ -47653,7 +47649,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/admin/stellar_accounts/generate/
          * @secure
          */
-        adminStellarAccountsGenerateCreate: (data: StellarAccountGenerate$1, params?: RequestParams$4) => Promise<HttpResponse$4<StellarAccountGenerate$1, any>>;
+        adminStellarAccountsGenerateCreate: (data: StellarAccountGenerate$1, params?: RequestParams$5) => Promise<HttpResponse$4<StellarAccountGenerate$1, any>>;
         /**
          * @description ### View or update a Stellar Account
          *
@@ -47662,7 +47658,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/stellar_accounts/{id}/
          * @secure
          */
-        adminStellarAccountsRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$4<StellarAccount$1, any>>;
+        adminStellarAccountsRead: (id: string, params?: RequestParams$5) => Promise<HttpResponse$4<StellarAccount$1, any>>;
         /**
          * @description ### View or update a Stellar Account
          *
@@ -47671,7 +47667,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request PATCH:/admin/stellar_accounts/{id}/
          * @secure
          */
-        adminStellarAccountsPartialUpdate: (id: string, data: StellarAccount$1, params?: RequestParams$4) => Promise<HttpResponse$4<StellarAccount$1, any>>;
+        adminStellarAccountsPartialUpdate: (id: string, data: StellarAccount$1, params?: RequestParams$5) => Promise<HttpResponse$4<StellarAccount$1, any>>;
         /**
          * @description ### Change the ownership of a service generated account ### Adds a new primary signer and removes the services secret as a signer
          *
@@ -47680,7 +47676,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/admin/stellar_accounts/{id}/change_ownership/
          * @secure
          */
-        adminStellarAccountsChangeOwnershipCreate: (id: string, data: StellarAccountChangeOwnership$1, params?: RequestParams$4) => Promise<HttpResponse$4<StellarAccountChangeOwnership$1, any>>;
+        adminStellarAccountsChangeOwnershipCreate: (id: string, data: StellarAccountChangeOwnership$1, params?: RequestParams$5) => Promise<HttpResponse$4<StellarAccountChangeOwnership$1, any>>;
         /**
          * @description ### List transactions
          *
@@ -47689,7 +47685,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/transactions/
          * @secure
          */
-        adminTransactionsList: (query: AdminTransactionsListParams$1, params?: RequestParams$4) => Promise<HttpResponse$4<AdminTransactionsListData$1, any>>;
+        adminTransactionsList: (query: AdminTransactionsListParams$1, params?: RequestParams$5) => Promise<HttpResponse$4<AdminTransactionsListData$1, any>>;
         /**
          * @description View for sending assets directly out of the hotwallet account
          *
@@ -47698,7 +47694,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/admin/transactions/send/
          * @secure
          */
-        adminTransactionsSendCreate: (data: AdminSendTransaction$1, params?: RequestParams$4) => Promise<HttpResponse$4<AdminSendTransaction$1, any>>;
+        adminTransactionsSendCreate: (data: AdminSendTransaction$1, params?: RequestParams$5) => Promise<HttpResponse$4<AdminSendTransaction$1, any>>;
         /**
          * @description ### GET and PATCH a single transaction on the Stellar service
          *
@@ -47707,7 +47703,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/transactions/{id}/
          * @secure
          */
-        adminTransactionsRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$4<AdminTransaction$1, any>>;
+        adminTransactionsRead: (id: string, params?: RequestParams$5) => Promise<HttpResponse$4<AdminTransaction$1, any>>;
         /**
          * @description ### GET and PATCH a single transaction on the Stellar service
          *
@@ -47716,7 +47712,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request PATCH:/admin/transactions/{id}/
          * @secure
          */
-        adminTransactionsPartialUpdate: (id: string, data: AdminTransaction$1, params?: RequestParams$4) => Promise<HttpResponse$4<AdminTransaction$1, any>>;
+        adminTransactionsPartialUpdate: (id: string, data: AdminTransaction$1, params?: RequestParams$5) => Promise<HttpResponse$4<AdminTransaction$1, any>>;
         /**
          * @description ### List users
          *
@@ -47725,7 +47721,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/users/
          * @secure
          */
-        adminUsersList: (query: AdminUsersListParams$2, params?: RequestParams$4) => Promise<HttpResponse$4<AdminUsersListData$1, any>>;
+        adminUsersList: (query: AdminUsersListParams$2, params?: RequestParams$5) => Promise<HttpResponse$4<AdminUsersListData$1, any>>;
         /**
          * @description ### List users
          *
@@ -47734,7 +47730,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/admin/users/
          * @secure
          */
-        adminUsersCreate: (data: AdminUserInfoSeralizer$1, params?: RequestParams$4) => Promise<HttpResponse$4<AdminUserInfoSeralizer$1, any>>;
+        adminUsersCreate: (data: AdminUserInfoSeralizer$1, params?: RequestParams$5) => Promise<HttpResponse$4<AdminUserInfoSeralizer$1, any>>;
         /**
          * @description ### List users
          *
@@ -47743,7 +47739,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/users/{id}/
          * @secure
          */
-        adminUsersRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$4<AdminUser$2, any>>;
+        adminUsersRead: (id: string, params?: RequestParams$5) => Promise<HttpResponse$4<AdminUser$2, any>>;
         /**
          * @description ### List users
          *
@@ -47752,7 +47748,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request PATCH:/admin/users/{id}/
          * @secure
          */
-        adminUsersPartialUpdate: (id: string, data: UserSeralizer$1, params?: RequestParams$4) => Promise<HttpResponse$4<UserSeralizer$1, any>>;
+        adminUsersPartialUpdate: (id: string, data: UserSeralizer$1, params?: RequestParams$5) => Promise<HttpResponse$4<UserSeralizer$1, any>>;
         /**
          * No description
          *
@@ -47761,7 +47757,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/users/{id}/memos/
          * @secure
          */
-        adminUsersMemosList: (id: string, params?: RequestParams$4) => Promise<HttpResponse$4<AdminUsersMemosListData$1, any>>;
+        adminUsersMemosList: (id: string, params?: RequestParams$5) => Promise<HttpResponse$4<AdminUsersMemosListData$1, any>>;
         /**
          * No description
          *
@@ -47770,7 +47766,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/admin/users/{id}/memos/
          * @secure
          */
-        adminUsersMemosCreate: (id: string, data: AdminUserMemo$1, params?: RequestParams$4) => Promise<HttpResponse$4<AdminUserMemo$1, any>>;
+        adminUsersMemosCreate: (id: string, data: AdminUserMemo$1, params?: RequestParams$5) => Promise<HttpResponse$4<AdminUserMemo$1, any>>;
         /**
          * @description ### View warmstorage balance
          *
@@ -47779,7 +47775,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/warmstorage/
          * @secure
          */
-        adminWarmstorageList: (query: AdminWarmstorageListParams$1, params?: RequestParams$4) => Promise<HttpResponse$4<AdminWarmstorageListData$1, any>>;
+        adminWarmstorageList: (query: AdminWarmstorageListParams$1, params?: RequestParams$5) => Promise<HttpResponse$4<AdminWarmstorageListData$1, any>>;
         /**
          * @description ### List or create warmstorage accounts for monitoring
          *
@@ -47788,7 +47784,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/warmstorage/accounts/
          * @secure
          */
-        adminWarmstorageAccountsList: (query: AdminWarmstorageAccountsListParams$1, params?: RequestParams$4) => Promise<HttpResponse$4<AdminWarmstorageAccountsListData$1, any>>;
+        adminWarmstorageAccountsList: (query: AdminWarmstorageAccountsListParams$1, params?: RequestParams$5) => Promise<HttpResponse$4<AdminWarmstorageAccountsListData$1, any>>;
         /**
          * @description ### List or create warmstorage accounts for monitoring
          *
@@ -47797,7 +47793,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/admin/warmstorage/accounts/
          * @secure
          */
-        adminWarmstorageAccountsCreate: (data: WarmstorageAccount$1, params?: RequestParams$4) => Promise<HttpResponse$4<WarmstorageAccount$1, any>>;
+        adminWarmstorageAccountsCreate: (data: WarmstorageAccount$1, params?: RequestParams$5) => Promise<HttpResponse$4<WarmstorageAccount$1, any>>;
         /**
          * @description ### View or update a warm storage account
          *
@@ -47806,7 +47802,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/admin/warmstorage/accounts/{id}/
          * @secure
          */
-        adminWarmstorageAccountsRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$4<WarmstorageAccount$1, any>>;
+        adminWarmstorageAccountsRead: (id: string, params?: RequestParams$5) => Promise<HttpResponse$4<WarmstorageAccount$1, any>>;
         /**
          * @description ### View or update a warm storage account
          *
@@ -47815,7 +47811,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request PATCH:/admin/warmstorage/accounts/{id}/
          * @secure
          */
-        adminWarmstorageAccountsPartialUpdate: (id: string, data: WarmstorageAccount$1, params?: RequestParams$4) => Promise<HttpResponse$4<WarmstorageAccount$1, any>>;
+        adminWarmstorageAccountsPartialUpdate: (id: string, data: WarmstorageAccount$1, params?: RequestParams$5) => Promise<HttpResponse$4<WarmstorageAccount$1, any>>;
     };
     company: {
         /**
@@ -47826,7 +47822,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/company/
          * @secure
          */
-        companyList: (params?: RequestParams$4) => Promise<HttpResponse$4<CompanyListData$1, any>>;
+        companyList: (params?: RequestParams$5) => Promise<HttpResponse$4<CompanyListData$1, any>>;
         /**
          * @description Add a new stellar asset to the service, or list existing assets. You'll need to include a valid stellar anchor issuing address and asset ID.
          *
@@ -47835,7 +47831,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/company/assets/
          * @secure
          */
-        companyAssetsList: (params?: RequestParams$4) => Promise<HttpResponse$4<CompanyAssetsListData$1, any>>;
+        companyAssetsList: (params?: RequestParams$5) => Promise<HttpResponse$4<CompanyAssetsListData$1, any>>;
     };
     deactivate: {
         /**
@@ -47846,7 +47842,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/deactivate/
          * @secure
          */
-        deactivateCreate: (data: Deactivate$4, params?: RequestParams$4) => Promise<HttpResponse$4<Deactivate$4, any>>;
+        deactivateCreate: (data: Deactivate$4, params?: RequestParams$5) => Promise<HttpResponse$4<Deactivate$4, any>>;
     };
     hooks: {
         /**
@@ -47857,7 +47853,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/hooks/prs/
          * @secure
          */
-        hooksPrsCreate: (data: PRSWebhook$1, params?: RequestParams$4) => Promise<HttpResponse$4<PRSWebhook$1, any>>;
+        hooksPrsCreate: (data: PRSWebhook$1, params?: RequestParams$5) => Promise<HttpResponse$4<PRSWebhook$1, any>>;
     };
     info: {
         /**
@@ -47868,7 +47864,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/info/
          * @secure
          */
-        infoList: (params?: RequestParams$4) => Promise<HttpResponse$4<InfoListData$1, any>>;
+        infoList: (params?: RequestParams$5) => Promise<HttpResponse$4<InfoListData$1, any>>;
     };
     knownAssets: {
         /**
@@ -47879,7 +47875,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/known-assets/
          * @secure
          */
-        knownAssetsList: (query: KnownAssetsListParams$1, params?: RequestParams$4) => Promise<HttpResponse$4<KnownAssetsListData$1, any>>;
+        knownAssetsList: (query: KnownAssetsListParams$1, params?: RequestParams$5) => Promise<HttpResponse$4<KnownAssetsListData$1, any>>;
     };
     stellarFederation: {
         /**
@@ -47890,7 +47886,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/stellar_federation/{company}/
          * @secure
          */
-        stellarFederationRead: (company: string, params?: RequestParams$4) => Promise<HttpResponse$4<any, any>>;
+        stellarFederationRead: (company: string, params?: RequestParams$5) => Promise<HttpResponse$4<any, any>>;
     };
     transactions: {
         /**
@@ -47901,7 +47897,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/transactions/
          * @secure
          */
-        transactionsList: (query: TransactionsListParams$1, params?: RequestParams$4) => Promise<HttpResponse$4<TransactionsListData$1, any>>;
+        transactionsList: (query: TransactionsListParams$1, params?: RequestParams$5) => Promise<HttpResponse$4<TransactionsListData$1, any>>;
         /**
          * @description Create the send transaction on Rehive, and/or on the stellar blockchain. When the an email address, the transaction will be handled off-chain, only on the rehive ledger. When sent to a stellar address, the transaction is created on Rehive. Rehive then sends a webhook to the /hooks/debit/ endpoint and a blockchain transaction is created and broadcasted.
          *
@@ -47910,7 +47906,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/transactions/send/
          * @secure
          */
-        transactionsSendCreate: (data: SendTransaction$1, params?: RequestParams$4) => Promise<HttpResponse$4<SendTransaction$1, any>>;
+        transactionsSendCreate: (data: SendTransaction$1, params?: RequestParams$5) => Promise<HttpResponse$4<SendTransaction$1, any>>;
     };
     user: {
         /**
@@ -47921,7 +47917,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/user/
          * @secure
          */
-        userList: (params?: RequestParams$4) => Promise<HttpResponse$4<UserListData$1, any>>;
+        userList: (params?: RequestParams$5) => Promise<HttpResponse$4<UserListData$1, any>>;
         /**
          * No description
          *
@@ -47930,7 +47926,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request PATCH:/user/
          * @secure
          */
-        userPartialUpdate: (data: UserInfoSeralizer$1, params?: RequestParams$4) => Promise<HttpResponse$4<UserInfoSeralizer$1, any>>;
+        userPartialUpdate: (data: UserInfoSeralizer$1, params?: RequestParams$5) => Promise<HttpResponse$4<UserInfoSeralizer$1, any>>;
         /**
          * No description
          *
@@ -47939,7 +47935,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/user/account/
          * @secure
          */
-        userAccountList: (params?: RequestParams$4) => Promise<HttpResponse$4<any, any>>;
+        userAccountList: (params?: RequestParams$5) => Promise<HttpResponse$4<any, any>>;
         /**
          * @description ### Endpoint for validating a specific session id using a valid Rehive user session
          *
@@ -47948,7 +47944,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/user/anchor/sessions/{session_id}/validate/
          * @secure
          */
-        userAnchorSessionsValidateCreate: (sessionId: string, data: AnchorAccountValidate$1, params?: RequestParams$4) => Promise<HttpResponse$4<object, any>>;
+        userAnchorSessionsValidateCreate: (sessionId: string, data: AnchorAccountValidate$1, params?: RequestParams$5) => Promise<HttpResponse$4<object, any>>;
         /**
          * @description ### Endpoint for validating a specific session id using a valid Rehive user session
          *
@@ -47957,7 +47953,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/user/anchor/sessions/{session_id}/validate_account/
          * @secure
          */
-        userAnchorSessionsValidateAccountCreate: (sessionId: string, data: AnchorAccountValidate$1, params?: RequestParams$4) => Promise<HttpResponse$4<object, any>>;
+        userAnchorSessionsValidateAccountCreate: (sessionId: string, data: AnchorAccountValidate$1, params?: RequestParams$5) => Promise<HttpResponse$4<object, any>>;
         /**
          * @description ### Endpoint for validating a specific session id using a valid Rehive user session
          *
@@ -47966,7 +47962,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/user/anchor/sessions/{session_id}/validate_session/
          * @secure
          */
-        userAnchorSessionsValidateSessionCreate: (sessionId: string, data: AnchorSessionValidate$1, params?: RequestParams$4) => Promise<HttpResponse$4<object, any>>;
+        userAnchorSessionsValidateSessionCreate: (sessionId: string, data: AnchorSessionValidate$1, params?: RequestParams$5) => Promise<HttpResponse$4<object, any>>;
         /**
          * @description ### Endpoint for viewing all user SEP-10 sessions
          *
@@ -47975,7 +47971,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/user/anchor/transactions/
          * @secure
          */
-        userAnchorTransactionsList: (params?: RequestParams$4) => Promise<HttpResponse$4<UserAnchorTransactionsListData$1, any>>;
+        userAnchorTransactionsList: (params?: RequestParams$5) => Promise<HttpResponse$4<UserAnchorTransactionsListData$1, any>>;
         /**
          * @description ### Endpoint for viewing all user SEP-10 sessions
          *
@@ -47984,7 +47980,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/user/anchor/transactions/{transaction_id}/
          * @secure
          */
-        userAnchorTransactionsRead: (transactionId: string, params?: RequestParams$4) => Promise<HttpResponse$4<UserSEP24Transaction$1, any>>;
+        userAnchorTransactionsRead: (transactionId: string, params?: RequestParams$5) => Promise<HttpResponse$4<UserSEP24Transaction$1, any>>;
         /**
          * @description ### Endpoint for viewing all user SEP-10 sessions
          *
@@ -47993,7 +47989,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/user/anchor/transactions/{transaction_id}/
          * @secure
          */
-        userAnchorTransactionsCreate: (transactionId: string, data: UserSEP24Transaction$1, params?: RequestParams$4) => Promise<HttpResponse$4<UserSEP24Transaction$1, any>>;
+        userAnchorTransactionsCreate: (transactionId: string, data: UserSEP24Transaction$1, params?: RequestParams$5) => Promise<HttpResponse$4<UserSEP24Transaction$1, any>>;
         /**
          * @description ### Endpoint for viewing all user SEP-10 sessions
          *
@@ -48002,7 +47998,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request PATCH:/user/anchor/transactions/{transaction_id}/
          * @secure
          */
-        userAnchorTransactionsPartialUpdate: (transactionId: string, data: UserSEP24Transaction$1, params?: RequestParams$4) => Promise<HttpResponse$4<UserSEP24Transaction$1, any>>;
+        userAnchorTransactionsPartialUpdate: (transactionId: string, data: UserSEP24Transaction$1, params?: RequestParams$5) => Promise<HttpResponse$4<UserSEP24Transaction$1, any>>;
         /**
          * @description ### Endpoint for generating a new unvalidated authentication session using a SEP 10 JWT
          *
@@ -48011,7 +48007,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/user/anchor/{company_id}/auth/
          * @secure
          */
-        userAnchorAuthCreate: (companyId: string, params?: RequestParams$4) => Promise<HttpResponse$4<any, any>>;
+        userAnchorAuthCreate: (companyId: string, params?: RequestParams$5) => Promise<HttpResponse$4<any, any>>;
         /**
          * No description
          *
@@ -48020,7 +48016,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/user/known-public-addresses/
          * @secure
          */
-        userKnownPublicAddressesList: (params?: RequestParams$4) => Promise<HttpResponse$4<UserKnownPublicAddressesListData$1, any>>;
+        userKnownPublicAddressesList: (params?: RequestParams$5) => Promise<HttpResponse$4<UserKnownPublicAddressesListData$1, any>>;
         /**
          * No description
          *
@@ -48029,7 +48025,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request GET:/user/memos/
          * @secure
          */
-        userMemosList: (params?: RequestParams$4) => Promise<HttpResponse$4<UserMemosListData$1, any>>;
+        userMemosList: (params?: RequestParams$5) => Promise<HttpResponse$4<UserMemosListData$1, any>>;
         /**
          * No description
          *
@@ -48038,7 +48034,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/user/memos/
          * @secure
          */
-        userMemosCreate: (data: UserMemo$1, params?: RequestParams$4) => Promise<HttpResponse$4<UserMemo$1, any>>;
+        userMemosCreate: (data: UserMemo$1, params?: RequestParams$5) => Promise<HttpResponse$4<UserMemo$1, any>>;
         /**
          * @description Create the send transaction on Rehive, and/or on the stellar blockchain. When the an email address, the transaction will be handled off-chain, only on the rehive ledger. When sent to a stellar address, the transaction is created on Rehive. Rehive then sends a webhook to the /hooks/debit/ endpoint and a blockchain transaction is created and broadcasted.
          *
@@ -48047,7 +48043,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/user/transactions/send/
          * @secure
          */
-        userTransactionsSendCreate: (data: SendTransaction$1, params?: RequestParams$4) => Promise<HttpResponse$4<SendTransaction$1, any>>;
+        userTransactionsSendCreate: (data: SendTransaction$1, params?: RequestParams$5) => Promise<HttpResponse$4<SendTransaction$1, any>>;
         /**
          * No description
          *
@@ -48056,7 +48052,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/user/username/set/
          * @secure
          */
-        userUsernameSetCreate: (data: SetUsernameMemo$1, params?: RequestParams$4) => Promise<HttpResponse$4<SetUsernameMemo$1, any>>;
+        userUsernameSetCreate: (data: SetUsernameMemo$1, params?: RequestParams$5) => Promise<HttpResponse$4<SetUsernameMemo$1, any>>;
     };
 }
 
@@ -49682,11 +49678,11 @@ interface FullRequestParams$3 extends Omit<RequestInit, "body"> {
     /** request cancellation token */
     cancelToken?: CancelToken$3;
 }
-type RequestParams$3 = Omit<FullRequestParams$3, "body" | "method" | "query" | "path">;
+type RequestParams$4 = Omit<FullRequestParams$3, "body" | "method" | "query" | "path">;
 interface ApiConfig$3<SecurityDataType = unknown> {
     baseUrl?: string;
-    baseApiParams?: Omit<RequestParams$3, "baseUrl" | "cancelToken" | "signal">;
-    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$3 | void> | RequestParams$3 | void;
+    baseApiParams?: Omit<RequestParams$4, "baseUrl" | "cancelToken" | "signal">;
+    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$4 | void> | RequestParams$4 | void;
     customFetch?: typeof fetch;
 }
 interface HttpResponse$3<D extends unknown, E extends unknown = unknown> extends Response {
@@ -49716,7 +49712,7 @@ declare class HttpClient$3<SecurityDataType = unknown> {
     protected toQueryString(rawQuery?: QueryParamsType$3): string;
     protected addQueryParams(rawQuery?: QueryParamsType$3): string;
     private contentFormatters;
-    protected mergeRequestParams(params1: RequestParams$3, params2?: RequestParams$3): RequestParams$3;
+    protected mergeRequestParams(params1: RequestParams$4, params2?: RequestParams$4): RequestParams$4;
     protected createAbortSignal: (cancelToken: CancelToken$3) => AbortSignal | undefined;
     abortRequest: (cancelToken: CancelToken$3) => void;
     request: <T = any, E = any>({ body, secure, path, type, query, format, baseUrl, cancelToken, ...params }: FullRequestParams$3) => Promise<HttpResponse$3<T, E>>;
@@ -49738,7 +49734,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/activate/
          * @secure
          */
-        activateCreate: (data: Activate$3, params?: RequestParams$3) => Promise<HttpResponse$3<Activate$3, any>>;
+        activateCreate: (data: Activate$3, params?: RequestParams$4) => Promise<HttpResponse$3<Activate$3, any>>;
     };
     admin: {
         /**
@@ -49749,7 +49745,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/asset/
          * @secure
          */
-        adminAssetList: (params?: RequestParams$3) => Promise<HttpResponse$3<AdminAssetListData, any>>;
+        adminAssetList: (params?: RequestParams$4) => Promise<HttpResponse$3<AdminAssetListData, any>>;
         /**
          * @description Add a new stellar asset to the service, or list existing assets. You'll need to include a valid stellar anchor issuing address and asset ID.
          *
@@ -49758,7 +49754,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/admin/asset/
          * @secure
          */
-        adminAssetCreate: (data: AdminCreateAsset, params?: RequestParams$3) => Promise<HttpResponse$3<AdminCreateAsset, any>>;
+        adminAssetCreate: (data: AdminCreateAsset, params?: RequestParams$4) => Promise<HttpResponse$3<AdminCreateAsset, any>>;
         /**
          * No description
          *
@@ -49767,7 +49763,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/asset/{id}/
          * @secure
          */
-        adminAssetRead: (id: string, params?: RequestParams$3) => Promise<HttpResponse$3<AdminAsset, any>>;
+        adminAssetRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$3<AdminAsset, any>>;
         /**
          * No description
          *
@@ -49776,7 +49772,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request PATCH:/admin/asset/{id}/
          * @secure
          */
-        adminAssetPartialUpdate: (id: string, data: AdminAsset, params?: RequestParams$3) => Promise<HttpResponse$3<AdminAsset, any>>;
+        adminAssetPartialUpdate: (id: string, data: AdminAsset, params?: RequestParams$4) => Promise<HttpResponse$3<AdminAsset, any>>;
         /**
          * @description A simple APIView for funding asset accounts.
          *
@@ -49785,7 +49781,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/admin/asset/{id}/authorise_holder/
          * @secure
          */
-        adminAssetAuthoriseHolderCreate: (id: string, data: AdminAuthAssetTrust, params?: RequestParams$3) => Promise<HttpResponse$3<AdminAuthAssetTrust, any>>;
+        adminAssetAuthoriseHolderCreate: (id: string, data: AdminAuthAssetTrust, params?: RequestParams$4) => Promise<HttpResponse$3<AdminAuthAssetTrust, any>>;
         /**
          * @description A simple APIView for funding asset accounts.
          *
@@ -49794,7 +49790,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/admin/asset/{id}/fund/
          * @secure
          */
-        adminAssetFundCreate: (id: string, data: AdminFundAsset, params?: RequestParams$3) => Promise<HttpResponse$3<AdminFundAsset, any>>;
+        adminAssetFundCreate: (id: string, data: AdminFundAsset, params?: RequestParams$4) => Promise<HttpResponse$3<AdminFundAsset, any>>;
         /**
          * No description
          *
@@ -49803,7 +49799,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/blacklisted-account/{id}/
          * @secure
          */
-        adminBlacklistedAccountRead: (id: string, params?: RequestParams$3) => Promise<HttpResponse$3<BlacklistedAccount, any>>;
+        adminBlacklistedAccountRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$3<BlacklistedAccount, any>>;
         /**
          * No description
          *
@@ -49812,7 +49808,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request PUT:/admin/blacklisted-account/{id}/
          * @secure
          */
-        adminBlacklistedAccountUpdate: (id: string, data: BlacklistedAccount, params?: RequestParams$3) => Promise<HttpResponse$3<BlacklistedAccount, any>>;
+        adminBlacklistedAccountUpdate: (id: string, data: BlacklistedAccount, params?: RequestParams$4) => Promise<HttpResponse$3<BlacklistedAccount, any>>;
         /**
          * No description
          *
@@ -49821,7 +49817,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request PATCH:/admin/blacklisted-account/{id}/
          * @secure
          */
-        adminBlacklistedAccountPartialUpdate: (id: string, data: BlacklistedAccount, params?: RequestParams$3) => Promise<HttpResponse$3<BlacklistedAccount, any>>;
+        adminBlacklistedAccountPartialUpdate: (id: string, data: BlacklistedAccount, params?: RequestParams$4) => Promise<HttpResponse$3<BlacklistedAccount, any>>;
         /**
          * No description
          *
@@ -49830,7 +49826,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request DELETE:/admin/blacklisted-account/{id}/
          * @secure
          */
-        adminBlacklistedAccountDelete: (id: string, params?: RequestParams$3) => Promise<HttpResponse$3<any, any>>;
+        adminBlacklistedAccountDelete: (id: string, params?: RequestParams$4) => Promise<HttpResponse$3<any, any>>;
         /**
          * No description
          *
@@ -49839,7 +49835,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/blacklisted-accounts/
          * @secure
          */
-        adminBlacklistedAccountsList: (params?: RequestParams$3) => Promise<HttpResponse$3<AdminBlacklistedAccountsListData, any>>;
+        adminBlacklistedAccountsList: (params?: RequestParams$4) => Promise<HttpResponse$3<AdminBlacklistedAccountsListData, any>>;
         /**
          * No description
          *
@@ -49848,7 +49844,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/admin/blacklisted-accounts/
          * @secure
          */
-        adminBlacklistedAccountsCreate: (data: BlacklistedAccount, params?: RequestParams$3) => Promise<HttpResponse$3<BlacklistedAccount, any>>;
+        adminBlacklistedAccountsCreate: (data: BlacklistedAccount, params?: RequestParams$4) => Promise<HttpResponse$3<BlacklistedAccount, any>>;
         /**
          * @description ### View coldstorage balance
          *
@@ -49857,7 +49853,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/coldstorage/
          * @secure
          */
-        adminColdstorageList: (query: AdminColdstorageListParams, params?: RequestParams$3) => Promise<HttpResponse$3<AdminColdstorageListData, any>>;
+        adminColdstorageList: (query: AdminColdstorageListParams, params?: RequestParams$4) => Promise<HttpResponse$3<AdminColdstorageListData, any>>;
         /**
          * @description ### List or create coldstorage accounts for monitoring
          *
@@ -49866,7 +49862,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/coldstorage/accounts/
          * @secure
          */
-        adminColdstorageAccountsList: (query: AdminColdstorageAccountsListParams, params?: RequestParams$3) => Promise<HttpResponse$3<AdminColdstorageAccountsListData, any>>;
+        adminColdstorageAccountsList: (query: AdminColdstorageAccountsListParams, params?: RequestParams$4) => Promise<HttpResponse$3<AdminColdstorageAccountsListData, any>>;
         /**
          * @description ### List or create coldstorage accounts for monitoring
          *
@@ -49875,7 +49871,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/admin/coldstorage/accounts/
          * @secure
          */
-        adminColdstorageAccountsCreate: (data: ColdstorageAccount, params?: RequestParams$3) => Promise<HttpResponse$3<ColdstorageAccount, any>>;
+        adminColdstorageAccountsCreate: (data: ColdstorageAccount, params?: RequestParams$4) => Promise<HttpResponse$3<ColdstorageAccount, any>>;
         /**
          * @description ### View or update a cold storage account
          *
@@ -49884,7 +49880,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/coldstorage/accounts/{id}/
          * @secure
          */
-        adminColdstorageAccountsRead: (id: string, params?: RequestParams$3) => Promise<HttpResponse$3<ColdstorageAccount, any>>;
+        adminColdstorageAccountsRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$3<ColdstorageAccount, any>>;
         /**
          * @description ### View or update a cold storage account
          *
@@ -49893,7 +49889,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request PATCH:/admin/coldstorage/accounts/{id}/
          * @secure
          */
-        adminColdstorageAccountsPartialUpdate: (id: string, data: ColdstorageAccount, params?: RequestParams$3) => Promise<HttpResponse$3<ColdstorageAccount, any>>;
+        adminColdstorageAccountsPartialUpdate: (id: string, data: ColdstorageAccount, params?: RequestParams$4) => Promise<HttpResponse$3<ColdstorageAccount, any>>;
         /**
          * @description Details of Rehive company that was added via the /activate/ endpoint.
          *
@@ -49902,7 +49898,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/company/
          * @secure
          */
-        adminCompanyList: (params?: RequestParams$3) => Promise<HttpResponse$3<AdminCompanyListData, any>>;
+        adminCompanyList: (params?: RequestParams$4) => Promise<HttpResponse$3<AdminCompanyListData, any>>;
         /**
          * @description Details of Rehive company that was added via the /activate/ endpoint.
          *
@@ -49911,7 +49907,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request PATCH:/admin/company/
          * @secure
          */
-        adminCompanyPartialUpdate: (data: CompanyAdmin, params?: RequestParams$3) => Promise<HttpResponse$3<CompanyAdmin, any>>;
+        adminCompanyPartialUpdate: (data: CompanyAdmin, params?: RequestParams$4) => Promise<HttpResponse$3<CompanyAdmin, any>>;
         /**
          * @description Details of Rehive company that was added via the /activate/ endpoint.
          *
@@ -49920,7 +49916,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/company/configuration/
          * @secure
          */
-        adminCompanyConfigurationList: (params?: RequestParams$3) => Promise<HttpResponse$3<AdminCompanyConfigurationListData, any>>;
+        adminCompanyConfigurationList: (params?: RequestParams$4) => Promise<HttpResponse$3<AdminCompanyConfigurationListData, any>>;
         /**
          * @description Details of Rehive company that was added via the /activate/ endpoint.
          *
@@ -49929,7 +49925,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request PUT:/admin/company/configuration/
          * @secure
          */
-        adminCompanyConfigurationUpdate: (data: CompanyConfiguration$1, params?: RequestParams$3) => Promise<HttpResponse$3<CompanyConfiguration$1, any>>;
+        adminCompanyConfigurationUpdate: (data: CompanyConfiguration$1, params?: RequestParams$4) => Promise<HttpResponse$3<CompanyConfiguration$1, any>>;
         /**
          * @description Details of Rehive company that was added via the /activate/ endpoint.
          *
@@ -49938,7 +49934,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request PATCH:/admin/company/configuration/
          * @secure
          */
-        adminCompanyConfigurationPartialUpdate: (data: CompanyConfiguration$1, params?: RequestParams$3) => Promise<HttpResponse$3<CompanyConfiguration$1, any>>;
+        adminCompanyConfigurationPartialUpdate: (data: CompanyConfiguration$1, params?: RequestParams$4) => Promise<HttpResponse$3<CompanyConfiguration$1, any>>;
         /**
          * @description Group/Account Pairs specified for the company
          *
@@ -49947,7 +49943,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/company/configuration/account-groups/
          * @secure
          */
-        adminCompanyConfigurationAccountGroupsList: (params?: RequestParams$3) => Promise<HttpResponse$3<AdminCompanyConfigurationAccountGroupsListData, any>>;
+        adminCompanyConfigurationAccountGroupsList: (params?: RequestParams$4) => Promise<HttpResponse$3<AdminCompanyConfigurationAccountGroupsListData, any>>;
         /**
          * @description Group/Account Pairs specified for the company
          *
@@ -49956,7 +49952,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/admin/company/configuration/account-groups/
          * @secure
          */
-        adminCompanyConfigurationAccountGroupsCreate: (data: DefaultGroupAccountPair, params?: RequestParams$3) => Promise<HttpResponse$3<DefaultGroupAccountPair, any>>;
+        adminCompanyConfigurationAccountGroupsCreate: (data: DefaultGroupAccountPair, params?: RequestParams$4) => Promise<HttpResponse$3<DefaultGroupAccountPair, any>>;
         /**
          * @description Details for a Group/Account pair
          *
@@ -49965,7 +49961,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/company/configuration/account-groups/{id}/
          * @secure
          */
-        adminCompanyConfigurationAccountGroupsRead: (id: string, params?: RequestParams$3) => Promise<HttpResponse$3<DefaultGroupAccountPair, any>>;
+        adminCompanyConfigurationAccountGroupsRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$3<DefaultGroupAccountPair, any>>;
         /**
          * @description Details for a Group/Account pair
          *
@@ -49974,7 +49970,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request PUT:/admin/company/configuration/account-groups/{id}/
          * @secure
          */
-        adminCompanyConfigurationAccountGroupsUpdate: (id: string, data: DefaultGroupAccountPair, params?: RequestParams$3) => Promise<HttpResponse$3<DefaultGroupAccountPair, any>>;
+        adminCompanyConfigurationAccountGroupsUpdate: (id: string, data: DefaultGroupAccountPair, params?: RequestParams$4) => Promise<HttpResponse$3<DefaultGroupAccountPair, any>>;
         /**
          * @description Details for a Group/Account pair
          *
@@ -49983,7 +49979,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request PATCH:/admin/company/configuration/account-groups/{id}/
          * @secure
          */
-        adminCompanyConfigurationAccountGroupsPartialUpdate: (id: string, data: DefaultGroupAccountPair, params?: RequestParams$3) => Promise<HttpResponse$3<DefaultGroupAccountPair, any>>;
+        adminCompanyConfigurationAccountGroupsPartialUpdate: (id: string, data: DefaultGroupAccountPair, params?: RequestParams$4) => Promise<HttpResponse$3<DefaultGroupAccountPair, any>>;
         /**
          * @description Details for a Group/Account pair
          *
@@ -49992,7 +49988,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request DELETE:/admin/company/configuration/account-groups/{id}/
          * @secure
          */
-        adminCompanyConfigurationAccountGroupsDelete: (id: string, params?: RequestParams$3) => Promise<HttpResponse$3<any, any>>;
+        adminCompanyConfigurationAccountGroupsDelete: (id: string, params?: RequestParams$4) => Promise<HttpResponse$3<any, any>>;
         /**
          * @description Details of Rehive company that was added via the /activate/ endpoint.
          *
@@ -50001,7 +49997,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/company/configuration/anchor_platform/
          * @secure
          */
-        adminCompanyConfigurationAnchorPlatformList: (params?: RequestParams$3) => Promise<HttpResponse$3<AdminCompanyConfigurationAnchorPlatformListData, any>>;
+        adminCompanyConfigurationAnchorPlatformList: (params?: RequestParams$4) => Promise<HttpResponse$3<AdminCompanyConfigurationAnchorPlatformListData, any>>;
         /**
          * @description Details of Rehive company that was added via the /activate/ endpoint.
          *
@@ -50010,7 +50006,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request PUT:/admin/company/configuration/anchor_platform/
          * @secure
          */
-        adminCompanyConfigurationAnchorPlatformUpdate: (data: AnchorPlatformConfiguration, params?: RequestParams$3) => Promise<HttpResponse$3<AnchorPlatformConfiguration, any>>;
+        adminCompanyConfigurationAnchorPlatformUpdate: (data: AnchorPlatformConfiguration, params?: RequestParams$4) => Promise<HttpResponse$3<AnchorPlatformConfiguration, any>>;
         /**
          * @description Details of Rehive company that was added via the /activate/ endpoint.
          *
@@ -50019,7 +50015,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request PATCH:/admin/company/configuration/anchor_platform/
          * @secure
          */
-        adminCompanyConfigurationAnchorPlatformPartialUpdate: (data: AnchorPlatformConfiguration, params?: RequestParams$3) => Promise<HttpResponse$3<AnchorPlatformConfiguration, any>>;
+        adminCompanyConfigurationAnchorPlatformPartialUpdate: (data: AnchorPlatformConfiguration, params?: RequestParams$4) => Promise<HttpResponse$3<AnchorPlatformConfiguration, any>>;
         /**
          * @description Create and sends back a link to a Stellar.toml file
          *
@@ -50028,7 +50024,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/company/stellar-toml/
          * @secure
          */
-        adminCompanyStellarTomlList: (params?: RequestParams$3) => Promise<HttpResponse$3<AdminCompanyStellarTomlListData, any>>;
+        adminCompanyStellarTomlList: (params?: RequestParams$4) => Promise<HttpResponse$3<AdminCompanyStellarTomlListData, any>>;
         /**
          * @description ### View or update a Stellar Account
          *
@@ -50037,7 +50033,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/federation/
          * @secure
          */
-        adminFederationList: (params?: RequestParams$3) => Promise<HttpResponse$3<AdminFederationListData, any>>;
+        adminFederationList: (params?: RequestParams$4) => Promise<HttpResponse$3<AdminFederationListData, any>>;
         /**
          * @description ### View or update a Stellar Account
          *
@@ -50046,7 +50042,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/admin/federation/
          * @secure
          */
-        adminFederationCreate: (data: Federation, params?: RequestParams$3) => Promise<HttpResponse$3<Federation, any>>;
+        adminFederationCreate: (data: Federation, params?: RequestParams$4) => Promise<HttpResponse$3<Federation, any>>;
         /**
          * @description ### View, create and update the hot wallet
          *
@@ -50055,7 +50051,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/hotwallet/
          * @secure
          */
-        adminHotwalletList: (params?: RequestParams$3) => Promise<HttpResponse$3<AdminHotwalletListData, any>>;
+        adminHotwalletList: (params?: RequestParams$4) => Promise<HttpResponse$3<AdminHotwalletListData, any>>;
         /**
          * @description ### View, create and update the hot wallet
          *
@@ -50064,7 +50060,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/admin/hotwallet/
          * @secure
          */
-        adminHotwalletCreate: (data: Hotwallet, params?: RequestParams$3) => Promise<HttpResponse$3<Hotwallet, any>>;
+        adminHotwalletCreate: (data: Hotwallet, params?: RequestParams$4) => Promise<HttpResponse$3<Hotwallet, any>>;
         /**
          * @description ### View, create and update the hot wallet
          *
@@ -50073,7 +50069,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request PATCH:/admin/hotwallet/
          * @secure
          */
-        adminHotwalletPartialUpdate: (data: Hotwallet, params?: RequestParams$3) => Promise<HttpResponse$3<Hotwallet, any>>;
+        adminHotwalletPartialUpdate: (data: Hotwallet, params?: RequestParams$4) => Promise<HttpResponse$3<Hotwallet, any>>;
         /**
          * @description ### View hotwallet balance
          *
@@ -50082,7 +50078,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/hotwallet/active/
          * @secure
          */
-        adminHotwalletActiveList: (params?: RequestParams$3) => Promise<HttpResponse$3<AdminHotwalletActiveListData, any>>;
+        adminHotwalletActiveList: (params?: RequestParams$4) => Promise<HttpResponse$3<AdminHotwalletActiveListData, any>>;
         /**
          * @description A simple APIView for funding asset accounts.
          *
@@ -50091,7 +50087,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/admin/hotwallet/enable_mss/
          * @secure
          */
-        adminHotwalletEnableMssCreate: (data: HotwalletFund, params?: RequestParams$3) => Promise<HttpResponse$3<HotwalletFund, any>>;
+        adminHotwalletEnableMssCreate: (data: HotwalletFund, params?: RequestParams$4) => Promise<HttpResponse$3<HotwalletFund, any>>;
         /**
          * @description ### View hotwallet balance
          *
@@ -50100,7 +50096,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/hotwallet/fees/
          * @secure
          */
-        adminHotwalletFeesList: (params?: RequestParams$3) => Promise<HttpResponse$3<AdminHotwalletFeesListData, any>>;
+        adminHotwalletFeesList: (params?: RequestParams$4) => Promise<HttpResponse$3<AdminHotwalletFeesListData, any>>;
         /**
          * @description View and update company. Authenticates requests using a token in the Authorization header.
          *
@@ -50109,7 +50105,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/hotwallet/fund/
          * @secure
          */
-        adminHotwalletFundList: (params?: RequestParams$3) => Promise<HttpResponse$3<AdminHotwalletFundListData, any>>;
+        adminHotwalletFundList: (params?: RequestParams$4) => Promise<HttpResponse$3<AdminHotwalletFundListData, any>>;
         /**
          * @description ### Merges and deletes the current hotwallet
          *
@@ -50118,7 +50114,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/admin/hotwallet/merge/
          * @secure
          */
-        adminHotwalletMergeCreate: (data: HotwalletMerge, params?: RequestParams$3) => Promise<HttpResponse$3<HotwalletMerge, any>>;
+        adminHotwalletMergeCreate: (data: HotwalletMerge, params?: RequestParams$4) => Promise<HttpResponse$3<HotwalletMerge, any>>;
         /**
          * @description ### Sends an onchain transactions directly from the Hotwallet
          *
@@ -50127,7 +50123,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/admin/hotwallet/send/
          * @secure
          */
-        adminHotwalletSendCreate: (data: HotwalletSend, params?: RequestParams$3) => Promise<HttpResponse$3<HotwalletSend, any>>;
+        adminHotwalletSendCreate: (data: HotwalletSend, params?: RequestParams$4) => Promise<HttpResponse$3<HotwalletSend, any>>;
         /**
          * No description
          *
@@ -50136,7 +50132,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/known-public-addresses/
          * @secure
          */
-        adminKnownPublicAddressesList: (params?: RequestParams$3) => Promise<HttpResponse$3<AdminKnownPublicAddressesListData, any>>;
+        adminKnownPublicAddressesList: (params?: RequestParams$4) => Promise<HttpResponse$3<AdminKnownPublicAddressesListData, any>>;
         /**
          * No description
          *
@@ -50145,7 +50141,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/admin/known-public-addresses/
          * @secure
          */
-        adminKnownPublicAddressesCreate: (data: KnownPublicAddresses, params?: RequestParams$3) => Promise<HttpResponse$3<KnownPublicAddresses, any>>;
+        adminKnownPublicAddressesCreate: (data: KnownPublicAddresses, params?: RequestParams$4) => Promise<HttpResponse$3<KnownPublicAddresses, any>>;
         /**
          * No description
          *
@@ -50154,7 +50150,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/known-public-addresses/{id}/
          * @secure
          */
-        adminKnownPublicAddressesRead: (id: string, params?: RequestParams$3) => Promise<HttpResponse$3<KnownPublicAddresses, any>>;
+        adminKnownPublicAddressesRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$3<KnownPublicAddresses, any>>;
         /**
          * No description
          *
@@ -50163,7 +50159,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request PUT:/admin/known-public-addresses/{id}/
          * @secure
          */
-        adminKnownPublicAddressesUpdate: (id: string, data: KnownPublicAddresses, params?: RequestParams$3) => Promise<HttpResponse$3<KnownPublicAddresses, any>>;
+        adminKnownPublicAddressesUpdate: (id: string, data: KnownPublicAddresses, params?: RequestParams$4) => Promise<HttpResponse$3<KnownPublicAddresses, any>>;
         /**
          * No description
          *
@@ -50172,7 +50168,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request PATCH:/admin/known-public-addresses/{id}/
          * @secure
          */
-        adminKnownPublicAddressesPartialUpdate: (id: string, data: KnownPublicAddresses, params?: RequestParams$3) => Promise<HttpResponse$3<KnownPublicAddresses, any>>;
+        adminKnownPublicAddressesPartialUpdate: (id: string, data: KnownPublicAddresses, params?: RequestParams$4) => Promise<HttpResponse$3<KnownPublicAddresses, any>>;
         /**
          * No description
          *
@@ -50181,7 +50177,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request DELETE:/admin/known-public-addresses/{id}/
          * @secure
          */
-        adminKnownPublicAddressesDelete: (id: string, params?: RequestParams$3) => Promise<HttpResponse$3<any, any>>;
+        adminKnownPublicAddressesDelete: (id: string, params?: RequestParams$4) => Promise<HttpResponse$3<any, any>>;
         /**
          * No description
          *
@@ -50190,7 +50186,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/memos/
          * @secure
          */
-        adminMemosList: (params?: RequestParams$3) => Promise<HttpResponse$3<AdminMemosListData, any>>;
+        adminMemosList: (params?: RequestParams$4) => Promise<HttpResponse$3<AdminMemosListData, any>>;
         /**
          * No description
          *
@@ -50199,7 +50195,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/admin/memos/
          * @secure
          */
-        adminMemosCreate: (data: AdminMemo, params?: RequestParams$3) => Promise<HttpResponse$3<AdminMemo, any>>;
+        adminMemosCreate: (data: AdminMemo, params?: RequestParams$4) => Promise<HttpResponse$3<AdminMemo, any>>;
         /**
          * @description ### List transactions
          *
@@ -50208,7 +50204,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/sep10-authenticated-accounts/
          * @secure
          */
-        adminSep10AuthenticatedAccountsList: (query: AdminSep10AuthenticatedAccountsListParams, params?: RequestParams$3) => Promise<HttpResponse$3<AdminSep10AuthenticatedAccountsListData, any>>;
+        adminSep10AuthenticatedAccountsList: (query: AdminSep10AuthenticatedAccountsListParams, params?: RequestParams$4) => Promise<HttpResponse$3<AdminSep10AuthenticatedAccountsListData, any>>;
         /**
          * @description ### GET a single SEP10AuthenticatedAccount object
          *
@@ -50217,7 +50213,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/sep10-authenticated-accounts/{id}/
          * @secure
          */
-        adminSep10AuthenticatedAccountsRead: (id: string, params?: RequestParams$3) => Promise<HttpResponse$3<AdminSEP10AuthenticatedAccount, any>>;
+        adminSep10AuthenticatedAccountsRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$3<AdminSEP10AuthenticatedAccount, any>>;
         /**
          * @description ### List all SEP24Transaction objects
          *
@@ -50226,7 +50222,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/sep24-transactions/
          * @secure
          */
-        adminSep24TransactionsList: (query: AdminSep24TransactionsListParams, params?: RequestParams$3) => Promise<HttpResponse$3<AdminSep24TransactionsListData, any>>;
+        adminSep24TransactionsList: (query: AdminSep24TransactionsListParams, params?: RequestParams$4) => Promise<HttpResponse$3<AdminSep24TransactionsListData, any>>;
         /**
          * @description ### GET a single SEP24Transaction object
          *
@@ -50235,7 +50231,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/sep24-transactions/{id}/
          * @secure
          */
-        adminSep24TransactionsRead: (id: string, params?: RequestParams$3) => Promise<HttpResponse$3<AdminSEP24Transaction, any>>;
+        adminSep24TransactionsRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$3<AdminSEP24Transaction, any>>;
         /**
          * @description ### List stellar accounts
          *
@@ -50244,7 +50240,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/stellar_accounts/
          * @secure
          */
-        adminStellarAccountsList: (query: AdminStellarAccountsListParams, params?: RequestParams$3) => Promise<HttpResponse$3<AdminStellarAccountsListData, any>>;
+        adminStellarAccountsList: (query: AdminStellarAccountsListParams, params?: RequestParams$4) => Promise<HttpResponse$3<AdminStellarAccountsListData, any>>;
         /**
          * @description ### View or update a Stellar Account
          *
@@ -50253,7 +50249,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/admin/stellar_accounts/generate/
          * @secure
          */
-        adminStellarAccountsGenerateCreate: (data: StellarAccountGenerate, params?: RequestParams$3) => Promise<HttpResponse$3<StellarAccountGenerate, any>>;
+        adminStellarAccountsGenerateCreate: (data: StellarAccountGenerate, params?: RequestParams$4) => Promise<HttpResponse$3<StellarAccountGenerate, any>>;
         /**
          * @description ### View or update a Stellar Account
          *
@@ -50262,7 +50258,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/stellar_accounts/{id}/
          * @secure
          */
-        adminStellarAccountsRead: (id: string, params?: RequestParams$3) => Promise<HttpResponse$3<StellarAccount, any>>;
+        adminStellarAccountsRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$3<StellarAccount, any>>;
         /**
          * @description ### View or update a Stellar Account
          *
@@ -50271,7 +50267,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request PATCH:/admin/stellar_accounts/{id}/
          * @secure
          */
-        adminStellarAccountsPartialUpdate: (id: string, data: StellarAccount, params?: RequestParams$3) => Promise<HttpResponse$3<StellarAccount, any>>;
+        adminStellarAccountsPartialUpdate: (id: string, data: StellarAccount, params?: RequestParams$4) => Promise<HttpResponse$3<StellarAccount, any>>;
         /**
          * @description ### Change the ownership of a service generated account ### Adds a new primary signer and removes the services secret as a signer
          *
@@ -50280,7 +50276,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/admin/stellar_accounts/{id}/change_ownership/
          * @secure
          */
-        adminStellarAccountsChangeOwnershipCreate: (id: string, data: StellarAccountChangeOwnership, params?: RequestParams$3) => Promise<HttpResponse$3<StellarAccountChangeOwnership, any>>;
+        adminStellarAccountsChangeOwnershipCreate: (id: string, data: StellarAccountChangeOwnership, params?: RequestParams$4) => Promise<HttpResponse$3<StellarAccountChangeOwnership, any>>;
         /**
          * @description ### List transactions
          *
@@ -50289,7 +50285,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/transactions/
          * @secure
          */
-        adminTransactionsList: (query: AdminTransactionsListParams, params?: RequestParams$3) => Promise<HttpResponse$3<AdminTransactionsListData, any>>;
+        adminTransactionsList: (query: AdminTransactionsListParams, params?: RequestParams$4) => Promise<HttpResponse$3<AdminTransactionsListData, any>>;
         /**
          * @description View for sending assets directly out of the hotwallet account
          *
@@ -50298,7 +50294,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/admin/transactions/send/
          * @secure
          */
-        adminTransactionsSendCreate: (data: AdminSendTransaction, params?: RequestParams$3) => Promise<HttpResponse$3<AdminSendTransaction, any>>;
+        adminTransactionsSendCreate: (data: AdminSendTransaction, params?: RequestParams$4) => Promise<HttpResponse$3<AdminSendTransaction, any>>;
         /**
          * @description ### GET and PATCH a single transaction on the Stellar service
          *
@@ -50307,7 +50303,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/transactions/{id}/
          * @secure
          */
-        adminTransactionsRead: (id: string, params?: RequestParams$3) => Promise<HttpResponse$3<AdminTransaction, any>>;
+        adminTransactionsRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$3<AdminTransaction, any>>;
         /**
          * @description ### GET and PATCH a single transaction on the Stellar service
          *
@@ -50316,7 +50312,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request PATCH:/admin/transactions/{id}/
          * @secure
          */
-        adminTransactionsPartialUpdate: (id: string, data: AdminTransaction, params?: RequestParams$3) => Promise<HttpResponse$3<AdminTransaction, any>>;
+        adminTransactionsPartialUpdate: (id: string, data: AdminTransaction, params?: RequestParams$4) => Promise<HttpResponse$3<AdminTransaction, any>>;
         /**
          * @description ### List users
          *
@@ -50325,7 +50321,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/users/
          * @secure
          */
-        adminUsersList: (query: AdminUsersListParams$1, params?: RequestParams$3) => Promise<HttpResponse$3<AdminUsersListData, any>>;
+        adminUsersList: (query: AdminUsersListParams$1, params?: RequestParams$4) => Promise<HttpResponse$3<AdminUsersListData, any>>;
         /**
          * @description ### List users
          *
@@ -50334,7 +50330,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/admin/users/
          * @secure
          */
-        adminUsersCreate: (data: AdminUserInfoSeralizer, params?: RequestParams$3) => Promise<HttpResponse$3<AdminUserInfoSeralizer, any>>;
+        adminUsersCreate: (data: AdminUserInfoSeralizer, params?: RequestParams$4) => Promise<HttpResponse$3<AdminUserInfoSeralizer, any>>;
         /**
          * @description ### List users
          *
@@ -50343,7 +50339,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/users/{id}/
          * @secure
          */
-        adminUsersRead: (id: string, params?: RequestParams$3) => Promise<HttpResponse$3<AdminUser$1, any>>;
+        adminUsersRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$3<AdminUser$1, any>>;
         /**
          * @description ### List users
          *
@@ -50352,7 +50348,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request PATCH:/admin/users/{id}/
          * @secure
          */
-        adminUsersPartialUpdate: (id: string, data: UserSeralizer, params?: RequestParams$3) => Promise<HttpResponse$3<UserSeralizer, any>>;
+        adminUsersPartialUpdate: (id: string, data: UserSeralizer, params?: RequestParams$4) => Promise<HttpResponse$3<UserSeralizer, any>>;
         /**
          * No description
          *
@@ -50361,7 +50357,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/users/{id}/memos/
          * @secure
          */
-        adminUsersMemosList: (id: string, params?: RequestParams$3) => Promise<HttpResponse$3<AdminUsersMemosListData, any>>;
+        adminUsersMemosList: (id: string, params?: RequestParams$4) => Promise<HttpResponse$3<AdminUsersMemosListData, any>>;
         /**
          * No description
          *
@@ -50370,7 +50366,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/admin/users/{id}/memos/
          * @secure
          */
-        adminUsersMemosCreate: (id: string, data: AdminUserMemo, params?: RequestParams$3) => Promise<HttpResponse$3<AdminUserMemo, any>>;
+        adminUsersMemosCreate: (id: string, data: AdminUserMemo, params?: RequestParams$4) => Promise<HttpResponse$3<AdminUserMemo, any>>;
         /**
          * @description ### View warmstorage balance
          *
@@ -50379,7 +50375,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/warmstorage/
          * @secure
          */
-        adminWarmstorageList: (query: AdminWarmstorageListParams, params?: RequestParams$3) => Promise<HttpResponse$3<AdminWarmstorageListData, any>>;
+        adminWarmstorageList: (query: AdminWarmstorageListParams, params?: RequestParams$4) => Promise<HttpResponse$3<AdminWarmstorageListData, any>>;
         /**
          * @description ### List or create warmstorage accounts for monitoring
          *
@@ -50388,7 +50384,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/warmstorage/accounts/
          * @secure
          */
-        adminWarmstorageAccountsList: (query: AdminWarmstorageAccountsListParams, params?: RequestParams$3) => Promise<HttpResponse$3<AdminWarmstorageAccountsListData, any>>;
+        adminWarmstorageAccountsList: (query: AdminWarmstorageAccountsListParams, params?: RequestParams$4) => Promise<HttpResponse$3<AdminWarmstorageAccountsListData, any>>;
         /**
          * @description ### List or create warmstorage accounts for monitoring
          *
@@ -50397,7 +50393,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/admin/warmstorage/accounts/
          * @secure
          */
-        adminWarmstorageAccountsCreate: (data: WarmstorageAccount, params?: RequestParams$3) => Promise<HttpResponse$3<WarmstorageAccount, any>>;
+        adminWarmstorageAccountsCreate: (data: WarmstorageAccount, params?: RequestParams$4) => Promise<HttpResponse$3<WarmstorageAccount, any>>;
         /**
          * @description ### View or update a warm storage account
          *
@@ -50406,7 +50402,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/admin/warmstorage/accounts/{id}/
          * @secure
          */
-        adminWarmstorageAccountsRead: (id: string, params?: RequestParams$3) => Promise<HttpResponse$3<WarmstorageAccount, any>>;
+        adminWarmstorageAccountsRead: (id: string, params?: RequestParams$4) => Promise<HttpResponse$3<WarmstorageAccount, any>>;
         /**
          * @description ### View or update a warm storage account
          *
@@ -50415,7 +50411,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request PATCH:/admin/warmstorage/accounts/{id}/
          * @secure
          */
-        adminWarmstorageAccountsPartialUpdate: (id: string, data: WarmstorageAccount, params?: RequestParams$3) => Promise<HttpResponse$3<WarmstorageAccount, any>>;
+        adminWarmstorageAccountsPartialUpdate: (id: string, data: WarmstorageAccount, params?: RequestParams$4) => Promise<HttpResponse$3<WarmstorageAccount, any>>;
     };
     company: {
         /**
@@ -50426,7 +50422,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/company/
          * @secure
          */
-        companyList: (params?: RequestParams$3) => Promise<HttpResponse$3<CompanyListData, any>>;
+        companyList: (params?: RequestParams$4) => Promise<HttpResponse$3<CompanyListData, any>>;
         /**
          * @description Add a new stellar asset to the service, or list existing assets. You'll need to include a valid stellar anchor issuing address and asset ID.
          *
@@ -50435,7 +50431,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/company/assets/
          * @secure
          */
-        companyAssetsList: (params?: RequestParams$3) => Promise<HttpResponse$3<CompanyAssetsListData, any>>;
+        companyAssetsList: (params?: RequestParams$4) => Promise<HttpResponse$3<CompanyAssetsListData, any>>;
     };
     deactivate: {
         /**
@@ -50446,7 +50442,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/deactivate/
          * @secure
          */
-        deactivateCreate: (data: Deactivate$3, params?: RequestParams$3) => Promise<HttpResponse$3<Deactivate$3, any>>;
+        deactivateCreate: (data: Deactivate$3, params?: RequestParams$4) => Promise<HttpResponse$3<Deactivate$3, any>>;
     };
     hooks: {
         /**
@@ -50457,7 +50453,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/hooks/prs/
          * @secure
          */
-        hooksPrsCreate: (data: PRSWebhook, params?: RequestParams$3) => Promise<HttpResponse$3<PRSWebhook, any>>;
+        hooksPrsCreate: (data: PRSWebhook, params?: RequestParams$4) => Promise<HttpResponse$3<PRSWebhook, any>>;
     };
     info: {
         /**
@@ -50468,7 +50464,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/info/
          * @secure
          */
-        infoList: (params?: RequestParams$3) => Promise<HttpResponse$3<InfoListData, any>>;
+        infoList: (params?: RequestParams$4) => Promise<HttpResponse$3<InfoListData, any>>;
     };
     knownAssets: {
         /**
@@ -50479,7 +50475,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/known-assets/
          * @secure
          */
-        knownAssetsList: (query: KnownAssetsListParams, params?: RequestParams$3) => Promise<HttpResponse$3<KnownAssetsListData, any>>;
+        knownAssetsList: (query: KnownAssetsListParams, params?: RequestParams$4) => Promise<HttpResponse$3<KnownAssetsListData, any>>;
     };
     stellarFederation: {
         /**
@@ -50490,7 +50486,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/stellar_federation/{company}/
          * @secure
          */
-        stellarFederationRead: (company: string, params?: RequestParams$3) => Promise<HttpResponse$3<any, any>>;
+        stellarFederationRead: (company: string, params?: RequestParams$4) => Promise<HttpResponse$3<any, any>>;
     };
     transactions: {
         /**
@@ -50501,7 +50497,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/transactions/
          * @secure
          */
-        transactionsList: (query: TransactionsListParams, params?: RequestParams$3) => Promise<HttpResponse$3<TransactionsListData, any>>;
+        transactionsList: (query: TransactionsListParams, params?: RequestParams$4) => Promise<HttpResponse$3<TransactionsListData, any>>;
         /**
          * @description Create the send transaction on Rehive, and/or on the stellar blockchain. When the an email address, the transaction will be handled off-chain, only on the rehive ledger. When sent to a stellar address, the transaction is created on Rehive. Rehive then sends a webhook to the /hooks/debit/ endpoint and a blockchain transaction is created and broadcasted.
          *
@@ -50510,7 +50506,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/transactions/send/
          * @secure
          */
-        transactionsSendCreate: (data: SendTransaction, params?: RequestParams$3) => Promise<HttpResponse$3<SendTransaction, any>>;
+        transactionsSendCreate: (data: SendTransaction, params?: RequestParams$4) => Promise<HttpResponse$3<SendTransaction, any>>;
     };
     user: {
         /**
@@ -50521,7 +50517,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/user/
          * @secure
          */
-        userList: (params?: RequestParams$3) => Promise<HttpResponse$3<UserListData, any>>;
+        userList: (params?: RequestParams$4) => Promise<HttpResponse$3<UserListData, any>>;
         /**
          * No description
          *
@@ -50530,7 +50526,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request PATCH:/user/
          * @secure
          */
-        userPartialUpdate: (data: UserInfoSeralizer, params?: RequestParams$3) => Promise<HttpResponse$3<UserInfoSeralizer, any>>;
+        userPartialUpdate: (data: UserInfoSeralizer, params?: RequestParams$4) => Promise<HttpResponse$3<UserInfoSeralizer, any>>;
         /**
          * No description
          *
@@ -50539,7 +50535,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/user/account/
          * @secure
          */
-        userAccountList: (params?: RequestParams$3) => Promise<HttpResponse$3<any, any>>;
+        userAccountList: (params?: RequestParams$4) => Promise<HttpResponse$3<any, any>>;
         /**
          * @description ### Endpoint for validating a specific session id using a valid Rehive user session
          *
@@ -50548,7 +50544,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/user/anchor/sessions/{session_id}/validate/
          * @secure
          */
-        userAnchorSessionsValidateCreate: (sessionId: string, data: AnchorAccountValidate, params?: RequestParams$3) => Promise<HttpResponse$3<object, any>>;
+        userAnchorSessionsValidateCreate: (sessionId: string, data: AnchorAccountValidate, params?: RequestParams$4) => Promise<HttpResponse$3<object, any>>;
         /**
          * @description ### Endpoint for validating a specific session id using a valid Rehive user session
          *
@@ -50557,7 +50553,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/user/anchor/sessions/{session_id}/validate_account/
          * @secure
          */
-        userAnchorSessionsValidateAccountCreate: (sessionId: string, data: AnchorAccountValidate, params?: RequestParams$3) => Promise<HttpResponse$3<object, any>>;
+        userAnchorSessionsValidateAccountCreate: (sessionId: string, data: AnchorAccountValidate, params?: RequestParams$4) => Promise<HttpResponse$3<object, any>>;
         /**
          * @description ### Endpoint for validating a specific session id using a valid Rehive user session
          *
@@ -50566,7 +50562,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/user/anchor/sessions/{session_id}/validate_session/
          * @secure
          */
-        userAnchorSessionsValidateSessionCreate: (sessionId: string, data: AnchorSessionValidate, params?: RequestParams$3) => Promise<HttpResponse$3<object, any>>;
+        userAnchorSessionsValidateSessionCreate: (sessionId: string, data: AnchorSessionValidate, params?: RequestParams$4) => Promise<HttpResponse$3<object, any>>;
         /**
          * @description ### Endpoint for viewing all user SEP-10 sessions
          *
@@ -50575,7 +50571,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/user/anchor/transactions/
          * @secure
          */
-        userAnchorTransactionsList: (params?: RequestParams$3) => Promise<HttpResponse$3<UserAnchorTransactionsListData, any>>;
+        userAnchorTransactionsList: (params?: RequestParams$4) => Promise<HttpResponse$3<UserAnchorTransactionsListData, any>>;
         /**
          * @description ### Endpoint for viewing all user SEP-10 sessions
          *
@@ -50584,7 +50580,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/user/anchor/transactions/{transaction_id}/
          * @secure
          */
-        userAnchorTransactionsRead: (transactionId: string, params?: RequestParams$3) => Promise<HttpResponse$3<UserSEP24Transaction, any>>;
+        userAnchorTransactionsRead: (transactionId: string, params?: RequestParams$4) => Promise<HttpResponse$3<UserSEP24Transaction, any>>;
         /**
          * @description ### Endpoint for viewing all user SEP-10 sessions
          *
@@ -50593,7 +50589,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/user/anchor/transactions/{transaction_id}/
          * @secure
          */
-        userAnchorTransactionsCreate: (transactionId: string, data: UserSEP24Transaction, params?: RequestParams$3) => Promise<HttpResponse$3<UserSEP24Transaction, any>>;
+        userAnchorTransactionsCreate: (transactionId: string, data: UserSEP24Transaction, params?: RequestParams$4) => Promise<HttpResponse$3<UserSEP24Transaction, any>>;
         /**
          * @description ### Endpoint for viewing all user SEP-10 sessions
          *
@@ -50602,7 +50598,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request PATCH:/user/anchor/transactions/{transaction_id}/
          * @secure
          */
-        userAnchorTransactionsPartialUpdate: (transactionId: string, data: UserSEP24Transaction, params?: RequestParams$3) => Promise<HttpResponse$3<UserSEP24Transaction, any>>;
+        userAnchorTransactionsPartialUpdate: (transactionId: string, data: UserSEP24Transaction, params?: RequestParams$4) => Promise<HttpResponse$3<UserSEP24Transaction, any>>;
         /**
          * @description ### Endpoint for generating a new unvalidated authentication session using a SEP 10 JWT
          *
@@ -50611,7 +50607,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/user/anchor/{company_id}/auth/
          * @secure
          */
-        userAnchorAuthCreate: (companyId: string, params?: RequestParams$3) => Promise<HttpResponse$3<any, any>>;
+        userAnchorAuthCreate: (companyId: string, params?: RequestParams$4) => Promise<HttpResponse$3<any, any>>;
         /**
          * No description
          *
@@ -50620,7 +50616,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/user/known-public-addresses/
          * @secure
          */
-        userKnownPublicAddressesList: (params?: RequestParams$3) => Promise<HttpResponse$3<UserKnownPublicAddressesListData, any>>;
+        userKnownPublicAddressesList: (params?: RequestParams$4) => Promise<HttpResponse$3<UserKnownPublicAddressesListData, any>>;
         /**
          * No description
          *
@@ -50629,7 +50625,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request GET:/user/memos/
          * @secure
          */
-        userMemosList: (params?: RequestParams$3) => Promise<HttpResponse$3<UserMemosListData, any>>;
+        userMemosList: (params?: RequestParams$4) => Promise<HttpResponse$3<UserMemosListData, any>>;
         /**
          * No description
          *
@@ -50638,7 +50634,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/user/memos/
          * @secure
          */
-        userMemosCreate: (data: UserMemo, params?: RequestParams$3) => Promise<HttpResponse$3<UserMemo, any>>;
+        userMemosCreate: (data: UserMemo, params?: RequestParams$4) => Promise<HttpResponse$3<UserMemo, any>>;
         /**
          * @description Create the send transaction on Rehive, and/or on the stellar blockchain. When the an email address, the transaction will be handled off-chain, only on the rehive ledger. When sent to a stellar address, the transaction is created on Rehive. Rehive then sends a webhook to the /hooks/debit/ endpoint and a blockchain transaction is created and broadcasted.
          *
@@ -50647,7 +50643,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/user/transactions/send/
          * @secure
          */
-        userTransactionsSendCreate: (data: SendTransaction, params?: RequestParams$3) => Promise<HttpResponse$3<SendTransaction, any>>;
+        userTransactionsSendCreate: (data: SendTransaction, params?: RequestParams$4) => Promise<HttpResponse$3<SendTransaction, any>>;
         /**
          * No description
          *
@@ -50656,7 +50652,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/user/username/set/
          * @secure
          */
-        userUsernameSetCreate: (data: SetUsernameMemo, params?: RequestParams$3) => Promise<HttpResponse$3<SetUsernameMemo, any>>;
+        userUsernameSetCreate: (data: SetUsernameMemo, params?: RequestParams$4) => Promise<HttpResponse$3<SetUsernameMemo, any>>;
     };
 }
 
@@ -55339,11 +55335,11 @@ interface FullRequestParams$2 extends Omit<RequestInit, "body"> {
     /** request cancellation token */
     cancelToken?: CancelToken$2;
 }
-type RequestParams$2 = Omit<FullRequestParams$2, "body" | "method" | "query" | "path">;
+type RequestParams$3 = Omit<FullRequestParams$2, "body" | "method" | "query" | "path">;
 interface ApiConfig$2<SecurityDataType = unknown> {
     baseUrl?: string;
-    baseApiParams?: Omit<RequestParams$2, "baseUrl" | "cancelToken" | "signal">;
-    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$2 | void> | RequestParams$2 | void;
+    baseApiParams?: Omit<RequestParams$3, "baseUrl" | "cancelToken" | "signal">;
+    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$3 | void> | RequestParams$3 | void;
     customFetch?: typeof fetch;
 }
 interface HttpResponse$2<D extends unknown, E extends unknown = unknown> extends Response {
@@ -55373,7 +55369,7 @@ declare class HttpClient$2<SecurityDataType = unknown> {
     protected toQueryString(rawQuery?: QueryParamsType$2): string;
     protected addQueryParams(rawQuery?: QueryParamsType$2): string;
     private contentFormatters;
-    protected mergeRequestParams(params1: RequestParams$2, params2?: RequestParams$2): RequestParams$2;
+    protected mergeRequestParams(params1: RequestParams$3, params2?: RequestParams$3): RequestParams$3;
     protected createAbortSignal: (cancelToken: CancelToken$2) => AbortSignal | undefined;
     abortRequest: (cancelToken: CancelToken$2) => void;
     request: <T = any, E = any>({ body, secure, path, type, query, format, baseUrl, cancelToken, ...params }: FullRequestParams$2) => Promise<HttpResponse$2<T, E>>;
@@ -55401,7 +55397,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/activate/
          * @secure
          */
-        activateCreate: (data: Activate$2, params?: RequestParams$2) => Promise<HttpResponse$2<ActionResponse$2, any>>;
+        activateCreate: (data: Activate$2, params?: RequestParams$3) => Promise<HttpResponse$2<ActionResponse$2, any>>;
     };
     admin: {
         /**
@@ -55413,7 +55409,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/admin/business-categories/
          * @secure
          */
-        adminBusinessCategoriesList: (query: AdminBusinessCategoriesListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedAdminBusinessCategoryListResponse, any>>;
+        adminBusinessCategoriesList: (query: AdminBusinessCategoriesListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedAdminBusinessCategoryListResponse, any>>;
         /**
          * No description
          *
@@ -55423,7 +55419,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/admin/business-categories/
          * @secure
          */
-        adminBusinessCategoriesCreate: (data: AdminBusinessCategory, params?: RequestParams$2) => Promise<HttpResponse$2<AdminBusinessCategoryResponse, any>>;
+        adminBusinessCategoriesCreate: (data: AdminBusinessCategory, params?: RequestParams$3) => Promise<HttpResponse$2<AdminBusinessCategoryResponse, any>>;
         /**
          * No description
          *
@@ -55433,7 +55429,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/admin/business-categories/{identifier}/
          * @secure
          */
-        adminBusinessCategoriesRetrieve: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$2<AdminBusinessCategoryResponse, any>>;
+        adminBusinessCategoriesRetrieve: (identifier: string, params?: RequestParams$3) => Promise<HttpResponse$2<AdminBusinessCategoryResponse, any>>;
         /**
          * No description
          *
@@ -55443,7 +55439,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request PUT:/admin/business-categories/{identifier}/
          * @secure
          */
-        adminBusinessCategoriesUpdate: (identifier: string, data: AdminBusinessCategory, params?: RequestParams$2) => Promise<HttpResponse$2<AdminBusinessCategoryResponse, any>>;
+        adminBusinessCategoriesUpdate: (identifier: string, data: AdminBusinessCategory, params?: RequestParams$3) => Promise<HttpResponse$2<AdminBusinessCategoryResponse, any>>;
         /**
          * No description
          *
@@ -55453,7 +55449,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request PATCH:/admin/business-categories/{identifier}/
          * @secure
          */
-        adminBusinessCategoriesPartialUpdate: (identifier: string, data: PatchedAdminBusinessCategory, params?: RequestParams$2) => Promise<HttpResponse$2<AdminBusinessCategoryResponse, any>>;
+        adminBusinessCategoriesPartialUpdate: (identifier: string, data: PatchedAdminBusinessCategory, params?: RequestParams$3) => Promise<HttpResponse$2<AdminBusinessCategoryResponse, any>>;
         /**
          * No description
          *
@@ -55463,7 +55459,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request DELETE:/admin/business-categories/{identifier}/
          * @secure
          */
-        adminBusinessCategoriesDestroy: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$2<AdminBusinessCategoryResponse, any>>;
+        adminBusinessCategoriesDestroy: (identifier: string, params?: RequestParams$3) => Promise<HttpResponse$2<AdminBusinessCategoryResponse, any>>;
         /**
          * No description
          *
@@ -55473,7 +55469,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/admin/business-users/
          * @secure
          */
-        adminBusinessUsersList: (query: AdminBusinessUsersListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedAdminBusinessUserListResponse, any>>;
+        adminBusinessUsersList: (query: AdminBusinessUsersListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedAdminBusinessUserListResponse, any>>;
         /**
          * No description
          *
@@ -55483,7 +55479,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/admin/business-users/
          * @secure
          */
-        adminBusinessUsersCreate: (data: AdminCreateBusinessUser, params?: RequestParams$2) => Promise<HttpResponse$2<AdminBusinessUserResponse, any>>;
+        adminBusinessUsersCreate: (data: AdminCreateBusinessUser, params?: RequestParams$3) => Promise<HttpResponse$2<AdminBusinessUserResponse, any>>;
         /**
          * No description
          *
@@ -55493,7 +55489,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/admin/business-users/{user_id}/
          * @secure
          */
-        adminBusinessUsersRetrieve: (userId: string, params?: RequestParams$2) => Promise<HttpResponse$2<AdminBusinessUserResponse, any>>;
+        adminBusinessUsersRetrieve: (userId: string, params?: RequestParams$3) => Promise<HttpResponse$2<AdminBusinessUserResponse, any>>;
         /**
          * No description
          *
@@ -55503,7 +55499,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request PUT:/admin/business-users/{user_id}/
          * @secure
          */
-        adminBusinessUsersUpdate: (userId: string, data: AdminUpdateBusinessUser, params?: RequestParams$2) => Promise<HttpResponse$2<AdminBusinessUserResponse, any>>;
+        adminBusinessUsersUpdate: (userId: string, data: AdminUpdateBusinessUser, params?: RequestParams$3) => Promise<HttpResponse$2<AdminBusinessUserResponse, any>>;
         /**
          * No description
          *
@@ -55513,7 +55509,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request PATCH:/admin/business-users/{user_id}/
          * @secure
          */
-        adminBusinessUsersPartialUpdate: (userId: string, data: PatchedAdminUpdateBusinessUser, params?: RequestParams$2) => Promise<HttpResponse$2<AdminBusinessUserResponse, any>>;
+        adminBusinessUsersPartialUpdate: (userId: string, data: PatchedAdminUpdateBusinessUser, params?: RequestParams$3) => Promise<HttpResponse$2<AdminBusinessUserResponse, any>>;
         /**
          * No description
          *
@@ -55523,7 +55519,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/admin/businesses/
          * @secure
          */
-        adminBusinessesList: (query: AdminBusinessesListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedAdminBusinessListResponse, any>>;
+        adminBusinessesList: (query: AdminBusinessesListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedAdminBusinessListResponse, any>>;
         /**
          * No description
          *
@@ -55533,7 +55529,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/admin/businesses/{business_id}/
          * @secure
          */
-        adminBusinessesRetrieve: (businessId: string, params?: RequestParams$2) => Promise<HttpResponse$2<AdminBusinessResponse, any>>;
+        adminBusinessesRetrieve: (businessId: string, params?: RequestParams$3) => Promise<HttpResponse$2<AdminBusinessResponse, any>>;
         /**
          * No description
          *
@@ -55543,7 +55539,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request PUT:/admin/businesses/{business_id}/
          * @secure
          */
-        adminBusinessesUpdate: (businessId: string, data: AdminUpdateBusiness, params?: RequestParams$2) => Promise<HttpResponse$2<AdminUpdateBusinessResponse, any>>;
+        adminBusinessesUpdate: (businessId: string, data: AdminUpdateBusiness, params?: RequestParams$3) => Promise<HttpResponse$2<AdminUpdateBusinessResponse, any>>;
         /**
          * No description
          *
@@ -55553,7 +55549,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request PATCH:/admin/businesses/{business_id}/
          * @secure
          */
-        adminBusinessesPartialUpdate: (businessId: string, data: PatchedAdminUpdateBusiness, params?: RequestParams$2) => Promise<HttpResponse$2<AdminUpdateBusinessResponse, any>>;
+        adminBusinessesPartialUpdate: (businessId: string, data: PatchedAdminUpdateBusiness, params?: RequestParams$3) => Promise<HttpResponse$2<AdminUpdateBusinessResponse, any>>;
         /**
          * No description
          *
@@ -55563,7 +55559,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/admin/businesses/{business_id}/categories/{category_id}/
          * @secure
          */
-        adminBusinessesCategoriesRetrieve: (businessId: string, categoryId: string, params?: RequestParams$2) => Promise<HttpResponse$2<BusinessCategoryUpdateResponse, any>>;
+        adminBusinessesCategoriesRetrieve: (businessId: string, categoryId: string, params?: RequestParams$3) => Promise<HttpResponse$2<BusinessCategoryUpdateResponse, any>>;
         /**
          * No description
          *
@@ -55573,7 +55569,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request DELETE:/admin/businesses/{business_id}/categories/{category_id}/
          * @secure
          */
-        adminBusinessesCategoriesDestroy: (businessId: string, categoryId: string, params?: RequestParams$2) => Promise<HttpResponse$2<BusinessCategoryUpdateResponse, any>>;
+        adminBusinessesCategoriesDestroy: (businessId: string, categoryId: string, params?: RequestParams$3) => Promise<HttpResponse$2<BusinessCategoryUpdateResponse, any>>;
         /**
          * No description
          *
@@ -55583,7 +55579,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/admin/businesses/{business_id}/documents/
          * @secure
          */
-        adminBusinessesDocumentsList: ({ businessId, ...query }: AdminBusinessesDocumentsListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedAdminBusinessDocumentListResponse, any>>;
+        adminBusinessesDocumentsList: ({ businessId, ...query }: AdminBusinessesDocumentsListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedAdminBusinessDocumentListResponse, any>>;
         /**
          * No description
          *
@@ -55593,7 +55589,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/admin/businesses/{business_id}/documents/
          * @secure
          */
-        adminBusinessesDocumentsCreate: (businessId: string, data: AdminCreateBusinessDocument, params?: RequestParams$2) => Promise<HttpResponse$2<AdminBusinessDocumentResponse, any>>;
+        adminBusinessesDocumentsCreate: (businessId: string, data: AdminCreateBusinessDocument, params?: RequestParams$3) => Promise<HttpResponse$2<AdminBusinessDocumentResponse, any>>;
         /**
          * No description
          *
@@ -55603,7 +55599,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/admin/businesses/{business_id}/documents/{document_id}/
          * @secure
          */
-        adminBusinessesDocumentsRetrieve: (businessId: string, documentId: string, params?: RequestParams$2) => Promise<HttpResponse$2<AdminBusinessDocumentResponse, any>>;
+        adminBusinessesDocumentsRetrieve: (businessId: string, documentId: string, params?: RequestParams$3) => Promise<HttpResponse$2<AdminBusinessDocumentResponse, any>>;
         /**
          * No description
          *
@@ -55613,7 +55609,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request PUT:/admin/businesses/{business_id}/documents/{document_id}/
          * @secure
          */
-        adminBusinessesDocumentsUpdate: (businessId: string, documentId: string, data: AdminBusinessDocument, params?: RequestParams$2) => Promise<HttpResponse$2<AdminBusinessDocumentResponse, any>>;
+        adminBusinessesDocumentsUpdate: (businessId: string, documentId: string, data: AdminBusinessDocument, params?: RequestParams$3) => Promise<HttpResponse$2<AdminBusinessDocumentResponse, any>>;
         /**
          * No description
          *
@@ -55623,7 +55619,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request PATCH:/admin/businesses/{business_id}/documents/{document_id}/
          * @secure
          */
-        adminBusinessesDocumentsPartialUpdate: (businessId: string, documentId: string, data: PatchedAdminBusinessDocument, params?: RequestParams$2) => Promise<HttpResponse$2<AdminBusinessDocumentResponse, any>>;
+        adminBusinessesDocumentsPartialUpdate: (businessId: string, documentId: string, data: PatchedAdminBusinessDocument, params?: RequestParams$3) => Promise<HttpResponse$2<AdminBusinessDocumentResponse, any>>;
         /**
          * No description
          *
@@ -55633,7 +55629,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request DELETE:/admin/businesses/{business_id}/documents/{document_id}/
          * @secure
          */
-        adminBusinessesDocumentsDestroy: (businessId: string, documentId: string, params?: RequestParams$2) => Promise<HttpResponse$2<AdminBusinessDocumentResponse, any>>;
+        adminBusinessesDocumentsDestroy: (businessId: string, documentId: string, params?: RequestParams$3) => Promise<HttpResponse$2<AdminBusinessDocumentResponse, any>>;
         /**
          * No description
          *
@@ -55643,7 +55639,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/admin/businesses/{business_id}/payouts/
          * @secure
          */
-        adminBusinessesPayoutsList: ({ businessId, ...query }: AdminBusinessesPayoutsListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedAdminBusinessPayoutListResponse, any>>;
+        adminBusinessesPayoutsList: ({ businessId, ...query }: AdminBusinessesPayoutsListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedAdminBusinessPayoutListResponse, any>>;
         /**
          * No description
          *
@@ -55653,7 +55649,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/admin/businesses/{business_id}/payouts/
          * @secure
          */
-        adminBusinessesPayoutsCreate: (businessId: string, data: AdminCreateBusinessPayout, params?: RequestParams$2) => Promise<HttpResponse$2<AdminBusinessPayoutResponse, any>>;
+        adminBusinessesPayoutsCreate: (businessId: string, data: AdminCreateBusinessPayout, params?: RequestParams$3) => Promise<HttpResponse$2<AdminBusinessPayoutResponse, any>>;
         /**
          * No description
          *
@@ -55663,7 +55659,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/admin/businesses/{business_id}/payouts/{payout_id}/
          * @secure
          */
-        adminBusinessesPayoutsRetrieve: (businessId: string, payoutId: string, params?: RequestParams$2) => Promise<HttpResponse$2<AdminBusinessPayoutResponse, any>>;
+        adminBusinessesPayoutsRetrieve: (businessId: string, payoutId: string, params?: RequestParams$3) => Promise<HttpResponse$2<AdminBusinessPayoutResponse, any>>;
         /**
          * No description
          *
@@ -55673,7 +55669,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/admin/businesses/{business_id}/payouts/{payout_id}/transactions/
          * @secure
          */
-        adminBusinessesPayoutsTransactionsList: ({ businessId, payoutId, ...query }: AdminBusinessesPayoutsTransactionsListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedAdminBusinessPayoutTransactionListResponse, any>>;
+        adminBusinessesPayoutsTransactionsList: ({ businessId, payoutId, ...query }: AdminBusinessesPayoutsTransactionsListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedAdminBusinessPayoutTransactionListResponse, any>>;
         /**
          * No description
          *
@@ -55683,7 +55679,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/admin/businesses/{identifier}/categories/
          * @secure
          */
-        adminBusinessesCategoriesList: ({ identifier, ...query }: AdminBusinessesCategoriesListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedBusinessCategoryListResponse, any>>;
+        adminBusinessesCategoriesList: ({ identifier, ...query }: AdminBusinessesCategoriesListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedBusinessCategoryListResponse, any>>;
         /**
          * No description
          *
@@ -55693,7 +55689,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/admin/businesses/{identifier}/categories/
          * @secure
          */
-        adminBusinessesCategoriesCreate: (identifier: string, data: BusinsessCategoryCreate, params?: RequestParams$2) => Promise<HttpResponse$2<BusinessCategoriesResponse, any>>;
+        adminBusinessesCategoriesCreate: (identifier: string, data: BusinsessCategoryCreate, params?: RequestParams$3) => Promise<HttpResponse$2<BusinessCategoriesResponse, any>>;
         /**
          * No description
          *
@@ -55703,7 +55699,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/admin/company/
          * @secure
          */
-        adminCompanyRetrieve: (params?: RequestParams$2) => Promise<HttpResponse$2<AdminCompanyResponse$2, any>>;
+        adminCompanyRetrieve: (params?: RequestParams$3) => Promise<HttpResponse$2<AdminCompanyResponse$2, any>>;
         /**
          * No description
          *
@@ -55713,7 +55709,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request PUT:/admin/company/
          * @secure
          */
-        adminCompanyUpdate: (data: AdminUpdateCompany$1, params?: RequestParams$2) => Promise<HttpResponse$2<AdminCompanyResponse$2, any>>;
+        adminCompanyUpdate: (data: AdminUpdateCompany$1, params?: RequestParams$3) => Promise<HttpResponse$2<AdminCompanyResponse$2, any>>;
         /**
          * No description
          *
@@ -55723,7 +55719,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request PATCH:/admin/company/
          * @secure
          */
-        adminCompanyPartialUpdate: (data: PatchedAdminUpdateCompany$1, params?: RequestParams$2) => Promise<HttpResponse$2<AdminCompanyResponse$2, any>>;
+        adminCompanyPartialUpdate: (data: PatchedAdminUpdateCompany$1, params?: RequestParams$3) => Promise<HttpResponse$2<AdminCompanyResponse$2, any>>;
         /**
          * No description
          *
@@ -55733,7 +55729,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/admin/currencies/
          * @secure
          */
-        adminCurrenciesList: (query: AdminCurrenciesListParams$1, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedCurrencyListResponse, any>>;
+        adminCurrenciesList: (query: AdminCurrenciesListParams$1, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedCurrencyListResponse, any>>;
         /**
          * No description
          *
@@ -55743,7 +55739,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/admin/currencies/{code}/
          * @secure
          */
-        adminCurrenciesRetrieve: (code: string, params?: RequestParams$2) => Promise<HttpResponse$2<CurrencyResponse, any>>;
+        adminCurrenciesRetrieve: (code: string, params?: RequestParams$3) => Promise<HttpResponse$2<CurrencyResponse, any>>;
         /**
          * No description
          *
@@ -55753,7 +55749,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/admin/webhook/
          * @secure
          */
-        adminWebhookCreate: (data: Webhook$2, params?: RequestParams$2) => Promise<HttpResponse$2<ActionResponse$2, any>>;
+        adminWebhookCreate: (data: Webhook$2, params?: RequestParams$3) => Promise<HttpResponse$2<ActionResponse$2, any>>;
     };
     customer: {
         /**
@@ -55765,7 +55761,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/customer/businesses/
          * @secure
          */
-        customerBusinessesList: (query: CustomerBusinessesListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedCustomerBusinessListResponse, any>>;
+        customerBusinessesList: (query: CustomerBusinessesListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedCustomerBusinessListResponse, any>>;
         /**
          * No description
          *
@@ -55775,7 +55771,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/customer/businesses/{business_id}/
          * @secure
          */
-        customerBusinessesRetrieve: (businessId: string, params?: RequestParams$2) => Promise<HttpResponse$2<CustomerBusinessResponse, any>>;
+        customerBusinessesRetrieve: (businessId: string, params?: RequestParams$3) => Promise<HttpResponse$2<CustomerBusinessResponse, any>>;
         /**
          * No description
          *
@@ -55785,7 +55781,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/customer/enroll/
          * @secure
          */
-        customerEnrollCreate: (data: CustomerEnroll, params?: RequestParams$2) => Promise<HttpResponse$2<CustomerBusinessResponse, any>>;
+        customerEnrollCreate: (data: CustomerEnroll, params?: RequestParams$3) => Promise<HttpResponse$2<CustomerBusinessResponse, any>>;
     };
     deactivate: {
         /**
@@ -55797,7 +55793,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/deactivate/
          * @secure
          */
-        deactivateCreate: (data: Deactivate$2, params?: RequestParams$2) => Promise<HttpResponse$2<ActionResponse$2, any>>;
+        deactivateCreate: (data: Deactivate$2, params?: RequestParams$3) => Promise<HttpResponse$2<ActionResponse$2, any>>;
     };
     manager: {
         /**
@@ -55809,7 +55805,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/business-categories/
          * @secure
          */
-        managerBusinessCategoriesList: (query: ManagerBusinessCategoriesListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedBusinessCategoryListResponse, any>>;
+        managerBusinessCategoriesList: (query: ManagerBusinessCategoriesListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedBusinessCategoryListResponse, any>>;
         /**
          * No description
          *
@@ -55819,7 +55815,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/business-categories/{identifier}/
          * @secure
          */
-        managerBusinessCategoriesRetrieve: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$2<BusinessCategoryResponse, any>>;
+        managerBusinessCategoriesRetrieve: (identifier: string, params?: RequestParams$3) => Promise<HttpResponse$2<BusinessCategoryResponse, any>>;
         /**
          * No description
          *
@@ -55829,7 +55825,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/
          * @secure
          */
-        managerBusinessesList: (query: ManagerBusinessesListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedManagerBusinessListResponse, any>>;
+        managerBusinessesList: (query: ManagerBusinessesListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedManagerBusinessListResponse, any>>;
         /**
          * No description
          *
@@ -55839,7 +55835,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/manager/businesses/
          * @secure
          */
-        managerBusinessesCreate: (data: ManagerCreateBusiness, params?: RequestParams$2) => Promise<HttpResponse$2<ManagerBusinessResponse, any>>;
+        managerBusinessesCreate: (data: ManagerCreateBusiness, params?: RequestParams$3) => Promise<HttpResponse$2<ManagerBusinessResponse, any>>;
         /**
          * No description
          *
@@ -55849,7 +55845,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/{business_id}/
          * @secure
          */
-        managerBusinessesRetrieve: (businessId: string, params?: RequestParams$2) => Promise<HttpResponse$2<ManagerBusinessResponse, any>>;
+        managerBusinessesRetrieve: (businessId: string, params?: RequestParams$3) => Promise<HttpResponse$2<ManagerBusinessResponse, any>>;
         /**
          * No description
          *
@@ -55859,7 +55855,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request PUT:/manager/businesses/{business_id}/
          * @secure
          */
-        managerBusinessesUpdate: (businessId: string, data: ManagerUpdateBusiness, params?: RequestParams$2) => Promise<HttpResponse$2<ManagerBusinessResponse, any>>;
+        managerBusinessesUpdate: (businessId: string, data: ManagerUpdateBusiness, params?: RequestParams$3) => Promise<HttpResponse$2<ManagerBusinessResponse, any>>;
         /**
          * No description
          *
@@ -55869,7 +55865,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request PATCH:/manager/businesses/{business_id}/
          * @secure
          */
-        managerBusinessesPartialUpdate: (businessId: string, data: PatchedManagerUpdateBusiness, params?: RequestParams$2) => Promise<HttpResponse$2<ManagerBusinessResponse, any>>;
+        managerBusinessesPartialUpdate: (businessId: string, data: PatchedManagerUpdateBusiness, params?: RequestParams$3) => Promise<HttpResponse$2<ManagerBusinessResponse, any>>;
         /**
          * No description
          *
@@ -55879,7 +55875,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/{business_id}/categories/{category_id}/
          * @secure
          */
-        managerBusinessesCategoriesRetrieve: (businessId: string, categoryId: string, params?: RequestParams$2) => Promise<HttpResponse$2<BusinessCategoryUpdateResponse, any>>;
+        managerBusinessesCategoriesRetrieve: (businessId: string, categoryId: string, params?: RequestParams$3) => Promise<HttpResponse$2<BusinessCategoryUpdateResponse, any>>;
         /**
          * No description
          *
@@ -55889,7 +55885,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request DELETE:/manager/businesses/{business_id}/categories/{category_id}/
          * @secure
          */
-        managerBusinessesCategoriesDestroy: (businessId: string, categoryId: string, params?: RequestParams$2) => Promise<HttpResponse$2<BusinessCategoryUpdateResponse, any>>;
+        managerBusinessesCategoriesDestroy: (businessId: string, categoryId: string, params?: RequestParams$3) => Promise<HttpResponse$2<BusinessCategoryUpdateResponse, any>>;
         /**
          * No description
          *
@@ -55899,7 +55895,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/{business_id}/documents/
          * @secure
          */
-        managerBusinessesDocumentsList: ({ businessId, ...query }: ManagerBusinessesDocumentsListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedManagerBusinessDocumentListResponse, any>>;
+        managerBusinessesDocumentsList: ({ businessId, ...query }: ManagerBusinessesDocumentsListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedManagerBusinessDocumentListResponse, any>>;
         /**
          * No description
          *
@@ -55909,7 +55905,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/manager/businesses/{business_id}/documents/
          * @secure
          */
-        managerBusinessesDocumentsCreate: (businessId: string, data: ManagerCreateBusinessDocument, params?: RequestParams$2) => Promise<HttpResponse$2<ManagerBusinessDocumentResponse, any>>;
+        managerBusinessesDocumentsCreate: (businessId: string, data: ManagerCreateBusinessDocument, params?: RequestParams$3) => Promise<HttpResponse$2<ManagerBusinessDocumentResponse, any>>;
         /**
          * No description
          *
@@ -55919,7 +55915,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/{business_id}/documents/{document_id}/
          * @secure
          */
-        managerBusinessesDocumentsRetrieve: (businessId: string, documentId: string, params?: RequestParams$2) => Promise<HttpResponse$2<ManagerBusinessDocumentResponse, any>>;
+        managerBusinessesDocumentsRetrieve: (businessId: string, documentId: string, params?: RequestParams$3) => Promise<HttpResponse$2<ManagerBusinessDocumentResponse, any>>;
         /**
          * No description
          *
@@ -55929,7 +55925,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/{business_id}/invoices/
          * @secure
          */
-        managerBusinessesInvoicesList: ({ businessId, ...query }: ManagerBusinessesInvoicesListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedManagerBusinessInvoiceListResponse, any>>;
+        managerBusinessesInvoicesList: ({ businessId, ...query }: ManagerBusinessesInvoicesListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedManagerBusinessInvoiceListResponse, any>>;
         /**
          * No description
          *
@@ -55939,7 +55935,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/manager/businesses/{business_id}/invoices/
          * @secure
          */
-        managerBusinessesInvoicesCreate: (businessId: string, data: ManagerCreateBusinessInvoice, params?: RequestParams$2) => Promise<HttpResponse$2<ManagerBusinessInvoiceResponse, any>>;
+        managerBusinessesInvoicesCreate: (businessId: string, data: ManagerCreateBusinessInvoice, params?: RequestParams$3) => Promise<HttpResponse$2<ManagerBusinessInvoiceResponse, any>>;
         /**
          * No description
          *
@@ -55949,7 +55945,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/{business_id}/invoices/{invoice_id}/
          * @secure
          */
-        managerBusinessesInvoicesRetrieve: (businessId: string, invoiceId: string, params?: RequestParams$2) => Promise<HttpResponse$2<ManagerBusinessInvoiceResponse, any>>;
+        managerBusinessesInvoicesRetrieve: (businessId: string, invoiceId: string, params?: RequestParams$3) => Promise<HttpResponse$2<ManagerBusinessInvoiceResponse, any>>;
         /**
          * No description
          *
@@ -55959,7 +55955,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request PUT:/manager/businesses/{business_id}/invoices/{invoice_id}/
          * @secure
          */
-        managerBusinessesInvoicesUpdate: (businessId: string, invoiceId: string, data: ManagerUpdateBusinessInvoice, params?: RequestParams$2) => Promise<HttpResponse$2<ManagerBusinessInvoiceResponse, any>>;
+        managerBusinessesInvoicesUpdate: (businessId: string, invoiceId: string, data: ManagerUpdateBusinessInvoice, params?: RequestParams$3) => Promise<HttpResponse$2<ManagerBusinessInvoiceResponse, any>>;
         /**
          * No description
          *
@@ -55969,7 +55965,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request PATCH:/manager/businesses/{business_id}/invoices/{invoice_id}/
          * @secure
          */
-        managerBusinessesInvoicesPartialUpdate: (businessId: string, invoiceId: string, data: PatchedManagerUpdateBusinessInvoice, params?: RequestParams$2) => Promise<HttpResponse$2<ManagerBusinessInvoiceResponse, any>>;
+        managerBusinessesInvoicesPartialUpdate: (businessId: string, invoiceId: string, data: PatchedManagerUpdateBusinessInvoice, params?: RequestParams$3) => Promise<HttpResponse$2<ManagerBusinessInvoiceResponse, any>>;
         /**
          * No description
          *
@@ -55979,7 +55975,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/{business_id}/invoices/{invoice_id}/logs/
          * @secure
          */
-        managerBusinessesInvoicesLogsList: ({ businessId, invoiceId, ...query }: ManagerBusinessesInvoicesLogsListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedManagerBusinessInvoiceLogListResponse, any>>;
+        managerBusinessesInvoicesLogsList: ({ businessId, invoiceId, ...query }: ManagerBusinessesInvoicesLogsListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedManagerBusinessInvoiceLogListResponse, any>>;
         /**
          * No description
          *
@@ -55989,7 +55985,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/{business_id}/invoices/{invoice_id}/refunds/
          * @secure
          */
-        managerBusinessesInvoicesRefundsList: ({ businessId, invoiceId, ...query }: ManagerBusinessesInvoicesRefundsListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedManagerBusinessInvoiceRefundListResponse, any>>;
+        managerBusinessesInvoicesRefundsList: ({ businessId, invoiceId, ...query }: ManagerBusinessesInvoicesRefundsListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedManagerBusinessInvoiceRefundListResponse, any>>;
         /**
          * No description
          *
@@ -55999,7 +55995,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/manager/businesses/{business_id}/invoices/{invoice_id}/refunds/
          * @secure
          */
-        managerBusinessesInvoicesRefundsCreate: (businessId: string, invoiceId: string, data: ManagerCreateBusinessInvoiceRefund, params?: RequestParams$2) => Promise<HttpResponse$2<ManagerCreateBusinessInvoiceRefundResponse, any>>;
+        managerBusinessesInvoicesRefundsCreate: (businessId: string, invoiceId: string, data: ManagerCreateBusinessInvoiceRefund, params?: RequestParams$3) => Promise<HttpResponse$2<ManagerCreateBusinessInvoiceRefundResponse, any>>;
         /**
          * No description
          *
@@ -56009,7 +56005,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/{business_id}/invoices/{invoice_id}/transactions/
          * @secure
          */
-        managerBusinessesInvoicesTransactionsList: ({ businessId, invoiceId, ...query }: ManagerBusinessesInvoicesTransactionsListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedManagerBusinessInvoiceTransactionListResponse, any>>;
+        managerBusinessesInvoicesTransactionsList: ({ businessId, invoiceId, ...query }: ManagerBusinessesInvoicesTransactionsListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedManagerBusinessInvoiceTransactionListResponse, any>>;
         /**
          * No description
          *
@@ -56019,7 +56015,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/{business_id}/metrics/
          * @secure
          */
-        managerBusinessesMetricsList: ({ businessId, ...query }: ManagerBusinessesMetricsListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedManagerBusinessMetricListResponse, any>>;
+        managerBusinessesMetricsList: ({ businessId, ...query }: ManagerBusinessesMetricsListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedManagerBusinessMetricListResponse, any>>;
         /**
          * No description
          *
@@ -56029,7 +56025,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/{business_id}/metrics/{metric_id}/
          * @secure
          */
-        managerBusinessesMetricsRetrieve: (businessId: string, metricId: string, params?: RequestParams$2) => Promise<HttpResponse$2<ManagerBusinessMetricResponse, any>>;
+        managerBusinessesMetricsRetrieve: (businessId: string, metricId: string, params?: RequestParams$3) => Promise<HttpResponse$2<ManagerBusinessMetricResponse, any>>;
         /**
          * No description
          *
@@ -56039,7 +56035,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/{business_id}/metrics/{metric_id}/points/
          * @secure
          */
-        managerBusinessesMetricsPointsList: ({ businessId, metricId, ...query }: ManagerBusinessesMetricsPointsListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedManagerBusinessMetricPointListResponse, any>>;
+        managerBusinessesMetricsPointsList: ({ businessId, metricId, ...query }: ManagerBusinessesMetricsPointsListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedManagerBusinessMetricPointListResponse, any>>;
         /**
          * No description
          *
@@ -56049,7 +56045,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/{business_id}/payouts/
          * @secure
          */
-        managerBusinessesPayoutsList: ({ businessId, ...query }: ManagerBusinessesPayoutsListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedManagerBusinessPayoutListResponse, any>>;
+        managerBusinessesPayoutsList: ({ businessId, ...query }: ManagerBusinessesPayoutsListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedManagerBusinessPayoutListResponse, any>>;
         /**
          * No description
          *
@@ -56059,7 +56055,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/manager/businesses/{business_id}/payouts/
          * @secure
          */
-        managerBusinessesPayoutsCreate: (businessId: string, data: ManagerCreateBusinessPayout, params?: RequestParams$2) => Promise<HttpResponse$2<ManagerBusinessPayoutResponse, any>>;
+        managerBusinessesPayoutsCreate: (businessId: string, data: ManagerCreateBusinessPayout, params?: RequestParams$3) => Promise<HttpResponse$2<ManagerBusinessPayoutResponse, any>>;
         /**
          * No description
          *
@@ -56069,7 +56065,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/{business_id}/payouts/{payout_id}/
          * @secure
          */
-        managerBusinessesPayoutsRetrieve: (businessId: string, payoutId: string, params?: RequestParams$2) => Promise<HttpResponse$2<ManagerBusinessPayoutResponse, any>>;
+        managerBusinessesPayoutsRetrieve: (businessId: string, payoutId: string, params?: RequestParams$3) => Promise<HttpResponse$2<ManagerBusinessPayoutResponse, any>>;
         /**
          * No description
          *
@@ -56079,7 +56075,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/{business_id}/payouts/{payout_id}/transactions/
          * @secure
          */
-        managerBusinessesPayoutsTransactionsList: ({ businessId, payoutId, ...query }: ManagerBusinessesPayoutsTransactionsListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedManagerBusinessPayoutTransactionListResponse, any>>;
+        managerBusinessesPayoutsTransactionsList: ({ businessId, payoutId, ...query }: ManagerBusinessesPayoutsTransactionsListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedManagerBusinessPayoutTransactionListResponse, any>>;
         /**
          * No description
          *
@@ -56089,7 +56085,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/{business_id}/transactions/
          * @secure
          */
-        managerBusinessesTransactionsList: ({ businessId, ...query }: ManagerBusinessesTransactionsListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedManagerBusinessTransactionListResponse, any>>;
+        managerBusinessesTransactionsList: ({ businessId, ...query }: ManagerBusinessesTransactionsListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedManagerBusinessTransactionListResponse, any>>;
         /**
          * No description
          *
@@ -56099,7 +56095,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/{business_id}/transactions/{transaction_id}/
          * @secure
          */
-        managerBusinessesTransactionsRetrieve: (businessId: string, transactionId: string, params?: RequestParams$2) => Promise<HttpResponse$2<ManagerBusinessTransactionResponse, any>>;
+        managerBusinessesTransactionsRetrieve: (businessId: string, transactionId: string, params?: RequestParams$3) => Promise<HttpResponse$2<ManagerBusinessTransactionResponse, any>>;
         /**
          * No description
          *
@@ -56109,7 +56105,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/{business_id}/users/
          * @secure
          */
-        managerBusinessesUsersList: ({ businessId, ...query }: ManagerBusinessesUsersListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedBusinessUserListResponse, any>>;
+        managerBusinessesUsersList: ({ businessId, ...query }: ManagerBusinessesUsersListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedBusinessUserListResponse, any>>;
         /**
          * No description
          *
@@ -56119,7 +56115,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/manager/businesses/{business_id}/users/
          * @secure
          */
-        managerBusinessesUsersCreate: (businessId: string, data: ManagerCreateBusinessUser, params?: RequestParams$2) => Promise<HttpResponse$2<BusinessUserResponse, any>>;
+        managerBusinessesUsersCreate: (businessId: string, data: ManagerCreateBusinessUser, params?: RequestParams$3) => Promise<HttpResponse$2<BusinessUserResponse, any>>;
         /**
          * No description
          *
@@ -56129,7 +56125,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/{business_id}/users/{user_id}/
          * @secure
          */
-        managerBusinessesUsersRetrieve: (businessId: string, userId: string, params?: RequestParams$2) => Promise<HttpResponse$2<BusinessUserResponse, any>>;
+        managerBusinessesUsersRetrieve: (businessId: string, userId: string, params?: RequestParams$3) => Promise<HttpResponse$2<BusinessUserResponse, any>>;
         /**
          * No description
          *
@@ -56139,7 +56135,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request PUT:/manager/businesses/{business_id}/users/{user_id}/
          * @secure
          */
-        managerBusinessesUsersUpdate: (businessId: string, userId: string, data: ManagerUpdateBusinessUser, params?: RequestParams$2) => Promise<HttpResponse$2<BusinessUserResponse, any>>;
+        managerBusinessesUsersUpdate: (businessId: string, userId: string, data: ManagerUpdateBusinessUser, params?: RequestParams$3) => Promise<HttpResponse$2<BusinessUserResponse, any>>;
         /**
          * No description
          *
@@ -56149,7 +56145,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request PATCH:/manager/businesses/{business_id}/users/{user_id}/
          * @secure
          */
-        managerBusinessesUsersPartialUpdate: (businessId: string, userId: string, data: PatchedManagerUpdateBusinessUser, params?: RequestParams$2) => Promise<HttpResponse$2<BusinessUserResponse, any>>;
+        managerBusinessesUsersPartialUpdate: (businessId: string, userId: string, data: PatchedManagerUpdateBusinessUser, params?: RequestParams$3) => Promise<HttpResponse$2<BusinessUserResponse, any>>;
         /**
          * No description
          *
@@ -56159,7 +56155,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/businesses/{identifier}/categories/
          * @secure
          */
-        managerBusinessesCategoriesList: ({ identifier, ...query }: ManagerBusinessesCategoriesListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedBusinessCategoryListResponse, any>>;
+        managerBusinessesCategoriesList: ({ identifier, ...query }: ManagerBusinessesCategoriesListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedBusinessCategoryListResponse, any>>;
         /**
          * No description
          *
@@ -56169,7 +56165,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/manager/businesses/{identifier}/categories/
          * @secure
          */
-        managerBusinessesCategoriesCreate: (identifier: string, data: BusinsessCategoryCreate, params?: RequestParams$2) => Promise<HttpResponse$2<BusinessCategoryResponse, any>>;
+        managerBusinessesCategoriesCreate: (identifier: string, data: BusinsessCategoryCreate, params?: RequestParams$3) => Promise<HttpResponse$2<BusinessCategoryResponse, any>>;
         /**
          * No description
          *
@@ -56179,7 +56175,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/manager/company/
          * @secure
          */
-        managerCompanyRetrieve: (params?: RequestParams$2) => Promise<HttpResponse$2<ManagerCompanyResponse, any>>;
+        managerCompanyRetrieve: (params?: RequestParams$3) => Promise<HttpResponse$2<ManagerCompanyResponse, any>>;
     };
     user: {
         /**
@@ -56191,7 +56187,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/user/business-categories/
          * @secure
          */
-        userBusinessCategoriesList: (query: UserBusinessCategoriesListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedBusinessCategoryListResponse, any>>;
+        userBusinessCategoriesList: (query: UserBusinessCategoriesListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedBusinessCategoryListResponse, any>>;
         /**
          * No description
          *
@@ -56201,7 +56197,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/user/business-categories/{identifier}/
          * @secure
          */
-        userBusinessCategoriesRetrieve: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$2<BusinessCategoryResponse, any>>;
+        userBusinessCategoriesRetrieve: (identifier: string, params?: RequestParams$3) => Promise<HttpResponse$2<BusinessCategoryResponse, any>>;
         /**
          * No description
          *
@@ -56211,7 +56207,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/user/businesses/
          * @secure
          */
-        userBusinessesList: (query: UserBusinessesListParams, params?: RequestParams$2) => Promise<HttpResponse$2<PaginatedUserBusinessListResponse, any>>;
+        userBusinessesList: (query: UserBusinessesListParams, params?: RequestParams$3) => Promise<HttpResponse$2<PaginatedUserBusinessListResponse, any>>;
         /**
          * No description
          *
@@ -56221,7 +56217,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/user/businesses/{identifier}/
          * @secure
          */
-        userBusinessesRetrieve: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$2<UserBusinessResponse, any>>;
+        userBusinessesRetrieve: (identifier: string, params?: RequestParams$3) => Promise<HttpResponse$2<UserBusinessResponse, any>>;
         /**
          * No description
          *
@@ -56231,7 +56227,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/user/company/
          * @secure
          */
-        userCompanyRetrieve: (params?: RequestParams$2) => Promise<HttpResponse$2<UserCompanyResponse, any>>;
+        userCompanyRetrieve: (params?: RequestParams$3) => Promise<HttpResponse$2<UserCompanyResponse, any>>;
     };
     webhook: {
         /**
@@ -56243,7 +56239,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/webhook/
          * @secure
          */
-        webhookCreate: (data: Webhook$2, params?: RequestParams$2) => Promise<HttpResponse$2<ActionResponse$2, any>>;
+        webhookCreate: (data: Webhook$2, params?: RequestParams$3) => Promise<HttpResponse$2<ActionResponse$2, any>>;
     };
 }
 
@@ -57933,11 +57929,11 @@ interface FullRequestParams$1 extends Omit<RequestInit, "body"> {
     /** request cancellation token */
     cancelToken?: CancelToken$1;
 }
-type RequestParams$1 = Omit<FullRequestParams$1, "body" | "method" | "query" | "path">;
+type RequestParams$2 = Omit<FullRequestParams$1, "body" | "method" | "query" | "path">;
 interface ApiConfig$1<SecurityDataType = unknown> {
     baseUrl?: string;
-    baseApiParams?: Omit<RequestParams$1, "baseUrl" | "cancelToken" | "signal">;
-    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$1 | void> | RequestParams$1 | void;
+    baseApiParams?: Omit<RequestParams$2, "baseUrl" | "cancelToken" | "signal">;
+    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$2 | void> | RequestParams$2 | void;
     customFetch?: typeof fetch;
 }
 interface HttpResponse$1<D extends unknown, E extends unknown = unknown> extends Response {
@@ -57967,7 +57963,7 @@ declare class HttpClient$1<SecurityDataType = unknown> {
     protected toQueryString(rawQuery?: QueryParamsType$1): string;
     protected addQueryParams(rawQuery?: QueryParamsType$1): string;
     private contentFormatters;
-    protected mergeRequestParams(params1: RequestParams$1, params2?: RequestParams$1): RequestParams$1;
+    protected mergeRequestParams(params1: RequestParams$2, params2?: RequestParams$2): RequestParams$2;
     protected createAbortSignal: (cancelToken: CancelToken$1) => AbortSignal | undefined;
     abortRequest: (cancelToken: CancelToken$1) => void;
     request: <T = any, E = any>({ body, secure, path, type, query, format, baseUrl, cancelToken, ...params }: FullRequestParams$1) => Promise<HttpResponse$1<T, E>>;
@@ -57995,7 +57991,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/activate/
          * @secure
          */
-        activateCreate: (data: Activate$1, params?: RequestParams$1) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        activateCreate: (data: Activate$1, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
     };
     admin: {
         /**
@@ -58007,7 +58003,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/admin/company/
          * @secure
          */
-        adminCompanyRetrieve: (params?: RequestParams$1) => Promise<HttpResponse$1<AdminCompanyResponse$1, any>>;
+        adminCompanyRetrieve: (params?: RequestParams$2) => Promise<HttpResponse$1<AdminCompanyResponse$1, any>>;
         /**
          * No description
          *
@@ -58017,7 +58013,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PUT:/admin/company/
          * @secure
          */
-        adminCompanyUpdate: (data: AdminCompany$1, params?: RequestParams$1) => Promise<HttpResponse$1<AdminCompanyResponse$1, any>>;
+        adminCompanyUpdate: (data: AdminCompany$1, params?: RequestParams$2) => Promise<HttpResponse$1<AdminCompanyResponse$1, any>>;
         /**
          * No description
          *
@@ -58027,7 +58023,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PATCH:/admin/company/
          * @secure
          */
-        adminCompanyPartialUpdate: (data: PatchedAdminCompany, params?: RequestParams$1) => Promise<HttpResponse$1<AdminCompanyResponse$1, any>>;
+        adminCompanyPartialUpdate: (data: PatchedAdminCompany, params?: RequestParams$2) => Promise<HttpResponse$1<AdminCompanyResponse$1, any>>;
         /**
          * No description
          *
@@ -58037,7 +58033,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/admin/company/configuration/
          * @secure
          */
-        adminCompanyConfigurationRetrieve: (params?: RequestParams$1) => Promise<HttpResponse$1<CompanyConfigurationResponse, any>>;
+        adminCompanyConfigurationRetrieve: (params?: RequestParams$2) => Promise<HttpResponse$1<CompanyConfigurationResponse, any>>;
         /**
          * No description
          *
@@ -58047,7 +58043,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PUT:/admin/company/configuration/
          * @secure
          */
-        adminCompanyConfigurationUpdate: (data: CompanyConfiguration, params?: RequestParams$1) => Promise<HttpResponse$1<CompanyConfigurationResponse, any>>;
+        adminCompanyConfigurationUpdate: (data: CompanyConfiguration, params?: RequestParams$2) => Promise<HttpResponse$1<CompanyConfigurationResponse, any>>;
         /**
          * No description
          *
@@ -58057,7 +58053,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PATCH:/admin/company/configuration/
          * @secure
          */
-        adminCompanyConfigurationPartialUpdate: (data: PatchedCompanyConfiguration, params?: RequestParams$1) => Promise<HttpResponse$1<CompanyConfigurationResponse, any>>;
+        adminCompanyConfigurationPartialUpdate: (data: PatchedCompanyConfiguration, params?: RequestParams$2) => Promise<HttpResponse$1<CompanyConfigurationResponse, any>>;
         /**
          * No description
          *
@@ -58067,7 +58063,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/admin/company_payment_processors/
          * @secure
          */
-        adminCompanyPaymentProcessorsList: (query: AdminCompanyPaymentProcessorsListParams, params?: RequestParams$1) => Promise<HttpResponse$1<PaginatedCompanyPaymentProcessorListResponse, any>>;
+        adminCompanyPaymentProcessorsList: (query: AdminCompanyPaymentProcessorsListParams, params?: RequestParams$2) => Promise<HttpResponse$1<PaginatedCompanyPaymentProcessorListResponse, any>>;
         /**
          * No description
          *
@@ -58077,7 +58073,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/admin/company_payment_processors/
          * @secure
          */
-        adminCompanyPaymentProcessorsCreate: (data: AdminCompanyPaymentProcessor, params?: RequestParams$1) => Promise<HttpResponse$1<CompanyPaymentProcessorResponse, any>>;
+        adminCompanyPaymentProcessorsCreate: (data: AdminCompanyPaymentProcessor, params?: RequestParams$2) => Promise<HttpResponse$1<CompanyPaymentProcessorResponse, any>>;
         /**
          * No description
          *
@@ -58087,7 +58083,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/admin/company_payment_processors/{identifier}/
          * @secure
          */
-        adminCompanyPaymentProcessorsRetrieve: (identifier: string, params?: RequestParams$1) => Promise<HttpResponse$1<CompanyPaymentProcessorResponse, any>>;
+        adminCompanyPaymentProcessorsRetrieve: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$1<CompanyPaymentProcessorResponse, any>>;
         /**
          * No description
          *
@@ -58097,7 +58093,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PUT:/admin/company_payment_processors/{identifier}/
          * @secure
          */
-        adminCompanyPaymentProcessorsUpdate: (identifier: string, data: AdminCompanyPaymentProcessor, params?: RequestParams$1) => Promise<HttpResponse$1<AdminCompanyPaymentProcessorResponse, any>>;
+        adminCompanyPaymentProcessorsUpdate: (identifier: string, data: AdminCompanyPaymentProcessor, params?: RequestParams$2) => Promise<HttpResponse$1<AdminCompanyPaymentProcessorResponse, any>>;
         /**
          * No description
          *
@@ -58107,7 +58103,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PATCH:/admin/company_payment_processors/{identifier}/
          * @secure
          */
-        adminCompanyPaymentProcessorsPartialUpdate: (identifier: string, data: PatchedAdminCompanyPaymentProcessor, params?: RequestParams$1) => Promise<HttpResponse$1<AdminCompanyPaymentProcessorResponse, any>>;
+        adminCompanyPaymentProcessorsPartialUpdate: (identifier: string, data: PatchedAdminCompanyPaymentProcessor, params?: RequestParams$2) => Promise<HttpResponse$1<AdminCompanyPaymentProcessorResponse, any>>;
         /**
          * No description
          *
@@ -58117,7 +58113,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request DELETE:/admin/company_payment_processors/{identifier}/
          * @secure
          */
-        adminCompanyPaymentProcessorsDestroy: (identifier: string, params?: RequestParams$1) => Promise<HttpResponse$1<AdminCompanyPaymentProcessorResponse, any>>;
+        adminCompanyPaymentProcessorsDestroy: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$1<AdminCompanyPaymentProcessorResponse, any>>;
         /**
          * No description
          *
@@ -58127,7 +58123,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/admin/payment_processor_quote/
          * @secure
          */
-        adminPaymentProcessorQuoteList: (query: AdminPaymentProcessorQuoteListParams, params?: RequestParams$1) => Promise<HttpResponse$1<PaginatedPaymentProcessorQuoteListResponse, any>>;
+        adminPaymentProcessorQuoteList: (query: AdminPaymentProcessorQuoteListParams, params?: RequestParams$2) => Promise<HttpResponse$1<PaginatedPaymentProcessorQuoteListResponse, any>>;
         /**
          * No description
          *
@@ -58137,7 +58133,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/admin/payment_processors/
          * @secure
          */
-        adminPaymentProcessorsList: (query: AdminPaymentProcessorsListParams, params?: RequestParams$1) => Promise<HttpResponse$1<PaginatedPaymentProcessorListResponse, any>>;
+        adminPaymentProcessorsList: (query: AdminPaymentProcessorsListParams, params?: RequestParams$2) => Promise<HttpResponse$1<PaginatedPaymentProcessorListResponse, any>>;
         /**
          * No description
          *
@@ -58147,7 +58143,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/admin/payment_processors/
          * @secure
          */
-        adminPaymentProcessorsCreate: (data: AdminPaymentProcessor, params?: RequestParams$1) => Promise<HttpResponse$1<PaymentProcessorResponse, any>>;
+        adminPaymentProcessorsCreate: (data: AdminPaymentProcessor, params?: RequestParams$2) => Promise<HttpResponse$1<PaymentProcessorResponse, any>>;
         /**
          * No description
          *
@@ -58157,7 +58153,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/admin/payment_processors/{identifier}/
          * @secure
          */
-        adminPaymentProcessorsRetrieve: (identifier: string, params?: RequestParams$1) => Promise<HttpResponse$1<PaymentProcessorResponse, any>>;
+        adminPaymentProcessorsRetrieve: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$1<PaymentProcessorResponse, any>>;
         /**
          * No description
          *
@@ -58167,7 +58163,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PUT:/admin/payment_processors/{identifier}/
          * @secure
          */
-        adminPaymentProcessorsUpdate: (identifier: string, data: AdminPaymentProcessor, params?: RequestParams$1) => Promise<HttpResponse$1<AdminPaymentProcessorResponse, any>>;
+        adminPaymentProcessorsUpdate: (identifier: string, data: AdminPaymentProcessor, params?: RequestParams$2) => Promise<HttpResponse$1<AdminPaymentProcessorResponse, any>>;
         /**
          * No description
          *
@@ -58177,7 +58173,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PATCH:/admin/payment_processors/{identifier}/
          * @secure
          */
-        adminPaymentProcessorsPartialUpdate: (identifier: string, data: PatchedAdminPaymentProcessor, params?: RequestParams$1) => Promise<HttpResponse$1<AdminPaymentProcessorResponse, any>>;
+        adminPaymentProcessorsPartialUpdate: (identifier: string, data: PatchedAdminPaymentProcessor, params?: RequestParams$2) => Promise<HttpResponse$1<AdminPaymentProcessorResponse, any>>;
         /**
          * No description
          *
@@ -58187,7 +58183,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request DELETE:/admin/payment_processors/{identifier}/
          * @secure
          */
-        adminPaymentProcessorsDestroy: (identifier: string, params?: RequestParams$1) => Promise<HttpResponse$1<AdminPaymentProcessorResponse, any>>;
+        adminPaymentProcessorsDestroy: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$1<AdminPaymentProcessorResponse, any>>;
         /**
          * No description
          *
@@ -58197,7 +58193,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/admin/requests/
          * @secure
          */
-        adminRequestsList: (query: AdminRequestsListParams, params?: RequestParams$1) => Promise<HttpResponse$1<PaginatedRequestListResponse, any>>;
+        adminRequestsList: (query: AdminRequestsListParams, params?: RequestParams$2) => Promise<HttpResponse$1<PaginatedRequestListResponse, any>>;
         /**
          * No description
          *
@@ -58207,7 +58203,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/admin/requests/
          * @secure
          */
-        adminRequestsCreate: (data: AdminRequestCreateUpdate, params?: RequestParams$1) => Promise<HttpResponse$1<RequestResponse, any>>;
+        adminRequestsCreate: (data: AdminRequestCreateUpdate, params?: RequestParams$2) => Promise<HttpResponse$1<RequestResponse, any>>;
         /**
          * No description
          *
@@ -58217,7 +58213,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/admin/requests/{identifier}/
          * @secure
          */
-        adminRequestsRetrieve: (identifier: string, params?: RequestParams$1) => Promise<HttpResponse$1<RequestResponse, any>>;
+        adminRequestsRetrieve: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$1<RequestResponse, any>>;
         /**
          * No description
          *
@@ -58227,7 +58223,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PUT:/admin/requests/{identifier}/
          * @secure
          */
-        adminRequestsUpdate: (identifier: string, data: Request, params?: RequestParams$1) => Promise<HttpResponse$1<RequestResponse, any>>;
+        adminRequestsUpdate: (identifier: string, data: Request, params?: RequestParams$2) => Promise<HttpResponse$1<RequestResponse, any>>;
         /**
          * No description
          *
@@ -58237,7 +58233,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PATCH:/admin/requests/{identifier}/
          * @secure
          */
-        adminRequestsPartialUpdate: (identifier: string, data: PatchedAdminRequestCreateUpdate, params?: RequestParams$1) => Promise<HttpResponse$1<AdminRequestCreateUpdateResponse, any>>;
+        adminRequestsPartialUpdate: (identifier: string, data: PatchedAdminRequestCreateUpdate, params?: RequestParams$2) => Promise<HttpResponse$1<AdminRequestCreateUpdateResponse, any>>;
         /**
          * No description
          *
@@ -58247,7 +58243,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/admin/requests/{identifier}/logs/
          * @secure
          */
-        adminRequestsLogsList: ({ identifier, ...query }: AdminRequestsLogsListParams, params?: RequestParams$1) => Promise<HttpResponse$1<PaginatedRequestLogsListResponse, any>>;
+        adminRequestsLogsList: ({ identifier, ...query }: AdminRequestsLogsListParams, params?: RequestParams$2) => Promise<HttpResponse$1<PaginatedRequestLogsListResponse, any>>;
         /**
          * No description
          *
@@ -58257,7 +58253,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/admin/requests/{identifier}/payment-process-quotes/
          * @secure
          */
-        adminRequestsPaymentProcessQuotesList: ({ identifier, ...query }: AdminRequestsPaymentProcessQuotesListParams, params?: RequestParams$1) => Promise<HttpResponse$1<PaginatedPaymentProcessorQuoteListResponse, any>>;
+        adminRequestsPaymentProcessQuotesList: ({ identifier, ...query }: AdminRequestsPaymentProcessQuotesListParams, params?: RequestParams$2) => Promise<HttpResponse$1<PaginatedPaymentProcessorQuoteListResponse, any>>;
         /**
          * No description
          *
@@ -58267,7 +58263,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/admin/requests/{identifier}/payment-process-quotes/{quote_identifier}/
          * @secure
          */
-        adminRequestsPaymentProcessQuotesRetrieve: (identifier: string, quoteIdentifier: string, params?: RequestParams$1) => Promise<HttpResponse$1<PaymentProcessorQuoteResponse, any>>;
+        adminRequestsPaymentProcessQuotesRetrieve: (identifier: string, quoteIdentifier: string, params?: RequestParams$2) => Promise<HttpResponse$1<PaymentProcessorQuoteResponse, any>>;
         /**
          * No description
          *
@@ -58277,7 +58273,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/admin/requests/{identifier}/payment-process-quotes/{quote_identifier}/execute/
          * @secure
          */
-        adminRequestsPaymentProcessQuotesExecuteRetrieve: (identifier: string, quoteIdentifier: string, params?: RequestParams$1) => Promise<HttpResponse$1<PaymentProcessorQuoteResponse, any>>;
+        adminRequestsPaymentProcessQuotesExecuteRetrieve: (identifier: string, quoteIdentifier: string, params?: RequestParams$2) => Promise<HttpResponse$1<PaymentProcessorQuoteResponse, any>>;
         /**
          * No description
          *
@@ -58287,7 +58283,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/admin/requests/{identifier}/refunds/
          * @secure
          */
-        adminRequestsRefundsList: ({ identifier, ...query }: AdminRequestsRefundsListParams, params?: RequestParams$1) => Promise<HttpResponse$1<PaginatedRefundListResponse, any>>;
+        adminRequestsRefundsList: ({ identifier, ...query }: AdminRequestsRefundsListParams, params?: RequestParams$2) => Promise<HttpResponse$1<PaginatedRefundListResponse, any>>;
         /**
          * No description
          *
@@ -58297,7 +58293,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/admin/requests/{identifier}/refunds/
          * @secure
          */
-        adminRequestsRefundsCreate: (identifier: string, data: AdminRefund, params?: RequestParams$1) => Promise<HttpResponse$1<AdminRefundResponse, any>>;
+        adminRequestsRefundsCreate: (identifier: string, data: AdminRefund, params?: RequestParams$2) => Promise<HttpResponse$1<AdminRefundResponse, any>>;
         /**
          * No description
          *
@@ -58307,7 +58303,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/admin/requests/{identifier}/transactions/
          * @secure
          */
-        adminRequestsTransactionsList: ({ identifier, ...query }: AdminRequestsTransactionsListParams, params?: RequestParams$1) => Promise<HttpResponse$1<PaginatedRequestTransactionListResponse, any>>;
+        adminRequestsTransactionsList: ({ identifier, ...query }: AdminRequestsTransactionsListParams, params?: RequestParams$2) => Promise<HttpResponse$1<PaginatedRequestTransactionListResponse, any>>;
         /**
          * No description
          *
@@ -58317,7 +58313,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/admin/users/
          * @secure
          */
-        adminUsersList: (query: AdminUsersListParams, params?: RequestParams$1) => Promise<HttpResponse$1<PaginatedAdminUserListResponse, any>>;
+        adminUsersList: (query: AdminUsersListParams, params?: RequestParams$2) => Promise<HttpResponse$1<PaginatedAdminUserListResponse, any>>;
         /**
          * No description
          *
@@ -58327,7 +58323,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/admin/users/{identifier}/
          * @secure
          */
-        adminUsersRetrieve: (identifier: string, params?: RequestParams$1) => Promise<HttpResponse$1<AdminUserResponse, any>>;
+        adminUsersRetrieve: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$1<AdminUserResponse, any>>;
         /**
          * No description
          *
@@ -58337,7 +58333,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PUT:/admin/users/{identifier}/
          * @secure
          */
-        adminUsersUpdate: (identifier: string, data: AdminUser, params?: RequestParams$1) => Promise<HttpResponse$1<AdminUserResponse, any>>;
+        adminUsersUpdate: (identifier: string, data: AdminUser, params?: RequestParams$2) => Promise<HttpResponse$1<AdminUserResponse, any>>;
         /**
          * No description
          *
@@ -58347,7 +58343,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PATCH:/admin/users/{identifier}/
          * @secure
          */
-        adminUsersPartialUpdate: (identifier: string, data: PatchedAdminUser, params?: RequestParams$1) => Promise<HttpResponse$1<AdminUserResponse, any>>;
+        adminUsersPartialUpdate: (identifier: string, data: PatchedAdminUser, params?: RequestParams$2) => Promise<HttpResponse$1<AdminUserResponse, any>>;
         /**
          * No description
          *
@@ -58357,7 +58353,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/admin/webhooks/
          * @secure
          */
-        adminWebhooksList: (query: AdminWebhooksListParams, params?: RequestParams$1) => Promise<HttpResponse$1<PaginatedAdminWebhookListResponse, any>>;
+        adminWebhooksList: (query: AdminWebhooksListParams, params?: RequestParams$2) => Promise<HttpResponse$1<PaginatedAdminWebhookListResponse, any>>;
         /**
          * No description
          *
@@ -58367,7 +58363,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/admin/webhooks/
          * @secure
          */
-        adminWebhooksCreate: (data: AdminWebhook, params?: RequestParams$1) => Promise<HttpResponse$1<AdminWebhookResponse, any>>;
+        adminWebhooksCreate: (data: AdminWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<AdminWebhookResponse, any>>;
         /**
          * No description
          *
@@ -58377,7 +58373,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/admin/webhooks/{identifier}/
          * @secure
          */
-        adminWebhooksRetrieve: (identifier: string, params?: RequestParams$1) => Promise<HttpResponse$1<AdminWebhookResponse, any>>;
+        adminWebhooksRetrieve: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$1<AdminWebhookResponse, any>>;
         /**
          * No description
          *
@@ -58387,7 +58383,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PUT:/admin/webhooks/{identifier}/
          * @secure
          */
-        adminWebhooksUpdate: (identifier: string, data: AdminWebhook, params?: RequestParams$1) => Promise<HttpResponse$1<AdminWebhookResponse, any>>;
+        adminWebhooksUpdate: (identifier: string, data: AdminWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<AdminWebhookResponse, any>>;
         /**
          * No description
          *
@@ -58397,7 +58393,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PATCH:/admin/webhooks/{identifier}/
          * @secure
          */
-        adminWebhooksPartialUpdate: (identifier: string, data: PatchedAdminWebhook, params?: RequestParams$1) => Promise<HttpResponse$1<AdminWebhookResponse, any>>;
+        adminWebhooksPartialUpdate: (identifier: string, data: PatchedAdminWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<AdminWebhookResponse, any>>;
         /**
          * No description
          *
@@ -58407,7 +58403,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request DELETE:/admin/webhooks/{identifier}/
          * @secure
          */
-        adminWebhooksDestroy: (identifier: string, params?: RequestParams$1) => Promise<HttpResponse$1<AdminWebhookResponse, any>>;
+        adminWebhooksDestroy: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$1<AdminWebhookResponse, any>>;
     };
     deactivate: {
         /**
@@ -58419,7 +58415,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/deactivate/
          * @secure
          */
-        deactivateCreate: (data: Deactivate$1, params?: RequestParams$1) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        deactivateCreate: (data: Deactivate$1, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
     };
     requests: {
         /**
@@ -58431,7 +58427,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/requests/{identifier}/
          * @secure
          */
-        requestsRetrieve: (identifier: string, params?: RequestParams$1) => Promise<HttpResponse$1<PublicRequestResponse, any>>;
+        requestsRetrieve: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$1<PublicRequestResponse, any>>;
         /**
          * No description
          *
@@ -58441,7 +58437,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PUT:/requests/{identifier}/
          * @secure
          */
-        requestsUpdate: (identifier: string, data: PublicRequest, params?: RequestParams$1) => Promise<HttpResponse$1<PublicRequestResponse, any>>;
+        requestsUpdate: (identifier: string, data: PublicRequest, params?: RequestParams$2) => Promise<HttpResponse$1<PublicRequestResponse, any>>;
         /**
          * No description
          *
@@ -58451,7 +58447,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PATCH:/requests/{identifier}/
          * @secure
          */
-        requestsPartialUpdate: (identifier: string, data: PatchedPublicRequestUpdate, params?: RequestParams$1) => Promise<HttpResponse$1<PublicRequestResponse, any>>;
+        requestsPartialUpdate: (identifier: string, data: PatchedPublicRequestUpdate, params?: RequestParams$2) => Promise<HttpResponse$1<PublicRequestResponse, any>>;
         /**
          * No description
          *
@@ -58461,7 +58457,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/requests/{identifier}/otp_challenge/
          * @secure
          */
-        requestsOtpChallengeCreate: (identifier: string, data: OTPChallenge, params?: RequestParams$1) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        requestsOtpChallengeCreate: (identifier: string, data: OTPChallenge, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
         /**
          * No description
          *
@@ -58471,7 +58467,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/requests/{identifier}/payment_processors/
          * @secure
          */
-        requestsPaymentProcessorsList: ({ identifier, ...query }: RequestsPaymentProcessorsListParams, params?: RequestParams$1) => Promise<HttpResponse$1<PaginatedPaymentProcessorListResponse, any>>;
+        requestsPaymentProcessorsList: ({ identifier, ...query }: RequestsPaymentProcessorsListParams, params?: RequestParams$2) => Promise<HttpResponse$1<PaginatedPaymentProcessorListResponse, any>>;
         /**
          * No description
          *
@@ -58481,7 +58477,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/requests/{identifier}/resend_otp/
          * @secure
          */
-        requestsResendOtpCreate: (identifier: string, params?: RequestParams$1) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        requestsResendOtpCreate: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
         /**
          * No description
          *
@@ -58491,7 +58487,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/requests/{identifier}/transactions/
          * @secure
          */
-        requestsTransactionsList: ({ identifier, ...query }: RequestsTransactionsListParams, params?: RequestParams$1) => Promise<HttpResponse$1<PaginatedRequestTransactionListResponse, any>>;
+        requestsTransactionsList: ({ identifier, ...query }: RequestsTransactionsListParams, params?: RequestParams$2) => Promise<HttpResponse$1<PaginatedRequestTransactionListResponse, any>>;
     };
     user: {
         /**
@@ -58503,7 +58499,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/user/payment_processors/
          * @secure
          */
-        userPaymentProcessorsList: (query: UserPaymentProcessorsListParams, params?: RequestParams$1) => Promise<HttpResponse$1<PaginatedUserCompanyPaymentProcessorListResponse, any>>;
+        userPaymentProcessorsList: (query: UserPaymentProcessorsListParams, params?: RequestParams$2) => Promise<HttpResponse$1<PaginatedUserCompanyPaymentProcessorListResponse, any>>;
         /**
          * No description
          *
@@ -58513,7 +58509,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/user/payment_processors/
          * @secure
          */
-        userPaymentProcessorsCreate: (data: UserCRUDCompanyPaymentProcessor, params?: RequestParams$1) => Promise<HttpResponse$1<UserCompanyPaymentProcessorResponse, any>>;
+        userPaymentProcessorsCreate: (data: UserCRUDCompanyPaymentProcessor, params?: RequestParams$2) => Promise<HttpResponse$1<UserCompanyPaymentProcessorResponse, any>>;
         /**
          * No description
          *
@@ -58523,7 +58519,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/user/payment_processors/{id}/
          * @secure
          */
-        userPaymentProcessorsRetrieve: (id: string, params?: RequestParams$1) => Promise<HttpResponse$1<UserCompanyPaymentProcessorResponse, any>>;
+        userPaymentProcessorsRetrieve: (id: string, params?: RequestParams$2) => Promise<HttpResponse$1<UserCompanyPaymentProcessorResponse, any>>;
         /**
          * No description
          *
@@ -58533,7 +58529,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PUT:/user/payment_processors/{id}/
          * @secure
          */
-        userPaymentProcessorsUpdate: (id: string, data: UserCRUDCompanyPaymentProcessor, params?: RequestParams$1) => Promise<HttpResponse$1<UserCRUDCompanyPaymentProcessorResponse, any>>;
+        userPaymentProcessorsUpdate: (id: string, data: UserCRUDCompanyPaymentProcessor, params?: RequestParams$2) => Promise<HttpResponse$1<UserCRUDCompanyPaymentProcessorResponse, any>>;
         /**
          * No description
          *
@@ -58543,7 +58539,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PATCH:/user/payment_processors/{id}/
          * @secure
          */
-        userPaymentProcessorsPartialUpdate: (id: string, data: PatchedUserCRUDCompanyPaymentProcessor, params?: RequestParams$1) => Promise<HttpResponse$1<UserCRUDCompanyPaymentProcessorResponse, any>>;
+        userPaymentProcessorsPartialUpdate: (id: string, data: PatchedUserCRUDCompanyPaymentProcessor, params?: RequestParams$2) => Promise<HttpResponse$1<UserCRUDCompanyPaymentProcessorResponse, any>>;
         /**
          * No description
          *
@@ -58553,7 +58549,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request DELETE:/user/payment_processors/{id}/
          * @secure
          */
-        userPaymentProcessorsDestroy: (id: string, params?: RequestParams$1) => Promise<HttpResponse$1<UserCRUDCompanyPaymentProcessorResponse, any>>;
+        userPaymentProcessorsDestroy: (id: string, params?: RequestParams$2) => Promise<HttpResponse$1<UserCRUDCompanyPaymentProcessorResponse, any>>;
         /**
          * No description
          *
@@ -58563,7 +58559,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/user/requests/
          * @secure
          */
-        userRequestsList: (query: UserRequestsListParams, params?: RequestParams$1) => Promise<HttpResponse$1<PaginatedRequestListResponse, any>>;
+        userRequestsList: (query: UserRequestsListParams, params?: RequestParams$2) => Promise<HttpResponse$1<PaginatedRequestListResponse, any>>;
         /**
          * No description
          *
@@ -58573,7 +58569,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/user/requests/
          * @secure
          */
-        userRequestsCreate: (data: RequestCreateUpdate, params?: RequestParams$1) => Promise<HttpResponse$1<RequestCreateUpdateResponse, any>>;
+        userRequestsCreate: (data: RequestCreateUpdate, params?: RequestParams$2) => Promise<HttpResponse$1<RequestCreateUpdateResponse, any>>;
         /**
          * No description
          *
@@ -58583,7 +58579,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/user/requests/{identifier}/
          * @secure
          */
-        userRequestsRetrieve: (identifier: string, params?: RequestParams$1) => Promise<HttpResponse$1<RequestResponse, any>>;
+        userRequestsRetrieve: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$1<RequestResponse, any>>;
         /**
          * No description
          *
@@ -58593,7 +58589,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PUT:/user/requests/{identifier}/
          * @secure
          */
-        userRequestsUpdate: (identifier: string, data: Request, params?: RequestParams$1) => Promise<HttpResponse$1<RequestResponse, any>>;
+        userRequestsUpdate: (identifier: string, data: Request, params?: RequestParams$2) => Promise<HttpResponse$1<RequestResponse, any>>;
         /**
          * No description
          *
@@ -58603,7 +58599,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PATCH:/user/requests/{identifier}/
          * @secure
          */
-        userRequestsPartialUpdate: (identifier: string, data: PatchedRequestCreateUpdate, params?: RequestParams$1) => Promise<HttpResponse$1<RequestCreateUpdateResponse, any>>;
+        userRequestsPartialUpdate: (identifier: string, data: PatchedRequestCreateUpdate, params?: RequestParams$2) => Promise<HttpResponse$1<RequestCreateUpdateResponse, any>>;
         /**
          * No description
          *
@@ -58613,7 +58609,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/user/requests/{identifier}/notify/
          * @secure
          */
-        userRequestsNotifyCreate: (identifier: string, params?: RequestParams$1) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        userRequestsNotifyCreate: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
         /**
          * No description
          *
@@ -58623,7 +58619,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/user/requests/{identifier}/refunds/
          * @secure
          */
-        userRequestsRefundsList: ({ identifier, ...query }: UserRequestsRefundsListParams, params?: RequestParams$1) => Promise<HttpResponse$1<PaginatedRefundListResponse, any>>;
+        userRequestsRefundsList: ({ identifier, ...query }: UserRequestsRefundsListParams, params?: RequestParams$2) => Promise<HttpResponse$1<PaginatedRefundListResponse, any>>;
         /**
          * No description
          *
@@ -58633,7 +58629,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/user/requests/{identifier}/refunds/
          * @secure
          */
-        userRequestsRefundsCreate: (identifier: string, data: CreateRefund, params?: RequestParams$1) => Promise<HttpResponse$1<CreateRefundResponse, any>>;
+        userRequestsRefundsCreate: (identifier: string, data: CreateRefund, params?: RequestParams$2) => Promise<HttpResponse$1<CreateRefundResponse, any>>;
         /**
          * No description
          *
@@ -58643,7 +58639,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/user/requests/{identifier}/transactions/
          * @secure
          */
-        userRequestsTransactionsList: ({ identifier, ...query }: UserRequestsTransactionsListParams, params?: RequestParams$1) => Promise<HttpResponse$1<PaginatedRequestTransactionListResponse, any>>;
+        userRequestsTransactionsList: ({ identifier, ...query }: UserRequestsTransactionsListParams, params?: RequestParams$2) => Promise<HttpResponse$1<PaginatedRequestTransactionListResponse, any>>;
         /**
          * No description
          *
@@ -58653,7 +58649,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/user/webhooks/
          * @secure
          */
-        userWebhooksList: (query: UserWebhooksListParams, params?: RequestParams$1) => Promise<HttpResponse$1<PaginatedWebhookListResponse, any>>;
+        userWebhooksList: (query: UserWebhooksListParams, params?: RequestParams$2) => Promise<HttpResponse$1<PaginatedWebhookListResponse, any>>;
         /**
          * No description
          *
@@ -58663,7 +58659,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/user/webhooks/
          * @secure
          */
-        userWebhooksCreate: (data: Webhook$1, params?: RequestParams$1) => Promise<HttpResponse$1<WebhookResponse, any>>;
+        userWebhooksCreate: (data: Webhook$1, params?: RequestParams$2) => Promise<HttpResponse$1<WebhookResponse, any>>;
         /**
          * No description
          *
@@ -58673,7 +58669,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/user/webhooks/{identifier}/
          * @secure
          */
-        userWebhooksRetrieve: (identifier: string, params?: RequestParams$1) => Promise<HttpResponse$1<WebhookResponse, any>>;
+        userWebhooksRetrieve: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$1<WebhookResponse, any>>;
         /**
          * No description
          *
@@ -58683,7 +58679,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PUT:/user/webhooks/{identifier}/
          * @secure
          */
-        userWebhooksUpdate: (identifier: string, data: Webhook$1, params?: RequestParams$1) => Promise<HttpResponse$1<WebhookResponse, any>>;
+        userWebhooksUpdate: (identifier: string, data: Webhook$1, params?: RequestParams$2) => Promise<HttpResponse$1<WebhookResponse, any>>;
         /**
          * No description
          *
@@ -58693,7 +58689,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PATCH:/user/webhooks/{identifier}/
          * @secure
          */
-        userWebhooksPartialUpdate: (identifier: string, data: PatchedWebhook, params?: RequestParams$1) => Promise<HttpResponse$1<WebhookResponse, any>>;
+        userWebhooksPartialUpdate: (identifier: string, data: PatchedWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<WebhookResponse, any>>;
         /**
          * No description
          *
@@ -58703,7 +58699,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request DELETE:/user/webhooks/{identifier}/
          * @secure
          */
-        userWebhooksDestroy: (identifier: string, params?: RequestParams$1) => Promise<HttpResponse$1<WebhookResponse, any>>;
+        userWebhooksDestroy: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$1<WebhookResponse, any>>;
     };
     webhook: {
         /**
@@ -58715,7 +58711,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/webhook/
          * @secure
          */
-        webhookCreate: (data: RehiveWebhook, params?: RequestParams$1) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        webhookCreate: (data: RehiveWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
     };
     webhooks: {
         /**
@@ -58727,7 +58723,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/webhooks/rehive_transaction/executed/
          * @secure
          */
-        webhooksRehiveTransactionExecutedCreate: (data: RehiveWebhook, params?: RequestParams$1) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        webhooksRehiveTransactionExecutedCreate: (data: RehiveWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
         /**
          * No description
          *
@@ -58737,7 +58733,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/webhooks/rehive_transaction/initiated/
          * @secure
          */
-        webhooksRehiveTransactionInitiatedCreate: (data: RehiveWebhook, params?: RequestParams$1) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        webhooksRehiveTransactionInitiatedCreate: (data: RehiveWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
         /**
          * No description
          *
@@ -58747,7 +58743,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/webhooks/rehive_user/create/
          * @secure
          */
-        webhooksRehiveUserCreateCreate: (data: RehiveWebhook, params?: RequestParams$1) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        webhooksRehiveUserCreateCreate: (data: RehiveWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
         /**
          * No description
          *
@@ -58757,7 +58753,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/webhooks/rehive_user/email_update/
          * @secure
          */
-        webhooksRehiveUserEmailUpdateCreate: (data: RehiveWebhook, params?: RequestParams$1) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        webhooksRehiveUserEmailUpdateCreate: (data: RehiveWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
         /**
          * No description
          *
@@ -58767,7 +58763,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/webhooks/rehive_user/update/
          * @secure
          */
-        webhooksRehiveUserUpdateCreate: (data: RehiveWebhook, params?: RequestParams$1) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        webhooksRehiveUserUpdateCreate: (data: RehiveWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
     };
 }
 
@@ -59279,11 +59275,11 @@ interface FullRequestParams extends Omit<RequestInit, "body"> {
     /** request cancellation token */
     cancelToken?: CancelToken;
 }
-type RequestParams = Omit<FullRequestParams, "body" | "method" | "query" | "path">;
+type RequestParams$1 = Omit<FullRequestParams, "body" | "method" | "query" | "path">;
 interface ApiConfig<SecurityDataType = unknown> {
     baseUrl?: string;
-    baseApiParams?: Omit<RequestParams, "baseUrl" | "cancelToken" | "signal">;
-    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams | void> | RequestParams | void;
+    baseApiParams?: Omit<RequestParams$1, "baseUrl" | "cancelToken" | "signal">;
+    securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams$1 | void> | RequestParams$1 | void;
     customFetch?: typeof fetch;
 }
 interface HttpResponse<D extends unknown, E extends unknown = unknown> extends Response {
@@ -59313,7 +59309,7 @@ declare class HttpClient<SecurityDataType = unknown> {
     protected toQueryString(rawQuery?: QueryParamsType): string;
     protected addQueryParams(rawQuery?: QueryParamsType): string;
     private contentFormatters;
-    protected mergeRequestParams(params1: RequestParams, params2?: RequestParams): RequestParams;
+    protected mergeRequestParams(params1: RequestParams$1, params2?: RequestParams$1): RequestParams$1;
     protected createAbortSignal: (cancelToken: CancelToken) => AbortSignal | undefined;
     abortRequest: (cancelToken: CancelToken) => void;
     request: <T = any, E = any>({ body, secure, path, type, query, format, baseUrl, cancelToken, ...params }: FullRequestParams) => Promise<HttpResponse<T, E>>;
@@ -59340,7 +59336,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request POST:/activate/
          * @secure
          */
-        activateCreate: (data: Activate, params?: RequestParams) => Promise<HttpResponse<ActionResponse, any>>;
+        activateCreate: (data: Activate, params?: RequestParams$1) => Promise<HttpResponse<ActionResponse, any>>;
     };
     admin: {
         /**
@@ -59351,7 +59347,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request GET:/admin/cards/
          * @secure
          */
-        adminCardsList: (query: AdminCardsListParams, params?: RequestParams) => Promise<HttpResponse<PaginatedAdminCardListResponse, any>>;
+        adminCardsList: (query: AdminCardsListParams, params?: RequestParams$1) => Promise<HttpResponse<PaginatedAdminCardListResponse, any>>;
         /**
          * No description
          *
@@ -59360,7 +59356,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request GET:/admin/cards/{identifier}/
          * @secure
          */
-        adminCardsRetrieve: (identifier: string, params?: RequestParams) => Promise<HttpResponse<AdminExtendedCardResponse, any>>;
+        adminCardsRetrieve: (identifier: string, params?: RequestParams$1) => Promise<HttpResponse<AdminExtendedCardResponse, any>>;
         /**
          * No description
          *
@@ -59369,7 +59365,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request GET:/admin/company/
          * @secure
          */
-        adminCompanyRetrieve: (params?: RequestParams) => Promise<HttpResponse<AdminCompanyResponse, any>>;
+        adminCompanyRetrieve: (params?: RequestParams$1) => Promise<HttpResponse<AdminCompanyResponse, any>>;
         /**
          * No description
          *
@@ -59378,7 +59374,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request PUT:/admin/company/
          * @secure
          */
-        adminCompanyUpdate: (data: AdminUpdateCompany, params?: RequestParams) => Promise<HttpResponse<AdminCompanyResponse, any>>;
+        adminCompanyUpdate: (data: AdminUpdateCompany, params?: RequestParams$1) => Promise<HttpResponse<AdminCompanyResponse, any>>;
         /**
          * No description
          *
@@ -59387,7 +59383,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request PATCH:/admin/company/
          * @secure
          */
-        adminCompanyPartialUpdate: (data: PatchedAdminUpdateCompany, params?: RequestParams) => Promise<HttpResponse<AdminCompanyResponse, any>>;
+        adminCompanyPartialUpdate: (data: PatchedAdminUpdateCompany, params?: RequestParams$1) => Promise<HttpResponse<AdminCompanyResponse, any>>;
         /**
          * No description
          *
@@ -59396,7 +59392,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request GET:/admin/crypto-return-policies/
          * @secure
          */
-        adminCryptoReturnPoliciesList: (params?: RequestParams) => Promise<HttpResponse<AdminCryptoReturnPolicyListResponse, any>>;
+        adminCryptoReturnPoliciesList: (params?: RequestParams$1) => Promise<HttpResponse<AdminCryptoReturnPolicyListResponse, any>>;
         /**
          * No description
          *
@@ -59405,7 +59401,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request POST:/admin/crypto-return-policies/
          * @secure
          */
-        adminCryptoReturnPoliciesCreate: (data: AdminCryptoReturnPolicy, params?: RequestParams) => Promise<HttpResponse<AdminCryptoReturnPolicyResponse, any>>;
+        adminCryptoReturnPoliciesCreate: (data: AdminCryptoReturnPolicy, params?: RequestParams$1) => Promise<HttpResponse<AdminCryptoReturnPolicyResponse, any>>;
         /**
          * No description
          *
@@ -59414,7 +59410,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request GET:/admin/crypto-return-policies/{identifier}/
          * @secure
          */
-        adminCryptoReturnPoliciesRetrieve: (identifier: string, params?: RequestParams) => Promise<HttpResponse<AdminCryptoReturnPolicyResponse, any>>;
+        adminCryptoReturnPoliciesRetrieve: (identifier: string, params?: RequestParams$1) => Promise<HttpResponse<AdminCryptoReturnPolicyResponse, any>>;
         /**
          * No description
          *
@@ -59423,7 +59419,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request PUT:/admin/crypto-return-policies/{identifier}/
          * @secure
          */
-        adminCryptoReturnPoliciesUpdate: (identifier: string, data: AdminCryptoReturnPolicy, params?: RequestParams) => Promise<HttpResponse<AdminCryptoReturnPolicyResponse, any>>;
+        adminCryptoReturnPoliciesUpdate: (identifier: string, data: AdminCryptoReturnPolicy, params?: RequestParams$1) => Promise<HttpResponse<AdminCryptoReturnPolicyResponse, any>>;
         /**
          * No description
          *
@@ -59432,7 +59428,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request PATCH:/admin/crypto-return-policies/{identifier}/
          * @secure
          */
-        adminCryptoReturnPoliciesPartialUpdate: (identifier: string, data: PatchedAdminCryptoReturnPolicy, params?: RequestParams) => Promise<HttpResponse<AdminCryptoReturnPolicyResponse, any>>;
+        adminCryptoReturnPoliciesPartialUpdate: (identifier: string, data: PatchedAdminCryptoReturnPolicy, params?: RequestParams$1) => Promise<HttpResponse<AdminCryptoReturnPolicyResponse, any>>;
         /**
          * No description
          *
@@ -59441,7 +59437,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request DELETE:/admin/crypto-return-policies/{identifier}/
          * @secure
          */
-        adminCryptoReturnPoliciesDestroy: (identifier: string, params?: RequestParams) => Promise<HttpResponse<AdminCryptoReturnPolicyResponse, any>>;
+        adminCryptoReturnPoliciesDestroy: (identifier: string, params?: RequestParams$1) => Promise<HttpResponse<AdminCryptoReturnPolicyResponse, any>>;
         /**
          * No description
          *
@@ -59450,7 +59446,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request GET:/admin/currencies/
          * @secure
          */
-        adminCurrenciesList: (query: AdminCurrenciesListParams, params?: RequestParams) => Promise<HttpResponse<PaginatedAdminCurrencyListResponse, any>>;
+        adminCurrenciesList: (query: AdminCurrenciesListParams, params?: RequestParams$1) => Promise<HttpResponse<PaginatedAdminCurrencyListResponse, any>>;
         /**
          * No description
          *
@@ -59459,7 +59455,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request GET:/admin/currencies/{code}/
          * @secure
          */
-        adminCurrenciesRetrieve: (code: string, params?: RequestParams) => Promise<HttpResponse<AdminCurrencyResponse, any>>;
+        adminCurrenciesRetrieve: (code: string, params?: RequestParams$1) => Promise<HttpResponse<AdminCurrencyResponse, any>>;
         /**
          * No description
          *
@@ -59468,7 +59464,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request PUT:/admin/currencies/{code}/
          * @secure
          */
-        adminCurrenciesUpdate: (code: string, data: AdminCurrency, params?: RequestParams) => Promise<HttpResponse<AdminCurrencyResponse, any>>;
+        adminCurrenciesUpdate: (code: string, data: AdminCurrency, params?: RequestParams$1) => Promise<HttpResponse<AdminCurrencyResponse, any>>;
         /**
          * No description
          *
@@ -59477,7 +59473,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request PATCH:/admin/currencies/{code}/
          * @secure
          */
-        adminCurrenciesPartialUpdate: (code: string, data: PatchedAdminCurrency, params?: RequestParams) => Promise<HttpResponse<AdminCurrencyResponse, any>>;
+        adminCurrenciesPartialUpdate: (code: string, data: PatchedAdminCurrency, params?: RequestParams$1) => Promise<HttpResponse<AdminCurrencyResponse, any>>;
         /**
          * No description
          *
@@ -59486,7 +59482,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request POST:/admin/payment-processor-quote/
          * @secure
          */
-        adminPaymentProcessorQuoteCreate: (data: AdminPaymentProcessorQuote, params?: RequestParams) => Promise<HttpResponse<AdminPaymentProcessorQuoteResponseResponse, any>>;
+        adminPaymentProcessorQuoteCreate: (data: AdminPaymentProcessorQuote, params?: RequestParams$1) => Promise<HttpResponse<AdminPaymentProcessorQuoteResponseResponse, any>>;
         /**
          * No description
          *
@@ -59495,7 +59491,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request GET:/admin/wallets/
          * @secure
          */
-        adminWalletsList: (query: AdminWalletsListParams, params?: RequestParams) => Promise<HttpResponse<PaginatedAdminWalletListResponse, any>>;
+        adminWalletsList: (query: AdminWalletsListParams, params?: RequestParams$1) => Promise<HttpResponse<PaginatedAdminWalletListResponse, any>>;
         /**
          * No description
          *
@@ -59504,7 +59500,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request GET:/admin/wallets/{identifier}/
          * @secure
          */
-        adminWalletsRetrieve: (identifier: string, params?: RequestParams) => Promise<HttpResponse<AdminWalletResponse, any>>;
+        adminWalletsRetrieve: (identifier: string, params?: RequestParams$1) => Promise<HttpResponse<AdminWalletResponse, any>>;
     };
     bridge: {
         /**
@@ -59515,7 +59511,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request POST:/bridge/webhook/{company_id}/
          * @secure
          */
-        bridgeWebhookCreate: (companyId: string, data: BridgeWebhook, params?: RequestParams) => Promise<HttpResponse<ActionResponse, any>>;
+        bridgeWebhookCreate: (companyId: string, data: BridgeWebhook, params?: RequestParams$1) => Promise<HttpResponse<ActionResponse, any>>;
     };
     deactivate: {
         /**
@@ -59526,7 +59522,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request POST:/deactivate/
          * @secure
          */
-        deactivateCreate: (data: Deactivate, params?: RequestParams) => Promise<HttpResponse<ActionResponse, any>>;
+        deactivateCreate: (data: Deactivate, params?: RequestParams$1) => Promise<HttpResponse<ActionResponse, any>>;
     };
     user: {
         /**
@@ -59537,7 +59533,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request GET:/user/
          * @secure
          */
-        userRetrieve: (params?: RequestParams) => Promise<HttpResponse<UserResponse, any>>;
+        userRetrieve: (params?: RequestParams$1) => Promise<HttpResponse<UserResponse, any>>;
         /**
          * No description
          *
@@ -59546,7 +59542,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request PUT:/user/
          * @secure
          */
-        userUpdate: (data: User, params?: RequestParams) => Promise<HttpResponse<UserResponse, any>>;
+        userUpdate: (data: User, params?: RequestParams$1) => Promise<HttpResponse<UserResponse, any>>;
         /**
          * No description
          *
@@ -59555,7 +59551,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request PATCH:/user/
          * @secure
          */
-        userPartialUpdate: (data: PatchedUser, params?: RequestParams) => Promise<HttpResponse<UserResponse, any>>;
+        userPartialUpdate: (data: PatchedUser, params?: RequestParams$1) => Promise<HttpResponse<UserResponse, any>>;
         /**
          * No description
          *
@@ -59564,7 +59560,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request POST:/user/crypto-deposit/
          * @secure
          */
-        userCryptoDepositCreate: (data: UserCryptoDeposit, params?: RequestParams) => Promise<HttpResponse<UserCryptoDepositResponseResponse, any>>;
+        userCryptoDepositCreate: (data: UserCryptoDeposit, params?: RequestParams$1) => Promise<HttpResponse<UserCryptoDepositResponseResponse, any>>;
         /**
          * No description
          *
@@ -59573,7 +59569,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request POST:/user/kyc-links/
          * @secure
          */
-        userKycLinksCreate: (data: UserCreateCustomerKYCLink, params?: RequestParams) => Promise<HttpResponse<UserCustomerKYCLinkResponse, any>>;
+        userKycLinksCreate: (data: UserCreateCustomerKYCLink, params?: RequestParams$1) => Promise<HttpResponse<UserCustomerKYCLinkResponse, any>>;
     };
     webhook: {
         /**
@@ -59584,7 +59580,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request POST:/webhook/
          * @secure
          */
-        webhookCreate: (data: Webhook, params?: RequestParams) => Promise<HttpResponse<ActionResponse, any>>;
+        webhookCreate: (data: Webhook, params?: RequestParams$1) => Promise<HttpResponse<ActionResponse, any>>;
     };
 }
 

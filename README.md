@@ -98,6 +98,139 @@ const stagingRewards = rehive.extensions.rewards({
 });
 ```
 
+## API Responses and Error Handling
+
+### Response Structure
+
+All API methods return responses in a consistent format that matches the Rehive API structure:
+
+```typescript
+// API responses have a standard structure
+const user = await rehive.user.authRetrieve();
+console.log(user.data.email); // Access user data
+
+const accounts = await rehive.user.userAccountsList({});
+console.log(accounts.data.results); // Access account list
+```
+
+**Response Format:**
+```typescript
+{
+  status: "success",
+  data: {
+    // Your actual data here
+    id: "user-id",
+    email: "user@example.com",
+    // ... other properties
+  }
+}
+```
+
+### Error Handling
+
+The SDK provides comprehensive error handling through the `ApiError` class:
+
+```typescript
+import { RehiveClient, ApiError } from '@rehive/sdk';
+
+try {
+  const user = await rehive.user.authRetrieve();
+  console.log('User:', user.data.email);
+} catch (error) {
+  if (error instanceof ApiError) {
+    // Structured API errors from Rehive
+    console.log('Status Code:', error.status);        // 401, 400, 500, etc.
+    console.log('Error Message:', error.message);     // Human-readable message
+    console.log('Error Details:', error.error);       // Full API error response
+    
+    // Handle specific error types
+    switch (error.status) {
+      case 401:
+        console.log('Authentication required');
+        // Redirect to login
+        break;
+      case 400:
+        console.log('Bad request:', error.error.data);
+        // Show validation errors
+        break;
+      case 429:
+        console.log('Rate limited - retry later');
+        break;
+      default:
+        console.log('API error:', error.message);
+    }
+  } else {
+    // Network errors, timeouts, etc.
+    console.error('Network error:', error.message);
+  }
+}
+```
+
+**Common Error Scenarios:**
+
+| Status Code | Description | Common Causes |
+|-------------|-------------|---------------|
+| `400` | Bad Request | Missing required fields, invalid data format |
+| `401` | Unauthorized | Missing or invalid authentication token |
+| `403` | Forbidden | Insufficient permissions for the operation |
+| `404` | Not Found | Resource doesn't exist or user lacks access |
+| `429` | Rate Limited | Too many requests - implement retry logic |
+| `500` | Server Error | Internal server error - retry or contact support |
+
+**Error Response Structure:**
+```typescript
+// ApiError properties
+{
+  status: 400,                    // HTTP status code
+  message: "Validation failed",   // Human-readable message
+  error: {                        // Full API response
+    status: "error",
+    message: "Validation failed",
+    data: {
+      email: ["This field is required"],
+      password: ["Password too short"]
+    }
+  }
+}
+```
+
+### Authentication Error Handling
+
+The SDK provides specialized handlers for authentication flows:
+
+```typescript
+// Subscribe to authentication errors
+const unsubscribe = rehive.auth.subscribeToErrors((error) => {
+  if (error) {
+    console.error('Auth error:', error.message);
+    
+    // Handle different auth error types
+    if (error.status === 401) {
+      // Token expired or invalid
+      window.location.href = '/login';
+    } else if (error.status === 400) {
+      // Invalid credentials
+      showErrorMessage('Invalid email or password');
+    }
+  }
+});
+
+// Subscribe to session changes
+const unsubscribeSession = rehive.auth.subscribeToSession((session) => {
+  if (session) {
+    console.log('User logged in:', session.user.email);
+    // Update UI for authenticated state
+  } else {
+    console.log('User logged out');
+    // Update UI for unauthenticated state
+  }
+});
+
+// Clean up subscriptions
+unsubscribe();
+unsubscribeSession();
+```
+
 ## Key Features
 
 ### ✅ Smart Token Management

@@ -23,8 +23,8 @@ export function ConversionDemo() {
       const conversionApi = rehive.extensions.conversion()
 
       const response = await conversionApi.user.userConversionPairsList({})
-      // The actual conversion data is in response.data.data
-      setConversionData(response.data.data)
+      // With our updated templates, data is now directly in response.data
+      setConversionData(response.data)
     } catch (err: any) {
       setError(err.message || 'Failed to list conversion pairs')
       console.error('Conversion API error:', err)

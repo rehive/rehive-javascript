@@ -39,8 +39,6 @@ export interface ApiConfig<SecurityDataType = unknown> {
   baseApiParams?: Omit<RequestParams, "baseUrl" | "cancelToken" | "signal">;
   securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams | void> | RequestParams | void;
   customFetch?: typeof fetch;
-  expires?: number;
-  refreshCallback?: () => Promise<void>;
 }
 
 type CancelToken = Symbol | string | number;
@@ -59,9 +57,6 @@ export class HttpClient<SecurityDataType = unknown> {
   private abortControllers = new Map<CancelToken, AbortController>();
   private customFetch = (...fetchParams: Parameters<typeof fetch>) => fetch(...fetchParams);
 
-  private expires: number | null | undefined;
-  private refreshCallback!: () => Promise<void>;
-
   private baseApiParams: RequestParams = {
     credentials: "same-origin",
     headers: {},
@@ -71,9 +66,6 @@ export class HttpClient<SecurityDataType = unknown> {
 
   constructor(apiConfig: ApiConfig<SecurityDataType> = {}) {
     Object.assign(this, apiConfig);
-    if (!this.refreshCallback) {
-      this.refreshCallback = async () => {};
-    }
   }
 
   public setSecurityData = (data: SecurityDataType | null) => {
@@ -163,17 +155,6 @@ export class HttpClient<SecurityDataType = unknown> {
     }
   };
 
-  setExpires(expires: number | null) {
-    this.expires = expires;
-  }
-
-  private isExpired(): boolean {
-    // If there is no expires value then then the token does not expire.
-    if (!this.expires) return false;
-    // Compare the current date to the expires date + a 30 second buffer.
-    return Date.now() >= this.expires - (30 * 1000);
-  }
-
   public request = async <T = any>({
     body,
     secure,
@@ -190,10 +171,6 @@ export class HttpClient<SecurityDataType = unknown> {
         this.securityWorker &&
         (await this.securityWorker(this.securityData))) ||
       {};
-    // If there is a token and it has expired, call the refresh callback.
-    if (secureParams && this.isExpired()) {
-      await this.refreshCallback();
-    }
     const requestParams = this.mergeRequestParams(params, secureParams);
     const queryString = query && this.toQueryString(query);
     const payloadFormatter = this.contentFormatters[type || ContentType.Json];

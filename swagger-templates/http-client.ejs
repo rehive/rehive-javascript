@@ -1,0 +1,9 @@
+<%
+const { apiConfig, generateResponses, config } = it;
+%>
+// Import the shared http client instead of generating a new one
+export * from '../../shared/http-client.js';
+import { HttpClient, ApiConfig } from '../../shared/http-client.js';
+
+// Note: We don't need a specialized HttpClient class since we're using the shared one
+// The shared HttpClient is imported and re-exported above

@@ -20,8 +20,8 @@ export function TOTPFlow() {
     setIsLoading(true)
     try {
       const response = await rehive.user.authMfaAuthenticatorsList()
-      // The actual authenticators data is in response.data.data
-      setAuthenticators(response.data.data?.results || [])
+      // With our updated templates, data is now directly in response.data
+      setAuthenticators(response.data?.results || [])
     } catch (error) {
       console.error('Failed to load authenticators:', error)
     } finally {
@@ -54,12 +54,12 @@ export function TOTPFlow() {
         type: 'totp',
         details: {}
       } as any)
-      // The actual authenticator data is in response.data.data
-      setNewAuthenticator(response.data.data)
+      // With our updated templates, data is now directly in response.data
+      setNewAuthenticator(response.data)
       
       // Generate QR code if otpauth_url is available
-      if (response.data.data?.details?.otpauth_url) {
-        await generateQRCode(response.data.data.details.otpauth_url)
+      if (response.data?.details?.otpauth_url) {
+        await generateQRCode(response.data.details.otpauth_url)
       }
       
       await loadAuthenticators()

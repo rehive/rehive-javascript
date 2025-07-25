@@ -15,8 +15,8 @@ export function UserDetails() {
     
     try {
       const response = await rehive.user.userRetrieve()
-      // The actual user data is in response.data.data
-      setUserDetails(response.data.data)
+      // With our updated templates, data is now directly in response.data
+      setUserDetails(response.data)
     } catch (error: any) {
       console.error('Failed to fetch user details:', error)
       setError(error?.message || 'Failed to fetch user details')

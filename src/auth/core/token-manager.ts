@@ -88,61 +88,6 @@ export class TokenManager {
   private isRefreshing = false; // Flag to prevent recursive refresh
   private apiInstances: Set<any> = new Set(); // Registry of all API instances
 
-  /**
-   * Creates a custom fetch wrapper that automatically unwraps nested response structures.
-   * 
-   * Many Rehive API responses have a structure like:
-   * {
-   *   "status": "success",
-   *   "data": {
-   *     "data": { ...actual data... }
-   *   }
-   * }
-   * 
-   * This custom fetch intercepts responses and unwraps them to:
-   * {
-   *   "status": "success", 
-   *   "data": { ...actual data... }
-   * }
-   * 
-   * This provides a cleaner DX where developers can access response.data.user
-   * instead of response.data.data.user
-   */
-  private createCustomFetch(): typeof fetch {
-    return async (...args) => {
-      const response = await fetch(...args);
-      
-      // Clone the response so we can read it without consuming the original
-      const clonedResponse = response.clone();
-      
-      try {
-        // Only process JSON responses
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          const json = await clonedResponse.json();
-          
-          // Check if response has the nested data.data structure
-          if (json && typeof json === 'object' && 'data' in json && 'data' in json.data) {
-            const unwrapped = {
-              ...json,
-              data: json.data.data
-            };
-            
-            // Create new response with unwrapped data
-            return new Response(JSON.stringify(unwrapped), {
-              status: response.status,
-              statusText: response.statusText,
-              headers: response.headers
-            });
-          }
-        }
-      } catch (e) {
-        // If parsing fails, return original response
-      }
-      
-      return response;
-    };
-  }
 
   constructor(config: TokenManagerConfig) {
     /**
@@ -153,7 +98,7 @@ export class TokenManager {
      */
     this.platformApi = new RehivePlatformUserApi({
       baseUrl: config.baseUrl || '',
-      customFetch: this.createCustomFetch(),
+      customFetch: fetch,
       securityWorker: async (securityData: any) => {
         if (!securityData) return {};
         
@@ -185,7 +130,7 @@ export class TokenManager {
      */
     this.adminApi = new RehivePlatformAdminApi({
       baseUrl: config.baseUrl || '',
-      customFetch: this.createCustomFetch(),
+      customFetch: fetch,
       securityWorker: async (securityData: any) => {
         if (!securityData) return {};
         
@@ -403,7 +348,7 @@ export class TokenManager {
     const apiInstance = new ApiClass({
       ...config,
       // Apply the same response unwrapping to extension APIs
-      customFetch: this.createCustomFetch(),
+      customFetch: fetch,
       securityWorker: async (securityData: string | null) => {
         if (!securityData) return {};
         
