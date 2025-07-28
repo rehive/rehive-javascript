@@ -2,6 +2,8 @@
 
 A modern TypeScript SDK for the Rehive platform and extension APIs, providing a unified interface for both server-side and client-side usage.
 
+> **Note:** This is version 3 of the Rehive JavaScript SDK. For the previous version (v2) documentation, please refer to the [v2 branch](https://github.com/rehive/rehive-javascript/tree/v2).
+
 ## Installation
 
 ```bash
