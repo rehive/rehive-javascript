@@ -1,0 +1,18 @@
+<%
+const { contract, utils, config } = it;
+const { formatDescription, require, _ } = utils;
+const { name, $content } = contract;
+%>
+<% if (config.generateUnionEnums) { %>
+  export type <%~ name %> = <%~ _.map($content, ({ value }) => value).join(" | ") %>
+<% } else { %>
+  export enum <%~ name %> {
+    <%~ _.map($content, ({ key, value, description }) => {
+      let formattedDescription = description && formatDescription(description, true);
+      return [
+        formattedDescription && `/** ${formattedDescription} */`,
+        `${key} = ${value}`
+      ].filter(Boolean).join("\n");
+    }).join(",\n") %>
+  }
+<% } %>

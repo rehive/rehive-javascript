@@ -1,29 +1,92 @@
 {
   "name": "rehive",
-  "version": "2.1.1",
-  "description": "Javascript SDK for rehive APIs",
-  "main": "rehive.js",
+  "version": "3.0.1",
+  "description": "SDK for Rehive Platform and Extensions",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node minify.js"
+    "build": "npm run build:core && npm run build:react",
+    "build:core": "tsup src/index.ts --format cjs,esm --dts --minify --out-dir dist",
+    "build:react": "tsup src/react.tsx --format cjs,esm --dts --minify --out-dir dist",
+    "dev": "npm run build:core -- --watch & npm run build:react -- --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/rehive/rehive-javascript"
-  },
-  "types": "./@types/rehive.d.ts",
-  "engines": {
-    "node": ">=6.9.1"
-  },
-  "author": "rehive",
+  "keywords": [
+    "rehive",
+    "sdk",
+    "platform",
+    "authentication",
+    "conversion",
+    "react",
+    "react-native"
+  ],
+  "author": "Rehive",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/rehive/rehive-javascript/issues"
+  "peerDependencies": {
+    "react": ">=16.8.0"
   },
-  "homepage": "https://github.com/rehive/rehive-javascript",
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "dependencies": {},
   "devDependencies": {
-    "@node-minify/core": "^8.0.6",
-    "@node-minify/uglify-js": "^8.0.6",
-    "typescript": "^5.6.2"
+    "@testing-library/jest-dom": "^6.1.0",
+    "@testing-library/react": "^14.0.0",
+    "@types/jest": "^29.5.0",
+    "@types/react": "^18.0.0",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
+    "react": "^18.0.0",
+    "ts-jest": "^29.1.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "dist",
+    "src/extensions",
+    "src/platform"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.mjs",
+      "require": "./dist/react.js"
+    },
+    "./extensions/conversion": {
+      "types": "./src/extensions/conversion/index.ts",
+      "import": "./src/extensions/conversion/index.js",
+      "require": "./src/extensions/conversion/index.js"
+    },
+    "./extensions/conversion/*": {
+      "types": "./src/extensions/conversion/*.ts",
+      "import": "./src/extensions/conversion/*.js",
+      "require": "./src/extensions/conversion/*.js"
+    },
+    "./extensions/*/": {
+      "types": "./src/extensions/*/",
+      "import": "./src/extensions/*/",
+      "require": "./src/extensions/*/"
+    },
+    "./platform/user/*": {
+      "types": "./src/platform/user/*.ts",
+      "import": "./src/platform/user/*.js",
+      "require": "./src/platform/user/*.js"
+    },
+    "./platform/admin/*": {
+      "types": "./src/platform/admin/*.ts",
+      "import": "./src/platform/admin/*.js", 
+      "require": "./src/platform/admin/*.js"
+    }
   }
 }
