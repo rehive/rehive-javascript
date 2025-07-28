@@ -229,7 +229,7 @@ console.log(accounts.data.results); // Access account list
 
 ### Error Handling
 
-The SDK provides comprehensive error handling through the `ApiError` class:
+The SDK provides error handling through the `ApiError` class:
 
 ```typescript
 import { RehiveClient, ApiError } from 'rehive';
@@ -429,7 +429,7 @@ const rehive = new RehiveClient({
 
 ## TypeScript Support
 
-The SDK is fully typed with comprehensive TypeScript support:
+The SDK is fully typed with TypeScript support:
 
 ```typescript
 import { RehiveClient, type RehiveConfig, type UserSession } from 'rehive';
