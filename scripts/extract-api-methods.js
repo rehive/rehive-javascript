@@ -95,6 +95,12 @@ const endpoints = [
     url: 'https://bridge.services.rehive.com/schema.json',
     clientName: 'bridge-api',
     fileName: 'bridge-methods.md'
+  },
+  { 
+    name: 'App Extension', 
+    url: 'https://app.services.rehive.com/schema.json',
+    clientName: 'app-api',
+    fileName: 'app-methods.md'
   }
 ];
 

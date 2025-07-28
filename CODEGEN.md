@@ -10,15 +10,11 @@ The SDK includes multiple API clients generated from swagger specs:
 src/
 ├── platform/
 │   ├── user/           # Platform User API (generated)
-│   │   ├── data-contracts.ts
-│   │   ├── http-client.ts
 │   │   └── rehive-platform-user-api.ts
 │   └── admin/          # Platform Admin API (generated)
-│       ├── data-contracts.ts
-│       ├── http-client.ts
 │       └── rehive-platform-admin-api.ts
 ├── extensions/         # Service Extensions (generated)
-│   ├── conversion/
+│   ├── conversion/     # Single API file per extension
 │   ├── mass-send/
 │   ├── notifications/
 │   ├── products/
@@ -27,11 +23,14 @@ src/
 │   ├── stellar-testnet/
 │   ├── business/
 │   ├── payment-requests/
-│   └── bridge/
+│   ├── bridge/
+│   └── app/
 ├── shared/
 │   └── http-client.ts  # Shared/customized HTTP client
 └── auth/              # Auth functionality using Platform User API
 ```
+
+**Note:** Each extension generates a single API file. The swagger templates automatically handle importing the shared HTTP client, so no manual file updates are required.
 
 ## Updating Generated Files
 
@@ -194,12 +193,41 @@ npx swagger-typescript-api generate \
   --extract-response-body
 ```
 
-**After generating each extension:**
-1. Update the generated `http-client.ts` to re-export shared client:
-```typescript
-export * from '../../shared/http-client.js';
+#### App Extension
+```bash
+npx swagger-typescript-api generate \
+  --templates ./swagger-templates \
+  --path https://app.services.rehive.com/schema.json \
+  --output src/extensions/app/ \
+  --name rehive-app-api \
+  --extract-request-params \
+  --extract-response-error \
+  --extract-response-body
 ```
-2. Export from main index.ts
+
+### After generating an extension:
+
+1. Add the type import in `src/client/rehive-client.ts`:
+```typescript
+import type { Api as AppApi } from '../extensions/app/rehive-app-api.js';
+```
+
+2. Add the factory method to the extensions object:
+```typescript
+public readonly extensions = {
+  // ... other extensions
+  app: (config: { baseUrl?: string } = {}) => this.createAppApi(config),
+```
+
+3. Add the create method:
+```typescript
+private createAppApi(config: { baseUrl?: string } = {}): AppApi<unknown> {
+  const { Api } = require('../extensions/app/rehive-app-api.js');
+  return this.createExtensionApi(Api, {
+    baseUrl: config.baseUrl || 'https://app.services.rehive.com/api/'
+  });
+}
+```
 
 ## Customizations
 

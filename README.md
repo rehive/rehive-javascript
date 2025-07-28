@@ -162,6 +162,9 @@ await products.user.userProductsList({});
 const notifications = rehive.extensions.notifications();
 await notifications.user.userNotificationsList({});
 
+const app = rehive.extensions.app();
+await app.user.userAppsRetrieve({});
+
 // Custom environment URLs (same pattern for all extensions)
 const stagingConversion = rehive.extensions.conversion({
   baseUrl: 'https://onversion.services.rehive.com/api/'
@@ -367,7 +370,8 @@ src/
 │   ├── stellar-testnet/# 101 methods
 │   ├── business/       # 84 methods
 │   ├── payment-requests/# 77 methods
-│   └── bridge/         # 27 methods
+│   ├── bridge/         # 27 methods
+│   └── app/            # 46 methods
 ├── shared/
 │   └── http-client.ts  # Shared/customized HTTP client
 └── auth/              # Auth functionality using Platform User API
@@ -389,8 +393,9 @@ src/
 | Business Extension | `business-api` | 84 | [Methods](./docs/api-methods/business-methods.md) |
 | Payment Requests Extension | `payment-requests-api` | 77 | [Methods](./docs/api-methods/payment-requests-methods.md) |
 | Bridge Extension | `bridge-api` | 27 | [Methods](./docs/api-methods/bridge-methods.md) |
+| App Extension | `app-api` | 46 | [Methods](./docs/api-methods/app-methods.md) |
 
-**Total: 1,339 API methods across platform and extensions**
+**Total: 1,385 API methods across platform and extensions**
 
 📋 [View complete API overview](./docs/api-methods-overview.md)
 
