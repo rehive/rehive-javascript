@@ -170,7 +170,7 @@ export class TokenManager {
   }
 
   private setupCrossTabSync(): void {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
       const handleStorageChange = (event: StorageEvent) => {
         if (event.key === this.storageKey && event.newValue) {
           try {

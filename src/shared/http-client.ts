@@ -191,6 +191,12 @@ export class HttpClient<SecurityDataType = unknown> {
         this.abortControllers.delete(cancelToken);
       }
 
+      // Automatic response unwrapping for backward compatibility
+      // If response has the format {status: "success", data: {...}}, return just the data
+      if (data && typeof data === 'object' && data.status === 'success' && 'data' in data) {
+        return data.data;
+      }
+
       return data;
     });
   };

@@ -267,14 +267,28 @@ export class RehiveClient {
   // I'll continue with the key methods in the next part
 
   private getDefaultStorage(): StorageAdapter {
-    if (typeof window !== 'undefined') {
+    // Check for React Native environment
+    if (typeof navigator !== 'undefined' && navigator.product === 'ReactNative') {
+      return new MemoryStorageAdapter();
+    }
+    // Check for web browser environment
+    if (typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
       return new WebStorageAdapter();
     }
+    // Default to memory storage for server-side or unknown environments
     return new MemoryStorageAdapter();
   }
 
   private setupCrossTabSync(): void {
-    if (typeof window !== 'undefined') {
+    // Skip cross-tab sync in React Native
+    if (typeof navigator !== 'undefined' && navigator.product === 'ReactNative') {
+      return;
+    }
+    
+    // Only setup cross-tab sync in actual browser environments
+    if (typeof window !== 'undefined' && 
+        typeof window.addEventListener === 'function' && 
+        typeof window.localStorage !== 'undefined') {
       const handleStorageChange = (event: StorageEvent) => {
         if (event.key === this.storageKey && event.newValue) {
           try {
@@ -407,73 +421,114 @@ export class RehiveClient {
   }
 
   private createConversionApi(config: { baseUrl?: string } = {}): ConversionApi<unknown> {
-    const { Api } = require('../extensions/conversion/rehive-conversion-api.js');
-    return this.createExtensionApi(Api, {
-      baseUrl: config.baseUrl || 'https://conversion.services.rehive.com/api/'
-    });
+    // Use dynamic import with try-catch for React Native compatibility
+    try {
+      const { Api } = require('../extensions/conversion/rehive-conversion-api.js');
+      return this.createExtensionApi(Api, {
+        baseUrl: config.baseUrl || 'https://conversion.services.rehive.com/api/'
+      });
+    } catch (error) {
+      throw new Error('ConversionApi not available in this environment: ' + (error instanceof Error ? error.message : String(error)));
+    }
   }
 
   private createMassSendApi(config: { baseUrl?: string } = {}): MassSendApi<unknown> {
-    const { Api } = require('../extensions/mass-send/rehive-mass-send-api.js');
-    return this.createExtensionApi(Api, {
-      baseUrl: config.baseUrl || 'https://mass-send.services.rehive.com/api/'
-    });
+    try {
+      const { Api } = require('../extensions/mass-send/rehive-mass-send-api.js');
+      return this.createExtensionApi(Api, {
+        baseUrl: config.baseUrl || 'https://mass-send.services.rehive.com/api/'
+      });
+    } catch (error) {
+      throw new Error('MassSendApi not available in this environment: ' + (error instanceof Error ? error.message : String(error)));
+    }
   }
 
   private createNotificationsApi(config: { baseUrl?: string } = {}): NotificationsApi<unknown> {
-    const { Api } = require('../extensions/notifications/rehive-notifications-api.js');
-    return this.createExtensionApi(Api, {
-      baseUrl: config.baseUrl || 'https://notification.services.rehive.com/api/'
-    });
+    try {
+      const { Api } = require('../extensions/notifications/rehive-notifications-api.js');
+      return this.createExtensionApi(Api, {
+        baseUrl: config.baseUrl || 'https://notification.services.rehive.com/api/'
+      });
+    } catch (error) {
+      throw new Error('NotificationsApi not available in this environment: ' + (error instanceof Error ? error.message : String(error)));
+    }
   }
 
   private createProductsApi(config: { baseUrl?: string } = {}): ProductsApi<unknown> {
-    const { Api } = require('../extensions/products/rehive-products-api.js');
-    return this.createExtensionApi(Api, {
-      baseUrl: config.baseUrl || 'https://product.services.rehive.com/api/'
-    });
+    try {
+      const { Api } = require('../extensions/products/rehive-products-api.js');
+      return this.createExtensionApi(Api, {
+        baseUrl: config.baseUrl || 'https://product.services.rehive.com/api/'
+      });
+    } catch (error) {
+      throw new Error('ProductsApi not available in this environment: ' + (error instanceof Error ? error.message : String(error)));
+    }
   }
 
   private createRewardsApi(config: { baseUrl?: string } = {}): RewardsApi<unknown> {
-    const { Api } = require('../extensions/rewards/rehive-rewards-api.js');
-    return this.createExtensionApi(Api, {
-      baseUrl: config.baseUrl || 'https://reward.services.rehive.com/api/'
-    });
+    try {
+      const { Api } = require('../extensions/rewards/rehive-rewards-api.js');
+      return this.createExtensionApi(Api, {
+        baseUrl: config.baseUrl || 'https://reward.services.rehive.com/api/'
+      });
+    } catch (error) {
+      throw new Error('RewardsApi not available in this environment: ' + (error instanceof Error ? error.message : String(error)));
+    }
   }
 
   private createStellarApi(config: { baseUrl?: string } = {}): StellarApi<unknown> {
-    const { Api } = require('../extensions/stellar/rehive-stellar-api.js');
-    return this.createExtensionApi(Api, {
-      baseUrl: config.baseUrl || 'https://stellar.services.rehive.com/api/'
-    });
+    try {
+      const { Api } = require('../extensions/stellar/rehive-stellar-api.js');
+      return this.createExtensionApi(Api, {
+        baseUrl: config.baseUrl || 'https://stellar.services.rehive.com/api/'
+      });
+    } catch (error) {
+      throw new Error('StellarApi not available in this environment: ' + (error instanceof Error ? error.message : String(error)));
+    }
   }
 
   private createStellarTestnetApi(config: { baseUrl?: string } = {}): StellarTestnetApi<unknown> {
-    const { Api } = require('../extensions/stellar-testnet/rehive-stellar-testnet-api.js');
-    return this.createExtensionApi(Api, {
-      baseUrl: config.baseUrl || 'https://stellar-testnet.services.rehive.com/api/'
-    });
+    try {
+      const { Api } = require('../extensions/stellar-testnet/rehive-stellar-testnet-api.js');
+      return this.createExtensionApi(Api, {
+        baseUrl: config.baseUrl || 'https://stellar-testnet.services.rehive.com/api/'
+      });
+    } catch (error) {
+      throw new Error('StellarTestnetApi not available in this environment: ' + (error instanceof Error ? error.message : String(error)));
+    }
   }
 
   private createBusinessApi(config: { baseUrl?: string } = {}): BusinessApi<unknown> {
-    const { Api } = require('../extensions/business/rehive-business-api.js');
-    return this.createExtensionApi(Api, {
-      baseUrl: config.baseUrl || 'https://business.services.rehive.com/api/'
-    });
+    try {
+      const { Api } = require('../extensions/business/rehive-business-api.js');
+      return this.createExtensionApi(Api, {
+        baseUrl: config.baseUrl || 'https://business.services.rehive.com/api/'
+      });
+    } catch (error) {
+      throw new Error('BusinessApi not available in this environment: ' + (error instanceof Error ? error.message : String(error)));
+    }
   }
 
   private createPaymentRequestsApi(config: { baseUrl?: string } = {}): PaymentRequestsApi<unknown> {
-    const { Api } = require('../extensions/payment-requests/rehive-payment-requests-api.js');
-    return this.createExtensionApi(Api, {
-      baseUrl: config.baseUrl || 'https://payment-requests.services.rehive.com/api/'
-    });
+    try {
+      const { Api } = require('../extensions/payment-requests/rehive-payment-requests-api.js');
+      return this.createExtensionApi(Api, {
+        baseUrl: config.baseUrl || 'https://payment-requests.services.rehive.com/api/'
+      });
+    } catch (error) {
+      throw new Error('PaymentRequestsApi not available in this environment: ' + (error instanceof Error ? error.message : String(error)));
+    }
   }
 
   private createBridgeApi(config: { baseUrl?: string } = {}): BridgeApi<unknown> {
-    const { Api } = require('../extensions/bridge/rehive-bridge-api.js');
-    return this.createExtensionApi(Api, {
-      baseUrl: config.baseUrl || 'https://bridge.services.rehive.com/api/'
-    });
+    try {
+      const { Api } = require('../extensions/bridge/rehive-bridge-api.js');
+      return this.createExtensionApi(Api, {
+        baseUrl: config.baseUrl || 'https://bridge.services.rehive.com/api/'
+      });
+    } catch (error) {
+      throw new Error('BridgeApi not available in this environment: ' + (error instanceof Error ? error.message : String(error)));
+    }
   }
 
   /**
@@ -518,12 +573,12 @@ export class RehiveClient {
       };
       const response = await this.user.authLogin(loginData);
 
-      if (!response.data) {
+      if (!response) {
         throw new Error('Response data is missing');
       }
 
-      // With our custom templates, response.data contains the login data directly
-      const loginResponseData = response.data;
+      // Response is already unwrapped by HttpClient
+      const loginResponseData = response;
       
       const newSession: UserSession = {
         user: loginResponseData.user,
@@ -577,12 +632,12 @@ export class RehiveClient {
       };
       const response = await this.user.authRegister(registerData as Register);
 
-      if (!response.data) {
+      if (!response) {
         throw new Error('Response data is missing');
       }
 
-      // With our custom templates, response.data contains the register data directly
-      const registerResponseData = response.data;
+      // Response is already unwrapped by HttpClient
+      const registerResponseData = response;
       
       const newSession: UserSession = {
         user: registerResponseData.user,
@@ -649,12 +704,12 @@ export class RehiveClient {
           session_duration: 60
         });
 
-        if (!response.data) {
+        if (!response) {
           throw new Error('Refresh response data is missing');
         }
 
-        // With our custom templates, response.data contains the refresh data directly
-        const refreshResponseData = response.data;
+        // Response is already unwrapped by HttpClient
+        const refreshResponseData = response;
         
         const updatedSessions = [...currentAuthState.sessions];
         updatedSessions[activeSessionIndex] = {
