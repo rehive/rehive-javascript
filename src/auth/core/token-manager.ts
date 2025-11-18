@@ -553,6 +553,7 @@ export class TokenManager {
           ...activeSession,
           refresh_token: response.data.refresh_token,
           expires: response.data.expires,
+          company: activeSession.company,
         };
 
         const newAuthState = {
@@ -614,10 +615,16 @@ export class TokenManager {
         refresh_token: response.data.refresh_token,
         challenges: response.data.challenges,
         expires: response.data.expires,
+        company: params.company,
       };
 
       const currentAuthState = await this.loadAuthState();
-      const existingSessionIndex = currentAuthState.sessions.findIndex((session: UserSession) => session.user.id === newSession.user.id);
+      // Match sessions by both user.id and company to support multi-company logins
+      const existingSessionIndex = currentAuthState.sessions.findIndex(
+        (session: UserSession) =>
+          session.user.id === newSession.user.id &&
+          session.company === newSession.company
+      );
 
       let newAuthState: AuthState;
       if (existingSessionIndex !== -1) {
@@ -673,6 +680,7 @@ export class TokenManager {
         refresh_token: response.data.refresh_token,
         challenges: response.data.challenges,
         expires: response.data.expires,
+        company: params.company,
       };
 
       const currentAuthState = await this.loadAuthState();
