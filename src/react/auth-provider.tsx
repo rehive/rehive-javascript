@@ -13,6 +13,11 @@ interface AuthContextType {
   authLoading: boolean;
   authError: Error | null | undefined;
   deleteChallenge: (challengeId: string | undefined) => Promise<void>;
+  getSessions: () => AuthSession[];
+  getSessionsByCompany: (company: string) => AuthSession[];
+  switchToSession: (userId: string, company?: string) => Promise<AuthSession | null>;
+  clearAllSessions: () => Promise<void>;
+  logoutAll: () => Promise<void>;
   rehive: RehiveClient;
 }
 
@@ -98,10 +103,52 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
 
   const deleteChallenge = async (challengeId: string | undefined): Promise<void> => {
     if (!challengeId) return;
-    
+
     setAuthLoading(true);
     try {
       await rehive.auth.deleteChallenge(challengeId);
+    } catch (error) {
+      throw error;
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const getSessions = (): AuthSession[] => {
+    return rehive.auth.getSessions();
+  };
+
+  const getSessionsByCompany = (company: string): AuthSession[] => {
+    return rehive.auth.getSessionsByCompany(company);
+  };
+
+  const switchToSession = async (userId: string, company?: string): Promise<AuthSession | null> => {
+    setAuthLoading(true);
+    try {
+      const session = await rehive.auth.switchToSession(userId, company);
+      return session;
+    } catch (error) {
+      throw error;
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const clearAllSessions = async (): Promise<void> => {
+    setAuthLoading(true);
+    try {
+      await rehive.auth.clearAllSessions();
+    } catch (error) {
+      throw error;
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const logoutAll = async (): Promise<void> => {
+    setAuthLoading(true);
+    try {
+      await rehive.auth.logoutAll();
     } catch (error) {
       throw error;
     } finally {
@@ -119,6 +166,11 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
     authLoading,
     authError,
     deleteChallenge,
+    getSessions,
+    getSessionsByCompany,
+    switchToSession,
+    clearAllSessions,
+    logoutAll,
     rehive,
   };
 

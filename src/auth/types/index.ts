@@ -21,6 +21,7 @@ export interface AuthSession {
   refresh_token: string;
   challenges: any[];
   expires: number;
+  company?: string;
 }
 
 // Alias for backward compatibility

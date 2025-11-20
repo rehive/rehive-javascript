@@ -263,6 +263,82 @@ export class TokenManager {
     return null;
   }
 
+  /**
+   * Get all stored sessions.
+   *
+   * Returns an array of all sessions currently stored in the TokenManager.
+   * This is useful for displaying a list of available sessions/users in the UI.
+   *
+   * @returns Array of all sessions
+   */
+  public getSessions(): UserSession[] {
+    return [...this.sessions];
+  }
+
+  /**
+   * Get all sessions for a specific company.
+   *
+   * Filters sessions by company identifier, useful for displaying sessions
+   * grouped by company in multi-company applications.
+   *
+   * @param company - The company identifier to filter by
+   * @returns Array of sessions belonging to the specified company
+   */
+  public getSessionsByCompany(company: string): UserSession[] {
+    return this.sessions.filter(session => session.company === company);
+  }
+
+  /**
+   * Switch to a different session without requiring login.
+   *
+   * This method allows users to switch between previously authenticated sessions.
+   * It updates the active session, syncs tokens to all API instances, and notifies
+   * session listeners. If the session token is expired, it will automatically refresh.
+   *
+   * @param userId - The user ID of the session to switch to
+   * @param company - Optional company identifier to match (required for multi-company setups)
+   * @returns The activated session, or null if no matching session was found
+   * @throws Error if token refresh fails
+   */
+  public async switchToSession(userId: string, company?: string): Promise<UserSession | null> {
+    const currentAuthState = await this.loadAuthState();
+
+    // Find the session matching both userId and company
+    const sessionIndex = currentAuthState.sessions.findIndex(
+      (session: UserSession) =>
+        session.user.id === userId &&
+        session.company === company
+    );
+
+    if (sessionIndex === -1) {
+      return null;
+    }
+
+    const session = currentAuthState.sessions[sessionIndex];
+
+    // Update the active session index
+    const newAuthState = {
+      ...currentAuthState,
+      activeSessionIndex: sessionIndex,
+    };
+
+    await this.saveAuthState(newAuthState);
+
+    // Check if token is expired and refresh if needed
+    if (session.expires && this.isTokenExpired(session.expires)) {
+      await this.refresh();
+      // Get the updated session after refresh
+      const updatedSession = this.getActiveSession();
+      return updatedSession;
+    }
+
+    // Sync tokens to all API instances and notify listeners
+    this.syncTokensToAllInstances(session.token, session.expires);
+    this.notifySessionListeners();
+
+    return session;
+  }
+
   public getCurrentError(): Error | null {
     return this.currentError;
   }
@@ -553,6 +629,7 @@ export class TokenManager {
           ...activeSession,
           refresh_token: response.data.refresh_token,
           expires: response.data.expires,
+          company: activeSession.company,
         };
 
         const newAuthState = {
@@ -614,10 +691,16 @@ export class TokenManager {
         refresh_token: response.data.refresh_token,
         challenges: response.data.challenges,
         expires: response.data.expires,
+        company: params.company,
       };
 
       const currentAuthState = await this.loadAuthState();
-      const existingSessionIndex = currentAuthState.sessions.findIndex((session: UserSession) => session.user.id === newSession.user.id);
+      // Match sessions by both user.id and company to support multi-company logins
+      const existingSessionIndex = currentAuthState.sessions.findIndex(
+        (session: UserSession) =>
+          session.user.id === newSession.user.id &&
+          session.company === newSession.company
+      );
 
       let newAuthState: AuthState;
       if (existingSessionIndex !== -1) {
@@ -673,6 +756,7 @@ export class TokenManager {
         refresh_token: response.data.refresh_token,
         challenges: response.data.challenges,
         expires: response.data.expires,
+        company: params.company,
       };
 
       const currentAuthState = await this.loadAuthState();
@@ -736,6 +820,63 @@ export class TokenManager {
       const error = e instanceof Error ? e : new Error('Failed to delete challenge');
       this.notifyErrorListeners(error);
     }
+  }
+
+  /**
+   * Clear all sessions locally without calling logout API
+   *
+   * This method removes all sessions from local storage without making
+   * API calls to invalidate tokens on the server. Useful for quick local
+   * cleanup or "sign out everywhere" functionality.
+   */
+  public async clearAllSessions(): Promise<void> {
+    const newAuthState: AuthState = {
+      sessions: [],
+      activeSessionIndex: -1,
+    };
+
+    await this.saveAuthState(newAuthState);
+    this.syncTokensToAllInstances(null);
+    this.notifyErrorListeners(null);
+  }
+
+  /**
+   * Logout all sessions by calling logout API for each session
+   *
+   * This method iterates through all sessions and calls the logout endpoint
+   * for each one to properly invalidate tokens on the server. This is more
+   * thorough than clearAllSessions but takes longer.
+   *
+   * @returns Promise that resolves when all logout calls complete
+   */
+  public async logoutAll(): Promise<void> {
+    const currentAuthState = await this.loadAuthState();
+    const sessions = currentAuthState.sessions;
+
+    // Call logout for each session
+    const logoutPromises = sessions.map(async (session) => {
+      try {
+        // Temporarily set this session's token for the logout call
+        this.platformApi.setSecurityData(`Token ${session.token}`);
+        await this.platformApi.authLogout({ clear_session_option: 'none' });
+      } catch (e) {
+        // Log error but continue with other logouts
+        console.warn('Logout API call failed for session:', session.user.id, e);
+      }
+    });
+
+    // Wait for all logout calls to complete
+    await Promise.all(logoutPromises);
+
+    // Clear all sessions locally
+    const newAuthState: AuthState = {
+      sessions: [],
+      activeSessionIndex: -1,
+    };
+
+    await this.saveAuthState(newAuthState);
+    this.syncTokensToAllInstances(null);
+    this.notifyErrorListeners(null);
   }
 
   public subscribeToSession(listener: SessionListener): () => void {

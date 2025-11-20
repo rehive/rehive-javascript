@@ -1,6 +1,7 @@
 import { AuthProvider } from 'rehive/react'
 import { WebStorageAdapter } from 'rehive'
 import { LoginForm } from './components/LoginForm'
+import { SessionSwitcher } from './components/SessionSwitcher'
 import { TOTPFlow } from './components/TOTPFlow'
 import { UserDetails } from './components/UserDetails'
 import { ConversionDemo } from './components/ConversionDemo'
@@ -26,12 +27,13 @@ function App() {
         <div className="app-content">
           <main className="main-content">
             <LoginForm />
+            <SessionSwitcher />
             <TOTPFlow />
             <UserDetails />
             <ConversionDemo />
             <RehiveClientDemo />
           </main>
-          
+
           <aside className="sidebar">
             <DebugPanel />
           </aside>

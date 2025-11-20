@@ -401,6 +401,114 @@ src/
 
 ## Advanced Usage
 
+### Multi-Company Session Management
+
+The SDK supports managing multiple sessions for the same user across different companies. This is useful for applications where users can be authenticated to multiple companies simultaneously.
+
+```typescript
+// Login to first company
+await rehive.auth.login({
+  user: 'user@example.com',
+  password: 'password',
+  company: 'company-one'
+});
+
+// Login to second company (adds a new session)
+await rehive.auth.login({
+  user: 'user@example.com',
+  password: 'password',
+  company: 'company-two'
+});
+
+// Get all active sessions
+const sessions = rehive.auth.getSessions();
+console.log(`You have ${sessions.length} active sessions`);
+
+// Get sessions for a specific company
+const companyOneSessions = rehive.auth.getSessionsByCompany('company-one');
+
+// Switch between sessions without re-authenticating
+await rehive.auth.switchToSession('user-id', 'company-two');
+
+// All subsequent API calls will use the active session
+const profile = await rehive.user.userRetrieve(); // Uses company-two session
+
+// Clear all sessions locally (fast, but doesn't invalidate tokens on server)
+await rehive.auth.clearAllSessions();
+
+// Logout all sessions on the server (slower, but properly invalidates all tokens)
+await rehive.auth.logoutAll();
+```
+
+**Key Features:**
+- **Multiple sessions per user**: Maintain separate sessions for different companies
+- **Seamless switching**: Change active session without re-authentication
+- **Automatic token refresh**: Sessions are refreshed automatically when switching
+- **Company tracking**: Each session stores the company identifier for easy lookup
+
+**React Integration:**
+```typescript
+import { useAuth } from 'rehive/react';
+
+function SessionSwitcher() {
+  const {
+    getSessions,
+    getSessionsByCompany,
+    switchToSession,
+    clearAllSessions,
+    logoutAll
+  } = useAuth();
+
+  const sessions = getSessions();
+
+  // Group sessions by company
+  const sessionsByCompany = sessions.reduce((acc, session) => {
+    const company = session.company || 'unknown';
+    if (!acc[company]) acc[company] = [];
+    acc[company].push(session);
+    return acc;
+  }, {});
+
+  const handleSwitch = async (userId, company) => {
+    await switchToSession(userId, company);
+    // UI automatically updates via session listeners
+  };
+
+  const handleClearAll = async () => {
+    if (confirm('Clear all sessions locally?')) {
+      await clearAllSessions();
+    }
+  };
+
+  const handleLogoutAll = async () => {
+    if (confirm('Logout all sessions on server?')) {
+      await logoutAll();
+    }
+  };
+
+  return (
+    <div>
+      {Object.entries(sessionsByCompany).map(([company, sessions]) => (
+        <div key={company}>
+          <h3>{company}</h3>
+          {sessions.map(session => (
+            <button
+              key={session.user.id}
+              onClick={() => handleSwitch(session.user.id, session.company)}
+            >
+              {session.user.email}
+            </button>
+          ))}
+        </div>
+      ))}
+
+      <button onClick={handleClearAll}>Clear All Sessions</button>
+      <button onClick={handleLogoutAll}>Logout All Sessions</button>
+    </div>
+  );
+}
+```
+
 ### Error Handling
 
 ```typescript

@@ -15,6 +15,8 @@ export function LoginForm() {
     setIsLoggingIn(true)
     try {
       await login(credentials)
+      // Clear form after successful login
+      setCredentials({ user: '', password: '', company: '' })
     } catch (error) {
       console.error('Login failed:', error)
     } finally {
@@ -39,26 +41,22 @@ export function LoginForm() {
     )
   }
 
-  if (authUser) {
-    return (
-      <div className="authenticated-view">
-        <div className="user-section">
-          <h2>✓ Authentication Successful</h2>
-          <p>You are now authenticated with the Rehive platform. Check the debug panel for detailed session information.</p>
-          
-          <button onClick={handleLogout} className="logout-btn">
-            Logout
-          </button>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="login-section">
       <h2>Rehive SDK Authentication</h2>
-      <p>Test the SDK authentication flow with your Rehive credentials.</p>
-      
+
+      {authUser ? (
+        <div className="auth-status">
+          <p className="status-success">✓ Currently authenticated as {authUser.user.email || authUser.user.id}</p>
+          <p className="status-info">You can add another session by logging in with different credentials below.</p>
+          <button onClick={handleLogout} className="logout-btn-inline">
+            Logout Current Session
+          </button>
+        </div>
+      ) : (
+        <p>Test the SDK authentication flow with your Rehive credentials.</p>
+      )}
+
       <form onSubmit={handleLogin} className="login-form">
         <div className="form-group">
           <label htmlFor="user">Email or Username</label>
@@ -71,7 +69,7 @@ export function LoginForm() {
             placeholder="user@example.com"
           />
         </div>
-        
+
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
@@ -83,7 +81,7 @@ export function LoginForm() {
             placeholder="••••••••"
           />
         </div>
-        
+
         <div className="form-group">
           <label htmlFor="company">Company ID</label>
           <input
@@ -95,12 +93,12 @@ export function LoginForm() {
             placeholder="your-company-id"
           />
         </div>
-        
+
         <button type="submit" disabled={isLoggingIn} className="login-btn">
-          {isLoggingIn ? 'Authenticating...' : 'Authenticate'}
+          {isLoggingIn ? 'Authenticating...' : authUser ? 'Add Another Session' : 'Authenticate'}
         </button>
       </form>
-      
+
       {authError && (
         <div className="error-message">
           <h4>Authentication Failed</h4>
