@@ -933,3 +933,41 @@ body {
   margin-top: 1rem;
   font-size: 1.1rem;
 }
+
+/* Auth Status Styles */
+.auth-status {
+  background: rgba(40, 167, 69, 0.1);
+  border-left: 3px solid #28a745;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 4px;
+}
+
+.status-success {
+  margin: 0 0 0.5rem 0;
+  color: #28a745;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.status-info {
+  margin: 0 0 1rem 0;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.logout-btn-inline {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.logout-btn-inline:hover {
+  background: #c82333;
+}
