@@ -2,6 +2,8 @@
 
 A modern TypeScript SDK for the Rehive platform and extension APIs, providing a unified interface for both server-side and client-side usage.
 
+> **Note:** This is version 3 of the Rehive JavaScript SDK. For the previous version (v2) documentation, please refer to the [v2 branch](https://github.com/rehive/rehive-javascript/tree/v2).
+
 ## Installation
 
 ```bash
@@ -160,6 +162,9 @@ await products.user.userProductsList({});
 const notifications = rehive.extensions.notifications();
 await notifications.user.userNotificationsList({});
 
+const app = rehive.extensions.app();
+await app.user.userAppsRetrieve({});
+
 // Custom environment URLs (same pattern for all extensions)
 const stagingConversion = rehive.extensions.conversion({
   baseUrl: 'https://onversion.services.rehive.com/api/'
@@ -229,7 +234,7 @@ console.log(accounts.data.results); // Access account list
 
 ### Error Handling
 
-The SDK provides comprehensive error handling through the `ApiError` class:
+The SDK provides error handling through the `ApiError` class:
 
 ```typescript
 import { RehiveClient, ApiError } from 'rehive';
@@ -365,7 +370,8 @@ src/
 │   ├── stellar-testnet/# 101 methods
 │   ├── business/       # 84 methods
 │   ├── payment-requests/# 77 methods
-│   └── bridge/         # 27 methods
+│   ├── bridge/         # 27 methods
+│   └── app/            # 46 methods
 ├── shared/
 │   └── http-client.ts  # Shared/customized HTTP client
 └── auth/              # Auth functionality using Platform User API
@@ -387,8 +393,9 @@ src/
 | Business Extension | `business-api` | 84 | [Methods](./docs/api-methods/business-methods.md) |
 | Payment Requests Extension | `payment-requests-api` | 77 | [Methods](./docs/api-methods/payment-requests-methods.md) |
 | Bridge Extension | `bridge-api` | 27 | [Methods](./docs/api-methods/bridge-methods.md) |
+| App Extension | `app-api` | 46 | [Methods](./docs/api-methods/app-methods.md) |
 
-**Total: 1,339 API methods across platform and extensions**
+**Total: 1,385 API methods across platform and extensions**
 
 📋 [View complete API overview](./docs/api-methods-overview.md)
 
@@ -537,7 +544,7 @@ const rehive = new RehiveClient({
 
 ## TypeScript Support
 
-The SDK is fully typed with comprehensive TypeScript support:
+The SDK is fully typed with TypeScript support:
 
 ```typescript
 import { RehiveClient, type RehiveConfig, type UserSession } from 'rehive';

@@ -1,7 +1,7 @@
 {
   "name": "rehive",
-  "version": "3.0.0",
-  "description": "Comprehensive SDK for Rehive Platform and Extensions",
+  "version": "3.1.0",
+  "description": "SDK for Rehive Platform and Extensions",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",

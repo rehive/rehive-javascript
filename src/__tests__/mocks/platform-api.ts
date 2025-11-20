@@ -76,8 +76,8 @@ export class MockRehivePlatformUserApi {
       throw new Error('Invalid credentials');
     }
     
-    // Return in the format that generated APIs return: { data: actualApiResponse }
-    return { data: mockLoginResponse };
+    // Return the login response data directly (the SDK expects response.data to contain the actual data)
+    return mockLoginResponse;
   }
 
   async authRegister(data: Register) {
@@ -87,12 +87,12 @@ export class MockRehivePlatformUserApi {
       throw new Error('User already exists');
     }
     
-    return { data: mockRegisterResponse };
+    return mockRegisterResponse;
   }
 
   async authLogout(data: Logout) {
     await new Promise(resolve => setTimeout(resolve, 50));
-    return { data: mockLogoutResponse };
+    return mockLogoutResponse;
   }
 
   async userRetrieve() {
@@ -107,8 +107,8 @@ export class MockRehivePlatformUserApi {
   }
 
   // Mock other methods as needed
-  async listAccounts() {
-    return { data: { status: 'success', data: { results: [] } } };
+  async userAccountsList() {
+    return { status: 'success', data: { results: [] } };
   }
   
   async adminUsersCreate(data: any) {
@@ -119,13 +119,11 @@ export class MockRehivePlatformUserApi {
   // Mock refresh method for refresh token
   async authRefreshCreate(data: any) {
     await new Promise(resolve => setTimeout(resolve, 50));
-    return { 
+    return {
+      status: 'success',
       data: {
-        status: 'success',
-        data: {
-          refresh_token: 'new-refresh-token-123',
-          expires: Date.now() + 3600000
-        }
+        refresh_token: 'new-refresh-token-123',
+        expires: Date.now() + 3600000
       }
     };
   }
@@ -138,7 +136,7 @@ export class MockRehivePlatformUserApi {
   // Add user property for conversion API compatibility
   user = {
     userConversionPairsList: async (params: any) => {
-      return { data: { status: 'success', data: { results: [] } } };
+      return { status: 'success', data: { results: [] } };
     }
   };
 }

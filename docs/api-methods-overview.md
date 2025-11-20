@@ -59,3 +59,8 @@
 - **Client:** `bridge-api`
 - **Methods:** 27
 - **Documentation:** [bridge-methods.md](./api-methods/bridge-methods.md)
+
+## App Extension
+- **Client:** `app-api`
+- **Methods:** 46
+- **Documentation:** [app-methods.md](./api-methods/app-methods.md)

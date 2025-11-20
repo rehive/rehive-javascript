@@ -268,7 +268,7 @@ interface AccountResponse {
     data: Account;
 }
 /** This serializer can be used if only a `status` is required in the response. */
-interface ActionResponse$9 {
+interface ActionResponse$a {
     status: string;
 }
 interface AdminAccountAssetFee$1 {
@@ -1356,7 +1356,7 @@ interface BankOwnerAddress$1 {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-interface Company$3 {
+interface Company$4 {
     id: string;
     /** @maxLength 100 */
     name?: string | null;
@@ -1983,7 +1983,7 @@ interface CompanyDisallowedTransactionSubtype$1 {
     subtype: ReducedTransactionSubtype$1;
     currency: ReducedAsset$1;
 }
-interface CompanyResponse$1 {
+interface CompanyResponse$2 {
     status: string;
     /**
      * A ModelSerializer that takes additional arguments for
@@ -1991,7 +1991,7 @@ interface CompanyResponse$1 {
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    data: Company$3;
+    data: Company$4;
 }
 /**
  * A ModelSerializer that takes additional arguments for
@@ -2944,7 +2944,7 @@ interface CryptoAccountResponse {
      */
     data: CryptoAccount;
 }
-interface Deactivate$a {
+interface Deactivate$b {
     user: string;
     company: string;
 }
@@ -10827,7 +10827,7 @@ interface UserWalletAccountsCurrenciesListParams {
  * For general usage, help, and recommendations please take a look at the [platform docs](https://docs.rehive.com/platform/get-started/introduction/).
  *
  */
-declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<SecurityDataType> {
+declare class Api$c<SecurityDataType extends unknown> extends HttpClient$b<SecurityDataType> {
     v3: {
         /**
          * No description
@@ -11008,7 +11008,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/deactivate/
          * @secure
          */
-        authDeactivate: (data: Deactivate$a, params?: RequestParams) => Promise<ActionResponse$9>;
+        authDeactivate: (data: Deactivate$b, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -11018,7 +11018,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/deactivate/verify/
          * @secure
          */
-        authDeactivateVerify: (data: VerifyDeactivate$1, params?: RequestParams) => Promise<ActionResponse$9>;
+        authDeactivateVerify: (data: VerifyDeactivate$1, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -11028,7 +11028,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/email/verify/
          * @secure
          */
-        authEmailVerify: (data: VerifyEmail, params?: RequestParams) => Promise<ActionResponse$9>;
+        authEmailVerify: (data: VerifyEmail, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -11038,7 +11038,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/email/verify/resend/
          * @secure
          */
-        authEmailVerifyResend: (data: ResendVerifyEmail, params?: RequestParams) => Promise<ActionResponse$9>;
+        authEmailVerifyResend: (data: ResendVerifyEmail, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -11067,7 +11067,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/logout/
          * @secure
          */
-        authLogout: (data: Logout, params?: RequestParams) => Promise<ActionResponse$9>;
+        authLogout: (data: Logout, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -11107,7 +11107,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/auth/mfa/authenticators/{identifier}/
          * @secure
          */
-        authMfaAuthenticatorsDestroy: (identifier: string, params?: RequestParams) => Promise<ActionResponse$9>;
+        authMfaAuthenticatorsDestroy: (identifier: string, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -11117,7 +11117,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/mfa/deliver/
          * @secure
          */
-        authMfaDeliver: (data: MFADeliver, params?: RequestParams) => Promise<ActionResponse$9>;
+        authMfaDeliver: (data: MFADeliver, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -11127,7 +11127,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/mfa/verify/
          * @secure
          */
-        authMfaVerify: (data: MFAVerify, params?: RequestParams) => Promise<ActionResponse$9>;
+        authMfaVerify: (data: MFAVerify, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -11137,7 +11137,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/mobile/verify/
          * @secure
          */
-        authMobileVerify: (data: VerifyMobile, params?: RequestParams) => Promise<ActionResponse$9>;
+        authMobileVerify: (data: VerifyMobile, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -11147,7 +11147,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/mobile/verify/resend/
          * @secure
          */
-        authMobileVerifyResend: (data: ResendVerifyMobile, params?: RequestParams) => Promise<ActionResponse$9>;
+        authMobileVerifyResend: (data: ResendVerifyMobile, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -11202,7 +11202,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/password/change/
          * @secure
          */
-        authPasswordChange: (data: PasswordChange, params?: RequestParams) => Promise<ActionResponse$9>;
+        authPasswordChange: (data: PasswordChange, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -11212,7 +11212,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/password/reset/
          * @secure
          */
-        authPasswordReset: (data: PasswordReset, params?: RequestParams) => Promise<ActionResponse$9>;
+        authPasswordReset: (data: PasswordReset, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -11222,7 +11222,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/password/reset/confirm/
          * @secure
          */
-        authPasswordResetConfirm: (data: PasswordResetConfirm$1, params?: RequestParams) => Promise<ActionResponse$9>;
+        authPasswordResetConfirm: (data: PasswordResetConfirm$1, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -11251,7 +11251,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/request-delete/
          * @secure
          */
-        authRequestDelete: (data: RequestDelete, params?: RequestParams) => Promise<ActionResponse$9>;
+        authRequestDelete: (data: RequestDelete, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -11261,7 +11261,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request POST:/3/auth/request-delete/verify/
          * @secure
          */
-        authRequestDeleteVerify: (data: VerifyRequestDelete$1, params?: RequestParams) => Promise<ActionResponse$9>;
+        authRequestDeleteVerify: (data: VerifyRequestDelete$1, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -11291,7 +11291,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/auth/tokens/
          * @secure
          */
-        authTokensListDestroy: (params?: RequestParams) => Promise<ActionResponse$9>;
+        authTokensListDestroy: (params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -11311,7 +11311,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/auth/tokens/{token_key}/
          * @secure
          */
-        authTokensDestroy: (tokenKey: string, params?: RequestParams) => Promise<ActionResponse$9>;
+        authTokensDestroy: (tokenKey: string, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -11321,7 +11321,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request GET:/3/company/
          * @secure
          */
-        companyRetrieve: (params?: RequestParams) => Promise<CompanyResponse$1>;
+        companyRetrieve: (params?: RequestParams) => Promise<CompanyResponse$2>;
         /**
          * No description
          *
@@ -11611,7 +11611,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/metrics/{identifier}/
          * @secure
          */
-        metricsDestroy: (identifier: string, params?: RequestParams) => Promise<ActionResponse$9>;
+        metricsDestroy: (identifier: string, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -11815,7 +11815,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/statements/{identifier}/
          * @secure
          */
-        statementsDestroy: (identifier: string, params?: RequestParams) => Promise<ActionResponse$9>;
+        statementsDestroy: (identifier: string, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -12065,7 +12065,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/addresses/{id}/
          * @secure
          */
-        userAddressesDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$9>;
+        userAddressesDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -12125,7 +12125,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/bank-accounts/{id}/
          * @secure
          */
-        userBankAccountsDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$9>;
+        userBankAccountsDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -12165,7 +12165,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/bank-accounts/{id}/account-currencies/{account_currency_id}/
          * @secure
          */
-        userBankAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams) => Promise<ActionResponse$9>;
+        userBankAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -12209,7 +12209,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @deprecated
          * @secure
          */
-        userBankAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams) => Promise<ActionResponse$9>;
+        userBankAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -12269,7 +12269,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/crypto-accounts/{id}/
          * @secure
          */
-        userCryptoAccountsDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$9>;
+        userCryptoAccountsDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -12309,7 +12309,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/crypto-accounts/{id}/account-currencies/{account_currency_id}/
          * @secure
          */
-        userCryptoAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams) => Promise<ActionResponse$9>;
+        userCryptoAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -12353,7 +12353,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @deprecated
          * @secure
          */
-        userCryptoAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams) => Promise<ActionResponse$9>;
+        userCryptoAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -12413,7 +12413,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/devices/{device_id}/apps/{app_id}/
          * @secure
          */
-        userDevicesAppsDestroy: (appId: string, deviceId: string, params?: RequestParams) => Promise<ActionResponse$9>;
+        userDevicesAppsDestroy: (appId: string, deviceId: string, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -12453,7 +12453,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/devices/{id}/
          * @secure
          */
-        userDevicesDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$9>;
+        userDevicesDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -12512,7 +12512,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/documents/{id}/
          * @secure
          */
-        userDocumentsDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$9>;
+        userDocumentsDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -12572,7 +12572,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/emails/{id}/
          * @secure
          */
-        userEmailsDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$9>;
+        userEmailsDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -12712,7 +12712,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/mobiles/{id}/
          * @secure
          */
-        userMobilesDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$9>;
+        userMobilesDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -12772,7 +12772,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/wallet-accounts/{id}/
          * @secure
          */
-        userWalletAccountsDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$9>;
+        userWalletAccountsDestroy: (id: string, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -12812,7 +12812,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @request DELETE:/3/user/wallet-accounts/{id}/account-currencies/{account_currency_id}/
          * @secure
          */
-        userWalletAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams) => Promise<ActionResponse$9>;
+        userWalletAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams) => Promise<ActionResponse$a>;
         /**
          * No description
          *
@@ -12856,7 +12856,7 @@ declare class Api$b<SecurityDataType extends unknown> extends HttpClient$b<Secur
          * @deprecated
          * @secure
          */
-        userWalletAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams) => Promise<ActionResponse$9>;
+        userWalletAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams) => Promise<ActionResponse$a>;
     };
 }
 
@@ -12897,7 +12897,7 @@ type ErrorListener = (error: Error | null) => void;
  * The proxying happens dynamically at construction time, so all generated methods
  * are available without the v3 prefix while maintaining full TypeScript support.
  */
-declare class RehivePlatformUserApi<SecurityDataType = unknown> extends Api$b<SecurityDataType> {
+declare class RehivePlatformUserApi<SecurityDataType = unknown> extends Api$c<SecurityDataType> {
     [key: string]: any;
     constructor(config?: any);
 }
@@ -12979,7 +12979,7 @@ interface AccountAssetSettingsResponse {
     data: AccountAssetSettings;
 }
 /** This serializer can be used if only a `status` is required in the response. */
-interface ActionResponse$8 {
+interface ActionResponse$9 {
     status: string;
 }
 /**
@@ -13423,7 +13423,7 @@ interface AdminAuthenticatorRuleResponse {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-interface AdminCompany$8 {
+interface AdminCompany$9 {
     id: string;
     /** @maxLength 100 */
     name?: string | null;
@@ -13897,7 +13897,7 @@ interface AdminCompanyLinkResponse {
      */
     data: AdminCompanyLink;
 }
-interface AdminCompanyResponse$8 {
+interface AdminCompanyResponse$9 {
     status: string;
     /**
      * A ModelSerializer that takes additional arguments for
@@ -13905,7 +13905,7 @@ interface AdminCompanyResponse$8 {
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    data: AdminCompany$8;
+    data: AdminCompany$9;
 }
 /**
  * A ModelSerializer that takes additional arguments for
@@ -25139,7 +25139,7 @@ interface PatchedAdminAccountAccountAssetSettingsUpdate {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-interface PatchedAdminCompany$6 {
+interface PatchedAdminCompany$7 {
     id?: string;
     /** @maxLength 100 */
     name?: string | null;
@@ -29835,7 +29835,7 @@ declare class HttpClient$a<SecurityDataType = unknown> {
  * For general usage, help, and recommendations please take a look at the [platform docs](https://docs.rehive.com/platform/get-started/introduction/).
  *
  */
-declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<SecurityDataType> {
+declare class Api$b<SecurityDataType extends unknown> extends HttpClient$a<SecurityDataType> {
     v3: {
         /**
          * No description
@@ -29896,7 +29896,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/access-control-rules/{id}/
          * @secure
          */
-        accessControlRulesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        accessControlRulesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -30216,7 +30216,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/accounts/{reference}/currencies/{code}/fees/{fee_id}/
          * @secure
          */
-        accountsCurrenciesFeesDestroy: (code: string, feeId: string, reference: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        accountsCurrenciesFeesDestroy: (code: string, feeId: string, reference: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -30276,7 +30276,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/accounts/{reference}/currencies/{code}/limits/{limit_id}/
          * @secure
          */
-        accountsCurrenciesLimitsDestroy: (code: string, limitId: string, reference: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        accountsCurrenciesLimitsDestroy: (code: string, limitId: string, reference: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -30316,7 +30316,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/auth/deactivate/
          * @secure
          */
-        authDeactivateCreate: (data: AdminDeactivate, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        authDeactivateCreate: (data: AdminDeactivate, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -30326,7 +30326,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/auth/deactivate/verify/
          * @secure
          */
-        authDeactivateVerifyCreate: (data: VerifyDeactivate, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        authDeactivateVerifyCreate: (data: VerifyDeactivate, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -30346,7 +30346,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/auth/password/reset/
          * @secure
          */
-        authPasswordResetCreate: (data: AdminPasswordReset, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        authPasswordResetCreate: (data: AdminPasswordReset, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -30356,7 +30356,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/auth/password/reset/confirm/
          * @secure
          */
-        authPasswordResetConfirmCreate: (data: PasswordResetConfirm, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        authPasswordResetConfirmCreate: (data: PasswordResetConfirm, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -30376,7 +30376,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/auth/request-delete/
          * @secure
          */
-        authRequestDeleteCreate: (data: AdminRequestDelete, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        authRequestDeleteCreate: (data: AdminRequestDelete, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -30386,7 +30386,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request POST:/3/admin/auth/request-delete/verify/
          * @secure
          */
-        authRequestDeleteVerifyCreate: (data: VerifyRequestDelete, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        authRequestDeleteVerifyCreate: (data: VerifyRequestDelete, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -30446,7 +30446,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/authenticator-rules/{identifier}/
          * @secure
          */
-        authenticatorRulesDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        authenticatorRulesDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -30506,7 +30506,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/bank-accounts/{id}/
          * @secure
          */
-        bankAccountsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        bankAccountsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -30546,7 +30546,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/bank-accounts/{id}/currencies/{code}/
          * @secure
          */
-        bankAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        bankAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -30556,7 +30556,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request GET:/3/admin/company/
          * @secure
          */
-        companyRetrieve: (params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyResponse$8, any>>;
+        companyRetrieve: (params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyResponse$9, any>>;
         /**
          * No description
          *
@@ -30566,7 +30566,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PUT:/3/admin/company/
          * @secure
          */
-        companyUpdate: (data: AdminCompany$8, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyResponse$8, any>>;
+        companyUpdate: (data: AdminCompany$9, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyResponse$9, any>>;
         /**
          * No description
          *
@@ -30576,7 +30576,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request PATCH:/3/admin/company/
          * @secure
          */
-        companyPartialUpdate: (data: PatchedAdminCompany$6, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyResponse$8, any>>;
+        companyPartialUpdate: (data: PatchedAdminCompany$7, params?: RequestParams$b) => Promise<HttpResponse$a<AdminCompanyResponse$9, any>>;
         /**
          * No description
          *
@@ -30666,7 +30666,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/company/links/{id}/
          * @secure
          */
-        companyLinksDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        companyLinksDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -30816,7 +30816,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/document-types/{id}/
          * @secure
          */
-        documentTypesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        documentTypesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -30856,7 +30856,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/exports/{identifier}/
          * @secure
          */
-        exportsDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        exportsDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -30966,7 +30966,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/groups/{group_name}/fees/{fee_id}/
          * @secure
          */
-        groupsFeesDestroy: (feeId: string, groupName: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        groupsFeesDestroy: (feeId: string, groupName: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -31026,7 +31026,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/groups/{group_name}/permissions/{permission_id}/
          * @secure
          */
-        groupsPermissionsDestroy: (groupName: string, permissionId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        groupsPermissionsDestroy: (groupName: string, permissionId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -31116,7 +31116,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/groups/{group_name}/tiers/{tier_id}/
          * @secure
          */
-        groupsTiersDestroy: (groupName: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        groupsTiersDestroy: (groupName: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -31176,7 +31176,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/groups/{group_name}/tiers/{tier_id}/fees/{fee_id}/
          * @secure
          */
-        groupsTiersFeesDestroy: (feeId: string, groupName: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        groupsTiersFeesDestroy: (feeId: string, groupName: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -31236,7 +31236,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/groups/{group_name}/tiers/{tier_id}/limits/{limit_id}/
          * @secure
          */
-        groupsTiersLimitsDestroy: (groupName: string, limitId: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        groupsTiersLimitsDestroy: (groupName: string, limitId: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -31296,7 +31296,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/groups/{group_name}/tiers/{tier_id}/requirement-sets/{req_set_id}/
          * @secure
          */
-        groupsTiersRequirementSetsDestroy: (groupName: string, reqSetId: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        groupsTiersRequirementSetsDestroy: (groupName: string, reqSetId: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -31356,7 +31356,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/groups/{group_name}/tiers/{tier_id}/requirement-sets/{req_set_id}/items/{req_item_id}/
          * @secure
          */
-        groupsTiersRequirementSetsItemsDestroy: (groupName: string, reqItemId: string, reqSetId: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        groupsTiersRequirementSetsItemsDestroy: (groupName: string, reqItemId: string, reqSetId: string, tierId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -31446,7 +31446,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/legal-terms/{id}/
          * @secure
          */
-        legalTermsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        legalTermsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -31506,7 +31506,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/legal-terms/{term_id}/versions/{version_id}/
          * @secure
          */
-        legalTermsVersionsDestroy: (termId: string, versionId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        legalTermsVersionsDestroy: (termId: string, versionId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -31546,7 +31546,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/metrics/{identifier}/
          * @secure
          */
-        metricsDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        metricsDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -31610,7 +31610,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/oauth-clients/{identifier}/
          * @secure
          */
-        oauthClientsDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        oauthClientsDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -31720,7 +31720,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/services/{service_id}/
          * @secure
          */
-        servicesDestroy: (serviceId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        servicesDestroy: (serviceId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -31760,7 +31760,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/services/{service_id}/permissions/{permission_id}/
          * @secure
          */
-        servicesPermissionsDestroy: (permissionId: string, serviceId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        servicesPermissionsDestroy: (permissionId: string, serviceId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -31796,7 +31796,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/statements/{identifier}/
          * @secure
          */
-        statementsDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        statementsDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -31856,7 +31856,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/subtypes/{id}/
          * @secure
          */
-        subtypesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        subtypesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -32176,7 +32176,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/{identifier}/groups/{group_name}/
          * @secure
          */
-        usersGroupsDestroy: (groupName: string, identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersGroupsDestroy: (groupName: string, identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -32306,7 +32306,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/{identifier}/permissions/{permission_id}/
          * @secure
          */
-        usersPermissionsDestroy: (identifier: string, permissionId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersPermissionsDestroy: (identifier: string, permissionId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -32396,7 +32396,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/addresses/{id}/
          * @secure
          */
-        usersAddressesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersAddressesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -32456,7 +32456,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/bank-accounts/{id}/
          * @secure
          */
-        usersBankAccountsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersBankAccountsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -32496,7 +32496,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/bank-accounts/{id}/account-currencies/{account_currency_id}/
          * @secure
          */
-        usersBankAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersBankAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -32540,7 +32540,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @deprecated
          * @secure
          */
-        usersBankAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersBankAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -32600,7 +32600,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/crypto-accounts/{id}/
          * @secure
          */
-        usersCryptoAccountsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersCryptoAccountsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -32640,7 +32640,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/crypto-accounts/{id}/account-currencies/{account_currency_id}/
          * @secure
          */
-        usersCryptoAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersCryptoAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -32684,7 +32684,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @deprecated
          * @secure
          */
-        usersCryptoAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersCryptoAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -32744,7 +32744,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/devices/{device_id}/apps/{app_id}/
          * @secure
          */
-        usersDevicesAppsDestroy: (appId: string, deviceId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersDevicesAppsDestroy: (appId: string, deviceId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -32784,7 +32784,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/devices/{id}/
          * @secure
          */
-        usersDevicesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersDevicesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -32864,7 +32864,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/documents/{id}/
          * @secure
          */
-        usersDocumentsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersDocumentsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -32924,7 +32924,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/emails/{id}/
          * @secure
          */
-        usersEmailsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersEmailsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -32954,7 +32954,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/mfa/authenticators/{identifier}/
          * @secure
          */
-        usersMfaAuthenticatorsDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersMfaAuthenticatorsDestroy: (identifier: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -33014,7 +33014,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/mobiles/{id}/
          * @secure
          */
-        usersMobilesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersMobilesDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -33054,7 +33054,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/tokens/
          * @secure
          */
-        adminUsersTokensListDestroy: (params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        adminUsersTokensListDestroy: (params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -33094,7 +33094,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/tokens/{token_key}/
          * @secure
          */
-        usersTokensDestroy: (tokenKey: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersTokensDestroy: (tokenKey: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -33154,7 +33154,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/wallet-accounts/{id}/
          * @secure
          */
-        usersWalletAccountsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersWalletAccountsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -33194,7 +33194,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/users/wallet-accounts/{id}/account-currencies/{account_currency_id}/
          * @secure
          */
-        usersWalletAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersWalletAccountsAccountCurrenciesDestroy: (accountCurrencyId: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -33238,7 +33238,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @deprecated
          * @secure
          */
-        usersWalletAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        usersWalletAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -33298,7 +33298,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/wallet-accounts/{id}/
          * @secure
          */
-        walletAccountsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        walletAccountsDestroy: (id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -33338,7 +33338,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/wallet-accounts/{id}/currencies/{code}/
          * @secure
          */
-        walletAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        walletAccountsCurrenciesDestroy: (code: string, id: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
         /**
          * No description
          *
@@ -33438,7 +33438,7 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
          * @request DELETE:/3/admin/webhooks/{webhhook_id}/
          * @secure
          */
-        webhooksDestroy: (webhhookId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$8, any>>;
+        webhooksDestroy: (webhhookId: string, params?: RequestParams$b) => Promise<HttpResponse$a<ActionResponse$9, any>>;
     };
 }
 
@@ -33459,17 +33459,17 @@ declare class Api$a<SecurityDataType extends unknown> extends HttpClient$a<Secur
  * The proxying happens dynamically at construction time, so all generated methods
  * are available without the v3 prefix while maintaining full TypeScript support.
  */
-declare class RehivePlatformAdminApi<SecurityDataType = unknown> extends Api$a<SecurityDataType> {
+declare class RehivePlatformAdminApi<SecurityDataType = unknown> extends Api$b<SecurityDataType> {
     [key: string]: any;
     constructor(config?: any);
 }
 
 /** This serializer can be used if only a `status` is required in the response. */
-interface ActionResponse$7 {
+interface ActionResponse$8 {
     /** @default "sucess" */
     status?: string;
 }
-interface Activate$9 {
+interface Activate$a {
     token: string;
     identifier: string;
     name: string;
@@ -33482,7 +33482,7 @@ interface Activate$9 {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-interface AdminCompany$7 {
+interface AdminCompany$8 {
     id: string;
     /** @format uuid */
     secret: string;
@@ -33490,7 +33490,7 @@ interface AdminCompany$7 {
     display_currency?: string;
     operational_account?: string | null;
 }
-interface AdminCompanyResponse$7 {
+interface AdminCompanyResponse$8 {
     /** @example "success" */
     status?: string;
     /**
@@ -33499,7 +33499,7 @@ interface AdminCompanyResponse$7 {
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    data?: AdminCompany$7;
+    data?: AdminCompany$8;
 }
 /**
  * A ModelSerializer that takes additional arguments for
@@ -33866,7 +33866,7 @@ interface AdminUserResponse$2 {
      */
     data?: AdminUser$4;
 }
-interface Deactivate$9 {
+interface Deactivate$a {
     token: string;
     /** @default false */
     purge?: boolean;
@@ -34120,7 +34120,7 @@ interface PaginatedUserRateListResponse {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-interface PatchedAdminCompany$5 {
+interface PatchedAdminCompany$6 {
     id?: string;
     /** @format uuid */
     secret?: string;
@@ -34792,7 +34792,7 @@ declare class HttpClient$9<SecurityDataType = unknown> {
  * The **Conversion Service API** is used for currency rates and conversions in Rehive.
  *
  */
-declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<SecurityDataType> {
+declare class Api$a<SecurityDataType extends unknown> extends HttpClient$9<SecurityDataType> {
     activate: {
         /**
          * No description
@@ -34803,7 +34803,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request POST:/activate/
          * @secure
          */
-        activateCreate: (data: Activate$9, params?: RequestParams$a) => Promise<HttpResponse$9<ActionResponse$7, any>>;
+        activateCreate: (data: Activate$a, params?: RequestParams$a) => Promise<HttpResponse$9<ActionResponse$8, any>>;
     };
     admin: {
         /**
@@ -34815,7 +34815,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request GET:/admin/company/
          * @secure
          */
-        adminCompanyRetrieve: (params?: RequestParams$a) => Promise<HttpResponse$9<AdminCompanyResponse$7, any>>;
+        adminCompanyRetrieve: (params?: RequestParams$a) => Promise<HttpResponse$9<AdminCompanyResponse$8, any>>;
         /**
          * No description
          *
@@ -34825,7 +34825,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PUT:/admin/company/
          * @secure
          */
-        adminCompanyUpdate: (data: AdminCompany$7, params?: RequestParams$a) => Promise<HttpResponse$9<AdminCompanyResponse$7, any>>;
+        adminCompanyUpdate: (data: AdminCompany$8, params?: RequestParams$a) => Promise<HttpResponse$9<AdminCompanyResponse$8, any>>;
         /**
          * No description
          *
@@ -34835,7 +34835,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request PATCH:/admin/company/
          * @secure
          */
-        adminCompanyPartialUpdate: (data: PatchedAdminCompany$5, params?: RequestParams$a) => Promise<HttpResponse$9<AdminCompanyResponse$7, any>>;
+        adminCompanyPartialUpdate: (data: PatchedAdminCompany$6, params?: RequestParams$a) => Promise<HttpResponse$9<AdminCompanyResponse$8, any>>;
         /**
          * No description
          *
@@ -35227,7 +35227,7 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request POST:/deactivate/
          * @secure
          */
-        deactivateCreate: (data: Deactivate$9, params?: RequestParams$a) => Promise<HttpResponse$9<ActionResponse$7, any>>;
+        deactivateCreate: (data: Deactivate$a, params?: RequestParams$a) => Promise<HttpResponse$9<ActionResponse$8, any>>;
     };
     user: {
         /**
@@ -35401,12 +35401,12 @@ declare class Api$9<SecurityDataType extends unknown> extends HttpClient$9<Secur
          * @request POST:/webhook/
          * @secure
          */
-        webhookCreate: (data: Webhook$7, params?: RequestParams$a) => Promise<HttpResponse$9<ActionResponse$7, any>>;
+        webhookCreate: (data: Webhook$7, params?: RequestParams$a) => Promise<HttpResponse$9<ActionResponse$8, any>>;
     };
 }
 
 /** This serializer can be used if only a `status` is required in the response. */
-interface ActionResponse$6 {
+interface ActionResponse$7 {
     /** @default "sucess" */
     status?: string;
 }
@@ -35414,7 +35414,7 @@ interface ActionResponse$6 {
  * Serialize the activation data, should be a token that represents an admin
  * user.
  */
-interface Activate$8 {
+interface Activate$9 {
     token: string;
     id: string;
     name: string;
@@ -35427,14 +35427,14 @@ interface Activate$8 {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-interface AdminCompany$6 {
+interface AdminCompany$7 {
     id: string;
     /** @format uuid */
     secret: string;
     /** @maxLength 100 */
     name?: string | null;
 }
-interface AdminCompanyResponse$6 {
+interface AdminCompanyResponse$7 {
     /** @example "success" */
     status?: string;
     /**
@@ -35443,7 +35443,7 @@ interface AdminCompanyResponse$6 {
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    data?: AdminCompany$6;
+    data?: AdminCompany$7;
 }
 /**
  * A ModelSerializer that takes additional arguments for
@@ -35486,7 +35486,7 @@ interface AdminListCreateTransactionBatchResponse {
  * Serialize the deactivation data, should be a token that represents an admin
  * user.
  */
-interface Deactivate$8 {
+interface Deactivate$9 {
     token: string;
     /** @default false */
     purge?: boolean;
@@ -35636,7 +35636,7 @@ interface PaginatedListTransactionListResponse {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-interface PatchedAdminCompany$4 {
+interface PatchedAdminCompany$5 {
     id?: string;
     /** @format uuid */
     secret?: string;
@@ -35807,7 +35807,7 @@ declare class HttpClient$8<SecurityDataType = unknown> {
  * The **Mass Send Service API** is used for sending baatches of transactions via CSV uploads in Rehive.
  *
  */
-declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<SecurityDataType> {
+declare class Api$9<SecurityDataType extends unknown> extends HttpClient$8<SecurityDataType> {
     activate: {
         /**
          * No description
@@ -35818,7 +35818,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request POST:/activate/
          * @secure
          */
-        activateCreate: (data: Activate$8, params?: RequestParams$9) => Promise<HttpResponse$8<ActionResponse$6, any>>;
+        activateCreate: (data: Activate$9, params?: RequestParams$9) => Promise<HttpResponse$8<ActionResponse$7, any>>;
     };
     admin: {
         /**
@@ -35830,7 +35830,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request GET:/admin/company/
          * @secure
          */
-        adminCompanyRetrieve: (params?: RequestParams$9) => Promise<HttpResponse$8<AdminCompanyResponse$6, any>>;
+        adminCompanyRetrieve: (params?: RequestParams$9) => Promise<HttpResponse$8<AdminCompanyResponse$7, any>>;
         /**
          * No description
          *
@@ -35840,7 +35840,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request PUT:/admin/company/
          * @secure
          */
-        adminCompanyUpdate: (data: AdminCompany$6, params?: RequestParams$9) => Promise<HttpResponse$8<AdminCompanyResponse$6, any>>;
+        adminCompanyUpdate: (data: AdminCompany$7, params?: RequestParams$9) => Promise<HttpResponse$8<AdminCompanyResponse$7, any>>;
         /**
          * No description
          *
@@ -35850,7 +35850,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request PATCH:/admin/company/
          * @secure
          */
-        adminCompanyPartialUpdate: (data: PatchedAdminCompany$4, params?: RequestParams$9) => Promise<HttpResponse$8<AdminCompanyResponse$6, any>>;
+        adminCompanyPartialUpdate: (data: PatchedAdminCompany$5, params?: RequestParams$9) => Promise<HttpResponse$8<AdminCompanyResponse$7, any>>;
         /**
          * No description
          *
@@ -35922,7 +35922,7 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request POST:/deactivate/
          * @secure
          */
-        deactivateCreate: (data: Deactivate$8, params?: RequestParams$9) => Promise<HttpResponse$8<ActionResponse$6, any>>;
+        deactivateCreate: (data: Deactivate$9, params?: RequestParams$9) => Promise<HttpResponse$8<ActionResponse$7, any>>;
     };
     uploads: {
         /**
@@ -35996,12 +35996,12 @@ declare class Api$8<SecurityDataType extends unknown> extends HttpClient$8<Secur
          * @request POST:/webhook/
          * @secure
          */
-        webhookCreate: (data: Webhook$6, params?: RequestParams$9) => Promise<HttpResponse$8<ActionResponse$6, any>>;
+        webhookCreate: (data: Webhook$6, params?: RequestParams$9) => Promise<HttpResponse$8<ActionResponse$7, any>>;
     };
 }
 
 /** This serializer can be used if only a `status` is required in the response. */
-interface ActionResponse$5 {
+interface ActionResponse$6 {
     /** @default "sucess" */
     status?: string;
 }
@@ -36009,7 +36009,7 @@ interface ActionResponse$5 {
  * Serialize the activation data, should be a token that represents an admin
  * user.
  */
-interface Activate$7 {
+interface Activate$8 {
     token: string;
     id: string;
     name: string;
@@ -36019,7 +36019,7 @@ interface Activate$7 {
     push_enabled: boolean;
 }
 /** Serialize company, update and delete. */
-interface AdminCompany$5 {
+interface AdminCompany$6 {
     id: string;
     /** @format uuid */
     secret: string;
@@ -36065,11 +36065,11 @@ interface AdminCompany$5 {
      */
     icon?: string | null;
 }
-interface AdminCompanyResponse$5 {
+interface AdminCompanyResponse$6 {
     /** @example "success" */
     status?: string;
     /** Serialize company, update and delete. */
-    data?: AdminCompany$5;
+    data?: AdminCompany$6;
 }
 /** Serialize notifications, create, update and delete. */
 interface AdminCreateUpdateNotification {
@@ -36277,7 +36277,7 @@ interface AdminTriggerNotification {
  * Serialize the deactivation data, should be a token that represents an admin
  * user.
  */
-interface Deactivate$7 {
+interface Deactivate$8 {
     token: string;
     /** @default false */
     purge?: boolean;
@@ -36493,7 +36493,7 @@ interface PaginatedUserNotificationListResponse {
     data?: PaginatedUserNotificationList;
 }
 /** Serialize company, update and delete. */
-interface PatchedAdminCompany$3 {
+interface PatchedAdminCompany$4 {
     id?: string;
     /** @format uuid */
     secret?: string;
@@ -36831,7 +36831,7 @@ declare class HttpClient$7<SecurityDataType = unknown> {
  * The **Notification Service API** is used for sending email, SMS, and push notifications in Rehive.
  *
  */
-declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<SecurityDataType> {
+declare class Api$8<SecurityDataType extends unknown> extends HttpClient$7<SecurityDataType> {
     activate: {
         /**
          * No description
@@ -36842,7 +36842,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request POST:/activate/
          * @secure
          */
-        activateCreate: (data: Activate$7, params?: RequestParams$8) => Promise<HttpResponse$7<ActionResponse$5, any>>;
+        activateCreate: (data: Activate$8, params?: RequestParams$8) => Promise<HttpResponse$7<ActionResponse$6, any>>;
     };
     admin: {
         /**
@@ -36854,7 +36854,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request GET:/admin/company/
          * @secure
          */
-        adminCompanyRetrieve: (params?: RequestParams$8) => Promise<HttpResponse$7<AdminCompanyResponse$5, any>>;
+        adminCompanyRetrieve: (params?: RequestParams$8) => Promise<HttpResponse$7<AdminCompanyResponse$6, any>>;
         /**
          * No description
          *
@@ -36864,7 +36864,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request PUT:/admin/company/
          * @secure
          */
-        adminCompanyUpdate: (data: AdminCompany$5, params?: RequestParams$8) => Promise<HttpResponse$7<AdminCompanyResponse$5, any>>;
+        adminCompanyUpdate: (data: AdminCompany$6, params?: RequestParams$8) => Promise<HttpResponse$7<AdminCompanyResponse$6, any>>;
         /**
          * No description
          *
@@ -36874,7 +36874,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request PATCH:/admin/company/
          * @secure
          */
-        adminCompanyPartialUpdate: (data: PatchedAdminCompany$3, params?: RequestParams$8) => Promise<HttpResponse$7<AdminCompanyResponse$5, any>>;
+        adminCompanyPartialUpdate: (data: PatchedAdminCompany$4, params?: RequestParams$8) => Promise<HttpResponse$7<AdminCompanyResponse$6, any>>;
         /**
          * No description
          *
@@ -37044,7 +37044,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request POST:/admin/logs/{log_id}/send/
          * @secure
          */
-        adminLogsSendCreate: (logId: string, data: AdminLogSend, params?: RequestParams$8) => Promise<HttpResponse$7<ActionResponse$5, any>>;
+        adminLogsSendCreate: (logId: string, data: AdminLogSend, params?: RequestParams$8) => Promise<HttpResponse$7<ActionResponse$6, any>>;
         /**
          * No description
          *
@@ -37114,7 +37114,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request POST:/admin/notifications/{notification_id}/trigger/
          * @secure
          */
-        adminNotificationsTriggerCreate: (notificationId: string, data: AdminTriggerNotification, params?: RequestParams$8) => Promise<HttpResponse$7<ActionResponse$5, any>>;
+        adminNotificationsTriggerCreate: (notificationId: string, data: AdminTriggerNotification, params?: RequestParams$8) => Promise<HttpResponse$7<ActionResponse$6, any>>;
         /**
          * No description
          *
@@ -37143,7 +37143,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request POST:/admin/webhook/
          * @secure
          */
-        adminWebhookCreate: (data: Webhook$5, params?: RequestParams$8) => Promise<HttpResponse$7<ActionResponse$5, any>>;
+        adminWebhookCreate: (data: Webhook$5, params?: RequestParams$8) => Promise<HttpResponse$7<ActionResponse$6, any>>;
     };
     deactivate: {
         /**
@@ -37155,7 +37155,7 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request POST:/deactivate/
          * @secure
          */
-        deactivateCreate: (data: Deactivate$7, params?: RequestParams$8) => Promise<HttpResponse$7<ActionResponse$5, any>>;
+        deactivateCreate: (data: Deactivate$8, params?: RequestParams$8) => Promise<HttpResponse$7<ActionResponse$6, any>>;
     };
     user: {
         /**
@@ -37208,16 +37208,16 @@ declare class Api$7<SecurityDataType extends unknown> extends HttpClient$7<Secur
          * @request POST:/webhook/
          * @secure
          */
-        webhookCreate: (data: Webhook$5, params?: RequestParams$8) => Promise<HttpResponse$7<ActionResponse$5, any>>;
+        webhookCreate: (data: Webhook$5, params?: RequestParams$8) => Promise<HttpResponse$7<ActionResponse$6, any>>;
     };
 }
 
 /** This serializer can be used if only a `status` is required in the response. */
-interface ActionResponse$4 {
+interface ActionResponse$5 {
     /** @default "sucess" */
     status?: string;
 }
-interface Activate$6 {
+interface Activate$7 {
     token: string;
     id: string;
     name: string;
@@ -37230,13 +37230,13 @@ interface Activate$6 {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-interface AdminCompany$4 {
+interface AdminCompany$5 {
     id: string;
     /** @maxItems 10 */
     manager_groups?: string[] | null;
     name: string | null;
 }
-interface AdminCompanyResponse$4 {
+interface AdminCompanyResponse$5 {
     /** @example "success" */
     status?: string;
     /**
@@ -37245,7 +37245,7 @@ interface AdminCompanyResponse$4 {
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    data?: AdminCompany$4;
+    data?: AdminCompany$5;
 }
 /**
  * A ModelSerializer that takes additional arguments for
@@ -38000,12 +38000,12 @@ interface CategoryResponse {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-interface Company$2 {
+interface Company$3 {
     id: string;
     manager_groups: string[] | null;
     name: string | null;
 }
-interface CompanyResponse {
+interface CompanyResponse$1 {
     /** @example "success" */
     status?: string;
     /**
@@ -38014,7 +38014,7 @@ interface CompanyResponse {
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    data?: Company$2;
+    data?: Company$3;
 }
 /**
  * A ModelSerializer that takes additional arguments for
@@ -38126,7 +38126,7 @@ interface CurrencyResponse$2 {
      */
     data?: Currency$4;
 }
-interface Deactivate$6 {
+interface Deactivate$7 {
     token: string;
     /** @default false */
     purge?: boolean;
@@ -39572,7 +39572,7 @@ interface PaginatedVoucherListResponse {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-interface PatchedAdminCompany$2 {
+interface PatchedAdminCompany$3 {
     id?: string;
     /** @maxItems 10 */
     manager_groups?: string[] | null;
@@ -41656,7 +41656,7 @@ declare class HttpClient$6<SecurityDataType = unknown> {
  * The **Product Service API** is used for product and order management in Rehive.
  *
  */
-declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<SecurityDataType> {
+declare class Api$7<SecurityDataType extends unknown> extends HttpClient$6<SecurityDataType> {
     activate: {
         /**
          * No description
@@ -41667,7 +41667,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/activate/
          * @secure
          */
-        activateCreate: (data: Activate$6, params?: RequestParams$7) => Promise<HttpResponse$6<ActionResponse$4, any>>;
+        activateCreate: (data: Activate$7, params?: RequestParams$7) => Promise<HttpResponse$6<ActionResponse$5, any>>;
     };
     admin: {
         /**
@@ -41739,7 +41739,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/admin/company/
          * @secure
          */
-        adminCompanyRetrieve: (params?: RequestParams$7) => Promise<HttpResponse$6<AdminCompanyResponse$4, any>>;
+        adminCompanyRetrieve: (params?: RequestParams$7) => Promise<HttpResponse$6<AdminCompanyResponse$5, any>>;
         /**
          * No description
          *
@@ -41749,7 +41749,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PUT:/admin/company/
          * @secure
          */
-        adminCompanyUpdate: (data: AdminCompany$4, params?: RequestParams$7) => Promise<HttpResponse$6<AdminCompanyResponse$4, any>>;
+        adminCompanyUpdate: (data: AdminCompany$5, params?: RequestParams$7) => Promise<HttpResponse$6<AdminCompanyResponse$5, any>>;
         /**
          * No description
          *
@@ -41759,7 +41759,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request PATCH:/admin/company/
          * @secure
          */
-        adminCompanyPartialUpdate: (data: PatchedAdminCompany$2, params?: RequestParams$7) => Promise<HttpResponse$6<AdminCompanyResponse$4, any>>;
+        adminCompanyPartialUpdate: (data: PatchedAdminCompany$3, params?: RequestParams$7) => Promise<HttpResponse$6<AdminCompanyResponse$5, any>>;
         /**
          * No description
          *
@@ -42731,7 +42731,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/deactivate/
          * @secure
          */
-        deactivateCreate: (data: Deactivate$6, params?: RequestParams$7) => Promise<HttpResponse$6<ActionResponse$4, any>>;
+        deactivateCreate: (data: Deactivate$7, params?: RequestParams$7) => Promise<HttpResponse$6<ActionResponse$5, any>>;
     };
     manager: {
         /**
@@ -42763,7 +42763,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/manager/company/
          * @secure
          */
-        managerCompanyRetrieve: (params?: RequestParams$7) => Promise<HttpResponse$6<CompanyResponse, any>>;
+        managerCompanyRetrieve: (params?: RequestParams$7) => Promise<HttpResponse$6<CompanyResponse$1, any>>;
         /**
          * No description
          *
@@ -43715,7 +43715,7 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request GET:/user/company/
          * @secure
          */
-        userCompanyRetrieve: (params?: RequestParams$7) => Promise<HttpResponse$6<CompanyResponse, any>>;
+        userCompanyRetrieve: (params?: RequestParams$7) => Promise<HttpResponse$6<CompanyResponse$1, any>>;
         /**
          * No description
          *
@@ -44077,16 +44077,16 @@ declare class Api$6<SecurityDataType extends unknown> extends HttpClient$6<Secur
          * @request POST:/webhook/
          * @secure
          */
-        webhookCreate: (data: Webhook$4, params?: RequestParams$7) => Promise<HttpResponse$6<ActionResponse$4, any>>;
+        webhookCreate: (data: Webhook$4, params?: RequestParams$7) => Promise<HttpResponse$6<ActionResponse$5, any>>;
     };
 }
 
 /** This serializer can be used if only a `status` is required in the response. */
-interface ActionResponse$3 {
+interface ActionResponse$4 {
     /** @default "sucess" */
     status?: string;
 }
-interface Activate$5 {
+interface Activate$6 {
     token: string;
     id: string;
     name: string;
@@ -44240,7 +44240,7 @@ interface AdminCampaignResponse {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-interface AdminCompany$3 {
+interface AdminCompany$4 {
     id: string;
     identifier: string;
     /** @format uuid */
@@ -44248,7 +44248,7 @@ interface AdminCompany$3 {
     name: string;
     operational_account?: string | null;
 }
-interface AdminCompanyResponse$3 {
+interface AdminCompanyResponse$4 {
     /** @example "success" */
     status?: string;
     /**
@@ -44257,7 +44257,7 @@ interface AdminCompanyResponse$3 {
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    data?: AdminCompany$3;
+    data?: AdminCompany$4;
 }
 /**
  * A ModelSerializer that takes additional arguments for
@@ -44505,7 +44505,7 @@ interface CurrencyResponse$1 {
      */
     data?: Currency$3;
 }
-interface Deactivate$5 {
+interface Deactivate$6 {
     token: string;
     /** @default false */
     purge?: boolean;
@@ -44636,7 +44636,7 @@ interface PaginatedUserRewardListResponse {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-interface PatchedAdminCompany$1 {
+interface PatchedAdminCompany$2 {
     id?: string;
     identifier?: string;
     /** @format uuid */
@@ -44801,7 +44801,7 @@ interface PatchedUserUpdateReferral {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-interface User$3 {
+interface User$4 {
     id: string;
     referral_code: string | null;
     referee_code: string | null;
@@ -44895,7 +44895,7 @@ interface UserCreateReward {
     created: number;
     data?: Record<string, any>;
 }
-interface UserResponse$1 {
+interface UserResponse$2 {
     /** @example "success" */
     status?: string;
     /**
@@ -44904,7 +44904,7 @@ interface UserResponse$1 {
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    data?: User$3;
+    data?: User$4;
 }
 /**
  * A ModelSerializer that takes additional arguments for
@@ -45144,7 +45144,7 @@ declare class HttpClient$5<SecurityDataType = unknown> {
  * The **Reward Service API** is used for reward campaigns in Rehive.
  *
  */
-declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<SecurityDataType> {
+declare class Api$6<SecurityDataType extends unknown> extends HttpClient$5<SecurityDataType> {
     activate: {
         /**
          * No description
@@ -45155,7 +45155,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request POST:/activate/
          * @secure
          */
-        activateCreate: (data: Activate$5, params?: RequestParams$6) => Promise<HttpResponse$5<ActionResponse$3, any>>;
+        activateCreate: (data: Activate$6, params?: RequestParams$6) => Promise<HttpResponse$5<ActionResponse$4, any>>;
     };
     admin: {
         /**
@@ -45227,7 +45227,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request GET:/admin/company/
          * @secure
          */
-        adminCompanyRetrieve: (params?: RequestParams$6) => Promise<HttpResponse$5<AdminCompanyResponse$3, any>>;
+        adminCompanyRetrieve: (params?: RequestParams$6) => Promise<HttpResponse$5<AdminCompanyResponse$4, any>>;
         /**
          * No description
          *
@@ -45237,7 +45237,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request PUT:/admin/company/
          * @secure
          */
-        adminCompanyUpdate: (data: AdminCompany$3, params?: RequestParams$6) => Promise<HttpResponse$5<AdminCompanyResponse$3, any>>;
+        adminCompanyUpdate: (data: AdminCompany$4, params?: RequestParams$6) => Promise<HttpResponse$5<AdminCompanyResponse$4, any>>;
         /**
          * No description
          *
@@ -45247,7 +45247,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request PATCH:/admin/company/
          * @secure
          */
-        adminCompanyPartialUpdate: (data: PatchedAdminCompany$1, params?: RequestParams$6) => Promise<HttpResponse$5<AdminCompanyResponse$3, any>>;
+        adminCompanyPartialUpdate: (data: PatchedAdminCompany$2, params?: RequestParams$6) => Promise<HttpResponse$5<AdminCompanyResponse$4, any>>;
         /**
          * No description
          *
@@ -45347,7 +45347,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request POST:/admin/webhook/
          * @secure
          */
-        adminWebhookCreate: (data: Webhook$3, params?: RequestParams$6) => Promise<HttpResponse$5<ActionResponse$3, any>>;
+        adminWebhookCreate: (data: Webhook$3, params?: RequestParams$6) => Promise<HttpResponse$5<ActionResponse$4, any>>;
     };
     deactivate: {
         /**
@@ -45359,7 +45359,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request POST:/deactivate/
          * @secure
          */
-        deactivateCreate: (data: Deactivate$5, params?: RequestParams$6) => Promise<HttpResponse$5<ActionResponse$3, any>>;
+        deactivateCreate: (data: Deactivate$6, params?: RequestParams$6) => Promise<HttpResponse$5<ActionResponse$4, any>>;
     };
     user: {
         /**
@@ -45371,7 +45371,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request GET:/user/
          * @secure
          */
-        userRetrieve: (params?: RequestParams$6) => Promise<HttpResponse$5<UserResponse$1, any>>;
+        userRetrieve: (params?: RequestParams$6) => Promise<HttpResponse$5<UserResponse$2, any>>;
         /**
          * No description
          *
@@ -45381,7 +45381,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request PUT:/user/
          * @secure
          */
-        userUpdate: (data: UserUpdateReferral, params?: RequestParams$6) => Promise<HttpResponse$5<UserResponse$1, any>>;
+        userUpdate: (data: UserUpdateReferral, params?: RequestParams$6) => Promise<HttpResponse$5<UserResponse$2, any>>;
         /**
          * No description
          *
@@ -45391,7 +45391,7 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request PATCH:/user/
          * @secure
          */
-        userPartialUpdate: (data: PatchedUserUpdateReferral, params?: RequestParams$6) => Promise<HttpResponse$5<UserResponse$1, any>>;
+        userPartialUpdate: (data: PatchedUserUpdateReferral, params?: RequestParams$6) => Promise<HttpResponse$5<UserResponse$2, any>>;
         /**
          * No description
          *
@@ -45453,11 +45453,11 @@ declare class Api$5<SecurityDataType extends unknown> extends HttpClient$5<Secur
          * @request POST:/webhook/
          * @secure
          */
-        webhookCreate: (data: Webhook$3, params?: RequestParams$6) => Promise<HttpResponse$5<ActionResponse$3, any>>;
+        webhookCreate: (data: Webhook$3, params?: RequestParams$6) => Promise<HttpResponse$5<ActionResponse$4, any>>;
     };
 }
 
-interface Activate$4 {
+interface Activate$5 {
     /**
      * Token
      * @minLength 1
@@ -46610,7 +46610,7 @@ interface UserCompanyConfiguration$1 {
     /** Disable withdrawals */
     disable_withdrawals?: boolean;
 }
-interface Company$1 {
+interface Company$2 {
     /**
      * Identifier
      * @minLength 1
@@ -46659,7 +46659,7 @@ interface Asset$1 {
     /** Sep24 enabled */
     sep24_enabled?: boolean;
 }
-interface Deactivate$4 {
+interface Deactivate$5 {
     /**
      * Token
      * @minLength 1
@@ -47024,7 +47024,7 @@ interface AdminWarmstorageAccountsListData$1 {
     previous?: string | null;
     results: WarmstorageAccount$1[];
 }
-type CompanyListData$1 = Company$1[];
+type CompanyListData$1 = Company$2[];
 type CompanyAssetsListData$1 = Asset$1[];
 type InfoListData$1 = InfoView$1[];
 interface KnownAssetsListParams$1 {
@@ -47125,7 +47125,7 @@ declare class HttpClient$4<SecurityDataType = unknown> {
  *
  * Start by clicking Authorize and adding the header: Token <your-api-key>. The user endpoints require a normal rehive user token returned by Rehive's /auth/login/ or /auth/register/ endpoints. The admin endpoints require a permanent token with admin permissions. The /hooks/ enpoint requires the secret from the Rehive webhook settings in the authorization header as Secret <your-webhook-secret>.
  */
-declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<SecurityDataType> {
+declare class Api$5<SecurityDataType extends unknown> extends HttpClient$4<SecurityDataType> {
     activate: {
         /**
          * @description This endpoint is used by the Rehive Marketplace to add this service for a specific company. It requires an permanent API token for that company with admin permissions.
@@ -47135,7 +47135,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/activate/
          * @secure
          */
-        activateCreate: (data: Activate$4, params?: RequestParams$5) => Promise<HttpResponse$4<Activate$4, any>>;
+        activateCreate: (data: Activate$5, params?: RequestParams$5) => Promise<HttpResponse$4<Activate$5, any>>;
     };
     admin: {
         /**
@@ -47843,7 +47843,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
          * @request POST:/deactivate/
          * @secure
          */
-        deactivateCreate: (data: Deactivate$4, params?: RequestParams$5) => Promise<HttpResponse$4<Deactivate$4, any>>;
+        deactivateCreate: (data: Deactivate$5, params?: RequestParams$5) => Promise<HttpResponse$4<Deactivate$5, any>>;
     };
     hooks: {
         /**
@@ -48057,7 +48057,7 @@ declare class Api$4<SecurityDataType extends unknown> extends HttpClient$4<Secur
     };
 }
 
-interface Activate$3 {
+interface Activate$4 {
     /**
      * Token
      * @minLength 1
@@ -49210,7 +49210,7 @@ interface UserCompanyConfiguration {
     /** Disable withdrawals */
     disable_withdrawals?: boolean;
 }
-interface Company {
+interface Company$1 {
     /**
      * Identifier
      * @minLength 1
@@ -49259,7 +49259,7 @@ interface Asset {
     /** Sep24 enabled */
     sep24_enabled?: boolean;
 }
-interface Deactivate$3 {
+interface Deactivate$4 {
     /**
      * Token
      * @minLength 1
@@ -49624,7 +49624,7 @@ interface AdminWarmstorageAccountsListData {
     previous?: string | null;
     results: WarmstorageAccount[];
 }
-type CompanyListData = Company[];
+type CompanyListData = Company$1[];
 type CompanyAssetsListData = Asset[];
 type InfoListData = InfoView[];
 interface KnownAssetsListParams {
@@ -49725,7 +49725,7 @@ declare class HttpClient$3<SecurityDataType = unknown> {
  *
  * Start by clicking Authorize and adding the header: Token <your-api-key>. The user endpoints require a normal rehive user token returned by Rehive's /auth/login/ or /auth/register/ endpoints. The admin endpoints require a permanent token with admin permissions. The /hooks/ enpoint requires the secret from the Rehive webhook settings in the authorization header as Secret <your-webhook-secret>.
  */
-declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<SecurityDataType> {
+declare class Api$4<SecurityDataType extends unknown> extends HttpClient$3<SecurityDataType> {
     activate: {
         /**
          * @description This endpoint is used by the Rehive Marketplace to add this service for a specific company. It requires an permanent API token for that company with admin permissions.
@@ -49735,7 +49735,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/activate/
          * @secure
          */
-        activateCreate: (data: Activate$3, params?: RequestParams$4) => Promise<HttpResponse$3<Activate$3, any>>;
+        activateCreate: (data: Activate$4, params?: RequestParams$4) => Promise<HttpResponse$3<Activate$4, any>>;
     };
     admin: {
         /**
@@ -50443,7 +50443,7 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
          * @request POST:/deactivate/
          * @secure
          */
-        deactivateCreate: (data: Deactivate$3, params?: RequestParams$4) => Promise<HttpResponse$3<Deactivate$3, any>>;
+        deactivateCreate: (data: Deactivate$4, params?: RequestParams$4) => Promise<HttpResponse$3<Deactivate$4, any>>;
     };
     hooks: {
         /**
@@ -50658,11 +50658,11 @@ declare class Api$3<SecurityDataType extends unknown> extends HttpClient$3<Secur
 }
 
 /** This serializer can be used if only a `status` is required in the response. */
-interface ActionResponse$2 {
+interface ActionResponse$3 {
     /** @default "sucess" */
     status?: string;
 }
-interface Activate$2 {
+interface Activate$3 {
     token: string;
     id: string;
     /** @format uuid */
@@ -51165,7 +51165,7 @@ interface AdminBusinessUser {
     email: string | null;
     mobile: string | null;
     roles: ("manager" | "customer")[];
-    user: User$2;
+    user: User$3;
     first_name: string;
     last_name: string;
     username: string;
@@ -51190,7 +51190,7 @@ interface AdminBusinessUserResponse {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-interface AdminCompany$2 {
+interface AdminCompany$3 {
     id: string;
     /** @format uuid */
     secret: string;
@@ -51223,7 +51223,7 @@ interface AdminCompanyPayoutMinimum {
     currency: Currency$2;
     amount: number;
 }
-interface AdminCompanyResponse$2 {
+interface AdminCompanyResponse$3 {
     /** @example "success" */
     status?: string;
     /**
@@ -51232,7 +51232,7 @@ interface AdminCompanyResponse$2 {
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    data?: AdminCompany$2;
+    data?: AdminCompany$3;
 }
 /**
  * A ModelSerializer that takes additional arguments for
@@ -51807,7 +51807,7 @@ interface BusinessUser {
     email: string | null;
     mobile: string | null;
     roles: ("manager" | "customer")[];
-    user: User$2;
+    user: User$3;
     first_name: string;
     last_name: string;
     username: string;
@@ -52164,7 +52164,7 @@ interface CustomerBusinessResponse {
 interface CustomerEnroll {
     business: string;
 }
-interface Deactivate$2 {
+interface Deactivate$3 {
     token: string;
     /** @default false */
     purge?: boolean;
@@ -54770,7 +54770,7 @@ interface ShortBusiness {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-interface User$2 {
+interface User$3 {
     id: string;
     first_name: string | null;
     last_name: string | null;
@@ -55387,7 +55387,7 @@ declare class HttpClient$2<SecurityDataType = unknown> {
  * The **Business Service API** is used for managing businesses in Rehive.
  *
  */
-declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<SecurityDataType> {
+declare class Api$3<SecurityDataType extends unknown> extends HttpClient$2<SecurityDataType> {
     activate: {
         /**
          * No description
@@ -55398,7 +55398,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/activate/
          * @secure
          */
-        activateCreate: (data: Activate$2, params?: RequestParams$3) => Promise<HttpResponse$2<ActionResponse$2, any>>;
+        activateCreate: (data: Activate$3, params?: RequestParams$3) => Promise<HttpResponse$2<ActionResponse$3, any>>;
     };
     admin: {
         /**
@@ -55700,7 +55700,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request GET:/admin/company/
          * @secure
          */
-        adminCompanyRetrieve: (params?: RequestParams$3) => Promise<HttpResponse$2<AdminCompanyResponse$2, any>>;
+        adminCompanyRetrieve: (params?: RequestParams$3) => Promise<HttpResponse$2<AdminCompanyResponse$3, any>>;
         /**
          * No description
          *
@@ -55710,7 +55710,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request PUT:/admin/company/
          * @secure
          */
-        adminCompanyUpdate: (data: AdminUpdateCompany$1, params?: RequestParams$3) => Promise<HttpResponse$2<AdminCompanyResponse$2, any>>;
+        adminCompanyUpdate: (data: AdminUpdateCompany$1, params?: RequestParams$3) => Promise<HttpResponse$2<AdminCompanyResponse$3, any>>;
         /**
          * No description
          *
@@ -55720,7 +55720,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request PATCH:/admin/company/
          * @secure
          */
-        adminCompanyPartialUpdate: (data: PatchedAdminUpdateCompany$1, params?: RequestParams$3) => Promise<HttpResponse$2<AdminCompanyResponse$2, any>>;
+        adminCompanyPartialUpdate: (data: PatchedAdminUpdateCompany$1, params?: RequestParams$3) => Promise<HttpResponse$2<AdminCompanyResponse$3, any>>;
         /**
          * No description
          *
@@ -55750,7 +55750,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/admin/webhook/
          * @secure
          */
-        adminWebhookCreate: (data: Webhook$2, params?: RequestParams$3) => Promise<HttpResponse$2<ActionResponse$2, any>>;
+        adminWebhookCreate: (data: Webhook$2, params?: RequestParams$3) => Promise<HttpResponse$2<ActionResponse$3, any>>;
     };
     customer: {
         /**
@@ -55794,7 +55794,7 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/deactivate/
          * @secure
          */
-        deactivateCreate: (data: Deactivate$2, params?: RequestParams$3) => Promise<HttpResponse$2<ActionResponse$2, any>>;
+        deactivateCreate: (data: Deactivate$3, params?: RequestParams$3) => Promise<HttpResponse$2<ActionResponse$3, any>>;
     };
     manager: {
         /**
@@ -56240,12 +56240,12 @@ declare class Api$2<SecurityDataType extends unknown> extends HttpClient$2<Secur
          * @request POST:/webhook/
          * @secure
          */
-        webhookCreate: (data: Webhook$2, params?: RequestParams$3) => Promise<HttpResponse$2<ActionResponse$2, any>>;
+        webhookCreate: (data: Webhook$2, params?: RequestParams$3) => Promise<HttpResponse$2<ActionResponse$3, any>>;
     };
 }
 
 /** This serializer can be used if only a `status` is required in the response. */
-interface ActionResponse$1 {
+interface ActionResponse$2 {
     /** @default "sucess" */
     status?: string;
 }
@@ -56253,7 +56253,7 @@ interface ActionResponse$1 {
  * Serialize the activation data, should be a token that represents an admin
  * user.
  */
-interface Activate$1 {
+interface Activate$2 {
     token: string;
     id: string;
     name: string;
@@ -56261,7 +56261,7 @@ interface Activate$1 {
     secret: string;
 }
 /** Serialize company, update and delete. */
-interface AdminCompany$1 {
+interface AdminCompany$2 {
     id: string;
     /** @format uuid */
     secret: string;
@@ -56287,11 +56287,11 @@ interface AdminCompanyPaymentProcessorResponse {
     /** Serialize Company Payment Processors, view, create and update. */
     data?: AdminCompanyPaymentProcessor;
 }
-interface AdminCompanyResponse$1 {
+interface AdminCompanyResponse$2 {
     /** @example "success" */
     status?: string;
     /** Serialize company, update and delete. */
-    data?: AdminCompany$1;
+    data?: AdminCompany$2;
 }
 /**
  * A ModelSerializer that takes additional arguments for
@@ -56406,7 +56406,7 @@ interface AdminRequestCreateUpdate {
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    payer_user?: User$1;
+    payer_user?: User$2;
     /** @maxLength 255 */
     request_reference?: string | null;
     request_currency: string;
@@ -56678,7 +56678,7 @@ interface Currency$1 {
  * Serialize the deactivation data, should be a token that represents an admin
  * user.
  */
-interface Deactivate$1 {
+interface Deactivate$2 {
     token: string;
     /** @default false */
     purge?: boolean;
@@ -56907,7 +56907,7 @@ interface PaginatedWebhookListResponse {
     data?: PaginatedWebhookList;
 }
 /** Serialize company, update and delete. */
-interface PatchedAdminCompany {
+interface PatchedAdminCompany$1 {
     id?: string;
     /** @format uuid */
     secret?: string;
@@ -56987,7 +56987,7 @@ interface PatchedAdminRequestCreateUpdate {
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    payer_user?: User$1;
+    payer_user?: User$2;
     /** @maxLength 255 */
     request_reference?: string | null;
     request_currency?: string;
@@ -57100,7 +57100,7 @@ interface PatchedPublicRequestUpdate {
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    user?: User$1;
+    user?: User$2;
     request_reference?: string | null;
     request_currency?: Record<string, any>;
     request_amount?: number | null;
@@ -57150,14 +57150,14 @@ interface PatchedRequestCreateUpdate {
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    user?: User$1;
+    user?: User$2;
     /**
      * A ModelSerializer that takes additional arguments for
      * "fields", "omit" and "expand" in order to
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    payer_user?: User$1;
+    payer_user?: User$2;
     /** @maxLength 255 */
     request_reference?: string | null;
     request_currency?: string;
@@ -57348,14 +57348,14 @@ interface PublicRequest {
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    user?: User$1;
+    user?: User$2;
     /**
      * A ModelSerializer that takes additional arguments for
      * "fields", "omit" and "expand" in order to
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    payer_user?: User$1;
+    payer_user?: User$2;
     request_reference: string | null;
     request_currency: Record<string, any>;
     request_amount: number | null;
@@ -57475,14 +57475,14 @@ interface Request {
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    user?: User$1;
+    user?: User$2;
     /**
      * A ModelSerializer that takes additional arguments for
      * "fields", "omit" and "expand" in order to
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    payer_user?: User$1;
+    payer_user?: User$2;
     payer_email: string;
     payer_mobile_number: string;
     /** @maxLength 255 */
@@ -57551,14 +57551,14 @@ interface RequestCreateUpdate {
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    user?: User$1;
+    user?: User$2;
     /**
      * A ModelSerializer that takes additional arguments for
      * "fields", "omit" and "expand" in order to
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    payer_user?: User$1;
+    payer_user?: User$2;
     /** @maxLength 255 */
     request_reference?: string | null;
     request_currency: string;
@@ -57664,7 +57664,7 @@ interface RequestTransaction {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-interface User$1 {
+interface User$2 {
     id: string;
     /** @maxLength 30 */
     base_currency?: string | null;
@@ -57981,7 +57981,7 @@ declare class HttpClient$1<SecurityDataType = unknown> {
  * The **Payment Request Service API** is used for payments, payment requests, and invoices in Rehive.
  *
  */
-declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<SecurityDataType> {
+declare class Api$2<SecurityDataType extends unknown> extends HttpClient$1<SecurityDataType> {
     activate: {
         /**
          * No description
@@ -57992,7 +57992,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/activate/
          * @secure
          */
-        activateCreate: (data: Activate$1, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        activateCreate: (data: Activate$2, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$2, any>>;
     };
     admin: {
         /**
@@ -58004,7 +58004,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request GET:/admin/company/
          * @secure
          */
-        adminCompanyRetrieve: (params?: RequestParams$2) => Promise<HttpResponse$1<AdminCompanyResponse$1, any>>;
+        adminCompanyRetrieve: (params?: RequestParams$2) => Promise<HttpResponse$1<AdminCompanyResponse$2, any>>;
         /**
          * No description
          *
@@ -58014,7 +58014,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PUT:/admin/company/
          * @secure
          */
-        adminCompanyUpdate: (data: AdminCompany$1, params?: RequestParams$2) => Promise<HttpResponse$1<AdminCompanyResponse$1, any>>;
+        adminCompanyUpdate: (data: AdminCompany$2, params?: RequestParams$2) => Promise<HttpResponse$1<AdminCompanyResponse$2, any>>;
         /**
          * No description
          *
@@ -58024,7 +58024,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request PATCH:/admin/company/
          * @secure
          */
-        adminCompanyPartialUpdate: (data: PatchedAdminCompany, params?: RequestParams$2) => Promise<HttpResponse$1<AdminCompanyResponse$1, any>>;
+        adminCompanyPartialUpdate: (data: PatchedAdminCompany$1, params?: RequestParams$2) => Promise<HttpResponse$1<AdminCompanyResponse$2, any>>;
         /**
          * No description
          *
@@ -58416,7 +58416,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/deactivate/
          * @secure
          */
-        deactivateCreate: (data: Deactivate$1, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        deactivateCreate: (data: Deactivate$2, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$2, any>>;
     };
     requests: {
         /**
@@ -58458,7 +58458,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/requests/{identifier}/otp_challenge/
          * @secure
          */
-        requestsOtpChallengeCreate: (identifier: string, data: OTPChallenge, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        requestsOtpChallengeCreate: (identifier: string, data: OTPChallenge, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$2, any>>;
         /**
          * No description
          *
@@ -58478,7 +58478,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/requests/{identifier}/resend_otp/
          * @secure
          */
-        requestsResendOtpCreate: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        requestsResendOtpCreate: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$2, any>>;
         /**
          * No description
          *
@@ -58610,7 +58610,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/user/requests/{identifier}/notify/
          * @secure
          */
-        userRequestsNotifyCreate: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        userRequestsNotifyCreate: (identifier: string, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$2, any>>;
         /**
          * No description
          *
@@ -58712,7 +58712,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/webhook/
          * @secure
          */
-        webhookCreate: (data: RehiveWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        webhookCreate: (data: RehiveWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$2, any>>;
     };
     webhooks: {
         /**
@@ -58724,7 +58724,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/webhooks/rehive_transaction/executed/
          * @secure
          */
-        webhooksRehiveTransactionExecutedCreate: (data: RehiveWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        webhooksRehiveTransactionExecutedCreate: (data: RehiveWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$2, any>>;
         /**
          * No description
          *
@@ -58734,7 +58734,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/webhooks/rehive_transaction/initiated/
          * @secure
          */
-        webhooksRehiveTransactionInitiatedCreate: (data: RehiveWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        webhooksRehiveTransactionInitiatedCreate: (data: RehiveWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$2, any>>;
         /**
          * No description
          *
@@ -58744,7 +58744,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/webhooks/rehive_user/create/
          * @secure
          */
-        webhooksRehiveUserCreateCreate: (data: RehiveWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        webhooksRehiveUserCreateCreate: (data: RehiveWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$2, any>>;
         /**
          * No description
          *
@@ -58754,7 +58754,7 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/webhooks/rehive_user/email_update/
          * @secure
          */
-        webhooksRehiveUserEmailUpdateCreate: (data: RehiveWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        webhooksRehiveUserEmailUpdateCreate: (data: RehiveWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$2, any>>;
         /**
          * No description
          *
@@ -58764,19 +58764,19 @@ declare class Api$1<SecurityDataType extends unknown> extends HttpClient$1<Secur
          * @request POST:/webhooks/rehive_user/update/
          * @secure
          */
-        webhooksRehiveUserUpdateCreate: (data: RehiveWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$1, any>>;
+        webhooksRehiveUserUpdateCreate: (data: RehiveWebhook, params?: RequestParams$2) => Promise<HttpResponse$1<ActionResponse$2, any>>;
     };
 }
 
 /** This serializer can be used if only a `status` is required in the response. */
-interface ActionResponse {
+interface ActionResponse$1 {
     status: string;
 }
 /**
  * Serialize the activation data, should be a token that represents an admin
  * user.
  */
-interface Activate {
+interface Activate$1 {
     token: string;
     id: string;
     name: string;
@@ -58802,7 +58802,7 @@ interface AdminCard {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-interface AdminCompany {
+interface AdminCompany$1 {
     id: string;
     /** @format uuid */
     secret: string;
@@ -58815,7 +58815,7 @@ interface AdminCompany {
     bridge_webhook_id: string | null;
     admin_user_bridge_id: string | null;
 }
-interface AdminCompanyResponse {
+interface AdminCompanyResponse$1 {
     status: string;
     /**
      * A ModelSerializer that takes additional arguments for
@@ -58823,7 +58823,7 @@ interface AdminCompanyResponse {
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    data: AdminCompany;
+    data: AdminCompany$1;
 }
 interface AdminCryptoReturnPolicy {
     id: string;
@@ -59025,7 +59025,7 @@ interface Currency {
  * Serialize the deactivation data, should be a token that represents an admin
  * user.
  */
-interface Deactivate {
+interface Deactivate$1 {
     token: string;
     /** @default false */
     purge?: boolean;
@@ -59144,7 +59144,7 @@ interface PatchedAdminUpdateCompany {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-interface PatchedUser {
+interface PatchedUser$1 {
     id?: string;
     bridge_id?: string;
     bridge_signed_agreement_id?: string;
@@ -59156,7 +59156,7 @@ interface PatchedUser {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-interface User {
+interface User$1 {
     id: string;
     bridge_id: string;
     bridge_signed_agreement_id: string;
@@ -59204,7 +59204,7 @@ interface UserCustomerKYCLinkResponse {
     status: string;
     data: UserCustomerKYCLink;
 }
-interface UserResponse {
+interface UserResponse$1 {
     status: string;
     /**
      * A ModelSerializer that takes additional arguments for
@@ -59212,7 +59212,7 @@ interface UserResponse {
      * control which fields are displayed, and whether to replace simple
      * values with complex, nested serializations
      */
-    data: User;
+    data: User$1;
 }
 interface Webhook {
     id: string;
@@ -59327,7 +59327,7 @@ declare class HttpClient<SecurityDataType = unknown> {
  * The **Bridge Service API** is used for managing and processing Rehive transactions using Bridge.
  *
  */
-declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+declare class Api$1<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
     activate: {
         /**
          * No description
@@ -59337,7 +59337,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request POST:/activate/
          * @secure
          */
-        activateCreate: (data: Activate, params?: RequestParams$1) => Promise<HttpResponse<ActionResponse, any>>;
+        activateCreate: (data: Activate$1, params?: RequestParams$1) => Promise<HttpResponse<ActionResponse$1, any>>;
     };
     admin: {
         /**
@@ -59366,7 +59366,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request GET:/admin/company/
          * @secure
          */
-        adminCompanyRetrieve: (params?: RequestParams$1) => Promise<HttpResponse<AdminCompanyResponse, any>>;
+        adminCompanyRetrieve: (params?: RequestParams$1) => Promise<HttpResponse<AdminCompanyResponse$1, any>>;
         /**
          * No description
          *
@@ -59375,7 +59375,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request PUT:/admin/company/
          * @secure
          */
-        adminCompanyUpdate: (data: AdminUpdateCompany, params?: RequestParams$1) => Promise<HttpResponse<AdminCompanyResponse, any>>;
+        adminCompanyUpdate: (data: AdminUpdateCompany, params?: RequestParams$1) => Promise<HttpResponse<AdminCompanyResponse$1, any>>;
         /**
          * No description
          *
@@ -59384,7 +59384,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request PATCH:/admin/company/
          * @secure
          */
-        adminCompanyPartialUpdate: (data: PatchedAdminUpdateCompany, params?: RequestParams$1) => Promise<HttpResponse<AdminCompanyResponse, any>>;
+        adminCompanyPartialUpdate: (data: PatchedAdminUpdateCompany, params?: RequestParams$1) => Promise<HttpResponse<AdminCompanyResponse$1, any>>;
         /**
          * No description
          *
@@ -59512,7 +59512,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request POST:/bridge/webhook/{company_id}/
          * @secure
          */
-        bridgeWebhookCreate: (companyId: string, data: BridgeWebhook, params?: RequestParams$1) => Promise<HttpResponse<ActionResponse, any>>;
+        bridgeWebhookCreate: (companyId: string, data: BridgeWebhook, params?: RequestParams$1) => Promise<HttpResponse<ActionResponse$1, any>>;
     };
     deactivate: {
         /**
@@ -59523,7 +59523,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request POST:/deactivate/
          * @secure
          */
-        deactivateCreate: (data: Deactivate, params?: RequestParams$1) => Promise<HttpResponse<ActionResponse, any>>;
+        deactivateCreate: (data: Deactivate$1, params?: RequestParams$1) => Promise<HttpResponse<ActionResponse$1, any>>;
     };
     user: {
         /**
@@ -59534,7 +59534,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request GET:/user/
          * @secure
          */
-        userRetrieve: (params?: RequestParams$1) => Promise<HttpResponse<UserResponse, any>>;
+        userRetrieve: (params?: RequestParams$1) => Promise<HttpResponse<UserResponse$1, any>>;
         /**
          * No description
          *
@@ -59543,7 +59543,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request PUT:/user/
          * @secure
          */
-        userUpdate: (data: User, params?: RequestParams$1) => Promise<HttpResponse<UserResponse, any>>;
+        userUpdate: (data: User$1, params?: RequestParams$1) => Promise<HttpResponse<UserResponse$1, any>>;
         /**
          * No description
          *
@@ -59552,7 +59552,7 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request PATCH:/user/
          * @secure
          */
-        userPartialUpdate: (data: PatchedUser, params?: RequestParams$1) => Promise<HttpResponse<UserResponse, any>>;
+        userPartialUpdate: (data: PatchedUser$1, params?: RequestParams$1) => Promise<HttpResponse<UserResponse$1, any>>;
         /**
          * No description
          *
@@ -59581,7 +59581,1190 @@ declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityD
          * @request POST:/webhook/
          * @secure
          */
-        webhookCreate: (data: Webhook, params?: RequestParams$1) => Promise<HttpResponse<ActionResponse, any>>;
+        webhookCreate: (data: Webhook, params?: RequestParams$1) => Promise<HttpResponse<ActionResponse$1, any>>;
+    };
+}
+
+/** This serializer can be used if only a `status` is required in the response. */
+interface ActionResponse {
+    /** @default "sucess" */
+    status?: string;
+}
+interface Activate {
+    token: string;
+    id: string;
+    /** @format uuid */
+    secret: string;
+}
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+interface AdminCompany {
+    id: string;
+    /** @format uuid */
+    secret: string;
+    config?: Record<string, any>;
+    /** @format uri */
+    android_play_store_url?: string | null;
+    /** @format uri */
+    apple_app_store_url?: string | null;
+}
+interface AdminCompanyResponse {
+    /** @example "success" */
+    status?: string;
+    /**
+     * A ModelSerializer that takes additional arguments for
+     * "fields", "omit" and "expand" in order to
+     * control which fields are displayed, and whether to replace simple
+     * values with complex, nested serializations
+     */
+    data?: AdminCompany;
+}
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+interface AdminCreateDomain {
+    id: string;
+    /**
+     * * `native` - Native
+     * * `client` - Client
+     */
+    host?: "native" | "client";
+    /** @maxLength 100 */
+    domain: string;
+    /**
+     * * `active` - Active
+     * * `inactive` - Inactive
+     */
+    status: "active" | "inactive";
+    created: number;
+    updated: number;
+}
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+interface AdminCreateLocale {
+    /** @pattern ^[a-zA-Z0-9\_\-]+$ */
+    id: string;
+    translation: Record<string, any>;
+    /** @format uri */
+    icon?: string | null;
+    /** @maxLength 50 */
+    name?: string | null;
+}
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+interface AdminDomain {
+    id: string;
+    /**
+     * * `native` - Native
+     * * `client` - Client
+     */
+    host: "native" | "client";
+    domain: string;
+    /**
+     * * `active` - Active
+     * * `inactive` - Inactive
+     */
+    status: "active" | "inactive";
+    created: number;
+    updated: number;
+}
+interface AdminDomainResponse {
+    /** @example "success" */
+    status?: string;
+    /**
+     * A ModelSerializer that takes additional arguments for
+     * "fields", "omit" and "expand" in order to
+     * control which fields are displayed, and whether to replace simple
+     * values with complex, nested serializations
+     */
+    data?: AdminDomain;
+}
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+interface AndroidApp {
+    id: string;
+    /** @maxLength 50 */
+    package: string;
+    /** @maxLength 30 */
+    name?: string | null;
+    /** @maxLength 80 */
+    short_description?: string | null;
+    /** @maxLength 4000 */
+    full_description?: string | null;
+    /** @maxLength 3807 */
+    whats_new?: string | null;
+    /**
+     * @format uri
+     * @maxLength 200
+     */
+    website?: string | null;
+    /** @maxLength 24 */
+    contact_phone_number?: string | null;
+    /**
+     * @format email
+     * @maxLength 254
+     */
+    contact_email_address?: string | null;
+    /**
+     * @format uri
+     * @maxLength 200
+     */
+    terms_and_conditions?: string | null;
+    /**
+     * @format uri
+     * @maxLength 200
+     */
+    privacy_policy?: string | null;
+    created: number;
+    updated: number;
+}
+interface AndroidAppResponse {
+    /** @example "success" */
+    status?: string;
+    /**
+     * A ModelSerializer that takes additional arguments for
+     * "fields", "omit" and "expand" in order to
+     * control which fields are displayed, and whether to replace simple
+     * values with complex, nested serializations
+     */
+    data?: AndroidApp;
+}
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+interface AppCodebase {
+    id: string;
+    /**
+     * * `mobile` - Mobile
+     * * `web` - Web
+     */
+    type: "mobile" | "web";
+    /** @format uri */
+    file: string;
+    /** @maxLength 24 */
+    version: string;
+    /** @maxLength 24 */
+    title?: string | null;
+    description?: string | null;
+    /** @format date-time */
+    created: string;
+    /** @format date-time */
+    updated: string;
+}
+interface AppCodebaseResponse {
+    /** @example "success" */
+    status?: string;
+    /**
+     * A ModelSerializer that takes additional arguments for
+     * "fields", "omit" and "expand" in order to
+     * control which fields are displayed, and whether to replace simple
+     * values with complex, nested serializations
+     */
+    data?: AppCodebase;
+}
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+interface Company {
+    id: string;
+    config: Record<string, any>;
+    /** @format uri */
+    android_play_store_url?: string | null;
+    /** @format uri */
+    apple_app_store_url?: string | null;
+}
+interface CompanyResponse {
+    /** @example "success" */
+    status?: string;
+    /**
+     * A ModelSerializer that takes additional arguments for
+     * "fields", "omit" and "expand" in order to
+     * control which fields are displayed, and whether to replace simple
+     * values with complex, nested serializations
+     */
+    data?: Company;
+}
+interface Deactivate {
+    token: string;
+    /** @default false */
+    purge?: boolean;
+}
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+interface IOSApp {
+    id: string;
+    /** @maxLength 50 */
+    bundle_identifier: string;
+    /** @maxLength 30 */
+    name?: string | null;
+    /** @maxLength 30 */
+    subtitle?: string | null;
+    /** @maxLength 3110 */
+    description?: string | null;
+    /** @maxLength 170 */
+    promotional_text?: string | null;
+    /** @maxLength 3807 */
+    whats_new?: string | null;
+    /** @maxLength 70 */
+    keywords?: string | null;
+    /**
+     * @format uri
+     * @maxLength 200
+     */
+    support_url?: string | null;
+    /**
+     * @format uri
+     * @maxLength 200
+     */
+    marketing_url?: string | null;
+    /** @maxLength 30 */
+    contact_first_name?: string | null;
+    /** @maxLength 30 */
+    contact_last_name?: string | null;
+    /** @maxLength 24 */
+    contact_phone_number?: string | null;
+    /**
+     * @format email
+     * @maxLength 254
+     */
+    contact_email_address?: string | null;
+    /** @maxLength 70 */
+    copyright?: string | null;
+    /**
+     * @format uri
+     * @maxLength 200
+     */
+    terms_and_conditions?: string | null;
+    /**
+     * @format uri
+     * @maxLength 200
+     */
+    privacy_policy?: string | null;
+    created: number;
+    updated: number;
+}
+interface IOSAppResponse {
+    /** @example "success" */
+    status?: string;
+    /**
+     * A ModelSerializer that takes additional arguments for
+     * "fields", "omit" and "expand" in order to
+     * control which fields are displayed, and whether to replace simple
+     * values with complex, nested serializations
+     */
+    data?: IOSApp;
+}
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+interface Locale {
+    id: string;
+    translation: Record<string, any>;
+    created: number;
+    updated: number;
+    /** @format uri */
+    icon?: string | null;
+    /** @maxLength 50 */
+    name?: string | null;
+}
+interface LocaleResponse {
+    /** @example "success" */
+    status?: string;
+    /**
+     * A ModelSerializer that takes additional arguments for
+     * "fields", "omit" and "expand" in order to
+     * control which fields are displayed, and whether to replace simple
+     * values with complex, nested serializations
+     */
+    data?: Locale;
+}
+interface PaginatedAdminDomainList {
+    /** @example 123 */
+    count?: number;
+    /**
+     * @format uri
+     * @example "http://api.example.org/accounts/?page=4"
+     */
+    next?: string | null;
+    /**
+     * @format uri
+     * @example "http://api.example.org/accounts/?page=2"
+     */
+    previous?: string | null;
+    results?: AdminDomain[];
+}
+interface PaginatedAdminDomainListResponse {
+    /** @example "success" */
+    status?: string;
+    data?: PaginatedAdminDomainList;
+}
+interface PaginatedAndroidAppList {
+    /** @example 123 */
+    count?: number;
+    /**
+     * @format uri
+     * @example "http://api.example.org/accounts/?page=4"
+     */
+    next?: string | null;
+    /**
+     * @format uri
+     * @example "http://api.example.org/accounts/?page=2"
+     */
+    previous?: string | null;
+    results?: AndroidApp[];
+}
+interface PaginatedAndroidAppListResponse {
+    /** @example "success" */
+    status?: string;
+    data?: PaginatedAndroidAppList;
+}
+interface PaginatedAppCodebaseList {
+    /** @example 123 */
+    count?: number;
+    /**
+     * @format uri
+     * @example "http://api.example.org/accounts/?page=4"
+     */
+    next?: string | null;
+    /**
+     * @format uri
+     * @example "http://api.example.org/accounts/?page=2"
+     */
+    previous?: string | null;
+    results?: AppCodebase[];
+}
+interface PaginatedAppCodebaseListResponse {
+    /** @example "success" */
+    status?: string;
+    data?: PaginatedAppCodebaseList;
+}
+interface PaginatedIOSAppList {
+    /** @example 123 */
+    count?: number;
+    /**
+     * @format uri
+     * @example "http://api.example.org/accounts/?page=4"
+     */
+    next?: string | null;
+    /**
+     * @format uri
+     * @example "http://api.example.org/accounts/?page=2"
+     */
+    previous?: string | null;
+    results?: IOSApp[];
+}
+interface PaginatedIOSAppListResponse {
+    /** @example "success" */
+    status?: string;
+    data?: PaginatedIOSAppList;
+}
+interface PaginatedLocaleList {
+    /** @example 123 */
+    count?: number;
+    /**
+     * @format uri
+     * @example "http://api.example.org/accounts/?page=4"
+     */
+    next?: string | null;
+    /**
+     * @format uri
+     * @example "http://api.example.org/accounts/?page=2"
+     */
+    previous?: string | null;
+    results?: Locale[];
+}
+interface PaginatedLocaleListResponse {
+    /** @example "success" */
+    status?: string;
+    data?: PaginatedLocaleList;
+}
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+interface PatchedAdminCompany {
+    id?: string;
+    /** @format uuid */
+    secret?: string;
+    config?: Record<string, any>;
+    /** @format uri */
+    android_play_store_url?: string | null;
+    /** @format uri */
+    apple_app_store_url?: string | null;
+}
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+interface PatchedAdminDomain {
+    id?: string;
+    /**
+     * * `native` - Native
+     * * `client` - Client
+     */
+    host?: "native" | "client";
+    domain?: string;
+    /**
+     * * `active` - Active
+     * * `inactive` - Inactive
+     */
+    status?: "active" | "inactive";
+    created?: number;
+    updated?: number;
+}
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+interface PatchedAndroidApp {
+    id?: string;
+    /** @maxLength 50 */
+    package?: string;
+    /** @maxLength 30 */
+    name?: string | null;
+    /** @maxLength 80 */
+    short_description?: string | null;
+    /** @maxLength 4000 */
+    full_description?: string | null;
+    /** @maxLength 3807 */
+    whats_new?: string | null;
+    /**
+     * @format uri
+     * @maxLength 200
+     */
+    website?: string | null;
+    /** @maxLength 24 */
+    contact_phone_number?: string | null;
+    /**
+     * @format email
+     * @maxLength 254
+     */
+    contact_email_address?: string | null;
+    /**
+     * @format uri
+     * @maxLength 200
+     */
+    terms_and_conditions?: string | null;
+    /**
+     * @format uri
+     * @maxLength 200
+     */
+    privacy_policy?: string | null;
+    created?: number;
+    updated?: number;
+}
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+interface PatchedAppCodebase {
+    id?: string;
+    /**
+     * * `mobile` - Mobile
+     * * `web` - Web
+     */
+    type?: "mobile" | "web";
+    /** @format uri */
+    file?: string;
+    /** @maxLength 24 */
+    version?: string;
+    /** @maxLength 24 */
+    title?: string | null;
+    description?: string | null;
+    /** @format date-time */
+    created?: string;
+    /** @format date-time */
+    updated?: string;
+}
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+interface PatchedIOSApp {
+    id?: string;
+    /** @maxLength 50 */
+    bundle_identifier?: string;
+    /** @maxLength 30 */
+    name?: string | null;
+    /** @maxLength 30 */
+    subtitle?: string | null;
+    /** @maxLength 3110 */
+    description?: string | null;
+    /** @maxLength 170 */
+    promotional_text?: string | null;
+    /** @maxLength 3807 */
+    whats_new?: string | null;
+    /** @maxLength 70 */
+    keywords?: string | null;
+    /**
+     * @format uri
+     * @maxLength 200
+     */
+    support_url?: string | null;
+    /**
+     * @format uri
+     * @maxLength 200
+     */
+    marketing_url?: string | null;
+    /** @maxLength 30 */
+    contact_first_name?: string | null;
+    /** @maxLength 30 */
+    contact_last_name?: string | null;
+    /** @maxLength 24 */
+    contact_phone_number?: string | null;
+    /**
+     * @format email
+     * @maxLength 254
+     */
+    contact_email_address?: string | null;
+    /** @maxLength 70 */
+    copyright?: string | null;
+    /**
+     * @format uri
+     * @maxLength 200
+     */
+    terms_and_conditions?: string | null;
+    /**
+     * @format uri
+     * @maxLength 200
+     */
+    privacy_policy?: string | null;
+    created?: number;
+    updated?: number;
+}
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+interface PatchedLocale {
+    id?: string;
+    translation?: Record<string, any>;
+    created?: number;
+    updated?: number;
+    /** @format uri */
+    icon?: string | null;
+    /** @maxLength 50 */
+    name?: string | null;
+}
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+interface PatchedUser {
+    id?: string;
+    config?: Record<string, any>;
+}
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+interface User {
+    id: string;
+    config?: Record<string, any>;
+}
+interface UserResponse {
+    /** @example "success" */
+    status?: string;
+    /**
+     * A ModelSerializer that takes additional arguments for
+     * "fields", "omit" and "expand" in order to
+     * control which fields are displayed, and whether to replace simple
+     * values with complex, nested serializations
+     */
+    data?: User;
+}
+interface AdminAndroidAppsListParams {
+    /** A page number within the paginated result set. */
+    page?: number;
+    /** Number of results to return per page. */
+    page_size?: number;
+}
+interface AdminAppCodebasesListParams {
+    /** A page number within the paginated result set. */
+    page?: number;
+    /** Number of results to return per page. */
+    page_size?: number;
+    type?: string;
+    version?: string;
+}
+interface AdminDomainsListParams {
+    /** A page number within the paginated result set. */
+    page?: number;
+    /** Number of results to return per page. */
+    page_size?: number;
+}
+interface AdminIosAppsListParams {
+    /** A page number within the paginated result set. */
+    page?: number;
+    /** Number of results to return per page. */
+    page_size?: number;
+}
+interface AdminLocalesListParams {
+    id?: string;
+    id__in?: string;
+    /** A page number within the paginated result set. */
+    page?: number;
+    /** Number of results to return per page. */
+    page_size?: number;
+}
+interface PublicCompanyLocalesListParams {
+    id?: string;
+    id__in?: string;
+    /** A page number within the paginated result set. */
+    page?: number;
+    /** Number of results to return per page. */
+    page_size?: number;
+    /** @pattern ^([a-zA-Z0-9\_\-]+)$ */
+    companyId: string;
+}
+interface SuperadminAppCodebasesListParams {
+    /** A page number within the paginated result set. */
+    page?: number;
+    /** Number of results to return per page. */
+    page_size?: number;
+    type?: string;
+    version?: string;
+}
+interface UserLocalesListParams {
+    id?: string;
+    id__in?: string;
+    /** A page number within the paginated result set. */
+    page?: number;
+    /** Number of results to return per page. */
+    page_size?: number;
+}
+/**
+ * @title App Service API
+ * @version 1 (1)
+ * @termsOfService https://rehive.com/terms/
+ * @baseUrl https://app.services.rehive.com
+ * @externalDocs https://docs.rehive.com
+ * @contact Rehive Support <support@rehive.com> (https://rehive.com/support/)
+ *
+ *
+ * The **App Service API** is used for customizing the end-user app experience in Rehive.
+ *
+ */
+declare class Api<SecurityDataType extends unknown> extends HttpClient$b<SecurityDataType> {
+    activate: {
+        /**
+         * No description
+         *
+         * @tags activate
+         * @name ActivateCreate
+         * @summary Activate service
+         * @request POST:/activate/
+         * @secure
+         */
+        activateCreate: (data: Activate, params?: RequestParams) => Promise<ActionResponse>;
+    };
+    admin: {
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminAndroidAppsList
+         * @summary List android apps
+         * @request GET:/admin/android-apps/
+         * @secure
+         */
+        adminAndroidAppsList: (query: AdminAndroidAppsListParams, params?: RequestParams) => Promise<PaginatedAndroidAppListResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminAndroidAppsCreate
+         * @summary Create android app
+         * @request POST:/admin/android-apps/
+         * @secure
+         */
+        adminAndroidAppsCreate: (data: AndroidApp, params?: RequestParams) => Promise<AndroidAppResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminAndroidAppsRetrieve
+         * @summary Retrieve android app
+         * @request GET:/admin/android-apps/{id}/
+         * @secure
+         */
+        adminAndroidAppsRetrieve: (id: string, params?: RequestParams) => Promise<AndroidAppResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminAndroidAppsUpdate
+         * @summary Update android app
+         * @request PUT:/admin/android-apps/{id}/
+         * @secure
+         */
+        adminAndroidAppsUpdate: (id: string, data: AndroidApp, params?: RequestParams) => Promise<AndroidAppResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminAndroidAppsPartialUpdate
+         * @summary Partially update android app
+         * @request PATCH:/admin/android-apps/{id}/
+         * @secure
+         */
+        adminAndroidAppsPartialUpdate: (id: string, data: PatchedAndroidApp, params?: RequestParams) => Promise<AndroidAppResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminAndroidAppsDestroy
+         * @summary Delete android app
+         * @request DELETE:/admin/android-apps/{id}/
+         * @secure
+         */
+        adminAndroidAppsDestroy: (id: string, params?: RequestParams) => Promise<AndroidAppResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminAppCodebasesList
+         * @summary List app codebases
+         * @request GET:/admin/app-codebases/
+         * @secure
+         */
+        adminAppCodebasesList: (query: AdminAppCodebasesListParams, params?: RequestParams) => Promise<PaginatedAppCodebaseListResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminAppCodebasesRetrieve
+         * @summary Retrieve app codebase
+         * @request GET:/admin/app-codebases/{id}/
+         * @secure
+         */
+        adminAppCodebasesRetrieve: (id: string, params?: RequestParams) => Promise<AppCodebaseResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminCompanyRetrieve
+         * @summary Retrieve company
+         * @request GET:/admin/company/
+         * @secure
+         */
+        adminCompanyRetrieve: (params?: RequestParams) => Promise<AdminCompanyResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminCompanyUpdate
+         * @summary Update company
+         * @request PUT:/admin/company/
+         * @secure
+         */
+        adminCompanyUpdate: (data: AdminCompany, params?: RequestParams) => Promise<AdminCompanyResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminCompanyPartialUpdate
+         * @summary Partially update company
+         * @request PATCH:/admin/company/
+         * @secure
+         */
+        adminCompanyPartialUpdate: (data: PatchedAdminCompany, params?: RequestParams) => Promise<AdminCompanyResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminDomainsList
+         * @summary List domains
+         * @request GET:/admin/domains/
+         * @secure
+         */
+        adminDomainsList: (query: AdminDomainsListParams, params?: RequestParams) => Promise<PaginatedAdminDomainListResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminDomainsCreate
+         * @summary Create domain
+         * @request POST:/admin/domains/
+         * @secure
+         */
+        adminDomainsCreate: (data: AdminCreateDomain, params?: RequestParams) => Promise<AdminDomainResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminDomainsRetrieve
+         * @summary Retrieve domain
+         * @request GET:/admin/domains/{identifier}/
+         * @secure
+         */
+        adminDomainsRetrieve: (identifier: string, params?: RequestParams) => Promise<AdminDomainResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminDomainsUpdate
+         * @summary Update domain
+         * @request PUT:/admin/domains/{identifier}/
+         * @secure
+         */
+        adminDomainsUpdate: (identifier: string, data: AdminDomain, params?: RequestParams) => Promise<AdminDomainResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminDomainsPartialUpdate
+         * @summary Partially update domain
+         * @request PATCH:/admin/domains/{identifier}/
+         * @secure
+         */
+        adminDomainsPartialUpdate: (identifier: string, data: PatchedAdminDomain, params?: RequestParams) => Promise<AdminDomainResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminDomainsDestroy
+         * @summary Delete domain
+         * @request DELETE:/admin/domains/{identifier}/
+         * @secure
+         */
+        adminDomainsDestroy: (identifier: string, params?: RequestParams) => Promise<AdminDomainResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminIosAppsList
+         * @summary List iOS apps
+         * @request GET:/admin/ios-apps/
+         * @secure
+         */
+        adminIosAppsList: (query: AdminIosAppsListParams, params?: RequestParams) => Promise<PaginatedIOSAppListResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminIosAppsCreate
+         * @summary Create iOS app
+         * @request POST:/admin/ios-apps/
+         * @secure
+         */
+        adminIosAppsCreate: (data: IOSApp, params?: RequestParams) => Promise<IOSAppResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminIosAppsRetrieve
+         * @summary Retrieve iOS app
+         * @request GET:/admin/ios-apps/{id}/
+         * @secure
+         */
+        adminIosAppsRetrieve: (id: string, params?: RequestParams) => Promise<IOSAppResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminIosAppsUpdate
+         * @summary Update iOS app
+         * @request PUT:/admin/ios-apps/{id}/
+         * @secure
+         */
+        adminIosAppsUpdate: (id: string, data: IOSApp, params?: RequestParams) => Promise<IOSAppResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminIosAppsPartialUpdate
+         * @summary Partially update iOS app
+         * @request PATCH:/admin/ios-apps/{id}/
+         * @secure
+         */
+        adminIosAppsPartialUpdate: (id: string, data: PatchedIOSApp, params?: RequestParams) => Promise<IOSAppResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminIosAppsDestroy
+         * @summary Delete iOS app
+         * @request DELETE:/admin/ios-apps/{id}/
+         * @secure
+         */
+        adminIosAppsDestroy: (id: string, params?: RequestParams) => Promise<IOSAppResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminLocalesList
+         * @summary List locales
+         * @request GET:/admin/locales/
+         * @secure
+         */
+        adminLocalesList: (query: AdminLocalesListParams, params?: RequestParams) => Promise<PaginatedLocaleListResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminLocalesCreate
+         * @summary Create locale
+         * @request POST:/admin/locales/
+         * @secure
+         */
+        adminLocalesCreate: (data: AdminCreateLocale, params?: RequestParams) => Promise<LocaleResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminLocalesRetrieve
+         * @summary Retrieve locale
+         * @request GET:/admin/locales/{locale_id}/
+         * @secure
+         */
+        adminLocalesRetrieve: (localeId: string, params?: RequestParams) => Promise<LocaleResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminLocalesUpdate
+         * @summary Update locale
+         * @request PUT:/admin/locales/{locale_id}/
+         * @secure
+         */
+        adminLocalesUpdate: (localeId: string, data: Locale, params?: RequestParams) => Promise<LocaleResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminLocalesPartialUpdate
+         * @summary Partially update locale
+         * @request PATCH:/admin/locales/{locale_id}/
+         * @secure
+         */
+        adminLocalesPartialUpdate: (localeId: string, data: PatchedLocale, params?: RequestParams) => Promise<LocaleResponse>;
+        /**
+         * No description
+         *
+         * @tags admin
+         * @name AdminLocalesDestroy
+         * @summary Delete locale
+         * @request DELETE:/admin/locales/{locale_id}/
+         * @secure
+         */
+        adminLocalesDestroy: (localeId: string, params?: RequestParams) => Promise<LocaleResponse>;
+    };
+    deactivate: {
+        /**
+         * No description
+         *
+         * @tags deactivate
+         * @name DeactivateCreate
+         * @summary Deactivate service
+         * @request POST:/deactivate/
+         * @secure
+         */
+        deactivateCreate: (data: Deactivate, params?: RequestParams) => Promise<ActionResponse>;
+    };
+    public: {
+        /**
+         * No description
+         *
+         * @tags public
+         * @name PublicCompanyRetrieve
+         * @summary Retrieve public company
+         * @request GET:/public/company/
+         * @secure
+         */
+        publicCompanyRetrieve: (params?: RequestParams) => Promise<CompanyResponse>;
+        /**
+         * No description
+         *
+         * @tags public
+         * @name PublicCompanyLocalesList
+         * @summary List public locales
+         * @request GET:/public/company/{company_id}/locales/
+         * @secure
+         */
+        publicCompanyLocalesList: ({ companyId, ...query }: PublicCompanyLocalesListParams, params?: RequestParams) => Promise<PaginatedLocaleListResponse>;
+        /**
+         * No description
+         *
+         * @tags public
+         * @name PublicCompanyLocalesRetrieve
+         * @summary Retrieve public locale
+         * @request GET:/public/company/{company_id}/locales/{locale_id}/
+         * @secure
+         */
+        publicCompanyLocalesRetrieve: (companyId: string, localeId: string, params?: RequestParams) => Promise<LocaleResponse>;
+    };
+    superadmin: {
+        /**
+         * No description
+         *
+         * @tags superadmin
+         * @name SuperadminAppCodebasesList
+         * @summary List app codebases
+         * @request GET:/superadmin/app-codebases/
+         * @secure
+         */
+        superadminAppCodebasesList: (query: SuperadminAppCodebasesListParams, params?: RequestParams) => Promise<PaginatedAppCodebaseListResponse>;
+        /**
+         * No description
+         *
+         * @tags superadmin
+         * @name SuperadminAppCodebasesCreate
+         * @summary Create app codebase
+         * @request POST:/superadmin/app-codebases/
+         * @secure
+         */
+        superadminAppCodebasesCreate: (data: AppCodebase, params?: RequestParams) => Promise<AppCodebaseResponse>;
+        /**
+         * No description
+         *
+         * @tags superadmin
+         * @name SuperadminAppCodebasesRetrieve
+         * @summary Retrieve app codebase
+         * @request GET:/superadmin/app-codebases/{id}/
+         * @secure
+         */
+        superadminAppCodebasesRetrieve: (id: string, params?: RequestParams) => Promise<AppCodebaseResponse>;
+        /**
+         * No description
+         *
+         * @tags superadmin
+         * @name SuperadminAppCodebasesUpdate
+         * @summary Update app codebase
+         * @request PUT:/superadmin/app-codebases/{id}/
+         * @secure
+         */
+        superadminAppCodebasesUpdate: (id: string, data: AppCodebase, params?: RequestParams) => Promise<AppCodebaseResponse>;
+        /**
+         * No description
+         *
+         * @tags superadmin
+         * @name SuperadminAppCodebasesPartialUpdate
+         * @summary Partially update codebase
+         * @request PATCH:/superadmin/app-codebases/{id}/
+         * @secure
+         */
+        superadminAppCodebasesPartialUpdate: (id: string, data: PatchedAppCodebase, params?: RequestParams) => Promise<AppCodebaseResponse>;
+        /**
+         * No description
+         *
+         * @tags superadmin
+         * @name SuperadminAppCodebasesDestroy
+         * @summary Delete codebase
+         * @request DELETE:/superadmin/app-codebases/{id}/
+         * @secure
+         */
+        superadminAppCodebasesDestroy: (id: string, params?: RequestParams) => Promise<AppCodebaseResponse>;
+    };
+    user: {
+        /**
+         * No description
+         *
+         * @tags user
+         * @name UserRetrieve
+         * @summary Retrieve user
+         * @request GET:/user/
+         * @secure
+         */
+        userRetrieve: (params?: RequestParams) => Promise<UserResponse>;
+        /**
+         * No description
+         *
+         * @tags user
+         * @name UserUpdate
+         * @summary Update user
+         * @request PUT:/user/
+         * @secure
+         */
+        userUpdate: (data: User, params?: RequestParams) => Promise<UserResponse>;
+        /**
+         * No description
+         *
+         * @tags user
+         * @name UserPartialUpdate
+         * @summary Partially update user
+         * @request PATCH:/user/
+         * @secure
+         */
+        userPartialUpdate: (data: PatchedUser, params?: RequestParams) => Promise<UserResponse>;
+        /**
+         * No description
+         *
+         * @tags user
+         * @name UserCompanyRetrieve
+         * @summary Retrieve company
+         * @request GET:/user/company/
+         * @secure
+         */
+        userCompanyRetrieve: (params?: RequestParams) => Promise<CompanyResponse>;
+        /**
+         * No description
+         *
+         * @tags user
+         * @name UserLocalesList
+         * @summary List locales
+         * @request GET:/user/locales/
+         * @secure
+         */
+        userLocalesList: (query: UserLocalesListParams, params?: RequestParams) => Promise<PaginatedLocaleListResponse>;
+        /**
+         * No description
+         *
+         * @tags user
+         * @name UserLocalesRetrieve
+         * @summary Retrieve locale
+         * @request GET:/user/locales/{locale_id}/
+         * @secure
+         */
+        userLocalesRetrieve: (localeId: string, params?: RequestParams) => Promise<LocaleResponse>;
     };
 }
 
@@ -59695,32 +60878,35 @@ declare class RehiveClient {
     readonly extensions: {
         conversion: (config?: {
             baseUrl?: string;
-        }) => Api$9<unknown>;
+        }) => Api$a<unknown>;
         massSend: (config?: {
             baseUrl?: string;
-        }) => Api$8<unknown>;
+        }) => Api$9<unknown>;
         notifications: (config?: {
             baseUrl?: string;
-        }) => Api$7<unknown>;
+        }) => Api$8<unknown>;
         products: (config?: {
             baseUrl?: string;
-        }) => Api$6<unknown>;
+        }) => Api$7<unknown>;
         rewards: (config?: {
             baseUrl?: string;
-        }) => Api$5<unknown>;
+        }) => Api$6<unknown>;
         stellar: (config?: {
             baseUrl?: string;
-        }) => Api$4<unknown>;
+        }) => Api$5<unknown>;
         stellarTestnet: (config?: {
             baseUrl?: string;
-        }) => Api$3<unknown>;
+        }) => Api$4<unknown>;
         business: (config?: {
             baseUrl?: string;
-        }) => Api$2<unknown>;
+        }) => Api$3<unknown>;
         paymentRequests: (config?: {
             baseUrl?: string;
-        }) => Api$1<unknown>;
+        }) => Api$2<unknown>;
         bridge: (config?: {
+            baseUrl?: string;
+        }) => Api$1<unknown>;
+        app: (config?: {
             baseUrl?: string;
         }) => Api<unknown>;
         /**
@@ -59784,6 +60970,7 @@ declare class RehiveClient {
     private createBusinessApi;
     private createPaymentRequestsApi;
     private createBridgeApi;
+    private createAppApi;
     /**
      * Make an authenticated HTTP request using fetch with automatic token management.
      *

@@ -13,6 +13,7 @@ import type { Api as StellarTestnetApi } from '../extensions/stellar-testnet/reh
 import type { Api as BusinessApi } from '../extensions/business/rehive-business-api.js';
 import type { Api as PaymentRequestsApi } from '../extensions/payment-requests/rehive-payment-requests-api.js';
 import type { Api as BridgeApi } from '../extensions/bridge/rehive-bridge-api.js';
+import type { Api as AppApi } from '../extensions/app/rehive-app-api.js';
 import type {
   UserSession,
   AuthState,
@@ -174,6 +175,7 @@ export class RehiveClient {
     business: (config: { baseUrl?: string } = {}) => this.createBusinessApi(config),
     paymentRequests: (config: { baseUrl?: string } = {}) => this.createPaymentRequestsApi(config),
     bridge: (config: { baseUrl?: string } = {}) => this.createBridgeApi(config),
+    app: (config: { baseUrl?: string } = {}) => this.createAppApi(config),
     
     /**
      * Make authenticated HTTP requests to custom endpoints.
@@ -478,6 +480,13 @@ export class RehiveClient {
     const { Api } = require('../extensions/bridge/rehive-bridge-api.js');
     return this.createExtensionApi(Api, {
       baseUrl: config.baseUrl || 'https://bridge.services.rehive.com/api/'
+    });
+  }
+
+  private createAppApi(config: { baseUrl?: string } = {}): AppApi<unknown> {
+    const { Api } = require('../extensions/app/rehive-app-api.js');
+    return this.createExtensionApi(Api, {
+      baseUrl: config.baseUrl || 'https://app.services.rehive.com/api/'
     });
   }
 
