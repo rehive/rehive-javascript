@@ -12874,6 +12874,7 @@ interface AuthSession {
     refresh_token: string;
     challenges: any[];
     expires: number;
+    company?: string;
 }
 type UserSession$1 = AuthSession;
 type SessionListener = (session: AuthSession | null) => void;
@@ -59679,6 +59680,9 @@ declare class RehiveClient {
         logout: () => Promise<void>;
         refresh: () => Promise<void>;
         getActiveSession: () => AuthSession | null;
+        getSessions: () => AuthSession[];
+        getSessionsByCompany: (company: string) => AuthSession[];
+        switchToSession: (userId: string, company?: string) => Promise<AuthSession | null>;
         subscribeToSession: (listener: SessionListener) => () => void;
         subscribeToErrors: (listener: ErrorListener) => () => void;
         deleteChallenge: (challengeId: string) => Promise<void>;
@@ -59798,6 +59802,18 @@ declare class RehiveClient {
     private subscribeToSession;
     private subscribeToErrors;
     private deleteChallenge;
+    /**
+     * Get all stored sessions
+     */
+    private getSessions;
+    /**
+     * Get all sessions for a specific company
+     */
+    private getSessionsByCompany;
+    /**
+     * Switch to a different session without requiring login
+     */
+    private switchToSession;
 }
 
 interface AuthContextType {
@@ -59810,6 +59826,9 @@ interface AuthContextType {
     authLoading: boolean;
     authError: Error | null | undefined;
     deleteChallenge: (challengeId: string | undefined) => Promise<void>;
+    getSessions: () => AuthSession[];
+    getSessionsByCompany: (company: string) => AuthSession[];
+    switchToSession: (userId: string, company?: string) => Promise<AuthSession | null>;
     rehive: RehiveClient;
 }
 interface AuthProviderProps {

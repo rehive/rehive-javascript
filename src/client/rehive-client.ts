@@ -150,6 +150,9 @@ export class RehiveClient {
     logout: () => this.logout(),
     refresh: () => this.refresh(),
     getActiveSession: () => this.getActiveSession(),
+    getSessions: () => this.getSessions(),
+    getSessionsByCompany: (company: string) => this.getSessionsByCompany(company),
+    switchToSession: (userId: string, company?: string) => this.switchToSession(userId, company),
     subscribeToSession: (listener: SessionListener) => this.subscribeToSession(listener),
     subscribeToErrors: (listener: ErrorListener) => this.subscribeToErrors(listener),
     deleteChallenge: (challengeId: string) => this.deleteChallenge(challengeId)
@@ -524,17 +527,23 @@ export class RehiveClient {
 
       // With our custom templates, response.data contains the login data directly
       const loginResponseData = response.data;
-      
+
       const newSession: UserSession = {
         user: loginResponseData.user,
         token: loginResponseData.token,
         refresh_token: loginResponseData.refresh_token,
         challenges: loginResponseData.challenges,
         expires: loginResponseData.expires,
+        company: params.company,
       };
 
       const currentAuthState = await this.loadAuthState();
-      const existingSessionIndex = currentAuthState.sessions.findIndex((session: UserSession) => session.user.id === newSession.user.id);
+      // Match sessions by both user.id and company to support multi-company logins
+      const existingSessionIndex = currentAuthState.sessions.findIndex(
+        (session: UserSession) =>
+          session.user.id === newSession.user.id &&
+          session.company === newSession.company
+      );
 
       let newAuthState: AuthState;
       if (existingSessionIndex !== -1) {
@@ -583,13 +592,14 @@ export class RehiveClient {
 
       // With our custom templates, response.data contains the register data directly
       const registerResponseData = response.data;
-      
+
       const newSession: UserSession = {
         user: registerResponseData.user,
         token: registerResponseData.token,
         refresh_token: registerResponseData.refresh_token,
         challenges: registerResponseData.challenges,
         expires: registerResponseData.expires,
+        company: params.company,
       };
 
       const currentAuthState = await this.loadAuthState();
@@ -655,12 +665,13 @@ export class RehiveClient {
 
         // With our custom templates, response.data contains the refresh data directly
         const refreshResponseData = response.data;
-        
+
         const updatedSessions = [...currentAuthState.sessions];
         updatedSessions[activeSessionIndex] = {
           ...activeSession,
           refresh_token: refreshResponseData.refresh_token,
           expires: refreshResponseData.expires,
+          company: activeSession.company,
         };
 
         const newAuthState = {
@@ -711,26 +722,82 @@ export class RehiveClient {
   private async deleteChallenge(challengeId: string): Promise<void> {
     const currentAuthState = await this.loadAuthState();
     const activeSessionIndex = currentAuthState.activeSessionIndex;
-    
+
     if (activeSessionIndex >= 0 && activeSessionIndex < currentAuthState.sessions.length) {
       const activeSession = currentAuthState.sessions[activeSessionIndex];
-      
+
       // Remove the challenge from the active session
       const updatedSession = {
         ...activeSession,
         challenges: activeSession.challenges?.filter(challenge => challenge.id !== challengeId) || []
       };
-      
+
       // Update the session in the auth state
       const updatedSessions = [...currentAuthState.sessions];
       updatedSessions[activeSessionIndex] = updatedSession;
-      
+
       const newAuthState = {
         ...currentAuthState,
         sessions: updatedSessions
       };
-      
+
       await this.saveAuthState(newAuthState);
     }
+  }
+
+  /**
+   * Get all stored sessions
+   */
+  private getSessions(): UserSession[] {
+    return [...this.sessions];
+  }
+
+  /**
+   * Get all sessions for a specific company
+   */
+  private getSessionsByCompany(company: string): UserSession[] {
+    return this.sessions.filter(session => session.company === company);
+  }
+
+  /**
+   * Switch to a different session without requiring login
+   */
+  private async switchToSession(userId: string, company?: string): Promise<UserSession | null> {
+    const currentAuthState = await this.loadAuthState();
+
+    // Find the session matching both userId and company
+    const sessionIndex = currentAuthState.sessions.findIndex(
+      (session: UserSession) =>
+        session.user.id === userId &&
+        session.company === company
+    );
+
+    if (sessionIndex === -1) {
+      return null;
+    }
+
+    const session = currentAuthState.sessions[sessionIndex];
+
+    // Update the active session index
+    const newAuthState = {
+      ...currentAuthState,
+      activeSessionIndex: sessionIndex,
+    };
+
+    await this.saveAuthState(newAuthState);
+
+    // Check if token is expired and refresh if needed
+    if (session.expires && this.isTokenExpired(session.expires)) {
+      await this.refresh();
+      // Get the updated session after refresh
+      const updatedSession = this.getActiveSession();
+      return updatedSession;
+    }
+
+    // Sync tokens to all API instances and notify listeners
+    this.syncTokensToAllInstances(session.token, session.expires);
+    this.notifySessionListeners();
+
+    return session;
   }
 }
