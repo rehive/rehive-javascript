@@ -822,6 +822,63 @@ export class TokenManager {
     }
   }
 
+  /**
+   * Clear all sessions locally without calling logout API
+   *
+   * This method removes all sessions from local storage without making
+   * API calls to invalidate tokens on the server. Useful for quick local
+   * cleanup or "sign out everywhere" functionality.
+   */
+  public async clearAllSessions(): Promise<void> {
+    const newAuthState: AuthState = {
+      sessions: [],
+      activeSessionIndex: -1,
+    };
+
+    await this.saveAuthState(newAuthState);
+    this.syncTokensToAllInstances(null);
+    this.notifyErrorListeners(null);
+  }
+
+  /**
+   * Logout all sessions by calling logout API for each session
+   *
+   * This method iterates through all sessions and calls the logout endpoint
+   * for each one to properly invalidate tokens on the server. This is more
+   * thorough than clearAllSessions but takes longer.
+   *
+   * @returns Promise that resolves when all logout calls complete
+   */
+  public async logoutAll(): Promise<void> {
+    const currentAuthState = await this.loadAuthState();
+    const sessions = currentAuthState.sessions;
+
+    // Call logout for each session
+    const logoutPromises = sessions.map(async (session) => {
+      try {
+        // Temporarily set this session's token for the logout call
+        this.platformApi.setSecurityData(`Token ${session.token}`);
+        await this.platformApi.authLogout({ clear_session_option: 'none' });
+      } catch (e) {
+        // Log error but continue with other logouts
+        console.warn('Logout API call failed for session:', session.user.id, e);
+      }
+    });
+
+    // Wait for all logout calls to complete
+    await Promise.all(logoutPromises);
+
+    // Clear all sessions locally
+    const newAuthState: AuthState = {
+      sessions: [],
+      activeSessionIndex: -1,
+    };
+
+    await this.saveAuthState(newAuthState);
+    this.syncTokensToAllInstances(null);
+    this.notifyErrorListeners(null);
+  }
+
   public subscribeToSession(listener: SessionListener): () => void {
     this.sessionListeners.push(listener);
     return () => {

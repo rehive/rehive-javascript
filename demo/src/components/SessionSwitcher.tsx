@@ -3,7 +3,7 @@ import { useAuth } from 'rehive/react'
 import type { AuthSession } from 'rehive'
 
 export function SessionSwitcher() {
-  const { authUser, getSessions, switchToSession } = useAuth()
+  const { authUser, getSessions, switchToSession, clearAllSessions, logoutAll } = useAuth()
   const [isSwitching, setIsSwitching] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -26,6 +26,36 @@ export function SessionSwitcher() {
       await switchToSession(userId, company)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to switch session')
+    } finally {
+      setIsSwitching(false)
+    }
+  }
+
+  const handleClearAll = async () => {
+    if (!confirm('Clear all sessions locally? This will not invalidate tokens on the server.')) {
+      return
+    }
+    setIsSwitching(true)
+    setError(null)
+    try {
+      await clearAllSessions()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to clear sessions')
+    } finally {
+      setIsSwitching(false)
+    }
+  }
+
+  const handleLogoutAll = async () => {
+    if (!confirm('Logout all sessions? This will invalidate all tokens on the server.')) {
+      return
+    }
+    setIsSwitching(true)
+    setError(null)
+    try {
+      await logoutAll()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to logout all sessions')
     } finally {
       setIsSwitching(false)
     }
@@ -81,6 +111,23 @@ export function SessionSwitcher() {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="session-actions">
+        <button
+          onClick={handleClearAll}
+          disabled={isSwitching}
+          className="clear-all-btn"
+        >
+          Clear All Sessions (Local)
+        </button>
+        <button
+          onClick={handleLogoutAll}
+          disabled={isSwitching}
+          className="logout-all-btn"
+        >
+          Logout All Sessions (Server)
+        </button>
       </div>
 
       {isSwitching && (

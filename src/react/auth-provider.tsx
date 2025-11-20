@@ -16,6 +16,8 @@ interface AuthContextType {
   getSessions: () => AuthSession[];
   getSessionsByCompany: (company: string) => AuthSession[];
   switchToSession: (userId: string, company?: string) => Promise<AuthSession | null>;
+  clearAllSessions: () => Promise<void>;
+  logoutAll: () => Promise<void>;
   rehive: RehiveClient;
 }
 
@@ -132,6 +134,28 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
     }
   };
 
+  const clearAllSessions = async (): Promise<void> => {
+    setAuthLoading(true);
+    try {
+      await rehive.auth.clearAllSessions();
+    } catch (error) {
+      throw error;
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const logoutAll = async (): Promise<void> => {
+    setAuthLoading(true);
+    try {
+      await rehive.auth.logoutAll();
+    } catch (error) {
+      throw error;
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
   const auth: AuthContextType = {
     authUser,
     refreshCallback,
@@ -145,6 +169,8 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
     getSessions,
     getSessionsByCompany,
     switchToSession,
+    clearAllSessions,
+    logoutAll,
     rehive,
   };
 

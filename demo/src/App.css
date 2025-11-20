@@ -917,6 +917,56 @@ body {
   font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
 }
 
+.session-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid;
+  border-top-color: rgba(128, 128, 128, 0.2);
+}
+
+.clear-all-btn,
+.logout-all-btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.clear-all-btn {
+  background: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+  border: 1px solid #ffc107;
+}
+
+.clear-all-btn:hover:not(:disabled) {
+  background: rgba(255, 193, 7, 0.3);
+  transform: translateY(-1px);
+}
+
+.logout-all-btn {
+  background: rgba(220, 53, 69, 0.2);
+  color: #dc3545;
+  border: 1px solid #dc3545;
+}
+
+.logout-all-btn:hover:not(:disabled) {
+  background: rgba(220, 53, 69, 0.3);
+  transform: translateY(-1px);
+}
+
+.clear-all-btn:disabled,
+.logout-all-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .switching-overlay {
   position: fixed;
   top: 0;

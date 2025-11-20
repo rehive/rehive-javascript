@@ -425,6 +425,12 @@ await rehive.auth.switchToSession('user-id', 'company-two');
 
 // All subsequent API calls will use the active session
 const profile = await rehive.user.userRetrieve(); // Uses company-two session
+
+// Clear all sessions locally (fast, but doesn't invalidate tokens on server)
+await rehive.auth.clearAllSessions();
+
+// Logout all sessions on the server (slower, but properly invalidates all tokens)
+await rehive.auth.logoutAll();
 ```
 
 **Key Features:**
@@ -438,7 +444,13 @@ const profile = await rehive.user.userRetrieve(); // Uses company-two session
 import { useAuth } from 'rehive/react';
 
 function SessionSwitcher() {
-  const { getSessions, getSessionsByCompany, switchToSession } = useAuth();
+  const {
+    getSessions,
+    getSessionsByCompany,
+    switchToSession,
+    clearAllSessions,
+    logoutAll
+  } = useAuth();
 
   const sessions = getSessions();
 
@@ -453,6 +465,18 @@ function SessionSwitcher() {
   const handleSwitch = async (userId, company) => {
     await switchToSession(userId, company);
     // UI automatically updates via session listeners
+  };
+
+  const handleClearAll = async () => {
+    if (confirm('Clear all sessions locally?')) {
+      await clearAllSessions();
+    }
+  };
+
+  const handleLogoutAll = async () => {
+    if (confirm('Logout all sessions on server?')) {
+      await logoutAll();
+    }
   };
 
   return (
@@ -470,6 +494,9 @@ function SessionSwitcher() {
           ))}
         </div>
       ))}
+
+      <button onClick={handleClearAll}>Clear All Sessions</button>
+      <button onClick={handleLogoutAll}>Logout All Sessions</button>
     </div>
   );
 }

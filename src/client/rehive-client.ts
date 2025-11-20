@@ -153,6 +153,8 @@ export class RehiveClient {
     getSessions: () => this.getSessions(),
     getSessionsByCompany: (company: string) => this.getSessionsByCompany(company),
     switchToSession: (userId: string, company?: string) => this.switchToSession(userId, company),
+    clearAllSessions: () => this.clearAllSessions(),
+    logoutAll: () => this.logoutAll(),
     subscribeToSession: (listener: SessionListener) => this.subscribeToSession(listener),
     subscribeToErrors: (listener: ErrorListener) => this.subscribeToErrors(listener),
     deleteChallenge: (challengeId: string) => this.deleteChallenge(challengeId)
@@ -799,5 +801,52 @@ export class RehiveClient {
     this.notifySessionListeners();
 
     return session;
+  }
+
+  /**
+   * Clear all sessions locally without calling logout API
+   */
+  private async clearAllSessions(): Promise<void> {
+    const newAuthState: AuthState = {
+      sessions: [],
+      activeSessionIndex: -1,
+    };
+
+    await this.saveAuthState(newAuthState);
+    this.syncTokensToAllInstances(null);
+    this.notifyErrorListeners(null);
+  }
+
+  /**
+   * Logout all sessions by calling logout API for each session
+   */
+  private async logoutAll(): Promise<void> {
+    const currentAuthState = await this.loadAuthState();
+    const sessions = currentAuthState.sessions;
+
+    // Call logout for each session
+    const logoutPromises = sessions.map(async (session) => {
+      try {
+        // Temporarily set this session's token for the logout call
+        this.user.setSecurityData(`Token ${session.token}`);
+        await this.user.authLogout({ clear_session_option: 'none' });
+      } catch (e) {
+        // Log error but continue with other logouts
+        console.warn('Logout API call failed for session:', session.user.id, e);
+      }
+    });
+
+    // Wait for all logout calls to complete
+    await Promise.all(logoutPromises);
+
+    // Clear all sessions locally
+    const newAuthState: AuthState = {
+      sessions: [],
+      activeSessionIndex: -1,
+    };
+
+    await this.saveAuthState(newAuthState);
+    this.syncTokensToAllInstances(null);
+    this.notifyErrorListeners(null);
   }
 }

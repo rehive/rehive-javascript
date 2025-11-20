@@ -59683,6 +59683,8 @@ declare class RehiveClient {
         getSessions: () => AuthSession[];
         getSessionsByCompany: (company: string) => AuthSession[];
         switchToSession: (userId: string, company?: string) => Promise<AuthSession | null>;
+        clearAllSessions: () => Promise<void>;
+        logoutAll: () => Promise<void>;
         subscribeToSession: (listener: SessionListener) => () => void;
         subscribeToErrors: (listener: ErrorListener) => () => void;
         deleteChallenge: (challengeId: string) => Promise<void>;
@@ -59814,6 +59816,14 @@ declare class RehiveClient {
      * Switch to a different session without requiring login
      */
     private switchToSession;
+    /**
+     * Clear all sessions locally without calling logout API
+     */
+    private clearAllSessions;
+    /**
+     * Logout all sessions by calling logout API for each session
+     */
+    private logoutAll;
 }
 
 interface AuthContextType {
@@ -59829,6 +59839,8 @@ interface AuthContextType {
     getSessions: () => AuthSession[];
     getSessionsByCompany: (company: string) => AuthSession[];
     switchToSession: (userId: string, company?: string) => Promise<AuthSession | null>;
+    clearAllSessions: () => Promise<void>;
+    logoutAll: () => Promise<void>;
     rehive: RehiveClient;
 }
 interface AuthProviderProps {
