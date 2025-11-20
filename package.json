@@ -1,6 +1,6 @@
 {
   "name": "rehive",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "SDK for Rehive Platform and Extensions",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -13,7 +13,8 @@
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "rehive",
