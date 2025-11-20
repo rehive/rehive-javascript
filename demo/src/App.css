@@ -803,11 +803,12 @@ body {
 
 /* Session Switcher Styles */
 .session-switcher {
-  background: white;
+  background: transparent;
+  border: 1px solid;
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 2rem;
+  opacity: 0.9;
 }
 
 .session-switcher h3 {
@@ -829,20 +830,21 @@ body {
 }
 
 .company-group {
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid;
   border-radius: 8px;
   overflow: hidden;
+  opacity: 0.8;
 }
 
 .company-name {
   margin: 0;
   padding: 0.75rem 1rem;
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(128, 128, 128, 0.1);
   font-size: 0.9rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .company-sessions {
@@ -856,8 +858,9 @@ body {
   align-items: center;
   padding: 1rem;
   border: none;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  background: white;
+  border-bottom: 1px solid;
+  border-bottom-color: rgba(128, 128, 128, 0.2);
+  background: transparent;
   cursor: pointer;
   transition: background-color 0.2s, border-color 0.2s;
   text-align: left;
@@ -870,18 +873,18 @@ body {
 }
 
 .session-item:hover:not(:disabled) {
-  background: rgba(0, 123, 255, 0.05);
+  background: rgba(59, 130, 246, 0.1);
 }
 
 .session-item.active {
-  background: rgba(0, 123, 255, 0.1);
-  border-left: 3px solid #007bff;
+  background: rgba(59, 130, 246, 0.15);
+  border-left: 3px solid #3b82f6;
   padding-left: calc(1rem - 3px);
 }
 
 .session-item:disabled {
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 .session-user {
@@ -891,7 +894,7 @@ body {
 }
 
 .active-indicator {
-  color: #28a745;
+  color: #22c55e;
   font-weight: bold;
   font-size: 1.2rem;
 }
