@@ -34,9 +34,9 @@ export function DebugPanel() {
       
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Storage Adapter</Text>
-        <Text style={styles.text}>MemoryStorageAdapter</Text>
+        <Text style={styles.text}>SecureStoreAdapter</Text>
         <Text style={styles.subText}>
-          Data is not persisted between app restarts
+          Data is securely encrypted and persisted between app restarts
         </Text>
       </View>
     </View>

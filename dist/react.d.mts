@@ -59608,7 +59608,7 @@ interface RehiveConfig {
  * - Full TypeScript intellisense support
  *
  * ### 3. Enhanced Developer Experience
- * - Automatic response unwrapping (data.data → data)
+ * - Consistent API response format
  * - No .v3 prefix needed for platform APIs
  * - Unified token management across all APIs
  *
@@ -59651,7 +59651,7 @@ interface RehiveConfig {
  * const users = await response.json();
  * ```
  *
- * All APIs automatically handle token expiration, refresh, and response unwrapping.
+ * All APIs automatically handle token expiration and refresh.
  */
 declare class RehiveClient {
     private refreshPromise;

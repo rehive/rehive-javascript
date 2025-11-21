@@ -10,9 +10,12 @@
   },
   "dependencies": {
     "expo": "~53.0.0",
+    "expo-secure-store": "^15.0.7",
     "expo-status-bar": "2.2.3",
     "react": "19.0.0",
     "react-native": "0.79.5",
+    "react-native-qrcode-svg": "^6.3.15",
+    "react-native-svg": "^15.13.0",
     "rehive": "file:../..",
     "typescript": "5.8.3"
   },

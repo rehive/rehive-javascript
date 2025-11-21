@@ -48,7 +48,7 @@ export interface RehiveConfig {
  * - Full TypeScript intellisense support
  * 
  * ### 3. Enhanced Developer Experience
- * - Automatic response unwrapping (data.data → data)
+ * - Consistent API response format
  * - No .v3 prefix needed for platform APIs
  * - Unified token management across all APIs
  * 
@@ -91,7 +91,7 @@ export interface RehiveConfig {
  * const users = await response.json();
  * ```
  * 
- * All APIs automatically handle token expiration, refresh, and response unwrapping.
+ * All APIs automatically handle token expiration and refresh.
  */
 export class RehiveClient {
   private refreshPromise: Promise<void> | null = null;
@@ -577,8 +577,7 @@ export class RehiveClient {
         throw new Error('Response data is missing');
       }
 
-      // Response is already unwrapped by HttpClient
-      const loginResponseData = response;
+      const loginResponseData = response.data;
       
       const newSession: UserSession = {
         user: loginResponseData.user,
@@ -636,8 +635,7 @@ export class RehiveClient {
         throw new Error('Response data is missing');
       }
 
-      // Response is already unwrapped by HttpClient
-      const registerResponseData = response;
+      const registerResponseData = response.data;
       
       const newSession: UserSession = {
         user: registerResponseData.user,
@@ -682,6 +680,7 @@ export class RehiveClient {
   }
 
   private async refresh(): Promise<void> {
+    console.log('refreshing')
     if (this.refreshPromise) {
       return this.refreshPromise;
     }
@@ -708,8 +707,7 @@ export class RehiveClient {
           throw new Error('Refresh response data is missing');
         }
 
-        // Response is already unwrapped by HttpClient
-        const refreshResponseData = response;
+        const refreshResponseData = response.data;
         
         const updatedSessions = [...currentAuthState.sessions];
         updatedSessions[activeSessionIndex] = {
@@ -741,6 +739,7 @@ export class RehiveClient {
         this.syncTokensToAllInstances(null);
         throw e;
       } finally {
+        console.log('refreshing complete')
         this.isRefreshing = false;
         this.refreshPromise = null;
       }

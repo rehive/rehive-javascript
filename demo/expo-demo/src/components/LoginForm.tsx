@@ -7,7 +7,8 @@ export function LoginForm() {
   const [credentials, setCredentials] = useState({
     user: '',
     password: '',
-    company: ''
+    company: '',
+    session_duration: 3600 // Default 1 hour in seconds
   });
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
@@ -98,7 +99,22 @@ export function LoginForm() {
             autoCapitalize="none"
           />
         </View>
-        
+
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Token Duration (seconds)</Text>
+          <TextInput
+            style={styles.input}
+            value={credentials.session_duration.toString()}
+            onChangeText={(text) => setCredentials(prev => ({ ...prev, session_duration: parseInt(text) || 3600 }))}
+            placeholder="3600 (1 hour)"
+            placeholderTextColor="#95a5a6"
+            keyboardType="numeric"
+          />
+          <Text style={styles.helperText}>
+            For testing refresh: use 30-60 seconds
+          </Text>
+        </View>
+
         <TouchableOpacity 
           onPress={handleLogin} 
           disabled={isLoggingIn || !credentials.user || !credentials.password || !credentials.company}
@@ -174,6 +190,12 @@ const styles = StyleSheet.create({
     padding: 12,
     fontSize: 16,
     backgroundColor: '#f8f9fa',
+  },
+  helperText: {
+    fontSize: 12,
+    color: '#95a5a6',
+    marginTop: 4,
+    fontStyle: 'italic',
   },
   loginButton: {
     backgroundColor: '#3498db',

@@ -595,11 +595,11 @@ export class TokenManager {
 
   public async login(params: LoginParams): Promise<UserSession> {
     try {
-      const loginData: Login = { 
-        user: params.user, 
-        session_duration: 60, 
-        password: params.password, 
+      const loginData: Login = {
+        user: params.user,
+        password: params.password,
         company: params.company,
+        session_duration: params.session_duration || 3600,
         auth_method: 'token'
       };
       const response = await this.platformApi.authLogin(loginData);

@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, ScrollView, View, Text } from 'react-native';
 import { AuthProvider } from './rehive-react-wrapper';
-import { MemoryStorageAdapter } from 'rehive';
+import { SecureStoreAdapter } from './src/storage/SecureStoreAdapter';
 import { LoginForm } from './src/components/LoginForm';
 import { TOTPFlow } from './src/components/TOTPFlow';
 import { UserDetails } from './src/components/UserDetails';
@@ -14,7 +14,7 @@ export default function App() {
     <AuthProvider 
       config={{
         baseUrl: 'https://api.rehive.com',
-        storage: new MemoryStorageAdapter()
+        storage: new SecureStoreAdapter()
       }}
     >
       <View style={styles.container}>
