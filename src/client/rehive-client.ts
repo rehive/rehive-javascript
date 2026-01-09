@@ -523,7 +523,7 @@ export class RehiveClient {
   // Auth methods
   private async login(params: LoginParams): Promise<UserSession> {
     try {
-      const sessionDuration = params.session_duration ?? 60;
+      const sessionDuration = params.session_duration ?? 900; // 15 minutes
       const loginData: Login = {
         user: params.user,
         session_duration: sessionDuration,
@@ -587,7 +587,7 @@ export class RehiveClient {
 
   private async register(params: RegisterParams): Promise<void> {
     try {
-      const sessionDuration = params.session_duration ?? 600;
+      const sessionDuration = params.session_duration ?? 900; // 15 minutes
       const registerData = {
         email: params.email,
         session_duration: sessionDuration,
@@ -671,7 +671,7 @@ export class RehiveClient {
         this.user.setSecurityData(`Refresh-Token ${activeSession.refresh_token}`);
 
         const response = await this.user.authRefreshCreate({
-          session_duration: activeSession.session_duration ?? 60
+          session_duration: activeSession.session_duration ?? 900
         });
 
         if (!response.data) {
@@ -686,7 +686,7 @@ export class RehiveClient {
           ...activeSession,
           refresh_token: refreshResponseData.refresh_token,
           expires: refreshResponseData.expires,
-          session_duration: activeSession.session_duration ?? 60,
+          session_duration: activeSession.session_duration ?? 900,
           company: activeSession.company,
         };
 

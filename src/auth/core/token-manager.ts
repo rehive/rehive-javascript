@@ -616,7 +616,7 @@ export class TokenManager {
 
         // Call the refresh endpoint using the session_duration from the active session
         const response = await this.platformApi.authRefreshCreate({
-          session_duration: activeSession.session_duration ?? 60
+          session_duration: activeSession.session_duration ?? 900
         });
 
         if (!response.data) {
@@ -629,7 +629,7 @@ export class TokenManager {
           ...activeSession,
           refresh_token: response.data.refresh_token,
           expires: response.data.expires,
-          session_duration: activeSession.session_duration ?? 60,
+          session_duration: activeSession.session_duration ?? 900,
           company: activeSession.company,
         };
 
@@ -673,7 +673,7 @@ export class TokenManager {
 
   public async login(params: LoginParams): Promise<UserSession> {
     try {
-      const sessionDuration = params.session_duration ?? 60;
+      const sessionDuration = params.session_duration ?? 900; // 15 minutes
       const loginData: Login = {
         user: params.user,
         session_duration: sessionDuration,
@@ -737,7 +737,7 @@ export class TokenManager {
 
   public async register(params: RegisterParams): Promise<void> {
     try {
-      const sessionDuration = params.session_duration ?? 600;
+      const sessionDuration = params.session_duration ?? 900; // 15 minutes
       const registerData = {
         email: params.email,
         session_duration: sessionDuration,
