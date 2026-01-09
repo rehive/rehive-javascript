@@ -71,23 +71,23 @@ export class MockRehivePlatformUserApi {
   async authLogin(data: Login) {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 100));
-    
+
     if (data.password === 'wrong-password') {
       throw new Error('Invalid credentials');
     }
-    
-    // Return the login response data directly (the SDK expects response.data to contain the actual data)
-    return mockLoginResponse;
+
+    // Return in the format that generated APIs return: { data: actualApiResponse.data }
+    return { data: mockLoginResponse.data };
   }
 
   async authRegister(data: Register) {
     await new Promise(resolve => setTimeout(resolve, 100));
-    
+
     if (data.email === 'existing@example.com') {
       throw new Error('User already exists');
     }
-    
-    return mockRegisterResponse;
+
+    return { data: mockRegisterResponse.data };
   }
 
   async authLogout(data: Logout) {
@@ -120,7 +120,6 @@ export class MockRehivePlatformUserApi {
   async authRefreshCreate(data: any) {
     await new Promise(resolve => setTimeout(resolve, 50));
     return {
-      status: 'success',
       data: {
         refresh_token: 'new-refresh-token-123',
         expires: Date.now() + 3600000

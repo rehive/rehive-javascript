@@ -14,6 +14,7 @@ export interface UserSession {
   token: string;
   refresh_token: string;
   expires: number;
+  session_duration: number;
 }
 
 export interface AuthState {

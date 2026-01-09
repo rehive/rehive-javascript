@@ -614,9 +614,9 @@ export class TokenManager {
         // Set the refresh token for the refresh request (NOT the access token)
         this.platformApi.setSecurityData(`Refresh-Token ${activeSession.refresh_token}`);
 
-        // Call the refresh endpoint
+        // Call the refresh endpoint using the session_duration from the active session
         const response = await this.platformApi.authRefreshCreate({
-          session_duration: 60 // Default to 60 minutes
+          session_duration: activeSession.session_duration ?? 60
         });
 
         if (!response.data) {
@@ -629,6 +629,7 @@ export class TokenManager {
           ...activeSession,
           refresh_token: response.data.refresh_token,
           expires: response.data.expires,
+          session_duration: activeSession.session_duration ?? 60,
           company: activeSession.company,
         };
 
@@ -672,10 +673,11 @@ export class TokenManager {
 
   public async login(params: LoginParams): Promise<UserSession> {
     try {
-      const loginData: Login = { 
-        user: params.user, 
-        session_duration: 60, 
-        password: params.password, 
+      const sessionDuration = params.session_duration ?? 60;
+      const loginData: Login = {
+        user: params.user,
+        session_duration: sessionDuration,
+        password: params.password,
         company: params.company,
         auth_method: 'token'
       };
@@ -691,6 +693,7 @@ export class TokenManager {
         refresh_token: response.data.refresh_token,
         challenges: response.data.challenges,
         expires: response.data.expires,
+        session_duration: sessionDuration,
         company: params.company,
       };
 
@@ -734,14 +737,15 @@ export class TokenManager {
 
   public async register(params: RegisterParams): Promise<void> {
     try {
-      const registerData = { 
-        email: params.email, 
-        session_duration: 600, 
-        password: params.password, 
-        company: params.company, 
-        password1: params.password, 
-        password2: params.password, 
-        terms_and_conditions: params.terms_and_conditions, 
+      const sessionDuration = params.session_duration ?? 600;
+      const registerData = {
+        email: params.email,
+        session_duration: sessionDuration,
+        password: params.password,
+        company: params.company,
+        password1: params.password,
+        password2: params.password,
+        terms_and_conditions: params.terms_and_conditions,
         privacy_policy: params.privacy_policy
       };
       const response = await this.platformApi.authRegister(registerData as Register);
@@ -756,6 +760,7 @@ export class TokenManager {
         refresh_token: response.data.refresh_token,
         challenges: response.data.challenges,
         expires: response.data.expires,
+        session_duration: sessionDuration,
         company: params.company,
       };
 
