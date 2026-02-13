@@ -4381,9 +4381,9 @@ export interface CreateCompany {
   logo?: string | null;
   /** @format uri */
   icon?: string | null;
-  address: AdminCompanyAddress;
-  settings: CompanySettings;
-  services: ReducedService[];
+  address?: AdminCompanyAddress;
+  settings?: CompanySettings;
+  services?: ReducedService[];
   public?: boolean;
   metadata?: Record<string, any>;
   /**
@@ -4398,12 +4398,12 @@ export interface CreateCompany {
    * * `restricted` - Restricted
    * * `suspended` - Suspended
    */
-  status: "pending" | "active" | "restricted" | "suspended";
-  created: number;
-  updated: number;
+  status?: "pending" | "active" | "restricted" | "suspended";
+  created?: number;
+  updated?: number;
   /** @format email */
   system_email?: string;
-  owner: ReducedUserInfo;
+  owner?: ReducedUserInfo;
   /**
    * @maxItems 1
    * @minItems 0

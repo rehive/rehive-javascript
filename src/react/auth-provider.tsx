@@ -1,13 +1,14 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { RehiveClient } from '../client/rehive-client.js';
 import type { RehiveConfig } from '../client/rehive-client.js';
-import type { AuthSession, LoginParams, RegisterParams } from '../auth/types/index.js';
+import type { AuthSession, LoginParams, RegisterParams, RegisterCompanyParams } from '../auth/types/index.js';
 
 interface AuthContextType {
   authUser: AuthSession | null | undefined;
   refreshCallback: () => Promise<void>;
   login: (params: LoginParams) => Promise<AuthSession>;
   register: (params: RegisterParams) => Promise<void>;
+  registerCompany: (params: RegisterCompanyParams) => Promise<void>;
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
   authLoading: boolean;
@@ -90,6 +91,17 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
     }
   };
 
+  const registerCompany = async (params: RegisterCompanyParams): Promise<void> => {
+    setAuthLoading(true);
+    try {
+      await rehive.auth.registerCompany(params);
+    } catch (error) {
+      throw error;
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
   const logout = async (): Promise<void> => {
     setAuthLoading(true);
     try {
@@ -161,6 +173,7 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
     refreshCallback,
     login,
     register,
+    registerCompany,
     logout,
     refresh: refreshCallback,
     authLoading,
