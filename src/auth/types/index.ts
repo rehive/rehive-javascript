@@ -37,8 +37,14 @@ export interface AuthState {
 export type SessionListener = (session: AuthSession | null) => void;
 export type ErrorListener = (error: Error | null) => void;
 
-export type RegisterCompanyParams = Omit<PlatformRegisterCompany, 'company'> & {
+// Temporary SDK-facing workaround:
+// Update the API OpenAPI schema for /3/auth/company/register/ so generated
+// RegisterCompany models the expected company input shape (company.id-centric),
+// then replace this override with the generated type directly.
+export type RegisterCompanyParams = Omit<PlatformRegisterCompany, 'company' | 'email' | 'password'> & {
   company: { id: string } & Record<string, any>;
+  email: string;
+  password: string;
 };
 
 // Re-export platform types for convenience
