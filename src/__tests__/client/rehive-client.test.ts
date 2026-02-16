@@ -25,7 +25,7 @@ jest.mock('../../extensions/conversion/rehive-conversion-api.js', () => {
 });
 
 // Import mock responses after mocking
-const { mockLoginResponse, mockRegisterResponse, MockRehivePlatformUserApi } = require('../mocks/platform-api.js');
+const { mockLoginResponse, mockRegisterResponse, mockRegisterCompanyResponse, MockRehivePlatformUserApi } = require('../mocks/platform-api.js');
 
 describe('RehiveClient', () => {
   let rehive: RehiveClient;
@@ -58,6 +58,7 @@ describe('RehiveClient', () => {
     it('should provide auth methods', () => {
       expect(typeof rehive.auth.login).toBe('function');
       expect(typeof rehive.auth.register).toBe('function');
+      expect(typeof rehive.auth.registerCompany).toBe('function');
       expect(typeof rehive.auth.logout).toBe('function');
       expect(typeof rehive.auth.refresh).toBe('function');
     });
@@ -108,6 +109,21 @@ describe('RehiveClient', () => {
       const activeSession = rehive.auth.getActiveSession();
       expect(activeSession).not.toBeNull();
       expect(activeSession?.token).toBe(mockRegisterResponse.data.token);
+    });
+
+    it('should successfully register company', async () => {
+      await rehive.auth.registerCompany({
+        email: 'owner@example.com',
+        password: 'password123',
+        company: {
+          id: 'new-company'
+        }
+      });
+
+      const activeSession = rehive.auth.getActiveSession();
+      expect(activeSession).not.toBeNull();
+      expect(activeSession?.token).toBe(mockRegisterCompanyResponse.data.token);
+      expect(activeSession?.company).toBe('new-company');
     });
 
     it('should successfully logout', async () => {

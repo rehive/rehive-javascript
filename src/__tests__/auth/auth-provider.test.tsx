@@ -20,7 +20,7 @@ jest.mock('../../platform/admin/rehive-platform-admin-api.js', () => {
 });
 
 // Import mock response after mocking
-const { mockLoginResponse } = require('../mocks/platform-api.js');
+const { mockLoginResponse, mockRegisterCompanyResponse } = require('../mocks/platform-api.js');
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => (
   <AuthProvider 
@@ -155,6 +155,30 @@ describe('AuthProvider', () => {
     expect(result.current.authUser?.user.id).toBeDefined();
   });
 
+  it('should handle company registration', async () => {
+    const { result } = renderHook(() => useAuth(), {
+      wrapper: TestWrapper
+    });
+
+    await waitFor(() => {
+      expect(result.current.authLoading).toBe(false);
+    });
+
+    await act(async () => {
+      await result.current.registerCompany({
+        email: 'owner@example.com',
+        password: 'password123',
+        company: {
+          id: 'new-company'
+        }
+      });
+    });
+
+    expect(result.current.authUser).not.toBeNull();
+    expect(result.current.authUser?.token).toBe(mockRegisterCompanyResponse.data.token);
+    expect(result.current.authUser?.company).toBe('new-company');
+  });
+
   it('should handle logout', async () => {
     const { result } = renderHook(() => useAuth(), {
       wrapper: TestWrapper
@@ -194,6 +218,7 @@ describe('AuthProvider', () => {
 
     expect(result.current.rehive).toBeDefined();
     expect(typeof result.current.rehive.auth.login).toBe('function');
+    expect(typeof result.current.rehive.auth.registerCompany).toBe('function');
     expect(typeof result.current.rehive.auth.logout).toBe('function');
   });
 

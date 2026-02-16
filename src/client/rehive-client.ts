@@ -2,7 +2,7 @@ import { WebStorageAdapter, MemoryStorageAdapter } from '../auth/core/storage-ad
 import { ApiError } from '../shared/api-utils.js';
 import { RehivePlatformUserApi } from '../platform/user/index.js';
 import { RehivePlatformAdminApi } from '../platform/admin/index.js';
-import type { Login, Register, Logout, Refresh } from '../platform/user/rehive-platform-user-api.js';
+import type { Login, Register, RegisterCompany, Logout, Refresh } from '../platform/user/rehive-platform-user-api.js';
 import type { Api as ConversionApi } from '../extensions/conversion/rehive-conversion-api.js';
 import type { Api as MassSendApi } from '../extensions/mass-send/rehive-mass-send-api.js';
 import type { Api as NotificationsApi } from '../extensions/notifications/rehive-notifications-api.js';
@@ -21,7 +21,8 @@ import type {
   ErrorListener,
   StorageAdapter,
   LoginParams,
-  RegisterParams
+  RegisterParams,
+  RegisterCompanyParams
 } from '../auth/types/index.js';
 
 export interface RehiveConfig {
@@ -148,6 +149,7 @@ export class RehiveClient {
   public readonly auth = {
     login: (params: LoginParams) => this.login(params),
     register: (params: RegisterParams) => this.register(params),
+    registerCompany: (params: RegisterCompanyParams) => this.registerCompany(params),
     logout: () => this.logout(),
     refresh: () => this.refresh(),
     getActiveSession: () => this.getActiveSession(),
@@ -627,6 +629,41 @@ export class RehiveClient {
       this.notifyErrorListeners(null);
     } catch (e) {
       const error = e instanceof ApiError ? e : new Error('Registration failed');
+      this.notifyErrorListeners(error);
+      throw e;
+    }
+  }
+
+  private async registerCompany(params: RegisterCompanyParams): Promise<void> {
+    try {
+      const response = await this.user.authRegisterCompany(params as RegisterCompany);
+
+      if (!response.data) {
+        throw new Error('Response data is missing');
+      }
+
+      const registerResponseData = response.data;
+
+      const newSession: UserSession = {
+        user: registerResponseData.user,
+        token: registerResponseData.token,
+        refresh_token: registerResponseData.refresh_token,
+        challenges: registerResponseData.challenges,
+        expires: registerResponseData.expires,
+        session_duration: 900, // 15 minutes
+        company: params.company.id,
+      };
+
+      const currentAuthState = await this.loadAuthState();
+      const newAuthState = {
+        sessions: [...currentAuthState.sessions, newSession],
+        activeSessionIndex: currentAuthState.sessions.length,
+      };
+
+      await this.saveAuthState(newAuthState);
+      this.notifyErrorListeners(null);
+    } catch (e) {
+      const error = e instanceof ApiError ? e : new Error('Company registration failed');
       this.notifyErrorListeners(error);
       throw e;
     }
