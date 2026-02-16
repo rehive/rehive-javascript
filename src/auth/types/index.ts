@@ -1,4 +1,5 @@
 // Auth types for Rehive SDK
+import type { RegisterCompany as PlatformRegisterCompany } from '../../platform/user/rehive-platform-user-api.js';
 
 export interface StorageAdapter {
   getItem(key: string): Promise<string | null>;
@@ -36,5 +37,9 @@ export interface AuthState {
 export type SessionListener = (session: AuthSession | null) => void;
 export type ErrorListener = (error: Error | null) => void;
 
+export type RegisterCompanyParams = Omit<PlatformRegisterCompany, 'company'> & {
+  company: { id: string } & Record<string, any>;
+};
+
 // Re-export platform types for convenience
-export type { Login as LoginParams, Register as RegisterParams, RegisterCompany as RegisterCompanyParams } from '../../platform/user/rehive-platform-user-api.js';
+export type { Login as LoginParams, Register as RegisterParams } from '../../platform/user/rehive-platform-user-api.js';

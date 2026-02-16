@@ -2,7 +2,7 @@ import { WebStorageAdapter, MemoryStorageAdapter } from '../auth/core/storage-ad
 import { ApiError } from '../shared/api-utils.js';
 import { RehivePlatformUserApi } from '../platform/user/index.js';
 import { RehivePlatformAdminApi } from '../platform/admin/index.js';
-import type { Login, Register } from '../platform/user/rehive-platform-user-api.js';
+import type { Login, Register, RegisterCompany } from '../platform/user/rehive-platform-user-api.js';
 import type { Api as ConversionApi } from '../extensions/conversion/rehive-conversion-api.js';
 import type { Api as MassSendApi } from '../extensions/mass-send/rehive-mass-send-api.js';
 import type { Api as NotificationsApi } from '../extensions/notifications/rehive-notifications-api.js';
@@ -636,7 +636,7 @@ export class RehiveClient {
 
   private async registerCompany(params: RegisterCompanyParams): Promise<void> {
     try {
-      const response = await this.user.authRegisterCompany(params);
+      const response = await this.user.authRegisterCompany(params as RegisterCompany);
 
       if (!response.data) {
         throw new Error('Response data is missing');
@@ -650,7 +650,7 @@ export class RehiveClient {
         refresh_token: registerResponseData.refresh_token,
         challenges: registerResponseData.challenges,
         expires: registerResponseData.expires,
-        session_duration: 900,  // 15 minutes
+        session_duration: 900, // 15 minutes
         company: params.company.id,
       };
 
