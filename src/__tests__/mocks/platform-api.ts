@@ -1,4 +1,4 @@
-import type { Login, Register, Logout } from '../../platform/user/rehive-platform-user-api.js';
+import type { Login, Register, RegisterCompany, Logout } from '../../platform/user/rehive-platform-user-api.js';
 
 // Mock responses that match the actual API structure
 export const mockLoginResponse = {
@@ -37,6 +37,23 @@ export const mockRegisterResponse = {
 
 export const mockLogoutResponse = {
   status: 'success'
+};
+
+export const mockRegisterCompanyResponse = {
+  status: 'success',
+  data: {
+    token: 'mock-auth-token-company-register-12345',
+    refresh_token: 'mock-refresh-token-company-register-12345',
+    user: {
+      id: 'user-789',
+      email: 'owner@example.com',
+      first_name: 'Company',
+      last_name: 'Owner'
+    },
+    challenges: [],
+    expires: Date.now() + 3600000,
+    created: Date.now()
+  }
 };
 
 export const mockUserResponse = {
@@ -88,6 +105,16 @@ export class MockRehivePlatformUserApi {
     }
 
     return { data: mockRegisterResponse.data };
+  }
+
+  async authRegisterCompany(data: RegisterCompany) {
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    if (!data.company?.id) {
+      throw new Error('Company id is required');
+    }
+
+    return { data: mockRegisterCompanyResponse.data };
   }
 
   async authLogout(data: Logout) {
