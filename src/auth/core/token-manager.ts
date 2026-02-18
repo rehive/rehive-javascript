@@ -673,10 +673,13 @@ export class TokenManager {
 
   public async login(params: LoginParams): Promise<UserSession> {
     try {
-      const sessionDuration = params.session_duration ?? 900; // 15 minutes
+      // Default to 900s unless explicitly set to null (no custom duration)
+      const sessionDuration = params.session_duration === null
+        ? undefined
+        : (params.session_duration ?? 900); // 15 minutes
       const loginData: Login = {
         user: params.user,
-        session_duration: sessionDuration,
+        ...(sessionDuration != null && { session_duration: sessionDuration }),
         password: params.password,
         company: params.company,
         auth_method: 'token'
@@ -693,7 +696,7 @@ export class TokenManager {
         refresh_token: response.data.refresh_token,
         challenges: response.data.challenges,
         expires: response.data.expires,
-        session_duration: sessionDuration,
+        session_duration: sessionDuration ?? 900,
         company: params.company,
       };
 
