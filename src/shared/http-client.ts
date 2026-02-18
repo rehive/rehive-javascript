@@ -8,7 +8,7 @@
  * ## SOURCE: https://github.com/acacode/swagger-typescript-api ##
  * ---------------------------------------------------------------
  */
-import { withErrorHandling } from './api-utils.js';
+import { normalizeFetch, withErrorHandling } from './api-utils.js';
 
 export type QueryParamsType = Record<string | number, any>;
 export type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;
@@ -66,6 +66,7 @@ export class HttpClient<SecurityDataType = unknown> {
 
   constructor(apiConfig: ApiConfig<SecurityDataType> = {}) {
     Object.assign(this, apiConfig);
+    this.customFetch = normalizeFetch(this.customFetch);
   }
 
   public setSecurityData = (data: SecurityDataType | null) => {

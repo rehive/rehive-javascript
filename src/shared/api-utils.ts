@@ -10,6 +10,16 @@ export class ApiError extends Error {
   }
 }
 
+export const normalizeFetch = (fetchFn: typeof fetch): typeof fetch => {
+  const globalFetch = typeof globalThis !== 'undefined' ? globalThis.fetch : undefined;
+
+  if (globalFetch && fetchFn === globalFetch) {
+    return globalFetch.bind(globalThis);
+  }
+
+  return (...fetchParams: Parameters<typeof fetch>) => fetchFn(...fetchParams);
+};
+
 export async function withErrorHandling(fetchPromise: Promise<Response>): Promise<Response> {
   try {
     const response = await fetchPromise;

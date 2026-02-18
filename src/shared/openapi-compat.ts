@@ -1,4 +1,4 @@
-import { withErrorHandling } from './api-utils.js';
+import { normalizeFetch, withErrorHandling } from './api-utils.js';
 
 type HttpMethod =
   | 'get'
@@ -212,7 +212,7 @@ export class OpenApiCompatApi<SecurityDataType = unknown> {
   constructor({ apiConfig, createClient, defaultBaseUrl, sdk }: BuildApiArgs<SecurityDataType>) {
     this.baseUrl = apiConfig.baseUrl || defaultBaseUrl;
     this.securityWorker = apiConfig.securityWorker;
-    this.customFetch = apiConfig.customFetch || fetch;
+    this.customFetch = normalizeFetch(apiConfig.customFetch || fetch);
     this.baseApiParams = apiConfig.baseApiParams || {};
     this.operations = buildOperations(sdk);
 
