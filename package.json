@@ -10,6 +10,8 @@
     "build:core": "tsup src/index.ts --format cjs,esm --dts --minify --out-dir dist",
     "build:react": "tsup src/react.tsx --format cjs,esm --dts --minify --out-dir dist",
     "dev": "npm run build:core -- --watch & npm run build:react -- --watch",
+    "codegen:openapi-ts": "bash scripts/codegen-openapi-ts.sh",
+    "codegen:openapi-ts:clean": "rm -rf src/platform/user/openapi-ts src/platform/admin/openapi-ts src/extensions/conversion/openapi-ts src/extensions/mass-send/openapi-ts src/extensions/notifications/openapi-ts src/extensions/products/openapi-ts src/extensions/rewards/openapi-ts src/extensions/stellar/openapi-ts src/extensions/stellar-testnet/openapi-ts src/extensions/business/openapi-ts src/extensions/payment-requests/openapi-ts src/extensions/bridge/openapi-ts src/extensions/app/openapi-ts && npm run codegen:openapi-ts",
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -51,7 +53,8 @@
   "files": [
     "dist",
     "src/extensions",
-    "src/platform"
+    "src/platform",
+    "src/shared"
   ],
   "exports": {
     ".": {

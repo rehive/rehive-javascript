@@ -353,7 +353,7 @@ unsubscribeSession();
 
 ## Architecture
 
-The SDK includes multiple API clients generated from swagger specifications:
+The SDK includes multiple API clients generated from OpenAPI specifications:
 
 ```
 src/
@@ -574,13 +574,10 @@ npm run build
 
 ### Updating API Clients
 
-The SDK uses generated API clients from swagger specifications. To update them:
+The SDK uses generated API clients from OpenAPI specifications. To refresh the latest generated output:
 
 ```bash
-# Extract current API methods for reference
-node scripts/extract-api-methods.js
-
-# Follow the code generation workflow
+npm run codegen:openapi-ts
 ```
 
 📖 [Complete code generation guide](./CODEGEN.md)
