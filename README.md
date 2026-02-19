@@ -591,6 +591,18 @@ node scripts/extract-api-methods.js
 npm run dev
 ```
 
+### Publishing
+
+```bash
+# Bump version (choose one)
+npm version patch   # e.g. 3.1.4 → 3.1.5
+npm version minor   # e.g. 3.1.4 → 3.2.0
+npm version major   # e.g. 3.1.4 → 4.0.0
+
+# Publish to npm (builds automatically via prepublishOnly)
+npm publish
+```
+
 ## Documentation
 
 - **[API Methods Overview](./docs/api-methods-overview.md)** - Complete list of all available API methods
