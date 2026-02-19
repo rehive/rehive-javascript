@@ -19,8 +19,8 @@ describe('OpenApiCompatApi fetch context', () => {
     }) as unknown as typeof fetch;
 
   const createMockClient = (onFetch?: (fn: typeof fetch) => void) =>
-    (config: Record<string, any>) => {
-      if (onFetch) onFetch(config.fetch);
+    (config?: Record<string, any>) => {
+      if (onFetch && config) onFetch(config.fetch);
       return { request: async () => ({}) };
     };
 
@@ -39,7 +39,7 @@ describe('OpenApiCompatApi fetch context', () => {
 
     expect(capturedFetch).toBeDefined();
 
-    const response = await capturedFetch(new Request('https://example.com/test'));
+    const response = await capturedFetch('https://example.com/test');
     const data = await response.json();
 
     expect(data).toEqual({ result: 'ok' });
@@ -64,7 +64,7 @@ describe('OpenApiCompatApi fetch context', () => {
 
     expect(capturedFetch).toBeDefined();
 
-    const response = await capturedFetch(new Request('https://example.com/test'));
+    const response = await capturedFetch('https://example.com/test');
     const data = await response.json();
 
     expect(data).toEqual({ result: 'ok' });
