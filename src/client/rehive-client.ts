@@ -14,6 +14,10 @@ import type { Api as BusinessApi } from '../extensions/business/rehive-business-
 import type { Api as PaymentRequestsApi } from '../extensions/payment-requests/rehive-payment-requests-api.js';
 import type { Api as BridgeApi } from '../extensions/bridge/rehive-bridge-api.js';
 import type { Api as AppApi } from '../extensions/app/rehive-app-api.js';
+import type { Api as BillingApi } from '../extensions/billing/rehive-billing-api.js';
+import type { Api as BuilderApi } from '../extensions/builder/rehive-builder-api.js';
+import type { Api as AlchemyApi } from '../extensions/alchemy/rehive-alchemy-api.js';
+import type { Api as RainApi } from '../extensions/rain/rehive-rain-api.js';
 import type {
   UserSession,
   AuthState,
@@ -178,7 +182,11 @@ export class RehiveClient {
     paymentRequests: (config: { baseUrl?: string } = {}) => this.createPaymentRequestsApi(config),
     bridge: (config: { baseUrl?: string } = {}) => this.createBridgeApi(config),
     app: (config: { baseUrl?: string } = {}) => this.createAppApi(config),
-    
+    billing: (config: { baseUrl?: string } = {}) => this.createBillingApi(config),
+    builder: (config: { baseUrl?: string } = {}) => this.createBuilderApi(config),
+    alchemy: (config: { baseUrl?: string } = {}) => this.createAlchemyApi(config),
+    rain: (config: { baseUrl?: string } = {}) => this.createRainApi(config),
+
     /**
      * Make authenticated HTTP requests to custom endpoints.
      * 
@@ -489,6 +497,34 @@ export class RehiveClient {
     const { Api } = require('../extensions/app/rehive-app-api.js');
     return this.createExtensionApi(Api, {
       baseUrl: config.baseUrl || 'https://app.services.rehive.com/api/'
+    });
+  }
+
+  private createBillingApi(config: { baseUrl?: string } = {}): BillingApi<unknown> {
+    const { Api } = require('../extensions/billing/rehive-billing-api.js');
+    return this.createExtensionApi(Api, {
+      baseUrl: config.baseUrl || 'https://billing.services.rehive.com/api/'
+    });
+  }
+
+  private createBuilderApi(config: { baseUrl?: string } = {}): BuilderApi<unknown> {
+    const { Api } = require('../extensions/builder/rehive-builder-api.js');
+    return this.createExtensionApi(Api, {
+      baseUrl: config.baseUrl || 'https://builder.services.rehive.com/api/'
+    });
+  }
+
+  private createAlchemyApi(config: { baseUrl?: string } = {}): AlchemyApi<unknown> {
+    const { Api } = require('../extensions/alchemy/rehive-alchemy-api.js');
+    return this.createExtensionApi(Api, {
+      baseUrl: config.baseUrl || 'https://alchemy.services.rehive.com/api/'
+    });
+  }
+
+  private createRainApi(config: { baseUrl?: string } = {}): RainApi<unknown> {
+    const { Api } = require('../extensions/rain/rehive-rain-api.js');
+    return this.createExtensionApi(Api, {
+      baseUrl: config.baseUrl || 'https://rain.services.rehive.com/api/'
     });
   }
 

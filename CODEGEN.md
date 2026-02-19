@@ -24,7 +24,11 @@ src/
 │   ├── business/
 │   ├── payment-requests/
 │   ├── bridge/
-│   └── app/
+│   ├── app/
+│   ├── billing/
+│   ├── builder/
+│   ├── alchemy/
+│   └── rain/
 ├── shared/
 │   └── http-client.ts  # Shared/customized HTTP client
 └── auth/              # Auth functionality using Platform User API
@@ -203,6 +207,65 @@ npx swagger-typescript-api generate \
   --extract-request-params \
   --extract-response-error \
   --extract-response-body
+```
+
+#### Billing Extension
+```bash
+npx swagger-typescript-api generate \
+  --templates ./swagger-templates \
+  --path https://billing.services.rehive.com/schema.json \
+  --output src/extensions/billing/ \
+  --name rehive-billing-api \
+  --extract-request-params \
+  --extract-response-error \
+  --extract-response-body
+```
+
+#### Builder Extension
+```bash
+npx swagger-typescript-api generate \
+  --templates ./swagger-templates \
+  --path https://builder.services.rehive.com/schema.json \
+  --output src/extensions/builder/ \
+  --name rehive-builder-api \
+  --extract-request-params \
+  --extract-response-error \
+  --extract-response-body
+```
+
+#### Alchemy Extension
+```bash
+npx swagger-typescript-api generate \
+  --templates ./swagger-templates \
+  --path https://alchemy.services.rehive.com/schema.json \
+  --output src/extensions/alchemy/ \
+  --name rehive-alchemy-api \
+  --extract-request-params \
+  --extract-response-error \
+  --extract-response-body
+```
+
+#### Rain Extension
+```bash
+npx swagger-typescript-api generate \
+  --templates ./swagger-templates \
+  --path https://rain.services.rehive.com/schema.json \
+  --output src/extensions/rain/ \
+  --name rehive-rain-api \
+  --extract-request-params \
+  --extract-response-error \
+  --extract-response-body
+```
+
+### Generate All
+
+You can also use the helper script to regenerate all APIs at once:
+
+```bash
+./scripts/generate-all.sh           # Generate all APIs
+./scripts/generate-all.sh extensions # Generate only extensions
+./scripts/generate-all.sh platform   # Generate only platform APIs
+./scripts/generate-all.sh billing    # Generate a specific extension
 ```
 
 ### After generating an extension:

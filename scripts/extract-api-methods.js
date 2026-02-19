@@ -96,11 +96,35 @@ const endpoints = [
     clientName: 'bridge-api',
     fileName: 'bridge-methods.md'
   },
-  { 
-    name: 'App Extension', 
+  {
+    name: 'App Extension',
     url: 'https://app.services.rehive.com/schema.json',
     clientName: 'app-api',
     fileName: 'app-methods.md'
+  },
+  {
+    name: 'Billing Extension',
+    url: 'https://billing.services.rehive.com/schema.json',
+    clientName: 'billing-api',
+    fileName: 'billing-methods.md'
+  },
+  {
+    name: 'Builder Extension',
+    url: 'https://builder.services.rehive.com/schema.json',
+    clientName: 'builder-api',
+    fileName: 'builder-methods.md'
+  },
+  {
+    name: 'Alchemy Extension',
+    url: 'https://alchemy.services.rehive.com/schema.json',
+    clientName: 'alchemy-api',
+    fileName: 'alchemy-methods.md'
+  },
+  {
+    name: 'Rain Extension',
+    url: 'https://rain.services.rehive.com/schema.json',
+    clientName: 'rain-api',
+    fileName: 'rain-methods.md'
   }
 ];
 
