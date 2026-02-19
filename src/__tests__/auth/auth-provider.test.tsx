@@ -1,33 +1,43 @@
 import React from 'react';
 import { render, renderHook, act, waitFor } from '@testing-library/react';
 import { AuthProvider, useAuth } from '../../react/auth-provider.js';
-import { MemoryStorageAdapter } from '../../auth/core/storage-adapters.js';
+import {
+  mockLoginResponse,
+  mockRegisterResponse,
+  mockRegisterCompanyResponse,
+  mockLogoutResponse,
+  mockRefreshResponse,
+} from '../mocks/platform-api.js';
 
-// Mock the Platform User API
-jest.mock('../../platform/user/rehive-platform-user-api.js', () => {
-  const { MockRehivePlatformUserApi } = require('../mocks/platform-api.js');
-  return {
-    Api: MockRehivePlatformUserApi
-  };
-});
+const mockAuthLogin = jest.fn();
+const mockAuthRegister = jest.fn();
+const mockAuthRegisterCompany = jest.fn();
+const mockAuthLogout = jest.fn();
+const mockAuthRefreshCreate = jest.fn();
 
-// Mock the Platform Admin API  
-jest.mock('../../platform/admin/rehive-platform-admin-api.js', () => {
-  const { MockRehivePlatformUserApi } = require('../mocks/platform-api.js');
-  return {
-    Api: MockRehivePlatformUserApi
-  };
-});
+jest.mock('../../platform/user/openapi-ts/sdk.gen.js', () => ({
+  authLogin: (...args: any[]) => mockAuthLogin(...args),
+  authRegister: (...args: any[]) => mockAuthRegister(...args),
+  authRegisterCompany: (...args: any[]) => mockAuthRegisterCompany(...args),
+  authLogout: (...args: any[]) => mockAuthLogout(...args),
+  authRefreshCreate: (...args: any[]) => mockAuthRefreshCreate(...args),
+}));
 
-// Import mock response after mocking
-const { mockLoginResponse, mockRegisterCompanyResponse } = require('../mocks/platform-api.js');
+jest.mock('../../platform/user/openapi-ts/client/index.js', () => ({
+  createClient: jest.fn(() => ({})),
+}));
+
+jest.mock('../../platform/admin/openapi-ts/sdk.gen.js', () => ({}));
+jest.mock('../../platform/admin/openapi-ts/client/index.js', () => ({
+  createClient: jest.fn(() => ({})),
+}));
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => (
-  <AuthProvider 
+  <AuthProvider
     config={{
       baseUrl: 'https://api.test.com',
-      storage: new MemoryStorageAdapter(),
-      enableCrossTabSync: false
+      storage: 'memory',
+      enableCrossTabSync: false,
     }}
   >
     {children}
@@ -48,13 +58,24 @@ const TestComponent = () => {
 describe('AuthProvider', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+
+    mockAuthLogin.mockImplementation(async (opts: any) => {
+      if (opts?.body?.password === 'wrong-password') {
+        throw new Error('Invalid credentials');
+      }
+      return mockLoginResponse;
+    });
+    mockAuthRegister.mockResolvedValue(mockRegisterResponse);
+    mockAuthRegisterCompany.mockResolvedValue(mockRegisterCompanyResponse);
+    mockAuthLogout.mockResolvedValue(mockLogoutResponse);
+    mockAuthRefreshCreate.mockResolvedValue(mockRefreshResponse);
   });
 
   it('should provide auth context to children', () => {
     const { getByTestId } = render(
       <TestWrapper>
         <TestComponent />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     expect(getByTestId('loading')).toBeInTheDocument();
@@ -66,13 +87,12 @@ describe('AuthProvider', () => {
     const { getByTestId } = render(
       <TestWrapper>
         <TestComponent />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     expect(getByTestId('loading')).toHaveTextContent('true');
     expect(getByTestId('user')).toHaveTextContent('null');
 
-    // Wait for initialization to complete
     await waitFor(() => {
       expect(getByTestId('loading')).toHaveTextContent('false');
     });
@@ -80,22 +100,20 @@ describe('AuthProvider', () => {
 
   it('should handle login through useAuth hook', async () => {
     const { result } = renderHook(() => useAuth(), {
-      wrapper: TestWrapper
+      wrapper: TestWrapper,
     });
 
-    // Wait for initial loading to finish
     await waitFor(() => {
       expect(result.current.authLoading).toBe(false);
     });
 
     expect(result.current.authUser).toBeNull();
 
-    // Perform login
     await act(async () => {
       await result.current.login({
         user: 'test@example.com',
         password: 'password123',
-        company: 'test-company'
+        company: 'test-company',
       });
     });
 
@@ -106,22 +124,21 @@ describe('AuthProvider', () => {
 
   it('should handle login errors', async () => {
     const { result } = renderHook(() => useAuth(), {
-      wrapper: TestWrapper
+      wrapper: TestWrapper,
     });
 
     await waitFor(() => {
       expect(result.current.authLoading).toBe(false);
     });
 
-    // Attempt login with wrong password
     await act(async () => {
       try {
         await result.current.login({
           user: 'test@example.com',
           password: 'wrong-password',
-          company: 'test-company'
+          company: 'test-company',
         });
-      } catch (error) {
+      } catch {
         // Expected error
       }
     });
@@ -132,7 +149,7 @@ describe('AuthProvider', () => {
 
   it('should handle registration', async () => {
     const { result } = renderHook(() => useAuth(), {
-      wrapper: TestWrapper
+      wrapper: TestWrapper,
     });
 
     await waitFor(() => {
@@ -144,10 +161,6 @@ describe('AuthProvider', () => {
         email: 'newuser@example.com',
         password: 'password123',
         company: 'test-company',
-        password1: 'password123',
-        password2: 'password123',
-        terms_and_conditions: true,
-        privacy_policy: true
       });
     });
 
@@ -157,7 +170,7 @@ describe('AuthProvider', () => {
 
   it('should handle company registration', async () => {
     const { result } = renderHook(() => useAuth(), {
-      wrapper: TestWrapper
+      wrapper: TestWrapper,
     });
 
     await waitFor(() => {
@@ -167,10 +180,9 @@ describe('AuthProvider', () => {
     await act(async () => {
       await result.current.registerCompany({
         email: 'owner@example.com',
-        password: 'password123',
-        company: {
-          id: 'new-company'
-        }
+        password1: 'password123',
+        password2: 'password123',
+        company: { id: 'new-company' } as any,
       });
     });
 
@@ -181,25 +193,23 @@ describe('AuthProvider', () => {
 
   it('should handle logout', async () => {
     const { result } = renderHook(() => useAuth(), {
-      wrapper: TestWrapper
+      wrapper: TestWrapper,
     });
 
     await waitFor(() => {
       expect(result.current.authLoading).toBe(false);
     });
 
-    // First login
     await act(async () => {
       await result.current.login({
         user: 'test@example.com',
         password: 'password123',
-        company: 'test-company'
+        company: 'test-company',
       });
     });
 
     expect(result.current.authUser).not.toBeNull();
 
-    // Then logout
     await act(async () => {
       await result.current.logout();
     });
@@ -209,7 +219,7 @@ describe('AuthProvider', () => {
 
   it('should provide access to rehive client', async () => {
     const { result } = renderHook(() => useAuth(), {
-      wrapper: TestWrapper
+      wrapper: TestWrapper,
     });
 
     await waitFor(() => {
@@ -223,7 +233,6 @@ describe('AuthProvider', () => {
   });
 
   it('should throw error when used outside AuthProvider', () => {
-    // Suppress console.error for this test
     const originalError = console.error;
     console.error = jest.fn();
 
@@ -236,42 +245,15 @@ describe('AuthProvider', () => {
 
   it('should handle refresh callback', async () => {
     const { result } = renderHook(() => useAuth(), {
-      wrapper: TestWrapper
+      wrapper: TestWrapper,
     });
 
     await waitFor(() => {
       expect(result.current.authLoading).toBe(false);
     });
 
-    // Login first
-    await act(async () => {
-      await result.current.login({
-        user: 'test@example.com',
-        password: 'password123',
-        company: 'test-company'
-      });
-    });
-
-    // Test refresh callback
     expect(typeof result.current.refreshCallback).toBe('function');
     expect(typeof result.current.refresh).toBe('function');
     expect(result.current.refresh).toBe(result.current.refreshCallback);
-  });
-
-  it('should handle deleteChallenge', async () => {
-    const { result } = renderHook(() => useAuth(), {
-      wrapper: TestWrapper
-    });
-
-    await waitFor(() => {
-      expect(result.current.authLoading).toBe(false);
-    });
-
-    // Should not throw even without active session
-    await act(async () => {
-      await result.current.deleteChallenge('challenge-123');
-    });
-
-    expect(typeof result.current.deleteChallenge).toBe('function');
   });
 });

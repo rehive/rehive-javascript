@@ -1,15 +1,7 @@
-// Auth types for Rehive SDK
-
 export interface StorageAdapter {
   getItem(key: string): Promise<string | null>;
   setItem(key: string, value: string): Promise<void>;
   removeItem(key: string): Promise<void>;
-}
-
-export interface TokenManagerConfig {
-  baseUrl: string;
-  storage: StorageAdapter;
-  enableCrossTabSync?: boolean;
 }
 
 export interface AuthSession {
@@ -25,7 +17,6 @@ export interface AuthSession {
   company?: string;
 }
 
-// Alias for backward compatibility
 export type UserSession = AuthSession;
 
 export interface AuthState {
@@ -35,10 +26,3 @@ export interface AuthState {
 
 export type SessionListener = (session: AuthSession | null) => void;
 export type ErrorListener = (error: Error | null) => void;
-
-// Re-export platform types for convenience
-export type {
-  Login as LoginParams,
-  Register as RegisterParams,
-  RegisterCompany as RegisterCompanyParams
-} from '../../platform/user/rehive-platform-user-api.js';

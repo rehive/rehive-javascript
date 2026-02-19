@@ -2,7 +2,7 @@ export class ApiError extends Error {
   status: number;
   error: string;
 
-  constructor({status, error, message}: {status: number, error: string, message: string}) {
+  constructor({ status, error, message }: { status: number; error: string; message: string }) {
     super(message);
     this.status = status;
     this.error = error;
@@ -11,7 +11,8 @@ export class ApiError extends Error {
 }
 
 export const normalizeFetch = (fetchFn: typeof fetch): typeof fetch => {
-  const globalFetch = typeof globalThis !== 'undefined' ? globalThis.fetch : undefined;
+  const globalFetch =
+    typeof globalThis !== 'undefined' ? globalThis.fetch : undefined;
 
   if (globalFetch && fetchFn === globalFetch) {
     return globalFetch.bind(globalThis);
@@ -19,29 +20,3 @@ export const normalizeFetch = (fetchFn: typeof fetch): typeof fetch => {
 
   return (...fetchParams: Parameters<typeof fetch>) => fetchFn(...fetchParams);
 };
-
-export async function withErrorHandling(fetchPromise: Promise<Response>): Promise<Response> {
-  try {
-    const response = await fetchPromise;
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      let errorJson = null;
-      try {
-        errorJson = JSON.parse(errorText);
-      } catch (e) {
-        errorJson = null;
-      }
-      throw new ApiError({
-        status: response.status, 
-        error: errorJson || errorText, 
-        message: errorJson?.error || errorJson?.message || 'A server error occurred. HTTPStatus: ' + response.status
-      });
-    }
-
-    return response;
-  } catch (error) {
-    console.log('Error during fetch operation:', error);
-    throw error;
-  }
-}
