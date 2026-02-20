@@ -89,6 +89,31 @@ const conversionStaging = rehive.extensions.conversion({
 const response = await rehive.extensions.fetch("https://my-custom.services.rehive.com/api/data");
 ```
 
+### Authenticated Fetch (for custom endpoints)
+
+For API endpoints not covered by the generated SDK (e.g. the Builder service), use `createAuthenticatedFetch` to get a `fetch` function that automatically injects the auth token:
+
+```typescript
+import { createAuth } from "rehive/auth";
+import { createAuthenticatedFetch } from "rehive";
+
+const auth = createAuth({ storage: "local" });
+await auth.login({ user: "email@example.com", password: "pass", company: "myco" });
+
+// Create an authenticated fetch -- handles token refresh automatically
+const authFetch = createAuthenticatedFetch(auth);
+
+// Use it like regular fetch, but with auth headers injected
+const response = await authFetch("https://builder.services.rehive.com/api/admin/build-tasks/", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ config: { /* ... */ } }),
+});
+const data = await response.json();
+```
+
+This is also available on the `RehiveClient` wrapper as `rehive.extensions.fetch(url, options)`.
+
 ## React Integration
 
 For a complete working example, see the [interactive demo](./demo).

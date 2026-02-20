@@ -30,6 +30,17 @@ function errorHandlingFetch(baseFetch: typeof fetch): typeof fetch {
   };
 }
 
+export function createAuthenticatedFetch(auth: Auth): (url: string, options?: RequestInit) => Promise<Response> {
+  return async (url: string, options: RequestInit = {}): Promise<Response> => {
+    const token = await auth.getToken();
+    const headers = new Headers(options.headers);
+    if (token) {
+      headers.set('Authorization', `Token ${token}`);
+    }
+    return fetch(url, { ...options, headers });
+  };
+}
+
 export function buildClientConfig(config: ApiFactoryConfig, defaultBaseUrl: string) {
   return {
     baseUrl: config.baseUrl || defaultBaseUrl,

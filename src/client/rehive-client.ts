@@ -1,6 +1,7 @@
 import { createAuth, type Auth, type AuthConfig } from '../auth/create-auth.js';
 import { createUserApi, type UserApi } from '../platform/user/create-api.js';
 import { createAdminApi, type AdminApi } from '../platform/admin/create-api.js';
+import { createAuthenticatedFetch } from '../shared/create-api-client.js';
 import { createConversionApi, type ConversionApi } from '../extensions/conversion/create-api.js';
 import { createMassSendApi, type MassSendApi } from '../extensions/mass-send/create-api.js';
 import { createNotificationsApi, type NotificationsApi } from '../extensions/notifications/create-api.js';
@@ -19,43 +20,38 @@ export class RehiveClient {
   public readonly auth: Auth;
   public readonly user: UserApi;
   public readonly admin: AdminApi;
+  public readonly extensions: {
+    conversion: (cfg?: { baseUrl?: string }) => ConversionApi;
+    massSend: (cfg?: { baseUrl?: string }) => MassSendApi;
+    notifications: (cfg?: { baseUrl?: string }) => NotificationsApi;
+    products: (cfg?: { baseUrl?: string }) => ProductsApi;
+    rewards: (cfg?: { baseUrl?: string }) => RewardsApi;
+    stellar: (cfg?: { baseUrl?: string }) => StellarApi;
+    stellarTestnet: (cfg?: { baseUrl?: string }) => StellarTestnetApi;
+    business: (cfg?: { baseUrl?: string }) => BusinessApi;
+    paymentRequests: (cfg?: { baseUrl?: string }) => PaymentRequestsApi;
+    bridge: (cfg?: { baseUrl?: string }) => BridgeApi;
+    app: (cfg?: { baseUrl?: string }) => AppApi;
+    fetch: (url: string, options?: RequestInit) => Promise<Response>;
+  };
 
   constructor(config: RehiveConfig = {}) {
     this.auth = createAuth(config);
     this.user = createUserApi({ auth: this.auth, baseUrl: config.baseUrl });
     this.admin = createAdminApi({ auth: this.auth, baseUrl: config.baseUrl });
+    this.extensions = {
+      conversion: (cfg?) => createConversionApi({ auth: this.auth, ...cfg }),
+      massSend: (cfg?) => createMassSendApi({ auth: this.auth, ...cfg }),
+      notifications: (cfg?) => createNotificationsApi({ auth: this.auth, ...cfg }),
+      products: (cfg?) => createProductsApi({ auth: this.auth, ...cfg }),
+      rewards: (cfg?) => createRewardsApi({ auth: this.auth, ...cfg }),
+      stellar: (cfg?) => createStellarApi({ auth: this.auth, ...cfg }),
+      stellarTestnet: (cfg?) => createStellarTestnetApi({ auth: this.auth, ...cfg }),
+      business: (cfg?) => createBusinessApi({ auth: this.auth, ...cfg }),
+      paymentRequests: (cfg?) => createPaymentRequestsApi({ auth: this.auth, ...cfg }),
+      bridge: (cfg?) => createBridgeApi({ auth: this.auth, ...cfg }),
+      app: (cfg?) => createAppApi({ auth: this.auth, ...cfg }),
+      fetch: createAuthenticatedFetch(this.auth),
+    };
   }
-
-  public readonly extensions = {
-    conversion: (cfg?: { baseUrl?: string }): ConversionApi =>
-      createConversionApi({ auth: this.auth, ...cfg }),
-    massSend: (cfg?: { baseUrl?: string }): MassSendApi =>
-      createMassSendApi({ auth: this.auth, ...cfg }),
-    notifications: (cfg?: { baseUrl?: string }): NotificationsApi =>
-      createNotificationsApi({ auth: this.auth, ...cfg }),
-    products: (cfg?: { baseUrl?: string }): ProductsApi =>
-      createProductsApi({ auth: this.auth, ...cfg }),
-    rewards: (cfg?: { baseUrl?: string }): RewardsApi =>
-      createRewardsApi({ auth: this.auth, ...cfg }),
-    stellar: (cfg?: { baseUrl?: string }): StellarApi =>
-      createStellarApi({ auth: this.auth, ...cfg }),
-    stellarTestnet: (cfg?: { baseUrl?: string }): StellarTestnetApi =>
-      createStellarTestnetApi({ auth: this.auth, ...cfg }),
-    business: (cfg?: { baseUrl?: string }): BusinessApi =>
-      createBusinessApi({ auth: this.auth, ...cfg }),
-    paymentRequests: (cfg?: { baseUrl?: string }): PaymentRequestsApi =>
-      createPaymentRequestsApi({ auth: this.auth, ...cfg }),
-    bridge: (cfg?: { baseUrl?: string }): BridgeApi =>
-      createBridgeApi({ auth: this.auth, ...cfg }),
-    app: (cfg?: { baseUrl?: string }): AppApi =>
-      createAppApi({ auth: this.auth, ...cfg }),
-    fetch: async (url: string, options: RequestInit = {}): Promise<Response> => {
-      const token = await this.auth.getToken();
-      const headers = new Headers(options.headers);
-      if (token) {
-        headers.set('Authorization', `Token ${token}`);
-      }
-      return fetch(url, { ...options, headers });
-    },
-  };
 }
