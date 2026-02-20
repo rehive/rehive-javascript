@@ -8,7 +8,6 @@ export function ConversionDemo() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-
   const handleListPairs = async () => {
     if (!rehive || !isAuthenticated) {
       setError('Please log in first')
@@ -19,11 +18,8 @@ export function ConversionDemo() {
     setError(null)
 
     try {
-      // Create a conversion API instance - no imports needed!
       const conversionApi = rehive.extensions.conversion()
-
-      const response = await conversionApi.user.userConversionPairsList({})
-      // With our updated templates, data is now directly in response.data
+      const response: any = await conversionApi.userConversionPairsList({})
       setConversionData(response.data)
     } catch (err: any) {
       setError(err.message || 'Failed to list conversion pairs')
@@ -71,17 +67,12 @@ export function ConversionDemo() {
       )}
 
       <div className="conversion-info">
-        <h4>Token Sync Demo:</h4>
-        <p>
-          This component demonstrates how extension APIs automatically stay synchronized 
-          with authentication tokens. When your token refreshes (expires after ~1 hour), 
-          all registered extension APIs will automatically receive the new token.
-        </p>
+        <h4>How it works in v4:</h4>
         <ul>
-          <li>✅ <code>rehive.extensions.conversion()</code> creates authenticated instances</li>
-          <li>✅ Tokens are automatically synchronized across all APIs</li>
-          <li>✅ Token refresh propagates to platform + extension APIs</li>
-          <li>✅ No manual token management required</li>
+          <li>✅ <code>rehive.extensions.conversion()</code> creates an authenticated API</li>
+          <li>✅ Each API calls <code>auth.getToken()</code> automatically per request</li>
+          <li>✅ Token refresh is handled transparently</li>
+          <li>✅ Full TypeScript autocomplete on every method</li>
         </ul>
       </div>
     </div>
