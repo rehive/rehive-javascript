@@ -1,40 +1,58 @@
 type SdkModule = Record<string, unknown>;
 
+// ===========================================================================
+// Type utilities
+// ===========================================================================
+
+/**
+ * Strip `undefined` from the resolved type of a Promise.
+ *
+ * The openapi-ts codegen defaults `ThrowOnError` to `false`, which makes
+ * every SDK function return `Promise<T | undefined>`.  Our
+ * `errorHandlingFetch` wrapper throws on non-ok responses before the
+ * openapi-ts client ever sees them, so the `undefined` (error) branch is
+ * unreachable at runtime.  This utility aligns the types with that reality.
+ */
+type StrictReturn<T> = T extends Promise<infer U> ? Promise<NonNullable<U>> : T;
+
 type StripClient<T> =
   T extends (options?: infer O) => infer R
-    ? (options?: Omit<O & {}, 'client'>) => R
+    ? (options?: Omit<O & {}, 'client'>) => StrictReturn<R>
     : T extends (options: infer O) => infer R
-      ? (options: Omit<O, 'client'>) => R
+      ? (options: Omit<O, 'client'>) => StrictReturn<R>
       : T;
 
 export type BoundSdk<M extends SdkModule> = {
   [K in keyof M as M[K] extends (...args: any[]) => any ? K : never]: StripClient<M[K]>;
 };
 
-// ---------------------------------------------------------------------------
-// Backward-compatibility helpers
+// ===========================================================================
+// DEPRECATED — Backward-compatibility helpers
 //
 // The v4 SDK functions expect a single options object: { query, body, path }.
 // Older code may call with flat params or positional args.  The compat layer
 // detects the calling convention and rewrites arguments on the fly.
-// ---------------------------------------------------------------------------
+//
+// TODO: Remove once all call sites use v4 structured parameters.
+// ===========================================================================
 
-/** Returns true when the object already uses the v4 structured style. */
+/** @deprecated Compat-only. Returns true when the object already uses the v4 structured style. */
 function hasStructuredOptions(obj: Record<string, unknown>): boolean {
   return 'query' in obj || 'body' in obj || 'path' in obj;
 }
 
-/** Returns true for write operations that send a request body. */
+/** @deprecated Compat-only. Returns true for write operations that send a request body. */
 function isWriteOperation(name: string): boolean {
   return /(?:Create|Update|PartialUpdate)$/.test(name);
 }
 
-/** Convert camelCase to snake_case (e.g. groupName → group_name). */
+/** @deprecated Compat-only. Convert camelCase to snake_case (e.g. groupName → group_name). */
 function toSnakeCase(str: string): string {
   return str.replace(/[A-Z]/g, (ch) => `_${ch.toLowerCase()}`);
 }
 
 /**
+ * @deprecated Compat-only.
  * Extract the URL template from a generated SDK function's source.
  * Works because tsup preserves string literals in the output.
  */
@@ -48,12 +66,13 @@ function extractUrlTemplate(fn: Function): string | null {
   }
 }
 
-/** Pull `{param}` names out of a URL template, preserving order. */
+/** @deprecated Compat-only. Pull `{param}` names out of a URL template, preserving order. */
 function extractPathParamNames(url: string): string[] {
   return [...url.matchAll(/\{(\w+)\}/g)].map((m) => m[1]);
 }
 
 /**
+ * @deprecated Compat-only.
  * Split a flat key/value map into path params and the rest, using the
  * URL-template param names for matching (supports both snake_case keys
  * and camelCase equivalents).
@@ -79,9 +98,20 @@ function separatePathParams(
   return { path, rest };
 }
 
-// ---------------------------------------------------------------------------
-// bindSdk – the main entry point
-// ---------------------------------------------------------------------------
+// ===========================================================================
+// bindSdk — main entry point
+//
+// Core responsibility: bind each SDK function to a configured client instance
+// so callers don't need to pass `client` on every call.
+//
+// Additionally includes a DEPRECATED compat layer (see above) that rewrites
+// flat/positional arguments into the v4 structured style. Once all call sites
+// pass `{ query, body, path }` directly, the body of the bound wrapper
+// simplifies to:
+//
+//   bound[name] = (options?: any) => fn({ ...options, client });
+//
+// ===========================================================================
 
 export function bindSdk<M extends SdkModule>(
   sdkModule: M,
@@ -92,7 +122,7 @@ export function bindSdk<M extends SdkModule>(
   for (const [name, fn] of Object.entries(sdkModule)) {
     if (typeof fn !== 'function') continue;
 
-    // Pre-compute metadata once per function.
+    // [COMPAT] Pre-compute metadata once per function.
     const url = extractUrlTemplate(fn as Function);
     const pathParamNames = url ? extractPathParamNames(url) : [];
 
@@ -111,7 +141,7 @@ export function bindSdk<M extends SdkModule>(
       if (args.length === 1) {
         const arg = args[0];
 
-        // Primitive → treat as the first (or only) path param.
+        // [COMPAT] Primitive → treat as the first (or only) path param.
         if (arg === null || typeof arg !== 'object') {
           if (pathParamNames.length > 0) {
             return (fn as Function)({
@@ -124,7 +154,7 @@ export function bindSdk<M extends SdkModule>(
 
         const obj = arg as Record<string, unknown>;
 
-        // Already structured → pass through.
+        // v4 structured style → pass through (this is the target path).
         if (hasStructuredOptions(obj)) {
           return (fn as Function)({ ...obj, client });
         }
@@ -134,7 +164,7 @@ export function bindSdk<M extends SdkModule>(
           return (fn as Function)({ client });
         }
 
-        // Flat object – separate any path params from the rest.
+        // [COMPAT] Flat object – separate any path params from the rest.
         if (pathParamNames.length > 0) {
           const { path, rest } = separatePathParams(obj, pathParamNames);
           const options: Record<string, unknown> = { client };
@@ -145,14 +175,14 @@ export function bindSdk<M extends SdkModule>(
           return (fn as Function)(options);
         }
 
-        // No path params – wrap everything as query or body.
+        // [COMPAT] No path params – wrap everything as query or body.
         return (fn as Function)({
           [isWriteOperation(name) ? 'body' : 'query']: obj,
           client,
         });
       }
 
-      // ── Multiple arguments (positional / legacy style) ─────────────
+      // ── [COMPAT] Multiple arguments (positional / legacy style) ────
       //
       // Convention: primitive args map to path params (in URL-template
       // order), and the last object arg is body (writes) or query (reads).
