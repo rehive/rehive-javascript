@@ -115,7 +115,7 @@ export function createAuth(config: AuthConfig = {}): Auth {
 
   const client = createClient({
     baseUrl,
-    responseStyle: 'data' as any,
+    responseStyle: 'data' as const,
     fetch: errorHandlingFetch(normalizeFetch(globalThis.fetch)),
   });
 

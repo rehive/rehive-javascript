@@ -55,7 +55,7 @@ export interface Config<T extends ClientOptions = ClientOptions>
 
 export interface RequestOptions<
   TData = unknown,
-  TResponseStyle extends ResponseStyle = 'fields',
+  TResponseStyle extends ResponseStyle = 'data',
   ThrowOnError extends boolean = boolean,
   Url extends string = string,
 >
@@ -88,7 +88,7 @@ export interface RequestOptions<
 }
 
 export interface ResolvedRequestOptions<
-  TResponseStyle extends ResponseStyle = 'fields',
+  TResponseStyle extends ResponseStyle = 'data',
   ThrowOnError extends boolean = boolean,
   Url extends string = string,
 > extends RequestOptions<unknown, TResponseStyle, ThrowOnError, Url> {
@@ -99,7 +99,7 @@ export type RequestResult<
   TData = unknown,
   TError = unknown,
   ThrowOnError extends boolean = boolean,
-  TResponseStyle extends ResponseStyle = 'fields',
+  TResponseStyle extends ResponseStyle = 'data',
 > = ThrowOnError extends true
   ? Promise<
       TResponseStyle extends 'data'
@@ -140,7 +140,7 @@ type MethodFn = <
   TData = unknown,
   TError = unknown,
   ThrowOnError extends boolean = false,
-  TResponseStyle extends ResponseStyle = 'fields',
+  TResponseStyle extends ResponseStyle = 'data',
 >(
   options: Omit<RequestOptions<TData, TResponseStyle, ThrowOnError>, 'method'>,
 ) => RequestResult<TData, TError, ThrowOnError, TResponseStyle>;
@@ -149,7 +149,7 @@ type SseFn = <
   TData = unknown,
   TError = unknown,
   ThrowOnError extends boolean = false,
-  TResponseStyle extends ResponseStyle = 'fields',
+  TResponseStyle extends ResponseStyle = 'data',
 >(
   options: Omit<RequestOptions<TData, TResponseStyle, ThrowOnError>, 'method'>,
 ) => Promise<ServerSentEventsResult<TData, TError>>;
@@ -158,7 +158,7 @@ type RequestFn = <
   TData = unknown,
   TError = unknown,
   ThrowOnError extends boolean = false,
-  TResponseStyle extends ResponseStyle = 'fields',
+  TResponseStyle extends ResponseStyle = 'data',
 >(
   options: Omit<RequestOptions<TData, TResponseStyle, ThrowOnError>, 'method'> &
     Pick<Required<RequestOptions<TData, TResponseStyle, ThrowOnError>>, 'method'>,
@@ -205,7 +205,7 @@ export type Options<
   TData extends TDataShape = TDataShape,
   ThrowOnError extends boolean = boolean,
   TResponse = unknown,
-  TResponseStyle extends ResponseStyle = 'fields',
+  TResponseStyle extends ResponseStyle = 'data',
 > = OmitKeys<
   RequestOptions<TResponse, TResponseStyle, ThrowOnError>,
   'body' | 'path' | 'query' | 'url'

@@ -36,4 +36,8 @@ generate "payment-requests" "https://payment-requests.services.rehive.com/schema
 generate "bridge" "https://bridge.services.rehive.com/schema.json" "src/extensions/bridge/openapi-ts"
 generate "app" "https://app.services.rehive.com/schema.json" "src/extensions/app/openapi-ts"
 
+# Apply post-codegen type fixes (responseStyle defaults, etc.)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+"${SCRIPT_DIR}/fix-codegen-types.sh"
+
 echo "Done. OpenAPI output updated in src/platform/*/openapi-ts and src/extensions/*/openapi-ts."

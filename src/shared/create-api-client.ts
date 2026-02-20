@@ -33,7 +33,7 @@ function errorHandlingFetch(baseFetch: typeof fetch): typeof fetch {
 export function buildClientConfig(config: ApiFactoryConfig, defaultBaseUrl: string) {
   return {
     baseUrl: config.baseUrl || defaultBaseUrl,
-    responseStyle: 'data' as any,
+    responseStyle: 'data' as const,
     fetch: errorHandlingFetch(normalizeFetch(globalThis.fetch)),
     auth: async () => {
       const token = await config.auth.getToken();
