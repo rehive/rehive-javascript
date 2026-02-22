@@ -299,8 +299,8 @@ Each module is a separate entry point with its own bundle. The `RehiveClient` wr
 
 1. `createAuth()` manages sessions, tokens, and refresh internally using its own openapi-ts client
 2. Each API factory (`createUserApi`, `createAdminApi`, etc.) creates an openapi-ts client configured with `auth: () => auth.getToken()`
-3. `bindSdk()` pre-injects the client into every generated SDK function, preserving full type safety
-4. No runtime introspection, no argument parsing, no `[key: string]: any`
+3. `bindSdk()` injects the client into every generated SDK function, preserving full type safety
+4. All methods use v4 structured parameters: `{ query, body, path }`
 
 ## Available APIs
 

@@ -33,7 +33,7 @@ describe('bindSdk', () => {
     });
   });
 
-  it('should work with empty options', () => {
+  it('should work with no options', () => {
     const mockClient = { id: 'test-client' };
     const mockFn = jest.fn((opts: any) => opts);
 
@@ -45,17 +45,18 @@ describe('bindSdk', () => {
     expect(mockFn).toHaveBeenCalledWith({ client: mockClient });
   });
 
-  it('should not override existing client in options', () => {
-    const mockClient = { id: 'injected-client' };
+  it('should pass through query, body, and path options', () => {
+    const mockClient = { id: 'test-client' };
     const mockFn = jest.fn((opts: any) => opts);
 
     const module = { someCall: mockFn };
     const bound = bindSdk(module, mockClient);
 
-    bound.someCall({ client: 'user-client' as any });
+    bound.someCall({ path: { id: '123' }, query: { limit: 10 } });
 
-    // client from bindSdk should override since it's spread last
     expect(mockFn).toHaveBeenCalledWith({
+      path: { id: '123' },
+      query: { limit: 10 },
       client: mockClient,
     });
   });
