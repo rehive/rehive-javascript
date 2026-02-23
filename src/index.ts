@@ -1,6 +1,3 @@
-export { RehiveClient } from './client/rehive-client.js';
-export type { RehiveConfig } from './client/rehive-client.js';
-
 export { createAuth } from './auth/create-auth.js';
 export type { Auth, AuthConfig, LoginParams, RegisterParams, RegisterCompanyParams } from './auth/create-auth.js';
 

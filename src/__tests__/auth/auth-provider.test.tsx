@@ -217,7 +217,7 @@ describe('AuthProvider', () => {
     expect(result.current.authUser).toBeNull();
   });
 
-  it('should provide access to rehive client', async () => {
+  it('should provide access to auth instance', async () => {
     const { result } = renderHook(() => useAuth(), {
       wrapper: TestWrapper,
     });
@@ -226,10 +226,10 @@ describe('AuthProvider', () => {
       expect(result.current.authLoading).toBe(false);
     });
 
-    expect(result.current.rehive).toBeDefined();
-    expect(typeof result.current.rehive.auth.login).toBe('function');
-    expect(typeof result.current.rehive.auth.registerCompany).toBe('function');
-    expect(typeof result.current.rehive.auth.logout).toBe('function');
+    expect(result.current.auth).toBeDefined();
+    expect(typeof result.current.auth.login).toBe('function');
+    expect(typeof result.current.auth.registerCompany).toBe('function');
+    expect(typeof result.current.auth.logout).toBe('function');
   });
 
   it('should throw error when used outside AuthProvider', () => {

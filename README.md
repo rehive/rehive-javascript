@@ -12,7 +12,7 @@ npm install rehive
 
 ## Quick Start
 
-### Modular API (recommended)
+### Modular API
 
 Import only what you need. Each module is tree-shakeable and fully typed.
 
@@ -57,38 +57,6 @@ const admin = createAdminApi({ auth });
 await admin.adminUsersCreate({ body: { email: "user@example.com" } });
 ```
 
-### RehiveClient wrapper (backward-compatible)
-
-A convenience class that composes auth + all APIs in one object:
-
-```typescript
-import { RehiveClient } from "rehive";
-
-const rehive = new RehiveClient({
-  baseUrl: "https://api.rehive.com",
-  storage: "local",
-});
-
-// Auth
-await rehive.auth.login({ user: "email@example.com", password: "pass", company: "myco" });
-
-// Platform APIs -- directly on the client
-await rehive.user.userRetrieve();
-await rehive.admin.adminUsersList({});
-
-// Extension APIs -- created via factory methods
-const conversion = rehive.extensions.conversion();
-await conversion.userConversionPairsList({});
-
-// Custom base URL for staging
-const conversionStaging = rehive.extensions.conversion({
-  baseUrl: "https://staging-conversion.services.rehive.com/api/",
-});
-
-// Authenticated fetch for custom endpoints
-const response = await rehive.extensions.fetch("https://my-custom.services.rehive.com/api/data");
-```
-
 ### Authenticated Fetch (for custom endpoints)
 
 For API endpoints not covered by the generated SDK (e.g. the Builder service), use `createAuthenticatedFetch` to get a `fetch` function that automatically injects the auth token:
@@ -112,8 +80,6 @@ const response = await authFetch("https://builder.services.rehive.com/api/admin/
 const data = await response.json();
 ```
 
-This is also available on the `RehiveClient` wrapper as `rehive.extensions.fetch(url, options)`.
-
 ## React Integration
 
 For a complete working example, see the [interactive demo](./demo).
@@ -130,7 +96,7 @@ function App() {
 }
 
 function Dashboard() {
-  const { authUser, authLoading, login, logout, rehive } = useAuth();
+  const { authUser, authLoading, login, logout, auth } = useAuth();
 
   if (authLoading) return <div>Loading...</div>;
 
@@ -151,7 +117,7 @@ function Dashboard() {
 }
 ```
 
-The `useAuth` hook provides: `authUser`, `authLoading`, `authError`, `login`, `register`, `registerCompany`, `logout`, `logoutAll`, `refresh`, `getSessions`, `switchToSession`, `clearAllSessions`, `deleteChallenge`, and `rehive` (the full `RehiveClient` instance).
+The `useAuth` hook provides: `authUser`, `authLoading`, `authError`, `login`, `register`, `registerCompany`, `logout`, `logoutAll`, `refresh`, `getSessions`, `switchToSession`, `clearAllSessions`, `deleteChallenge`, and `auth` (the `Auth` instance for creating modular API clients).
 
 ## Extension APIs
 
@@ -290,10 +256,10 @@ rehive/
 ├── rehive/admin          → createAdminApi()
 ├── rehive/extensions/*   → create*Api() for each extension
 ├── rehive/react          → AuthProvider, useAuth
-└── rehive                → RehiveClient wrapper + re-exports
+└── rehive                → re-exports + utilities
 ```
 
-Each module is a separate entry point with its own bundle. The `RehiveClient` wrapper composes all modules for convenience but is not required.
+Each module is a separate entry point with its own bundle. Import only the factories you need for optimal tree-shaking.
 
 ### How it works
 

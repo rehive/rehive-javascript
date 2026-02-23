@@ -1,9 +1,7 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import type { ReactNode } from 'react';
-import { RehiveClient } from '../client/rehive-client.js';
-import type { RehiveConfig } from '../client/rehive-client.js';
+import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
+import { createAuth } from '../auth/create-auth.js';
+import type { Auth, AuthConfig, LoginParams, RegisterParams, RegisterCompanyParams } from '../auth/create-auth.js';
 import type { AuthSession } from '../auth/types/index.js';
-import type { LoginParams, RegisterParams, RegisterCompanyParams } from '../auth/create-auth.js';
 
 export interface AuthContextType {
   authUser: AuthSession | null | undefined;
@@ -21,33 +19,33 @@ export interface AuthContextType {
   switchToSession: (userId: string, company?: string) => Promise<AuthSession | null>;
   clearAllSessions: () => Promise<void>;
   logoutAll: () => Promise<void>;
-  rehive: RehiveClient;
+  auth: Auth;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export interface AuthProviderProps {
   children: ReactNode;
-  config: RehiveConfig;
+  config: AuthConfig;
 }
 
 export const AuthProvider = ({ children, config }: AuthProviderProps) => {
-  const [rehive] = useState(() => new RehiveClient(config));
+  const [auth] = useState(() => createAuth(config));
   const [authUser, setAuthUser] = useState<AuthSession | null | undefined>(undefined);
-  const [authLoading, setAuthLoading] = useState<boolean>(true);
+  const [authLoading, setAuthLoading] = useState(true);
   const [authError, setAuthError] = useState<Error | null>(null);
 
-  const refreshCallback = useCallback(() => rehive.auth.refresh(), [rehive]);
+  const refreshCallback = useCallback(() => auth.refresh(), [auth]);
 
   useEffect(() => {
-    const unsubscribeSession = rehive.auth.subscribe(setAuthUser);
-    const unsubscribeError = rehive.auth.subscribeToErrors(setAuthError);
+    const unsubscribeSession = auth.subscribe(setAuthUser);
+    const unsubscribeError = auth.subscribeToErrors(setAuthError);
 
     return () => {
       unsubscribeSession();
       unsubscribeError();
     };
-  }, [rehive]);
+  }, [auth]);
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -55,7 +53,7 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
         if (!config.token) {
           await new Promise((resolve) => setTimeout(resolve, 10));
         }
-        const session = rehive.auth.getActiveSession();
+        const session = auth.getActiveSession();
         setAuthUser(session);
       } catch (error) {
         console.error('Error initializing auth:', error);
@@ -66,12 +64,12 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
     };
 
     initializeAuth();
-  }, [rehive, config.token]);
+  }, [auth, config.token]);
 
   const login = async (params: LoginParams): Promise<AuthSession> => {
     setAuthLoading(true);
     try {
-      return await rehive.auth.login(params);
+      return await auth.login(params);
     } finally {
       setAuthLoading(false);
     }
@@ -80,7 +78,7 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
   const register = async (params: RegisterParams): Promise<AuthSession> => {
     setAuthLoading(true);
     try {
-      return await rehive.auth.register(params);
+      return await auth.register(params);
     } finally {
       setAuthLoading(false);
     }
@@ -89,7 +87,7 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
   const registerCompany = async (params: RegisterCompanyParams): Promise<AuthSession> => {
     setAuthLoading(true);
     try {
-      return await rehive.auth.registerCompany(params);
+      return await auth.registerCompany(params);
     } finally {
       setAuthLoading(false);
     }
@@ -98,7 +96,7 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
   const logout = async (): Promise<void> => {
     setAuthLoading(true);
     try {
-      await rehive.auth.logout();
+      await auth.logout();
     } finally {
       setAuthLoading(false);
     }
@@ -108,16 +106,16 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
     if (!challengeId) return;
     setAuthLoading(true);
     try {
-      await rehive.auth.deleteChallenge(challengeId);
+      await auth.deleteChallenge(challengeId);
     } finally {
       setAuthLoading(false);
     }
   };
 
-  const getSessions = (): AuthSession[] => rehive.auth.getSessions();
+  const getSessions = (): AuthSession[] => auth.getSessions();
 
   const getSessionsByCompany = (company: string): AuthSession[] =>
-    rehive.auth.getSessionsByCompany(company);
+    auth.getSessionsByCompany(company);
 
   const switchToSession = async (
     userId: string,
@@ -125,7 +123,7 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
   ): Promise<AuthSession | null> => {
     setAuthLoading(true);
     try {
-      return await rehive.auth.switchToSession(userId, company);
+      return await auth.switchToSession(userId, company);
     } finally {
       setAuthLoading(false);
     }
@@ -134,7 +132,7 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
   const clearAllSessions = async (): Promise<void> => {
     setAuthLoading(true);
     try {
-      await rehive.auth.clearAllSessions();
+      await auth.clearAllSessions();
     } finally {
       setAuthLoading(false);
     }
@@ -143,13 +141,13 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
   const logoutAll = async (): Promise<void> => {
     setAuthLoading(true);
     try {
-      await rehive.auth.logoutAll();
+      await auth.logoutAll();
     } finally {
       setAuthLoading(false);
     }
   };
 
-  const auth: AuthContextType = {
+  const contextValue: AuthContextType = {
     authUser,
     refreshCallback,
     login,
@@ -165,10 +163,10 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
     switchToSession,
     clearAllSessions,
     logoutAll,
-    rehive,
+    auth,
   };
 
-  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = (): AuthContextType => {

@@ -15,11 +15,6 @@ jest.mock('../../platform/user/openapi-ts/client/index.js', () => ({
   createClient: jest.fn(() => ({})),
 }));
 
-jest.mock('../../platform/admin/openapi-ts/sdk.gen.js', () => ({}));
-jest.mock('../../platform/admin/openapi-ts/client/index.js', () => ({
-  createClient: jest.fn(() => ({})),
-}));
-
 jest.mock('../../extensions/app/openapi-ts/sdk.gen.js', () => ({
   publicCompanyRetrieve: (...args: any[]) => mockPublicCompanyRetrieve(...args),
   publicCompanyLocalesList: (...args: any[]) => mockPublicCompanyLocalesList(...args),
@@ -31,7 +26,8 @@ jest.mock('../../extensions/app/openapi-ts/client/index.js', () => ({
   createClient: jest.fn(() => ({})),
 }));
 
-import { RehiveClient } from '../../client/rehive-client.js';
+import { createAuth } from '../../auth/create-auth.js';
+import { createAppApi } from '../../extensions/app/create-api.js';
 
 describe('App Extension Integration', () => {
   beforeEach(() => {
@@ -77,60 +73,62 @@ describe('App Extension Integration', () => {
   });
 
   it('should create app extension and call public endpoints', async () => {
-    const rehive = new RehiveClient({
+    const auth = createAuth({
       baseUrl: 'https://api.test.com',
       storage: 'memory',
     });
 
-    const app = rehive.extensions.app();
+    const app = createAppApi({ auth });
     expect(app).toBeDefined();
     expect(typeof app.publicCompanyRetrieve).toBe('function');
 
-    const result: any = await app.publicCompanyRetrieve({});
+    const result = await app.publicCompanyRetrieve({});
     expect(result.status).toBe('success');
     expect(result.data?.id).toBe('demo-company');
   });
 
   it('should create app extension with custom base URL', async () => {
-    const rehive = new RehiveClient({
+    const auth = createAuth({
       baseUrl: 'https://api.test.com',
       storage: 'memory',
     });
 
-    const appStaging = rehive.extensions.app({
+    const appStaging = createAppApi({
+      auth,
       baseUrl: 'https://staging-app.services.rehive.com/api/',
     });
     expect(appStaging).toBeDefined();
 
-    const result: any = await appStaging.publicCompanyRetrieve({});
+    const result = await appStaging.publicCompanyRetrieve({});
     expect(result.status).toBe('success');
   });
 
   it('should call admin endpoints with authentication', async () => {
-    const rehive = new RehiveClient({
+    const auth = createAuth({
       baseUrl: 'https://api.test.com',
       token: 'permanent-admin-token',
     });
 
-    const app = rehive.extensions.app();
+    const app = createAppApi({ auth });
 
-    const androidApps: any = await app.adminAndroidAppsList({});
+    const androidApps = await app.adminAndroidAppsList({});
     expect(androidApps.status).toBe('success');
     expect(androidApps.data?.results).toHaveLength(1);
 
-    const iosApps: any = await app.adminIosAppsList({});
+    const iosApps = await app.adminIosAppsList({});
     expect(iosApps.status).toBe('success');
     expect(iosApps.data?.results).toHaveLength(1);
   });
 
   it('should support multiple app extension instances', () => {
-    const rehive = new RehiveClient({
+    const auth = createAuth({
       baseUrl: 'https://api.test.com',
       token: 'server-token',
     });
 
-    const appProd = rehive.extensions.app();
-    const appStaging = rehive.extensions.app({
+    const appProd = createAppApi({ auth });
+    const appStaging = createAppApi({
+      auth,
       baseUrl: 'https://staging-app.services.rehive.com/api/',
     });
 

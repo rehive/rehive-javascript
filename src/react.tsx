@@ -1,8 +1,6 @@
 export { AuthProvider, useAuth } from './react/auth-provider.js';
 export type { AuthContextType, AuthProviderProps } from './react/auth-provider.js';
 
-export { RehiveClient } from './client/rehive-client.js';
-
 export type {
   UserSession,
   AuthSession,

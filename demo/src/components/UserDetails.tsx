@@ -1,25 +1,27 @@
 import { useState } from 'react'
 import { useAuth } from 'rehive/react'
+import { createUserApi } from 'rehive/user'
+import type { ExtendedUserInfoResponse } from 'rehive/user'
 
 export function UserDetails() {
-  const { authUser, rehive } = useAuth()
-  const [userDetails, setUserDetails] = useState<any>(null)
+  const { authUser, auth } = useAuth()
+  const [userDetails, setUserDetails] = useState<ExtendedUserInfoResponse['data'] | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const fetchUserDetails = async () => {
     if (!authUser) return
-    
+
     setIsLoading(true)
     setError(null)
-    
+
     try {
-      const response = await rehive.user.userRetrieve()
-      // With our updated templates, data is now directly in response.data
+      const user = createUserApi({ auth })
+      const response = await user.userRetrieve()
       setUserDetails(response.data)
-    } catch (error: any) {
-      console.error('Failed to fetch user details:', error)
-      setError(error?.message || 'Failed to fetch user details')
+    } catch (err) {
+      console.error('Failed to fetch user details:', err)
+      setError(err instanceof Error ? err.message : 'Failed to fetch user details')
     } finally {
       setIsLoading(false)
     }
@@ -28,7 +30,7 @@ export function UserDetails() {
   if (!authUser) {
     return (
       <div className="totp-section">
-        <h3>👤 User Details</h3>
+        <h3>User Details</h3>
         <p>Please authenticate first to query user details.</p>
       </div>
     )
@@ -36,11 +38,11 @@ export function UserDetails() {
 
   return (
     <div className="totp-section">
-      <h3>👤 User Details</h3>
+      <h3>User Details</h3>
       <p>Query detailed user information from the Rehive platform.</p>
-      
+
       <div className="totp-actions">
-        <button 
+        <button
           onClick={fetchUserDetails}
           disabled={isLoading}
           className="create-totp-btn"
@@ -57,7 +59,7 @@ export function UserDetails() {
 
       {userDetails && (
         <div className="authenticators-list">
-          <h4>📋 User Information</h4>
+          <h4>User Information</h4>
           <div className="authenticators">
             <div className="authenticator-item">
               <div className="auth-info">
@@ -68,7 +70,7 @@ export function UserDetails() {
                 <div><strong>Last Name:</strong> {userDetails.last_name || 'Not set'}</div>
                 <div><strong>Mobile:</strong> {userDetails.mobile || 'Not set'}</div>
                 <div><strong>Status:</strong> <span className={`status-${userDetails.status?.toLowerCase()}`}>{userDetails.status || 'Unknown'}</span></div>
-                <div><strong>Verified:</strong> {userDetails.verified ? '✅ Yes' : '❌ No'}</div>
+                <div><strong>Verified:</strong> {userDetails.verified ? 'Yes' : 'No'}</div>
                 <div><strong>Created:</strong> {new Date(userDetails.created).toLocaleString()}</div>
                 <div><strong>Updated:</strong> {new Date(userDetails.updated).toLocaleString()}</div>
                 {userDetails.timezone && <div><strong>Timezone:</strong> {userDetails.timezone}</div>}
@@ -77,13 +79,13 @@ export function UserDetails() {
                 {userDetails.birth_date && <div><strong>Birth Date:</strong> {new Date(userDetails.birth_date).toLocaleDateString()}</div>}
               </div>
             </div>
-            
+
             {userDetails.groups && userDetails.groups.length > 0 && (
               <div className="authenticator-item">
                 <div className="auth-info">
-                  <div><strong>👥 Groups:</strong></div>
-                  {userDetails.groups.map((group: any) => (
-                    <div key={group.name}>• {group.name} {group.label && `(${group.label})`}</div>
+                  <div><strong>Groups:</strong></div>
+                  {userDetails.groups.map((group) => (
+                    <div key={group.name}>- {group.name} {group.label && `(${group.label})`}</div>
                   ))}
                 </div>
               </div>
@@ -92,9 +94,9 @@ export function UserDetails() {
             {userDetails.permission_groups && userDetails.permission_groups.length > 0 && (
               <div className="authenticator-item">
                 <div className="auth-info">
-                  <div><strong>🔐 Permission Groups:</strong></div>
-                  {userDetails.permission_groups.map((group: any) => (
-                    <div key={group.name}>• {group.name} {group.label && `(${group.label})`}</div>
+                  <div><strong>Permission Groups:</strong></div>
+                  {userDetails.permission_groups.map((group) => (
+                    <div key={group.name}>- {group.name} {group.label && `(${group.label})`}</div>
                   ))}
                 </div>
               </div>
