@@ -35,6 +35,10 @@ generate "business" "https://business.services.rehive.com/schema.json" "src/exte
 generate "payment-requests" "https://payment-requests.services.rehive.com/schema.json" "src/extensions/payment-requests/openapi-ts"
 generate "bridge" "https://bridge.services.rehive.com/schema.json" "src/extensions/bridge/openapi-ts"
 generate "app" "https://app.services.rehive.com/schema.json" "src/extensions/app/openapi-ts"
+generate "billing"  "https://billing.services.rehive.com/schema.json"  "src/extensions/billing/openapi-ts"
+generate "builder"  "https://builder.services.rehive.com/schema.json"  "src/extensions/builder/openapi-ts"
+generate "rain"     "https://rain.services.rehive.com/schema.json"     "src/extensions/rain/openapi-ts"
+generate "alchemy"  "https://alchemy.services.rehive.com/schema.json"  "src/extensions/alchemy/openapi-ts"
 
 # Apply post-codegen type fixes (responseStyle defaults, etc.)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

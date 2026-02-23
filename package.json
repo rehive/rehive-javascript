@@ -9,7 +9,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "codegen:openapi-ts": "bash scripts/codegen-openapi-ts.sh",
-    "codegen:openapi-ts:clean": "rm -rf src/platform/user/openapi-ts src/platform/admin/openapi-ts src/extensions/conversion/openapi-ts src/extensions/mass-send/openapi-ts src/extensions/notifications/openapi-ts src/extensions/products/openapi-ts src/extensions/rewards/openapi-ts src/extensions/stellar/openapi-ts src/extensions/stellar-testnet/openapi-ts src/extensions/business/openapi-ts src/extensions/payment-requests/openapi-ts src/extensions/bridge/openapi-ts src/extensions/app/openapi-ts && npm run codegen:openapi-ts",
+    "codegen:openapi-ts:clean": "rm -rf src/platform/user/openapi-ts src/platform/admin/openapi-ts src/extensions/conversion/openapi-ts src/extensions/mass-send/openapi-ts src/extensions/notifications/openapi-ts src/extensions/products/openapi-ts src/extensions/rewards/openapi-ts src/extensions/stellar/openapi-ts src/extensions/stellar-testnet/openapi-ts src/extensions/business/openapi-ts src/extensions/payment-requests/openapi-ts src/extensions/bridge/openapi-ts src/extensions/app/openapi-ts src/extensions/billing/openapi-ts src/extensions/builder/openapi-ts src/extensions/rain/openapi-ts src/extensions/alchemy/openapi-ts && npm run codegen:openapi-ts",
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -130,6 +130,26 @@
       "types": "./dist/extensions/app.d.ts",
       "import": "./dist/extensions/app.mjs",
       "require": "./dist/extensions/app.js"
+    },
+    "./extensions/billing": {
+      "types": "./dist/extensions/billing.d.ts",
+      "import": "./dist/extensions/billing.mjs",
+      "require": "./dist/extensions/billing.js"
+    },
+    "./extensions/builder": {
+      "types": "./dist/extensions/builder.d.ts",
+      "import": "./dist/extensions/builder.mjs",
+      "require": "./dist/extensions/builder.js"
+    },
+    "./extensions/rain": {
+      "types": "./dist/extensions/rain.d.ts",
+      "import": "./dist/extensions/rain.mjs",
+      "require": "./dist/extensions/rain.js"
+    },
+    "./extensions/alchemy": {
+      "types": "./dist/extensions/alchemy.d.ts",
+      "import": "./dist/extensions/alchemy.mjs",
+      "require": "./dist/extensions/alchemy.js"
     },
     "./react": {
       "types": "./dist/react.d.ts",

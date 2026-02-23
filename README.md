@@ -59,7 +59,7 @@ await admin.adminUsersCreate({ body: { email: "user@example.com" } });
 
 ### Authenticated Fetch (for custom endpoints)
 
-For API endpoints not covered by the generated SDK (e.g. the Builder service), use `createAuthenticatedFetch` to get a `fetch` function that automatically injects the auth token:
+For API endpoints not covered by the generated SDK, use `createAuthenticatedFetch` to get a `fetch` function that automatically injects the auth token:
 
 ```typescript
 import { createAuth } from "rehive/auth";
@@ -72,10 +72,10 @@ await auth.login({ user: "email@example.com", password: "pass", company: "myco" 
 const authFetch = createAuthenticatedFetch(auth);
 
 // Use it like regular fetch, but with auth headers injected
-const response = await authFetch("https://builder.services.rehive.com/api/admin/build-tasks/", {
+const response = await authFetch("https://example.services.rehive.com/api/custom-endpoint/", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ config: { /* ... */ } }),
+  body: JSON.stringify({ data: { /* ... */ } }),
 });
 const data = await response.json();
 ```
@@ -121,7 +121,7 @@ The `useAuth` hook provides: `authUser`, `authLoading`, `authError`, `login`, `r
 
 ## Extension APIs
 
-All 11 extension APIs follow the same pattern -- import the factory, pass `auth`, call methods:
+All 15 extension APIs follow the same pattern -- import the factory, pass `auth`, call methods:
 
 ```typescript
 import { createConversionApi } from "rehive/extensions/conversion";
@@ -135,6 +135,10 @@ import { createBusinessApi } from "rehive/extensions/business";
 import { createPaymentRequestsApi } from "rehive/extensions/payment-requests";
 import { createBridgeApi } from "rehive/extensions/bridge";
 import { createAppApi } from "rehive/extensions/app";
+import { createBillingApi } from "rehive/extensions/billing";
+import { createBuilderApi } from "rehive/extensions/builder";
+import { createRainApi } from "rehive/extensions/rain";
+import { createAlchemyApi } from "rehive/extensions/alchemy";
 
 const conversion = createConversionApi({ auth });
 const rewards = createRewardsApi({ auth });
@@ -160,6 +164,10 @@ const conversionStaging = createConversionApi({
 | Payment Requests | `https://payment-requests.services.rehive.com/api/` |
 | Bridge | `https://bridge.services.rehive.com/api/` |
 | App | `https://app.services.rehive.com/api/` |
+| Billing | `https://billing.services.rehive.com/api/` |
+| Builder | `https://builder.services.rehive.com/api/` |
+| Rain | `https://rain.services.rehive.com/api/` |
+| Alchemy | `https://alchemy.services.rehive.com/api/` |
 
 ## Error Handling
 
@@ -285,8 +293,12 @@ Each module is a separate entry point with its own bundle. Import only the facto
 | Payment Requests | `rehive/extensions/payment-requests` | 77 |
 | Bridge | `rehive/extensions/bridge` | 27 |
 | App | `rehive/extensions/app` | 46 |
+| Billing | `rehive/extensions/billing` | 13 |
+| Builder | `rehive/extensions/builder` | 5 |
+| Rain | `rehive/extensions/rain` | 26 |
+| Alchemy | `rehive/extensions/alchemy` | 20 |
 
-**Total: 1,385 typed API methods across platform and extensions**
+**Total: 1,449 typed API methods across platform and extensions**
 
 ## Development
 
