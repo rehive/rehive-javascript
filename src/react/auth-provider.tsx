@@ -1,14 +1,14 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
-import { RehiveClient } from '../client/rehive-client.js';
-import type { RehiveConfig } from '../client/rehive-client.js';
-import type { AuthSession, LoginParams, RegisterParams, RegisterCompanyParams } from '../auth/types/index.js';
+import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
+import { createAuth } from '../auth/create-auth.js';
+import type { Auth, AuthConfig, LoginParams, RegisterParams, RegisterCompanyParams } from '../auth/create-auth.js';
+import type { AuthSession } from '../auth/types/index.js';
 
-interface AuthContextType {
+export interface AuthContextType {
   authUser: AuthSession | null | undefined;
   refreshCallback: () => Promise<void>;
   login: (params: LoginParams) => Promise<AuthSession>;
-  register: (params: RegisterParams) => Promise<void>;
-  registerCompany: (params: RegisterCompanyParams) => Promise<void>;
+  register: (params: RegisterParams) => Promise<AuthSession>;
+  registerCompany: (params: RegisterCompanyParams) => Promise<AuthSession>;
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
   authLoading: boolean;
@@ -19,43 +19,41 @@ interface AuthContextType {
   switchToSession: (userId: string, company?: string) => Promise<AuthSession | null>;
   clearAllSessions: () => Promise<void>;
   logoutAll: () => Promise<void>;
-  rehive: RehiveClient;
+  auth: Auth;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-interface AuthProviderProps {
+export interface AuthProviderProps {
   children: ReactNode;
-  config: RehiveConfig;
+  config: AuthConfig;
 }
 
 export const AuthProvider = ({ children, config }: AuthProviderProps) => {
-  const [rehive] = useState(() => new RehiveClient(config));
+  const [auth] = useState(() => createAuth(config));
   const [authUser, setAuthUser] = useState<AuthSession | null | undefined>(undefined);
-  const [authLoading, setAuthLoading] = useState<boolean>(true);
+  const [authLoading, setAuthLoading] = useState(true);
   const [authError, setAuthError] = useState<Error | null>(null);
 
-  const refreshCallback = useCallback(() => rehive.auth.refresh(), [rehive]);
+  const refreshCallback = useCallback(() => auth.refresh(), [auth]);
 
   useEffect(() => {
-    const unsubscribeSession = rehive.auth.subscribeToSession(setAuthUser);
-    const unsubscribeError = rehive.auth.subscribeToErrors(setAuthError);
-    
+    const unsubscribeSession = auth.subscribe(setAuthUser);
+    const unsubscribeError = auth.subscribeToErrors(setAuthError);
+
     return () => {
       unsubscribeSession();
       unsubscribeError();
     };
-  }, [rehive]);
+  }, [auth]);
 
   useEffect(() => {
     const initializeAuth = async () => {
       try {
         if (!config.token) {
-          // Give client-side auth a moment to initialize
-          await new Promise(resolve => setTimeout(resolve, 10));
+          await new Promise((resolve) => setTimeout(resolve, 10));
         }
-        // Check if we have an active session
-        const session = rehive.auth.getActiveSession();
+        const session = auth.getActiveSession();
         setAuthUser(session);
       } catch (error) {
         console.error('Error initializing auth:', error);
@@ -66,37 +64,30 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
     };
 
     initializeAuth();
-  }, [rehive, config.token]);
+  }, [auth, config.token]);
 
   const login = async (params: LoginParams): Promise<AuthSession> => {
     setAuthLoading(true);
     try {
-      const result = await rehive.auth.login(params);
-      return result;
-    } catch (error) {
-      throw error;
+      return await auth.login(params);
     } finally {
       setAuthLoading(false);
     }
   };
 
-  const register = async (params: RegisterParams): Promise<void> => {
+  const register = async (params: RegisterParams): Promise<AuthSession> => {
     setAuthLoading(true);
     try {
-      await rehive.auth.register(params);
-    } catch (error) {
-      throw error;
+      return await auth.register(params);
     } finally {
       setAuthLoading(false);
     }
   };
 
-  const registerCompany = async (params: RegisterCompanyParams): Promise<void> => {
+  const registerCompany = async (params: RegisterCompanyParams): Promise<AuthSession> => {
     setAuthLoading(true);
     try {
-      await rehive.auth.registerCompany(params);
-    } catch (error) {
-      throw error;
+      return await auth.registerCompany(params);
     } finally {
       setAuthLoading(false);
     }
@@ -105,9 +96,7 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
   const logout = async (): Promise<void> => {
     setAuthLoading(true);
     try {
-      await rehive.auth.logout();
-    } catch (error) {
-      throw error;
+      await auth.logout();
     } finally {
       setAuthLoading(false);
     }
@@ -115,32 +104,26 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
 
   const deleteChallenge = async (challengeId: string | undefined): Promise<void> => {
     if (!challengeId) return;
-
     setAuthLoading(true);
     try {
-      await rehive.auth.deleteChallenge(challengeId);
-    } catch (error) {
-      throw error;
+      await auth.deleteChallenge(challengeId);
     } finally {
       setAuthLoading(false);
     }
   };
 
-  const getSessions = (): AuthSession[] => {
-    return rehive.auth.getSessions();
-  };
+  const getSessions = (): AuthSession[] => auth.getSessions();
 
-  const getSessionsByCompany = (company: string): AuthSession[] => {
-    return rehive.auth.getSessionsByCompany(company);
-  };
+  const getSessionsByCompany = (company: string): AuthSession[] =>
+    auth.getSessionsByCompany(company);
 
-  const switchToSession = async (userId: string, company?: string): Promise<AuthSession | null> => {
+  const switchToSession = async (
+    userId: string,
+    company?: string,
+  ): Promise<AuthSession | null> => {
     setAuthLoading(true);
     try {
-      const session = await rehive.auth.switchToSession(userId, company);
-      return session;
-    } catch (error) {
-      throw error;
+      return await auth.switchToSession(userId, company);
     } finally {
       setAuthLoading(false);
     }
@@ -149,9 +132,7 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
   const clearAllSessions = async (): Promise<void> => {
     setAuthLoading(true);
     try {
-      await rehive.auth.clearAllSessions();
-    } catch (error) {
-      throw error;
+      await auth.clearAllSessions();
     } finally {
       setAuthLoading(false);
     }
@@ -160,15 +141,13 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
   const logoutAll = async (): Promise<void> => {
     setAuthLoading(true);
     try {
-      await rehive.auth.logoutAll();
-    } catch (error) {
-      throw error;
+      await auth.logoutAll();
     } finally {
       setAuthLoading(false);
     }
   };
 
-  const auth: AuthContextType = {
+  const contextValue: AuthContextType = {
     authUser,
     refreshCallback,
     login,
@@ -184,14 +163,10 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
     switchToSession,
     clearAllSessions,
     logoutAll,
-    rehive,
+    auth,
   };
 
-  return (
-    <AuthContext.Provider value={auth}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = (): AuthContextType => {
@@ -201,5 +176,3 @@ export const useAuth = (): AuthContextType => {
   }
   return context;
 };
-
-export type { AuthContextType, AuthProviderProps };

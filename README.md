@@ -1,8 +1,8 @@
 # Rehive SDK
 
-A modern TypeScript SDK for the Rehive platform and extension APIs, providing a unified interface for both server-side and client-side usage.
+A modern, fully typed TypeScript SDK for the Rehive platform and extension APIs. Tree-shakeable modular imports, shared authentication, and full autocomplete on every method.
 
-> **Note:** This is version 3 of the Rehive JavaScript SDK. For the previous version (v2) documentation, please refer to the [v2 branch](https://github.com/rehive/rehive-javascript/tree/v2).
+> **Note:** This is version 4 of the Rehive JavaScript SDK -- a major rewrite with a modular architecture. For v3, see the [v3 branch](https://github.com/rehive/rehive-javascript/tree/v3). For v2, see the [v2 branch](https://github.com/rehive/rehive-javascript/tree/v2).
 
 ## Installation
 
@@ -12,63 +12,72 @@ npm install rehive
 
 ## Quick Start
 
-### Server-side Usage (Permanent Token)
+### Modular API
 
-Perfect for backend services, webhooks, and admin operations:
+Import only what you need. Each module is tree-shakeable and fully typed.
 
 ```typescript
-import { RehiveClient } from 'rehive';
+import { createAuth } from "rehive/auth";
+import { createUserApi } from "rehive/user";
+import { createAdminApi } from "rehive/admin";
+import { createConversionApi } from "rehive/extensions/conversion";
 
-// Initialize with permanent token (baseUrl defaults to https://api.rehive.com)
-const rehive = new RehiveClient({
-  token: 'your-permanent-admin-token'
+// Create a shared auth instance
+const auth = createAuth({
+  baseUrl: "https://api.rehive.com",
+  storage: "local",           // "local" | "memory" | custom StorageAdapter
 });
 
-// Or explicitly specify the baseUrl
-const rehive = new RehiveClient({
-  baseUrl: 'https://api.rehive.com',
-  token: 'your-permanent-admin-token'
-});
+// Create API instances -- each uses auth.getToken() automatically
+const user = createUserApi({ auth });
+const admin = createAdminApi({ auth });
+const conversion = createConversionApi({ auth });
 
-// Direct API access - no initialization needed
-await rehive.admin.adminUsersCreate({
-  email: 'user@example.com',
-  first_name: 'John',
-  last_name: 'Doe'
-});
+// Authenticate
+await auth.login({ user: "email@example.com", password: "pass", company: "myco" });
 
-// User API with admin token (for impersonation)
-const userProfile = await rehive.user.userRetrieve();
+// All APIs are now authenticated -- full autocomplete on every method
+await user.userRetrieve();
+await admin.adminUsersList({});
+await conversion.userConversionPairsList({});
+
+// Logout
+await auth.logout();
 ```
 
-### Client-side Usage (Authentication Flows)
-
-Perfect for web and mobile applications:
+### Server-side with permanent token
 
 ```typescript
-import { RehiveClient } from 'rehive';
+import { createAuth } from "rehive/auth";
+import { createAdminApi } from "rehive/admin";
 
-// Initialize without token (baseUrl defaults to https://api.rehive.com)
-const rehive = new RehiveClient();
+const auth = createAuth({ token: "your-permanent-admin-token" });
+const admin = createAdminApi({ auth });
 
-// Or explicitly specify the baseUrl
-const rehive = new RehiveClient({
-  baseUrl: 'https://api.rehive.com'
+await admin.adminUsersCreate({ body: { email: "user@example.com" } });
+```
+
+### Authenticated Fetch (for custom endpoints)
+
+For API endpoints not covered by the generated SDK, use `createAuthenticatedFetch` to get a `fetch` function that automatically injects the auth token:
+
+```typescript
+import { createAuth } from "rehive/auth";
+import { createAuthenticatedFetch } from "rehive";
+
+const auth = createAuth({ storage: "local" });
+await auth.login({ user: "email@example.com", password: "pass", company: "myco" });
+
+// Create an authenticated fetch -- handles token refresh automatically
+const authFetch = createAuthenticatedFetch(auth);
+
+// Use it like regular fetch, but with auth headers injected
+const response = await authFetch("https://example.services.rehive.com/api/custom-endpoint/", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ data: { /* ... */ } }),
 });
-
-// Authentication flows
-await rehive.auth.login({
-  user: 'user@example.com',
-  password: 'secure-password',
-  company: 'your-company'
-});
-
-// Now all APIs are automatically authenticated
-const profile = await rehive.user.userRetrieve();
-const accounts = await rehive.user.userAccountsList({});
-
-// Logout when done
-await rehive.auth.logout();
+const data = await response.json();
 ```
 
 ## React Integration
@@ -76,543 +85,239 @@ await rehive.auth.logout();
 For a complete working example, see the [interactive demo](./demo).
 
 ```typescript
-import { useState } from 'react';
-import { AuthProvider, useAuth } from 'rehive/react';
+import { AuthProvider, useAuth } from "rehive/react";
 
 function App() {
   return (
-    <AuthProvider config={{ baseUrl: 'https://api.rehive.com' }}>
-      <UserDashboard />
+    <AuthProvider config={{ baseUrl: "https://api.rehive.com", storage: "local" }}>
+      <Dashboard />
     </AuthProvider>
   );
 }
 
-function UserDashboard() {
-  const { login, logout, session, loading, rehive } = useAuth();
-  const [userDetails, setUserDetails] = useState(null);
-  const [isLoadingDetails, setIsLoadingDetails] = useState(false);
+function Dashboard() {
+  const { authUser, authLoading, login, logout, auth } = useAuth();
 
-  const handleLogin = async () => {
-    await login({
-      user: 'email@example.com',
-      password: 'password',
-      company: 'my-company'
-    });
-  };
+  if (authLoading) return <div>Loading...</div>;
 
-  const fetchUserDetails = async () => {
-    setIsLoadingDetails(true);
-    try {
-      const response = await rehive.user.userRetrieve();
-      setUserDetails(response.data);
-    } catch (error) {
-      console.error('Failed to fetch user details:', error);
-    } finally {
-      setIsLoadingDetails(false);
-    }
-  };
-
-  if (loading) return <div>Loading...</div>;
-
-  if (!session) {
-    return <button onClick={handleLogin}>Login</button>;
+  if (!authUser) {
+    return (
+      <button onClick={() => login({ user: "email@example.com", password: "pass", company: "myco" })}>
+        Login
+      </button>
+    );
   }
 
   return (
     <div>
-      <h2>Welcome, {session.user.email}</h2>
+      <p>Logged in as {authUser.user.email}</p>
       <button onClick={logout}>Logout</button>
-      
-      <div>
-        <button onClick={fetchUserDetails} disabled={isLoadingDetails}>
-          {isLoadingDetails ? 'Loading...' : 'Fetch User Details'}
-        </button>
-        
-        {userDetails && (
-          <div>
-            <h3>User Details</h3>
-            <p>ID: {userDetails.id}</p>
-            <p>Name: {userDetails.first_name} {userDetails.last_name}</p>
-            <p>Status: {userDetails.status}</p>
-            <p>Verified: {userDetails.verified ? 'Yes' : 'No'}</p>
-          </div>
-        )}
-      </div>
     </div>
   );
 }
 ```
+
+The `useAuth` hook provides: `authUser`, `authLoading`, `authError`, `login`, `register`, `registerCompany`, `logout`, `logoutAll`, `refresh`, `getSessions`, `switchToSession`, `clearAllSessions`, `deleteChallenge`, and `auth` (the `Auth` instance for creating modular API clients).
 
 ## Extension APIs
 
-All extension APIs work the same way with automatic token synchronization:
+All 15 extension APIs follow the same pattern -- import the factory, pass `auth`, call methods:
 
 ```typescript
-// All extensions work the same way - no imports needed
-const conversion = rehive.extensions.conversion();
-await conversion.user.userConversionPairsList({});
-await conversion.admin.adminConversionRatesList({});
+import { createConversionApi } from "rehive/extensions/conversion";
+import { createRewardsApi } from "rehive/extensions/rewards";
+import { createStellarApi } from "rehive/extensions/stellar";
+import { createProductsApi } from "rehive/extensions/products";
+import { createNotificationsApi } from "rehive/extensions/notifications";
+import { createMassSendApi } from "rehive/extensions/mass-send";
+import { createStellarTestnetApi } from "rehive/extensions/stellar-testnet";
+import { createBusinessApi } from "rehive/extensions/business";
+import { createPaymentRequestsApi } from "rehive/extensions/payment-requests";
+import { createBridgeApi } from "rehive/extensions/bridge";
+import { createAppApi } from "rehive/extensions/app";
+import { createBillingApi } from "rehive/extensions/billing";
+import { createBuilderApi } from "rehive/extensions/builder";
+import { createRainApi } from "rehive/extensions/rain";
+import { createAlchemyApi } from "rehive/extensions/alchemy";
 
-const rewards = rehive.extensions.rewards();
-await rewards.user.userRewardsList({});
+const conversion = createConversionApi({ auth });
+const rewards = createRewardsApi({ auth });
+const stellar = createStellarApi({ auth });
 
-const products = rehive.extensions.products();
-await products.user.userProductsList({});
-
-const notifications = rehive.extensions.notifications();
-await notifications.user.userNotificationsList({});
-
-const app = rehive.extensions.app();
-await app.user.userAppsRetrieve({});
-
-// Custom environment URLs (same pattern for all extensions)
-const stagingConversion = rehive.extensions.conversion({
-  baseUrl: 'https://onversion.services.rehive.com/api/'
-});
-
-const stagingRewards = rehive.extensions.rewards({
-  baseUrl: 'https://rewards.services.rehive.com/api/'
-});
-```
-
-### Custom Extensions and Ad-hoc API Calls
-
-For custom extensions or one-off API calls, use the authenticated fetch method:
-
-```typescript
-// GET request to custom extension
-const response = await rehive.extensions.fetch('https://my-custom.services.rehive.com/api/users');
-const users = await response.json();
-
-// POST request with data
-const response = await rehive.extensions.fetch('https://my-custom.services.rehive.com/api/orders', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ product_id: 123, quantity: 2 })
-});
-
-// Works with any HTTP endpoint - automatically handles authentication
-const response = await rehive.extensions.fetch('https://api.external-service.com/data', {
-  method: 'GET',
-  headers: { 'X-Custom-Header': 'value' }
+// Each uses its default production base URL, or pass a custom one:
+const conversionStaging = createConversionApi({
+  auth,
+  baseUrl: "https://staging-conversion.services.rehive.com/api/",
 });
 ```
 
-**Key Benefits:**
-- **Automatic authentication**: Attaches current user token to requests
-- **Token refresh**: Automatically refreshes expired tokens 
-- **Works anywhere**: Use with any HTTP endpoint, not just Rehive services
-- **Standard fetch API**: Same interface as native `fetch()` with auth handling
+| Extension | Default Base URL |
+|-----------|-----------------|
+| Conversion | `https://conversion.services.rehive.com/api/` |
+| Mass Send | `https://mass-send.services.rehive.com/api/` |
+| Notifications | `https://notification.services.rehive.com/api/` |
+| Products | `https://product.services.rehive.com/api/` |
+| Rewards | `https://reward.services.rehive.com/api/` |
+| Stellar | `https://stellar.services.rehive.com/api/` |
+| Stellar Testnet | `https://stellar-testnet.services.rehive.com/api/` |
+| Business | `https://business.services.rehive.com/api/` |
+| Payment Requests | `https://payment-requests.services.rehive.com/api/` |
+| Bridge | `https://bridge.services.rehive.com/api/` |
+| App | `https://app.services.rehive.com/api/` |
+| Billing | `https://billing.services.rehive.com/api/` |
+| Builder | `https://builder.services.rehive.com/api/` |
+| Rain | `https://rain.services.rehive.com/api/` |
+| Alchemy | `https://alchemy.services.rehive.com/api/` |
 
-## API Responses and Error Handling
+## Error Handling
 
-### Response Structure
-
-All API methods return responses in a consistent format that matches the Rehive API structure:
-
-```typescript
-// API responses have a standard structure
-const user = await rehive.user.authRetrieve();
-console.log(user.data.email); // Access user data
-
-const accounts = await rehive.user.userAccountsList({});
-console.log(accounts.data.results); // Access account list
-```
-
-**Response Format:**
-```typescript
-{
-  status: "success",
-  data: {
-    // Your actual data here
-    id: "user-id",
-    email: "user@example.com",
-    // ... other properties
-  }
-}
-```
-
-### Error Handling
-
-The SDK provides error handling through the `ApiError` class:
+The SDK throws `ApiError` on non-200 responses:
 
 ```typescript
-import { RehiveClient, ApiError } from 'rehive';
+import { ApiError } from "rehive";
 
 try {
-  const user = await rehive.user.authRetrieve();
-  console.log('User:', user.data.email);
+  await user.userRetrieve();
 } catch (error) {
   if (error instanceof ApiError) {
-    // Structured API errors from Rehive
-    console.log('Status Code:', error.status);        // 401, 400, 500, etc.
-    console.log('Error Message:', error.message);     // Human-readable message
-    console.log('Error Details:', error.error);       // Full API error response
-    
-    // Handle specific error types
-    switch (error.status) {
-      case 401:
-        console.log('Authentication required');
-        // Redirect to login
-        break;
-      case 400:
-        console.log('Bad request:', error.error.data);
-        // Show validation errors
-        break;
-      case 429:
-        console.log('Rate limited - retry later');
-        break;
-      default:
-        console.log('API error:', error.message);
-    }
-  } else {
-    // Network errors, timeouts, etc.
-    console.error('Network error:', error.message);
+    console.log("Status:", error.status);    // 401, 400, 500, etc.
+    console.log("Message:", error.message);  // Human-readable message
+    console.log("Details:", error.error);    // Full API error response
   }
 }
 ```
 
-**Common Error Scenarios:**
-
-| Status Code | Description | Common Causes |
-|-------------|-------------|---------------|
-| `400` | Bad Request | Missing required fields, invalid data format |
-| `401` | Unauthorized | Missing or invalid authentication token |
-| `403` | Forbidden | Insufficient permissions for the operation |
-| `404` | Not Found | Resource doesn't exist or user lacks access |
-| `429` | Rate Limited | Too many requests - implement retry logic |
-| `500` | Server Error | Internal server error - retry or contact support |
-
-**Error Response Structure:**
-```typescript
-// ApiError properties
-{
-  status: 400,                    // HTTP status code
-  message: "Validation failed",   // Human-readable message
-  error: {                        // Full API response
-    status: "error",
-    message: "Validation failed",
-    data: {
-      email: ["This field is required"],
-      password: ["Password too short"]
-    }
-  }
-}
-```
-
-### Authentication Error Handling
-
-The SDK provides specialized handlers for authentication flows:
+Subscribe to auth errors for global handling:
 
 ```typescript
-// Subscribe to authentication errors
-const unsubscribe = rehive.auth.subscribeToErrors((error) => {
+const unsubscribe = auth.subscribeToErrors((error) => {
   if (error) {
-    console.error('Auth error:', error.message);
-    
-    // Handle different auth error types
-    if (error.status === 401) {
-      // Token expired or invalid
-      window.location.href = '/login';
-    } else if (error.status === 400) {
-      // Invalid credentials
-      showErrorMessage('Invalid email or password');
-    }
+    console.error("Auth error:", error.message);
   }
 });
-
-// Subscribe to session changes
-const unsubscribeSession = rehive.auth.subscribeToSession((session) => {
-  if (session) {
-    console.log('User logged in:', session.user.email);
-    // Update UI for authenticated state
-  } else {
-    console.log('User logged out');
-    // Update UI for unauthenticated state
-  }
-});
-
-// Clean up subscriptions
-unsubscribe();
-unsubscribeSession();
 ```
 
-## Key Features
+## Multi-Session Support
 
-### ✅ Smart Token Management
-- **Automatic refresh**: Tokens refresh 30 seconds before expiration
-- **Cross-API sync**: All API instances share the same authentication state
-- **Persistent sessions**: Authentication survives page reloads
-- **Cross-tab sync**: Authentication state syncs across browser tabs
+The auth module supports multiple concurrent sessions across different companies:
 
-### ✅ Extension Integration
-- **Factory methods**: Built-in methods for all Rehive extensions
-- **Default URLs**: Production URLs configured by default
-- **Environment flexibility**: Easy to override for staging/development
-- **Same DX**: Extensions get the same token management and response unwrapping
+```typescript
+// Login to multiple companies
+await auth.login({ user: "user@example.com", password: "pass", company: "company-one" });
+await auth.login({ user: "user@example.com", password: "pass", company: "company-two" });
+
+// List and switch sessions
+const sessions = auth.getSessions();                        // All sessions
+const filtered = auth.getSessionsByCompany("company-one");  // By company
+await auth.switchToSession("user-id", "company-two");       // Switch active
+
+// Cleanup
+await auth.clearAllSessions();  // Local only
+await auth.logoutAll();         // Invalidates tokens on server
+```
+
+## Storage Options
+
+```typescript
+import { createAuth } from "rehive/auth";
+import { WebStorageAdapter, MemoryStorageAdapter, AsyncStorageAdapter } from "rehive";
+
+// localStorage (default in browser, auto-detected)
+const auth = createAuth({ storage: "local" });
+
+// In-memory (not persisted -- good for tests)
+const auth = createAuth({ storage: "memory" });
+
+// Custom adapter (e.g. React Native AsyncStorage)
+import AsyncStorage from "@react-native-async-storage/async-storage";
+const auth = createAuth({ storage: new AsyncStorageAdapter(AsyncStorage) });
+
+// Or implement your own StorageAdapter
+const auth = createAuth({
+  storage: {
+    getItem: async (key) => { /* ... */ },
+    setItem: async (key, value) => { /* ... */ },
+    removeItem: async (key) => { /* ... */ },
+  },
+});
+```
+
+## Auth Configuration
+
+```typescript
+import { createAuth, type AuthConfig } from "rehive/auth";
+
+const auth = createAuth({
+  baseUrl: "https://api.rehive.com",    // API base URL (default: https://api.rehive.com)
+  storage: "local",                     // Storage adapter or shorthand
+  token: "permanent-token",             // Server-side permanent token
+  enableCrossTabSync: true,             // Sync auth across browser tabs (default: true)
+});
+```
 
 ## Architecture
 
-The SDK includes multiple API clients generated from swagger specifications:
+```
+rehive/
+├── rehive/auth           → createAuth()
+├── rehive/user           → createUserApi()
+├── rehive/admin          → createAdminApi()
+├── rehive/extensions/*   → create*Api() for each extension
+├── rehive/react          → AuthProvider, useAuth
+└── rehive                → re-exports + utilities
+```
 
-```
-src/
-├── platform/
-│   ├── user/           # Platform User API (203 methods)
-│   └── admin/          # Platform Admin API (360 methods)
-├── extensions/         # Service Extensions
-│   ├── conversion/     # 60 methods
-│   ├── mass-send/      # 18 methods
-│   ├── notifications/  # 37 methods
-│   ├── products/       # 241 methods
-│   ├── rewards/        # 30 methods
-│   ├── stellar/        # 101 methods
-│   ├── stellar-testnet/# 101 methods
-│   ├── business/       # 84 methods
-│   ├── payment-requests/# 77 methods
-│   ├── bridge/         # 27 methods
-│   └── app/            # 46 methods
-├── shared/
-│   └── http-client.ts  # Shared/customized HTTP client
-└── auth/              # Auth functionality using Platform User API
-```
+Each module is a separate entry point with its own bundle. Import only the factories you need for optimal tree-shaking.
+
+### How it works
+
+1. `createAuth()` manages sessions, tokens, and refresh internally using its own openapi-ts client
+2. Each API factory (`createUserApi`, `createAdminApi`, etc.) creates an openapi-ts client configured with `auth: () => auth.getToken()`
+3. `bindSdk()` injects the client into every generated SDK function, preserving full type safety
+4. All methods use v4 structured parameters: `{ query, body, path }`
 
 ## Available APIs
 
-| API | Client Name | Methods | Documentation |
-|-----|-------------|---------|---------------|
-| Platform User API | `platform-user-api` | 203 | [Methods](./docs/api-methods/platform-user-methods.md) |
-| Platform Admin API | `platform-admin-api` | 360 | [Methods](./docs/api-methods/platform-admin-methods.md) |
-| Conversion Extension | `conversion-api` | 60 | [Methods](./docs/api-methods/conversion-methods.md) |
-| Mass Send Extension | `mass-send-api` | 18 | [Methods](./docs/api-methods/mass-send-methods.md) |
-| Notifications Extension | `notifications-api` | 37 | [Methods](./docs/api-methods/notifications-methods.md) |
-| Products Extension | `products-api` | 241 | [Methods](./docs/api-methods/products-methods.md) |
-| Rewards Extension | `rewards-api` | 30 | [Methods](./docs/api-methods/rewards-methods.md) |
-| Stellar Extension | `stellar-api` | 101 | [Methods](./docs/api-methods/stellar-methods.md) |
-| Stellar Testnet Extension | `stellar-testnet-api` | 101 | [Methods](./docs/api-methods/stellar-testnet-methods.md) |
-| Business Extension | `business-api` | 84 | [Methods](./docs/api-methods/business-methods.md) |
-| Payment Requests Extension | `payment-requests-api` | 77 | [Methods](./docs/api-methods/payment-requests-methods.md) |
-| Bridge Extension | `bridge-api` | 27 | [Methods](./docs/api-methods/bridge-methods.md) |
-| App Extension | `app-api` | 46 | [Methods](./docs/api-methods/app-methods.md) |
+| API | Import | Methods |
+|-----|--------|---------|
+| Platform User | `rehive/user` | 203 |
+| Platform Admin | `rehive/admin` | 360 |
+| Conversion | `rehive/extensions/conversion` | 60 |
+| Mass Send | `rehive/extensions/mass-send` | 18 |
+| Notifications | `rehive/extensions/notifications` | 37 |
+| Products | `rehive/extensions/products` | 241 |
+| Rewards | `rehive/extensions/rewards` | 30 |
+| Stellar | `rehive/extensions/stellar` | 101 |
+| Stellar Testnet | `rehive/extensions/stellar-testnet` | 101 |
+| Business | `rehive/extensions/business` | 84 |
+| Payment Requests | `rehive/extensions/payment-requests` | 77 |
+| Bridge | `rehive/extensions/bridge` | 27 |
+| App | `rehive/extensions/app` | 46 |
+| Billing | `rehive/extensions/billing` | 13 |
+| Builder | `rehive/extensions/builder` | 5 |
+| Rain | `rehive/extensions/rain` | 26 |
+| Alchemy | `rehive/extensions/alchemy` | 20 |
 
-**Total: 1,385 API methods across platform and extensions**
-
-📋 [View complete API overview](./docs/api-methods-overview.md)
-
-## Advanced Usage
-
-### Multi-Company Session Management
-
-The SDK supports managing multiple sessions for the same user across different companies. This is useful for applications where users can be authenticated to multiple companies simultaneously.
-
-```typescript
-// Login to first company
-await rehive.auth.login({
-  user: 'user@example.com',
-  password: 'password',
-  company: 'company-one'
-});
-
-// Login to second company (adds a new session)
-await rehive.auth.login({
-  user: 'user@example.com',
-  password: 'password',
-  company: 'company-two'
-});
-
-// Get all active sessions
-const sessions = rehive.auth.getSessions();
-console.log(`You have ${sessions.length} active sessions`);
-
-// Get sessions for a specific company
-const companyOneSessions = rehive.auth.getSessionsByCompany('company-one');
-
-// Switch between sessions without re-authenticating
-await rehive.auth.switchToSession('user-id', 'company-two');
-
-// All subsequent API calls will use the active session
-const profile = await rehive.user.userRetrieve(); // Uses company-two session
-
-// Clear all sessions locally (fast, but doesn't invalidate tokens on server)
-await rehive.auth.clearAllSessions();
-
-// Logout all sessions on the server (slower, but properly invalidates all tokens)
-await rehive.auth.logoutAll();
-```
-
-**Key Features:**
-- **Multiple sessions per user**: Maintain separate sessions for different companies
-- **Seamless switching**: Change active session without re-authentication
-- **Automatic token refresh**: Sessions are refreshed automatically when switching
-- **Company tracking**: Each session stores the company identifier for easy lookup
-
-**React Integration:**
-```typescript
-import { useAuth } from 'rehive/react';
-
-function SessionSwitcher() {
-  const {
-    getSessions,
-    getSessionsByCompany,
-    switchToSession,
-    clearAllSessions,
-    logoutAll
-  } = useAuth();
-
-  const sessions = getSessions();
-
-  // Group sessions by company
-  const sessionsByCompany = sessions.reduce((acc, session) => {
-    const company = session.company || 'unknown';
-    if (!acc[company]) acc[company] = [];
-    acc[company].push(session);
-    return acc;
-  }, {});
-
-  const handleSwitch = async (userId, company) => {
-    await switchToSession(userId, company);
-    // UI automatically updates via session listeners
-  };
-
-  const handleClearAll = async () => {
-    if (confirm('Clear all sessions locally?')) {
-      await clearAllSessions();
-    }
-  };
-
-  const handleLogoutAll = async () => {
-    if (confirm('Logout all sessions on server?')) {
-      await logoutAll();
-    }
-  };
-
-  return (
-    <div>
-      {Object.entries(sessionsByCompany).map(([company, sessions]) => (
-        <div key={company}>
-          <h3>{company}</h3>
-          {sessions.map(session => (
-            <button
-              key={session.user.id}
-              onClick={() => handleSwitch(session.user.id, session.company)}
-            >
-              {session.user.email}
-            </button>
-          ))}
-        </div>
-      ))}
-
-      <button onClick={handleClearAll}>Clear All Sessions</button>
-      <button onClick={handleLogoutAll}>Logout All Sessions</button>
-    </div>
-  );
-}
-```
-
-### Error Handling
-
-```typescript
-// Subscribe to auth errors
-const unsubscribe = rehive.auth.subscribeToErrors((error) => {
-  if (error) {
-    console.error('Auth error:', error.message);
-    // Handle login redirect, show error message, etc.
-  }
-});
-
-// Subscribe to session changes
-const unsubscribeSession = rehive.auth.subscribeToSession((session) => {
-  if (session) {
-    console.log('User logged in:', session.user.email);
-  } else {
-    console.log('User logged out');
-  }
-});
-```
-
-### Custom Storage
-
-```typescript
-import { RehiveClient, MemoryStorageAdapter } from 'rehive';
-
-const rehive = new RehiveClient({
-  baseUrl: 'https://api.rehive.com',
-  storage: new MemoryStorageAdapter(), // Won't persist across page reloads
-  enableCrossTabSync: false // Disable cross-tab synchronization
-});
-```
-
-## TypeScript Support
-
-The SDK is fully typed with TypeScript support:
-
-```typescript
-import { RehiveClient, type RehiveConfig, type UserSession } from 'rehive';
-
-const config: RehiveConfig = {
-  baseUrl: 'https://api.rehive.com',
-  token: 'optional-permanent-token'
-};
-
-const rehive = new RehiveClient(config);
-
-// Full type safety on all API methods
-const session: UserSession = await rehive.auth.login({
-  user: 'email@example.com',
-  password: 'password',
-  company: 'company-name'
-});
-```
+**Total: 1,449 typed API methods across platform and extensions**
 
 ## Development
 
-### Building the SDK
-
 ```bash
+# Build
 npm run build
+
+# Type check
+npm run typecheck
+
+# Run tests
+npm test
+
+# Regenerate API clients from OpenAPI specs
+npm run codegen:openapi-ts
 ```
 
-### Updating API Clients
-
-The SDK uses generated API clients from swagger specifications. To update them:
-
-```bash
-# Extract current API methods for reference
-node scripts/extract-api-methods.js
-
-# Follow the code generation workflow
-```
-
-📖 [Complete code generation guide](./CODEGEN.md)
-
-### Testing
-
-```bash
-npm run dev
-```
-
-### Publishing
-
-```bash
-# Bump version (choose one)
-npm version patch   # e.g. 3.1.4 → 3.1.5
-npm version minor   # e.g. 3.1.4 → 3.2.0
-npm version major   # e.g. 3.1.4 → 4.0.0
-
-# Publish to npm (builds automatically via prepublishOnly)
-npm publish
-```
-
-## Documentation
-
-- **[API Methods Overview](./docs/api-methods-overview.md)** - Complete list of all available API methods
-- **[Code Generation Workflow](./CODEGEN.md)** - How to update generated API clients
-- **Individual API Documentation** - Detailed method lists for each API in `docs/api-methods/`
+See [CODEGEN.md](./CODEGEN.md) for the full code generation workflow.
 
 ## License
 
 MIT License
-
----
-
-This modern SDK design follows current best practices and provides a clean, intuitive developer experience for both server-side and client-side usage.

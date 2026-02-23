@@ -1,15 +1,15 @@
 # Rehive SDK Demo
 
-A minimal React application demonstrating the Rehive SDK authentication features.
+A minimal React application demonstrating the Rehive SDK v4 authentication features.
 
 ## Features Demonstrated
 
-- ✅ **User Authentication**: Login and logout functionality
-- ✅ **Session Management**: Automatic session handling and persistence
-- ✅ **User Details**: Display authenticated user information
-- ✅ **Error Handling**: Display authentication errors
-- ✅ **React Integration**: Using AuthProvider and useAuth hook
-- ✅ **Storage Options**: Configurable storage adapters
+- **User Authentication**: Login and logout functionality
+- **Session Management**: Automatic session handling and persistence
+- **User Details**: Display authenticated user information
+- **Error Handling**: Display authentication errors
+- **React Integration**: Using AuthProvider and useAuth hook
+- **Storage Options**: Configurable storage adapters
 
 ## Quick Start
 
@@ -31,25 +31,23 @@ A minimal React application demonstrating the Rehive SDK authentication features
 
 The demo is configured to use:
 - **API Base URL**: `https://api.rehive.com` (update in `App.tsx` for your environment)
-- **Storage**: `MemoryStorageAdapter` (data is not persisted between browser sessions)
+- **Storage**: `memory` (data is not persisted between browser sessions)
 - **Cross-tab sync**: Disabled for simplicity
 
 ## Usage
 
-### Basic Authentication Flow
+### React Integration (AuthProvider + useAuth)
 
 ```typescript
 import { AuthProvider, useAuth } from 'rehive/react'
-import { MemoryStorageAdapter } from 'rehive'
 
-// Wrap your app with AuthProvider
 function App() {
   return (
-    <AuthProvider 
+    <AuthProvider
       config={{
         baseUrl: 'https://api.rehive.com',
-        storage: new MemoryStorageAdapter(),
-        enableCrossTabSync: false
+        storage: 'memory',
+        enableCrossTabSync: false,
       }}
     >
       <LoginForm />
@@ -57,48 +55,48 @@ function App() {
   )
 }
 
-// Use the auth hook in components
 function LoginForm() {
   const { authUser, authLoading, authError, login, logout } = useAuth()
-  
+
   const handleLogin = async (credentials) => {
     await login({
       user: credentials.email,
       password: credentials.password,
-      company: credentials.company
+      company: credentials.company,
     })
   }
-  
+
   // ... rest of component
 }
+```
+
+### Modular API (without React)
+
+```typescript
+import { createAuth } from 'rehive/auth'
+import { createUserApi } from 'rehive/user'
+
+const auth = createAuth({ baseUrl: 'https://api.rehive.com', storage: 'memory' })
+const user = createUserApi({ auth })
+
+await auth.login({ user: 'email@example.com', password: 'pass', company: 'myco' })
+const profile = await user.userRetrieve()
 ```
 
 ### Available Storage Options
 
 ```typescript
-import { 
-  MemoryStorageAdapter,    // In-memory (not persisted)
-  WebStorageAdapter,       // localStorage (browser only)
-  AsyncStorageAdapter      // For React Native
-} from 'rehive'
+// In-memory (not persisted)
+storage: 'memory'
 
-// Use localStorage for persistence
-storage: new WebStorageAdapter()
+// localStorage (browser, persisted)
+storage: 'local'
 
-// Use AsyncStorage for React Native
+// React Native AsyncStorage
+import { AsyncStorageAdapter } from 'rehive'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 storage: new AsyncStorageAdapter(AsyncStorage)
 ```
-
-## SDK Features
-
-This demo showcases the following SDK capabilities:
-
-- **Framework Agnostic**: Core SDK works without React
-- **React Integration**: Optional React provider and hooks
-- **Multiple Storage Options**: Memory, localStorage, AsyncStorage
-- **Session Persistence**: Automatic session restoration
-- **Error Management**: Comprehensive error handling
-- **TypeScript Support**: Full type safety
 
 ## Development
 

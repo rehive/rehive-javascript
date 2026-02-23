@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useAuth } from 'rehive/react'
+import { createUserApi } from 'rehive/user'
 import QRCode from 'qrcode'
 
 export function TOTPFlow() {
-  const { authUser, rehive, deleteChallenge } = useAuth()
+  const { authUser, auth, deleteChallenge } = useAuth()
+  const user = useMemo(() => createUserApi({ auth }), [auth])
   const [authenticators, setAuthenticators] = useState<any[]>([])
   const [newAuthenticator, setNewAuthenticator] = useState<any>(null)
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>('')
@@ -16,11 +18,10 @@ export function TOTPFlow() {
 
   const loadAuthenticators = async () => {
     if (!authUser) return
-    
+
     setIsLoading(true)
     try {
-      const response = await rehive.user.authMfaAuthenticatorsList()
-      // With our updated templates, data is now directly in response.data
+      const response: any = await user.authMfaAuthenticatorsList()
       setAuthenticators(response.data?.results || [])
     } catch (error) {
       console.error('Failed to load authenticators:', error)
@@ -34,10 +35,7 @@ export function TOTPFlow() {
       const dataUrl = await QRCode.toDataURL(otpauthUrl, {
         width: 200,
         margin: 2,
-        color: {
-          dark: '#000000',
-          light: '#ffffff'
-        }
+        color: { dark: '#000000', light: '#ffffff' },
       })
       setQrCodeDataUrl(dataUrl)
     } catch (error) {
@@ -47,21 +45,19 @@ export function TOTPFlow() {
 
   const createTOTPAuthenticator = async () => {
     if (!authUser) return
-    
+
     setIsCreating(true)
     try {
-      const response = await rehive.user.authMfaAuthenticatorsCreate({
-        type: 'totp',
-        details: {}
-      } as any)
-      // With our updated templates, data is now directly in response.data
-      setNewAuthenticator(response.data)
-      
-      // Generate QR code if otpauth_url is available
-      if (response.data?.details?.otpauth_url) {
-        await generateQRCode(response.data.details.otpauth_url)
+      const response: any = await user.authMfaAuthenticatorsCreate({
+        body: { type: 'totp', details: {} } as any,
+      })
+      const data = response?.data ?? response
+      setNewAuthenticator(data)
+
+      if (data?.details?.otpauth_url) {
+        await generateQRCode(data.details.otpauth_url)
       }
-      
+
       await loadAuthenticators()
     } catch (error) {
       console.error('Failed to create TOTP authenticator:', error)
@@ -72,35 +68,29 @@ export function TOTPFlow() {
 
   const verifyTOTP = async () => {
     if (!authUser || !totpCode || totpCode.length !== 6) return
-    
+
     setIsVerifying(true)
     try {
       if (!authUser.challenges || authUser.challenges.length === 0) {
         console.error('No challenges found in auth user')
         return
       }
-      
+
       const challengeId = authUser.challenges[0].id
-      
       if (!challengeId) {
         console.error('Challenge ID is missing')
         return
       }
-      
-      await rehive.user.authMfaVerify({
-        token: totpCode,
-        challenge: challengeId
+
+      await user.authMfaVerify({
+        body: { token: totpCode, challenge: challengeId },
       })
-      
-      // Clear the challenge after successful verification
+
       console.log('MFA verification successful, clearing challenge...')
       await deleteChallenge(challengeId)
       setTotpCode('')
     } catch (error) {
       console.error('TOTP verification failed:', error)
-      if (error && typeof error === 'object' && 'data' in error) {
-        console.error('Error details:', error.data)
-      }
     } finally {
       setIsVerifying(false)
     }
@@ -108,15 +98,13 @@ export function TOTPFlow() {
 
   const verifyNewDevice = async () => {
     if (!newAuthenticator || !verificationCode || verificationCode.length !== 6) return
-    
+
     setIsVerifyingDevice(true)
     try {
-      await rehive.user.authMfaVerify({
-        token: verificationCode,
-        authenticator: newAuthenticator.id
+      await user.authMfaVerify({
+        body: { token: verificationCode, authenticator: newAuthenticator.id },
       })
-      
-      // Refresh authenticators list to show verified status
+
       await loadAuthenticators()
       setNewAuthenticator(null)
       setVerificationCode('')
@@ -130,7 +118,9 @@ export function TOTPFlow() {
 
   const deleteAuthenticator = async (authenticatorId: string) => {
     try {
-      await rehive.user.authMfaAuthenticatorsDestroy(authenticatorId)
+      await user.authMfaAuthenticatorsDestroy({
+        path: { identifier: authenticatorId },
+      })
       await loadAuthenticators()
     } catch (error) {
       console.error('Failed to delete authenticator:', error)
@@ -146,19 +136,18 @@ export function TOTPFlow() {
   if (!authUser) {
     return (
       <div className="totp-section">
-        <h3>🔐 TOTP Management</h3>
+        <h3>TOTP Management</h3>
         <p>Please authenticate first to manage TOTP devices.</p>
       </div>
     )
   }
 
-  // Show verification form if user has MFA challenges
   if (authUser.challenges && authUser.challenges.length > 0) {
     return (
       <div className="totp-section">
-        <h3>🔐 TOTP Verification Required</h3>
+        <h3>TOTP Verification Required</h3>
         <p>Enter your 6-digit TOTP code to complete authentication.</p>
-        
+
         <div className="totp-verify-form">
           <div className="form-group">
             <label htmlFor="totp-code">TOTP Code</label>
@@ -171,8 +160,8 @@ export function TOTPFlow() {
               maxLength={6}
             />
           </div>
-          
-          <button 
+
+          <button
             onClick={verifyTOTP}
             disabled={isVerifying || totpCode.length !== 6}
             className="verify-btn"
@@ -186,10 +175,10 @@ export function TOTPFlow() {
 
   return (
     <div className="totp-section">
-      <h3>🔐 TOTP Management</h3>
-      
+      <h3>TOTP Management</h3>
+
       <div className="totp-actions">
-        <button 
+        <button
           onClick={createTOTPAuthenticator}
           disabled={isCreating}
           className="create-totp-btn"
@@ -200,16 +189,12 @@ export function TOTPFlow() {
 
       {newAuthenticator && (
         <div className="new-authenticator">
-          <h4>📱 New TOTP Device Created</h4>
+          <h4>New TOTP Device Created</h4>
           <div className="qr-section">
             <p><strong>Scan this QR code with your authenticator app:</strong></p>
             <div className="qr-container">
               {qrCodeDataUrl ? (
-                <img 
-                  src={qrCodeDataUrl} 
-                  alt="TOTP QR Code" 
-                  className="qr-code"
-                />
+                <img src={qrCodeDataUrl} alt="TOTP QR Code" className="qr-code" />
               ) : (
                 <div className="qr-placeholder">
                   <p>Generating QR code...</p>
@@ -223,10 +208,10 @@ export function TOTPFlow() {
               <div><strong>Issuer:</strong> {newAuthenticator.details?.issuer}</div>
             </div>
           </div>
-          
+
           {!newAuthenticator.verified && (
             <div className="device-verification">
-              <h5>🔐 Verify Your Device</h5>
+              <h5>Verify Your Device</h5>
               <p>Enter a 6-digit code from your authenticator app to complete setup:</p>
               <div className="verification-form">
                 <div className="form-group">
@@ -240,7 +225,7 @@ export function TOTPFlow() {
                     maxLength={6}
                   />
                 </div>
-                <button 
+                <button
                   onClick={verifyNewDevice}
                   disabled={isVerifyingDevice || verificationCode.length !== 6}
                   className="verify-device-btn"
@@ -250,35 +235,29 @@ export function TOTPFlow() {
               </div>
             </div>
           )}
-          
-          <button onClick={() => {
-            setNewAuthenticator(null)
-            setQrCodeDataUrl('')
-          }} className="close-btn">
+
+          <button onClick={() => { setNewAuthenticator(null); setQrCodeDataUrl(''); }} className="close-btn">
             Close
           </button>
         </div>
       )}
 
       <div className="authenticators-list">
-        <h4>📋 Your TOTP Devices</h4>
+        <h4>Your TOTP Devices</h4>
         {isLoading ? (
           <p>Loading authenticators...</p>
         ) : authenticators.length === 0 ? (
           <p>No TOTP devices configured.</p>
         ) : (
           <div className="authenticators">
-            {authenticators.map((auth) => (
-              <div key={auth.id} className="authenticator-item">
+            {authenticators.map((authenticator) => (
+              <div key={authenticator.id} className="authenticator-item">
                 <div className="auth-info">
-                  <div><strong>Type:</strong> {auth.type.toUpperCase()}</div>
-                  <div><strong>Verified:</strong> {auth.verified ? '✅' : '❌'}</div>
-                  <div><strong>Created:</strong> {new Date(auth.created).toLocaleDateString()}</div>
+                  <div><strong>Type:</strong> {authenticator.type.toUpperCase()}</div>
+                  <div><strong>Verified:</strong> {authenticator.verified ? 'Yes' : 'No'}</div>
+                  <div><strong>Created:</strong> {new Date(authenticator.created).toLocaleDateString()}</div>
                 </div>
-                <button 
-                  onClick={() => deleteAuthenticator(auth.id)}
-                  className="delete-btn"
-                >
+                <button onClick={() => deleteAuthenticator(authenticator.id)} className="delete-btn">
                   Delete
                 </button>
               </div>

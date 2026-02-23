@@ -1,17 +1,17 @@
 /**
  * Integration test for error handling functionality.
- * 
+ *
  * This test validates that our API clients properly handle errors using
  * the withErrorHandling wrapper and ApiError class from api-utils.ts.
- * 
+ *
  * Run with: node tests/integration/error-handling.test.js
  */
 
-const { RehiveClient, ApiError } = require('../../dist/index.js');
+const { createAuth, createUserApi, ApiError } = require('../../dist/index.js');
 
 async function testErrorHandling() {
   console.log('🧪 Testing Error Handling\n');
-  
+
   const results = {
     authenticationError: false,
     badRequestError: false,
@@ -20,46 +20,47 @@ async function testErrorHandling() {
     statusCodeCapture: false,
     errorDetailCapture: false
   };
-  
+
   try {
-    const rehive = new RehiveClient({ 
+    const auth = createAuth({
       baseUrl: 'https://api.rehive.com'
     });
-    
+    const user = createUserApi({ auth });
+
     // Test 1: Authentication error (401)
     console.log('1️⃣  Testing authentication error (401)...');
     try {
       // This should fail because we're not authenticated
-      await rehive.user.authRetrieve();
+      await user.authRetrieve();
       console.log('   ❌ Expected authentication error but call succeeded');
     } catch (error) {
       console.log('   ✅ Caught authentication error');
       console.log('   📊 Error type:', error.constructor.name);
       console.log('   📊 Status:', error.status);
       console.log('   📊 Message:', error.message);
-      
+
       if (error instanceof ApiError) {
         results.apiErrorInstanceof = true;
         console.log('   ✅ Error is instance of ApiError');
       }
-      
+
       if (error.status === 401) {
         results.authenticationError = true;
         results.statusCodeCapture = true;
         console.log('   ✅ Correct status code captured');
       }
-      
+
       if (error.error) {
         results.errorDetailCapture = true;
         console.log('   ✅ Error details captured:', typeof error.error);
       }
     }
-    
+
     // Test 2: Bad request error (400)
     console.log('\n2️⃣  Testing bad request error (400)...');
     try {
       // This should fail with a 400 error due to missing required fields
-      await rehive.auth.login({
+      await auth.login({
         company: 'demo',
         user: '', // Empty user should cause 400
         password: 'demo1234'
@@ -70,25 +71,25 @@ async function testErrorHandling() {
       console.log('   📊 Error type:', error.constructor.name);
       console.log('   📊 Status:', error.status);
       console.log('   📊 Message:', error.message);
-      
+
       if (error.status === 400) {
         results.badRequestError = true;
         console.log('   ✅ Correct 400 status captured');
       }
-      
+
       if (error.error && typeof error.error === 'object') {
         console.log('   ✅ Structured error details:', Object.keys(error.error));
       }
     }
-    
+
     // Test 3: Network/connection error
     console.log('\n3️⃣  Testing network error...');
     try {
-      const badClient = new RehiveClient({ 
+      const badAuth = createAuth({
         baseUrl: 'https://nonexistent-domain-that-should-fail.com'
       });
-      
-      await badClient.auth.login({
+
+      await badAuth.login({
         company: 'demo',
         user: 'test@test.com',
         password: 'password'
@@ -98,14 +99,14 @@ async function testErrorHandling() {
       console.log('   ✅ Caught network error');
       console.log('   📊 Error type:', error.constructor.name);
       console.log('   📊 Message:', error.message);
-      
+
       // Network errors might not be ApiError instances (they could be fetch errors)
       if (error.code === 'ENOTFOUND' || error.message.includes('fetch')) {
         results.networkError = true;
         console.log('   ✅ Network error properly handled');
       }
     }
-    
+
     // Summary
     console.log('\n📋 Test Results Summary:');
     console.log('   🔐 Authentication Error (401):', results.authenticationError ? '✅' : '❌');
@@ -114,9 +115,9 @@ async function testErrorHandling() {
     console.log('   🏷️  ApiError instanceof:', results.apiErrorInstanceof ? '✅' : '❌');
     console.log('   📊 Status Code Capture:', results.statusCodeCapture ? '✅' : '❌');
     console.log('   📋 Error Detail Capture:', results.errorDetailCapture ? '✅' : '❌');
-    
+
     const allPassed = Object.values(results).every(result => result === true);
-    
+
     if (allPassed) {
       console.log('\n🎉 SUCCESS: All error handling tests passed!');
       console.log('   ✅ withErrorHandling wrapper is working correctly');
@@ -126,12 +127,12 @@ async function testErrorHandling() {
     } else {
       console.log('\n⚠️  Some error handling tests failed - check implementation');
     }
-    
+
     return {
       success: allPassed,
       results
     };
-    
+
   } catch (error) {
     console.log('\n❌ UNEXPECTED ERROR IN TEST');
     console.error('   Error:', error.message);

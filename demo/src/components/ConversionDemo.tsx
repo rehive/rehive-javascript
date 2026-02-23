@@ -1,16 +1,16 @@
 import { useState } from 'react'
 import { useAuth } from 'rehive/react'
+import { createConversionApi } from 'rehive/extensions/conversion'
 
 export function ConversionDemo() {
-  const { rehive, authUser } = useAuth()
+  const { auth, authUser } = useAuth()
   const isAuthenticated = !!authUser
-  const [conversionData, setConversionData] = useState<any>(null)
+  const [conversionData, setConversionData] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-
   const handleListPairs = async () => {
-    if (!rehive || !isAuthenticated) {
+    if (!isAuthenticated) {
       setError('Please log in first')
       return
     }
@@ -19,14 +19,11 @@ export function ConversionDemo() {
     setError(null)
 
     try {
-      // Create a conversion API instance - no imports needed!
-      const conversionApi = rehive.extensions.conversion()
-
-      const response = await conversionApi.user.userConversionPairsList({})
-      // With our updated templates, data is now directly in response.data
-      setConversionData(response.data)
-    } catch (err: any) {
-      setError(err.message || 'Failed to list conversion pairs')
+      const conversionApi = createConversionApi({ auth })
+      const response = await conversionApi.userConversionPairsList({})
+      setConversionData(JSON.stringify(response.data, null, 2))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to list conversion pairs')
       console.error('Conversion API error:', err)
     } finally {
       setLoading(false)
@@ -36,7 +33,7 @@ export function ConversionDemo() {
   if (!isAuthenticated) {
     return (
       <div className="conversion-demo">
-        <h3>🔄 Conversion Extension Demo</h3>
+        <h3>Conversion Extension Demo</h3>
         <p>Please log in to test the conversion extension with automatic token sync.</p>
       </div>
     )
@@ -44,11 +41,11 @@ export function ConversionDemo() {
 
   return (
     <div className="conversion-demo">
-      <h3>🔄 Conversion Extension Demo</h3>
+      <h3>Conversion Extension Demo</h3>
       <p>Test the conversion extension API with automatic token synchronization.</p>
-      
+
       <div className="conversion-actions">
-        <button 
+        <button
           onClick={handleListPairs}
           disabled={loading}
           className="demo-button"
@@ -66,22 +63,17 @@ export function ConversionDemo() {
       {conversionData && (
         <div className="conversion-results">
           <h4>API Response:</h4>
-          <pre>{JSON.stringify(conversionData, null, 2)}</pre>
+          <pre>{conversionData}</pre>
         </div>
       )}
 
       <div className="conversion-info">
-        <h4>Token Sync Demo:</h4>
-        <p>
-          This component demonstrates how extension APIs automatically stay synchronized 
-          with authentication tokens. When your token refreshes (expires after ~1 hour), 
-          all registered extension APIs will automatically receive the new token.
-        </p>
+        <h4>How it works in v4:</h4>
         <ul>
-          <li>✅ <code>rehive.extensions.conversion()</code> creates authenticated instances</li>
-          <li>✅ Tokens are automatically synchronized across all APIs</li>
-          <li>✅ Token refresh propagates to platform + extension APIs</li>
-          <li>✅ No manual token management required</li>
+          <li><code>createConversionApi({'{ auth }'})</code> creates an authenticated API</li>
+          <li>Each API calls <code>auth.getToken()</code> automatically per request</li>
+          <li>Token refresh is handled transparently</li>
+          <li>Full TypeScript autocomplete on every method</li>
         </ul>
       </div>
     </div>

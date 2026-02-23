@@ -1,17 +1,29 @@
 import { useState } from 'react'
 import { useAuth } from 'rehive/react'
+import { createAuth, createUserApi, createAdminApi, type Auth } from 'rehive'
+import {
+  createConversionApi,
+  type PaginatedUserConversionPairListResponse,
+} from 'rehive/extensions/conversion'
+import type {
+  ExtendedUserInfoResponse,
+  PaginatedAccountListResponse,
+} from 'rehive/user'
+import type { PaginatedAdminUserInfoListResponse } from 'rehive/admin'
+
+interface DemoResults {
+  userProfile?: ExtendedUserInfoResponse;
+  accounts?: PaginatedAccountListResponse;
+  conversion?: PaginatedUserConversionPairListResponse;
+  serverUserProfile?: ExtendedUserInfoResponse;
+  serverAdminUsers?: PaginatedAdminUserInfoListResponse;
+}
 
 export function RehiveClientDemo() {
-  const { rehive, authUser } = useAuth()
-  const [serverRehive, setServerRehive] = useState<any>(null)
+  const { auth, authUser } = useAuth()
+  const [serverAuth, setServerAuth] = useState<Auth | null>(null)
   const [serverToken, setServerToken] = useState('')
-  const [demoResults, setDemoResults] = useState<{
-    userApi?: any;
-    adminApi?: any;
-    conversion?: any;
-    serverUserApi?: any;
-    serverAdminApi?: any;
-  }>({})
+  const [demoResults, setDemoResults] = useState<DemoResults>({})
 
   const testClientSideAPIs = async () => {
     if (!authUser) {
@@ -20,23 +32,22 @@ export function RehiveClientDemo() {
     }
 
     try {
-      // Test direct API access
-      const userProfile = await rehive.user.userRetrieve()
-      const accountsList = await rehive.user.userAccountsList({})
-      
-      // Test extension API
-      const conversion = rehive.extensions.conversion()
-      const conversionPairs = await conversion.user.userConversionPairsList({})
+      const user = createUserApi({ auth })
+      const userProfile = await user.userRetrieve()
+      const accounts = await user.accountsList()
+
+      const conversion = createConversionApi({ auth })
+      const conversionPairs = await conversion.userConversionPairsList({})
 
       setDemoResults(prev => ({
         ...prev,
-        userApi: userProfile,
-        adminApi: accountsList, // Using user accounts as example
-        conversion: conversionPairs
+        userProfile,
+        accounts,
+        conversion: conversionPairs,
       }))
     } catch (error) {
       console.error('Client-side API test failed:', error)
-      alert(`API test failed: ${error.message}`)
+      alert(`API test failed: ${error instanceof Error ? error.message : error}`)
     }
   }
 
@@ -47,60 +58,60 @@ export function RehiveClientDemo() {
     }
 
     try {
-      // Create server-side client with permanent token
-      const { RehiveClient } = require('rehive')
-      const serverClient = new RehiveClient({
+      const serverAuthInstance = createAuth({
         baseUrl: 'https://api.rehive.com',
-        token: serverToken.trim()
+        token: serverToken.trim(),
       })
 
-      setServerRehive(serverClient)
+      setServerAuth(serverAuthInstance)
       alert('Server client initialized successfully!')
     } catch (error) {
       console.error('Server client initialization failed:', error)
-      alert(`Initialization failed: ${error.message}`)
+      alert(`Initialization failed: ${error instanceof Error ? error.message : error}`)
     }
   }
 
   const testServerSideAPIs = async () => {
-    if (!serverRehive) {
+    if (!serverAuth) {
       alert('Please initialize server client first')
       return
     }
 
     try {
-      // Test server-side APIs (admin operations)
-      const adminUsers = await serverRehive.admin.adminUsersList({})
-      const userProfile = await serverRehive.user.userRetrieve()
+      const admin = createAdminApi({ auth: serverAuth })
+      const user = createUserApi({ auth: serverAuth })
+      const serverAdminUsers = await admin.usersList()
+      const serverUserProfile = await user.userRetrieve()
 
       setDemoResults(prev => ({
         ...prev,
-        serverUserApi: userProfile,
-        serverAdminApi: adminUsers
+        serverUserProfile,
+        serverAdminUsers,
       }))
     } catch (error) {
       console.error('Server-side API test failed:', error)
-      alert(`Server API test failed: ${error.message}`)
+      alert(`Server API test failed: ${error instanceof Error ? error.message : error}`)
     }
   }
 
   return (
     <div className="rehive-client-demo">
-      <h2>🚀 RehiveClient API Demo</h2>
+      <h2>Modular API Demo</h2>
       <p>Test both client-side (authenticated) and server-side (permanent token) usage patterns.</p>
 
-      {/* Client-side Testing */}
       <div className="demo-section">
         <h3>Client-side APIs (Authenticated User)</h3>
         <p>Test direct API access after authentication:</p>
-        
+
         <div className="api-examples">
-          <code>await rehive.user.userRetrieve()</code><br/>
-          <code>await rehive.user.userAccountsList({})</code><br/>
-          <code>await rehive.extensions.conversion().user.userConversionPairsList({})</code>
+          <code>const user = createUserApi({'{ auth }'})</code><br/>
+          <code>await user.userRetrieve()</code><br/>
+          <code>await user.accountsList()</code><br/>
+          <code>const conversion = createConversionApi({'{ auth }'})</code><br/>
+          <code>await conversion.userConversionPairsList({})</code>
         </div>
 
-        <button 
+        <button
           onClick={testClientSideAPIs}
           disabled={!authUser}
           className="test-btn"
@@ -108,30 +119,29 @@ export function RehiveClientDemo() {
           {authUser ? 'Test Client-side APIs' : 'Login Required'}
         </button>
 
-        {demoResults.userApi && (
+        {demoResults.userProfile && (
           <div className="results">
-            <h4>✅ Client-side Results:</h4>
+            <h4>Client-side Results:</h4>
             <div className="result-item">
               <strong>User Profile:</strong>
-              <pre>{JSON.stringify(demoResults.userApi?.data, null, 2)}</pre>
+              <pre>{JSON.stringify(demoResults.userProfile.data, null, 2)}</pre>
             </div>
-            {demoResults.adminApi && (
+            {demoResults.accounts && (
               <div className="result-item">
                 <strong>User Accounts:</strong>
-                <pre>{JSON.stringify(demoResults.adminApi?.data?.results?.slice(0, 2), null, 2)}</pre>
+                <pre>{JSON.stringify(demoResults.accounts.data?.results?.slice(0, 2), null, 2)}</pre>
               </div>
             )}
             {demoResults.conversion && (
               <div className="result-item">
                 <strong>Conversion Pairs:</strong>
-                <pre>{JSON.stringify(demoResults.conversion?.data?.results?.slice(0, 2), null, 2)}</pre>
+                <pre>{JSON.stringify(demoResults.conversion.data?.results?.slice(0, 2), null, 2)}</pre>
               </div>
             )}
           </div>
         )}
       </div>
 
-      {/* Server-side Testing */}
       <div className="demo-section">
         <h3>Server-side APIs (Permanent Token)</h3>
         <p>Test server-side usage with permanent admin token:</p>
@@ -153,85 +163,63 @@ export function RehiveClientDemo() {
             Initialize Server Client
           </button>
 
-          {serverRehive && (
+          {serverAuth && (
             <div className="server-status">
-              ✅ Server client ready - no authentication flows needed!
+              Server client ready - no authentication flows needed!
             </div>
           )}
         </div>
 
         <div className="api-examples">
-          <code>const serverRehive = new RehiveClient({`{ token: 'admin-token' }`})</code><br/>
-          <code>await serverRehive.admin.adminUsersList({})</code><br/>
-          <code>await serverRehive.user.userRetrieve() // impersonation</code>
+          <code>{`const auth = createAuth({ token: 'admin-token' })`}</code><br/>
+          <code>{`const admin = createAdminApi({ auth })`}</code><br/>
+          <code>await admin.usersList()</code>
         </div>
 
-        <button 
+        <button
           onClick={testServerSideAPIs}
-          disabled={!serverRehive}
+          disabled={!serverAuth}
           className="test-btn"
         >
-          {serverRehive ? 'Test Server-side APIs' : 'Initialize Server Client First'}
+          {serverAuth ? 'Test Server-side APIs' : 'Initialize Server Client First'}
         </button>
 
-        {demoResults.serverUserApi && (
+        {demoResults.serverUserProfile && (
           <div className="results">
-            <h4>✅ Server-side Results:</h4>
+            <h4>Server-side Results:</h4>
             <div className="result-item">
               <strong>Admin Users List:</strong>
-              <pre>{JSON.stringify(demoResults.serverAdminApi?.data?.results?.slice(0, 2), null, 2)}</pre>
+              <pre>{JSON.stringify(demoResults.serverAdminUsers?.data?.results?.slice(0, 2), null, 2)}</pre>
             </div>
             <div className="result-item">
               <strong>User Profile (with admin token):</strong>
-              <pre>{JSON.stringify(demoResults.serverUserApi?.data, null, 2)}</pre>
+              <pre>{JSON.stringify(demoResults.serverUserProfile.data, null, 2)}</pre>
             </div>
           </div>
         )}
       </div>
 
-      {/* Usage Comparison */}
       <div className="demo-section">
-        <h3>📋 Usage Patterns Comparison</h3>
-        
+        <h3>v4 Modular Usage</h3>
+
         <div className="comparison">
           <div className="pattern">
-            <h4>Client-side (Web/Mobile Apps)</h4>
-            <pre>{`// Initialize without token
-const rehive = new RehiveClient({
-  baseUrl: 'https://api.rehive.com'
-})
+            <h4>Modular (tree-shakeable)</h4>
+            <pre>{`import { createAuth } from 'rehive/auth'
+import { createUserApi, type ExtendedUserInfoResponse } from 'rehive/user'
+import { createConversionApi } from 'rehive/extensions/conversion'
 
-// Login flow
-await rehive.auth.login({
-  user: 'email@example.com',
-  password: 'password',
-  company: 'company-name'
-})
-
-// Direct API access
-await rehive.user.userRetrieve()
-await rehive.admin.adminUsersCreate(data)
-
-// Extensions
-const conversion = rehive.extensions.conversion()
-await conversion.user.userConversionPairsList({})`}</pre>
-          </div>
-
-          <div className="pattern">
-            <h4>Server-side (Backend Services)</h4>
-            <pre>{`// Initialize with permanent token
-const rehive = new RehiveClient({
+const auth = createAuth({
   baseUrl: 'https://api.rehive.com',
-  token: 'your-admin-token'
+  storage: 'local',
 })
 
-// Immediate API access - no auth flows needed
-await rehive.admin.adminUsersCreate(data)
-await rehive.user.userRetrieve() // impersonation
+const user = createUserApi({ auth })
+const conversion = createConversionApi({ auth })
 
-// Extensions work the same way
-const conversion = rehive.extensions.conversion()
-await conversion.admin.adminConversionRatesList({})`}</pre>
+await auth.login({ user: 'email@example.com', ... })
+await user.userRetrieve()
+await conversion.userConversionPairsList({})`}</pre>
           </div>
         </div>
       </div>

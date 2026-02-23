@@ -1,15 +1,15 @@
 {
   "name": "rehive",
-  "version": "3.1.4",
+  "version": "4.0.0",
   "description": "SDK for Rehive Platform and Extensions",
   "main": "dist/index.js",
-  "module": "dist/index.esm.js",
+  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "npm run build:core && npm run build:react",
-    "build:core": "tsup src/index.ts --format cjs,esm --dts --minify --out-dir dist",
-    "build:react": "tsup src/react.tsx --format cjs,esm --dts --minify --out-dir dist",
-    "dev": "npm run build:core -- --watch & npm run build:react -- --watch",
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "codegen:openapi-ts": "bash scripts/codegen-openapi-ts.sh",
+    "codegen:openapi-ts:clean": "rm -rf src/platform/user/openapi-ts src/platform/admin/openapi-ts src/extensions/conversion/openapi-ts src/extensions/mass-send/openapi-ts src/extensions/notifications/openapi-ts src/extensions/products/openapi-ts src/extensions/rewards/openapi-ts src/extensions/stellar/openapi-ts src/extensions/stellar-testnet/openapi-ts src/extensions/business/openapi-ts src/extensions/payment-requests/openapi-ts src/extensions/bridge/openapi-ts src/extensions/app/openapi-ts src/extensions/billing/openapi-ts src/extensions/builder/openapi-ts src/extensions/rain/openapi-ts src/extensions/alchemy/openapi-ts && npm run codegen:openapi-ts",
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -51,7 +51,9 @@
   "files": [
     "dist",
     "src/extensions",
-    "src/platform"
+    "src/platform",
+    "src/shared",
+    "src/auth"
   ],
   "exports": {
     ".": {
@@ -59,35 +61,100 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     },
+    "./auth": {
+      "types": "./dist/auth.d.ts",
+      "import": "./dist/auth.mjs",
+      "require": "./dist/auth.js"
+    },
+    "./user": {
+      "types": "./dist/user.d.ts",
+      "import": "./dist/user.mjs",
+      "require": "./dist/user.js"
+    },
+    "./admin": {
+      "types": "./dist/admin.d.ts",
+      "import": "./dist/admin.mjs",
+      "require": "./dist/admin.js"
+    },
+    "./extensions/conversion": {
+      "types": "./dist/extensions/conversion.d.ts",
+      "import": "./dist/extensions/conversion.mjs",
+      "require": "./dist/extensions/conversion.js"
+    },
+    "./extensions/mass-send": {
+      "types": "./dist/extensions/mass-send.d.ts",
+      "import": "./dist/extensions/mass-send.mjs",
+      "require": "./dist/extensions/mass-send.js"
+    },
+    "./extensions/notifications": {
+      "types": "./dist/extensions/notifications.d.ts",
+      "import": "./dist/extensions/notifications.mjs",
+      "require": "./dist/extensions/notifications.js"
+    },
+    "./extensions/products": {
+      "types": "./dist/extensions/products.d.ts",
+      "import": "./dist/extensions/products.mjs",
+      "require": "./dist/extensions/products.js"
+    },
+    "./extensions/rewards": {
+      "types": "./dist/extensions/rewards.d.ts",
+      "import": "./dist/extensions/rewards.mjs",
+      "require": "./dist/extensions/rewards.js"
+    },
+    "./extensions/stellar": {
+      "types": "./dist/extensions/stellar.d.ts",
+      "import": "./dist/extensions/stellar.mjs",
+      "require": "./dist/extensions/stellar.js"
+    },
+    "./extensions/stellar-testnet": {
+      "types": "./dist/extensions/stellar-testnet.d.ts",
+      "import": "./dist/extensions/stellar-testnet.mjs",
+      "require": "./dist/extensions/stellar-testnet.js"
+    },
+    "./extensions/business": {
+      "types": "./dist/extensions/business.d.ts",
+      "import": "./dist/extensions/business.mjs",
+      "require": "./dist/extensions/business.js"
+    },
+    "./extensions/payment-requests": {
+      "types": "./dist/extensions/payment-requests.d.ts",
+      "import": "./dist/extensions/payment-requests.mjs",
+      "require": "./dist/extensions/payment-requests.js"
+    },
+    "./extensions/bridge": {
+      "types": "./dist/extensions/bridge.d.ts",
+      "import": "./dist/extensions/bridge.mjs",
+      "require": "./dist/extensions/bridge.js"
+    },
+    "./extensions/app": {
+      "types": "./dist/extensions/app.d.ts",
+      "import": "./dist/extensions/app.mjs",
+      "require": "./dist/extensions/app.js"
+    },
+    "./extensions/billing": {
+      "types": "./dist/extensions/billing.d.ts",
+      "import": "./dist/extensions/billing.mjs",
+      "require": "./dist/extensions/billing.js"
+    },
+    "./extensions/builder": {
+      "types": "./dist/extensions/builder.d.ts",
+      "import": "./dist/extensions/builder.mjs",
+      "require": "./dist/extensions/builder.js"
+    },
+    "./extensions/rain": {
+      "types": "./dist/extensions/rain.d.ts",
+      "import": "./dist/extensions/rain.mjs",
+      "require": "./dist/extensions/rain.js"
+    },
+    "./extensions/alchemy": {
+      "types": "./dist/extensions/alchemy.d.ts",
+      "import": "./dist/extensions/alchemy.mjs",
+      "require": "./dist/extensions/alchemy.js"
+    },
     "./react": {
       "types": "./dist/react.d.ts",
       "import": "./dist/react.mjs",
       "require": "./dist/react.js"
-    },
-    "./extensions/conversion": {
-      "types": "./src/extensions/conversion/index.ts",
-      "import": "./src/extensions/conversion/index.js",
-      "require": "./src/extensions/conversion/index.js"
-    },
-    "./extensions/conversion/*": {
-      "types": "./src/extensions/conversion/*.ts",
-      "import": "./src/extensions/conversion/*.js",
-      "require": "./src/extensions/conversion/*.js"
-    },
-    "./extensions/*/": {
-      "types": "./src/extensions/*/",
-      "import": "./src/extensions/*/",
-      "require": "./src/extensions/*/"
-    },
-    "./platform/user/*": {
-      "types": "./src/platform/user/*.ts",
-      "import": "./src/platform/user/*.js",
-      "require": "./src/platform/user/*.js"
-    },
-    "./platform/admin/*": {
-      "types": "./src/platform/admin/*.ts",
-      "import": "./src/platform/admin/*.js", 
-      "require": "./src/platform/admin/*.js"
     }
   }
 }

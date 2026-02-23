@@ -55,3 +55,6 @@ temp/
 .cache/
 .eslintcache
 .parcel-cache/
+
+# Local codegen staging output
+.codegen/

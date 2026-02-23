@@ -1,5 +1,4 @@
 import { AuthProvider } from 'rehive/react'
-import { WebStorageAdapter } from 'rehive'
 import { LoginForm } from './components/LoginForm'
 import { SessionSwitcher } from './components/SessionSwitcher'
 import { TOTPFlow } from './components/TOTPFlow'
@@ -9,13 +8,12 @@ import { RehiveClientDemo } from './components/RehiveClientDemo'
 import { DebugPanel } from './components/DebugPanel'
 import './App.css'
 
-// Main App Component
 function App() {
   return (
     <AuthProvider 
       config={{
         baseUrl: 'https://api.rehive.com',
-        storage: new WebStorageAdapter()
+        storage: 'local',
       }}
     >
       <div className="app">
