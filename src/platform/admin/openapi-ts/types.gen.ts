@@ -59,6 +59,29 @@ export type AccountAssetLimit = {
     readonly updated: number;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AccountAssetLimitRequest = {
+    /**
+     * * `max` - Maximum
+     * * `day_max` - Maximum per day
+     * * `week_max` - Maximum per week
+     * * `month_max` - Maximum per month
+     * * `min` - Minimum
+     * * `overdraft` - Overdraft
+     */
+    type: 'max' | 'day_max' | 'week_max' | 'month_max' | 'min' | 'overdraft';
+    /**
+     * * `credit` - Credit
+     * * `debit` - Debit
+     */
+    tx_type: 'credit' | 'debit';
+};
+
 export type AccountAssetResponse = {
     status: string;
     data: AccountAsset;
@@ -75,6 +98,19 @@ export type AccountAssetSettings = {
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
     disallowed_transaction_subtypes: Array<ReducedTransactionSubtype>;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AccountAssetSettingsRequest = {
+    allow_transactions?: boolean;
+    allow_debit_transactions?: boolean;
+    allow_credit_transactions?: boolean;
+    disallowed_transaction_subtypes: Array<ReducedTransactionSubtypeRequest>;
 };
 
 export type AccountAssetSettingsResponse = {
@@ -166,6 +202,20 @@ export type AdminAccountAccountAsset = {
     readonly updated: number;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminAccountAccountAssetRequest = {
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    active: boolean;
+    archived?: boolean;
+};
+
 export type AdminAccountAccountAssetResponse = {
     status: string;
     data: AdminAccountAccountAsset;
@@ -177,7 +227,7 @@ export type AdminAccountAccountAssetResponse = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminAccountAccountAssetSettingsUpdate = {
+export type AdminAccountAccountAssetSettingsUpdateRequest = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
@@ -237,6 +287,21 @@ export type AdminAccountAssetFeeList = Array<AdminAccountAssetFee>;
 export type AdminAccountAssetFeeListResponse = {
     status: string;
     data: AdminAccountAssetFeeList;
+};
+
+export type AdminAccountAssetFeeRequest = {
+    name: string | null;
+    description: string | null;
+    percentage?: number;
+    /**
+     * * `credit` - Credit
+     * * `debit` - Debit
+     */
+    tx_type: 'credit' | 'debit';
+    debit_account: string | null;
+    credit_account: string | null;
+    debit_subtype: string | null;
+    credit_subtype: string | null;
 };
 
 export type AdminAccountAssetFeeResponse = {
@@ -356,15 +421,15 @@ export type AdminAccountResponse = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminAppendTransactionCollectionMultiTransaction = {
-    transactions: Array<AdminAppendTransactionCollectionTransaction>;
+export type AdminAppendTransactionCollectionMultiTransactionRequest = {
+    transactions: Array<AdminAppendTransactionCollectionTransactionRequest>;
 };
 
 /**
  * This removed the status so that when appending to an existing collection
  * the status cannot be set manually.
  */
-export type AdminAppendTransactionCollectionTransaction = {
+export type AdminAppendTransactionCollectionTransactionRequest = {
     id?: string;
     parent?: string;
     partner?: string;
@@ -757,6 +822,21 @@ export type AdminCompanyAddress = {
     postal_code?: string | null;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminCompanyAddressRequest = {
+    line_1?: string | null;
+    line_2?: string | null;
+    city?: string | null;
+    state_province?: string | null;
+    country?: string | null;
+    postal_code?: string | null;
+};
+
 export type AdminCompanyAddressResponse = {
     status: string;
     data: AdminCompanyAddress;
@@ -822,6 +902,39 @@ export type AdminCompanyBankAccountAssetResponse = {
     data: AdminCompanyBankAccountAsset;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminCompanyBankAccountRequest = {
+    name?: string | null;
+    number?: string | null;
+    type?: string | null;
+    bank_name?: string | null;
+    bank_code?: string | null;
+    bank_currency?: string | null;
+    branch_code?: string | null;
+    branch_address?: CompanyBankBranchAddressRequest;
+    routing_number?: string | null;
+    swift?: string | null;
+    iban?: string | null;
+    bic?: string | null;
+    clabe?: string | null;
+    check_digit?: string | null;
+    pix_key?: string | null;
+    br_code?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+    /**
+     * * `deposit` - Deposit
+     */
+    action?: 'deposit' | null;
+};
+
 export type AdminCompanyBankAccountResponse = {
     status: string;
     data: AdminCompanyBankAccount;
@@ -864,6 +977,289 @@ export type AdminCompanyLinkCounterparty = {
 export type AdminCompanyLinkResponse = {
     status: string;
     data: AdminCompanyLink;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminCompanyRequest = {
+    name?: string | null;
+    legal_name?: string | null;
+    description?: string | null;
+    website?: string | null;
+    support_website?: string | null;
+    documentation_website?: string | null;
+    support_email?: string | null;
+    contact_email?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    logo?: Blob | File | null;
+    icon?: Blob | File | null;
+    public?: boolean;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    /**
+     * * `pending` - Pending
+     * * `active` - Active
+     * * `restricted` - Restricted
+     * * `suspended` - Suspended
+     */
+    status?: 'pending' | 'active' | 'restricted' | 'suspended';
+    system_email: string;
 };
 
 export type AdminCompanyResponse = {
@@ -964,6 +1360,34 @@ export type AdminCompanyWalletAccountAssetResponse = {
     data: AdminCompanyWalletAccountAsset;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminCompanyWalletAccountRequest = {
+    username?: string | null;
+    email?: string | null;
+    mobile?: string | null;
+    name?: string | null;
+    /**
+     * * `paypal` - Paypal
+     * * `venmo` - Venmo
+     * * `other` - Other
+     */
+    type?: 'paypal' | 'venmo' | 'other';
+    wallet_currency?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    /**
+     * * `deposit` - Deposit
+     */
+    action?: 'deposit' | null;
+    archived?: boolean;
+};
+
 export type AdminCompanyWalletAccountResponse = {
     status: string;
     data: AdminCompanyWalletAccount;
@@ -975,8 +1399,7 @@ export type AdminCompanyWalletAccountResponse = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateAccessControlRule = {
-    readonly id: number;
+export type AdminCreateAccessControlRuleRequest = {
     /**
      * * `allow` - Allow
      * * `deny` - Deny
@@ -988,8 +1411,6 @@ export type AdminCreateAccessControlRule = {
     type: 'ip';
     value: string;
     label?: string | null;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -998,35 +1419,7 @@ export type AdminCreateAccessControlRule = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateAccount = {
-    reference?: string | null;
-    name?: string;
-    readonly definition: string | null;
-    label?: string | null;
-    primary?: boolean;
-    recon?: boolean;
-    readonly currencies: Array<AdminAccountAccountAsset>;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    archived?: boolean;
-    readonly created: number;
-    readonly updated: number;
-};
-
-export type AdminCreateAccountAccountAsset = {
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminCreateAccountAccountAssetFee = {
+export type AdminCreateAccountAccountAssetFeeRequest = {
     name?: string | null;
     /**
      * @deprecated
@@ -1040,24 +1433,39 @@ export type AdminCreateAccountAccountAssetFee = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateAccountAccountAssetLimit = {
+export type AdminCreateAccountAccountAssetLimitRequest = {
     begin?: number | null;
     end?: number | null;
 };
 
+export type AdminCreateAccountAccountAssetRequest = {
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
 /**
  * A ModelSerializer that takes additional arguments for
  * "fields", "omit" and "expand" in order to
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateAccountDefinitionGroup = {
+export type AdminCreateAccountDefinitionGroupAssetRequest = {
+    currency: string;
+    archived?: boolean;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminCreateAccountDefinitionGroupRequest = {
     default?: boolean;
     primary?: boolean;
     currencies?: Array<string>;
     archived?: boolean;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -1066,11 +1474,16 @@ export type AdminCreateAccountDefinitionGroup = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateAccountDefinitionGroupAsset = {
-    currency: string;
+export type AdminCreateAccountRequest = {
+    reference?: string | null;
+    name?: string;
+    label?: string | null;
+    primary?: boolean;
+    recon?: boolean;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
     archived?: boolean;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -1079,20 +1492,18 @@ export type AdminCreateAccountDefinitionGroupAsset = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateAsset = {
+export type AdminCreateAssetRequest = {
     code?: string | null;
     display_code?: string | null;
     description?: string | null;
     symbol?: string | null;
     unit?: string | null;
     divisibility: number;
-    icon?: string | null;
+    icon?: Blob | File | null;
     metadata?: {
         [key: string]: unknown;
     } | null;
     archived?: boolean;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -1101,7 +1512,7 @@ export type AdminCreateAsset = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateAuthToken = {
+export type AdminCreateAuthTokenRequest = {
     duration?: number | null;
     user: string;
 };
@@ -1112,8 +1523,7 @@ export type AdminCreateAuthToken = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateAuthenticatorRule = {
-    readonly id: number;
+export type AdminCreateAuthenticatorRuleRequest = {
     /**
      * * `authentication` - Authentication
      * * `authorization` - Authorization
@@ -1129,8 +1539,6 @@ export type AdminCreateAuthenticatorRule = {
     authenticator_types: Array<'totp' | 'sms' | 'static'>;
     duration?: number | null;
     session_age?: number | null;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -1139,7 +1547,7 @@ export type AdminCreateAuthenticatorRule = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateCompanyBankAccountAsset = {
+export type AdminCreateCompanyBankAccountAssetRequest = {
     currency: string;
 };
 
@@ -1149,17 +1557,9 @@ export type AdminCreateCompanyBankAccountAsset = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateCompanyLink = {
-    readonly id: number;
+export type AdminCreateCompanyLinkRequest = {
     key?: string;
     company?: string;
-    /**
-     * * `pending` - Pending
-     * * `complete` - Complete
-     */
-    status: 'pending' | 'complete';
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -1168,7 +1568,7 @@ export type AdminCreateCompanyLink = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateCompanyWalletAccountAsset = {
+export type AdminCreateCompanyWalletAccountAssetRequest = {
     currency: string;
 };
 
@@ -1182,7 +1582,7 @@ export type AdminCreateCompanyWalletAccountAsset = {
  * - The class this mixin is attached to must have a Meta.model defined.
  * - The Meta.model class must have a PERMISSION_TYPE defined.
  */
-export type AdminCreateCreditTransaction = {
+export type AdminCreateCreditTransactionRequest = {
     id?: string;
 };
 
@@ -1192,11 +1592,29 @@ export type AdminCreateCreditTransaction = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateCryptoAccount = {
-    readonly id: number;
+export type AdminCreateCryptoAccountAccountAssetRequest = {
+    account_currency: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminCreateCryptoAccountAssetRequest = {
+    currency: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminCreateCryptoAccountRequest = {
     address: string;
     name?: string | null;
-    readonly code: string | null;
     /**
      * * `bitcoin` - Bitcoin
      * * `ethereum` - Ethereum
@@ -1220,36 +1638,12 @@ export type AdminCreateCryptoAccount = {
      * * `verified` - Verified
      */
     status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
-    readonly currencies: Array<ReducedAsset>;
-    readonly account_currencies: Array<ReducedAccountAsset>;
     archived?: boolean;
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
      */
     action?: 'withdraw' | 'deposit' | null;
-    readonly created: number;
-    readonly updated: number;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminCreateCryptoAccountAccountAsset = {
-    account_currency: string;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminCreateCryptoAccountAsset = {
-    currency: string;
 };
 
 /**
@@ -1262,7 +1656,7 @@ export type AdminCreateCryptoAccountAsset = {
  * - The class this mixin is attached to must have a Meta.model defined.
  * - The Meta.model class must have a PERMISSION_TYPE defined.
  */
-export type AdminCreateDebitTransaction = {
+export type AdminCreateDebitTransactionRequest = {
     id?: string;
 };
 
@@ -1272,27 +1666,7 @@ export type AdminCreateDebitTransaction = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateDevice = {
-    readonly id: number;
-    imei: string;
-    name?: string | null;
-    readonly apps: Array<DeviceApp>;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    archived?: boolean;
-    readonly created: number;
-    readonly updated: number;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminCreateDeviceApp = {
-    readonly id: number;
+export type AdminCreateDeviceAppRequest = {
     name?: string | null;
     /**
      * * `expo` - Expo
@@ -1300,8 +1674,6 @@ export type AdminCreateDeviceApp = {
     type: 'expo';
     token?: string | null;
     archived?: boolean;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -1310,14 +1682,25 @@ export type AdminCreateDeviceApp = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateEmail = {
-    readonly id: number;
+export type AdminCreateDeviceRequest = {
+    imei: string;
+    name?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminCreateEmailRequest = {
     email: string;
     primary?: boolean;
     verified?: boolean;
-    readonly temporary: boolean | null;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -1326,7 +1709,7 @@ export type AdminCreateEmail = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateExport = {
+export type AdminCreateExportRequest = {
     /**
      * * `account` - Account
      * * `account_currency` - Account_Currency
@@ -1357,27 +1740,7 @@ export type AdminCreateExport = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateGroup = {
-    label?: string | null;
-    description?: string | null;
-    icon?: string | null;
-    /**
-     * * `admin` - Admin
-     * * `user` - User
-     */
-    section?: 'admin' | 'user';
-    default?: boolean;
-    public?: boolean;
-    listed?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminCreateGroupFee = {
+export type AdminCreateGroupFeeRequest = {
     name?: string | null;
     /**
      * @deprecated
@@ -1391,12 +1754,12 @@ export type AdminCreateGroupFee = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateGroupLimit = {
+export type AdminCreateGroupLimitRequest = {
     begin?: number | null;
     end?: number | null;
 };
 
-export type AdminCreateGroupPermission = {
+export type AdminCreateGroupPermissionRequest = {
     /**
      * * `admin` - Admin
      * * `user` - User
@@ -1413,7 +1776,27 @@ export type AdminCreateGroupPermission = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateGroupTierFee = {
+export type AdminCreateGroupRequest = {
+    label?: string | null;
+    description?: string | null;
+    icon?: Blob | File | null;
+    /**
+     * * `admin` - Admin
+     * * `user` - User
+     */
+    section?: 'admin' | 'user';
+    default?: boolean;
+    public?: boolean;
+    listed?: boolean;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminCreateGroupTierFeeRequest = {
     name?: string | null;
     /**
      * @deprecated
@@ -1427,7 +1810,7 @@ export type AdminCreateGroupTierFee = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateGroupTierLimit = {
+export type AdminCreateGroupTierLimitRequest = {
     begin?: number | null;
     end?: number | null;
 };
@@ -1438,7 +1821,7 @@ export type AdminCreateGroupTierLimit = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateMetric = {
+export type AdminCreateMetricRequest = {
     name?: string | null;
     slug?: string | null;
     /**
@@ -1461,30 +1844,26 @@ export type AdminCreateMetric = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateMobile = {
-    readonly id: number;
+export type AdminCreateMobileRequest = {
     number: string;
     primary?: boolean;
     verified?: boolean;
     archived?: boolean;
-    readonly temporary: boolean | null;
-    readonly created: number;
-    readonly updated: number;
 };
 
-export type AdminCreateMultiGroupPermission = {
+export type AdminCreateMultiGroupPermissionRequest = {
     [key: string]: unknown;
 };
 
-export type AdminCreateMultiTransaction = {
-    transactions: Array<AdminExplicitCreateTransaction>;
+export type AdminCreateMultiTransactionRequest = {
+    transactions: Array<AdminExplicitCreateTransactionRequest>;
 };
 
-export type AdminCreateMultiUserPermission = {
+export type AdminCreateMultiUserPermissionRequest = {
     [key: string]: unknown;
 };
 
-export type AdminCreateServicePermission = {
+export type AdminCreateServicePermissionRequest = {
     permissions: Array<unknown>;
 };
 
@@ -1494,7 +1873,7 @@ export type AdminCreateServicePermission = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateStatement = {
+export type AdminCreateStatementRequest = {
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -1506,10 +1885,8 @@ export type AdminCreateStatement = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateTransactionCollection = {
+export type AdminCreateTransactionCollectionRequest = {
     id?: string;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -1522,7 +1899,7 @@ export type AdminCreateTransactionCollection = {
  * - The class this mixin is attached to must have a Meta.model defined.
  * - The Meta.model class must have a PERMISSION_TYPE defined.
  */
-export type AdminCreateTransactionCollectionTransaction = {
+export type AdminCreateTransactionCollectionTransactionRequest = {
     id?: string;
     parent?: string;
     partner?: string;
@@ -1534,7 +1911,7 @@ export type AdminCreateTransactionCollectionTransaction = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateTransactionFee = {
+export type AdminCreateTransactionFeeRequest = {
     description: string;
     amount: number;
 };
@@ -1545,8 +1922,7 @@ export type AdminCreateTransactionFee = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateTransactionMessage = {
-    readonly id: number;
+export type AdminCreateTransactionMessageRequest = {
     /**
      * * `admin` - Admin
      * * `user` - User
@@ -1559,10 +1935,7 @@ export type AdminCreateTransactionMessage = {
      */
     level?: 'info' | 'warning' | 'error';
     message: string;
-    author: ReducedUserInfo | null;
     archived?: boolean;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -1571,14 +1944,11 @@ export type AdminCreateTransactionMessage = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateTransactionSubtype = {
-    readonly id: number;
+export type AdminCreateTransactionSubtypeRequest = {
     name: string;
     label?: string | null;
     description?: string | null;
     archived?: boolean;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -1587,8 +1957,7 @@ export type AdminCreateTransactionSubtype = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateTransferTransaction = {
-    readonly id: string;
+export type AdminCreateTransferTransactionRequest = {
     debit_account?: string | null;
     debit_subtype?: string | null;
     debit_metadata?: {
@@ -1611,11 +1980,11 @@ export type AdminCreateTransferTransaction = {
     /**
      * @deprecated
      */
-    debit_fees?: Array<AdminCreateTransactionFee>;
+    debit_fees?: Array<AdminCreateTransactionFeeRequest>;
     /**
      * @deprecated
      */
-    credit_fees?: Array<AdminCreateTransactionFee>;
+    credit_fees?: Array<AdminCreateTransactionFeeRequest>;
     /**
      * * `Initiating` - Initiating
      * * `Quoted` - Quoted
@@ -1633,7 +2002,7 @@ export type AdminCreateTransferTransaction = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateUpdateAccountDefinition = {
+export type AdminCreateUpdateAccountDefinitionRequest = {
     name: string;
     label?: string | null;
     recon?: boolean;
@@ -1646,19 +2015,10 @@ export type AdminCreateUpdateAccountDefinition = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateUpdateLegalTerm = {
-    readonly id: number;
-    /**
-     * * `system` - System
-     * * `company` - Company
-     */
-    type: 'system' | 'company';
+export type AdminCreateUpdateLegalTermRequest = {
     name: string;
     description?: string | null;
-    readonly versions: Array<AdminReducedLegalTermVersion>;
     archived?: boolean;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -1667,8 +2027,7 @@ export type AdminCreateUpdateLegalTerm = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateUserAddress = {
-    readonly id: number;
+export type AdminCreateUserAddressRequest = {
     /**
      * * `permanent` - Permanent
      * * `contact` - Contact
@@ -1951,10 +2310,29 @@ export type AdminCreateUserAddress = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateUserBankAccount = {
-    readonly id: number;
+export type AdminCreateUserBankAccountAccountAssetRequest = {
+    account_currency: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminCreateUserBankAccountAssetRequest = {
+    currency: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminCreateUserBankAccountRequest = {
     name?: string | null;
-    owner?: BankOwner | null;
+    owner?: BankOwnerRequest | null;
     number?: string | null;
     type?: string | null;
     /**
@@ -1966,7 +2344,7 @@ export type AdminCreateUserBankAccount = {
     bank_code?: string | null;
     bank_currency?: string | null;
     branch_code?: string | null;
-    branch_address?: AdminUserBankBranchAddress;
+    branch_address?: AdminUserBankBranchAddressRequest;
     branch_address_text?: string | null;
     routing_number?: string | null;
     swift?: string | null;
@@ -1976,7 +2354,6 @@ export type AdminCreateUserBankAccount = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
-    readonly code: string | null;
     /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
@@ -1989,15 +2366,11 @@ export type AdminCreateUserBankAccount = {
         [key: string]: unknown;
     } | null;
     archived?: boolean;
-    readonly currencies: Array<ReducedAsset>;
-    readonly account_currencies: Array<ReducedAccountAsset>;
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
      */
     action?: 'withdraw' | 'deposit' | null;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -2006,28 +2379,7 @@ export type AdminCreateUserBankAccount = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateUserBankAccountAccountAsset = {
-    account_currency: string;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminCreateUserBankAccountAsset = {
-    currency: string;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminCreateUserDocument = {
-    readonly id: number;
+export type AdminCreateUserDocumentRequest = {
     /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
@@ -2044,7 +2396,7 @@ export type AdminCreateUserDocument = {
     expires?: number | null;
 };
 
-export type AdminCreateUserGroup = {
+export type AdminCreateUserGroupRequest = {
     group: string;
 };
 
@@ -2053,7 +2405,7 @@ export type AdminCreateUserGroup = {
  * Information about user setting and permissions shown in
  * the ExtendedUserInfoSerializer
  */
-export type AdminCreateUserInfo = {
+export type AdminCreateUserInfoRequest = {
     id?: string;
     username?: string;
     email?: string;
@@ -2061,16 +2413,9 @@ export type AdminCreateUserInfo = {
     first_name?: string | null;
     middle_name?: string | null;
     last_name?: string | null;
-    profile?: string | null;
-    readonly temporary: boolean | null;
+    profile?: Blob | File | null;
     id_number?: string | null;
     birth_date?: string | null;
-    currency: ReducedAsset;
-    readonly account: string;
-    readonly balance: number;
-    readonly available_balance: number;
-    readonly company: string;
-    readonly owner: boolean;
     language?: string;
     /**
      * * `AF` - Afghanistan
@@ -2608,21 +2953,6 @@ export type AdminCreateUserInfo = {
     timezone?: string | null;
     website?: string | null;
     business_name?: string | null;
-    /**
-     * @deprecated
-     */
-    readonly verified: boolean;
-    verification: UserVerification;
-    /**
-     * * `obsolete` - Obsolete
-     * * `declined` - Declined
-     * * `pending` - Pending
-     * * `incomplete` - Incomplete
-     * * `verified` - Verified
-     */
-    status: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
-    readonly created: number;
-    readonly updated: number;
     deactivated?: boolean;
     /**
      * * `retaining` - Retaining
@@ -2631,8 +2961,6 @@ export type AdminCreateUserInfo = {
      */
     retention_state?: 'retaining' | 'delete_requested' | 'deleted';
     archived?: boolean;
-    readonly last_login: number;
-    settings: UserSettings;
 };
 
 /**
@@ -2641,8 +2969,7 @@ export type AdminCreateUserInfo = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateUserMessage = {
-    readonly id: number;
+export type AdminCreateUserMessageRequest = {
     /**
      * * `admin` - Admin
      * * `user` - User
@@ -2656,12 +2983,9 @@ export type AdminCreateUserMessage = {
     level?: 'info' | 'warning' | 'error';
     message: string;
     archived?: boolean;
-    author: ReducedUserInfo | null;
-    readonly created: number;
-    readonly updated: number;
 };
 
-export type AdminCreateUserPermission = {
+export type AdminCreateUserPermissionRequest = {
     /**
      * * `admin` - Admin
      * * `user` - User
@@ -2678,13 +3002,31 @@ export type AdminCreateUserPermission = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateUserWalletAccount = {
-    readonly id: number;
+export type AdminCreateUserWalletAccountAccountAssetRequest = {
+    account_currency: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminCreateUserWalletAccountAssetRequest = {
+    currency: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminCreateUserWalletAccountRequest = {
     username?: string | null;
     email?: string | null;
     mobile?: string | null;
     name?: string | null;
-    readonly code: string | null;
     /**
      * * `paypal` - Paypal
      * * `venmo` - Venmo
@@ -2703,35 +3045,12 @@ export type AdminCreateUserWalletAccount = {
      * * `verified` - Verified
      */
     status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
-    readonly currencies: Array<ReducedAsset>;
     archived?: boolean;
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
      */
     action?: 'withdraw' | 'deposit' | null;
-    readonly created: number;
-    readonly updated: number;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminCreateUserWalletAccountAccountAsset = {
-    account_currency: string;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminCreateUserWalletAccountAsset = {
-    currency: string;
 };
 
 /**
@@ -2812,12 +3131,52 @@ export type AdminCryptoAccountAssetResponse = {
     data: AdminCryptoAccountAsset;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminCryptoAccountRequest = {
+    address: string;
+    name?: string | null;
+    /**
+     * * `bitcoin` - Bitcoin
+     * * `ethereum` - Ethereum
+     * * `stellar` - Stellar
+     * * `other` - Other
+     */
+    crypto_type?: 'bitcoin' | 'ethereum' | 'stellar' | 'other';
+    /**
+     * * `testnet` - Testnet
+     * * `mainnet` - Mainnet
+     */
+    network?: 'testnet' | 'mainnet';
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    /**
+     * * `obsolete` - Obsolete
+     * * `declined` - Declined
+     * * `pending` - Pending
+     * * `incomplete` - Incomplete
+     * * `verified` - Verified
+     */
+    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    archived?: boolean;
+    /**
+     * * `withdraw` - Withdraw
+     * * `deposit` - Deposit
+     */
+    action?: 'withdraw' | 'deposit' | null;
+};
+
 export type AdminCryptoAccountResponse = {
     status: string;
     data: AdminCryptoAccount;
 };
 
-export type AdminDeactivate = {
+export type AdminDeactivateRequest = {
     user: string;
 };
 
@@ -2860,9 +3219,38 @@ export type AdminDeviceApp = {
     readonly updated: number;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminDeviceAppRequest = {
+    name?: string | null;
+    /**
+     * * `expo` - Expo
+     */
+    type: 'expo';
+    archived?: boolean;
+};
+
 export type AdminDeviceAppResponse = {
     status: string;
     data: AdminDeviceApp;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminDeviceRequest = {
+    name?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
 };
 
 export type AdminDeviceResponse = {
@@ -2889,6 +3277,22 @@ export type AdminDocumentType = {
     readonly updated: number;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminDocumentTypeRequest = {
+    name?: string | null;
+    description?: string | null;
+    related_resources?: Array<'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount'>;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+};
+
 export type AdminDocumentTypeResponse = {
     status: string;
     data: AdminDocumentType;
@@ -2912,6 +3316,18 @@ export type AdminEmail = {
     readonly updated: number;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminEmailRequest = {
+    primary?: boolean;
+    verified?: boolean;
+    archived?: boolean;
+};
+
 export type AdminEmailResponse = {
     status: string;
     data: AdminEmail;
@@ -2927,7 +3343,7 @@ export type AdminEmailResponse = {
  * - The class this mixin is attached to must have a Meta.model defined.
  * - The Meta.model class must have a PERMISSION_TYPE defined.
  */
-export type AdminExplicitCreateTransaction = {
+export type AdminExplicitCreateTransactionRequest = {
     id?: string;
 };
 
@@ -3114,6 +3530,19 @@ export type AdminExtendedGroupTier = {
     readonly updated: number;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminExtendedGroupTierRequest = {
+    level: number;
+    name?: string | null;
+    description?: string | null;
+    archived?: boolean;
+};
+
 export type AdminExtendedGroupTierResponse = {
     status: string;
     data: AdminExtendedGroupTier;
@@ -3298,6 +3727,24 @@ export type AdminExtendedTransaction = {
     readonly expires: number;
     readonly created: number;
     readonly updated: number;
+};
+
+/**
+ * A mixin that handles the application of permissions to properties on a
+ * serializer using the built-in permissions system.
+ *
+ * NOTE : This only works if the following conditions are met:
+ * - The request context must contain a user.
+ * - The class this mixin is attached must be a serializer.
+ * - The class this mixin is attached to must have a Meta.model defined.
+ * - The Meta.model class must have a PERMISSION_TYPE defined.
+ */
+export type AdminExtendedTransactionRequest = {
+    note?: string;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
 };
 
 export type AdminExtendedTransactionResponse = {
@@ -4146,6 +4593,18 @@ export type AdminGroupPermission = {
     } | null;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminGroupPermissionRequest = {
+    properties?: {
+        [key: string]: unknown;
+    } | null;
+};
+
 export type AdminGroupPermissionResponse = {
     status: string;
     data: AdminGroupPermission;
@@ -4167,6 +4626,24 @@ export type AdminGroupSettings = {
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
     disallowed_transaction_subtypes: Array<GroupDisallowedTransactionSubtype>;
+    password_reset_url?: string | null;
+    password_set_url?: string | null;
+    email_verification_url?: string | null;
+    deactivate_verification_url?: string | null;
+    request_delete_verification_url?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminGroupSettingsRequest = {
+    allow_transactions?: boolean;
+    allow_debit_transactions?: boolean;
+    allow_credit_transactions?: boolean;
+    disallowed_transaction_subtypes: Array<GroupDisallowedTransactionSubtypeRequest>;
     password_reset_url?: string | null;
     password_set_url?: string | null;
     email_verification_url?: string | null;
@@ -4304,6 +4781,18 @@ export type AdminGroupTierListResponse = {
     data: AdminGroupTierList;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminGroupTierRequest = {
+    level: number;
+    name?: string | null;
+    description?: string | null;
+};
+
 export type AdminGroupTierResponse = {
     status: string;
     data: AdminGroupTier;
@@ -4354,12 +4843,26 @@ export type AdminLegalTermVersion = {
     readonly updated: number;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminLegalTermVersionRequest = {
+    note?: string | null;
+    content?: string | null;
+    url?: string | null;
+    urls?: Array<LegalTermVersionUrlRequest> | null;
+    archived?: boolean;
+};
+
 export type AdminLegalTermVersionResponse = {
     status: string;
     data: AdminLegalTermVersion;
 };
 
-export type AdminLogin = {
+export type AdminLoginRequest = {
     user: string;
     password: string;
     session_duration?: number | null;
@@ -4474,6 +4977,18 @@ export type AdminMobile = {
     readonly updated: number;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminMobileRequest = {
+    primary: boolean;
+    verified?: boolean;
+    archived?: boolean;
+};
+
 export type AdminMobileResponse = {
     status: string;
     data: AdminMobile;
@@ -4541,6 +5056,26 @@ export type AdminOauthClient = {
     archived?: boolean;
     readonly created: number;
     readonly updated: number;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminOauthClientRequest = {
+    /**
+     * * `apple` - Apple
+     * * `google` - Google
+     */
+    provider: 'apple' | 'google';
+    application: string;
+    client_id: string;
+    data?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
 };
 
 export type AdminOauthClientResponse = {
@@ -4618,7 +5153,7 @@ export type AdminPartnerUserInfo = {
 /**
  * Serializer for requesting a password reset e-mail.
  */
-export type AdminPasswordReset = {
+export type AdminPasswordResetRequest = {
     force?: boolean;
     user: string;
 };
@@ -4712,7 +5247,7 @@ export type AdminReducedUserLegalTermVersion = {
     readonly updated: number;
 };
 
-export type AdminRegister = {
+export type AdminRegisterRequest = {
     username?: string;
     email?: string;
     mobile?: string;
@@ -5360,7 +5895,7 @@ export type AdminRequest = {
     readonly updated: number;
 };
 
-export type AdminRequestDelete = {
+export type AdminRequestDeleteRequest = {
     user: string;
 };
 
@@ -5390,6 +5925,20 @@ export type AdminService = {
     readonly terms_and_conditions_url: string | null;
     readonly website_url: string | null;
     readonly active: boolean;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminServiceRequest = {
+    name: string;
+    description?: string | null;
+    tags?: Array<string> | null;
+    url: string;
+    management_url?: string | null;
 };
 
 export type AdminServiceResponse = {
@@ -5558,6 +6107,20 @@ export type AdminTransactionCollectionTransaction = {
     readonly expires: number;
 };
 
+/**
+ * A mixin that handles the application of permissions to properties on a
+ * serializer using the built-in permissions system.
+ *
+ * NOTE : This only works if the following conditions are met:
+ * - The request context must contain a user.
+ * - The class this mixin is attached must be a serializer.
+ * - The class this mixin is attached to must have a Meta.model defined.
+ * - The Meta.model class must have a PERMISSION_TYPE defined.
+ */
+export type AdminTransactionCollectionTransactionRequest = {
+    archived?: boolean;
+};
+
 export type AdminTransactionCollectionTransactionResponse = {
     status: string;
     data: AdminTransactionCollectionTransaction;
@@ -5681,14 +6244,21 @@ export type AdminTransactionTransition = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateAccountDefinitionGroup = {
-    group: ReducedGroup;
+export type AdminUpdateAccountDefinitionGroupAssetRequest = {
+    archived?: boolean;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminUpdateAccountDefinitionGroupRequest = {
     default?: boolean;
     primary?: boolean;
     currencies?: Array<string>;
     archived?: boolean;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -5697,33 +6267,16 @@ export type AdminUpdateAccountDefinitionGroup = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateAccountDefinitionGroupAsset = {
-    currency: ReducedAsset;
-    archived?: boolean;
-    readonly created: number;
-    readonly updated: number;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminUpdateAsset = {
-    readonly code: string | null;
+export type AdminUpdateAssetRequest = {
     display_code?: string | null;
     description?: string | null;
     symbol?: string | null;
     unit?: string | null;
-    readonly divisibility: number;
-    icon?: string | null;
+    icon?: Blob | File | null;
     metadata?: {
         [key: string]: unknown;
     } | null;
     archived?: boolean;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -5732,7 +6285,7 @@ export type AdminUpdateAsset = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateAuthToken = {
+export type AdminUpdateAuthTokenRequest = {
     expires: number;
 };
 
@@ -5742,14 +6295,7 @@ export type AdminUpdateAuthToken = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateAuthenticatorRule = {
-    readonly id: number;
-    /**
-     * * `authentication` - Authentication
-     * * `authorization` - Authorization
-     * * `setup` - Setup
-     */
-    type: 'authentication' | 'authorization' | 'setup';
+export type AdminUpdateAuthenticatorRuleRequest = {
     /**
      * * `ephemeral` - Ephemeral
      * * `durable` - Durable
@@ -5757,11 +6303,8 @@ export type AdminUpdateAuthenticatorRule = {
      */
     durability: 'ephemeral' | 'durable' | 'permanent';
     authenticator_types: Array<'totp' | 'sms' | 'static'>;
-    group: ReducedGroup;
     duration?: number | null;
     session_age?: number | null;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -5770,16 +6313,11 @@ export type AdminUpdateAuthenticatorRule = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateCompanyLink = {
-    readonly id: number;
-    readonly key: string | null;
-    counterparty: AdminCompanyLinkCounterparty;
+export type AdminUpdateCompanyLinkRequest = {
     /**
      * * `complete` - Complete
      */
     status: 'complete';
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -5788,7 +6326,7 @@ export type AdminUpdateCompanyLink = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateCompanySettings = {
+export type AdminUpdateCompanySettingsRequest = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
@@ -5821,21 +6359,15 @@ export type AdminUpdateCompanySettings = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateExtendedAccount = {
-    readonly reference: string;
+export type AdminUpdateExtendedAccountRequest = {
     name?: string;
-    readonly definition: string | null;
     label?: string | null;
     primary?: boolean;
     recon?: boolean;
-    user: ReducedUserInfo;
-    readonly currencies: Array<AdminAccountAccountAsset>;
     metadata?: {
         [key: string]: unknown;
     } | null;
     archived?: boolean;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -5848,18 +6380,7 @@ export type AdminUpdateExtendedAccount = {
  * - The class this mixin is attached to must have a Meta.model defined.
  * - The Meta.model class must have a PERMISSION_TYPE defined.
  */
-export type AdminUpdateExtendedTransaction = {
-    readonly id: string;
-    readonly collection: string;
-    readonly parent: string | null;
-    partner: AdminPartnerTransaction | null;
-    readonly index: number;
-    /**
-     * * `credit` - Credit
-     * * `debit` - Debit
-     */
-    tx_type: 'credit' | 'debit';
-    readonly subtype: string | null;
+export type AdminUpdateExtendedTransactionRequest = {
     note?: string;
     metadata?: {
         [key: string]: unknown;
@@ -5870,27 +6391,7 @@ export type AdminUpdateExtendedTransaction = {
      * * `Failed` - Failed
      */
     status?: 'Pending' | 'Complete' | 'Failed';
-    readonly reference: string | null;
-    readonly amount: number;
-    readonly fee: number;
-    readonly total_amount: number;
-    readonly balance: number;
-    readonly label: string;
-    readonly account: string;
-    currency: ReducedAsset;
-    account_currency: TransactionAccountAsset;
-    creator: ReducedUserInfo;
-    user: ReducedUserInfo;
-    /**
-     * @deprecated
-     */
-    readonly fees: Array<TransactionFee>;
-    readonly inclusive: boolean;
     archived?: boolean;
-    readonly executed: number | null;
-    readonly expires: number;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -5926,7 +6427,7 @@ export type AdminUpdateGroup = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateGroupFee = {
+export type AdminUpdateGroupFeeRequest = {
     name?: string | null;
     /**
      * @deprecated
@@ -5942,9 +6443,32 @@ export type AdminUpdateGroupFee = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateGroupLimit = {
+export type AdminUpdateGroupLimitRequest = {
     begin?: number | null;
     end?: number | null;
+    archived?: boolean;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminUpdateGroupRequest = {
+    name: string;
+    label?: string | null;
+    description?: string | null;
+    icon?: Blob | File | null;
+    /**
+     * * `system` - System
+     * * `admin` - Admin
+     * * `user` - User
+     */
+    section?: 'system' | 'admin' | 'user';
+    default: boolean;
+    public: boolean;
+    listed: boolean;
     archived?: boolean;
 };
 
@@ -5959,7 +6483,7 @@ export type AdminUpdateGroupResponse = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateGroupSettings = {
+export type AdminUpdateGroupSettingsRequest = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
@@ -5977,7 +6501,7 @@ export type AdminUpdateGroupSettings = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateGroupTierFee = {
+export type AdminUpdateGroupTierFeeRequest = {
     name?: string | null;
     /**
      * @deprecated
@@ -5993,7 +6517,7 @@ export type AdminUpdateGroupTierFee = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateGroupTierLimit = {
+export type AdminUpdateGroupTierLimitRequest = {
     begin?: number | null;
     end?: number | null;
     archived?: boolean;
@@ -6005,7 +6529,7 @@ export type AdminUpdateGroupTierLimit = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateGroupTierSettings = {
+export type AdminUpdateGroupTierSettingsRequest = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
@@ -6018,49 +6542,12 @@ export type AdminUpdateGroupTierSettings = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateOauthClient = {
-    readonly id: string;
-    /**
-     * * `apple` - Apple
-     * * `google` - Google
-     */
-    provider: 'apple' | 'google';
+export type AdminUpdateOauthClientRequest = {
     application: string;
-    readonly client_id: string;
     data?: {
         [key: string]: unknown;
     } | null;
     archived?: boolean;
-    readonly created: number;
-    readonly updated: number;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminUpdateService = {
-    readonly id: number;
-    readonly company: number | null;
-    readonly slug: string | null;
-    /**
-     * * `system` - System
-     * * `public` - Public
-     * * `private` - Private
-     */
-    type: 'system' | 'public' | 'private';
-    name?: string;
-    description?: string | null;
-    tags?: Array<string> | null;
-    readonly verified: boolean;
-    readonly public: boolean;
-    url?: string;
-    management_url?: string | null;
-    readonly terms_and_conditions_url: string | null;
-    readonly website_url: string | null;
-    active: boolean;
 };
 
 /**
@@ -6126,12 +6613,13 @@ export type AdminUpdateServicePermissionResponse = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateTransactionCollection = {
-    readonly id: string;
-    readonly transactions: Array<AdminTransactionCollectionTransaction>;
-    archived?: boolean;
-    readonly created: number;
-    readonly updated: number;
+export type AdminUpdateServiceRequest = {
+    name?: string;
+    description?: string | null;
+    tags?: Array<string> | null;
+    url?: string;
+    management_url?: string | null;
+    active: boolean;
 };
 
 /**
@@ -6140,19 +6628,21 @@ export type AdminUpdateTransactionCollection = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateTransactionSubtype = {
-    readonly id: number;
+export type AdminUpdateTransactionCollectionRequest = {
+    archived?: boolean;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminUpdateTransactionSubtypeRequest = {
     name: string;
     label?: string | null;
     description?: string | null;
-    /**
-     * * `credit` - Credit
-     * * `debit` - Debit
-     */
-    tx_type: 'credit' | 'debit';
     archived?: boolean;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -6161,35 +6651,12 @@ export type AdminUpdateTransactionSubtype = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateTransactionTransition = {
-    readonly id: string;
-    readonly set: string;
-    transaction: AdminExtendedTransaction;
+export type AdminUpdateTransactionTransitionRequest = {
     /**
      * * `approved` - Approved
      * * `declined` - Declined
      */
     status: 'approved' | 'declined';
-    /**
-     * * `Initiating` - Initiating
-     * * `Quoted` - Quoted
-     * * `Pending` - Pending
-     * * `Complete` - Complete
-     * * `Failed` - Failed
-     */
-    from_status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
-    /**
-     * * `Initiating` - Initiating
-     * * `Quoted` - Quoted
-     * * `Pending` - Pending
-     * * `Complete` - Complete
-     * * `Failed` - Failed
-     */
-    to_status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
-    readonly index: number;
-    readonly archived: boolean;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -6198,10 +6665,7 @@ export type AdminUpdateTransactionTransition = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateUserDocument = {
-    readonly id: number;
-    user: ReducedUserInfo;
-    readonly file: string;
+export type AdminUpdateUserDocumentRequest = {
     /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
@@ -6223,24 +6687,16 @@ export type AdminUpdateUserDocument = {
  * Information about user setting and permissions shown in
  * the ExtendedUserInfoSerializer
  */
-export type AdminUpdateUserInfo = {
-    readonly id: string;
+export type AdminUpdateUserInfoRequest = {
     username: string | null;
     email?: string;
     mobile?: string;
     first_name?: string | null;
     middle_name?: string | null;
     last_name?: string | null;
-    profile?: string | null;
-    readonly temporary: boolean | null;
+    profile?: Blob | File | null;
     id_number?: string | null;
     birth_date?: string | null;
-    currency: ReducedAsset;
-    readonly account: string;
-    readonly balance: number;
-    readonly available_balance: number;
-    readonly company: string;
-    readonly owner: boolean;
     language?: string;
     /**
      * * `AF` - Afghanistan
@@ -6779,11 +7235,6 @@ export type AdminUpdateUserInfo = {
     website?: string | null;
     business_name?: string | null;
     /**
-     * @deprecated
-     */
-    readonly verified: boolean;
-    verification: UserVerification;
-    /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
@@ -6791,8 +7242,6 @@ export type AdminUpdateUserInfo = {
      * * `verified` - Verified
      */
     status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
-    readonly created: number;
-    readonly updated: number;
     deactivated?: boolean;
     /**
      * * `retaining` - Retaining
@@ -6801,8 +7250,6 @@ export type AdminUpdateUserInfo = {
      */
     retention_state?: 'retaining' | 'delete_requested' | 'deleted';
     archived?: boolean;
-    readonly last_login: number;
-    settings: UserSettings;
 };
 
 /**
@@ -6811,7 +7258,7 @@ export type AdminUpdateUserInfo = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateUserSettings = {
+export type AdminUpdateUserSettingsRequest = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
@@ -7105,6 +7552,289 @@ export type AdminUserAddress = {
     readonly updated: number;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminUserAddressRequest = {
+    /**
+     * * `permanent` - Permanent
+     * * `contact` - Contact
+     * * `shipping` - Shipping
+     * * `billing` - Billing
+     * * `business` - Business
+     */
+    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business';
+    line_1?: string | null;
+    line_2?: string | null;
+    city?: string | null;
+    state_province?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    postal_code?: string | null;
+    /**
+     * * `obsolete` - Obsolete
+     * * `declined` - Declined
+     * * `pending` - Pending
+     * * `incomplete` - Incomplete
+     * * `verified` - Verified
+     */
+    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    archived?: boolean;
+};
+
 export type AdminUserAddressResponse = {
     status: string;
     data: AdminUserAddress;
@@ -7196,6 +7926,55 @@ export type AdminUserBankAccountAssetResponse = {
     data: AdminUserBankAccountAsset;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminUserBankAccountRequest = {
+    name?: string | null;
+    owner?: BankOwnerRequest | null;
+    number?: string | null;
+    type?: string | null;
+    /**
+     * * `individual` - Individual
+     * * `business` - Business
+     */
+    beneficiary_type?: 'individual' | 'business' | null;
+    bank_name?: string | null;
+    bank_code?: string | null;
+    bank_currency?: string | null;
+    branch_code?: string | null;
+    branch_address?: AdminUserBankBranchAddressRequest;
+    branch_address_text?: string | null;
+    routing_number?: string | null;
+    swift?: string | null;
+    iban?: string | null;
+    bic?: string | null;
+    clabe?: string | null;
+    check_digit?: string | null;
+    pix_key?: string | null;
+    br_code?: string | null;
+    /**
+     * * `obsolete` - Obsolete
+     * * `declined` - Declined
+     * * `pending` - Pending
+     * * `incomplete` - Incomplete
+     * * `verified` - Verified
+     */
+    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+    /**
+     * * `withdraw` - Withdraw
+     * * `deposit` - Deposit
+     */
+    action?: 'withdraw' | 'deposit' | null;
+};
+
 export type AdminUserBankAccountResponse = {
     status: string;
     data: AdminUserBankAccount;
@@ -7208,6 +7987,273 @@ export type AdminUserBankAccountResponse = {
  * values with complex, nested serializations
  */
 export type AdminUserBankBranchAddress = {
+    line_1?: string | null;
+    line_2?: string | null;
+    city?: string | null;
+    state_province?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    postal_code?: string | null;
+    state_code?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminUserBankBranchAddressRequest = {
     line_1?: string | null;
     line_2?: string | null;
     city?: string | null;
@@ -8259,6 +9305,18 @@ export type AdminUserPermission = {
     } | null;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminUserPermissionRequest = {
+    properties?: {
+        [key: string]: unknown;
+    } | null;
+};
+
 export type AdminUserPermissionResponse = {
     status: string;
     data: AdminUserPermission;
@@ -8335,6 +9393,43 @@ export type AdminUserWalletAccountAssetListResponse = {
 export type AdminUserWalletAccountAssetResponse = {
     status: string;
     data: AdminUserWalletAccountAsset;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminUserWalletAccountRequest = {
+    username?: string | null;
+    email?: string | null;
+    mobile?: string | null;
+    name?: string | null;
+    /**
+     * * `paypal` - Paypal
+     * * `venmo` - Venmo
+     * * `other` - Other
+     */
+    type?: 'paypal' | 'venmo' | 'other';
+    wallet_currency?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    /**
+     * * `obsolete` - Obsolete
+     * * `declined` - Declined
+     * * `pending` - Pending
+     * * `incomplete` - Incomplete
+     * * `verified` - Verified
+     */
+    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    archived?: boolean;
+    /**
+     * * `withdraw` - Withdraw
+     * * `deposit` - Deposit
+     */
+    action?: 'withdraw' | 'deposit' | null;
 };
 
 export type AdminUserWalletAccountResponse = {
@@ -8783,7 +9878,561 @@ export type BankOwnerAddress = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
+export type BankOwnerAddressRequest = {
+    line_1?: string | null;
+    line_2?: string | null;
+    city?: string | null;
+    state_province?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    postal_code?: string | null;
+    state_code?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type BankOwnerRequest = {
+    first_name?: string | null;
+    middle_name?: string | null;
+    last_name?: string | null;
+    full_name?: string | null;
+    phone_number?: string | null;
+    email_address?: string | null;
+    company_name?: string | null;
+    ein_tin?: string | null;
+    address?: BankOwnerAddressRequest;
+    address_text?: string | null;
+    cpf_cpnj?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
 export type CompanyBankBranchAddress = {
+    line_1?: string | null;
+    line_2?: string | null;
+    city?: string | null;
+    state_province?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    postal_code?: string | null;
+    state_code?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type CompanyBankBranchAddressRequest = {
     line_1?: string | null;
     line_2?: string | null;
     city?: string | null;
@@ -9049,6 +10698,10 @@ export type CompanyDisallowedTransactionSubtype = {
     currency: ReducedAsset;
 };
 
+export type CompanyDisallowedTransactionSubtypeRequest = {
+    subtype: ReducedTransactionSubtypeRequest;
+};
+
 /**
  * A ModelSerializer that takes additional arguments for
  * "fields", "omit" and "expand" in order to
@@ -9088,23 +10741,53 @@ export type CompanySettings = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateGroupTierRequirementSetItem = {
-    readonly id: number;
+export type CompanySettingsRequest = {
+    allow_transactions?: boolean;
+    allow_debit_transactions?: boolean;
+    allow_credit_transactions?: boolean;
+    disallowed_transaction_subtypes: Array<CompanyDisallowedTransactionSubtypeRequest>;
+    require_transaction_subtypes?: boolean;
+    require_verification?: boolean;
+    allow_registrations?: boolean;
+    allow_overdrafts?: boolean;
+    allow_session_durations?: boolean;
+    require_registration?: boolean;
+    default_session_duration?: number;
+    default_transaction_lifespan?: number;
+    require_terms_and_conditions?: boolean;
+    require_privacy_policy?: boolean;
+    account_reference_length?: number;
+    password_reset_url?: string | null;
+    password_set_url?: string | null;
+    email_verification_url?: string | null;
+    deactivate_verification_url?: string | null;
+    request_delete_verification_url?: string | null;
+    terms_and_conditions_url?: string | null;
+    privacy_policy_url?: string | null;
+    nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type CreateGroupTierRequirementSetItemRequest = {
     name?: string | null;
     description?: string | null;
     weight?: number | null;
-    readonly created: number;
-    readonly updated: number;
 };
 
-export type CreateGroupTierRequirementSetItemRule = ResourceRequirementRule;
+export type CreateGroupTierRequirementSetItemRuleRequest = ResourceRequirementRuleRequest;
 
 /**
  * Generic permission handling (No properties support).
  * - Services
  * - Auth tokens
  */
-export type CreatePermission = {
+export type CreatePermissionRequest = {
     /**
      * * `system` - System
      * * `admin` - Admin
@@ -9156,8 +10839,7 @@ export type CreatePermission = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateUpdateGroupTierRequirementSet = {
-    readonly id: number;
+export type CreateUpdateGroupTierRequirementSetRequest = {
     name?: string | null;
     description?: string | null;
     /**
@@ -9166,10 +10848,7 @@ export type CreateUpdateGroupTierRequirementSet = {
      */
     condition: 'all' | 'any';
     min_condition_matches?: number | null;
-    readonly items: Array<GroupTierRequirementSetItem>;
     weight?: number | null;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -9178,16 +10857,12 @@ export type CreateUpdateGroupTierRequirementSet = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type DeviceApp = {
-    readonly id: number;
+export type DeviceAppRequest = {
     name?: string | null;
     /**
      * * `expo` - Expo
      */
     type: 'expo';
-    readonly token: string | null;
-    readonly created: number;
-    readonly updated: number;
 };
 
 export type ExtendedAuthenticated = {
@@ -9796,6 +11471,10 @@ export type GroupDisallowedTransactionSubtype = {
     account_definition: ReducedAccountDefinition;
 };
 
+export type GroupDisallowedTransactionSubtypeRequest = {
+    subtype: ReducedTransactionSubtypeRequest;
+};
+
 /**
  * A ModelSerializer that takes additional arguments for
  * "fields", "omit" and "expand" in order to
@@ -9858,6 +11537,10 @@ export type GroupTierDisallowedTransactionSubtype = {
     account_definition: ReducedAccountDefinition;
 };
 
+export type GroupTierDisallowedTransactionSubtypeRequest = {
+    subtype: ReducedTransactionSubtypeRequest;
+};
+
 /**
  * A ModelSerializer that takes additional arguments for
  * "fields", "omit" and "expand" in order to
@@ -9879,6 +11562,23 @@ export type GroupTierFee = {
      * Convert the Fee value from Decimal to int based on asset divisibility
      */
     readonly value: number;
+    percentage?: number;
+    description: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type GroupTierFeeRequest = {
+    name: string | null;
+    /**
+     * * `credit` - Credit
+     * * `debit` - Debit
+     */
+    tx_type: 'credit' | 'debit';
     percentage?: number;
     description: string | null;
 };
@@ -9924,6 +11624,30 @@ export type GroupTierLimit = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
+export type GroupTierLimitRequest = {
+    /**
+     * * `max` - Maximum
+     * * `day_max` - Maximum per day
+     * * `week_max` - Maximum per week
+     * * `month_max` - Maximum per month
+     * * `min` - Minimum
+     * * `overdraft` - Overdraft
+     */
+    type: 'max' | 'day_max' | 'week_max' | 'month_max' | 'min' | 'overdraft';
+    /**
+     * * `credit` - Credit
+     * * `debit` - Debit
+     */
+    tx_type: 'credit' | 'debit';
+    currency: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
 export type GroupTierRequirementSet = {
     readonly id: number;
     parent?: number | null;
@@ -9961,12 +11685,26 @@ export type GroupTierRequirementSetItem = {
     readonly updated: number;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type GroupTierRequirementSetItemRequest = {
+    name?: string | null;
+    description?: string | null;
+    weight?: number | null;
+};
+
 export type GroupTierRequirementSetItemResponse = {
     status: string;
     data: GroupTierRequirementSetItem;
 };
 
 export type GroupTierRequirementSetItemRule = ResourceRequirementRule;
+
+export type GroupTierRequirementSetItemRuleRequest = ResourceRequirementRuleRequest;
 
 export type GroupTierRequirementSetResponse = {
     status: string;
@@ -9986,12 +11724,30 @@ export type GroupTierSettings = {
     disallowed_transaction_subtypes: Array<GroupTierDisallowedTransactionSubtype>;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type GroupTierSettingsRequest = {
+    allow_transactions?: boolean;
+    allow_debit_transactions?: boolean;
+    allow_credit_transactions?: boolean;
+    disallowed_transaction_subtypes: Array<GroupTierDisallowedTransactionSubtypeRequest>;
+};
+
 export type GroupTierSettingsResponse = {
     status: string;
     data: GroupTierSettings;
 };
 
 export type LegalTermVersionUrl = {
+    name: string;
+    url: string;
+};
+
+export type LegalTermVersionUrlRequest = {
     name: string;
     url: string;
 };
@@ -10694,7 +12450,7 @@ export type PaginatedUserPermissionListResponse = {
 /**
  * Serializer for confirming a password reset attempt.
  */
-export type PasswordResetConfirm = {
+export type PasswordResetConfirmRequest = {
     uid: string;
     token: string;
     /**
@@ -10711,22 +12467,12 @@ export type PasswordResetConfirm = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminAccountAccountAsset = {
-    readonly id?: string;
-    readonly balance?: number;
-    readonly available_balance?: number;
-    currency?: ReducedAsset;
-    readonly limits?: Array<AccountAssetLimit>;
-    readonly fees?: Array<AdminAccountAssetFee>;
+export type PatchedAdminAccountAccountAssetRequest = {
     metadata?: {
         [key: string]: unknown;
     } | null;
     active?: boolean;
-    settings?: AccountAssetSettings;
-    readonly subtypes?: Array<TransactionSubtype>;
     archived?: boolean;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -10735,7 +12481,7 @@ export type PatchedAdminAccountAccountAsset = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminAccountAccountAssetSettingsUpdate = {
+export type PatchedAdminAccountAccountAssetSettingsUpdateRequest = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
@@ -10747,8 +12493,55 @@ export type PatchedAdminAccountAccountAssetSettingsUpdate = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminCompany = {
-    readonly id?: string;
+export type PatchedAdminCompanyAddressRequest = {
+    line_1?: string | null;
+    line_2?: string | null;
+    city?: string | null;
+    state_province?: string | null;
+    country?: string | null;
+    postal_code?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type PatchedAdminCompanyBankAccountRequest = {
+    name?: string | null;
+    number?: string | null;
+    type?: string | null;
+    bank_name?: string | null;
+    bank_code?: string | null;
+    bank_currency?: string | null;
+    branch_code?: string | null;
+    branch_address?: CompanyBankBranchAddressRequest;
+    routing_number?: string | null;
+    swift?: string | null;
+    iban?: string | null;
+    bic?: string | null;
+    clabe?: string | null;
+    check_digit?: string | null;
+    pix_key?: string | null;
+    br_code?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+    /**
+     * * `deposit` - Deposit
+     */
+    action?: 'deposit' | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type PatchedAdminCompanyRequest = {
     name?: string | null;
     legal_name?: string | null;
     description?: string | null;
@@ -11009,20 +12802,12 @@ export type PatchedAdminCompany = {
      * * `ZW` - Zimbabwe
      */
     country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
-    logo?: string | null;
-    icon?: string | null;
-    address?: AdminCompanyAddress;
-    settings?: CompanySettings;
-    readonly services?: Array<ReducedService>;
+    logo?: Blob | File | null;
+    icon?: Blob | File | null;
     public?: boolean;
     metadata?: {
         [key: string]: unknown;
     } | null;
-    /**
-     * * `test` - Test
-     * * `production` - Production
-     */
-    mode?: 'test' | 'production';
     /**
      * * `pending` - Pending
      * * `active` - Active
@@ -11030,10 +12815,7 @@ export type PatchedAdminCompany = {
      * * `suspended` - Suspended
      */
     status?: 'pending' | 'active' | 'restricted' | 'suspended';
-    readonly created?: number;
-    readonly updated?: number;
     system_email?: string;
-    owner?: ReducedUserInfo;
 };
 
 /**
@@ -11042,60 +12824,7 @@ export type PatchedAdminCompany = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminCompanyAddress = {
-    line_1?: string | null;
-    line_2?: string | null;
-    city?: string | null;
-    state_province?: string | null;
-    country?: string | null;
-    postal_code?: string | null;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminCompanyBankAccount = {
-    readonly id?: number;
-    name?: string | null;
-    number?: string | null;
-    type?: string | null;
-    bank_name?: string | null;
-    bank_code?: string | null;
-    bank_currency?: string | null;
-    branch_code?: string | null;
-    branch_address?: CompanyBankBranchAddress;
-    routing_number?: string | null;
-    swift?: string | null;
-    iban?: string | null;
-    bic?: string | null;
-    clabe?: string | null;
-    check_digit?: string | null;
-    pix_key?: string | null;
-    br_code?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    readonly currencies?: Array<ReducedAsset>;
-    archived?: boolean;
-    /**
-     * * `deposit` - Deposit
-     */
-    action?: 'deposit' | null;
-    readonly created?: number;
-    readonly updated?: number;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminCompanyWalletAccount = {
-    readonly id?: number;
+export type PatchedAdminCompanyWalletAccountRequest = {
     username?: string | null;
     email?: string | null;
     mobile?: string | null;
@@ -11110,14 +12839,11 @@ export type PatchedAdminCompanyWalletAccount = {
     metadata?: {
         [key: string]: unknown;
     } | null;
-    readonly currencies?: Array<ReducedAsset>;
     /**
      * * `deposit` - Deposit
      */
     action?: 'deposit' | null;
     archived?: boolean;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -11126,8 +12852,7 @@ export type PatchedAdminCompanyWalletAccount = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminCreateAccessControlRule = {
-    readonly id?: number;
+export type PatchedAdminCreateAccessControlRuleRequest = {
     /**
      * * `allow` - Allow
      * * `deny` - Deny
@@ -11139,8 +12864,6 @@ export type PatchedAdminCreateAccessControlRule = {
     type?: 'ip';
     value?: string;
     label?: string | null;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -11149,7 +12872,7 @@ export type PatchedAdminCreateAccessControlRule = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminCreateAccountAccountAssetFee = {
+export type PatchedAdminCreateAccountAccountAssetFeeRequest = {
     name?: string | null;
     /**
      * @deprecated
@@ -11163,7 +12886,7 @@ export type PatchedAdminCreateAccountAccountAssetFee = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminCreateAccountAccountAssetLimit = {
+export type PatchedAdminCreateAccountAccountAssetLimitRequest = {
     begin?: number | null;
     end?: number | null;
 };
@@ -11174,7 +12897,7 @@ export type PatchedAdminCreateAccountAccountAssetLimit = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminCreateUpdateAccountDefinition = {
+export type PatchedAdminCreateUpdateAccountDefinitionRequest = {
     name?: string;
     label?: string | null;
     recon?: boolean;
@@ -11187,19 +12910,10 @@ export type PatchedAdminCreateUpdateAccountDefinition = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminCreateUpdateLegalTerm = {
-    readonly id?: number;
-    /**
-     * * `system` - System
-     * * `company` - Company
-     */
-    type?: 'system' | 'company';
+export type PatchedAdminCreateUpdateLegalTermRequest = {
     name?: string;
     description?: string | null;
-    readonly versions?: Array<AdminReducedLegalTermVersion>;
     archived?: boolean;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -11208,11 +12922,9 @@ export type PatchedAdminCreateUpdateLegalTerm = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminCryptoAccount = {
-    readonly id?: number;
+export type PatchedAdminCryptoAccountRequest = {
     address?: string;
     name?: string | null;
-    readonly code?: string | null;
     /**
      * * `bitcoin` - Bitcoin
      * * `ethereum` - Ethereum
@@ -11228,7 +12940,6 @@ export type PatchedAdminCryptoAccount = {
     metadata?: {
         [key: string]: unknown;
     } | null;
-    user?: ReducedUserInfo;
     /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
@@ -11237,16 +12948,12 @@ export type PatchedAdminCryptoAccount = {
      * * `verified` - Verified
      */
     status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
-    readonly currencies?: Array<ReducedAsset>;
-    readonly account_currencies?: Array<ReducedAccountAsset>;
     archived?: boolean;
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
      */
     action?: 'withdraw' | 'deposit' | null;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -11255,37 +12962,13 @@ export type PatchedAdminCryptoAccount = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminDevice = {
-    readonly id?: number;
-    user?: ReducedUserInfo;
-    readonly imei?: string;
-    name?: string | null;
-    readonly apps?: Array<ReducedDeviceApp>;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    archived?: boolean;
-    readonly created?: number;
-    readonly updated?: number;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminDeviceApp = {
-    readonly id?: number;
+export type PatchedAdminDeviceAppRequest = {
     name?: string | null;
     /**
      * * `expo` - Expo
      */
     type?: 'expo';
-    readonly token?: string | null;
     archived?: boolean;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -11294,8 +12977,21 @@ export type PatchedAdminDeviceApp = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminDocumentType = {
-    readonly id?: number;
+export type PatchedAdminDeviceRequest = {
+    name?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type PatchedAdminDocumentTypeRequest = {
     name?: string | null;
     description?: string | null;
     related_resources?: Array<'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount'>;
@@ -11303,8 +12999,6 @@ export type PatchedAdminDocumentType = {
         [key: string]: unknown;
     } | null;
     archived?: boolean;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -11313,16 +13007,10 @@ export type PatchedAdminDocumentType = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminEmail = {
-    user?: ReducedUserInfo;
-    readonly id?: number;
-    readonly email?: string;
+export type PatchedAdminEmailRequest = {
     primary?: boolean;
     verified?: boolean;
     archived?: boolean;
-    readonly temporary?: boolean | null;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -11331,23 +13019,11 @@ export type PatchedAdminEmail = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminExtendedGroupTier = {
-    readonly id?: number;
+export type PatchedAdminExtendedGroupTierRequest = {
     level?: number;
     name?: string | null;
     description?: string | null;
-    /**
-     * @deprecated
-     */
-    readonly limits?: Array<GroupTierLimit>;
-    /**
-     * @deprecated
-     */
-    readonly fees?: Array<GroupTierFee>;
-    settings?: GroupTierSettings;
     archived?: boolean;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -11356,51 +13032,7 @@ export type PatchedAdminExtendedGroupTier = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminGroupPermission = {
-    readonly id?: number;
-    /**
-     * * `system` - System
-     * * `admin` - Admin
-     * * `user` - User
-     */
-    section?: 'system' | 'admin' | 'user';
-    /**
-     * * `accesscontrolrule` - Access Control Rule
-     * * `account` - Account
-     * * `accountdefinition` - Account Definition
-     * * `address` - Address
-     * * `currency` - Currency
-     * * `bankaccount` - Bank Account
-     * * `company` - Company
-     * * `cryptoaccount` - Crypto Account
-     * * `device` - Device
-     * * `document` - Document
-     * * `email` - Email
-     * * `group` - Group
-     * * `jwt` - Jwt
-     * * `legalterm` - Legal Term
-     * * `mfa` - Mfa
-     * * `mfarule` - Mfa Rule
-     * * `mobile` - Mobile
-     * * `notification` - Notification
-     * * `oauthclient` - Oauth Client
-     * * `permission` - Permission
-     * * `request` - Request
-     * * `service` - Service
-     * * `token` - Token
-     * * `transaction` - Transaction
-     * * `transactionsubtypes` - Transaction Subtypes
-     * * `user` - User
-     * * `webhook` - Webhook
-     */
-    type?: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
-    /**
-     * * `view` - View
-     * * `add` - Add
-     * * `change` - Change
-     * * `delete` - Delete
-     */
-    level?: 'view' | 'add' | 'change' | 'delete';
+export type PatchedAdminGroupPermissionRequest = {
     properties?: {
         [key: string]: unknown;
     } | null;
@@ -11412,16 +13044,12 @@ export type PatchedAdminGroupPermission = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminLegalTermVersion = {
-    readonly id?: number;
-    readonly version?: number;
+export type PatchedAdminLegalTermVersionRequest = {
     note?: string | null;
     content?: string | null;
     url?: string | null;
-    urls?: Array<LegalTermVersionUrl> | null;
-    readonly created?: number;
+    urls?: Array<LegalTermVersionUrlRequest> | null;
     archived?: boolean;
-    readonly updated?: number;
 };
 
 /**
@@ -11430,16 +13058,10 @@ export type PatchedAdminLegalTermVersion = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminMobile = {
-    user?: ReducedUserInfo;
-    readonly id?: number;
-    readonly number?: string;
+export type PatchedAdminMobileRequest = {
     primary?: boolean;
     verified?: boolean;
     archived?: boolean;
-    readonly temporary?: boolean | null;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -11448,14 +13070,21 @@ export type PatchedAdminMobile = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateAccountDefinitionGroup = {
-    group?: ReducedGroup;
+export type PatchedAdminUpdateAccountDefinitionGroupAssetRequest = {
+    archived?: boolean;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type PatchedAdminUpdateAccountDefinitionGroupRequest = {
     default?: boolean;
     primary?: boolean;
     currencies?: Array<string>;
     archived?: boolean;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -11464,33 +13093,16 @@ export type PatchedAdminUpdateAccountDefinitionGroup = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateAccountDefinitionGroupAsset = {
-    currency?: ReducedAsset;
-    archived?: boolean;
-    readonly created?: number;
-    readonly updated?: number;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminUpdateAsset = {
-    readonly code?: string | null;
+export type PatchedAdminUpdateAssetRequest = {
     display_code?: string | null;
     description?: string | null;
     symbol?: string | null;
     unit?: string | null;
-    readonly divisibility?: number;
-    icon?: string | null;
+    icon?: Blob | File | null;
     metadata?: {
         [key: string]: unknown;
     } | null;
     archived?: boolean;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -11499,7 +13111,7 @@ export type PatchedAdminUpdateAsset = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateAuthToken = {
+export type PatchedAdminUpdateAuthTokenRequest = {
     expires?: number;
 };
 
@@ -11509,14 +13121,7 @@ export type PatchedAdminUpdateAuthToken = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateAuthenticatorRule = {
-    readonly id?: number;
-    /**
-     * * `authentication` - Authentication
-     * * `authorization` - Authorization
-     * * `setup` - Setup
-     */
-    type?: 'authentication' | 'authorization' | 'setup';
+export type PatchedAdminUpdateAuthenticatorRuleRequest = {
     /**
      * * `ephemeral` - Ephemeral
      * * `durable` - Durable
@@ -11524,11 +13129,8 @@ export type PatchedAdminUpdateAuthenticatorRule = {
      */
     durability?: 'ephemeral' | 'durable' | 'permanent';
     authenticator_types?: Array<'totp' | 'sms' | 'static'>;
-    group?: ReducedGroup;
     duration?: number | null;
     session_age?: number | null;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -11537,16 +13139,11 @@ export type PatchedAdminUpdateAuthenticatorRule = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateCompanyLink = {
-    readonly id?: number;
-    readonly key?: string | null;
-    counterparty?: AdminCompanyLinkCounterparty;
+export type PatchedAdminUpdateCompanyLinkRequest = {
     /**
      * * `complete` - Complete
      */
     status?: 'complete';
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -11555,7 +13152,7 @@ export type PatchedAdminUpdateCompanyLink = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateCompanySettings = {
+export type PatchedAdminUpdateCompanySettingsRequest = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
@@ -11588,21 +13185,15 @@ export type PatchedAdminUpdateCompanySettings = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateExtendedAccount = {
-    readonly reference?: string;
+export type PatchedAdminUpdateExtendedAccountRequest = {
     name?: string;
-    readonly definition?: string | null;
     label?: string | null;
     primary?: boolean;
     recon?: boolean;
-    user?: ReducedUserInfo;
-    readonly currencies?: Array<AdminAccountAccountAsset>;
     metadata?: {
         [key: string]: unknown;
     } | null;
     archived?: boolean;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -11615,18 +13206,7 @@ export type PatchedAdminUpdateExtendedAccount = {
  * - The class this mixin is attached to must have a Meta.model defined.
  * - The Meta.model class must have a PERMISSION_TYPE defined.
  */
-export type PatchedAdminUpdateExtendedTransaction = {
-    readonly id?: string;
-    readonly collection?: string;
-    readonly parent?: string | null;
-    partner?: AdminPartnerTransaction | null;
-    readonly index?: number;
-    /**
-     * * `credit` - Credit
-     * * `debit` - Debit
-     */
-    tx_type?: 'credit' | 'debit';
-    readonly subtype?: string | null;
+export type PatchedAdminUpdateExtendedTransactionRequest = {
     note?: string;
     metadata?: {
         [key: string]: unknown;
@@ -11637,27 +13217,7 @@ export type PatchedAdminUpdateExtendedTransaction = {
      * * `Failed` - Failed
      */
     status?: 'Pending' | 'Complete' | 'Failed';
-    readonly reference?: string | null;
-    readonly amount?: number;
-    readonly fee?: number;
-    readonly total_amount?: number;
-    readonly balance?: number;
-    readonly label?: string;
-    readonly account?: string;
-    currency?: ReducedAsset;
-    account_currency?: TransactionAccountAsset;
-    creator?: ReducedUserInfo;
-    user?: ReducedUserInfo;
-    /**
-     * @deprecated
-     */
-    readonly fees?: Array<TransactionFee>;
-    readonly inclusive?: boolean;
     archived?: boolean;
-    readonly executed?: number | null;
-    readonly expires?: number;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -11666,34 +13226,7 @@ export type PatchedAdminUpdateExtendedTransaction = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateGroup = {
-    name?: string;
-    label?: string | null;
-    description?: string | null;
-    icon?: string | null;
-    /**
-     * * `system` - System
-     * * `admin` - Admin
-     * * `user` - User
-     */
-    section?: 'system' | 'admin' | 'user';
-    default?: boolean;
-    public?: boolean;
-    listed?: boolean;
-    readonly tiers?: Array<ReducedGroupTier>;
-    settings?: AdminGroupSettings;
-    archived?: boolean;
-    readonly created?: number;
-    readonly updated?: number;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminUpdateGroupFee = {
+export type PatchedAdminUpdateGroupFeeRequest = {
     name?: string | null;
     /**
      * @deprecated
@@ -11709,7 +13242,7 @@ export type PatchedAdminUpdateGroupFee = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateGroupLimit = {
+export type PatchedAdminUpdateGroupLimitRequest = {
     begin?: number | null;
     end?: number | null;
     archived?: boolean;
@@ -11721,7 +13254,30 @@ export type PatchedAdminUpdateGroupLimit = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateGroupSettings = {
+export type PatchedAdminUpdateGroupRequest = {
+    name?: string;
+    label?: string | null;
+    description?: string | null;
+    icon?: Blob | File | null;
+    /**
+     * * `system` - System
+     * * `admin` - Admin
+     * * `user` - User
+     */
+    section?: 'system' | 'admin' | 'user';
+    default?: boolean;
+    public?: boolean;
+    listed?: boolean;
+    archived?: boolean;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type PatchedAdminUpdateGroupSettingsRequest = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
@@ -11739,7 +13295,7 @@ export type PatchedAdminUpdateGroupSettings = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateGroupTierFee = {
+export type PatchedAdminUpdateGroupTierFeeRequest = {
     name?: string | null;
     /**
      * @deprecated
@@ -11755,7 +13311,7 @@ export type PatchedAdminUpdateGroupTierFee = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateGroupTierLimit = {
+export type PatchedAdminUpdateGroupTierLimitRequest = {
     begin?: number | null;
     end?: number | null;
     archived?: boolean;
@@ -11767,7 +13323,7 @@ export type PatchedAdminUpdateGroupTierLimit = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateGroupTierSettings = {
+export type PatchedAdminUpdateGroupTierSettingsRequest = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
@@ -11780,21 +13336,12 @@ export type PatchedAdminUpdateGroupTierSettings = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateOauthClient = {
-    readonly id?: string;
-    /**
-     * * `apple` - Apple
-     * * `google` - Google
-     */
-    provider?: 'apple' | 'google';
+export type PatchedAdminUpdateOauthClientRequest = {
     application?: string;
-    readonly client_id?: string;
     data?: {
         [key: string]: unknown;
     } | null;
     archived?: boolean;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -11803,25 +13350,12 @@ export type PatchedAdminUpdateOauthClient = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateService = {
-    readonly id?: number;
-    readonly company?: number | null;
-    readonly slug?: string | null;
-    /**
-     * * `system` - System
-     * * `public` - Public
-     * * `private` - Private
-     */
-    type?: 'system' | 'public' | 'private';
+export type PatchedAdminUpdateServiceRequest = {
     name?: string;
     description?: string | null;
     tags?: Array<string> | null;
-    readonly verified?: boolean;
-    readonly public?: boolean;
     url?: string;
     management_url?: string | null;
-    readonly terms_and_conditions_url?: string | null;
-    readonly website_url?: string | null;
     active?: boolean;
 };
 
@@ -11831,12 +13365,8 @@ export type PatchedAdminUpdateService = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateTransactionCollection = {
-    readonly id?: string;
-    readonly transactions?: Array<AdminTransactionCollectionTransaction>;
+export type PatchedAdminUpdateTransactionCollectionRequest = {
     archived?: boolean;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -11845,19 +13375,11 @@ export type PatchedAdminUpdateTransactionCollection = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateTransactionSubtype = {
-    readonly id?: number;
+export type PatchedAdminUpdateTransactionSubtypeRequest = {
     name?: string;
     label?: string | null;
     description?: string | null;
-    /**
-     * * `credit` - Credit
-     * * `debit` - Debit
-     */
-    tx_type?: 'credit' | 'debit';
     archived?: boolean;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -11866,35 +13388,12 @@ export type PatchedAdminUpdateTransactionSubtype = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateTransactionTransition = {
-    readonly id?: string;
-    readonly set?: string;
-    transaction?: AdminExtendedTransaction;
+export type PatchedAdminUpdateTransactionTransitionRequest = {
     /**
      * * `approved` - Approved
      * * `declined` - Declined
      */
     status?: 'approved' | 'declined';
-    /**
-     * * `Initiating` - Initiating
-     * * `Quoted` - Quoted
-     * * `Pending` - Pending
-     * * `Complete` - Complete
-     * * `Failed` - Failed
-     */
-    from_status?: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
-    /**
-     * * `Initiating` - Initiating
-     * * `Quoted` - Quoted
-     * * `Pending` - Pending
-     * * `Complete` - Complete
-     * * `Failed` - Failed
-     */
-    to_status?: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
-    readonly index?: number;
-    readonly archived?: boolean;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -11903,10 +13402,7 @@ export type PatchedAdminUpdateTransactionTransition = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateUserDocument = {
-    readonly id?: number;
-    user?: ReducedUserInfo;
-    readonly file?: string;
+export type PatchedAdminUpdateUserDocumentRequest = {
     /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
@@ -11928,24 +13424,16 @@ export type PatchedAdminUpdateUserDocument = {
  * Information about user setting and permissions shown in
  * the ExtendedUserInfoSerializer
  */
-export type PatchedAdminUpdateUserInfo = {
-    readonly id?: string;
+export type PatchedAdminUpdateUserInfoRequest = {
     username?: string | null;
     email?: string;
     mobile?: string;
     first_name?: string | null;
     middle_name?: string | null;
     last_name?: string | null;
-    profile?: string | null;
-    readonly temporary?: boolean | null;
+    profile?: Blob | File | null;
     id_number?: string | null;
     birth_date?: string | null;
-    currency?: ReducedAsset;
-    readonly account?: string;
-    readonly balance?: number;
-    readonly available_balance?: number;
-    readonly company?: string;
-    readonly owner?: boolean;
     language?: string;
     /**
      * * `AF` - Afghanistan
@@ -12484,11 +13972,6 @@ export type PatchedAdminUpdateUserInfo = {
     website?: string | null;
     business_name?: string | null;
     /**
-     * @deprecated
-     */
-    readonly verified?: boolean;
-    verification?: UserVerification;
-    /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
@@ -12496,8 +13979,6 @@ export type PatchedAdminUpdateUserInfo = {
      * * `verified` - Verified
      */
     status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
-    readonly created?: number;
-    readonly updated?: number;
     deactivated?: boolean;
     /**
      * * `retaining` - Retaining
@@ -12506,8 +13987,6 @@ export type PatchedAdminUpdateUserInfo = {
      */
     retention_state?: 'retaining' | 'delete_requested' | 'deleted';
     archived?: boolean;
-    readonly last_login?: number;
-    settings?: UserSettings;
 };
 
 /**
@@ -12516,7 +13995,7 @@ export type PatchedAdminUpdateUserInfo = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateUserSettings = {
+export type PatchedAdminUpdateUserSettingsRequest = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
@@ -12529,8 +14008,7 @@ export type PatchedAdminUpdateUserSettings = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUserAddress = {
-    readonly id?: number;
+export type PatchedAdminUserAddressRequest = {
     /**
      * * `permanent` - Permanent
      * * `contact` - Contact
@@ -12539,7 +14017,6 @@ export type PatchedAdminUserAddress = {
      * * `business` - Business
      */
     type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business';
-    user?: ReducedUserInfo;
     line_1?: string | null;
     line_2?: string | null;
     city?: string | null;
@@ -12806,8 +14283,6 @@ export type PatchedAdminUserAddress = {
      */
     status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
     archived?: boolean;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -12816,11 +14291,9 @@ export type PatchedAdminUserAddress = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUserBankAccount = {
-    readonly id?: number;
-    user?: ReducedUserInfo;
+export type PatchedAdminUserBankAccountRequest = {
     name?: string | null;
-    owner?: BankOwner | null;
+    owner?: BankOwnerRequest | null;
     number?: string | null;
     type?: string | null;
     /**
@@ -12832,7 +14305,7 @@ export type PatchedAdminUserBankAccount = {
     bank_code?: string | null;
     bank_currency?: string | null;
     branch_code?: string | null;
-    branch_address?: AdminUserBankBranchAddress;
+    branch_address?: AdminUserBankBranchAddressRequest;
     branch_address_text?: string | null;
     routing_number?: string | null;
     swift?: string | null;
@@ -12842,7 +14315,6 @@ export type PatchedAdminUserBankAccount = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
-    readonly code?: string | null;
     /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
@@ -12855,15 +14327,11 @@ export type PatchedAdminUserBankAccount = {
         [key: string]: unknown;
     } | null;
     archived?: boolean;
-    readonly currencies?: Array<ReducedAsset>;
-    readonly account_currencies?: Array<ReducedAccountAsset>;
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
      */
     action?: 'withdraw' | 'deposit' | null;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -12872,51 +14340,7 @@ export type PatchedAdminUserBankAccount = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUserPermission = {
-    readonly id?: number;
-    /**
-     * * `system` - System
-     * * `admin` - Admin
-     * * `user` - User
-     */
-    section?: 'system' | 'admin' | 'user';
-    /**
-     * * `accesscontrolrule` - Access Control Rule
-     * * `account` - Account
-     * * `accountdefinition` - Account Definition
-     * * `address` - Address
-     * * `currency` - Currency
-     * * `bankaccount` - Bank Account
-     * * `company` - Company
-     * * `cryptoaccount` - Crypto Account
-     * * `device` - Device
-     * * `document` - Document
-     * * `email` - Email
-     * * `group` - Group
-     * * `jwt` - Jwt
-     * * `legalterm` - Legal Term
-     * * `mfa` - Mfa
-     * * `mfarule` - Mfa Rule
-     * * `mobile` - Mobile
-     * * `notification` - Notification
-     * * `oauthclient` - Oauth Client
-     * * `permission` - Permission
-     * * `request` - Request
-     * * `service` - Service
-     * * `token` - Token
-     * * `transaction` - Transaction
-     * * `transactionsubtypes` - Transaction Subtypes
-     * * `user` - User
-     * * `webhook` - Webhook
-     */
-    type?: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
-    /**
-     * * `view` - View
-     * * `add` - Add
-     * * `change` - Change
-     * * `delete` - Delete
-     */
-    level?: 'view' | 'add' | 'change' | 'delete';
+export type PatchedAdminUserPermissionRequest = {
     properties?: {
         [key: string]: unknown;
     } | null;
@@ -12928,14 +14352,11 @@ export type PatchedAdminUserPermission = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUserWalletAccount = {
-    readonly id?: number;
-    user?: ReducedUserInfo;
+export type PatchedAdminUserWalletAccountRequest = {
     username?: string | null;
     email?: string | null;
     mobile?: string | null;
     name?: string | null;
-    readonly code?: string | null;
     /**
      * * `paypal` - Paypal
      * * `venmo` - Venmo
@@ -12954,15 +14375,12 @@ export type PatchedAdminUserWalletAccount = {
      * * `verified` - Verified
      */
     status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
-    readonly currencies?: Array<ReducedAsset>;
     archived?: boolean;
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
      */
     action?: 'withdraw' | 'deposit' | null;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -12971,8 +14389,7 @@ export type PatchedAdminUserWalletAccount = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminWebhook = {
-    readonly id?: number;
+export type PatchedAdminWebhookRequest = {
     url?: string;
     /**
      * * `company.link.create` - Company Link Create
@@ -13016,10 +14433,7 @@ export type PatchedAdminWebhook = {
     secret?: string;
     condition?: string | null;
     enabled?: boolean;
-    service?: ReducedService | null;
     archived?: boolean;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -13028,8 +14442,7 @@ export type PatchedAdminWebhook = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedCreateUpdateGroupTierRequirementSet = {
-    readonly id?: number;
+export type PatchedCreateUpdateGroupTierRequirementSetRequest = {
     name?: string | null;
     description?: string | null;
     /**
@@ -13038,10 +14451,7 @@ export type PatchedCreateUpdateGroupTierRequirementSet = {
      */
     condition?: 'all' | 'any';
     min_condition_matches?: number | null;
-    readonly items?: Array<GroupTierRequirementSetItem>;
     weight?: number | null;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -13050,18 +14460,10 @@ export type PatchedCreateUpdateGroupTierRequirementSet = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedGroupTierRequirementSetItem = {
-    readonly id?: number;
-    /**
-     * * `resource` - Resource
-     */
-    type?: 'resource';
-    rule?: GroupTierRequirementSetItemRule;
+export type PatchedGroupTierRequirementSetItemRequest = {
     name?: string | null;
     description?: string | null;
     weight?: number | null;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -13164,8 +14566,40 @@ export type ReducedAccountAsset = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
+export type ReducedAccountAssetRequest = {
+    active: boolean;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
 export type ReducedAccountDefinition = {
     name: string;
+    label?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type ReducedAccountDefinitionRequest = {
+    name: string;
+    label?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type ReducedAccountRequest = {
+    name?: string;
     label?: string | null;
 };
 
@@ -13191,6 +14625,22 @@ export type ReducedAsset = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
+export type ReducedAssetRequest = {
+    code?: string | null;
+    display_code?: string | null;
+    description?: string | null;
+    symbol?: string | null;
+    unit?: string | null;
+    divisibility?: number;
+    icon: Blob | File | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
 export type ReducedCompany = {
     readonly id: string;
     readonly name: string | null;
@@ -13200,6 +14650,16 @@ export type ReducedCompany = {
      * * `production` - Production
      */
     mode: 'test' | 'production';
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type ReducedCompanyRequest = {
+    icon: Blob | File | null;
 };
 
 /**
@@ -13224,6 +14684,20 @@ export type ReducedDeviceApp = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
+export type ReducedDeviceAppRequest = {
+    name?: string | null;
+    /**
+     * * `expo` - Expo
+     */
+    type: 'expo';
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
 export type ReducedDocumentType = {
     readonly id: number;
     readonly name: string | null;
@@ -13237,6 +14711,23 @@ export type ReducedDocumentType = {
  * values with complex, nested serializations
  */
 export type ReducedGroup = {
+    name: string;
+    label?: string | null;
+    /**
+     * * `system` - System
+     * * `admin` - Admin
+     * * `user` - User
+     */
+    section: 'system' | 'admin' | 'user';
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type ReducedGroupRequest = {
     name: string;
     label?: string | null;
     /**
@@ -13290,6 +14781,16 @@ export type ReducedTransactionSubtype = {
     tx_type: 'credit' | 'debit';
 };
 
+export type ReducedTransactionSubtypeRequest = {
+    name: string;
+    label?: string | null;
+    /**
+     * * `credit` - Credit
+     * * `debit` - Debit
+     */
+    tx_type: 'credit' | 'debit';
+};
+
 /**
  * A condensed user serializer showing only the necessary user information
  * in order to identifiy the user.
@@ -13308,12 +14809,41 @@ export type ReducedUserInfo = {
 };
 
 /**
+ * A condensed user serializer showing only the necessary user information
+ * in order to identifiy the user.
+ */
+export type ReducedUserInfoRequest = {
+    profile?: Blob | File | null;
+};
+
+/**
  * A ModelSerializer that takes additional arguments for
  * "fields", "omit" and "expand" in order to
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
 export type ResourceRequirementRule = {
+    /**
+     * * `address` - Address
+     * * `bank_account` - Bank Account
+     * * `document` - Document
+     * * `email` - Email
+     * * `mobile` - Mobile
+     * * `user` - User
+     */
+    resource: 'address' | 'bank_account' | 'document' | 'email' | 'mobile' | 'user';
+    condition: {
+        [key: string]: unknown;
+    };
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type ResourceRequirementRuleRequest = {
     /**
      * * `address` - Address
      * * `bank_account` - Bank Account
@@ -13392,24 +14922,24 @@ export type TransactionSubtype = {
     readonly updated: number;
 };
 
-export type UpdateCompanyDisallowedTransactionSubtype = {
+export type UpdateCompanyDisallowedTransactionSubtypeRequest = {
     subtype: number;
     currency?: string | null;
 };
 
-export type UpdateGroupDisallowedTransactionSubtype = {
-    subtype: number;
-    currency?: string | null;
-    account_definition?: string | null;
-};
-
-export type UpdateGroupTierDisallowedTransactionSubtype = {
+export type UpdateGroupDisallowedTransactionSubtypeRequest = {
     subtype: number;
     currency?: string | null;
     account_definition?: string | null;
 };
 
-export type UpdateUserDisallowedTransactionSubtype = {
+export type UpdateGroupTierDisallowedTransactionSubtypeRequest = {
+    subtype: number;
+    currency?: string | null;
+    account_definition?: string | null;
+};
+
+export type UpdateUserDisallowedTransactionSubtypeRequest = {
     subtype: number;
     currency?: string;
 };
@@ -13417,6 +14947,10 @@ export type UpdateUserDisallowedTransactionSubtype = {
 export type UserDisallowedTransactionSubtype = {
     subtype: ReducedTransactionSubtype;
     currency: ReducedAsset;
+};
+
+export type UserDisallowedTransactionSubtypeRequest = {
+    subtype: ReducedTransactionSubtypeRequest;
 };
 
 /**
@@ -13488,6 +15022,19 @@ export type UserSettings = {
     disallowed_transaction_subtypes: Array<UserDisallowedTransactionSubtype>;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type UserSettingsRequest = {
+    allow_transactions?: boolean;
+    allow_debit_transactions?: boolean;
+    allow_credit_transactions?: boolean;
+    disallowed_transaction_subtypes: Array<UserDisallowedTransactionSubtypeRequest>;
+};
+
 export type UserSettingsResponse = {
     status: string;
     data: UserSettings;
@@ -13504,11 +15051,11 @@ export type UserVerification = {
     readonly mobile: boolean;
 };
 
-export type VerifyDeactivate = {
+export type VerifyDeactivateRequest = {
     key: string;
 };
 
-export type VerifyRequestDelete = {
+export type VerifyRequestDeleteRequest = {
     key: string;
 };
 
@@ -13637,7 +15184,7 @@ export type AdminAccountAccountAssetResponseWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminAccountAccountAssetSettingsUpdateWritable = {
+export type AdminAccountAccountAssetSettingsUpdateRequestWritable = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
@@ -13770,15 +15317,15 @@ export type AdminAccountResponseWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminAppendTransactionCollectionMultiTransactionWritable = {
-    transactions: Array<AdminAppendTransactionCollectionTransactionWritable>;
+export type AdminAppendTransactionCollectionMultiTransactionRequestWritable = {
+    transactions: Array<AdminAppendTransactionCollectionTransactionRequestWritable>;
 };
 
 /**
  * This removed the status so that when appending to an existing collection
  * the status cannot be set manually.
  */
-export type AdminAppendTransactionCollectionTransactionWritable = {
+export type AdminAppendTransactionCollectionTransactionRequestWritable = {
     id?: string;
     parent?: string;
     partner?: string;
@@ -14329,7 +15876,7 @@ export type AdminCompanyWalletAccountResponseWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateAccessControlRuleWritable = {
+export type AdminCreateAccessControlRuleRequestWritable = {
     /**
      * * `allow` - Allow
      * * `deny` - Deny
@@ -14351,34 +15898,7 @@ export type AdminCreateAccessControlRuleWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateAccountWritable = {
-    reference?: string | null;
-    name?: string;
-    label?: string | null;
-    primary?: boolean;
-    recon?: boolean;
-    user?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    archived?: boolean;
-};
-
-export type AdminCreateAccountAccountAssetWritable = {
-    currency: string;
-    active?: boolean;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminCreateAccountAccountAssetFeeWritable = {
+export type AdminCreateAccountAccountAssetFeeRequestWritable = {
     name?: string | null;
     value?: number;
     percentage?: number;
@@ -14405,7 +15925,7 @@ export type AdminCreateAccountAccountAssetFeeWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateAccountAccountAssetLimitWritable = {
+export type AdminCreateAccountAccountAssetLimitRequestWritable = {
     /**
      * * `max` - Maximum
      * * `day_max` - Maximum per day
@@ -14426,13 +15946,21 @@ export type AdminCreateAccountAccountAssetLimitWritable = {
     end?: number | null;
 };
 
+export type AdminCreateAccountAccountAssetRequestWritable = {
+    currency: string;
+    active?: boolean;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
 /**
  * A ModelSerializer that takes additional arguments for
  * "fields", "omit" and "expand" in order to
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateAccountDefinitionGroupWritable = {
+export type AdminCreateAccountDefinitionGroupRequestWritable = {
     group: string;
     default?: boolean;
     primary?: boolean;
@@ -14446,8 +15974,16 @@ export type AdminCreateAccountDefinitionGroupWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateAccountDefinitionGroupAssetWritable = {
-    currency: string;
+export type AdminCreateAccountRequestWritable = {
+    reference?: string | null;
+    name?: string;
+    label?: string | null;
+    primary?: boolean;
+    recon?: boolean;
+    user?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
     archived?: boolean;
 };
 
@@ -14457,14 +15993,14 @@ export type AdminCreateAccountDefinitionGroupAssetWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateAssetWritable = {
+export type AdminCreateAssetRequestWritable = {
     code?: string | null;
     display_code?: string | null;
     description?: string | null;
     symbol?: string | null;
     unit?: string | null;
     divisibility: number;
-    icon?: string | null;
+    icon?: Blob | File | null;
     manager?: string | null;
     manager_conditions?: Array<{
         [key: string]: unknown;
@@ -14481,7 +16017,7 @@ export type AdminCreateAssetWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateAuthenticatorRuleWritable = {
+export type AdminCreateAuthenticatorRuleRequestWritable = {
     /**
      * * `authentication` - Authentication
      * * `authorization` - Authorization
@@ -14502,17 +16038,6 @@ export type AdminCreateAuthenticatorRuleWritable = {
 };
 
 /**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminCreateCompanyLinkWritable = {
-    key?: string;
-    company?: string;
-};
-
-/**
  * A mixin that handles the application of permissions to properties on a
  * serializer using the built-in permissions system.
  *
@@ -14522,7 +16047,7 @@ export type AdminCreateCompanyLinkWritable = {
  * - The class this mixin is attached to must have a Meta.model defined.
  * - The Meta.model class must have a PERMISSION_TYPE defined.
  */
-export type AdminCreateCreditTransactionWritable = {
+export type AdminCreateCreditTransactionRequestWritable = {
     id?: string;
     amount: number;
     currency: string;
@@ -14546,7 +16071,7 @@ export type AdminCreateCreditTransactionWritable = {
     /**
      * @deprecated
      */
-    fees?: Array<AdminCreateTransactionFee>;
+    fees?: Array<AdminCreateTransactionFeeRequest>;
     expires?: number | null;
 };
 
@@ -14556,7 +16081,7 @@ export type AdminCreateCreditTransactionWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateCryptoAccountWritable = {
+export type AdminCreateCryptoAccountRequestWritable = {
     address: string;
     name?: string | null;
     /**
@@ -14601,7 +16126,7 @@ export type AdminCreateCryptoAccountWritable = {
  * - The class this mixin is attached to must have a Meta.model defined.
  * - The Meta.model class must have a PERMISSION_TYPE defined.
  */
-export type AdminCreateDebitTransactionWritable = {
+export type AdminCreateDebitTransactionRequestWritable = {
     id?: string;
     amount: number;
     currency: string;
@@ -14625,7 +16150,7 @@ export type AdminCreateDebitTransactionWritable = {
     /**
      * @deprecated
      */
-    fees?: Array<AdminCreateTransactionFee>;
+    fees?: Array<AdminCreateTransactionFeeRequest>;
     expires?: number | null;
 };
 
@@ -14635,7 +16160,7 @@ export type AdminCreateDebitTransactionWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateDeviceWritable = {
+export type AdminCreateDeviceRequestWritable = {
     user: string;
     imei: string;
     name?: string | null;
@@ -14651,23 +16176,7 @@ export type AdminCreateDeviceWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateDeviceAppWritable = {
-    name?: string | null;
-    /**
-     * * `expo` - Expo
-     */
-    type: 'expo';
-    token?: string | null;
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminCreateEmailWritable = {
+export type AdminCreateEmailRequestWritable = {
     user: string;
     email: string;
     primary?: boolean;
@@ -14680,28 +16189,7 @@ export type AdminCreateEmailWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateGroupWritable = {
-    name: string;
-    label?: string | null;
-    description?: string | null;
-    icon?: string | null;
-    /**
-     * * `admin` - Admin
-     * * `user` - User
-     */
-    section?: 'admin' | 'user';
-    default?: boolean;
-    public?: boolean;
-    listed?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminCreateGroupFeeWritable = {
+export type AdminCreateGroupFeeRequestWritable = {
     name?: string | null;
     value?: number;
     percentage?: number;
@@ -14730,7 +16218,7 @@ export type AdminCreateGroupFeeWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateGroupLimitWritable = {
+export type AdminCreateGroupLimitRequestWritable = {
     /**
      * * `max` - Maximum
      * * `day_max` - Maximum per day
@@ -14753,7 +16241,7 @@ export type AdminCreateGroupLimitWritable = {
     end?: number | null;
 };
 
-export type AdminCreateGroupPermissionWritable = {
+export type AdminCreateGroupPermissionRequestWritable = {
     /**
      * * `admin` - Admin
      * * `user` - User
@@ -14807,7 +16295,28 @@ export type AdminCreateGroupPermissionWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateGroupTierFeeWritable = {
+export type AdminCreateGroupRequestWritable = {
+    name: string;
+    label?: string | null;
+    description?: string | null;
+    icon?: Blob | File | null;
+    /**
+     * * `admin` - Admin
+     * * `user` - User
+     */
+    section?: 'admin' | 'user';
+    default?: boolean;
+    public?: boolean;
+    listed?: boolean;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminCreateGroupTierFeeRequestWritable = {
     name?: string | null;
     value?: number;
     percentage?: number;
@@ -14836,7 +16345,7 @@ export type AdminCreateGroupTierFeeWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateGroupTierLimitWritable = {
+export type AdminCreateGroupTierLimitRequestWritable = {
     value: number;
     /**
      * * `max` - Maximum
@@ -14865,7 +16374,7 @@ export type AdminCreateGroupTierLimitWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateMetricWritable = {
+export type AdminCreateMetricRequestWritable = {
     name?: string | null;
     slug?: string | null;
     /**
@@ -14911,7 +16420,7 @@ export type AdminCreateMetricWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateMobileWritable = {
+export type AdminCreateMobileRequestWritable = {
     user: string;
     number: string;
     primary?: boolean;
@@ -14919,20 +16428,20 @@ export type AdminCreateMobileWritable = {
     archived?: boolean;
 };
 
-export type AdminCreateMultiGroupPermissionWritable = {
-    permissions: Array<AdminCreateGroupPermissionWritable>;
+export type AdminCreateMultiGroupPermissionRequestWritable = {
+    permissions: Array<AdminCreateGroupPermissionRequestWritable>;
 };
 
-export type AdminCreateMultiTransactionWritable = {
-    transactions: Array<AdminExplicitCreateTransactionWritable>;
+export type AdminCreateMultiTransactionRequestWritable = {
+    transactions: Array<AdminExplicitCreateTransactionRequestWritable>;
 };
 
-export type AdminCreateMultiUserPermissionWritable = {
-    permissions: Array<AdminCreateUserPermissionWritable>;
+export type AdminCreateMultiUserPermissionRequestWritable = {
+    permissions: Array<AdminCreateUserPermissionRequestWritable>;
 };
 
-export type AdminCreateServicePermissionWritable = {
-    permissions: Array<CreatePermission>;
+export type AdminCreateServicePermissionRequestWritable = {
+    permissions: Array<CreatePermissionRequest>;
 };
 
 /**
@@ -14941,7 +16450,7 @@ export type AdminCreateServicePermissionWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateStatementWritable = {
+export type AdminCreateStatementRequestWritable = {
     account: string;
     timezone: string;
     start_date?: number | null;
@@ -14957,9 +16466,9 @@ export type AdminCreateStatementWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateTransactionCollectionWritable = {
+export type AdminCreateTransactionCollectionRequestWritable = {
     id?: string;
-    transactions: Array<AdminCreateTransactionCollectionTransactionWritable>;
+    transactions: Array<AdminCreateTransactionCollectionTransactionRequestWritable>;
     /**
      * * `Initiating` - Initiating
      * * `Quoted` - Quoted
@@ -14982,7 +16491,7 @@ export type AdminCreateTransactionCollectionWritable = {
  * - The class this mixin is attached to must have a Meta.model defined.
  * - The Meta.model class must have a PERMISSION_TYPE defined.
  */
-export type AdminCreateTransactionCollectionTransactionWritable = {
+export type AdminCreateTransactionCollectionTransactionRequestWritable = {
     id?: string;
     parent?: string;
     partner?: string;
@@ -15019,29 +16528,7 @@ export type AdminCreateTransactionCollectionTransactionWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateTransactionMessageWritable = {
-    /**
-     * * `admin` - Admin
-     * * `user` - User
-     */
-    section?: 'admin' | 'user';
-    /**
-     * * `info` - Info
-     * * `warning` - Warning
-     * * `error` - Error
-     */
-    level?: 'info' | 'warning' | 'error';
-    message: string;
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminCreateTransactionSubtypeWritable = {
+export type AdminCreateTransactionSubtypeRequestWritable = {
     name: string;
     label?: string | null;
     description?: string | null;
@@ -15067,7 +16554,7 @@ export type AdminCreateTransactionSubtypeWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateUpdateLegalTermWritable = {
+export type AdminCreateUpdateLegalTermRequestWritable = {
     name: string;
     description?: string | null;
     groups?: Array<string | null>;
@@ -15080,7 +16567,7 @@ export type AdminCreateUpdateLegalTermWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateUserAddressWritable = {
+export type AdminCreateUserAddressRequestWritable = {
     /**
      * * `permanent` - Permanent
      * * `contact` - Contact
@@ -15364,10 +16851,10 @@ export type AdminCreateUserAddressWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateUserBankAccountWritable = {
+export type AdminCreateUserBankAccountRequestWritable = {
     user: string;
     name?: string | null;
-    owner?: BankOwner | null;
+    owner?: BankOwnerRequest | null;
     number?: string | null;
     type?: string | null;
     /**
@@ -15379,7 +16866,7 @@ export type AdminCreateUserBankAccountWritable = {
     bank_code?: string | null;
     bank_currency?: string | null;
     branch_code?: string | null;
-    branch_address?: AdminUserBankBranchAddress;
+    branch_address?: AdminUserBankBranchAddressRequest;
     branch_address_text?: string | null;
     routing_number?: string | null;
     swift?: string | null;
@@ -15414,9 +16901,9 @@ export type AdminCreateUserBankAccountWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateUserDocumentWritable = {
+export type AdminCreateUserDocumentRequestWritable = {
     user: string;
-    file: string;
+    file: Blob | File;
     type: number;
     /**
      * * `obsolete` - Obsolete
@@ -15439,7 +16926,7 @@ export type AdminCreateUserDocumentWritable = {
  * Information about user setting and permissions shown in
  * the ExtendedUserInfoSerializer
  */
-export type AdminCreateUserInfoWritable = {
+export type AdminCreateUserInfoRequestWritable = {
     id?: string;
     username?: string;
     email?: string;
@@ -15447,7 +16934,7 @@ export type AdminCreateUserInfoWritable = {
     first_name?: string | null;
     middle_name?: string | null;
     last_name?: string | null;
-    profile?: string | null;
+    profile?: Blob | File | null;
     groups?: Array<string | null>;
     id_number?: string | null;
     birth_date?: string | null;
@@ -15998,29 +17485,7 @@ export type AdminCreateUserInfoWritable = {
     archived?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminCreateUserMessageWritable = {
-    /**
-     * * `admin` - Admin
-     * * `user` - User
-     */
-    section?: 'admin' | 'user';
-    /**
-     * * `info` - Info
-     * * `warning` - Warning
-     * * `error` - Error
-     */
-    level?: 'info' | 'warning' | 'error';
-    message: string;
-    archived?: boolean;
-};
-
-export type AdminCreateUserPermissionWritable = {
+export type AdminCreateUserPermissionRequestWritable = {
     /**
      * * `admin` - Admin
      * * `user` - User
@@ -16074,7 +17539,7 @@ export type AdminCreateUserPermissionWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminCreateUserWalletAccountWritable = {
+export type AdminCreateUserWalletAccountRequestWritable = {
     user: string;
     username?: string | null;
     email?: string | null;
@@ -16267,7 +17732,7 @@ export type AdminEmailResponseWritable = {
  * - The class this mixin is attached to must have a Meta.model defined.
  * - The Meta.model class must have a PERMISSION_TYPE defined.
  */
-export type AdminExplicitCreateTransactionWritable = {
+export type AdminExplicitCreateTransactionRequestWritable = {
     id?: string;
     /**
      * * `credit` - Credit
@@ -16295,7 +17760,7 @@ export type AdminExplicitCreateTransactionWritable = {
     /**
      * @deprecated
      */
-    fees?: Array<AdminCreateTransactionFee>;
+    fees?: Array<AdminCreateTransactionFeeRequest>;
     expires?: number | null;
 };
 
@@ -17557,7 +19022,7 @@ export type AdminReducedAccountAssetResponseWritable = {
     data: AdminReducedAccountAssetWritable;
 };
 
-export type AdminRegisterWritable = {
+export type AdminRegisterRequestWritable = {
     first_name?: string;
     middle_name?: string;
     last_name?: string;
@@ -18259,7 +19724,6 @@ export type AdminTransactionWritable = {
  * values with complex, nested serializations
  */
 export type AdminTransactionCollectionWritable = {
-    checks?: Array<'type' | 'verification' | 'limits' | 'balance'> | null;
     archived?: boolean;
 };
 
@@ -18346,35 +19810,12 @@ export type AdminTransactionSubtypeResponseWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateAccountDefinitionGroupWritable = {
-    default?: boolean;
-    primary?: boolean;
-    currencies?: Array<string>;
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminUpdateAccountDefinitionGroupAssetWritable = {
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminUpdateAssetWritable = {
+export type AdminUpdateAssetRequestWritable = {
     display_code?: string | null;
     description?: string | null;
     symbol?: string | null;
     unit?: string | null;
-    icon?: string | null;
+    icon?: Blob | File | null;
     manager?: string | null;
     manager_conditions?: Array<{
         [key: string]: unknown;
@@ -18391,7 +19832,7 @@ export type AdminUpdateAssetWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateAuthenticatorRuleWritable = {
+export type AdminUpdateAuthenticatorRuleRequestWritable = {
     /**
      * * `ephemeral` - Ephemeral
      * * `durable` - Durable
@@ -18410,24 +19851,11 @@ export type AdminUpdateAuthenticatorRuleWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateCompanyLinkWritable = {
-    /**
-     * * `complete` - Complete
-     */
-    status: 'complete';
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminUpdateCompanySettingsWritable = {
+export type AdminUpdateCompanySettingsRequestWritable = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
-    disallowed_transaction_subtypes: Array<UpdateCompanyDisallowedTransactionSubtype>;
+    disallowed_transaction_subtypes: Array<UpdateCompanyDisallowedTransactionSubtypeRequest>;
     require_transaction_subtypes?: boolean;
     require_verification?: boolean;
     allow_registrations?: boolean;
@@ -18448,47 +19876,6 @@ export type AdminUpdateCompanySettingsWritable = {
     privacy_policy_url?: string | null;
     nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminUpdateExtendedAccountWritable = {
-    name?: string;
-    label?: string | null;
-    primary?: boolean;
-    recon?: boolean;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    archived?: boolean;
-};
-
-/**
- * A mixin that handles the application of permissions to properties on a
- * serializer using the built-in permissions system.
- *
- * NOTE : This only works if the following conditions are met:
- * - The request context must contain a user.
- * - The class this mixin is attached must be a serializer.
- * - The class this mixin is attached to must have a Meta.model defined.
- * - The Meta.model class must have a PERMISSION_TYPE defined.
- */
-export type AdminUpdateExtendedTransactionWritable = {
-    note?: string;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    /**
-     * * `Pending` - Pending
-     * * `Complete` - Complete
-     * * `Failed` - Failed
-     */
-    status?: 'Pending' | 'Complete' | 'Failed';
-    archived?: boolean;
 };
 
 /**
@@ -18520,7 +19907,7 @@ export type AdminUpdateGroupWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateGroupFeeWritable = {
+export type AdminUpdateGroupFeeRequestWritable = {
     name?: string | null;
     value?: number;
     percentage?: number;
@@ -18550,7 +19937,7 @@ export type AdminUpdateGroupFeeWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateGroupLimitWritable = {
+export type AdminUpdateGroupLimitRequestWritable = {
     /**
      * * `max` - Maximum
      * * `day_max` - Maximum per day
@@ -18585,11 +19972,11 @@ export type AdminUpdateGroupResponseWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateGroupSettingsWritable = {
+export type AdminUpdateGroupSettingsRequestWritable = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
-    disallowed_transaction_subtypes: Array<UpdateGroupDisallowedTransactionSubtype>;
+    disallowed_transaction_subtypes: Array<UpdateGroupDisallowedTransactionSubtypeRequest>;
     password_reset_url?: string | null;
     password_set_url?: string | null;
     email_verification_url?: string | null;
@@ -18603,7 +19990,7 @@ export type AdminUpdateGroupSettingsWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateGroupTierFeeWritable = {
+export type AdminUpdateGroupTierFeeRequestWritable = {
     name?: string | null;
     value?: number;
     percentage?: number;
@@ -18633,7 +20020,7 @@ export type AdminUpdateGroupTierFeeWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateGroupTierLimitWritable = {
+export type AdminUpdateGroupTierLimitRequestWritable = {
     value: number;
     /**
      * * `max` - Maximum
@@ -18663,40 +20050,11 @@ export type AdminUpdateGroupTierLimitWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateGroupTierSettingsWritable = {
+export type AdminUpdateGroupTierSettingsRequestWritable = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
-    disallowed_transaction_subtypes: Array<UpdateGroupTierDisallowedTransactionSubtype>;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminUpdateOauthClientWritable = {
-    application: string;
-    data?: {
-        [key: string]: unknown;
-    } | null;
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminUpdateServiceWritable = {
-    name?: string;
-    description?: string | null;
-    tags?: Array<string> | null;
-    url?: string;
-    management_url?: string | null;
-    active: boolean;
+    disallowed_transaction_subtypes: Array<UpdateGroupTierDisallowedTransactionSubtypeRequest>;
 };
 
 export type AdminUpdateServicePermissionResponseWritable = {
@@ -18709,7 +20067,7 @@ export type AdminUpdateServicePermissionResponseWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateTransactionCollectionWritable = {
+export type AdminUpdateTransactionCollectionRequestWritable = {
     /**
      * * `Quoted` - Quoted
      * * `Pending` - Pending
@@ -18727,7 +20085,7 @@ export type AdminUpdateTransactionCollectionWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateTransactionSubtypeWritable = {
+export type AdminUpdateTransactionSubtypeRequestWritable = {
     name: string;
     label?: string | null;
     description?: string | null;
@@ -18748,21 +20106,7 @@ export type AdminUpdateTransactionSubtypeWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateTransactionTransitionWritable = {
-    /**
-     * * `approved` - Approved
-     * * `declined` - Declined
-     */
-    status: 'approved' | 'declined';
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminUpdateUserDocumentWritable = {
+export type AdminUpdateUserDocumentRequestWritable = {
     type: number;
     /**
      * * `obsolete` - Obsolete
@@ -18785,14 +20129,14 @@ export type AdminUpdateUserDocumentWritable = {
  * Information about user setting and permissions shown in
  * the ExtendedUserInfoSerializer
  */
-export type AdminUpdateUserInfoWritable = {
+export type AdminUpdateUserInfoRequestWritable = {
     username: string | null;
     email?: string;
     mobile?: string;
     first_name?: string | null;
     middle_name?: string | null;
     last_name?: string | null;
-    profile?: string | null;
+    profile?: Blob | File | null;
     groups?: Array<string | null>;
     id_number?: string | null;
     birth_date?: string | null;
@@ -19357,11 +20701,11 @@ export type AdminUpdateUserInfoWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type AdminUpdateUserSettingsWritable = {
+export type AdminUpdateUserSettingsRequestWritable = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
-    disallowed_transaction_subtypes: Array<UpdateUserDisallowedTransactionSubtype>;
+    disallowed_transaction_subtypes: Array<UpdateUserDisallowedTransactionSubtypeRequest>;
 };
 
 /**
@@ -20591,12 +21935,12 @@ export type CompanySettingsWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateGroupTierRequirementSetItemWritable = {
+export type CreateGroupTierRequirementSetItemRequestWritable = {
     /**
      * * `resource` - Resource
      */
     type: 'resource';
-    rule: CreateGroupTierRequirementSetItemRule;
+    rule: CreateGroupTierRequirementSetItemRuleRequest;
     name?: string | null;
     description?: string | null;
     weight?: number | null;
@@ -20608,7 +21952,7 @@ export type CreateGroupTierRequirementSetItemWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateUpdateGroupTierRequirementSetWritable = {
+export type CreateUpdateGroupTierRequirementSetRequestWritable = {
     parent?: number | null;
     name?: string | null;
     description?: string | null;
@@ -20619,20 +21963,6 @@ export type CreateUpdateGroupTierRequirementSetWritable = {
     condition: 'all' | 'any';
     min_condition_matches?: number | null;
     weight?: number | null;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type DeviceAppWritable = {
-    name?: string | null;
-    /**
-     * * `expo` - Expo
-     */
-    type: 'expo';
 };
 
 export type ExtendedAuthenticatedWritable = {
@@ -21973,7 +23303,7 @@ export type PaginatedUserPermissionListResponseWritable = {
 /**
  * Serializer for confirming a password reset attempt.
  */
-export type PasswordResetConfirmWritable = {
+export type PasswordResetConfirmRequestWritable = {
     new_password?: string;
     /**
      * @deprecated
@@ -21999,21 +23329,7 @@ export type PasswordResetConfirmWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminAccountAccountAssetWritable = {
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    active?: boolean;
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminAccountAccountAssetSettingsUpdateWritable = {
+export type PatchedAdminAccountAccountAssetSettingsUpdateRequestWritable = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
@@ -22026,351 +23342,7 @@ export type PatchedAdminAccountAccountAssetSettingsUpdateWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminCompanyWritable = {
-    name?: string | null;
-    legal_name?: string | null;
-    description?: string | null;
-    website?: string | null;
-    support_website?: string | null;
-    documentation_website?: string | null;
-    support_email?: string | null;
-    contact_email?: string | null;
-    /**
-     * * `AF` - Afghanistan
-     * * `AX` - Åland Islands
-     * * `AL` - Albania
-     * * `DZ` - Algeria
-     * * `AS` - American Samoa
-     * * `AD` - Andorra
-     * * `AO` - Angola
-     * * `AI` - Anguilla
-     * * `AQ` - Antarctica
-     * * `AG` - Antigua and Barbuda
-     * * `AR` - Argentina
-     * * `AM` - Armenia
-     * * `AW` - Aruba
-     * * `AU` - Australia
-     * * `AT` - Austria
-     * * `AZ` - Azerbaijan
-     * * `BS` - Bahamas
-     * * `BH` - Bahrain
-     * * `BD` - Bangladesh
-     * * `BB` - Barbados
-     * * `BY` - Belarus
-     * * `BE` - Belgium
-     * * `BZ` - Belize
-     * * `BJ` - Benin
-     * * `BM` - Bermuda
-     * * `BT` - Bhutan
-     * * `BO` - Bolivia
-     * * `BQ` - Bonaire, Sint Eustatius and Saba
-     * * `BA` - Bosnia and Herzegovina
-     * * `BW` - Botswana
-     * * `BV` - Bouvet Island
-     * * `BR` - Brazil
-     * * `IO` - British Indian Ocean Territory
-     * * `BN` - Brunei
-     * * `BG` - Bulgaria
-     * * `BF` - Burkina Faso
-     * * `BI` - Burundi
-     * * `CV` - Cabo Verde
-     * * `KH` - Cambodia
-     * * `CM` - Cameroon
-     * * `CA` - Canada
-     * * `KY` - Cayman Islands
-     * * `CF` - Central African Republic
-     * * `TD` - Chad
-     * * `CL` - Chile
-     * * `CN` - China
-     * * `CX` - Christmas Island
-     * * `CC` - Cocos (Keeling) Islands
-     * * `CO` - Colombia
-     * * `KM` - Comoros
-     * * `CG` - Congo
-     * * `CD` - Congo (the Democratic Republic of the)
-     * * `CK` - Cook Islands
-     * * `CR` - Costa Rica
-     * * `CI` - Côte d'Ivoire
-     * * `HR` - Croatia
-     * * `CU` - Cuba
-     * * `CW` - Curaçao
-     * * `CY` - Cyprus
-     * * `CZ` - Czechia
-     * * `DK` - Denmark
-     * * `DJ` - Djibouti
-     * * `DM` - Dominica
-     * * `DO` - Dominican Republic
-     * * `EC` - Ecuador
-     * * `EG` - Egypt
-     * * `SV` - El Salvador
-     * * `GQ` - Equatorial Guinea
-     * * `ER` - Eritrea
-     * * `EE` - Estonia
-     * * `SZ` - Eswatini
-     * * `ET` - Ethiopia
-     * * `FK` - Falkland Islands (Malvinas)
-     * * `FO` - Faroe Islands
-     * * `FJ` - Fiji
-     * * `FI` - Finland
-     * * `FR` - France
-     * * `GF` - French Guiana
-     * * `PF` - French Polynesia
-     * * `TF` - French Southern Territories
-     * * `GA` - Gabon
-     * * `GM` - Gambia
-     * * `GE` - Georgia
-     * * `DE` - Germany
-     * * `GH` - Ghana
-     * * `GI` - Gibraltar
-     * * `GR` - Greece
-     * * `GL` - Greenland
-     * * `GD` - Grenada
-     * * `GP` - Guadeloupe
-     * * `GU` - Guam
-     * * `GT` - Guatemala
-     * * `GG` - Guernsey
-     * * `GN` - Guinea
-     * * `GW` - Guinea-Bissau
-     * * `GY` - Guyana
-     * * `HT` - Haiti
-     * * `HM` - Heard Island and McDonald Islands
-     * * `VA` - Holy See
-     * * `HN` - Honduras
-     * * `HK` - Hong Kong
-     * * `HU` - Hungary
-     * * `IS` - Iceland
-     * * `IN` - India
-     * * `ID` - Indonesia
-     * * `IR` - Iran
-     * * `IQ` - Iraq
-     * * `IE` - Ireland
-     * * `IM` - Isle of Man
-     * * `IL` - Israel
-     * * `IT` - Italy
-     * * `JM` - Jamaica
-     * * `JP` - Japan
-     * * `JE` - Jersey
-     * * `JO` - Jordan
-     * * `KZ` - Kazakhstan
-     * * `KE` - Kenya
-     * * `KI` - Kiribati
-     * * `KW` - Kuwait
-     * * `KG` - Kyrgyzstan
-     * * `LA` - Laos
-     * * `LV` - Latvia
-     * * `LB` - Lebanon
-     * * `LS` - Lesotho
-     * * `LR` - Liberia
-     * * `LY` - Libya
-     * * `LI` - Liechtenstein
-     * * `LT` - Lithuania
-     * * `LU` - Luxembourg
-     * * `MO` - Macao
-     * * `MG` - Madagascar
-     * * `MW` - Malawi
-     * * `MY` - Malaysia
-     * * `MV` - Maldives
-     * * `ML` - Mali
-     * * `MT` - Malta
-     * * `MH` - Marshall Islands
-     * * `MQ` - Martinique
-     * * `MR` - Mauritania
-     * * `MU` - Mauritius
-     * * `YT` - Mayotte
-     * * `MX` - Mexico
-     * * `FM` - Micronesia
-     * * `MD` - Moldova
-     * * `MC` - Monaco
-     * * `MN` - Mongolia
-     * * `ME` - Montenegro
-     * * `MS` - Montserrat
-     * * `MA` - Morocco
-     * * `MZ` - Mozambique
-     * * `MM` - Myanmar
-     * * `NA` - Namibia
-     * * `NR` - Nauru
-     * * `NP` - Nepal
-     * * `NL` - Netherlands
-     * * `NC` - New Caledonia
-     * * `NZ` - New Zealand
-     * * `NI` - Nicaragua
-     * * `NE` - Niger
-     * * `NG` - Nigeria
-     * * `NU` - Niue
-     * * `NF` - Norfolk Island
-     * * `KP` - North Korea
-     * * `MK` - North Macedonia
-     * * `MP` - Northern Mariana Islands
-     * * `NO` - Norway
-     * * `OM` - Oman
-     * * `PK` - Pakistan
-     * * `PW` - Palau
-     * * `PS` - Palestine, State of
-     * * `PA` - Panama
-     * * `PG` - Papua New Guinea
-     * * `PY` - Paraguay
-     * * `PE` - Peru
-     * * `PH` - Philippines
-     * * `PN` - Pitcairn
-     * * `PL` - Poland
-     * * `PT` - Portugal
-     * * `PR` - Puerto Rico
-     * * `QA` - Qatar
-     * * `RE` - Réunion
-     * * `RO` - Romania
-     * * `RU` - Russia
-     * * `RW` - Rwanda
-     * * `BL` - Saint Barthélemy
-     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
-     * * `KN` - Saint Kitts and Nevis
-     * * `LC` - Saint Lucia
-     * * `MF` - Saint Martin (French part)
-     * * `PM` - Saint Pierre and Miquelon
-     * * `VC` - Saint Vincent and the Grenadines
-     * * `WS` - Samoa
-     * * `SM` - San Marino
-     * * `ST` - Sao Tome and Principe
-     * * `SA` - Saudi Arabia
-     * * `SN` - Senegal
-     * * `RS` - Serbia
-     * * `SC` - Seychelles
-     * * `SL` - Sierra Leone
-     * * `SG` - Singapore
-     * * `SX` - Sint Maarten (Dutch part)
-     * * `SK` - Slovakia
-     * * `SI` - Slovenia
-     * * `SB` - Solomon Islands
-     * * `SO` - Somalia
-     * * `ZA` - South Africa
-     * * `GS` - South Georgia and the South Sandwich Islands
-     * * `KR` - South Korea
-     * * `SS` - South Sudan
-     * * `ES` - Spain
-     * * `LK` - Sri Lanka
-     * * `SD` - Sudan
-     * * `SR` - Suriname
-     * * `SJ` - Svalbard and Jan Mayen
-     * * `SE` - Sweden
-     * * `CH` - Switzerland
-     * * `SY` - Syria
-     * * `TW` - Taiwan
-     * * `TJ` - Tajikistan
-     * * `TZ` - Tanzania
-     * * `TH` - Thailand
-     * * `TL` - Timor-Leste
-     * * `TG` - Togo
-     * * `TK` - Tokelau
-     * * `TO` - Tonga
-     * * `TT` - Trinidad and Tobago
-     * * `TN` - Tunisia
-     * * `TR` - Türkiye
-     * * `TM` - Turkmenistan
-     * * `TC` - Turks and Caicos Islands
-     * * `TV` - Tuvalu
-     * * `UG` - Uganda
-     * * `UA` - Ukraine
-     * * `AE` - United Arab Emirates
-     * * `GB` - United Kingdom
-     * * `UM` - United States Minor Outlying Islands
-     * * `US` - United States of America
-     * * `UY` - Uruguay
-     * * `UZ` - Uzbekistan
-     * * `VU` - Vanuatu
-     * * `VE` - Venezuela
-     * * `VN` - Vietnam
-     * * `VG` - Virgin Islands (British)
-     * * `VI` - Virgin Islands (U.S.)
-     * * `WF` - Wallis and Futuna
-     * * `EH` - Western Sahara
-     * * `YE` - Yemen
-     * * `ZM` - Zambia
-     * * `ZW` - Zimbabwe
-     */
-    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
-    logo?: string | null;
-    icon?: string | null;
-    public?: boolean;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    /**
-     * * `pending` - Pending
-     * * `active` - Active
-     * * `restricted` - Restricted
-     * * `suspended` - Suspended
-     */
-    status?: 'pending' | 'active' | 'restricted' | 'suspended';
-    system_email?: string;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminCompanyBankAccountWritable = {
-    name?: string | null;
-    number?: string | null;
-    type?: string | null;
-    bank_name?: string | null;
-    bank_code?: string | null;
-    bank_currency?: string | null;
-    branch_code?: string | null;
-    branch_address?: CompanyBankBranchAddress;
-    routing_number?: string | null;
-    swift?: string | null;
-    iban?: string | null;
-    bic?: string | null;
-    clabe?: string | null;
-    check_digit?: string | null;
-    pix_key?: string | null;
-    br_code?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    archived?: boolean;
-    /**
-     * * `deposit` - Deposit
-     */
-    action?: 'deposit' | null;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminCompanyWalletAccountWritable = {
-    username?: string | null;
-    email?: string | null;
-    mobile?: string | null;
-    name?: string | null;
-    /**
-     * * `paypal` - Paypal
-     * * `venmo` - Venmo
-     * * `other` - Other
-     */
-    type?: 'paypal' | 'venmo' | 'other';
-    wallet_currency?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    /**
-     * * `deposit` - Deposit
-     */
-    action?: 'deposit' | null;
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminCreateAccessControlRuleWritable = {
+export type PatchedAdminCreateAccessControlRuleRequestWritable = {
     /**
      * * `allow` - Allow
      * * `deny` - Deny
@@ -22392,7 +23364,7 @@ export type PatchedAdminCreateAccessControlRuleWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminCreateAccountAccountAssetFeeWritable = {
+export type PatchedAdminCreateAccountAccountAssetFeeRequestWritable = {
     name?: string | null;
     value?: number;
     percentage?: number;
@@ -22419,7 +23391,7 @@ export type PatchedAdminCreateAccountAccountAssetFeeWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminCreateAccountAccountAssetLimitWritable = {
+export type PatchedAdminCreateAccountAccountAssetLimitRequestWritable = {
     /**
      * * `max` - Maximum
      * * `day_max` - Maximum per day
@@ -22446,7 +23418,7 @@ export type PatchedAdminCreateAccountAccountAssetLimitWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminCreateUpdateLegalTermWritable = {
+export type PatchedAdminCreateUpdateLegalTermRequestWritable = {
     name?: string;
     description?: string | null;
     groups?: Array<string | null>;
@@ -22459,183 +23431,12 @@ export type PatchedAdminCreateUpdateLegalTermWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminCryptoAccountWritable = {
-    address?: string;
-    name?: string | null;
-    /**
-     * * `bitcoin` - Bitcoin
-     * * `ethereum` - Ethereum
-     * * `stellar` - Stellar
-     * * `other` - Other
-     */
-    crypto_type?: 'bitcoin' | 'ethereum' | 'stellar' | 'other';
-    /**
-     * * `testnet` - Testnet
-     * * `mainnet` - Mainnet
-     */
-    network?: 'testnet' | 'mainnet';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    /**
-     * * `obsolete` - Obsolete
-     * * `declined` - Declined
-     * * `pending` - Pending
-     * * `incomplete` - Incomplete
-     * * `verified` - Verified
-     */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
-    archived?: boolean;
-    /**
-     * * `withdraw` - Withdraw
-     * * `deposit` - Deposit
-     */
-    action?: 'withdraw' | 'deposit' | null;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminDeviceWritable = {
-    name?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminDeviceAppWritable = {
-    name?: string | null;
-    /**
-     * * `expo` - Expo
-     */
-    type?: 'expo';
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminDocumentTypeWritable = {
-    name?: string | null;
-    description?: string | null;
-    related_resources?: Array<'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount'>;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminEmailWritable = {
-    primary?: boolean;
-    verified?: boolean;
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminExtendedGroupTierWritable = {
-    level?: number;
-    name?: string | null;
-    description?: string | null;
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminGroupPermissionWritable = {
-    properties?: {
-        [key: string]: unknown;
-    } | null;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminLegalTermVersionWritable = {
-    note?: string | null;
-    content?: string | null;
-    url?: string | null;
-    urls?: Array<LegalTermVersionUrl> | null;
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminMobileWritable = {
-    primary?: boolean;
-    verified?: boolean;
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminUpdateAccountDefinitionGroupWritable = {
-    default?: boolean;
-    primary?: boolean;
-    currencies?: Array<string>;
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminUpdateAccountDefinitionGroupAssetWritable = {
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminUpdateAssetWritable = {
+export type PatchedAdminUpdateAssetRequestWritable = {
     display_code?: string | null;
     description?: string | null;
     symbol?: string | null;
     unit?: string | null;
-    icon?: string | null;
+    icon?: Blob | File | null;
     manager?: string | null;
     manager_conditions?: Array<{
         [key: string]: unknown;
@@ -22652,7 +23453,7 @@ export type PatchedAdminUpdateAssetWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateAuthenticatorRuleWritable = {
+export type PatchedAdminUpdateAuthenticatorRuleRequestWritable = {
     /**
      * * `ephemeral` - Ephemeral
      * * `durable` - Durable
@@ -22671,24 +23472,11 @@ export type PatchedAdminUpdateAuthenticatorRuleWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateCompanyLinkWritable = {
-    /**
-     * * `complete` - Complete
-     */
-    status?: 'complete';
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminUpdateCompanySettingsWritable = {
+export type PatchedAdminUpdateCompanySettingsRequestWritable = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
-    disallowed_transaction_subtypes?: Array<UpdateCompanyDisallowedTransactionSubtype>;
+    disallowed_transaction_subtypes?: Array<UpdateCompanyDisallowedTransactionSubtypeRequest>;
     require_transaction_subtypes?: boolean;
     require_verification?: boolean;
     allow_registrations?: boolean;
@@ -22717,71 +23505,7 @@ export type PatchedAdminUpdateCompanySettingsWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateExtendedAccountWritable = {
-    name?: string;
-    label?: string | null;
-    primary?: boolean;
-    recon?: boolean;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    archived?: boolean;
-};
-
-/**
- * A mixin that handles the application of permissions to properties on a
- * serializer using the built-in permissions system.
- *
- * NOTE : This only works if the following conditions are met:
- * - The request context must contain a user.
- * - The class this mixin is attached must be a serializer.
- * - The class this mixin is attached to must have a Meta.model defined.
- * - The Meta.model class must have a PERMISSION_TYPE defined.
- */
-export type PatchedAdminUpdateExtendedTransactionWritable = {
-    note?: string;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    /**
-     * * `Pending` - Pending
-     * * `Complete` - Complete
-     * * `Failed` - Failed
-     */
-    status?: 'Pending' | 'Complete' | 'Failed';
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminUpdateGroupWritable = {
-    name?: string;
-    label?: string | null;
-    description?: string | null;
-    icon?: string | null;
-    /**
-     * * `system` - System
-     * * `admin` - Admin
-     * * `user` - User
-     */
-    section?: 'system' | 'admin' | 'user';
-    default?: boolean;
-    public?: boolean;
-    listed?: boolean;
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminUpdateGroupFeeWritable = {
+export type PatchedAdminUpdateGroupFeeRequestWritable = {
     name?: string | null;
     value?: number;
     percentage?: number;
@@ -22811,7 +23535,7 @@ export type PatchedAdminUpdateGroupFeeWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateGroupLimitWritable = {
+export type PatchedAdminUpdateGroupLimitRequestWritable = {
     /**
      * * `max` - Maximum
      * * `day_max` - Maximum per day
@@ -22841,11 +23565,11 @@ export type PatchedAdminUpdateGroupLimitWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateGroupSettingsWritable = {
+export type PatchedAdminUpdateGroupSettingsRequestWritable = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
-    disallowed_transaction_subtypes?: Array<UpdateGroupDisallowedTransactionSubtype>;
+    disallowed_transaction_subtypes?: Array<UpdateGroupDisallowedTransactionSubtypeRequest>;
     password_reset_url?: string | null;
     password_set_url?: string | null;
     email_verification_url?: string | null;
@@ -22859,7 +23583,7 @@ export type PatchedAdminUpdateGroupSettingsWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateGroupTierFeeWritable = {
+export type PatchedAdminUpdateGroupTierFeeRequestWritable = {
     name?: string | null;
     value?: number;
     percentage?: number;
@@ -22889,7 +23613,7 @@ export type PatchedAdminUpdateGroupTierFeeWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateGroupTierLimitWritable = {
+export type PatchedAdminUpdateGroupTierLimitRequestWritable = {
     value?: number;
     /**
      * * `max` - Maximum
@@ -22919,11 +23643,11 @@ export type PatchedAdminUpdateGroupTierLimitWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateGroupTierSettingsWritable = {
+export type PatchedAdminUpdateGroupTierSettingsRequestWritable = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
-    disallowed_transaction_subtypes?: Array<UpdateGroupTierDisallowedTransactionSubtype>;
+    disallowed_transaction_subtypes?: Array<UpdateGroupTierDisallowedTransactionSubtypeRequest>;
 };
 
 /**
@@ -22932,36 +23656,7 @@ export type PatchedAdminUpdateGroupTierSettingsWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateOauthClientWritable = {
-    application?: string;
-    data?: {
-        [key: string]: unknown;
-    } | null;
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminUpdateServiceWritable = {
-    name?: string;
-    description?: string | null;
-    tags?: Array<string> | null;
-    url?: string;
-    management_url?: string | null;
-    active?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminUpdateTransactionCollectionWritable = {
+export type PatchedAdminUpdateTransactionCollectionRequestWritable = {
     /**
      * * `Quoted` - Quoted
      * * `Pending` - Pending
@@ -22979,7 +23674,7 @@ export type PatchedAdminUpdateTransactionCollectionWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateTransactionSubtypeWritable = {
+export type PatchedAdminUpdateTransactionSubtypeRequestWritable = {
     name?: string;
     label?: string | null;
     description?: string | null;
@@ -23000,21 +23695,7 @@ export type PatchedAdminUpdateTransactionSubtypeWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateTransactionTransitionWritable = {
-    /**
-     * * `approved` - Approved
-     * * `declined` - Declined
-     */
-    status?: 'approved' | 'declined';
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminUpdateUserDocumentWritable = {
+export type PatchedAdminUpdateUserDocumentRequestWritable = {
     type?: number;
     /**
      * * `obsolete` - Obsolete
@@ -23037,14 +23718,14 @@ export type PatchedAdminUpdateUserDocumentWritable = {
  * Information about user setting and permissions shown in
  * the ExtendedUserInfoSerializer
  */
-export type PatchedAdminUpdateUserInfoWritable = {
+export type PatchedAdminUpdateUserInfoRequestWritable = {
     username?: string | null;
     email?: string;
     mobile?: string;
     first_name?: string | null;
     middle_name?: string | null;
     last_name?: string | null;
-    profile?: string | null;
+    profile?: Blob | File | null;
     groups?: Array<string | null>;
     id_number?: string | null;
     birth_date?: string | null;
@@ -23609,11 +24290,11 @@ export type PatchedAdminUpdateUserInfoWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUpdateUserSettingsWritable = {
+export type PatchedAdminUpdateUserSettingsRequestWritable = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
-    disallowed_transaction_subtypes?: Array<UpdateUserDisallowedTransactionSubtype>;
+    disallowed_transaction_subtypes?: Array<UpdateUserDisallowedTransactionSubtypeRequest>;
 };
 
 /**
@@ -23622,441 +24303,7 @@ export type PatchedAdminUpdateUserSettingsWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminUserAddressWritable = {
-    /**
-     * * `permanent` - Permanent
-     * * `contact` - Contact
-     * * `shipping` - Shipping
-     * * `billing` - Billing
-     * * `business` - Business
-     */
-    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business';
-    line_1?: string | null;
-    line_2?: string | null;
-    city?: string | null;
-    state_province?: string | null;
-    /**
-     * * `AF` - Afghanistan
-     * * `AX` - Åland Islands
-     * * `AL` - Albania
-     * * `DZ` - Algeria
-     * * `AS` - American Samoa
-     * * `AD` - Andorra
-     * * `AO` - Angola
-     * * `AI` - Anguilla
-     * * `AQ` - Antarctica
-     * * `AG` - Antigua and Barbuda
-     * * `AR` - Argentina
-     * * `AM` - Armenia
-     * * `AW` - Aruba
-     * * `AU` - Australia
-     * * `AT` - Austria
-     * * `AZ` - Azerbaijan
-     * * `BS` - Bahamas
-     * * `BH` - Bahrain
-     * * `BD` - Bangladesh
-     * * `BB` - Barbados
-     * * `BY` - Belarus
-     * * `BE` - Belgium
-     * * `BZ` - Belize
-     * * `BJ` - Benin
-     * * `BM` - Bermuda
-     * * `BT` - Bhutan
-     * * `BO` - Bolivia
-     * * `BQ` - Bonaire, Sint Eustatius and Saba
-     * * `BA` - Bosnia and Herzegovina
-     * * `BW` - Botswana
-     * * `BV` - Bouvet Island
-     * * `BR` - Brazil
-     * * `IO` - British Indian Ocean Territory
-     * * `BN` - Brunei
-     * * `BG` - Bulgaria
-     * * `BF` - Burkina Faso
-     * * `BI` - Burundi
-     * * `CV` - Cabo Verde
-     * * `KH` - Cambodia
-     * * `CM` - Cameroon
-     * * `CA` - Canada
-     * * `KY` - Cayman Islands
-     * * `CF` - Central African Republic
-     * * `TD` - Chad
-     * * `CL` - Chile
-     * * `CN` - China
-     * * `CX` - Christmas Island
-     * * `CC` - Cocos (Keeling) Islands
-     * * `CO` - Colombia
-     * * `KM` - Comoros
-     * * `CG` - Congo
-     * * `CD` - Congo (the Democratic Republic of the)
-     * * `CK` - Cook Islands
-     * * `CR` - Costa Rica
-     * * `CI` - Côte d'Ivoire
-     * * `HR` - Croatia
-     * * `CU` - Cuba
-     * * `CW` - Curaçao
-     * * `CY` - Cyprus
-     * * `CZ` - Czechia
-     * * `DK` - Denmark
-     * * `DJ` - Djibouti
-     * * `DM` - Dominica
-     * * `DO` - Dominican Republic
-     * * `EC` - Ecuador
-     * * `EG` - Egypt
-     * * `SV` - El Salvador
-     * * `GQ` - Equatorial Guinea
-     * * `ER` - Eritrea
-     * * `EE` - Estonia
-     * * `SZ` - Eswatini
-     * * `ET` - Ethiopia
-     * * `FK` - Falkland Islands (Malvinas)
-     * * `FO` - Faroe Islands
-     * * `FJ` - Fiji
-     * * `FI` - Finland
-     * * `FR` - France
-     * * `GF` - French Guiana
-     * * `PF` - French Polynesia
-     * * `TF` - French Southern Territories
-     * * `GA` - Gabon
-     * * `GM` - Gambia
-     * * `GE` - Georgia
-     * * `DE` - Germany
-     * * `GH` - Ghana
-     * * `GI` - Gibraltar
-     * * `GR` - Greece
-     * * `GL` - Greenland
-     * * `GD` - Grenada
-     * * `GP` - Guadeloupe
-     * * `GU` - Guam
-     * * `GT` - Guatemala
-     * * `GG` - Guernsey
-     * * `GN` - Guinea
-     * * `GW` - Guinea-Bissau
-     * * `GY` - Guyana
-     * * `HT` - Haiti
-     * * `HM` - Heard Island and McDonald Islands
-     * * `VA` - Holy See
-     * * `HN` - Honduras
-     * * `HK` - Hong Kong
-     * * `HU` - Hungary
-     * * `IS` - Iceland
-     * * `IN` - India
-     * * `ID` - Indonesia
-     * * `IR` - Iran
-     * * `IQ` - Iraq
-     * * `IE` - Ireland
-     * * `IM` - Isle of Man
-     * * `IL` - Israel
-     * * `IT` - Italy
-     * * `JM` - Jamaica
-     * * `JP` - Japan
-     * * `JE` - Jersey
-     * * `JO` - Jordan
-     * * `KZ` - Kazakhstan
-     * * `KE` - Kenya
-     * * `KI` - Kiribati
-     * * `KW` - Kuwait
-     * * `KG` - Kyrgyzstan
-     * * `LA` - Laos
-     * * `LV` - Latvia
-     * * `LB` - Lebanon
-     * * `LS` - Lesotho
-     * * `LR` - Liberia
-     * * `LY` - Libya
-     * * `LI` - Liechtenstein
-     * * `LT` - Lithuania
-     * * `LU` - Luxembourg
-     * * `MO` - Macao
-     * * `MG` - Madagascar
-     * * `MW` - Malawi
-     * * `MY` - Malaysia
-     * * `MV` - Maldives
-     * * `ML` - Mali
-     * * `MT` - Malta
-     * * `MH` - Marshall Islands
-     * * `MQ` - Martinique
-     * * `MR` - Mauritania
-     * * `MU` - Mauritius
-     * * `YT` - Mayotte
-     * * `MX` - Mexico
-     * * `FM` - Micronesia
-     * * `MD` - Moldova
-     * * `MC` - Monaco
-     * * `MN` - Mongolia
-     * * `ME` - Montenegro
-     * * `MS` - Montserrat
-     * * `MA` - Morocco
-     * * `MZ` - Mozambique
-     * * `MM` - Myanmar
-     * * `NA` - Namibia
-     * * `NR` - Nauru
-     * * `NP` - Nepal
-     * * `NL` - Netherlands
-     * * `NC` - New Caledonia
-     * * `NZ` - New Zealand
-     * * `NI` - Nicaragua
-     * * `NE` - Niger
-     * * `NG` - Nigeria
-     * * `NU` - Niue
-     * * `NF` - Norfolk Island
-     * * `KP` - North Korea
-     * * `MK` - North Macedonia
-     * * `MP` - Northern Mariana Islands
-     * * `NO` - Norway
-     * * `OM` - Oman
-     * * `PK` - Pakistan
-     * * `PW` - Palau
-     * * `PS` - Palestine, State of
-     * * `PA` - Panama
-     * * `PG` - Papua New Guinea
-     * * `PY` - Paraguay
-     * * `PE` - Peru
-     * * `PH` - Philippines
-     * * `PN` - Pitcairn
-     * * `PL` - Poland
-     * * `PT` - Portugal
-     * * `PR` - Puerto Rico
-     * * `QA` - Qatar
-     * * `RE` - Réunion
-     * * `RO` - Romania
-     * * `RU` - Russia
-     * * `RW` - Rwanda
-     * * `BL` - Saint Barthélemy
-     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
-     * * `KN` - Saint Kitts and Nevis
-     * * `LC` - Saint Lucia
-     * * `MF` - Saint Martin (French part)
-     * * `PM` - Saint Pierre and Miquelon
-     * * `VC` - Saint Vincent and the Grenadines
-     * * `WS` - Samoa
-     * * `SM` - San Marino
-     * * `ST` - Sao Tome and Principe
-     * * `SA` - Saudi Arabia
-     * * `SN` - Senegal
-     * * `RS` - Serbia
-     * * `SC` - Seychelles
-     * * `SL` - Sierra Leone
-     * * `SG` - Singapore
-     * * `SX` - Sint Maarten (Dutch part)
-     * * `SK` - Slovakia
-     * * `SI` - Slovenia
-     * * `SB` - Solomon Islands
-     * * `SO` - Somalia
-     * * `ZA` - South Africa
-     * * `GS` - South Georgia and the South Sandwich Islands
-     * * `KR` - South Korea
-     * * `SS` - South Sudan
-     * * `ES` - Spain
-     * * `LK` - Sri Lanka
-     * * `SD` - Sudan
-     * * `SR` - Suriname
-     * * `SJ` - Svalbard and Jan Mayen
-     * * `SE` - Sweden
-     * * `CH` - Switzerland
-     * * `SY` - Syria
-     * * `TW` - Taiwan
-     * * `TJ` - Tajikistan
-     * * `TZ` - Tanzania
-     * * `TH` - Thailand
-     * * `TL` - Timor-Leste
-     * * `TG` - Togo
-     * * `TK` - Tokelau
-     * * `TO` - Tonga
-     * * `TT` - Trinidad and Tobago
-     * * `TN` - Tunisia
-     * * `TR` - Türkiye
-     * * `TM` - Turkmenistan
-     * * `TC` - Turks and Caicos Islands
-     * * `TV` - Tuvalu
-     * * `UG` - Uganda
-     * * `UA` - Ukraine
-     * * `AE` - United Arab Emirates
-     * * `GB` - United Kingdom
-     * * `UM` - United States Minor Outlying Islands
-     * * `US` - United States of America
-     * * `UY` - Uruguay
-     * * `UZ` - Uzbekistan
-     * * `VU` - Vanuatu
-     * * `VE` - Venezuela
-     * * `VN` - Vietnam
-     * * `VG` - Virgin Islands (British)
-     * * `VI` - Virgin Islands (U.S.)
-     * * `WF` - Wallis and Futuna
-     * * `EH` - Western Sahara
-     * * `YE` - Yemen
-     * * `ZM` - Zambia
-     * * `ZW` - Zimbabwe
-     */
-    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
-    postal_code?: string | null;
-    /**
-     * * `obsolete` - Obsolete
-     * * `declined` - Declined
-     * * `pending` - Pending
-     * * `incomplete` - Incomplete
-     * * `verified` - Verified
-     */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminUserBankAccountWritable = {
-    name?: string | null;
-    owner?: BankOwner | null;
-    number?: string | null;
-    type?: string | null;
-    /**
-     * * `individual` - Individual
-     * * `business` - Business
-     */
-    beneficiary_type?: 'individual' | 'business' | null;
-    bank_name?: string | null;
-    bank_code?: string | null;
-    bank_currency?: string | null;
-    branch_code?: string | null;
-    branch_address?: AdminUserBankBranchAddress;
-    branch_address_text?: string | null;
-    routing_number?: string | null;
-    swift?: string | null;
-    iban?: string | null;
-    bic?: string | null;
-    clabe?: string | null;
-    check_digit?: string | null;
-    pix_key?: string | null;
-    br_code?: string | null;
-    /**
-     * * `obsolete` - Obsolete
-     * * `declined` - Declined
-     * * `pending` - Pending
-     * * `incomplete` - Incomplete
-     * * `verified` - Verified
-     */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    archived?: boolean;
-    /**
-     * * `withdraw` - Withdraw
-     * * `deposit` - Deposit
-     */
-    action?: 'withdraw' | 'deposit' | null;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminUserPermissionWritable = {
-    properties?: {
-        [key: string]: unknown;
-    } | null;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminUserWalletAccountWritable = {
-    username?: string | null;
-    email?: string | null;
-    mobile?: string | null;
-    name?: string | null;
-    /**
-     * * `paypal` - Paypal
-     * * `venmo` - Venmo
-     * * `other` - Other
-     */
-    type?: 'paypal' | 'venmo' | 'other';
-    wallet_currency?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    /**
-     * * `obsolete` - Obsolete
-     * * `declined` - Declined
-     * * `pending` - Pending
-     * * `incomplete` - Incomplete
-     * * `verified` - Verified
-     */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
-    archived?: boolean;
-    /**
-     * * `withdraw` - Withdraw
-     * * `deposit` - Deposit
-     */
-    action?: 'withdraw' | 'deposit' | null;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAdminWebhookWritable = {
-    url?: string;
-    /**
-     * * `company.link.create` - Company Link Create
-     * * `company.link.update` - Company Link Update
-     * * `company.update` - Company Update
-     * * `currency.create` - Currency Create
-     * * `currency.update` - Currency Update
-     * * `user.create` - User Create
-     * * `user.update` - User Update
-     * * `user.password.reset` - User Password Reset
-     * * `user.password.set` - User Password Set
-     * * `user.deactivate.verify` - User Deactivate Verify
-     * * `user.request_delete.verify` - User Request Delete Verify
-     * * `user.email.verify` - User Email Verify
-     * * `user.mobile.verify` - User Mobile Verify
-     * * `email.create` - Email Create
-     * * `email.update` - Email Update
-     * * `mobile.create` - Mobile Create
-     * * `mobile.update` - Mobile Update
-     * * `address.create` - Address Create
-     * * `address.update` - Address Update
-     * * `document.create` - Document Create
-     * * `document.update` - Document Update
-     * * `bank_account.create` - Bank Account Create
-     * * `bank_account.update` - Bank Account Update
-     * * `bank_account.delete` - Bank Account Delete
-     * * `crypto_account.create` - Crypto Account Create
-     * * `crypto_account.update` - Crypto Account Update
-     * * `account.create` - Account Create
-     * * `account.update` - Account Update
-     * * `account.currency.create` - Account Currency Create
-     * * `transaction.create` - Transaction Create
-     * * `transaction.update` - Transaction Update
-     * * `transaction.initiate` - Transaction Initiate
-     * * `transaction.execute` - Transaction Execute
-     * * `transaction.transition.create` - Transaction Transition Create
-     * * `transaction.transition.update` - Transaction Transition Update
-     * * `mfa.sms.verify` - Mfa Sms Verify
-     */
-    event?: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'address.create' | 'address.update' | 'document.create' | 'document.update' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify';
-    secret?: string;
-    condition?: string | null;
-    enabled?: boolean;
-    archived?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedCreateUpdateGroupTierRequirementSetWritable = {
+export type PatchedCreateUpdateGroupTierRequirementSetRequestWritable = {
     parent?: number | null;
     name?: string | null;
     description?: string | null;
@@ -24066,18 +24313,6 @@ export type PatchedCreateUpdateGroupTierRequirementSetWritable = {
      */
     condition?: 'all' | 'any';
     min_condition_matches?: number | null;
-    weight?: number | null;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedGroupTierRequirementSetItemWritable = {
-    name?: string | null;
-    description?: string | null;
     weight?: number | null;
 };
 
@@ -24231,7 +24466,7 @@ export type AccessControlRulesListResponses = {
 export type AccessControlRulesListResponse = AccessControlRulesListResponses[keyof AccessControlRulesListResponses];
 
 export type AccessControlRulesCreateData = {
-    body: AdminCreateAccessControlRuleWritable;
+    body: AdminCreateAccessControlRuleRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/access-control-rules/';
@@ -24274,7 +24509,7 @@ export type AccessControlRulesRetrieveResponses = {
 export type AccessControlRulesRetrieveResponse = AccessControlRulesRetrieveResponses[keyof AccessControlRulesRetrieveResponses];
 
 export type AccessControlRulesPartialUpdateData = {
-    body?: PatchedAdminCreateAccessControlRuleWritable;
+    body?: PatchedAdminCreateAccessControlRuleRequestWritable;
     path: {
         id: string;
     };
@@ -24289,7 +24524,7 @@ export type AccessControlRulesPartialUpdateResponses = {
 export type AccessControlRulesPartialUpdateResponse = AccessControlRulesPartialUpdateResponses[keyof AccessControlRulesPartialUpdateResponses];
 
 export type AccessControlRulesUpdateData = {
-    body: AdminCreateAccessControlRuleWritable;
+    body: AdminCreateAccessControlRuleRequestWritable;
     path: {
         id: string;
     };
@@ -24396,7 +24631,7 @@ export type AccountDefinitionsListResponses = {
 export type AccountDefinitionsListResponse = AccountDefinitionsListResponses[keyof AccountDefinitionsListResponses];
 
 export type AccountDefinitionsCreateData = {
-    body: AdminCreateUpdateAccountDefinition;
+    body: AdminCreateUpdateAccountDefinitionRequest;
     path?: never;
     query?: never;
     url: '/3/admin/account-definitions/';
@@ -24424,7 +24659,7 @@ export type AccountDefinitionsRetrieveResponses = {
 export type AccountDefinitionsRetrieveResponse = AccountDefinitionsRetrieveResponses[keyof AccountDefinitionsRetrieveResponses];
 
 export type AccountDefinitionsPartialUpdateData = {
-    body?: PatchedAdminCreateUpdateAccountDefinition;
+    body?: PatchedAdminCreateUpdateAccountDefinitionRequest;
     path: {
         definition_name: string;
     };
@@ -24439,7 +24674,7 @@ export type AccountDefinitionsPartialUpdateResponses = {
 export type AccountDefinitionsPartialUpdateResponse = AccountDefinitionsPartialUpdateResponses[keyof AccountDefinitionsPartialUpdateResponses];
 
 export type AccountDefinitionsUpdateData = {
-    body: AdminCreateUpdateAccountDefinition;
+    body: AdminCreateUpdateAccountDefinitionRequest;
     path: {
         definition_name: string;
     };
@@ -24478,7 +24713,7 @@ export type AccountDefinitionsGroupsListResponses = {
 export type AccountDefinitionsGroupsListResponse = AccountDefinitionsGroupsListResponses[keyof AccountDefinitionsGroupsListResponses];
 
 export type AccountDefinitionsGroupsCreateData = {
-    body: AdminCreateAccountDefinitionGroupWritable;
+    body: AdminCreateAccountDefinitionGroupRequestWritable;
     path: {
         definition_name: string;
     };
@@ -24509,7 +24744,7 @@ export type AccountDefinitionsGroupsRetrieveResponses = {
 export type AccountDefinitionsGroupsRetrieveResponse = AccountDefinitionsGroupsRetrieveResponses[keyof AccountDefinitionsGroupsRetrieveResponses];
 
 export type AccountDefinitionsGroupsPartialUpdateData = {
-    body?: PatchedAdminUpdateAccountDefinitionGroupWritable;
+    body?: PatchedAdminUpdateAccountDefinitionGroupRequest;
     path: {
         definition_group_name: string;
         definition_name: string;
@@ -24525,7 +24760,7 @@ export type AccountDefinitionsGroupsPartialUpdateResponses = {
 export type AccountDefinitionsGroupsPartialUpdateResponse = AccountDefinitionsGroupsPartialUpdateResponses[keyof AccountDefinitionsGroupsPartialUpdateResponses];
 
 export type AccountDefinitionsGroupsUpdateData = {
-    body?: AdminUpdateAccountDefinitionGroupWritable;
+    body?: AdminUpdateAccountDefinitionGroupRequest;
     path: {
         definition_group_name: string;
         definition_name: string;
@@ -24566,7 +24801,7 @@ export type AccountDefinitionsGroupsCurrenciesListResponses = {
 export type AccountDefinitionsGroupsCurrenciesListResponse = AccountDefinitionsGroupsCurrenciesListResponses[keyof AccountDefinitionsGroupsCurrenciesListResponses];
 
 export type AccountDefinitionsGroupsCurrenciesCreateData = {
-    body: AdminCreateAccountDefinitionGroupAssetWritable;
+    body: AdminCreateAccountDefinitionGroupAssetRequest;
     path: {
         definition_group_name: string;
         definition_name: string;
@@ -24599,7 +24834,7 @@ export type AccountDefinitionsGroupsCurrenciesRetrieveResponses = {
 export type AccountDefinitionsGroupsCurrenciesRetrieveResponse = AccountDefinitionsGroupsCurrenciesRetrieveResponses[keyof AccountDefinitionsGroupsCurrenciesRetrieveResponses];
 
 export type AccountDefinitionsGroupsCurrenciesPartialUpdateData = {
-    body?: PatchedAdminUpdateAccountDefinitionGroupAssetWritable;
+    body?: PatchedAdminUpdateAccountDefinitionGroupAssetRequest;
     path: {
         currency_code: string;
         definition_group_name: string;
@@ -24616,7 +24851,7 @@ export type AccountDefinitionsGroupsCurrenciesPartialUpdateResponses = {
 export type AccountDefinitionsGroupsCurrenciesPartialUpdateResponse = AccountDefinitionsGroupsCurrenciesPartialUpdateResponses[keyof AccountDefinitionsGroupsCurrenciesPartialUpdateResponses];
 
 export type AccountDefinitionsGroupsCurrenciesUpdateData = {
-    body?: AdminUpdateAccountDefinitionGroupAssetWritable;
+    body?: AdminUpdateAccountDefinitionGroupAssetRequest;
     path: {
         currency_code: string;
         definition_group_name: string;
@@ -24685,7 +24920,7 @@ export type AccountsListResponses = {
 export type AccountsListResponse = AccountsListResponses[keyof AccountsListResponses];
 
 export type AccountsCreateData = {
-    body?: AdminCreateAccountWritable;
+    body?: AdminCreateAccountRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/accounts/';
@@ -24713,7 +24948,7 @@ export type AccountsRetrieveResponses = {
 export type AccountsRetrieveResponse = AccountsRetrieveResponses[keyof AccountsRetrieveResponses];
 
 export type AccountsPartialUpdateData = {
-    body?: PatchedAdminUpdateExtendedAccountWritable;
+    body?: PatchedAdminUpdateExtendedAccountRequest;
     path: {
         reference: string;
     };
@@ -24728,7 +24963,7 @@ export type AccountsPartialUpdateResponses = {
 export type AccountsPartialUpdateResponse = AccountsPartialUpdateResponses[keyof AccountsPartialUpdateResponses];
 
 export type AccountsUpdateData = {
-    body?: AdminUpdateExtendedAccountWritable;
+    body?: AdminUpdateExtendedAccountRequest;
     path: {
         reference: string;
     };
@@ -24799,7 +25034,7 @@ export type AccountsCurrenciesListResponses = {
 export type AccountsCurrenciesListResponse = AccountsCurrenciesListResponses[keyof AccountsCurrenciesListResponses];
 
 export type AccountsCurrenciesCreateData = {
-    body: AdminCreateAccountAccountAssetWritable;
+    body: AdminCreateAccountAccountAssetRequestWritable;
     path: {
         reference: string;
     };
@@ -24830,7 +25065,7 @@ export type AccountsCurrenciesRetrieveResponses = {
 export type AccountsCurrenciesRetrieveResponse = AccountsCurrenciesRetrieveResponses[keyof AccountsCurrenciesRetrieveResponses];
 
 export type AccountsCurrenciesPartialUpdateData = {
-    body?: PatchedAdminAccountAccountAssetWritable;
+    body?: PatchedAdminAccountAccountAssetRequest;
     path: {
         code: string;
         reference: string;
@@ -24846,7 +25081,7 @@ export type AccountsCurrenciesPartialUpdateResponses = {
 export type AccountsCurrenciesPartialUpdateResponse = AccountsCurrenciesPartialUpdateResponses[keyof AccountsCurrenciesPartialUpdateResponses];
 
 export type AccountsCurrenciesUpdateData = {
-    body: AdminAccountAccountAssetWritable;
+    body: AdminAccountAccountAssetRequest;
     path: {
         code: string;
         reference: string;
@@ -24878,7 +25113,7 @@ export type AccountsCurrenciesFeesListResponses = {
 export type AccountsCurrenciesFeesListResponse = AccountsCurrenciesFeesListResponses[keyof AccountsCurrenciesFeesListResponses];
 
 export type AccountsCurrenciesFeesCreateData = {
-    body: AdminCreateAccountAccountAssetFeeWritable;
+    body: AdminCreateAccountAccountAssetFeeRequestWritable;
     path: {
         code: string;
         reference: string;
@@ -24928,7 +25163,7 @@ export type AccountsCurrenciesFeesRetrieveResponses = {
 export type AccountsCurrenciesFeesRetrieveResponse = AccountsCurrenciesFeesRetrieveResponses[keyof AccountsCurrenciesFeesRetrieveResponses];
 
 export type AccountsCurrenciesFeesPartialUpdateData = {
-    body?: PatchedAdminCreateAccountAccountAssetFeeWritable;
+    body?: PatchedAdminCreateAccountAccountAssetFeeRequestWritable;
     path: {
         code: string;
         fee_id: string;
@@ -24945,7 +25180,7 @@ export type AccountsCurrenciesFeesPartialUpdateResponses = {
 export type AccountsCurrenciesFeesPartialUpdateResponse = AccountsCurrenciesFeesPartialUpdateResponses[keyof AccountsCurrenciesFeesPartialUpdateResponses];
 
 export type AccountsCurrenciesFeesUpdateData = {
-    body: AdminCreateAccountAccountAssetFeeWritable;
+    body: AdminCreateAccountAccountAssetFeeRequestWritable;
     path: {
         code: string;
         fee_id: string;
@@ -24987,7 +25222,7 @@ export type AccountsCurrenciesLimitsListResponses = {
 export type AccountsCurrenciesLimitsListResponse = AccountsCurrenciesLimitsListResponses[keyof AccountsCurrenciesLimitsListResponses];
 
 export type AccountsCurrenciesLimitsCreateData = {
-    body: AdminCreateAccountAccountAssetLimitWritable;
+    body: AdminCreateAccountAccountAssetLimitRequestWritable;
     path: {
         code: string;
         reference: string;
@@ -25037,7 +25272,7 @@ export type AccountsCurrenciesLimitsRetrieveResponses = {
 export type AccountsCurrenciesLimitsRetrieveResponse = AccountsCurrenciesLimitsRetrieveResponses[keyof AccountsCurrenciesLimitsRetrieveResponses];
 
 export type AccountsCurrenciesLimitsPartialUpdateData = {
-    body?: PatchedAdminCreateAccountAccountAssetLimitWritable;
+    body?: PatchedAdminCreateAccountAccountAssetLimitRequestWritable;
     path: {
         code: string;
         limit_id: string;
@@ -25054,7 +25289,7 @@ export type AccountsCurrenciesLimitsPartialUpdateResponses = {
 export type AccountsCurrenciesLimitsPartialUpdateResponse = AccountsCurrenciesLimitsPartialUpdateResponses[keyof AccountsCurrenciesLimitsPartialUpdateResponses];
 
 export type AccountsCurrenciesLimitsUpdateData = {
-    body: AdminCreateAccountAccountAssetLimitWritable;
+    body: AdminCreateAccountAccountAssetLimitRequestWritable;
     path: {
         code: string;
         limit_id: string;
@@ -25087,7 +25322,7 @@ export type AccountsCurrenciesSettingsRetrieveResponses = {
 export type AccountsCurrenciesSettingsRetrieveResponse = AccountsCurrenciesSettingsRetrieveResponses[keyof AccountsCurrenciesSettingsRetrieveResponses];
 
 export type AccountsCurrenciesSettingsPartialUpdateData = {
-    body?: PatchedAdminAccountAccountAssetSettingsUpdateWritable;
+    body?: PatchedAdminAccountAccountAssetSettingsUpdateRequestWritable;
     path: {
         code: string;
         reference: string;
@@ -25103,7 +25338,7 @@ export type AccountsCurrenciesSettingsPartialUpdateResponses = {
 export type AccountsCurrenciesSettingsPartialUpdateResponse = AccountsCurrenciesSettingsPartialUpdateResponses[keyof AccountsCurrenciesSettingsPartialUpdateResponses];
 
 export type AccountsCurrenciesSettingsUpdateData = {
-    body: AdminAccountAccountAssetSettingsUpdateWritable;
+    body: AdminAccountAccountAssetSettingsUpdateRequestWritable;
     path: {
         code: string;
         reference: string;
@@ -25119,7 +25354,7 @@ export type AccountsCurrenciesSettingsUpdateResponses = {
 export type AccountsCurrenciesSettingsUpdateResponse = AccountsCurrenciesSettingsUpdateResponses[keyof AccountsCurrenciesSettingsUpdateResponses];
 
 export type AuthDeactivateCreateData = {
-    body: AdminDeactivate;
+    body: AdminDeactivateRequest;
     path?: never;
     query?: never;
     url: '/3/admin/auth/deactivate/';
@@ -25132,7 +25367,7 @@ export type AuthDeactivateCreateResponses = {
 export type AuthDeactivateCreateResponse = AuthDeactivateCreateResponses[keyof AuthDeactivateCreateResponses];
 
 export type AuthDeactivateVerifyCreateData = {
-    body: VerifyDeactivate;
+    body: VerifyDeactivateRequest;
     path?: never;
     query?: never;
     url: '/3/admin/auth/deactivate/verify/';
@@ -25145,7 +25380,7 @@ export type AuthDeactivateVerifyCreateResponses = {
 export type AuthDeactivateVerifyCreateResponse = AuthDeactivateVerifyCreateResponses[keyof AuthDeactivateVerifyCreateResponses];
 
 export type AuthLoginCreateData = {
-    body: AdminLogin;
+    body: AdminLoginRequest;
     path?: never;
     query?: never;
     url: '/3/admin/auth/login/';
@@ -25158,7 +25393,7 @@ export type AuthLoginCreateResponses = {
 export type AuthLoginCreateResponse = AuthLoginCreateResponses[keyof AuthLoginCreateResponses];
 
 export type AuthPasswordResetCreateData = {
-    body: AdminPasswordReset;
+    body: AdminPasswordResetRequest;
     path?: never;
     query?: never;
     url: '/3/admin/auth/password/reset/';
@@ -25171,7 +25406,7 @@ export type AuthPasswordResetCreateResponses = {
 export type AuthPasswordResetCreateResponse = AuthPasswordResetCreateResponses[keyof AuthPasswordResetCreateResponses];
 
 export type AuthPasswordResetConfirmCreateData = {
-    body: PasswordResetConfirmWritable;
+    body: PasswordResetConfirmRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/auth/password/reset/confirm/';
@@ -25184,7 +25419,7 @@ export type AuthPasswordResetConfirmCreateResponses = {
 export type AuthPasswordResetConfirmCreateResponse = AuthPasswordResetConfirmCreateResponses[keyof AuthPasswordResetConfirmCreateResponses];
 
 export type AuthRegisterCreateData = {
-    body?: AdminRegisterWritable;
+    body?: AdminRegisterRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/auth/register/';
@@ -25197,7 +25432,7 @@ export type AuthRegisterCreateResponses = {
 export type AuthRegisterCreateResponse = AuthRegisterCreateResponses[keyof AuthRegisterCreateResponses];
 
 export type AuthRequestDeleteCreateData = {
-    body: AdminRequestDelete;
+    body: AdminRequestDeleteRequest;
     path?: never;
     query?: never;
     url: '/3/admin/auth/request-delete/';
@@ -25210,7 +25445,7 @@ export type AuthRequestDeleteCreateResponses = {
 export type AuthRequestDeleteCreateResponse = AuthRequestDeleteCreateResponses[keyof AuthRequestDeleteCreateResponses];
 
 export type AuthRequestDeleteVerifyCreateData = {
-    body: VerifyRequestDelete;
+    body: VerifyRequestDeleteRequest;
     path?: never;
     query?: never;
     url: '/3/admin/auth/request-delete/verify/';
@@ -25245,7 +25480,7 @@ export type AuthenticatorRulesListResponses = {
 export type AuthenticatorRulesListResponse = AuthenticatorRulesListResponses[keyof AuthenticatorRulesListResponses];
 
 export type AuthenticatorRulesCreateData = {
-    body: AdminCreateAuthenticatorRuleWritable;
+    body: AdminCreateAuthenticatorRuleRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/authenticator-rules/';
@@ -25288,7 +25523,7 @@ export type AuthenticatorRulesRetrieveResponses = {
 export type AuthenticatorRulesRetrieveResponse = AuthenticatorRulesRetrieveResponses[keyof AuthenticatorRulesRetrieveResponses];
 
 export type AuthenticatorRulesPartialUpdateData = {
-    body?: PatchedAdminUpdateAuthenticatorRuleWritable;
+    body?: PatchedAdminUpdateAuthenticatorRuleRequestWritable;
     path: {
         identifier: string;
     };
@@ -25303,7 +25538,7 @@ export type AuthenticatorRulesPartialUpdateResponses = {
 export type AuthenticatorRulesPartialUpdateResponse = AuthenticatorRulesPartialUpdateResponses[keyof AuthenticatorRulesPartialUpdateResponses];
 
 export type AuthenticatorRulesUpdateData = {
-    body: AdminUpdateAuthenticatorRuleWritable;
+    body: AdminUpdateAuthenticatorRuleRequestWritable;
     path: {
         identifier: string;
     };
@@ -25340,7 +25575,7 @@ export type BankAccountsListResponses = {
 export type BankAccountsListResponse = BankAccountsListResponses[keyof BankAccountsListResponses];
 
 export type BankAccountsCreateData = {
-    body?: AdminCompanyBankAccountWritable;
+    body?: AdminCompanyBankAccountRequest;
     path?: never;
     query?: never;
     url: '/3/admin/bank-accounts/';
@@ -25383,7 +25618,7 @@ export type BankAccountsRetrieveResponses = {
 export type BankAccountsRetrieveResponse = BankAccountsRetrieveResponses[keyof BankAccountsRetrieveResponses];
 
 export type BankAccountsPartialUpdateData = {
-    body?: PatchedAdminCompanyBankAccountWritable;
+    body?: PatchedAdminCompanyBankAccountRequest;
     path: {
         id: string;
     };
@@ -25398,7 +25633,7 @@ export type BankAccountsPartialUpdateResponses = {
 export type BankAccountsPartialUpdateResponse = BankAccountsPartialUpdateResponses[keyof BankAccountsPartialUpdateResponses];
 
 export type BankAccountsUpdateData = {
-    body?: AdminCompanyBankAccountWritable;
+    body?: AdminCompanyBankAccountRequest;
     path: {
         id: string;
     };
@@ -25437,7 +25672,7 @@ export type BankAccountsCurrenciesListResponses = {
 export type BankAccountsCurrenciesListResponse = BankAccountsCurrenciesListResponses[keyof BankAccountsCurrenciesListResponses];
 
 export type BankAccountsCurrenciesCreateData = {
-    body: AdminCreateCompanyBankAccountAsset;
+    body: AdminCreateCompanyBankAccountAssetRequest;
     path: {
         id: string;
     };
@@ -25497,7 +25732,7 @@ export type CompanyRetrieveResponses = {
 export type CompanyRetrieveResponse = CompanyRetrieveResponses[keyof CompanyRetrieveResponses];
 
 export type CompanyPartialUpdateData = {
-    body?: PatchedAdminCompanyWritable;
+    body?: PatchedAdminCompanyRequest;
     path?: never;
     query?: never;
     url: '/3/admin/company/';
@@ -25510,7 +25745,7 @@ export type CompanyPartialUpdateResponses = {
 export type CompanyPartialUpdateResponse = CompanyPartialUpdateResponses[keyof CompanyPartialUpdateResponses];
 
 export type CompanyUpdateData = {
-    body: AdminCompanyWritable;
+    body: AdminCompanyRequest;
     path?: never;
     query?: never;
     url: '/3/admin/company/';
@@ -25536,7 +25771,7 @@ export type CompanyAddressRetrieveResponses = {
 export type CompanyAddressRetrieveResponse = CompanyAddressRetrieveResponses[keyof CompanyAddressRetrieveResponses];
 
 export type CompanyAddressPartialUpdateData = {
-    body?: PatchedAdminCompanyAddress;
+    body?: PatchedAdminCompanyAddressRequest;
     path?: never;
     query?: never;
     url: '/3/admin/company/address/';
@@ -25549,7 +25784,7 @@ export type CompanyAddressPartialUpdateResponses = {
 export type CompanyAddressPartialUpdateResponse = CompanyAddressPartialUpdateResponses[keyof CompanyAddressPartialUpdateResponses];
 
 export type CompanyAddressUpdateData = {
-    body?: AdminCompanyAddress;
+    body?: AdminCompanyAddressRequest;
     path?: never;
     query?: never;
     url: '/3/admin/company/address/';
@@ -25586,7 +25821,7 @@ export type CompanyLinksListResponses = {
 export type CompanyLinksListResponse = CompanyLinksListResponses[keyof CompanyLinksListResponses];
 
 export type CompanyLinksCreateData = {
-    body?: AdminCreateCompanyLinkWritable;
+    body?: AdminCreateCompanyLinkRequest;
     path?: never;
     query?: never;
     url: '/3/admin/company/links/';
@@ -25629,7 +25864,7 @@ export type CompanyLinksRetrieveResponses = {
 export type CompanyLinksRetrieveResponse = CompanyLinksRetrieveResponses[keyof CompanyLinksRetrieveResponses];
 
 export type CompanyLinksPartialUpdateData = {
-    body?: PatchedAdminUpdateCompanyLinkWritable;
+    body?: PatchedAdminUpdateCompanyLinkRequest;
     path: {
         id: string;
     };
@@ -25644,7 +25879,7 @@ export type CompanyLinksPartialUpdateResponses = {
 export type CompanyLinksPartialUpdateResponse = CompanyLinksPartialUpdateResponses[keyof CompanyLinksPartialUpdateResponses];
 
 export type CompanyLinksUpdateData = {
-    body: AdminUpdateCompanyLinkWritable;
+    body: AdminUpdateCompanyLinkRequest;
     path: {
         id: string;
     };
@@ -25672,7 +25907,7 @@ export type CompanySettingsRetrieveResponses = {
 export type CompanySettingsRetrieveResponse = CompanySettingsRetrieveResponses[keyof CompanySettingsRetrieveResponses];
 
 export type CompanySettingsPartialUpdateData = {
-    body?: PatchedAdminUpdateCompanySettingsWritable;
+    body?: PatchedAdminUpdateCompanySettingsRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/company/settings/';
@@ -25685,7 +25920,7 @@ export type CompanySettingsPartialUpdateResponses = {
 export type CompanySettingsPartialUpdateResponse = CompanySettingsPartialUpdateResponses[keyof CompanySettingsPartialUpdateResponses];
 
 export type CompanySettingsUpdateData = {
-    body: AdminUpdateCompanySettingsWritable;
+    body: AdminUpdateCompanySettingsRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/company/settings/';
@@ -25736,7 +25971,7 @@ export type CurrenciesListResponses = {
 export type CurrenciesListResponse = CurrenciesListResponses[keyof CurrenciesListResponses];
 
 export type CurrenciesCreateData = {
-    body: AdminCreateAssetWritable;
+    body: AdminCreateAssetRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/currencies/';
@@ -25764,7 +25999,7 @@ export type CurrenciesRetrieveResponses = {
 export type CurrenciesRetrieveResponse = CurrenciesRetrieveResponses[keyof CurrenciesRetrieveResponses];
 
 export type CurrenciesPartialUpdateData = {
-    body?: PatchedAdminUpdateAssetWritable;
+    body?: PatchedAdminUpdateAssetRequestWritable;
     path: {
         code: string;
     };
@@ -25779,7 +26014,7 @@ export type CurrenciesPartialUpdateResponses = {
 export type CurrenciesPartialUpdateResponse = CurrenciesPartialUpdateResponses[keyof CurrenciesPartialUpdateResponses];
 
 export type CurrenciesUpdateData = {
-    body?: AdminUpdateAssetWritable;
+    body?: AdminUpdateAssetRequestWritable;
     path: {
         code: string;
     };
@@ -25831,7 +26066,7 @@ export type DocumentTypesListResponses = {
 export type DocumentTypesListResponse = DocumentTypesListResponses[keyof DocumentTypesListResponses];
 
 export type DocumentTypesCreateData = {
-    body?: AdminDocumentTypeWritable;
+    body?: AdminDocumentTypeRequest;
     path?: never;
     query?: never;
     url: '/3/admin/document-types/';
@@ -25874,7 +26109,7 @@ export type DocumentTypesRetrieveResponses = {
 export type DocumentTypesRetrieveResponse = DocumentTypesRetrieveResponses[keyof DocumentTypesRetrieveResponses];
 
 export type DocumentTypesPartialUpdateData = {
-    body?: PatchedAdminDocumentTypeWritable;
+    body?: PatchedAdminDocumentTypeRequest;
     path: {
         id: string;
     };
@@ -25889,7 +26124,7 @@ export type DocumentTypesPartialUpdateResponses = {
 export type DocumentTypesPartialUpdateResponse = DocumentTypesPartialUpdateResponses[keyof DocumentTypesPartialUpdateResponses];
 
 export type DocumentTypesUpdateData = {
-    body?: AdminDocumentTypeWritable;
+    body?: AdminDocumentTypeRequest;
     path: {
         id: string;
     };
@@ -25930,7 +26165,7 @@ export type ExportsListResponses = {
 export type ExportsListResponse = ExportsListResponses[keyof ExportsListResponses];
 
 export type ExportsCreateData = {
-    body: AdminCreateExport;
+    body: AdminCreateExportRequest;
     path?: never;
     query?: never;
     url: '/3/admin/exports/';
@@ -26006,7 +26241,7 @@ export type GroupsListResponses = {
 export type GroupsListResponse = GroupsListResponses[keyof GroupsListResponses];
 
 export type GroupsCreateData = {
-    body: AdminCreateGroupWritable;
+    body: AdminCreateGroupRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/groups/';
@@ -26034,7 +26269,7 @@ export type GroupsRetrieveResponses = {
 export type GroupsRetrieveResponse = GroupsRetrieveResponses[keyof GroupsRetrieveResponses];
 
 export type GroupsPartialUpdateData = {
-    body?: PatchedAdminUpdateGroupWritable;
+    body?: PatchedAdminUpdateGroupRequest;
     path: {
         group_name: string;
     };
@@ -26049,7 +26284,7 @@ export type GroupsPartialUpdateResponses = {
 export type GroupsPartialUpdateResponse = GroupsPartialUpdateResponses[keyof GroupsPartialUpdateResponses];
 
 export type GroupsUpdateData = {
-    body: AdminUpdateGroupWritable;
+    body: AdminUpdateGroupRequest;
     path: {
         group_name: string;
     };
@@ -26079,7 +26314,7 @@ export type GroupsFeesListResponses = {
 export type GroupsFeesListResponse = GroupsFeesListResponses[keyof GroupsFeesListResponses];
 
 export type GroupsFeesCreateData = {
-    body: AdminCreateGroupFeeWritable;
+    body: AdminCreateGroupFeeRequestWritable;
     path: {
         group_name: string;
     };
@@ -26126,7 +26361,7 @@ export type GroupsFeesRetrieveResponses = {
 export type GroupsFeesRetrieveResponse = GroupsFeesRetrieveResponses[keyof GroupsFeesRetrieveResponses];
 
 export type GroupsFeesPartialUpdateData = {
-    body?: PatchedAdminUpdateGroupFeeWritable;
+    body?: PatchedAdminUpdateGroupFeeRequestWritable;
     path: {
         fee_id: string;
         group_name: string;
@@ -26142,7 +26377,7 @@ export type GroupsFeesPartialUpdateResponses = {
 export type GroupsFeesPartialUpdateResponse = GroupsFeesPartialUpdateResponses[keyof GroupsFeesPartialUpdateResponses];
 
 export type GroupsFeesUpdateData = {
-    body: AdminUpdateGroupFeeWritable;
+    body: AdminUpdateGroupFeeRequestWritable;
     path: {
         fee_id: string;
         group_name: string;
@@ -26173,7 +26408,7 @@ export type GroupsLimitsListResponses = {
 export type GroupsLimitsListResponse = GroupsLimitsListResponses[keyof GroupsLimitsListResponses];
 
 export type GroupsLimitsCreateData = {
-    body: AdminCreateGroupLimitWritable;
+    body: AdminCreateGroupLimitRequestWritable;
     path: {
         group_name: string;
     };
@@ -26220,7 +26455,7 @@ export type GroupsLimitsRetrieveResponses = {
 export type GroupsLimitsRetrieveResponse = GroupsLimitsRetrieveResponses[keyof GroupsLimitsRetrieveResponses];
 
 export type GroupsLimitsPartialUpdateData = {
-    body?: PatchedAdminUpdateGroupLimitWritable;
+    body?: PatchedAdminUpdateGroupLimitRequestWritable;
     path: {
         group_name: string;
         limit_id: string;
@@ -26236,7 +26471,7 @@ export type GroupsLimitsPartialUpdateResponses = {
 export type GroupsLimitsPartialUpdateResponse = GroupsLimitsPartialUpdateResponses[keyof GroupsLimitsPartialUpdateResponses];
 
 export type GroupsLimitsUpdateData = {
-    body: AdminUpdateGroupLimitWritable;
+    body: AdminUpdateGroupLimitRequestWritable;
     path: {
         group_name: string;
         limit_id: string;
@@ -26276,7 +26511,7 @@ export type GroupsPermissionsListResponses = {
 export type GroupsPermissionsListResponse = GroupsPermissionsListResponses[keyof GroupsPermissionsListResponses];
 
 export type GroupsPermissionsCreateData = {
-    body: AdminCreateMultiGroupPermissionWritable;
+    body: AdminCreateMultiGroupPermissionRequestWritable;
     path: {
         group_name: string;
     };
@@ -26323,7 +26558,7 @@ export type GroupsPermissionsRetrieveResponses = {
 export type GroupsPermissionsRetrieveResponse = GroupsPermissionsRetrieveResponses[keyof GroupsPermissionsRetrieveResponses];
 
 export type GroupsPermissionsPartialUpdateData = {
-    body?: PatchedAdminGroupPermissionWritable;
+    body?: PatchedAdminGroupPermissionRequest;
     path: {
         group_name: string;
         permission_id: string;
@@ -26339,7 +26574,7 @@ export type GroupsPermissionsPartialUpdateResponses = {
 export type GroupsPermissionsPartialUpdateResponse = GroupsPermissionsPartialUpdateResponses[keyof GroupsPermissionsPartialUpdateResponses];
 
 export type GroupsPermissionsUpdateData = {
-    body?: AdminGroupPermissionWritable;
+    body?: AdminGroupPermissionRequest;
     path: {
         group_name: string;
         permission_id: string;
@@ -26370,7 +26605,7 @@ export type GroupsSettingsRetrieveResponses = {
 export type GroupsSettingsRetrieveResponse = GroupsSettingsRetrieveResponses[keyof GroupsSettingsRetrieveResponses];
 
 export type GroupsSettingsPartialUpdateData = {
-    body?: PatchedAdminUpdateGroupSettingsWritable;
+    body?: PatchedAdminUpdateGroupSettingsRequestWritable;
     path: {
         group_name: string;
     };
@@ -26385,7 +26620,7 @@ export type GroupsSettingsPartialUpdateResponses = {
 export type GroupsSettingsPartialUpdateResponse = GroupsSettingsPartialUpdateResponses[keyof GroupsSettingsPartialUpdateResponses];
 
 export type GroupsSettingsUpdateData = {
-    body: AdminUpdateGroupSettingsWritable;
+    body: AdminUpdateGroupSettingsRequestWritable;
     path: {
         group_name: string;
     };
@@ -26419,7 +26654,7 @@ export type GroupsTiersListResponses = {
 export type GroupsTiersListResponse = GroupsTiersListResponses[keyof GroupsTiersListResponses];
 
 export type GroupsTiersCreateData = {
-    body: AdminGroupTierWritable;
+    body: AdminGroupTierRequest;
     path: {
         group_name: string;
     };
@@ -26466,7 +26701,7 @@ export type GroupsTiersRetrieveResponses = {
 export type GroupsTiersRetrieveResponse = GroupsTiersRetrieveResponses[keyof GroupsTiersRetrieveResponses];
 
 export type GroupsTiersPartialUpdateData = {
-    body?: PatchedAdminExtendedGroupTierWritable;
+    body?: PatchedAdminExtendedGroupTierRequest;
     path: {
         group_name: string;
         tier_id: string;
@@ -26482,7 +26717,7 @@ export type GroupsTiersPartialUpdateResponses = {
 export type GroupsTiersPartialUpdateResponse = GroupsTiersPartialUpdateResponses[keyof GroupsTiersPartialUpdateResponses];
 
 export type GroupsTiersUpdateData = {
-    body: AdminExtendedGroupTierWritable;
+    body: AdminExtendedGroupTierRequest;
     path: {
         group_name: string;
         tier_id: string;
@@ -26514,7 +26749,7 @@ export type GroupsTiersFeesListResponses = {
 export type GroupsTiersFeesListResponse = GroupsTiersFeesListResponses[keyof GroupsTiersFeesListResponses];
 
 export type GroupsTiersFeesCreateData = {
-    body: AdminCreateGroupTierFeeWritable;
+    body: AdminCreateGroupTierFeeRequestWritable;
     path: {
         group_name: string;
         tier_id: string;
@@ -26564,7 +26799,7 @@ export type GroupsTiersFeesRetrieveResponses = {
 export type GroupsTiersFeesRetrieveResponse = GroupsTiersFeesRetrieveResponses[keyof GroupsTiersFeesRetrieveResponses];
 
 export type GroupsTiersFeesPartialUpdateData = {
-    body?: PatchedAdminUpdateGroupTierFeeWritable;
+    body?: PatchedAdminUpdateGroupTierFeeRequestWritable;
     path: {
         fee_id: string;
         group_name: string;
@@ -26581,7 +26816,7 @@ export type GroupsTiersFeesPartialUpdateResponses = {
 export type GroupsTiersFeesPartialUpdateResponse = GroupsTiersFeesPartialUpdateResponses[keyof GroupsTiersFeesPartialUpdateResponses];
 
 export type GroupsTiersFeesUpdateData = {
-    body: AdminUpdateGroupTierFeeWritable;
+    body: AdminUpdateGroupTierFeeRequestWritable;
     path: {
         fee_id: string;
         group_name: string;
@@ -26614,7 +26849,7 @@ export type GroupsTiersLimitsListResponses = {
 export type GroupsTiersLimitsListResponse = GroupsTiersLimitsListResponses[keyof GroupsTiersLimitsListResponses];
 
 export type GroupsTiersLimitsCreateData = {
-    body: AdminCreateGroupTierLimitWritable;
+    body: AdminCreateGroupTierLimitRequestWritable;
     path: {
         group_name: string;
         tier_id: string;
@@ -26664,7 +26899,7 @@ export type GroupsTiersLimitsRetrieveResponses = {
 export type GroupsTiersLimitsRetrieveResponse = GroupsTiersLimitsRetrieveResponses[keyof GroupsTiersLimitsRetrieveResponses];
 
 export type GroupsTiersLimitsPartialUpdateData = {
-    body?: PatchedAdminUpdateGroupTierLimitWritable;
+    body?: PatchedAdminUpdateGroupTierLimitRequestWritable;
     path: {
         group_name: string;
         limit_id: string;
@@ -26681,7 +26916,7 @@ export type GroupsTiersLimitsPartialUpdateResponses = {
 export type GroupsTiersLimitsPartialUpdateResponse = GroupsTiersLimitsPartialUpdateResponses[keyof GroupsTiersLimitsPartialUpdateResponses];
 
 export type GroupsTiersLimitsUpdateData = {
-    body: AdminUpdateGroupTierLimitWritable;
+    body: AdminUpdateGroupTierLimitRequestWritable;
     path: {
         group_name: string;
         limit_id: string;
@@ -26723,7 +26958,7 @@ export type GroupsTiersRequirementSetsListResponses = {
 export type GroupsTiersRequirementSetsListResponse = GroupsTiersRequirementSetsListResponses[keyof GroupsTiersRequirementSetsListResponses];
 
 export type GroupsTiersRequirementSetsCreateData = {
-    body: CreateUpdateGroupTierRequirementSetWritable;
+    body: CreateUpdateGroupTierRequirementSetRequestWritable;
     path: {
         group_name: string;
         tier_id: string;
@@ -26773,7 +27008,7 @@ export type GroupsTiersRequirementSetsRetrieveResponses = {
 export type GroupsTiersRequirementSetsRetrieveResponse = GroupsTiersRequirementSetsRetrieveResponses[keyof GroupsTiersRequirementSetsRetrieveResponses];
 
 export type GroupsTiersRequirementSetsPartialUpdateData = {
-    body?: PatchedCreateUpdateGroupTierRequirementSetWritable;
+    body?: PatchedCreateUpdateGroupTierRequirementSetRequestWritable;
     path: {
         group_name: string;
         req_set_id: string;
@@ -26790,7 +27025,7 @@ export type GroupsTiersRequirementSetsPartialUpdateResponses = {
 export type GroupsTiersRequirementSetsPartialUpdateResponse = GroupsTiersRequirementSetsPartialUpdateResponses[keyof GroupsTiersRequirementSetsPartialUpdateResponses];
 
 export type GroupsTiersRequirementSetsUpdateData = {
-    body: CreateUpdateGroupTierRequirementSetWritable;
+    body: CreateUpdateGroupTierRequirementSetRequestWritable;
     path: {
         group_name: string;
         req_set_id: string;
@@ -26833,7 +27068,7 @@ export type GroupsTiersRequirementSetsItemsListResponses = {
 export type GroupsTiersRequirementSetsItemsListResponse = GroupsTiersRequirementSetsItemsListResponses[keyof GroupsTiersRequirementSetsItemsListResponses];
 
 export type GroupsTiersRequirementSetsItemsCreateData = {
-    body: CreateGroupTierRequirementSetItemWritable;
+    body: CreateGroupTierRequirementSetItemRequestWritable;
     path: {
         group_name: string;
         req_set_id: string;
@@ -26886,7 +27121,7 @@ export type GroupsTiersRequirementSetsItemsRetrieveResponses = {
 export type GroupsTiersRequirementSetsItemsRetrieveResponse = GroupsTiersRequirementSetsItemsRetrieveResponses[keyof GroupsTiersRequirementSetsItemsRetrieveResponses];
 
 export type GroupsTiersRequirementSetsItemsPartialUpdateData = {
-    body?: PatchedGroupTierRequirementSetItemWritable;
+    body?: PatchedGroupTierRequirementSetItemRequest;
     path: {
         group_name: string;
         req_item_id: string;
@@ -26904,7 +27139,7 @@ export type GroupsTiersRequirementSetsItemsPartialUpdateResponses = {
 export type GroupsTiersRequirementSetsItemsPartialUpdateResponse = GroupsTiersRequirementSetsItemsPartialUpdateResponses[keyof GroupsTiersRequirementSetsItemsPartialUpdateResponses];
 
 export type GroupsTiersRequirementSetsItemsUpdateData = {
-    body?: GroupTierRequirementSetItemWritable;
+    body?: GroupTierRequirementSetItemRequest;
     path: {
         group_name: string;
         req_item_id: string;
@@ -26938,7 +27173,7 @@ export type GroupsTiersSettingsRetrieveResponses = {
 export type GroupsTiersSettingsRetrieveResponse = GroupsTiersSettingsRetrieveResponses[keyof GroupsTiersSettingsRetrieveResponses];
 
 export type GroupsTiersSettingsPartialUpdateData = {
-    body?: PatchedAdminUpdateGroupTierSettingsWritable;
+    body?: PatchedAdminUpdateGroupTierSettingsRequestWritable;
     path: {
         group_name: string;
         tier_id: string;
@@ -26954,7 +27189,7 @@ export type GroupsTiersSettingsPartialUpdateResponses = {
 export type GroupsTiersSettingsPartialUpdateResponse = GroupsTiersSettingsPartialUpdateResponses[keyof GroupsTiersSettingsPartialUpdateResponses];
 
 export type GroupsTiersSettingsUpdateData = {
-    body: AdminUpdateGroupTierSettingsWritable;
+    body: AdminUpdateGroupTierSettingsRequestWritable;
     path: {
         group_name: string;
         tier_id: string;
@@ -26995,7 +27230,7 @@ export type LegalTermsListResponses = {
 export type LegalTermsListResponse = LegalTermsListResponses[keyof LegalTermsListResponses];
 
 export type LegalTermsCreateData = {
-    body: AdminCreateUpdateLegalTermWritable;
+    body: AdminCreateUpdateLegalTermRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/legal-terms/';
@@ -27023,7 +27258,7 @@ export type LegalTermsRetrieveResponses = {
 export type LegalTermsRetrieveResponse = LegalTermsRetrieveResponses[keyof LegalTermsRetrieveResponses];
 
 export type LegalTermsPartialUpdateData = {
-    body?: PatchedAdminCreateUpdateLegalTermWritable;
+    body?: PatchedAdminCreateUpdateLegalTermRequestWritable;
     path: {
         id: string;
     };
@@ -27038,7 +27273,7 @@ export type LegalTermsPartialUpdateResponses = {
 export type LegalTermsPartialUpdateResponse = LegalTermsPartialUpdateResponses[keyof LegalTermsPartialUpdateResponses];
 
 export type LegalTermsUpdateData = {
-    body: AdminCreateUpdateLegalTermWritable;
+    body: AdminCreateUpdateLegalTermRequestWritable;
     path: {
         id: string;
     };
@@ -27077,7 +27312,7 @@ export type LegalTermsVersionsListResponses = {
 export type LegalTermsVersionsListResponse = LegalTermsVersionsListResponses[keyof LegalTermsVersionsListResponses];
 
 export type LegalTermsVersionsCreateData = {
-    body?: AdminLegalTermVersionWritable;
+    body?: AdminLegalTermVersionRequest;
     path: {
         id: string;
     };
@@ -27108,7 +27343,7 @@ export type LegalTermsVersionsRetrieveResponses = {
 export type LegalTermsVersionsRetrieveResponse = LegalTermsVersionsRetrieveResponses[keyof LegalTermsVersionsRetrieveResponses];
 
 export type LegalTermsVersionsPartialUpdateData = {
-    body?: PatchedAdminLegalTermVersionWritable;
+    body?: PatchedAdminLegalTermVersionRequest;
     path: {
         term_id: string;
         version_id: string;
@@ -27124,7 +27359,7 @@ export type LegalTermsVersionsPartialUpdateResponses = {
 export type LegalTermsVersionsPartialUpdateResponse = LegalTermsVersionsPartialUpdateResponses[keyof LegalTermsVersionsPartialUpdateResponses];
 
 export type LegalTermsVersionsUpdateData = {
-    body?: AdminLegalTermVersionWritable;
+    body?: AdminLegalTermVersionRequest;
     path: {
         term_id: string;
         version_id: string;
@@ -27174,7 +27409,7 @@ export type MetricsListResponses = {
 export type MetricsListResponse = MetricsListResponses[keyof MetricsListResponses];
 
 export type MetricsCreateData = {
-    body: AdminCreateMetricWritable;
+    body: AdminCreateMetricRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/metrics/';
@@ -27272,7 +27507,7 @@ export type OauthClientsListResponses = {
 export type OauthClientsListResponse = OauthClientsListResponses[keyof OauthClientsListResponses];
 
 export type OauthClientsCreateData = {
-    body: AdminOauthClientWritable;
+    body: AdminOauthClientRequest;
     path?: never;
     query?: never;
     url: '/3/admin/oauth-clients/';
@@ -27315,7 +27550,7 @@ export type OauthClientsRetrieveResponses = {
 export type OauthClientsRetrieveResponse = OauthClientsRetrieveResponses[keyof OauthClientsRetrieveResponses];
 
 export type OauthClientsPartialUpdateData = {
-    body?: PatchedAdminUpdateOauthClientWritable;
+    body?: PatchedAdminUpdateOauthClientRequest;
     path: {
         identifier: string;
     };
@@ -27330,7 +27565,7 @@ export type OauthClientsPartialUpdateResponses = {
 export type OauthClientsPartialUpdateResponse = OauthClientsPartialUpdateResponses[keyof OauthClientsPartialUpdateResponses];
 
 export type OauthClientsUpdateData = {
-    body: AdminUpdateOauthClientWritable;
+    body: AdminUpdateOauthClientRequest;
     path: {
         identifier: string;
     };
@@ -27493,7 +27728,7 @@ export type ServicesListResponses = {
 export type ServicesListResponse = ServicesListResponses[keyof ServicesListResponses];
 
 export type ServicesCreateData = {
-    body: AdminServiceWritable;
+    body: AdminServiceRequest;
     path?: never;
     query?: never;
     url: '/3/admin/services/';
@@ -27536,7 +27771,7 @@ export type ServicesRetrieveResponses = {
 export type ServicesRetrieveResponse = ServicesRetrieveResponses[keyof ServicesRetrieveResponses];
 
 export type ServicesPartialUpdateData = {
-    body?: PatchedAdminUpdateServiceWritable;
+    body?: PatchedAdminUpdateServiceRequest;
     path: {
         service_id: string;
     };
@@ -27551,7 +27786,7 @@ export type ServicesPartialUpdateResponses = {
 export type ServicesPartialUpdateResponse = ServicesPartialUpdateResponses[keyof ServicesPartialUpdateResponses];
 
 export type ServicesUpdateData = {
-    body: AdminUpdateServiceWritable;
+    body: AdminUpdateServiceRequest;
     path: {
         service_id: string;
     };
@@ -27590,7 +27825,7 @@ export type ServicesPermissionsListResponses = {
 export type ServicesPermissionsListResponse = ServicesPermissionsListResponses[keyof ServicesPermissionsListResponses];
 
 export type ServicesPermissionsCreateData = {
-    body: AdminCreateServicePermissionWritable;
+    body: AdminCreateServicePermissionRequestWritable;
     path: {
         service_id: string;
     };
@@ -27667,7 +27902,7 @@ export type StatementsListResponses = {
 export type StatementsListResponse = StatementsListResponses[keyof StatementsListResponses];
 
 export type StatementsCreateData = {
-    body: AdminCreateStatementWritable;
+    body: AdminCreateStatementRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/statements/';
@@ -27734,7 +27969,7 @@ export type SubtypesListResponses = {
 export type SubtypesListResponse = SubtypesListResponses[keyof SubtypesListResponses];
 
 export type SubtypesCreateData = {
-    body: AdminCreateTransactionSubtypeWritable;
+    body: AdminCreateTransactionSubtypeRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/subtypes/';
@@ -27777,7 +28012,7 @@ export type SubtypesRetrieveResponses = {
 export type SubtypesRetrieveResponse = SubtypesRetrieveResponses[keyof SubtypesRetrieveResponses];
 
 export type SubtypesPartialUpdateData = {
-    body?: PatchedAdminUpdateTransactionSubtypeWritable;
+    body?: PatchedAdminUpdateTransactionSubtypeRequestWritable;
     path: {
         id: string;
     };
@@ -27792,7 +28027,7 @@ export type SubtypesPartialUpdateResponses = {
 export type SubtypesPartialUpdateResponse = SubtypesPartialUpdateResponses[keyof SubtypesPartialUpdateResponses];
 
 export type SubtypesUpdateData = {
-    body: AdminUpdateTransactionSubtypeWritable;
+    body: AdminUpdateTransactionSubtypeRequestWritable;
     path: {
         id: string;
     };
@@ -27856,7 +28091,7 @@ export type TransactionCollectionsListResponses = {
 export type TransactionCollectionsListResponse = TransactionCollectionsListResponses[keyof TransactionCollectionsListResponses];
 
 export type TransactionCollectionsCreateData = {
-    body: AdminCreateTransactionCollectionWritable;
+    body: AdminCreateTransactionCollectionRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/transaction-collections/';
@@ -27884,7 +28119,7 @@ export type TransactionCollectionsRetrieveResponses = {
 export type TransactionCollectionsRetrieveResponse = TransactionCollectionsRetrieveResponses[keyof TransactionCollectionsRetrieveResponses];
 
 export type TransactionCollectionsPartialUpdateData = {
-    body?: PatchedAdminUpdateTransactionCollectionWritable;
+    body?: PatchedAdminUpdateTransactionCollectionRequestWritable;
     path: {
         identifier: string;
     };
@@ -27899,7 +28134,7 @@ export type TransactionCollectionsPartialUpdateResponses = {
 export type TransactionCollectionsPartialUpdateResponse = TransactionCollectionsPartialUpdateResponses[keyof TransactionCollectionsPartialUpdateResponses];
 
 export type TransactionCollectionsUpdateData = {
-    body?: AdminUpdateTransactionCollectionWritable;
+    body?: AdminUpdateTransactionCollectionRequestWritable;
     path: {
         identifier: string;
     };
@@ -27996,7 +28231,7 @@ export type TransactionCollectionsTransactionsListResponses = {
 export type TransactionCollectionsTransactionsListResponse = TransactionCollectionsTransactionsListResponses[keyof TransactionCollectionsTransactionsListResponses];
 
 export type TransactionCollectionsTransactionsCreateData = {
-    body: AdminAppendTransactionCollectionMultiTransactionWritable;
+    body: AdminAppendTransactionCollectionMultiTransactionRequestWritable;
     path: {
         identifier: string;
     };
@@ -28066,7 +28301,7 @@ export type TransactionTransitionsRetrieveResponses = {
 export type TransactionTransitionsRetrieveResponse = TransactionTransitionsRetrieveResponses[keyof TransactionTransitionsRetrieveResponses];
 
 export type TransactionTransitionsPartialUpdateData = {
-    body?: PatchedAdminUpdateTransactionTransitionWritable;
+    body?: PatchedAdminUpdateTransactionTransitionRequest;
     path: {
         identifier: string;
     };
@@ -28081,7 +28316,7 @@ export type TransactionTransitionsPartialUpdateResponses = {
 export type TransactionTransitionsPartialUpdateResponse = TransactionTransitionsPartialUpdateResponses[keyof TransactionTransitionsPartialUpdateResponses];
 
 export type TransactionTransitionsUpdateData = {
-    body: AdminUpdateTransactionTransitionWritable;
+    body: AdminUpdateTransactionTransitionRequest;
     path: {
         identifier: string;
     };
@@ -28176,7 +28411,7 @@ export type TransactionsListResponses = {
 export type TransactionsListResponse = TransactionsListResponses[keyof TransactionsListResponses];
 
 export type TransactionsCreateData = {
-    body: AdminCreateMultiTransactionWritable;
+    body: AdminCreateMultiTransactionRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/transactions/';
@@ -28204,7 +28439,7 @@ export type TransactionsRetrieveResponses = {
 export type TransactionsRetrieveResponse = TransactionsRetrieveResponses[keyof TransactionsRetrieveResponses];
 
 export type TransactionsPartialUpdateData = {
-    body?: PatchedAdminUpdateExtendedTransactionWritable;
+    body?: PatchedAdminUpdateExtendedTransactionRequest;
     path: {
         tx_code: string;
     };
@@ -28219,7 +28454,7 @@ export type TransactionsPartialUpdateResponses = {
 export type TransactionsPartialUpdateResponse = TransactionsPartialUpdateResponses[keyof TransactionsPartialUpdateResponses];
 
 export type TransactionsUpdateData = {
-    body?: AdminUpdateExtendedTransactionWritable;
+    body?: AdminUpdateExtendedTransactionRequest;
     path: {
         tx_code: string;
     };
@@ -28258,7 +28493,7 @@ export type TransactionsMessagesListResponses = {
 export type TransactionsMessagesListResponse = TransactionsMessagesListResponses[keyof TransactionsMessagesListResponses];
 
 export type TransactionsMessagesCreateData = {
-    body: AdminCreateTransactionMessageWritable;
+    body: AdminCreateTransactionMessageRequest;
     path: {
         tx_code: string;
     };
@@ -28289,7 +28524,7 @@ export type TransactionsMessagesRetrieveResponses = {
 export type TransactionsMessagesRetrieveResponse = TransactionsMessagesRetrieveResponses[keyof TransactionsMessagesRetrieveResponses];
 
 export type TransactionsCreditCreateData = {
-    body: AdminCreateCreditTransactionWritable;
+    body: AdminCreateCreditTransactionRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/transactions/credit/';
@@ -28302,7 +28537,7 @@ export type TransactionsCreditCreateResponses = {
 export type TransactionsCreditCreateResponse = TransactionsCreditCreateResponses[keyof TransactionsCreditCreateResponses];
 
 export type TransactionsDebitCreateData = {
-    body: AdminCreateDebitTransactionWritable;
+    body: AdminCreateDebitTransactionRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/transactions/debit/';
@@ -28328,7 +28563,7 @@ export type TransactionsTotalsRetrieveResponses = {
 export type TransactionsTotalsRetrieveResponse = TransactionsTotalsRetrieveResponses[keyof TransactionsTotalsRetrieveResponses];
 
 export type TransactionsTransferCreateData = {
-    body: AdminCreateTransferTransaction;
+    body: AdminCreateTransferTransactionRequest;
     path?: never;
     query?: never;
     url: '/3/admin/transactions/transfer/';
@@ -28930,7 +29165,7 @@ export type UsersListResponses = {
 export type UsersListResponse = UsersListResponses[keyof UsersListResponses];
 
 export type UsersCreateData = {
-    body?: AdminCreateUserInfoWritable;
+    body?: AdminCreateUserInfoRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/users/';
@@ -28958,7 +29193,7 @@ export type UsersRetrieveResponses = {
 export type UsersRetrieveResponse = UsersRetrieveResponses[keyof UsersRetrieveResponses];
 
 export type UsersPartialUpdateData = {
-    body?: PatchedAdminUpdateUserInfoWritable;
+    body?: PatchedAdminUpdateUserInfoRequestWritable;
     path: {
         identifier: string;
     };
@@ -28973,7 +29208,7 @@ export type UsersPartialUpdateResponses = {
 export type UsersPartialUpdateResponse = UsersPartialUpdateResponses[keyof UsersPartialUpdateResponses];
 
 export type UsersUpdateData = {
-    body: AdminUpdateUserInfoWritable;
+    body: AdminUpdateUserInfoRequestWritable;
     path: {
         identifier: string;
     };
@@ -29012,7 +29247,7 @@ export type UsersGroupsListResponses = {
 export type UsersGroupsListResponse = UsersGroupsListResponses[keyof UsersGroupsListResponses];
 
 export type UsersGroupsCreateData = {
-    body: AdminCreateUserGroup;
+    body: AdminCreateUserGroupRequest;
     path: {
         identifier: string;
     };
@@ -29165,7 +29400,7 @@ export type UsersMessagesListResponses = {
 export type UsersMessagesListResponse = UsersMessagesListResponses[keyof UsersMessagesListResponses];
 
 export type UsersMessagesCreateData = {
-    body: AdminCreateUserMessageWritable;
+    body: AdminCreateUserMessageRequest;
     path: {
         identifier: string;
     };
@@ -29220,7 +29455,7 @@ export type UsersPermissionsListResponses = {
 export type UsersPermissionsListResponse = UsersPermissionsListResponses[keyof UsersPermissionsListResponses];
 
 export type UsersPermissionsCreateData = {
-    body: AdminCreateMultiUserPermissionWritable;
+    body: AdminCreateMultiUserPermissionRequestWritable;
     path: {
         identifier: string;
     };
@@ -29267,7 +29502,7 @@ export type UsersPermissionsRetrieveResponses = {
 export type UsersPermissionsRetrieveResponse = UsersPermissionsRetrieveResponses[keyof UsersPermissionsRetrieveResponses];
 
 export type UsersPermissionsPartialUpdateData = {
-    body?: PatchedAdminUserPermissionWritable;
+    body?: PatchedAdminUserPermissionRequest;
     path: {
         identifier: string;
         permission_id: string;
@@ -29283,7 +29518,7 @@ export type UsersPermissionsPartialUpdateResponses = {
 export type UsersPermissionsPartialUpdateResponse = UsersPermissionsPartialUpdateResponses[keyof UsersPermissionsPartialUpdateResponses];
 
 export type UsersPermissionsUpdateData = {
-    body?: AdminUserPermissionWritable;
+    body?: AdminUserPermissionRequest;
     path: {
         identifier: string;
         permission_id: string;
@@ -29314,7 +29549,7 @@ export type UsersSettingsRetrieveResponses = {
 export type UsersSettingsRetrieveResponse = UsersSettingsRetrieveResponses[keyof UsersSettingsRetrieveResponses];
 
 export type UsersSettingsPartialUpdateData = {
-    body?: PatchedAdminUpdateUserSettingsWritable;
+    body?: PatchedAdminUpdateUserSettingsRequestWritable;
     path: {
         identifier: string;
     };
@@ -29329,7 +29564,7 @@ export type UsersSettingsPartialUpdateResponses = {
 export type UsersSettingsPartialUpdateResponse = UsersSettingsPartialUpdateResponses[keyof UsersSettingsPartialUpdateResponses];
 
 export type UsersSettingsUpdateData = {
-    body: AdminUpdateUserSettingsWritable;
+    body: AdminUpdateUserSettingsRequestWritable;
     path: {
         identifier: string;
     };
@@ -29368,7 +29603,7 @@ export type UsersAddressesListResponses = {
 export type UsersAddressesListResponse = UsersAddressesListResponses[keyof UsersAddressesListResponses];
 
 export type UsersAddressesCreateData = {
-    body: AdminCreateUserAddressWritable;
+    body: AdminCreateUserAddressRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/users/addresses/';
@@ -29411,7 +29646,7 @@ export type UsersAddressesRetrieveResponses = {
 export type UsersAddressesRetrieveResponse = UsersAddressesRetrieveResponses[keyof UsersAddressesRetrieveResponses];
 
 export type UsersAddressesPartialUpdateData = {
-    body?: PatchedAdminUserAddressWritable;
+    body?: PatchedAdminUserAddressRequest;
     path: {
         id: string;
     };
@@ -29426,7 +29661,7 @@ export type UsersAddressesPartialUpdateResponses = {
 export type UsersAddressesPartialUpdateResponse = UsersAddressesPartialUpdateResponses[keyof UsersAddressesPartialUpdateResponses];
 
 export type UsersAddressesUpdateData = {
-    body?: AdminUserAddressWritable;
+    body?: AdminUserAddressRequest;
     path: {
         id: string;
     };
@@ -29476,7 +29711,7 @@ export type UsersBankAccountsListResponses = {
 export type UsersBankAccountsListResponse = UsersBankAccountsListResponses[keyof UsersBankAccountsListResponses];
 
 export type UsersBankAccountsCreateData = {
-    body: AdminCreateUserBankAccountWritable;
+    body: AdminCreateUserBankAccountRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/users/bank-accounts/';
@@ -29519,7 +29754,7 @@ export type UsersBankAccountsRetrieveResponses = {
 export type UsersBankAccountsRetrieveResponse = UsersBankAccountsRetrieveResponses[keyof UsersBankAccountsRetrieveResponses];
 
 export type UsersBankAccountsPartialUpdateData = {
-    body?: PatchedAdminUserBankAccountWritable;
+    body?: PatchedAdminUserBankAccountRequest;
     path: {
         id: string;
     };
@@ -29534,7 +29769,7 @@ export type UsersBankAccountsPartialUpdateResponses = {
 export type UsersBankAccountsPartialUpdateResponse = UsersBankAccountsPartialUpdateResponses[keyof UsersBankAccountsPartialUpdateResponses];
 
 export type UsersBankAccountsUpdateData = {
-    body?: AdminUserBankAccountWritable;
+    body?: AdminUserBankAccountRequest;
     path: {
         id: string;
     };
@@ -29564,7 +29799,7 @@ export type UsersBankAccountsAccountCurrenciesListResponses = {
 export type UsersBankAccountsAccountCurrenciesListResponse = UsersBankAccountsAccountCurrenciesListResponses[keyof UsersBankAccountsAccountCurrenciesListResponses];
 
 export type UsersBankAccountsAccountCurrenciesCreateData = {
-    body: AdminCreateUserBankAccountAccountAsset;
+    body: AdminCreateUserBankAccountAccountAssetRequest;
     path: {
         id: string;
     };
@@ -29626,7 +29861,7 @@ export type UsersBankAccountsCurrenciesListResponses = {
 export type UsersBankAccountsCurrenciesListResponse = UsersBankAccountsCurrenciesListResponses[keyof UsersBankAccountsCurrenciesListResponses];
 
 export type UsersBankAccountsCurrenciesCreateData = {
-    body: AdminCreateUserBankAccountAsset;
+    body: AdminCreateUserBankAccountAssetRequest;
     path: {
         id: string;
     };
@@ -29708,7 +29943,7 @@ export type UsersCryptoAccountsListResponses = {
 export type UsersCryptoAccountsListResponse = UsersCryptoAccountsListResponses[keyof UsersCryptoAccountsListResponses];
 
 export type UsersCryptoAccountsCreateData = {
-    body: AdminCreateCryptoAccountWritable;
+    body: AdminCreateCryptoAccountRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/users/crypto-accounts/';
@@ -29751,7 +29986,7 @@ export type UsersCryptoAccountsRetrieveResponses = {
 export type UsersCryptoAccountsRetrieveResponse = UsersCryptoAccountsRetrieveResponses[keyof UsersCryptoAccountsRetrieveResponses];
 
 export type UsersCryptoAccountsPartialUpdateData = {
-    body?: PatchedAdminCryptoAccountWritable;
+    body?: PatchedAdminCryptoAccountRequest;
     path: {
         id: string;
     };
@@ -29766,7 +30001,7 @@ export type UsersCryptoAccountsPartialUpdateResponses = {
 export type UsersCryptoAccountsPartialUpdateResponse = UsersCryptoAccountsPartialUpdateResponses[keyof UsersCryptoAccountsPartialUpdateResponses];
 
 export type UsersCryptoAccountsUpdateData = {
-    body: AdminCryptoAccountWritable;
+    body: AdminCryptoAccountRequest;
     path: {
         id: string;
     };
@@ -29796,7 +30031,7 @@ export type UsersCryptoAccountsAccountCurrenciesListResponses = {
 export type UsersCryptoAccountsAccountCurrenciesListResponse = UsersCryptoAccountsAccountCurrenciesListResponses[keyof UsersCryptoAccountsAccountCurrenciesListResponses];
 
 export type UsersCryptoAccountsAccountCurrenciesCreateData = {
-    body: AdminCreateCryptoAccountAccountAsset;
+    body: AdminCreateCryptoAccountAccountAssetRequest;
     path: {
         id: string;
     };
@@ -29858,7 +30093,7 @@ export type UsersCryptoAccountsCurrenciesListResponses = {
 export type UsersCryptoAccountsCurrenciesListResponse = UsersCryptoAccountsCurrenciesListResponses[keyof UsersCryptoAccountsCurrenciesListResponses];
 
 export type UsersCryptoAccountsCurrenciesCreateData = {
-    body: AdminCreateCryptoAccountAsset;
+    body: AdminCreateCryptoAccountAssetRequest;
     path: {
         id: string;
     };
@@ -29929,7 +30164,7 @@ export type UsersDevicesListResponses = {
 export type UsersDevicesListResponse = UsersDevicesListResponses[keyof UsersDevicesListResponses];
 
 export type UsersDevicesCreateData = {
-    body: AdminCreateDeviceWritable;
+    body: AdminCreateDeviceRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/users/devices/';
@@ -29974,7 +30209,7 @@ export type UsersDevicesAppsRetrieveResponses = {
 export type UsersDevicesAppsRetrieveResponse = UsersDevicesAppsRetrieveResponses[keyof UsersDevicesAppsRetrieveResponses];
 
 export type UsersDevicesAppsPartialUpdateData = {
-    body?: PatchedAdminDeviceAppWritable;
+    body?: PatchedAdminDeviceAppRequest;
     path: {
         app_id: string;
         device_id: string;
@@ -29990,7 +30225,7 @@ export type UsersDevicesAppsPartialUpdateResponses = {
 export type UsersDevicesAppsPartialUpdateResponse = UsersDevicesAppsPartialUpdateResponses[keyof UsersDevicesAppsPartialUpdateResponses];
 
 export type UsersDevicesAppsUpdateData = {
-    body: AdminDeviceAppWritable;
+    body: AdminDeviceAppRequest;
     path: {
         app_id: string;
         device_id: string;
@@ -30036,7 +30271,7 @@ export type UsersDevicesRetrieveResponses = {
 export type UsersDevicesRetrieveResponse = UsersDevicesRetrieveResponses[keyof UsersDevicesRetrieveResponses];
 
 export type UsersDevicesPartialUpdateData = {
-    body?: PatchedAdminDeviceWritable;
+    body?: PatchedAdminDeviceRequest;
     path: {
         id: string;
     };
@@ -30051,7 +30286,7 @@ export type UsersDevicesPartialUpdateResponses = {
 export type UsersDevicesPartialUpdateResponse = UsersDevicesPartialUpdateResponses[keyof UsersDevicesPartialUpdateResponses];
 
 export type UsersDevicesUpdateData = {
-    body?: AdminDeviceWritable;
+    body?: AdminDeviceRequest;
     path: {
         id: string;
     };
@@ -30090,7 +30325,7 @@ export type UsersDevicesAppsListResponses = {
 export type UsersDevicesAppsListResponse = UsersDevicesAppsListResponses[keyof UsersDevicesAppsListResponses];
 
 export type UsersDevicesAppsCreateData = {
-    body: AdminCreateDeviceAppWritable;
+    body: AdminCreateDeviceAppRequest;
     path: {
         id: string;
     };
@@ -30140,7 +30375,7 @@ export type UsersDocumentsListResponses = {
 export type UsersDocumentsListResponse = UsersDocumentsListResponses[keyof UsersDocumentsListResponses];
 
 export type UsersDocumentsCreateData = {
-    body: AdminCreateUserDocumentWritable;
+    body: AdminCreateUserDocumentRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/users/documents/';
@@ -30183,7 +30418,7 @@ export type UsersDocumentsRetrieveResponses = {
 export type UsersDocumentsRetrieveResponse = UsersDocumentsRetrieveResponses[keyof UsersDocumentsRetrieveResponses];
 
 export type UsersDocumentsPartialUpdateData = {
-    body?: PatchedAdminUpdateUserDocumentWritable;
+    body?: PatchedAdminUpdateUserDocumentRequestWritable;
     path: {
         id: string;
     };
@@ -30198,7 +30433,7 @@ export type UsersDocumentsPartialUpdateResponses = {
 export type UsersDocumentsPartialUpdateResponse = UsersDocumentsPartialUpdateResponses[keyof UsersDocumentsPartialUpdateResponses];
 
 export type UsersDocumentsUpdateData = {
-    body: AdminUpdateUserDocumentWritable;
+    body: AdminUpdateUserDocumentRequestWritable;
     path: {
         id: string;
     };
@@ -30237,7 +30472,7 @@ export type UsersEmailsListResponses = {
 export type UsersEmailsListResponse = UsersEmailsListResponses[keyof UsersEmailsListResponses];
 
 export type UsersEmailsCreateData = {
-    body: AdminCreateEmailWritable;
+    body: AdminCreateEmailRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/users/emails/';
@@ -30280,7 +30515,7 @@ export type UsersEmailsRetrieveResponses = {
 export type UsersEmailsRetrieveResponse = UsersEmailsRetrieveResponses[keyof UsersEmailsRetrieveResponses];
 
 export type UsersEmailsPartialUpdateData = {
-    body?: PatchedAdminEmailWritable;
+    body?: PatchedAdminEmailRequest;
     path: {
         id: string;
     };
@@ -30295,7 +30530,7 @@ export type UsersEmailsPartialUpdateResponses = {
 export type UsersEmailsPartialUpdateResponse = UsersEmailsPartialUpdateResponses[keyof UsersEmailsPartialUpdateResponses];
 
 export type UsersEmailsUpdateData = {
-    body?: AdminEmailWritable;
+    body?: AdminEmailRequest;
     path: {
         id: string;
     };
@@ -30390,7 +30625,7 @@ export type UsersMobilesListResponses = {
 export type UsersMobilesListResponse = UsersMobilesListResponses[keyof UsersMobilesListResponses];
 
 export type UsersMobilesCreateData = {
-    body: AdminCreateMobileWritable;
+    body: AdminCreateMobileRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/users/mobiles/';
@@ -30433,7 +30668,7 @@ export type UsersMobilesRetrieveResponses = {
 export type UsersMobilesRetrieveResponse = UsersMobilesRetrieveResponses[keyof UsersMobilesRetrieveResponses];
 
 export type UsersMobilesPartialUpdateData = {
-    body?: PatchedAdminMobileWritable;
+    body?: PatchedAdminMobileRequest;
     path: {
         id: string;
     };
@@ -30448,7 +30683,7 @@ export type UsersMobilesPartialUpdateResponses = {
 export type UsersMobilesPartialUpdateResponse = UsersMobilesPartialUpdateResponses[keyof UsersMobilesPartialUpdateResponses];
 
 export type UsersMobilesUpdateData = {
-    body: AdminMobileWritable;
+    body: AdminMobileRequest;
     path: {
         id: string;
     };
@@ -30521,7 +30756,7 @@ export type UsersTokensListResponses = {
 export type UsersTokensListResponse = UsersTokensListResponses[keyof UsersTokensListResponses];
 
 export type UsersTokensCreateData = {
-    body: AdminCreateAuthToken;
+    body: AdminCreateAuthTokenRequest;
     path?: never;
     query?: never;
     url: '/3/admin/users/tokens/';
@@ -30564,7 +30799,7 @@ export type UsersTokensRetrieveResponses = {
 export type UsersTokensRetrieveResponse = UsersTokensRetrieveResponses[keyof UsersTokensRetrieveResponses];
 
 export type UsersTokensPartialUpdateData = {
-    body?: PatchedAdminUpdateAuthToken;
+    body?: PatchedAdminUpdateAuthTokenRequest;
     path: {
         token_key: string;
     };
@@ -30579,7 +30814,7 @@ export type UsersTokensPartialUpdateResponses = {
 export type UsersTokensPartialUpdateResponse = UsersTokensPartialUpdateResponses[keyof UsersTokensPartialUpdateResponses];
 
 export type UsersTokensUpdateData = {
-    body: AdminUpdateAuthToken;
+    body: AdminUpdateAuthTokenRequest;
     path: {
         token_key: string;
     };
@@ -30628,7 +30863,7 @@ export type UsersWalletAccountsListResponses = {
 export type UsersWalletAccountsListResponse = UsersWalletAccountsListResponses[keyof UsersWalletAccountsListResponses];
 
 export type UsersWalletAccountsCreateData = {
-    body: AdminCreateUserWalletAccountWritable;
+    body: AdminCreateUserWalletAccountRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/users/wallet-accounts/';
@@ -30671,7 +30906,7 @@ export type UsersWalletAccountsRetrieveResponses = {
 export type UsersWalletAccountsRetrieveResponse = UsersWalletAccountsRetrieveResponses[keyof UsersWalletAccountsRetrieveResponses];
 
 export type UsersWalletAccountsPartialUpdateData = {
-    body?: PatchedAdminUserWalletAccountWritable;
+    body?: PatchedAdminUserWalletAccountRequest;
     path: {
         id: string;
     };
@@ -30686,7 +30921,7 @@ export type UsersWalletAccountsPartialUpdateResponses = {
 export type UsersWalletAccountsPartialUpdateResponse = UsersWalletAccountsPartialUpdateResponses[keyof UsersWalletAccountsPartialUpdateResponses];
 
 export type UsersWalletAccountsUpdateData = {
-    body?: AdminUserWalletAccountWritable;
+    body?: AdminUserWalletAccountRequest;
     path: {
         id: string;
     };
@@ -30716,7 +30951,7 @@ export type UsersWalletAccountsAccountCurrenciesListResponses = {
 export type UsersWalletAccountsAccountCurrenciesListResponse = UsersWalletAccountsAccountCurrenciesListResponses[keyof UsersWalletAccountsAccountCurrenciesListResponses];
 
 export type UsersWalletAccountsAccountCurrenciesCreateData = {
-    body: AdminCreateUserWalletAccountAccountAsset;
+    body: AdminCreateUserWalletAccountAccountAssetRequest;
     path: {
         id: string;
     };
@@ -30778,7 +31013,7 @@ export type UsersWalletAccountsCurrenciesListResponses = {
 export type UsersWalletAccountsCurrenciesListResponse = UsersWalletAccountsCurrenciesListResponses[keyof UsersWalletAccountsCurrenciesListResponses];
 
 export type UsersWalletAccountsCurrenciesCreateData = {
-    body: AdminCreateUserWalletAccountAsset;
+    body: AdminCreateUserWalletAccountAssetRequest;
     path: {
         id: string;
     };
@@ -30847,7 +31082,7 @@ export type WalletAccountsListResponses = {
 export type WalletAccountsListResponse = WalletAccountsListResponses[keyof WalletAccountsListResponses];
 
 export type WalletAccountsCreateData = {
-    body?: AdminCompanyWalletAccountWritable;
+    body?: AdminCompanyWalletAccountRequest;
     path?: never;
     query?: never;
     url: '/3/admin/wallet-accounts/';
@@ -30890,7 +31125,7 @@ export type WalletAccountsRetrieveResponses = {
 export type WalletAccountsRetrieveResponse = WalletAccountsRetrieveResponses[keyof WalletAccountsRetrieveResponses];
 
 export type WalletAccountsPartialUpdateData = {
-    body?: PatchedAdminCompanyWalletAccountWritable;
+    body?: PatchedAdminCompanyWalletAccountRequest;
     path: {
         id: string;
     };
@@ -30905,7 +31140,7 @@ export type WalletAccountsPartialUpdateResponses = {
 export type WalletAccountsPartialUpdateResponse = WalletAccountsPartialUpdateResponses[keyof WalletAccountsPartialUpdateResponses];
 
 export type WalletAccountsUpdateData = {
-    body?: AdminCompanyWalletAccountWritable;
+    body?: AdminCompanyWalletAccountRequest;
     path: {
         id: string;
     };
@@ -30944,7 +31179,7 @@ export type WalletAccountsCurrenciesListResponses = {
 export type WalletAccountsCurrenciesListResponse = WalletAccountsCurrenciesListResponses[keyof WalletAccountsCurrenciesListResponses];
 
 export type WalletAccountsCurrenciesCreateData = {
-    body: AdminCreateCompanyWalletAccountAsset;
+    body: AdminCreateCompanyWalletAccountAssetRequest;
     path: {
         id: string;
     };
@@ -31120,7 +31355,7 @@ export type WebhooksListResponses = {
 export type WebhooksListResponse = WebhooksListResponses[keyof WebhooksListResponses];
 
 export type WebhooksCreateData = {
-    body: AdminWebhookWritable;
+    body?: AdminWebhookRequest;
     path?: never;
     query?: never;
     url: '/3/admin/webhooks/';
@@ -31163,7 +31398,7 @@ export type WebhooksRetrieveResponses = {
 export type WebhooksRetrieveResponse = WebhooksRetrieveResponses[keyof WebhooksRetrieveResponses];
 
 export type WebhooksPartialUpdateData = {
-    body?: PatchedAdminWebhookWritable;
+    body?: PatchedAdminWebhookRequest;
     path: {
         webhhook_id: string;
     };
@@ -31178,7 +31413,7 @@ export type WebhooksPartialUpdateResponses = {
 export type WebhooksPartialUpdateResponse = WebhooksPartialUpdateResponses[keyof WebhooksPartialUpdateResponses];
 
 export type WebhooksUpdateData = {
-    body: AdminWebhookWritable;
+    body?: AdminWebhookRequest;
     path: {
         webhhook_id: string;
     };
