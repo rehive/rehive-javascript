@@ -7,9 +7,9 @@ import {
   authLogout,
 } from '../platform/user/openapi-ts/sdk.gen.js';
 import type {
-  LoginWritable,
-  RegisterWritable,
-  RegisterCompanyWritable,
+  LoginRequestWritable,
+  RegisterRequestWritable,
+  RegisterCompanyRequestWritable,
 } from '../platform/user/openapi-ts/types.gen.js';
 import { WebStorageAdapter, MemoryStorageAdapter } from './core/storage-adapters.js';
 import { ApiError, normalizeFetch } from '../shared/api-utils.js';
@@ -41,7 +41,7 @@ export type RegisterParams = {
   session_duration?: number;
 };
 
-export type RegisterCompanyParams = RegisterCompanyWritable;
+export type RegisterCompanyParams = RegisterCompanyRequestWritable;
 
 export interface AuthConfig {
   baseUrl?: string;
@@ -233,7 +233,7 @@ export function createAuth(config: AuthConfig = {}): Auth {
     await initialize();
     try {
       const sessionDuration = params.session_duration ?? 900;
-      const body: LoginWritable = {
+      const body: LoginRequestWritable = {
         user: params.user,
         password: params.password,
         company: params.company,
@@ -286,7 +286,7 @@ export function createAuth(config: AuthConfig = {}): Auth {
     await initialize();
     try {
       const sessionDuration = params.session_duration ?? 900;
-      const body: RegisterWritable = {
+      const body: RegisterRequestWritable = {
         email: params.email,
         mobile: params.mobile,
         username: params.username,
@@ -332,7 +332,7 @@ export function createAuth(config: AuthConfig = {}): Auth {
   async function registerCompanyFn(params: RegisterCompanyParams): Promise<AuthSession> {
     await initialize();
     try {
-      const body: RegisterCompanyWritable = params;
+      const body: RegisterCompanyRequestWritable = params;
       const result: any = await authRegisterCompany({ client, body, throwOnError: true });
       const data = result?.data ?? result;
 

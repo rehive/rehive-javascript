@@ -45,6 +45,7 @@ export function buildClientConfig(config: ApiFactoryConfig, defaultBaseUrl: stri
   return {
     baseUrl: config.baseUrl || defaultBaseUrl,
     responseStyle: 'data' as const,
+    throwOnError: true,
     fetch: errorHandlingFetch(normalizeFetch(globalThis.fetch)),
     auth: async () => {
       const token = await config.auth.getToken();

@@ -48,6 +48,16 @@ export type AccountAccountAsset = {
     readonly updated: number;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AccountAccountAssetRequest = {
+    active: boolean;
+};
+
 export type AccountAccountAssetResponse = {
     status: string;
     data: AccountAccountAsset;
@@ -129,6 +139,29 @@ export type AccountAssetLimit = {
     readonly updated: number;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AccountAssetLimitRequest = {
+    /**
+     * * `max` - Maximum
+     * * `day_max` - Maximum per day
+     * * `week_max` - Maximum per week
+     * * `month_max` - Maximum per month
+     * * `min` - Minimum
+     * * `overdraft` - Overdraft
+     */
+    type: 'max' | 'day_max' | 'week_max' | 'month_max' | 'min' | 'overdraft';
+    /**
+     * * `credit` - Credit
+     * * `debit` - Debit
+     */
+    tx_type: 'credit' | 'debit';
+};
+
 export type AccountAssetLimitResponse = {
     status: string;
     data: AccountAssetLimit;
@@ -150,6 +183,19 @@ export type AccountAssetSettings = {
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
     disallowed_transaction_subtypes: Array<ReducedTransactionSubtype>;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AccountAssetSettingsRequest = {
+    allow_transactions?: boolean;
+    allow_debit_transactions?: boolean;
+    allow_credit_transactions?: boolean;
+    disallowed_transaction_subtypes: Array<ReducedTransactionSubtypeRequest>;
 };
 
 /**
@@ -199,6 +245,20 @@ export type AccountDefinitionResponse = {
     data: AccountDefinition;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AccountRequest = {
+    name?: string;
+    label?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
 export type AccountResponse = {
     status: string;
     data: Account;
@@ -236,6 +296,21 @@ export type AdminAccountAssetFee = {
     credit_subtype: string | null;
     readonly inferred: boolean | null;
     readonly archived: boolean | null;
+};
+
+export type AdminAccountAssetFeeRequest = {
+    name: string | null;
+    description: string | null;
+    percentage?: number;
+    /**
+     * * `credit` - Credit
+     * * `debit` - Debit
+     */
+    tx_type: 'credit' | 'debit';
+    debit_account: string | null;
+    credit_account: string | null;
+    debit_subtype: string | null;
+    credit_subtype: string | null;
 };
 
 export type AdminAccountAssetFeeResponse = {
@@ -1230,6 +1305,293 @@ export type BankOwnerAddress = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
+export type BankOwnerAddressRequest = {
+    line_1?: string | null;
+    line_2?: string | null;
+    city?: string | null;
+    state_province?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    postal_code?: string | null;
+    state_code?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type BankOwnerRequest = {
+    first_name?: string | null;
+    middle_name?: string | null;
+    last_name?: string | null;
+    full_name?: string | null;
+    phone_number?: string | null;
+    email_address?: string | null;
+    company_name?: string | null;
+    ein_tin?: string | null;
+    address?: BankOwnerAddressRequest;
+    address_text?: string | null;
+    cpf_cpnj?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
 export type Company = {
     readonly id: string;
     name?: string | null;
@@ -1825,6 +2187,10 @@ export type CompanyDisallowedTransactionSubtype = {
     currency: ReducedAsset;
 };
 
+export type CompanyDisallowedTransactionSubtypeRequest = {
+    subtype: ReducedTransactionSubtypeRequest;
+};
+
 export type CompanyResponse = {
     status: string;
     data: Company;
@@ -1841,6 +2207,39 @@ export type CompanySettings = {
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
     disallowed_transaction_subtypes: Array<CompanyDisallowedTransactionSubtype>;
+    require_transaction_subtypes?: boolean;
+    require_verification?: boolean;
+    allow_registrations?: boolean;
+    allow_overdrafts?: boolean;
+    allow_session_durations?: boolean;
+    require_registration?: boolean;
+    default_session_duration?: number;
+    default_transaction_lifespan?: number;
+    require_terms_and_conditions?: boolean;
+    require_privacy_policy?: boolean;
+    account_reference_length?: number;
+    password_reset_url?: string | null;
+    password_set_url?: string | null;
+    email_verification_url?: string | null;
+    deactivate_verification_url?: string | null;
+    request_delete_verification_url?: string | null;
+    terms_and_conditions_url?: string | null;
+    privacy_policy_url?: string | null;
+    nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type CompanySettingsRequest = {
+    allow_transactions?: boolean;
+    allow_debit_transactions?: boolean;
+    allow_credit_transactions?: boolean;
+    disallowed_transaction_subtypes: Array<CompanyDisallowedTransactionSubtypeRequest>;
     require_transaction_subtypes?: boolean;
     require_verification?: boolean;
     allow_registrations?: boolean;
@@ -1894,13 +2293,13 @@ export type CompanyWalletAccount = {
     readonly updated: number;
 };
 
-export type CreateAccountAccountAsset = {
+export type CreateAccountAccountAssetRequest = {
     metadata?: {
         [key: string]: unknown;
     } | null;
 };
 
-export type CreateAuthToken = {
+export type CreateAuthTokenRequest = {
     password: string;
     duration?: number | null;
 };
@@ -1911,7 +2310,7 @@ export type CreateAuthToken = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateCompany = {
+export type CreateCompanyRequest = {
     id: string;
     name?: string | null;
     legal_name?: string | null;
@@ -2173,11 +2572,8 @@ export type CreateCompany = {
      * * `ZW` - Zimbabwe
      */
     country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
-    logo?: string | null;
-    icon?: string | null;
-    address: AdminCompanyAddress;
-    settings: CompanySettings;
-    readonly services: Array<ReducedService>;
+    logo?: Blob | File | null;
+    icon?: Blob | File | null;
     public?: boolean;
     metadata?: {
         [key: string]: unknown;
@@ -2187,17 +2583,7 @@ export type CreateCompany = {
      * * `production` - Production
      */
     mode?: 'test' | 'production';
-    /**
-     * * `pending` - Pending
-     * * `active` - Active
-     * * `restricted` - Restricted
-     * * `suspended` - Suspended
-     */
-    status: 'pending' | 'active' | 'restricted' | 'suspended';
-    readonly created: number;
-    readonly updated: number;
     system_email?: string;
-    owner: ReducedUserInfo;
 };
 
 /**
@@ -2210,7 +2596,7 @@ export type CreateCompany = {
  * - The class this mixin is attached to must have a Meta.model defined.
  * - The Meta.model class must have a PERMISSION_TYPE defined.
  */
-export type CreateCreditTransaction = {
+export type CreateCreditTransactionRequest = {
     id?: string;
 };
 
@@ -2220,11 +2606,29 @@ export type CreateCreditTransaction = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateCryptoAccount = {
-    readonly id: number;
+export type CreateCryptoAccountAccountAssetRequest = {
+    account_currency: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type CreateCryptoAccountAssetRequest = {
+    currency: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type CreateCryptoAccountRequest = {
     address: string;
     name?: string | null;
-    readonly code: string | null;
     /**
      * * `bitcoin` - Bitcoin
      * * `ethereum` - Ethereum
@@ -2240,42 +2644,10 @@ export type CreateCryptoAccount = {
     metadata?: {
         [key: string]: unknown;
     } | null;
-    readonly currencies: Array<ReducedAsset>;
-    readonly account_currencies: Array<ReducedAccountAsset>;
-    /**
-     * * `obsolete` - Obsolete
-     * * `declined` - Declined
-     * * `pending` - Pending
-     * * `incomplete` - Incomplete
-     * * `verified` - Verified
-     */
-    status: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
     /**
      * * `withdraw` - Withdraw
      */
     action?: 'withdraw';
-    readonly created: number;
-    readonly updated: number;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type CreateCryptoAccountAccountAsset = {
-    account_currency: string;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type CreateCryptoAccountAsset = {
-    currency: string;
 };
 
 /**
@@ -2288,7 +2660,7 @@ export type CreateCryptoAccountAsset = {
  * - The class this mixin is attached to must have a Meta.model defined.
  * - The Meta.model class must have a PERMISSION_TYPE defined.
  */
-export type CreateDebitTransaction = {
+export type CreateDebitTransactionRequest = {
     id?: string;
 };
 
@@ -2298,34 +2670,13 @@ export type CreateDebitTransaction = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateDevice = {
-    readonly id: number;
-    imei: string;
-    name?: string | null;
-    readonly apps: Array<DeviceApp>;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    readonly created: number;
-    readonly updated: number;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type CreateDeviceApp = {
-    readonly id: number;
+export type CreateDeviceAppRequest = {
     name?: string | null;
     /**
      * * `expo` - Expo
      */
     type: 'expo';
     token?: string | null;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -2334,13 +2685,23 @@ export type CreateDeviceApp = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateEmail = {
-    readonly id: number;
+export type CreateDeviceRequest = {
+    imei: string;
+    name?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type CreateEmailRequest = {
     email: string;
     primary?: boolean;
-    readonly verified: boolean;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -2349,7 +2710,7 @@ export type CreateEmail = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateExport = {
+export type CreateExportRequest = {
     /**
      * * `account` - Account
      * * `account_currency` - Account_Currency
@@ -2368,7 +2729,7 @@ export type CreateExport = {
     file_format?: 'json' | 'csv';
 };
 
-export type CreateJwt = {
+export type CreateJwtRequest = {
     nonce?: string;
 };
 
@@ -2378,17 +2739,13 @@ export type CreateJwt = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateMfaAuthenticator = {
-    readonly id: string;
+export type CreateMfaAuthenticatorRequest = {
     /**
      * * `totp` - Totp
      * * `sms` - Sms
      * * `static` - Static
      */
     type: 'totp' | 'sms' | 'static';
-    readonly verified: boolean;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -2397,7 +2754,7 @@ export type CreateMfaAuthenticator = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateMetric = {
+export type CreateMetricRequest = {
     name?: string | null;
     slug?: string | null;
     /**
@@ -2419,17 +2776,12 @@ export type CreateMetric = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateMobile = {
-    readonly id: number;
+export type CreateMobileRequest = {
     number: string;
-    readonly primary: boolean;
-    readonly verified: boolean;
-    readonly created: number;
-    readonly updated: number;
 };
 
-export type CreateMultiTransaction = {
-    transactions: Array<ExplicitCreateTransaction>;
+export type CreateMultiTransactionRequest = {
+    transactions: Array<ExplicitCreateTransactionRequest>;
 };
 
 /**
@@ -2438,7 +2790,7 @@ export type CreateMultiTransaction = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateStatement = {
+export type CreateStatementRequest = {
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -2450,11 +2802,9 @@ export type CreateStatement = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateTransactionCollection = {
+export type CreateTransactionCollectionRequest = {
     id?: string;
-    transactions: Array<CreateTransactionCollectionTransaction>;
-    readonly created: number;
-    readonly updated: number;
+    transactions: Array<CreateTransactionCollectionTransactionRequest>;
 };
 
 /**
@@ -2467,7 +2817,7 @@ export type CreateTransactionCollection = {
  * - The class this mixin is attached to must have a Meta.model defined.
  * - The Meta.model class must have a PERMISSION_TYPE defined.
  */
-export type CreateTransactionCollectionTransaction = {
+export type CreateTransactionCollectionTransactionRequest = {
     id?: string;
     parent?: string;
     partner?: string;
@@ -2479,8 +2829,7 @@ export type CreateTransactionCollectionTransaction = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateTransferTransaction = {
-    readonly id: string;
+export type CreateTransferTransactionRequest = {
     debit_account?: string | null;
     debit_subtype?: string | null;
     debit_metadata?: {
@@ -2507,7 +2856,7 @@ export type CreateTransferTransaction = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateUserBankAccountAccountAsset = {
+export type CreateUserBankAccountAccountAssetRequest = {
     account_currency: string;
 };
 
@@ -2517,7 +2866,7 @@ export type CreateUserBankAccountAccountAsset = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateUserBankAccountAsset = {
+export type CreateUserBankAccountAssetRequest = {
     currency: string;
 };
 
@@ -2527,7 +2876,7 @@ export type CreateUserBankAccountAsset = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateUserWalletAccountAccountAsset = {
+export type CreateUserWalletAccountAccountAssetRequest = {
     account_currency: string;
 };
 
@@ -2537,7 +2886,7 @@ export type CreateUserWalletAccountAccountAsset = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateUserWalletAccountAsset = {
+export type CreateUserWalletAccountAssetRequest = {
     currency: string;
 };
 
@@ -2622,12 +2971,38 @@ export type CryptoAccountListResponse = {
     data: CryptoAccountList;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type CryptoAccountRequest = {
+    address: string;
+    name?: string | null;
+    /**
+     * * `bitcoin` - Bitcoin
+     * * `ethereum` - Ethereum
+     * * `stellar` - Stellar
+     * * `other` - Other
+     */
+    crypto_type?: 'bitcoin' | 'ethereum' | 'stellar' | 'other';
+    /**
+     * * `testnet` - Testnet
+     * * `mainnet` - Mainnet
+     */
+    network?: 'testnet' | 'mainnet';
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
 export type CryptoAccountResponse = {
     status: string;
     data: CryptoAccount;
 };
 
-export type Deactivate = {
+export type DeactivateRequest = {
     user: string;
     company: string;
 };
@@ -2668,6 +3043,20 @@ export type DeviceApp = {
     readonly updated: number;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type DeviceAppRequest = {
+    name?: string | null;
+    /**
+     * * `expo` - Expo
+     */
+    type: 'expo';
+};
+
 export type DeviceAppResponse = {
     status: string;
     data: DeviceApp;
@@ -2678,6 +3067,19 @@ export type DeviceList = Array<Device>;
 export type DeviceListResponse = {
     status: string;
     data: DeviceList;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type DeviceRequest = {
+    name?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
 };
 
 export type DeviceResponse = {
@@ -2730,6 +3132,16 @@ export type EmailListResponse = {
     data: EmailList;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type EmailRequest = {
+    primary?: boolean;
+};
+
 export type EmailResponse = {
     status: string;
     data: Email;
@@ -2745,7 +3157,7 @@ export type EmailResponse = {
  * - The class this mixin is attached to must have a Meta.model defined.
  * - The Meta.model class must have a PERMISSION_TYPE defined.
  */
-export type ExplicitCreateTransaction = {
+export type ExplicitCreateTransactionRequest = {
     id?: string;
 };
 
@@ -3569,1398 +3981,18 @@ export type ExtendedUserInfo = {
     settings: UserSettings;
 };
 
-export type ExtendedUserInfoResponse = {
-    status: string;
-    data: ExtendedUserInfo;
-};
-
-export type GroupDisallowedTransactionSubtype = {
-    subtype: ReducedTransactionSubtype;
-    currency: ReducedAsset;
-    account_definition: ReducedAccountDefinition;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type GroupFee = {
-    readonly id: number;
-    name: string | null;
-    /**
-     * * `credit` - Credit
-     * * `debit` - Debit
-     */
-    tx_type: 'credit' | 'debit';
-    readonly subtype: string | null;
-    readonly account_definition: string | null;
-    readonly currency: string;
-    /**
-     * Convert the Fee value from Decimal to int based on asset divisibility
-     */
-    readonly value: number;
-    percentage?: number;
-    description: string | null;
-};
-
-export type GroupFeeResponse = {
-    status: string;
-    data: GroupFee;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type GroupLimit = {
-    readonly id: number;
-    /**
-     * * `max` - Maximum
-     * * `day_max` - Maximum per day
-     * * `week_max` - Maximum per week
-     * * `month_max` - Maximum per month
-     * * `min` - Minimum
-     * * `overdraft` - Overdraft
-     */
-    type: 'max' | 'day_max' | 'week_max' | 'month_max' | 'min' | 'overdraft';
-    /**
-     * * `credit` - Credit
-     * * `debit` - Debit
-     */
-    tx_type: 'credit' | 'debit';
-    readonly subtype: string;
-    readonly account_definition: string | null;
-    readonly currency: string;
-    /**
-     * Convert the Limit value from Decimal to int based on asset divisibility
-     */
-    readonly value: number;
-    readonly begin: number;
-    readonly end: number;
-    readonly created: number;
-    readonly updated: number;
-};
-
-export type GroupLimitResponse = {
-    status: string;
-    data: GroupLimit;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type GroupPermission = {
-    readonly id: number;
-    /**
-     * * `system` - System
-     * * `admin` - Admin
-     * * `user` - User
-     */
-    section: 'system' | 'admin' | 'user';
-    /**
-     * * `accesscontrolrule` - Access Control Rule
-     * * `account` - Account
-     * * `accountdefinition` - Account Definition
-     * * `address` - Address
-     * * `currency` - Currency
-     * * `bankaccount` - Bank Account
-     * * `company` - Company
-     * * `cryptoaccount` - Crypto Account
-     * * `device` - Device
-     * * `document` - Document
-     * * `email` - Email
-     * * `group` - Group
-     * * `jwt` - Jwt
-     * * `legalterm` - Legal Term
-     * * `mfa` - Mfa
-     * * `mfarule` - Mfa Rule
-     * * `mobile` - Mobile
-     * * `notification` - Notification
-     * * `oauthclient` - Oauth Client
-     * * `permission` - Permission
-     * * `request` - Request
-     * * `service` - Service
-     * * `token` - Token
-     * * `transaction` - Transaction
-     * * `transactionsubtypes` - Transaction Subtypes
-     * * `user` - User
-     * * `webhook` - Webhook
-     */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
-    /**
-     * * `view` - View
-     * * `add` - Add
-     * * `change` - Change
-     * * `delete` - Delete
-     */
-    level: 'view' | 'add' | 'change' | 'delete';
-    readonly properties: {
-        [key: string]: unknown;
-    };
-};
-
-export type GroupPermissionResponse = {
-    status: string;
-    data: GroupPermission;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type GroupSettings = {
-    allow_transactions?: boolean;
-    allow_debit_transactions?: boolean;
-    allow_credit_transactions?: boolean;
-    disallowed_transaction_subtypes: Array<GroupDisallowedTransactionSubtype>;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type GroupTier = {
-    readonly id: number;
-    readonly level: number;
-    readonly name: string | null;
-    readonly description: string | null;
-    readonly active: boolean;
-    /**
-     * @deprecated
-     */
-    readonly limits: Array<GroupTierLimit>;
-    /**
-     * @deprecated
-     */
-    readonly fees: Array<GroupTierFee>;
-    settings: GroupTierSettings;
-    readonly created: number;
-    readonly updated: number;
-};
-
-export type GroupTierDisallowedTransactionSubtype = {
-    subtype: ReducedTransactionSubtype;
-    currency: ReducedAsset;
-    account_definition: ReducedAccountDefinition;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type GroupTierFee = {
-    readonly id: number;
-    name: string | null;
-    /**
-     * * `credit` - Credit
-     * * `debit` - Debit
-     */
-    tx_type: 'credit' | 'debit';
-    readonly subtype: string | null;
-    readonly account_definition: string | null;
-    readonly currency: string;
-    /**
-     * Convert the Fee value from Decimal to int based on asset divisibility
-     */
-    readonly value: number;
-    percentage?: number;
-    description: string | null;
-};
-
-export type GroupTierFeeResponse = {
-    status: string;
-    data: GroupTierFee;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type GroupTierLimit = {
-    readonly id: number;
-    /**
-     * Convert the Limit value from Decimal to int based on asset divisibility
-     */
-    readonly value: number;
-    /**
-     * * `max` - Maximum
-     * * `day_max` - Maximum per day
-     * * `week_max` - Maximum per week
-     * * `month_max` - Maximum per month
-     * * `min` - Minimum
-     * * `overdraft` - Overdraft
-     */
-    type: 'max' | 'day_max' | 'week_max' | 'month_max' | 'min' | 'overdraft';
-    /**
-     * * `credit` - Credit
-     * * `debit` - Debit
-     */
-    tx_type: 'credit' | 'debit';
-    readonly subtype: string;
-    readonly account_definition: string | null;
-    currency: string;
-    readonly begin: number;
-    readonly end: number;
-    readonly created: number;
-    readonly updated: number;
-};
-
-export type GroupTierLimitResponse = {
-    status: string;
-    data: GroupTierLimit;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type GroupTierRequirementSet = {
-    readonly id: number;
-    parent?: number | null;
-    name?: string | null;
-    description?: string | null;
-    /**
-     * * `all` - All
-     * * `any` - Any
-     */
-    condition: 'all' | 'any';
-    min_condition_matches?: number | null;
-    readonly items: Array<GroupTierRequirementSetItem>;
-    weight?: number | null;
-    readonly created: number;
-    readonly updated: number;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type GroupTierRequirementSetItem = {
-    readonly id: number;
-    /**
-     * * `resource` - Resource
-     */
-    type: 'resource';
-    rule: GroupTierRequirementSetItemRule;
-    name?: string | null;
-    description?: string | null;
-    weight?: number | null;
-    readonly created: number;
-    readonly updated: number;
-};
-
-export type GroupTierRequirementSetItemResponse = {
-    status: string;
-    data: GroupTierRequirementSetItem;
-};
-
-export type GroupTierRequirementSetItemRule = ResourceRequirementRule;
-
-export type GroupTierRequirementSetResponse = {
-    status: string;
-    data: GroupTierRequirementSet;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type GroupTierSettings = {
-    allow_transactions?: boolean;
-    allow_debit_transactions?: boolean;
-    allow_credit_transactions?: boolean;
-    disallowed_transaction_subtypes: Array<GroupTierDisallowedTransactionSubtype>;
-};
-
-export type Jwt = {
-    readonly token: string;
-};
-
-export type JwtResponse = {
-    status: string;
-    data: Jwt;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type LegalTerm = {
-    readonly id: number;
-    /**
-     * * `system` - System
-     * * `company` - Company
-     */
-    type: 'system' | 'company';
-    readonly name: string;
-    readonly description: string | null;
-    readonly versions: Array<ReducedLegalTermVersion>;
-    readonly created: number;
-    readonly updated: number;
-};
-
-export type LegalTermResponse = {
-    status: string;
-    data: LegalTerm;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type LegalTermVersion = {
-    readonly id: number;
-    readonly version: number;
-    readonly accepted: boolean;
-    readonly accepted_date: number;
-    readonly note: string | null;
-    readonly content: string | null;
-    readonly url: string | null;
-    readonly urls: Array<{
-        [key: string]: unknown;
-    }> | null;
-    readonly created: number;
-    readonly updated: number;
-};
-
-export type LegalTermVersionResponse = {
-    status: string;
-    data: LegalTermVersion;
-};
-
-export type Login = {
-    user: string;
-    company: string;
-    password: string;
-    /**
-     * * `cookie` - Cookie
-     * * `token` - Token
-     */
-    auth_method?: 'cookie' | 'token';
-};
-
-export type Logout = {
-    /**
-     * * `all` - All
-     * * `temporary` - Temporary
-     * * `none` - None
-     */
-    clear_session_option?: 'all' | 'temporary' | 'none';
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type MfaAuthenticator = {
-    readonly id: string;
-    /**
-     * * `totp` - Totp
-     * * `sms` - Sms
-     * * `static` - Static
-     */
-    type: 'totp' | 'sms' | 'static';
-    details: MfaDeviceDetail;
-    readonly verified: boolean;
-    readonly created: number;
-    readonly updated: number;
-};
-
-export type MfaAuthenticatorResponse = {
-    status: string;
-    data: MfaAuthenticator;
-};
-
-export type MfaDeliver = {
-    challenge?: string;
-    authenticator?: string;
-};
-
-export type MfaDeviceDetail = MfatotpDeviceDetail | MfaTwilioDeviceDetail | MfaStaticDeviceDetail;
-
-export type MfaStaticDeviceDetail = {
-    name?: string;
-    readonly tokens: Array<MfaStaticDeviceToken>;
-};
-
-export type MfaStaticDeviceToken = {
-    readonly token: string;
-    readonly available: boolean;
-};
-
-export type MfatotpDeviceDetail = {
-    name?: string;
-    /**
-     * * `SHA1` - SHA1
-     * * `SHA256` - SHA256
-     * * `SHA512` - SHA512
-     */
-    algorithm: 'SHA1' | 'SHA256' | 'SHA512';
-    readonly otpauth_url: string;
-    readonly issuer: string;
-    readonly account: string;
-    readonly key: string;
-};
-
-export type MfaTwilioDeviceDetail = {
-    name?: string;
-    mobile: string;
-};
-
-export type MfaVerify = {
-    token: string;
-    challenge?: string;
-    authenticator?: string;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type MaskedMfaAuthenticator = {
-    readonly id: string;
-    /**
-     * * `totp` - Totp
-     * * `sms` - Sms
-     * * `static` - Static
-     */
-    type: 'totp' | 'sms' | 'static';
-    details: MaskedMfaDeviceDetail;
-    readonly verified: boolean;
-    readonly created: number;
-    readonly updated: number;
-};
-
-export type MaskedMfaAuthenticatorResponse = {
-    status: string;
-    data: MaskedMfaAuthenticator;
-};
-
-export type MaskedMfaDeviceDetail = MaskedMfatotpDeviceDetail | MaskedMfaTwilioDeviceDetail | MaskedMfaStaticDeviceDetail;
-
-export type MaskedMfaStaticDeviceDetail = {
-    name?: string;
-    readonly tokens: Array<MaskedMfaStaticDeviceToken>;
-};
-
-export type MaskedMfaStaticDeviceToken = {
-    readonly token: string;
-    readonly available: boolean;
-};
-
-export type MaskedMfatotpDeviceDetail = {
-    name?: string;
-    /**
-     * * `SHA1` - SHA1
-     * * `SHA256` - SHA256
-     * * `SHA512` - SHA512
-     */
-    algorithm: 'SHA1' | 'SHA256' | 'SHA512';
-    readonly otpauth_url: string;
-    readonly issuer: string;
-    readonly account: string;
-    readonly key: string;
-};
-
-export type MaskedMfaTwilioDeviceDetail = {
-    name?: string;
-    mobile: string;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type Metric = {
-    readonly id: string;
-    readonly name: string | null;
-    readonly slug: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    /**
-     * * `account_count` - Account Count
-     * * `transaction_count` - Transaction Count
-     * * `transaction_complete_count` - Transaction Complete Count
-     * * `transaction_failed_count` - Transaction Failed Count
-     * * `transaction_pending_count` - Transaction Pending Count
-     * * `transaction_complete_sum` - Transaction Complete Sum
-     * * `transaction_failed_sum` - Transaction Failed Sum
-     * * `transaction_pending_sum` - Transaction Pending Sum
-     * * `transaction_balance_sum` - Transaction Balance Sum
-     * * `transaction_available_balance_sum` - Transaction Available Balance Sum
-     * * `user_count` - User Count
-     * * `user_active_count` - User Active Count
-     * * `user_transacted_in_30days_count` - User Transacted In 30Days Count
-     */
-    type: 'account_count' | 'transaction_count' | 'transaction_complete_count' | 'transaction_failed_count' | 'transaction_pending_count' | 'transaction_complete_sum' | 'transaction_failed_sum' | 'transaction_pending_sum' | 'transaction_balance_sum' | 'transaction_available_balance_sum' | 'user_count' | 'user_active_count' | 'user_transacted_in_30days_count';
-    currency: ReducedAsset;
-    readonly timezone: string;
-    readonly query: {
-        [key: string]: unknown;
-    };
-    /**
-     * * `accumulate` - Accumulate
-     * * `set` - Set
-     */
-    method: 'accumulate' | 'set';
-    readonly created: number;
-    readonly updated: number;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type MetricPoint = {
-    readonly id: number;
-    readonly value: number;
-    readonly date: number;
-};
-
-export type MetricResponse = {
-    status: string;
-    data: Metric;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type Mobile = {
-    readonly id: number;
-    readonly number: string;
-    primary?: boolean;
-    readonly verified: boolean;
-    readonly created: number;
-    readonly updated: number;
-};
-
-export type MobileList = Array<Mobile>;
-
-export type MobileListResponse = {
-    status: string;
-    data: MobileList;
-};
-
-export type MobileResponse = {
-    status: string;
-    data: Mobile;
-};
-
-export type MultiTransaction = {
-    transactions: Array<Transaction>;
-};
-
-export type MultiTransactionResponse = {
-    status: string;
-    data: MultiTransaction;
-};
-
-export type OauthAuthorize = {
-    session: string;
-    readonly url: string;
-};
-
-export type OauthAuthorizeResponse = {
-    status: string;
-    data: OauthAuthorize;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type OauthClient = {
-    readonly id: string;
-    /**
-     * * `apple` - Apple
-     * * `google` - Google
-     */
-    provider: 'apple' | 'google';
-    readonly application: string;
-    readonly client_id: string;
-    readonly created: number;
-    readonly updated: number;
-};
-
-export type OauthClientResponse = {
-    status: string;
-    data: OauthClient;
-};
-
-export type OauthLogin = {
-    session: string;
-    /**
-     * * `cookie` - Cookie
-     * * `token` - Token
-     */
-    auth_method?: 'cookie' | 'token';
-};
-
-export type OauthRegister = {
-    session: string;
-    terms_and_conditions?: boolean;
-    privacy_policy?: boolean;
-    /**
-     * * `cookie` - Cookie
-     * * `token` - Token
-     */
-    auth_method?: 'cookie' | 'token';
-};
-
-export type OauthSession = {
-    client: string;
-    readonly session: string;
-};
-
-export type OauthSessionResponse = {
-    status: string;
-    data: OauthSession;
-};
-
-export type OauthVerify = {
-    session?: string;
-    readonly user_exists: boolean;
-};
-
-export type OauthVerifyResponse = {
-    status: string;
-    data: OauthVerify;
-};
-
-export type PaginatedAccountAccountAssetList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<AccountAccountAsset>;
-};
-
-export type PaginatedAccountAccountAssetListResponse = {
-    status: string;
-    data: PaginatedAccountAccountAssetList;
-};
-
-export type PaginatedAccountAssetFeeList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<AccountAssetFee>;
-};
-
-export type PaginatedAccountAssetFeeListResponse = {
-    status: string;
-    data: PaginatedAccountAssetFeeList;
-};
-
-export type PaginatedAccountAssetLimitList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<AccountAssetLimit>;
-};
-
-export type PaginatedAccountAssetLimitListResponse = {
-    status: string;
-    data: PaginatedAccountAssetLimitList;
-};
-
-export type PaginatedAccountAssetList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<AccountAsset>;
-};
-
-export type PaginatedAccountAssetListResponse = {
-    status: string;
-    data: PaginatedAccountAssetList;
-};
-
-export type PaginatedAccountDefinitionList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<AccountDefinition>;
-};
-
-export type PaginatedAccountDefinitionListResponse = {
-    status: string;
-    data: PaginatedAccountDefinitionList;
-};
-
-export type PaginatedAccountList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<Account>;
-};
-
-export type PaginatedAccountListResponse = {
-    status: string;
-    data: PaginatedAccountList;
-};
-
-export type PaginatedAssetList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<Asset>;
-};
-
-export type PaginatedAssetListResponse = {
-    status: string;
-    data: PaginatedAssetList;
-};
-
-export type PaginatedCompanyBankAccountList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<CompanyBankAccount>;
-};
-
-export type PaginatedCompanyBankAccountListResponse = {
-    status: string;
-    data: PaginatedCompanyBankAccountList;
-};
-
-export type PaginatedCompanyWalletAccountList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<CompanyWalletAccount>;
-};
-
-export type PaginatedCompanyWalletAccountListResponse = {
-    status: string;
-    data: PaginatedCompanyWalletAccountList;
-};
-
-export type PaginatedDeviceAppList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<DeviceApp>;
-};
-
-export type PaginatedDeviceAppListResponse = {
-    status: string;
-    data: PaginatedDeviceAppList;
-};
-
-export type PaginatedDocumentTypeList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<DocumentType>;
-};
-
-export type PaginatedDocumentTypeListResponse = {
-    status: string;
-    data: PaginatedDocumentTypeList;
-};
-
-export type PaginatedExportList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<Export>;
-};
-
-export type PaginatedExportListResponse = {
-    status: string;
-    data: PaginatedExportList;
-};
-
-export type PaginatedGroupFeeList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<GroupFee>;
-};
-
-export type PaginatedGroupFeeListResponse = {
-    status: string;
-    data: PaginatedGroupFeeList;
-};
-
-export type PaginatedGroupLimitList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<GroupLimit>;
-};
-
-export type PaginatedGroupLimitListResponse = {
-    status: string;
-    data: PaginatedGroupLimitList;
-};
-
-export type PaginatedGroupPermissionList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<GroupPermission>;
-};
-
-export type PaginatedGroupPermissionListResponse = {
-    status: string;
-    data: PaginatedGroupPermissionList;
-};
-
-export type PaginatedGroupTierFeeList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<GroupTierFee>;
-};
-
-export type PaginatedGroupTierFeeListResponse = {
-    status: string;
-    data: PaginatedGroupTierFeeList;
-};
-
-export type PaginatedGroupTierLimitList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<GroupTierLimit>;
-};
-
-export type PaginatedGroupTierLimitListResponse = {
-    status: string;
-    data: PaginatedGroupTierLimitList;
-};
-
-export type PaginatedGroupTierList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<GroupTier>;
-};
-
-export type PaginatedGroupTierListResponse = {
-    status: string;
-    data: PaginatedGroupTierList;
-};
-
-export type PaginatedGroupTierRequirementSetItemList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<GroupTierRequirementSetItem>;
-};
-
-export type PaginatedGroupTierRequirementSetItemListResponse = {
-    status: string;
-    data: PaginatedGroupTierRequirementSetItemList;
-};
-
-export type PaginatedGroupTierRequirementSetList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<GroupTierRequirementSet>;
-};
-
-export type PaginatedGroupTierRequirementSetListResponse = {
-    status: string;
-    data: PaginatedGroupTierRequirementSetList;
-};
-
-export type PaginatedLegalTermList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<LegalTerm>;
-};
-
-export type PaginatedLegalTermListResponse = {
-    status: string;
-    data: PaginatedLegalTermList;
-};
-
-export type PaginatedLegalTermVersionList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<LegalTermVersion>;
-};
-
-export type PaginatedLegalTermVersionListResponse = {
-    status: string;
-    data: PaginatedLegalTermVersionList;
-};
-
-export type PaginatedMaskedMfaAuthenticatorList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<MaskedMfaAuthenticator>;
-};
-
-export type PaginatedMaskedMfaAuthenticatorListResponse = {
-    status: string;
-    data: PaginatedMaskedMfaAuthenticatorList;
-};
-
-export type PaginatedMetricList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<Metric>;
-};
-
-export type PaginatedMetricListResponse = {
-    status: string;
-    data: PaginatedMetricList;
-};
-
-export type PaginatedMetricPointList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<MetricPoint>;
-};
-
-export type PaginatedMetricPointListResponse = {
-    status: string;
-    data: PaginatedMetricPointList;
-};
-
-export type PaginatedOauthClientList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<OauthClient>;
-};
-
-export type PaginatedOauthClientListResponse = {
-    status: string;
-    data: PaginatedOauthClientList;
-};
-
-export type PaginatedPublicCompanyLegalTermList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<PublicCompanyLegalTerm>;
-};
-
-export type PaginatedPublicCompanyLegalTermListResponse = {
-    status: string;
-    data: PaginatedPublicCompanyLegalTermList;
-};
-
-export type PaginatedPublicCompanyLegalTermVersionList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<PublicCompanyLegalTermVersion>;
-};
-
-export type PaginatedPublicCompanyLegalTermVersionListResponse = {
-    status: string;
-    data: PaginatedPublicCompanyLegalTermVersionList;
-};
-
-export type PaginatedPublicCompanyList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<PublicCompany>;
-};
-
-export type PaginatedPublicCompanyListResponse = {
-    status: string;
-    data: PaginatedPublicCompanyList;
-};
-
-export type PaginatedPublicGroupList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<PublicGroup>;
-};
-
-export type PaginatedPublicGroupListResponse = {
-    status: string;
-    data: PaginatedPublicGroupList;
-};
-
-export type PaginatedPublicLegalTermList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<PublicLegalTerm>;
-};
-
-export type PaginatedPublicLegalTermListResponse = {
-    status: string;
-    data: PaginatedPublicLegalTermList;
-};
-
-export type PaginatedPublicLegalTermVersionList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<PublicLegalTermVersion>;
-};
-
-export type PaginatedPublicLegalTermVersionListResponse = {
-    status: string;
-    data: PaginatedPublicLegalTermVersionList;
-};
-
-export type PaginatedStatementList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<Statement>;
-};
-
-export type PaginatedStatementListResponse = {
-    status: string;
-    data: PaginatedStatementList;
-};
-
-export type PaginatedTransactionCollectionList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<TransactionCollection>;
-};
-
-export type PaginatedTransactionCollectionListResponse = {
-    status: string;
-    data: PaginatedTransactionCollectionList;
-};
-
-export type PaginatedTransactionList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<Transaction>;
-};
-
-export type PaginatedTransactionListResponse = {
-    status: string;
-    data: PaginatedTransactionList;
-};
-
-export type PaginatedTransactionMessageList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<TransactionMessage>;
-};
-
-export type PaginatedTransactionMessageListResponse = {
-    status: string;
-    data: PaginatedTransactionMessageList;
-};
-
-export type PaginatedUserDocumentList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<UserDocument>;
-};
-
-export type PaginatedUserDocumentListResponse = {
-    status: string;
-    data: PaginatedUserDocumentList;
-};
-
-export type PaginatedUserGroupList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<UserGroup>;
-};
-
-export type PaginatedUserGroupListResponse = {
-    status: string;
-    data: PaginatedUserGroupList;
-};
-
-export type PaginatedUserMessageList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<UserMessage>;
-};
-
-export type PaginatedUserMessageListResponse = {
-    status: string;
-    data: PaginatedUserMessageList;
-};
-
-export type PaginatedUserPermissionList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<UserPermission>;
-};
-
-export type PaginatedUserPermissionListResponse = {
-    status: string;
-    data: PaginatedUserPermissionList;
-};
-
-export type PaginatedUserWalletAccountAssetList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<UserWalletAccountAsset>;
-};
-
-export type PaginatedUserWalletAccountAssetListResponse = {
-    status: string;
-    data: PaginatedUserWalletAccountAssetList;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PartnerTransaction = {
-    readonly id: string;
-    user: PartnerUserInfo;
-};
-
-/**
- * A condensed user serializer showing only the necessary user information to
- * identify a partner user (without exposing any extra).
- *
- * This only works when a transaction instance is sent to it.
- */
-export type PartnerUserInfo = {
-    readonly id: string;
-    readonly identifier: string;
-    readonly username: string;
-    readonly first_name: string;
-    readonly middle_name: string;
-    readonly last_name: string;
-    readonly profile: string | null;
-    readonly temporary: boolean;
-};
-
-export type PasswordChange = {
-    old_password: string;
-    /**
-     * * `all` - All
-     * * `temporary` - Temporary
-     * * `none` - None
-     */
-    clear_session_option?: 'all' | 'temporary' | 'none';
-};
-
-/**
- * Serializer for requesting a password reset e-mail.
- */
-export type PasswordReset = {
-    force?: boolean;
-    user: string;
-    company: string;
-};
-
-/**
- * Serializer for confirming a password reset attempt.
- */
-export type PasswordResetConfirm = {
-    uid: string;
-    token: string;
-    /**
-     * * `all` - All
-     * * `temporary` - Temporary
-     * * `none` - None
-     */
-    clear_session_option?: 'all' | 'temporary' | 'none';
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedAccountAccountAsset = {
-    readonly id?: string;
-    readonly balance?: number;
-    readonly available_balance?: number;
-    currency?: ReducedAsset;
-    readonly limits?: Array<AccountAssetLimit>;
-    readonly fees?: Array<AdminAccountAssetFee>;
-    readonly metadata?: {
-        [key: string]: unknown;
-    } | null;
-    active?: boolean;
-    settings?: AccountAssetSettings;
-    readonly subtypes?: Array<TransactionSubtype>;
-    readonly created?: number;
-    readonly updated?: number;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedCryptoAccount = {
-    readonly id?: number;
-    address?: string;
-    name?: string | null;
-    readonly code?: string | null;
-    /**
-     * * `bitcoin` - Bitcoin
-     * * `ethereum` - Ethereum
-     * * `stellar` - Stellar
-     * * `other` - Other
-     */
-    crypto_type?: 'bitcoin' | 'ethereum' | 'stellar' | 'other';
-    /**
-     * * `testnet` - Testnet
-     * * `mainnet` - Mainnet
-     */
-    network?: 'testnet' | 'mainnet';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    readonly currencies?: Array<ReducedAsset>;
-    readonly account_currencies?: Array<ReducedAccountAsset>;
-    /**
-     * * `obsolete` - Obsolete
-     * * `declined` - Declined
-     * * `pending` - Pending
-     * * `incomplete` - Incomplete
-     * * `verified` - Verified
-     */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
-    /**
-     * * `withdraw` - Withdraw
-     * * `deposit` - Deposit
-     */
-    action?: 'withdraw' | 'deposit';
-    readonly created?: number;
-    readonly updated?: number;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedDevice = {
-    readonly id?: number;
-    readonly imei?: string;
-    name?: string | null;
-    readonly apps?: Array<ReducedDeviceApp>;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    readonly created?: number;
-    readonly updated?: number;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedDeviceApp = {
-    readonly id?: number;
-    name?: string | null;
-    /**
-     * * `expo` - Expo
-     */
-    type?: 'expo';
-    readonly token?: string | null;
-    readonly created?: number;
-    readonly updated?: number;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedEmail = {
-    readonly id?: number;
-    readonly email?: string;
-    primary?: boolean;
-    readonly verified?: boolean;
-    readonly created?: number;
-    readonly updated?: number;
-};
-
 /**
  * Extended user information shown based on the default user info serializer.
  * Contain additional information about user permissions and settings.
  */
-export type PatchedExtendedUserInfo = {
-    readonly id?: string;
-    username?: string | null;
-    readonly email?: string | null;
-    readonly mobile?: string | null;
+export type ExtendedUserInfoRequest = {
+    username: string | null;
     first_name?: string | null;
     middle_name?: string | null;
     last_name?: string | null;
-    profile?: string | null;
-    readonly groups?: Array<ReducedGroup>;
-    readonly temporary?: boolean | null;
+    profile?: Blob | File | null;
     id_number?: string | null;
     birth_date?: string | null;
-    currency?: ReducedAsset;
-    readonly account?: string;
-    readonly balance?: number;
-    readonly available_balance?: number;
-    readonly company?: string;
-    readonly owner?: boolean;
     language?: string;
     /**
      * * `AF` - Afghanistan
@@ -5492,28 +4524,20 @@ export type PatchedExtendedUserInfo = {
     grandfathers_name?: string | null;
     grandmothers_name?: string | null;
     central_bank_number?: string | null;
-    readonly metadata?: {
-        [key: string]: unknown;
-    } | null;
     timezone?: string | null;
     website?: string | null;
     business_name?: string | null;
-    /**
-     * @deprecated
-     */
-    readonly verified?: boolean;
-    verification?: UserVerification;
-    /**
-     * * `obsolete` - Obsolete
-     * * `declined` - Declined
-     * * `pending` - Pending
-     * * `incomplete` - Incomplete
-     * * `verified` - Verified
-     */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
-    readonly created?: number;
-    readonly updated?: number;
-    settings?: UserSettings;
+};
+
+export type ExtendedUserInfoResponse = {
+    status: string;
+    data: ExtendedUserInfo;
+};
+
+export type GroupDisallowedTransactionSubtype = {
+    subtype: ReducedTransactionSubtype;
+    currency: ReducedAsset;
+    account_definition: ReducedAccountDefinition;
 };
 
 /**
@@ -5522,13 +4546,1889 @@ export type PatchedExtendedUserInfo = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedMobile = {
-    readonly id?: number;
-    readonly number?: string;
+export type GroupFee = {
+    readonly id: number;
+    name: string | null;
+    /**
+     * * `credit` - Credit
+     * * `debit` - Debit
+     */
+    tx_type: 'credit' | 'debit';
+    readonly subtype: string | null;
+    readonly account_definition: string | null;
+    readonly currency: string;
+    /**
+     * Convert the Fee value from Decimal to int based on asset divisibility
+     */
+    readonly value: number;
+    percentage?: number;
+    description: string | null;
+};
+
+export type GroupFeeResponse = {
+    status: string;
+    data: GroupFee;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type GroupLimit = {
+    readonly id: number;
+    /**
+     * * `max` - Maximum
+     * * `day_max` - Maximum per day
+     * * `week_max` - Maximum per week
+     * * `month_max` - Maximum per month
+     * * `min` - Minimum
+     * * `overdraft` - Overdraft
+     */
+    type: 'max' | 'day_max' | 'week_max' | 'month_max' | 'min' | 'overdraft';
+    /**
+     * * `credit` - Credit
+     * * `debit` - Debit
+     */
+    tx_type: 'credit' | 'debit';
+    readonly subtype: string;
+    readonly account_definition: string | null;
+    readonly currency: string;
+    /**
+     * Convert the Limit value from Decimal to int based on asset divisibility
+     */
+    readonly value: number;
+    readonly begin: number;
+    readonly end: number;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type GroupLimitResponse = {
+    status: string;
+    data: GroupLimit;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type GroupPermission = {
+    readonly id: number;
+    /**
+     * * `system` - System
+     * * `admin` - Admin
+     * * `user` - User
+     */
+    section: 'system' | 'admin' | 'user';
+    /**
+     * * `accesscontrolrule` - Access Control Rule
+     * * `account` - Account
+     * * `accountdefinition` - Account Definition
+     * * `address` - Address
+     * * `currency` - Currency
+     * * `bankaccount` - Bank Account
+     * * `company` - Company
+     * * `cryptoaccount` - Crypto Account
+     * * `device` - Device
+     * * `document` - Document
+     * * `email` - Email
+     * * `group` - Group
+     * * `jwt` - Jwt
+     * * `legalterm` - Legal Term
+     * * `mfa` - Mfa
+     * * `mfarule` - Mfa Rule
+     * * `mobile` - Mobile
+     * * `notification` - Notification
+     * * `oauthclient` - Oauth Client
+     * * `permission` - Permission
+     * * `request` - Request
+     * * `service` - Service
+     * * `token` - Token
+     * * `transaction` - Transaction
+     * * `transactionsubtypes` - Transaction Subtypes
+     * * `user` - User
+     * * `webhook` - Webhook
+     */
+    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    /**
+     * * `view` - View
+     * * `add` - Add
+     * * `change` - Change
+     * * `delete` - Delete
+     */
+    level: 'view' | 'add' | 'change' | 'delete';
+    readonly properties: {
+        [key: string]: unknown;
+    };
+};
+
+export type GroupPermissionResponse = {
+    status: string;
+    data: GroupPermission;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type GroupSettings = {
+    allow_transactions?: boolean;
+    allow_debit_transactions?: boolean;
+    allow_credit_transactions?: boolean;
+    disallowed_transaction_subtypes: Array<GroupDisallowedTransactionSubtype>;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type GroupTier = {
+    readonly id: number;
+    readonly level: number;
+    readonly name: string | null;
+    readonly description: string | null;
+    readonly active: boolean;
+    /**
+     * @deprecated
+     */
+    readonly limits: Array<GroupTierLimit>;
+    /**
+     * @deprecated
+     */
+    readonly fees: Array<GroupTierFee>;
+    settings: GroupTierSettings;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type GroupTierDisallowedTransactionSubtype = {
+    subtype: ReducedTransactionSubtype;
+    currency: ReducedAsset;
+    account_definition: ReducedAccountDefinition;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type GroupTierFee = {
+    readonly id: number;
+    name: string | null;
+    /**
+     * * `credit` - Credit
+     * * `debit` - Debit
+     */
+    tx_type: 'credit' | 'debit';
+    readonly subtype: string | null;
+    readonly account_definition: string | null;
+    readonly currency: string;
+    /**
+     * Convert the Fee value from Decimal to int based on asset divisibility
+     */
+    readonly value: number;
+    percentage?: number;
+    description: string | null;
+};
+
+export type GroupTierFeeResponse = {
+    status: string;
+    data: GroupTierFee;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type GroupTierLimit = {
+    readonly id: number;
+    /**
+     * Convert the Limit value from Decimal to int based on asset divisibility
+     */
+    readonly value: number;
+    /**
+     * * `max` - Maximum
+     * * `day_max` - Maximum per day
+     * * `week_max` - Maximum per week
+     * * `month_max` - Maximum per month
+     * * `min` - Minimum
+     * * `overdraft` - Overdraft
+     */
+    type: 'max' | 'day_max' | 'week_max' | 'month_max' | 'min' | 'overdraft';
+    /**
+     * * `credit` - Credit
+     * * `debit` - Debit
+     */
+    tx_type: 'credit' | 'debit';
+    readonly subtype: string;
+    readonly account_definition: string | null;
+    currency: string;
+    readonly begin: number;
+    readonly end: number;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type GroupTierLimitResponse = {
+    status: string;
+    data: GroupTierLimit;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type GroupTierRequirementSet = {
+    readonly id: number;
+    parent?: number | null;
+    name?: string | null;
+    description?: string | null;
+    /**
+     * * `all` - All
+     * * `any` - Any
+     */
+    condition: 'all' | 'any';
+    min_condition_matches?: number | null;
+    readonly items: Array<GroupTierRequirementSetItem>;
+    weight?: number | null;
+    readonly created: number;
+    readonly updated: number;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type GroupTierRequirementSetItem = {
+    readonly id: number;
+    /**
+     * * `resource` - Resource
+     */
+    type: 'resource';
+    rule: GroupTierRequirementSetItemRule;
+    name?: string | null;
+    description?: string | null;
+    weight?: number | null;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type GroupTierRequirementSetItemResponse = {
+    status: string;
+    data: GroupTierRequirementSetItem;
+};
+
+export type GroupTierRequirementSetItemRule = ResourceRequirementRule;
+
+export type GroupTierRequirementSetResponse = {
+    status: string;
+    data: GroupTierRequirementSet;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type GroupTierSettings = {
+    allow_transactions?: boolean;
+    allow_debit_transactions?: boolean;
+    allow_credit_transactions?: boolean;
+    disallowed_transaction_subtypes: Array<GroupTierDisallowedTransactionSubtype>;
+};
+
+export type Jwt = {
+    readonly token: string;
+};
+
+export type JwtResponse = {
+    status: string;
+    data: Jwt;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type LegalTerm = {
+    readonly id: number;
+    /**
+     * * `system` - System
+     * * `company` - Company
+     */
+    type: 'system' | 'company';
+    readonly name: string;
+    readonly description: string | null;
+    readonly versions: Array<ReducedLegalTermVersion>;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type LegalTermResponse = {
+    status: string;
+    data: LegalTerm;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type LegalTermVersion = {
+    readonly id: number;
+    readonly version: number;
+    readonly accepted: boolean;
+    readonly accepted_date: number;
+    readonly note: string | null;
+    readonly content: string | null;
+    readonly url: string | null;
+    readonly urls: Array<{
+        [key: string]: unknown;
+    }> | null;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type LegalTermVersionResponse = {
+    status: string;
+    data: LegalTermVersion;
+};
+
+export type LoginRequest = {
+    user: string;
+    company: string;
+    password: string;
+    /**
+     * * `cookie` - Cookie
+     * * `token` - Token
+     */
+    auth_method?: 'cookie' | 'token';
+};
+
+export type LogoutRequest = {
+    /**
+     * * `all` - All
+     * * `temporary` - Temporary
+     * * `none` - None
+     */
+    clear_session_option?: 'all' | 'temporary' | 'none';
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type MfaAuthenticator = {
+    readonly id: string;
+    /**
+     * * `totp` - Totp
+     * * `sms` - Sms
+     * * `static` - Static
+     */
+    type: 'totp' | 'sms' | 'static';
+    details: MfaDeviceDetail;
+    readonly verified: boolean;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type MfaAuthenticatorResponse = {
+    status: string;
+    data: MfaAuthenticator;
+};
+
+export type MfaDeliverRequest = {
+    challenge?: string;
+    authenticator?: string;
+};
+
+export type MfaDeviceDetail = MfatotpDeviceDetail | MfaTwilioDeviceDetail | MfaStaticDeviceDetail;
+
+export type MfaStaticDeviceDetail = {
+    name?: string;
+    readonly tokens: Array<MfaStaticDeviceToken>;
+};
+
+export type MfaStaticDeviceToken = {
+    readonly token: string;
+    readonly available: boolean;
+};
+
+export type MfatotpDeviceDetail = {
+    name?: string;
+    /**
+     * * `SHA1` - SHA1
+     * * `SHA256` - SHA256
+     * * `SHA512` - SHA512
+     */
+    algorithm: 'SHA1' | 'SHA256' | 'SHA512';
+    readonly otpauth_url: string;
+    readonly issuer: string;
+    readonly account: string;
+    readonly key: string;
+};
+
+export type MfaTwilioDeviceDetail = {
+    name?: string;
+    mobile: string;
+};
+
+export type MfaVerifyRequest = {
+    token: string;
+    challenge?: string;
+    authenticator?: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type MaskedMfaAuthenticator = {
+    readonly id: string;
+    /**
+     * * `totp` - Totp
+     * * `sms` - Sms
+     * * `static` - Static
+     */
+    type: 'totp' | 'sms' | 'static';
+    details: MaskedMfaDeviceDetail;
+    readonly verified: boolean;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type MaskedMfaAuthenticatorResponse = {
+    status: string;
+    data: MaskedMfaAuthenticator;
+};
+
+export type MaskedMfaDeviceDetail = MaskedMfatotpDeviceDetail | MaskedMfaTwilioDeviceDetail | MaskedMfaStaticDeviceDetail;
+
+export type MaskedMfaStaticDeviceDetail = {
+    name?: string;
+    readonly tokens: Array<MaskedMfaStaticDeviceToken>;
+};
+
+export type MaskedMfaStaticDeviceToken = {
+    readonly token: string;
+    readonly available: boolean;
+};
+
+export type MaskedMfatotpDeviceDetail = {
+    name?: string;
+    /**
+     * * `SHA1` - SHA1
+     * * `SHA256` - SHA256
+     * * `SHA512` - SHA512
+     */
+    algorithm: 'SHA1' | 'SHA256' | 'SHA512';
+    readonly otpauth_url: string;
+    readonly issuer: string;
+    readonly account: string;
+    readonly key: string;
+};
+
+export type MaskedMfaTwilioDeviceDetail = {
+    name?: string;
+    mobile: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type Metric = {
+    readonly id: string;
+    readonly name: string | null;
+    readonly slug: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    /**
+     * * `account_count` - Account Count
+     * * `transaction_count` - Transaction Count
+     * * `transaction_complete_count` - Transaction Complete Count
+     * * `transaction_failed_count` - Transaction Failed Count
+     * * `transaction_pending_count` - Transaction Pending Count
+     * * `transaction_complete_sum` - Transaction Complete Sum
+     * * `transaction_failed_sum` - Transaction Failed Sum
+     * * `transaction_pending_sum` - Transaction Pending Sum
+     * * `transaction_balance_sum` - Transaction Balance Sum
+     * * `transaction_available_balance_sum` - Transaction Available Balance Sum
+     * * `user_count` - User Count
+     * * `user_active_count` - User Active Count
+     * * `user_transacted_in_30days_count` - User Transacted In 30Days Count
+     */
+    type: 'account_count' | 'transaction_count' | 'transaction_complete_count' | 'transaction_failed_count' | 'transaction_pending_count' | 'transaction_complete_sum' | 'transaction_failed_sum' | 'transaction_pending_sum' | 'transaction_balance_sum' | 'transaction_available_balance_sum' | 'user_count' | 'user_active_count' | 'user_transacted_in_30days_count';
+    currency: ReducedAsset;
+    readonly timezone: string;
+    readonly query: {
+        [key: string]: unknown;
+    };
+    /**
+     * * `accumulate` - Accumulate
+     * * `set` - Set
+     */
+    method: 'accumulate' | 'set';
+    readonly created: number;
+    readonly updated: number;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type MetricPoint = {
+    readonly id: number;
+    readonly value: number;
+    readonly date: number;
+};
+
+export type MetricResponse = {
+    status: string;
+    data: Metric;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type Mobile = {
+    readonly id: number;
+    readonly number: string;
     primary?: boolean;
-    readonly verified?: boolean;
-    readonly created?: number;
-    readonly updated?: number;
+    readonly verified: boolean;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type MobileList = Array<Mobile>;
+
+export type MobileListResponse = {
+    status: string;
+    data: MobileList;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type MobileRequest = {
+    primary?: boolean;
+};
+
+export type MobileResponse = {
+    status: string;
+    data: Mobile;
+};
+
+export type MultiTransaction = {
+    transactions: Array<Transaction>;
+};
+
+export type MultiTransactionResponse = {
+    status: string;
+    data: MultiTransaction;
+};
+
+export type OauthAuthorize = {
+    session: string;
+    readonly url: string;
+};
+
+export type OauthAuthorizeRequest = {
+    session: string;
+};
+
+export type OauthAuthorizeResponse = {
+    status: string;
+    data: OauthAuthorize;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type OauthClient = {
+    readonly id: string;
+    /**
+     * * `apple` - Apple
+     * * `google` - Google
+     */
+    provider: 'apple' | 'google';
+    readonly application: string;
+    readonly client_id: string;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type OauthClientResponse = {
+    status: string;
+    data: OauthClient;
+};
+
+export type OauthLoginRequest = {
+    session: string;
+    /**
+     * * `cookie` - Cookie
+     * * `token` - Token
+     */
+    auth_method?: 'cookie' | 'token';
+};
+
+export type OauthRegisterRequest = {
+    session: string;
+    terms_and_conditions?: boolean;
+    privacy_policy?: boolean;
+    /**
+     * * `cookie` - Cookie
+     * * `token` - Token
+     */
+    auth_method?: 'cookie' | 'token';
+};
+
+export type OauthSession = {
+    readonly session: string;
+};
+
+export type OauthSessionRequest = {
+    client: string;
+};
+
+export type OauthSessionResponse = {
+    status: string;
+    data: OauthSession;
+};
+
+export type OauthVerify = {
+    session?: string;
+    readonly user_exists: boolean;
+};
+
+export type OauthVerifyRequest = {
+    session?: string;
+};
+
+export type OauthVerifyResponse = {
+    status: string;
+    data: OauthVerify;
+};
+
+export type PaginatedAccountAccountAssetList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AccountAccountAsset>;
+};
+
+export type PaginatedAccountAccountAssetListResponse = {
+    status: string;
+    data: PaginatedAccountAccountAssetList;
+};
+
+export type PaginatedAccountAssetFeeList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AccountAssetFee>;
+};
+
+export type PaginatedAccountAssetFeeListResponse = {
+    status: string;
+    data: PaginatedAccountAssetFeeList;
+};
+
+export type PaginatedAccountAssetLimitList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AccountAssetLimit>;
+};
+
+export type PaginatedAccountAssetLimitListResponse = {
+    status: string;
+    data: PaginatedAccountAssetLimitList;
+};
+
+export type PaginatedAccountAssetList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AccountAsset>;
+};
+
+export type PaginatedAccountAssetListResponse = {
+    status: string;
+    data: PaginatedAccountAssetList;
+};
+
+export type PaginatedAccountDefinitionList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AccountDefinition>;
+};
+
+export type PaginatedAccountDefinitionListResponse = {
+    status: string;
+    data: PaginatedAccountDefinitionList;
+};
+
+export type PaginatedAccountList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<Account>;
+};
+
+export type PaginatedAccountListResponse = {
+    status: string;
+    data: PaginatedAccountList;
+};
+
+export type PaginatedAssetList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<Asset>;
+};
+
+export type PaginatedAssetListResponse = {
+    status: string;
+    data: PaginatedAssetList;
+};
+
+export type PaginatedCompanyBankAccountList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<CompanyBankAccount>;
+};
+
+export type PaginatedCompanyBankAccountListResponse = {
+    status: string;
+    data: PaginatedCompanyBankAccountList;
+};
+
+export type PaginatedCompanyWalletAccountList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<CompanyWalletAccount>;
+};
+
+export type PaginatedCompanyWalletAccountListResponse = {
+    status: string;
+    data: PaginatedCompanyWalletAccountList;
+};
+
+export type PaginatedDeviceAppList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<DeviceApp>;
+};
+
+export type PaginatedDeviceAppListResponse = {
+    status: string;
+    data: PaginatedDeviceAppList;
+};
+
+export type PaginatedDocumentTypeList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<DocumentType>;
+};
+
+export type PaginatedDocumentTypeListResponse = {
+    status: string;
+    data: PaginatedDocumentTypeList;
+};
+
+export type PaginatedExportList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<Export>;
+};
+
+export type PaginatedExportListResponse = {
+    status: string;
+    data: PaginatedExportList;
+};
+
+export type PaginatedGroupFeeList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<GroupFee>;
+};
+
+export type PaginatedGroupFeeListResponse = {
+    status: string;
+    data: PaginatedGroupFeeList;
+};
+
+export type PaginatedGroupLimitList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<GroupLimit>;
+};
+
+export type PaginatedGroupLimitListResponse = {
+    status: string;
+    data: PaginatedGroupLimitList;
+};
+
+export type PaginatedGroupPermissionList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<GroupPermission>;
+};
+
+export type PaginatedGroupPermissionListResponse = {
+    status: string;
+    data: PaginatedGroupPermissionList;
+};
+
+export type PaginatedGroupTierFeeList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<GroupTierFee>;
+};
+
+export type PaginatedGroupTierFeeListResponse = {
+    status: string;
+    data: PaginatedGroupTierFeeList;
+};
+
+export type PaginatedGroupTierLimitList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<GroupTierLimit>;
+};
+
+export type PaginatedGroupTierLimitListResponse = {
+    status: string;
+    data: PaginatedGroupTierLimitList;
+};
+
+export type PaginatedGroupTierList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<GroupTier>;
+};
+
+export type PaginatedGroupTierListResponse = {
+    status: string;
+    data: PaginatedGroupTierList;
+};
+
+export type PaginatedGroupTierRequirementSetItemList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<GroupTierRequirementSetItem>;
+};
+
+export type PaginatedGroupTierRequirementSetItemListResponse = {
+    status: string;
+    data: PaginatedGroupTierRequirementSetItemList;
+};
+
+export type PaginatedGroupTierRequirementSetList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<GroupTierRequirementSet>;
+};
+
+export type PaginatedGroupTierRequirementSetListResponse = {
+    status: string;
+    data: PaginatedGroupTierRequirementSetList;
+};
+
+export type PaginatedLegalTermList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<LegalTerm>;
+};
+
+export type PaginatedLegalTermListResponse = {
+    status: string;
+    data: PaginatedLegalTermList;
+};
+
+export type PaginatedLegalTermVersionList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<LegalTermVersion>;
+};
+
+export type PaginatedLegalTermVersionListResponse = {
+    status: string;
+    data: PaginatedLegalTermVersionList;
+};
+
+export type PaginatedMaskedMfaAuthenticatorList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<MaskedMfaAuthenticator>;
+};
+
+export type PaginatedMaskedMfaAuthenticatorListResponse = {
+    status: string;
+    data: PaginatedMaskedMfaAuthenticatorList;
+};
+
+export type PaginatedMetricList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<Metric>;
+};
+
+export type PaginatedMetricListResponse = {
+    status: string;
+    data: PaginatedMetricList;
+};
+
+export type PaginatedMetricPointList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<MetricPoint>;
+};
+
+export type PaginatedMetricPointListResponse = {
+    status: string;
+    data: PaginatedMetricPointList;
+};
+
+export type PaginatedOauthClientList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<OauthClient>;
+};
+
+export type PaginatedOauthClientListResponse = {
+    status: string;
+    data: PaginatedOauthClientList;
+};
+
+export type PaginatedPublicCompanyLegalTermList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<PublicCompanyLegalTerm>;
+};
+
+export type PaginatedPublicCompanyLegalTermListResponse = {
+    status: string;
+    data: PaginatedPublicCompanyLegalTermList;
+};
+
+export type PaginatedPublicCompanyLegalTermVersionList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<PublicCompanyLegalTermVersion>;
+};
+
+export type PaginatedPublicCompanyLegalTermVersionListResponse = {
+    status: string;
+    data: PaginatedPublicCompanyLegalTermVersionList;
+};
+
+export type PaginatedPublicCompanyList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<PublicCompany>;
+};
+
+export type PaginatedPublicCompanyListResponse = {
+    status: string;
+    data: PaginatedPublicCompanyList;
+};
+
+export type PaginatedPublicGroupList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<PublicGroup>;
+};
+
+export type PaginatedPublicGroupListResponse = {
+    status: string;
+    data: PaginatedPublicGroupList;
+};
+
+export type PaginatedPublicLegalTermList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<PublicLegalTerm>;
+};
+
+export type PaginatedPublicLegalTermListResponse = {
+    status: string;
+    data: PaginatedPublicLegalTermList;
+};
+
+export type PaginatedPublicLegalTermVersionList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<PublicLegalTermVersion>;
+};
+
+export type PaginatedPublicLegalTermVersionListResponse = {
+    status: string;
+    data: PaginatedPublicLegalTermVersionList;
+};
+
+export type PaginatedStatementList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<Statement>;
+};
+
+export type PaginatedStatementListResponse = {
+    status: string;
+    data: PaginatedStatementList;
+};
+
+export type PaginatedTransactionCollectionList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<TransactionCollection>;
+};
+
+export type PaginatedTransactionCollectionListResponse = {
+    status: string;
+    data: PaginatedTransactionCollectionList;
+};
+
+export type PaginatedTransactionList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<Transaction>;
+};
+
+export type PaginatedTransactionListResponse = {
+    status: string;
+    data: PaginatedTransactionList;
+};
+
+export type PaginatedTransactionMessageList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<TransactionMessage>;
+};
+
+export type PaginatedTransactionMessageListResponse = {
+    status: string;
+    data: PaginatedTransactionMessageList;
+};
+
+export type PaginatedUserDocumentList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<UserDocument>;
+};
+
+export type PaginatedUserDocumentListResponse = {
+    status: string;
+    data: PaginatedUserDocumentList;
+};
+
+export type PaginatedUserGroupList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<UserGroup>;
+};
+
+export type PaginatedUserGroupListResponse = {
+    status: string;
+    data: PaginatedUserGroupList;
+};
+
+export type PaginatedUserMessageList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<UserMessage>;
+};
+
+export type PaginatedUserMessageListResponse = {
+    status: string;
+    data: PaginatedUserMessageList;
+};
+
+export type PaginatedUserPermissionList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<UserPermission>;
+};
+
+export type PaginatedUserPermissionListResponse = {
+    status: string;
+    data: PaginatedUserPermissionList;
+};
+
+export type PaginatedUserWalletAccountAssetList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<UserWalletAccountAsset>;
+};
+
+export type PaginatedUserWalletAccountAssetListResponse = {
+    status: string;
+    data: PaginatedUserWalletAccountAssetList;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type PartnerTransaction = {
+    readonly id: string;
+    user: PartnerUserInfo;
+};
+
+/**
+ * A condensed user serializer showing only the necessary user information to
+ * identify a partner user (without exposing any extra).
+ *
+ * This only works when a transaction instance is sent to it.
+ */
+export type PartnerUserInfo = {
+    readonly id: string;
+    readonly identifier: string;
+    readonly username: string;
+    readonly first_name: string;
+    readonly middle_name: string;
+    readonly last_name: string;
+    readonly profile: string | null;
+    readonly temporary: boolean;
+};
+
+export type PasswordChangeRequest = {
+    old_password: string;
+    /**
+     * * `all` - All
+     * * `temporary` - Temporary
+     * * `none` - None
+     */
+    clear_session_option?: 'all' | 'temporary' | 'none';
+};
+
+/**
+ * Serializer for confirming a password reset attempt.
+ */
+export type PasswordResetConfirmRequest = {
+    uid: string;
+    token: string;
+    /**
+     * * `all` - All
+     * * `temporary` - Temporary
+     * * `none` - None
+     */
+    clear_session_option?: 'all' | 'temporary' | 'none';
+};
+
+/**
+ * Serializer for requesting a password reset e-mail.
+ */
+export type PasswordResetRequest = {
+    force?: boolean;
+    user: string;
+    company: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type PatchedAccountAccountAssetRequest = {
+    active?: boolean;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type PatchedCryptoAccountRequest = {
+    address?: string;
+    name?: string | null;
+    /**
+     * * `bitcoin` - Bitcoin
+     * * `ethereum` - Ethereum
+     * * `stellar` - Stellar
+     * * `other` - Other
+     */
+    crypto_type?: 'bitcoin' | 'ethereum' | 'stellar' | 'other';
+    /**
+     * * `testnet` - Testnet
+     * * `mainnet` - Mainnet
+     */
+    network?: 'testnet' | 'mainnet';
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type PatchedDeviceAppRequest = {
+    name?: string | null;
+    /**
+     * * `expo` - Expo
+     */
+    type?: 'expo';
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type PatchedDeviceRequest = {
+    name?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type PatchedEmailRequest = {
+    primary?: boolean;
+};
+
+/**
+ * Extended user information shown based on the default user info serializer.
+ * Contain additional information about user permissions and settings.
+ */
+export type PatchedExtendedUserInfoRequest = {
+    username?: string | null;
+    first_name?: string | null;
+    middle_name?: string | null;
+    last_name?: string | null;
+    profile?: Blob | File | null;
+    id_number?: string | null;
+    birth_date?: string | null;
+    language?: string;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    nationality?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    /**
+     * * `male` - Male
+     * * `female` - Female
+     * * `other` - Other
+     * * `not_specified` - Not Specified
+     */
+    gender?: 'male' | 'female' | 'other' | 'not_specified' | null;
+    /**
+     * * `mr` - Mr
+     * * `mrs` - Mrs
+     * * `ms` - Ms
+     * * `mx` - Mx
+     */
+    title?: 'mr' | 'mrs' | 'ms' | 'mx' | null;
+    /**
+     * * `single` - Single
+     * * `married` - Married
+     * * `divorced` - Divorced
+     * * `widowed` - Widowed
+     */
+    marital_status?: 'single' | 'married' | 'divorced' | 'widowed' | null;
+    fathers_name?: string | null;
+    mothers_name?: string | null;
+    grandfathers_name?: string | null;
+    grandmothers_name?: string | null;
+    central_bank_number?: string | null;
+    timezone?: string | null;
+    website?: string | null;
+    business_name?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type PatchedMobileRequest = {
+    primary?: boolean;
 };
 
 /**
@@ -5541,45 +6441,12 @@ export type PatchedMobile = {
  * - The class this mixin is attached to must have a Meta.model defined.
  * - The Meta.model class must have a PERMISSION_TYPE defined.
  */
-export type PatchedUpdateExtendedTransaction = {
-    readonly id?: string;
-    readonly collection?: string;
-    readonly parent?: string | null;
-    partner?: PartnerTransaction | null;
-    readonly index?: number;
-    /**
-     * * `credit` - Credit
-     * * `debit` - Debit
-     */
-    tx_type?: 'credit' | 'debit';
-    readonly subtype?: string | null;
-    readonly note?: string;
-    readonly metadata?: {
-        [key: string]: unknown;
-    } | null;
+export type PatchedUpdateExtendedTransactionRequest = {
     /**
      * * `Quoted` - Quoted
      * * `Pending` - Pending
      */
     status?: 'Quoted' | 'Pending';
-    readonly reference?: string | null;
-    readonly amount?: number;
-    readonly fee?: number;
-    readonly total_amount?: number;
-    readonly balance?: number;
-    readonly label?: string;
-    readonly account?: string;
-    currency?: ReducedAsset;
-    account_currency?: TransactionAccountAsset;
-    /**
-     * @deprecated
-     */
-    readonly fees?: Array<TransactionFee>;
-    readonly inclusive?: boolean;
-    readonly executed?: number | null;
-    readonly expires?: number;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -5588,18 +6455,8 @@ export type PatchedUpdateExtendedTransaction = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedUpdateLegalTermVersion = {
-    readonly id?: number;
-    readonly version?: number;
+export type PatchedUpdateLegalTermVersionRequest = {
     accepted?: boolean;
-    readonly note?: string | null;
-    readonly content?: string | null;
-    readonly url?: string | null;
-    readonly urls?: Array<{
-        [key: string]: unknown;
-    }> | null;
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -5608,8 +6465,7 @@ export type PatchedUpdateLegalTermVersion = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedUserAddress = {
-    readonly id?: number;
+export type PatchedUserAddressRequest = {
     /**
      * * `permanent` - Permanent
      * * `contact` - Contact
@@ -5875,16 +6731,6 @@ export type PatchedUserAddress = {
      */
     country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
     postal_code?: string | null;
-    /**
-     * * `obsolete` - Obsolete
-     * * `declined` - Declined
-     * * `pending` - Pending
-     * * `incomplete` - Incomplete
-     * * `verified` - Verified
-     */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -5893,8 +6739,7 @@ export type PatchedUserAddress = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedUserBankAccount = {
-    readonly id?: number;
+export type PatchedUserBankAccountRequest = {
     name?: string | null;
     number?: string | null;
     type?: string | null;
@@ -5903,12 +6748,12 @@ export type PatchedUserBankAccount = {
      * * `business` - Business
      */
     beneficiary_type?: 'individual' | 'business' | null;
-    owner?: BankOwner | null;
+    owner?: BankOwnerRequest | null;
     bank_name?: string | null;
     bank_code?: string | null;
     bank_currency?: string | null;
     branch_code?: string | null;
-    branch_address?: UserBankBranchAddress;
+    branch_address?: UserBankBranchAddressRequest;
     branch_address_text?: string | null;
     routing_number?: string | null;
     swift?: string | null;
@@ -5918,27 +6763,9 @@ export type PatchedUserBankAccount = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
-    readonly code?: string | null;
     metadata?: {
         [key: string]: unknown;
     } | null;
-    /**
-     * * `obsolete` - Obsolete
-     * * `declined` - Declined
-     * * `pending` - Pending
-     * * `incomplete` - Incomplete
-     * * `verified` - Verified
-     */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
-    readonly currencies?: Array<ReducedAsset>;
-    readonly account_currencies?: Array<ReducedAccountAsset>;
-    /**
-     * * `withdraw` - Withdraw
-     * * `deposit` - Deposit
-     */
-    action?: 'withdraw' | 'deposit';
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -5947,13 +6774,11 @@ export type PatchedUserBankAccount = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedUserWalletAccount = {
-    readonly id?: number;
+export type PatchedUserWalletAccountRequest = {
     username?: string | null;
     email?: string | null;
     mobile?: string | null;
     name?: string | null;
-    readonly code?: string | null;
     /**
      * * `paypal` - Paypal
      * * `venmo` - Venmo
@@ -5964,23 +6789,6 @@ export type PatchedUserWalletAccount = {
     metadata?: {
         [key: string]: unknown;
     } | null;
-    /**
-     * * `obsolete` - Obsolete
-     * * `declined` - Declined
-     * * `pending` - Pending
-     * * `incomplete` - Incomplete
-     * * `verified` - Verified
-     */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
-    readonly currencies?: Array<ReducedAsset>;
-    readonly account_currencies?: Array<ReducedAccountAsset>;
-    /**
-     * * `withdraw` - Withdraw
-     * * `deposit` - Deposit
-     */
-    action?: 'withdraw' | 'deposit';
-    readonly created?: number;
-    readonly updated?: number;
 };
 
 /**
@@ -6482,6 +7290,16 @@ export type ReducedAccountAccountAsset = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
+export type ReducedAccountAccountAssetRequest = {
+    active: boolean;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
 export type ReducedAccountAsset = {
     readonly id: string;
     readonly balance: number;
@@ -6498,6 +7316,16 @@ export type ReducedAccountAssetListResponse = {
     data: ReducedAccountAssetList;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type ReducedAccountAssetRequest = {
+    active: boolean;
+};
+
 export type ReducedAccountAssetResponse = {
     status: string;
     data: ReducedAccountAsset;
@@ -6511,6 +7339,17 @@ export type ReducedAccountAssetResponse = {
  */
 export type ReducedAccountDefinition = {
     name: string;
+    label?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type ReducedAccountRequest = {
+    name?: string;
     label?: string | null;
 };
 
@@ -6536,6 +7375,22 @@ export type ReducedAsset = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
+export type ReducedAssetRequest = {
+    code?: string | null;
+    display_code?: string | null;
+    description?: string | null;
+    symbol?: string | null;
+    unit?: string | null;
+    divisibility?: number;
+    icon: Blob | File | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
 export type ReducedDeviceApp = {
     readonly id: number;
     name?: string | null;
@@ -6544,6 +7399,20 @@ export type ReducedDeviceApp = {
      */
     type: 'expo';
     readonly token: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type ReducedDeviceAppRequest = {
+    name?: string | null;
+    /**
+     * * `expo` - Expo
+     */
+    type: 'expo';
 };
 
 /**
@@ -6565,6 +7434,23 @@ export type ReducedDocumentType = {
  * values with complex, nested serializations
  */
 export type ReducedGroup = {
+    name: string;
+    label?: string | null;
+    /**
+     * * `system` - System
+     * * `admin` - Admin
+     * * `user` - User
+     */
+    section: 'system' | 'admin' | 'user';
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type ReducedGroupRequest = {
     name: string;
     label?: string | null;
     /**
@@ -6634,24 +7520,25 @@ export type ReducedTransactionSubtype = {
     tx_type: 'credit' | 'debit';
 };
 
+export type ReducedTransactionSubtypeRequest = {
+    name: string;
+    label?: string | null;
+    /**
+     * * `credit` - Credit
+     * * `debit` - Debit
+     */
+    tx_type: 'credit' | 'debit';
+};
+
 /**
  * A condensed user serializer showing only the necessary user information
  * in order to identifiy the user.
  */
-export type ReducedUserInfo = {
-    readonly id: string;
-    readonly username: string | null;
-    readonly email: string | null;
-    readonly mobile: string | null;
-    readonly first_name: string | null;
-    readonly middle_name: string | null;
-    readonly last_name: string | null;
-    profile?: string | null;
-    readonly groups: Array<ReducedGroup>;
-    readonly temporary: boolean | null;
+export type ReducedUserInfoRequest = {
+    profile?: Blob | File | null;
 };
 
-export type Refresh = {
+export type RefreshRequest = {
     session_duration?: number | null;
 };
 
@@ -6669,7 +7556,553 @@ export type RefreshedResponse = {
     data: Refreshed;
 };
 
-export type Register = {
+/**
+ * Override company validation on the register serializer.
+ */
+export type RegisterCompanyRequest = {
+    username?: string;
+    email?: string;
+    mobile?: string;
+    company: CreateCompanyRequest;
+    id_number?: string | null;
+    birth_date?: string | null;
+    language?: string;
+    /**
+     * * `male` - Male
+     * * `female` - Female
+     * * `other` - Other
+     * * `not_specified` - Not Specified
+     */
+    gender?: 'male' | 'female' | 'other' | 'not_specified' | null;
+    /**
+     * * `mr` - Mr
+     * * `mrs` - Mrs
+     * * `ms` - Ms
+     * * `mx` - Mx
+     */
+    title?: 'mr' | 'mrs' | 'ms' | 'mx' | null;
+    /**
+     * * `single` - Single
+     * * `married` - Married
+     * * `divorced` - Divorced
+     * * `widowed` - Widowed
+     */
+    marital_status?: 'single' | 'married' | 'divorced' | 'widowed' | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    nationality?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    timezone?: string | null;
+    terms_and_conditions?: boolean;
+    privacy_policy?: boolean;
+    /**
+     * * `cookie` - Cookie
+     * * `token` - Token
+     */
+    auth_method?: 'cookie' | 'token';
+};
+
+export type RegisterRequest = {
     username?: string;
     email?: string;
     mobile?: string;
@@ -7212,563 +8645,17 @@ export type Register = {
     auth_method?: 'cookie' | 'token';
 };
 
-/**
- * Override company validation on the register serializer.
- */
-export type RegisterCompany = {
-    username?: string;
-    email?: string;
-    mobile?: string;
-    company: CreateCompany;
-    id_number?: string | null;
-    birth_date?: string | null;
-    language?: string;
-    /**
-     * * `male` - Male
-     * * `female` - Female
-     * * `other` - Other
-     * * `not_specified` - Not Specified
-     */
-    gender?: 'male' | 'female' | 'other' | 'not_specified' | null;
-    /**
-     * * `mr` - Mr
-     * * `mrs` - Mrs
-     * * `ms` - Ms
-     * * `mx` - Mx
-     */
-    title?: 'mr' | 'mrs' | 'ms' | 'mx' | null;
-    /**
-     * * `single` - Single
-     * * `married` - Married
-     * * `divorced` - Divorced
-     * * `widowed` - Widowed
-     */
-    marital_status?: 'single' | 'married' | 'divorced' | 'widowed' | null;
-    /**
-     * * `AF` - Afghanistan
-     * * `AX` - Åland Islands
-     * * `AL` - Albania
-     * * `DZ` - Algeria
-     * * `AS` - American Samoa
-     * * `AD` - Andorra
-     * * `AO` - Angola
-     * * `AI` - Anguilla
-     * * `AQ` - Antarctica
-     * * `AG` - Antigua and Barbuda
-     * * `AR` - Argentina
-     * * `AM` - Armenia
-     * * `AW` - Aruba
-     * * `AU` - Australia
-     * * `AT` - Austria
-     * * `AZ` - Azerbaijan
-     * * `BS` - Bahamas
-     * * `BH` - Bahrain
-     * * `BD` - Bangladesh
-     * * `BB` - Barbados
-     * * `BY` - Belarus
-     * * `BE` - Belgium
-     * * `BZ` - Belize
-     * * `BJ` - Benin
-     * * `BM` - Bermuda
-     * * `BT` - Bhutan
-     * * `BO` - Bolivia
-     * * `BQ` - Bonaire, Sint Eustatius and Saba
-     * * `BA` - Bosnia and Herzegovina
-     * * `BW` - Botswana
-     * * `BV` - Bouvet Island
-     * * `BR` - Brazil
-     * * `IO` - British Indian Ocean Territory
-     * * `BN` - Brunei
-     * * `BG` - Bulgaria
-     * * `BF` - Burkina Faso
-     * * `BI` - Burundi
-     * * `CV` - Cabo Verde
-     * * `KH` - Cambodia
-     * * `CM` - Cameroon
-     * * `CA` - Canada
-     * * `KY` - Cayman Islands
-     * * `CF` - Central African Republic
-     * * `TD` - Chad
-     * * `CL` - Chile
-     * * `CN` - China
-     * * `CX` - Christmas Island
-     * * `CC` - Cocos (Keeling) Islands
-     * * `CO` - Colombia
-     * * `KM` - Comoros
-     * * `CG` - Congo
-     * * `CD` - Congo (the Democratic Republic of the)
-     * * `CK` - Cook Islands
-     * * `CR` - Costa Rica
-     * * `CI` - Côte d'Ivoire
-     * * `HR` - Croatia
-     * * `CU` - Cuba
-     * * `CW` - Curaçao
-     * * `CY` - Cyprus
-     * * `CZ` - Czechia
-     * * `DK` - Denmark
-     * * `DJ` - Djibouti
-     * * `DM` - Dominica
-     * * `DO` - Dominican Republic
-     * * `EC` - Ecuador
-     * * `EG` - Egypt
-     * * `SV` - El Salvador
-     * * `GQ` - Equatorial Guinea
-     * * `ER` - Eritrea
-     * * `EE` - Estonia
-     * * `SZ` - Eswatini
-     * * `ET` - Ethiopia
-     * * `FK` - Falkland Islands (Malvinas)
-     * * `FO` - Faroe Islands
-     * * `FJ` - Fiji
-     * * `FI` - Finland
-     * * `FR` - France
-     * * `GF` - French Guiana
-     * * `PF` - French Polynesia
-     * * `TF` - French Southern Territories
-     * * `GA` - Gabon
-     * * `GM` - Gambia
-     * * `GE` - Georgia
-     * * `DE` - Germany
-     * * `GH` - Ghana
-     * * `GI` - Gibraltar
-     * * `GR` - Greece
-     * * `GL` - Greenland
-     * * `GD` - Grenada
-     * * `GP` - Guadeloupe
-     * * `GU` - Guam
-     * * `GT` - Guatemala
-     * * `GG` - Guernsey
-     * * `GN` - Guinea
-     * * `GW` - Guinea-Bissau
-     * * `GY` - Guyana
-     * * `HT` - Haiti
-     * * `HM` - Heard Island and McDonald Islands
-     * * `VA` - Holy See
-     * * `HN` - Honduras
-     * * `HK` - Hong Kong
-     * * `HU` - Hungary
-     * * `IS` - Iceland
-     * * `IN` - India
-     * * `ID` - Indonesia
-     * * `IR` - Iran
-     * * `IQ` - Iraq
-     * * `IE` - Ireland
-     * * `IM` - Isle of Man
-     * * `IL` - Israel
-     * * `IT` - Italy
-     * * `JM` - Jamaica
-     * * `JP` - Japan
-     * * `JE` - Jersey
-     * * `JO` - Jordan
-     * * `KZ` - Kazakhstan
-     * * `KE` - Kenya
-     * * `KI` - Kiribati
-     * * `KW` - Kuwait
-     * * `KG` - Kyrgyzstan
-     * * `LA` - Laos
-     * * `LV` - Latvia
-     * * `LB` - Lebanon
-     * * `LS` - Lesotho
-     * * `LR` - Liberia
-     * * `LY` - Libya
-     * * `LI` - Liechtenstein
-     * * `LT` - Lithuania
-     * * `LU` - Luxembourg
-     * * `MO` - Macao
-     * * `MG` - Madagascar
-     * * `MW` - Malawi
-     * * `MY` - Malaysia
-     * * `MV` - Maldives
-     * * `ML` - Mali
-     * * `MT` - Malta
-     * * `MH` - Marshall Islands
-     * * `MQ` - Martinique
-     * * `MR` - Mauritania
-     * * `MU` - Mauritius
-     * * `YT` - Mayotte
-     * * `MX` - Mexico
-     * * `FM` - Micronesia
-     * * `MD` - Moldova
-     * * `MC` - Monaco
-     * * `MN` - Mongolia
-     * * `ME` - Montenegro
-     * * `MS` - Montserrat
-     * * `MA` - Morocco
-     * * `MZ` - Mozambique
-     * * `MM` - Myanmar
-     * * `NA` - Namibia
-     * * `NR` - Nauru
-     * * `NP` - Nepal
-     * * `NL` - Netherlands
-     * * `NC` - New Caledonia
-     * * `NZ` - New Zealand
-     * * `NI` - Nicaragua
-     * * `NE` - Niger
-     * * `NG` - Nigeria
-     * * `NU` - Niue
-     * * `NF` - Norfolk Island
-     * * `KP` - North Korea
-     * * `MK` - North Macedonia
-     * * `MP` - Northern Mariana Islands
-     * * `NO` - Norway
-     * * `OM` - Oman
-     * * `PK` - Pakistan
-     * * `PW` - Palau
-     * * `PS` - Palestine, State of
-     * * `PA` - Panama
-     * * `PG` - Papua New Guinea
-     * * `PY` - Paraguay
-     * * `PE` - Peru
-     * * `PH` - Philippines
-     * * `PN` - Pitcairn
-     * * `PL` - Poland
-     * * `PT` - Portugal
-     * * `PR` - Puerto Rico
-     * * `QA` - Qatar
-     * * `RE` - Réunion
-     * * `RO` - Romania
-     * * `RU` - Russia
-     * * `RW` - Rwanda
-     * * `BL` - Saint Barthélemy
-     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
-     * * `KN` - Saint Kitts and Nevis
-     * * `LC` - Saint Lucia
-     * * `MF` - Saint Martin (French part)
-     * * `PM` - Saint Pierre and Miquelon
-     * * `VC` - Saint Vincent and the Grenadines
-     * * `WS` - Samoa
-     * * `SM` - San Marino
-     * * `ST` - Sao Tome and Principe
-     * * `SA` - Saudi Arabia
-     * * `SN` - Senegal
-     * * `RS` - Serbia
-     * * `SC` - Seychelles
-     * * `SL` - Sierra Leone
-     * * `SG` - Singapore
-     * * `SX` - Sint Maarten (Dutch part)
-     * * `SK` - Slovakia
-     * * `SI` - Slovenia
-     * * `SB` - Solomon Islands
-     * * `SO` - Somalia
-     * * `ZA` - South Africa
-     * * `GS` - South Georgia and the South Sandwich Islands
-     * * `KR` - South Korea
-     * * `SS` - South Sudan
-     * * `ES` - Spain
-     * * `LK` - Sri Lanka
-     * * `SD` - Sudan
-     * * `SR` - Suriname
-     * * `SJ` - Svalbard and Jan Mayen
-     * * `SE` - Sweden
-     * * `CH` - Switzerland
-     * * `SY` - Syria
-     * * `TW` - Taiwan
-     * * `TJ` - Tajikistan
-     * * `TZ` - Tanzania
-     * * `TH` - Thailand
-     * * `TL` - Timor-Leste
-     * * `TG` - Togo
-     * * `TK` - Tokelau
-     * * `TO` - Tonga
-     * * `TT` - Trinidad and Tobago
-     * * `TN` - Tunisia
-     * * `TR` - Türkiye
-     * * `TM` - Turkmenistan
-     * * `TC` - Turks and Caicos Islands
-     * * `TV` - Tuvalu
-     * * `UG` - Uganda
-     * * `UA` - Ukraine
-     * * `AE` - United Arab Emirates
-     * * `GB` - United Kingdom
-     * * `UM` - United States Minor Outlying Islands
-     * * `US` - United States of America
-     * * `UY` - Uruguay
-     * * `UZ` - Uzbekistan
-     * * `VU` - Vanuatu
-     * * `VE` - Venezuela
-     * * `VN` - Vietnam
-     * * `VG` - Virgin Islands (British)
-     * * `VI` - Virgin Islands (U.S.)
-     * * `WF` - Wallis and Futuna
-     * * `EH` - Western Sahara
-     * * `YE` - Yemen
-     * * `ZM` - Zambia
-     * * `ZW` - Zimbabwe
-     */
-    nationality?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
-    /**
-     * * `AF` - Afghanistan
-     * * `AX` - Åland Islands
-     * * `AL` - Albania
-     * * `DZ` - Algeria
-     * * `AS` - American Samoa
-     * * `AD` - Andorra
-     * * `AO` - Angola
-     * * `AI` - Anguilla
-     * * `AQ` - Antarctica
-     * * `AG` - Antigua and Barbuda
-     * * `AR` - Argentina
-     * * `AM` - Armenia
-     * * `AW` - Aruba
-     * * `AU` - Australia
-     * * `AT` - Austria
-     * * `AZ` - Azerbaijan
-     * * `BS` - Bahamas
-     * * `BH` - Bahrain
-     * * `BD` - Bangladesh
-     * * `BB` - Barbados
-     * * `BY` - Belarus
-     * * `BE` - Belgium
-     * * `BZ` - Belize
-     * * `BJ` - Benin
-     * * `BM` - Bermuda
-     * * `BT` - Bhutan
-     * * `BO` - Bolivia
-     * * `BQ` - Bonaire, Sint Eustatius and Saba
-     * * `BA` - Bosnia and Herzegovina
-     * * `BW` - Botswana
-     * * `BV` - Bouvet Island
-     * * `BR` - Brazil
-     * * `IO` - British Indian Ocean Territory
-     * * `BN` - Brunei
-     * * `BG` - Bulgaria
-     * * `BF` - Burkina Faso
-     * * `BI` - Burundi
-     * * `CV` - Cabo Verde
-     * * `KH` - Cambodia
-     * * `CM` - Cameroon
-     * * `CA` - Canada
-     * * `KY` - Cayman Islands
-     * * `CF` - Central African Republic
-     * * `TD` - Chad
-     * * `CL` - Chile
-     * * `CN` - China
-     * * `CX` - Christmas Island
-     * * `CC` - Cocos (Keeling) Islands
-     * * `CO` - Colombia
-     * * `KM` - Comoros
-     * * `CG` - Congo
-     * * `CD` - Congo (the Democratic Republic of the)
-     * * `CK` - Cook Islands
-     * * `CR` - Costa Rica
-     * * `CI` - Côte d'Ivoire
-     * * `HR` - Croatia
-     * * `CU` - Cuba
-     * * `CW` - Curaçao
-     * * `CY` - Cyprus
-     * * `CZ` - Czechia
-     * * `DK` - Denmark
-     * * `DJ` - Djibouti
-     * * `DM` - Dominica
-     * * `DO` - Dominican Republic
-     * * `EC` - Ecuador
-     * * `EG` - Egypt
-     * * `SV` - El Salvador
-     * * `GQ` - Equatorial Guinea
-     * * `ER` - Eritrea
-     * * `EE` - Estonia
-     * * `SZ` - Eswatini
-     * * `ET` - Ethiopia
-     * * `FK` - Falkland Islands (Malvinas)
-     * * `FO` - Faroe Islands
-     * * `FJ` - Fiji
-     * * `FI` - Finland
-     * * `FR` - France
-     * * `GF` - French Guiana
-     * * `PF` - French Polynesia
-     * * `TF` - French Southern Territories
-     * * `GA` - Gabon
-     * * `GM` - Gambia
-     * * `GE` - Georgia
-     * * `DE` - Germany
-     * * `GH` - Ghana
-     * * `GI` - Gibraltar
-     * * `GR` - Greece
-     * * `GL` - Greenland
-     * * `GD` - Grenada
-     * * `GP` - Guadeloupe
-     * * `GU` - Guam
-     * * `GT` - Guatemala
-     * * `GG` - Guernsey
-     * * `GN` - Guinea
-     * * `GW` - Guinea-Bissau
-     * * `GY` - Guyana
-     * * `HT` - Haiti
-     * * `HM` - Heard Island and McDonald Islands
-     * * `VA` - Holy See
-     * * `HN` - Honduras
-     * * `HK` - Hong Kong
-     * * `HU` - Hungary
-     * * `IS` - Iceland
-     * * `IN` - India
-     * * `ID` - Indonesia
-     * * `IR` - Iran
-     * * `IQ` - Iraq
-     * * `IE` - Ireland
-     * * `IM` - Isle of Man
-     * * `IL` - Israel
-     * * `IT` - Italy
-     * * `JM` - Jamaica
-     * * `JP` - Japan
-     * * `JE` - Jersey
-     * * `JO` - Jordan
-     * * `KZ` - Kazakhstan
-     * * `KE` - Kenya
-     * * `KI` - Kiribati
-     * * `KW` - Kuwait
-     * * `KG` - Kyrgyzstan
-     * * `LA` - Laos
-     * * `LV` - Latvia
-     * * `LB` - Lebanon
-     * * `LS` - Lesotho
-     * * `LR` - Liberia
-     * * `LY` - Libya
-     * * `LI` - Liechtenstein
-     * * `LT` - Lithuania
-     * * `LU` - Luxembourg
-     * * `MO` - Macao
-     * * `MG` - Madagascar
-     * * `MW` - Malawi
-     * * `MY` - Malaysia
-     * * `MV` - Maldives
-     * * `ML` - Mali
-     * * `MT` - Malta
-     * * `MH` - Marshall Islands
-     * * `MQ` - Martinique
-     * * `MR` - Mauritania
-     * * `MU` - Mauritius
-     * * `YT` - Mayotte
-     * * `MX` - Mexico
-     * * `FM` - Micronesia
-     * * `MD` - Moldova
-     * * `MC` - Monaco
-     * * `MN` - Mongolia
-     * * `ME` - Montenegro
-     * * `MS` - Montserrat
-     * * `MA` - Morocco
-     * * `MZ` - Mozambique
-     * * `MM` - Myanmar
-     * * `NA` - Namibia
-     * * `NR` - Nauru
-     * * `NP` - Nepal
-     * * `NL` - Netherlands
-     * * `NC` - New Caledonia
-     * * `NZ` - New Zealand
-     * * `NI` - Nicaragua
-     * * `NE` - Niger
-     * * `NG` - Nigeria
-     * * `NU` - Niue
-     * * `NF` - Norfolk Island
-     * * `KP` - North Korea
-     * * `MK` - North Macedonia
-     * * `MP` - Northern Mariana Islands
-     * * `NO` - Norway
-     * * `OM` - Oman
-     * * `PK` - Pakistan
-     * * `PW` - Palau
-     * * `PS` - Palestine, State of
-     * * `PA` - Panama
-     * * `PG` - Papua New Guinea
-     * * `PY` - Paraguay
-     * * `PE` - Peru
-     * * `PH` - Philippines
-     * * `PN` - Pitcairn
-     * * `PL` - Poland
-     * * `PT` - Portugal
-     * * `PR` - Puerto Rico
-     * * `QA` - Qatar
-     * * `RE` - Réunion
-     * * `RO` - Romania
-     * * `RU` - Russia
-     * * `RW` - Rwanda
-     * * `BL` - Saint Barthélemy
-     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
-     * * `KN` - Saint Kitts and Nevis
-     * * `LC` - Saint Lucia
-     * * `MF` - Saint Martin (French part)
-     * * `PM` - Saint Pierre and Miquelon
-     * * `VC` - Saint Vincent and the Grenadines
-     * * `WS` - Samoa
-     * * `SM` - San Marino
-     * * `ST` - Sao Tome and Principe
-     * * `SA` - Saudi Arabia
-     * * `SN` - Senegal
-     * * `RS` - Serbia
-     * * `SC` - Seychelles
-     * * `SL` - Sierra Leone
-     * * `SG` - Singapore
-     * * `SX` - Sint Maarten (Dutch part)
-     * * `SK` - Slovakia
-     * * `SI` - Slovenia
-     * * `SB` - Solomon Islands
-     * * `SO` - Somalia
-     * * `ZA` - South Africa
-     * * `GS` - South Georgia and the South Sandwich Islands
-     * * `KR` - South Korea
-     * * `SS` - South Sudan
-     * * `ES` - Spain
-     * * `LK` - Sri Lanka
-     * * `SD` - Sudan
-     * * `SR` - Suriname
-     * * `SJ` - Svalbard and Jan Mayen
-     * * `SE` - Sweden
-     * * `CH` - Switzerland
-     * * `SY` - Syria
-     * * `TW` - Taiwan
-     * * `TJ` - Tajikistan
-     * * `TZ` - Tanzania
-     * * `TH` - Thailand
-     * * `TL` - Timor-Leste
-     * * `TG` - Togo
-     * * `TK` - Tokelau
-     * * `TO` - Tonga
-     * * `TT` - Trinidad and Tobago
-     * * `TN` - Tunisia
-     * * `TR` - Türkiye
-     * * `TM` - Turkmenistan
-     * * `TC` - Turks and Caicos Islands
-     * * `TV` - Tuvalu
-     * * `UG` - Uganda
-     * * `UA` - Ukraine
-     * * `AE` - United Arab Emirates
-     * * `GB` - United Kingdom
-     * * `UM` - United States Minor Outlying Islands
-     * * `US` - United States of America
-     * * `UY` - Uruguay
-     * * `UZ` - Uzbekistan
-     * * `VU` - Vanuatu
-     * * `VE` - Venezuela
-     * * `VN` - Vietnam
-     * * `VG` - Virgin Islands (British)
-     * * `VI` - Virgin Islands (U.S.)
-     * * `WF` - Wallis and Futuna
-     * * `EH` - Western Sahara
-     * * `YE` - Yemen
-     * * `ZM` - Zambia
-     * * `ZW` - Zimbabwe
-     */
-    residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
-    timezone?: string | null;
-    terms_and_conditions?: boolean;
-    privacy_policy?: boolean;
-    /**
-     * * `cookie` - Cookie
-     * * `token` - Token
-     */
-    auth_method?: 'cookie' | 'token';
-};
-
-export type RequestDelete = {
+export type RequestDeleteRequest = {
     user: string;
     company: string;
 };
 
-export type ResendVerifyEmail = {
+export type ResendVerifyEmailRequest = {
     email: string;
     company: string;
 };
 
-export type ResendVerifyMobile = {
+export type ResendVerifyMobileRequest = {
     mobile: string;
     company: string;
 };
@@ -8058,45 +8945,12 @@ export type TransactionSubtypeResponse = {
  * - The class this mixin is attached to must have a Meta.model defined.
  * - The Meta.model class must have a PERMISSION_TYPE defined.
  */
-export type UpdateExtendedTransaction = {
-    readonly id: string;
-    readonly collection: string;
-    readonly parent: string | null;
-    partner: PartnerTransaction | null;
-    readonly index: number;
-    /**
-     * * `credit` - Credit
-     * * `debit` - Debit
-     */
-    tx_type: 'credit' | 'debit';
-    readonly subtype: string | null;
-    readonly note: string;
-    readonly metadata: {
-        [key: string]: unknown;
-    } | null;
+export type UpdateExtendedTransactionRequest = {
     /**
      * * `Quoted` - Quoted
      * * `Pending` - Pending
      */
     status?: 'Quoted' | 'Pending';
-    readonly reference: string | null;
-    readonly amount: number;
-    readonly fee: number;
-    readonly total_amount: number;
-    readonly balance: number;
-    readonly label: string;
-    readonly account: string;
-    currency: ReducedAsset;
-    account_currency: TransactionAccountAsset;
-    /**
-     * @deprecated
-     */
-    readonly fees: Array<TransactionFee>;
-    readonly inclusive: boolean;
-    readonly executed: number | null;
-    readonly expires: number;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -8105,18 +8959,8 @@ export type UpdateExtendedTransaction = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type UpdateLegalTermVersion = {
-    readonly id: number;
-    readonly version: number;
+export type UpdateLegalTermVersionRequest = {
     accepted: boolean;
-    readonly note: string | null;
-    readonly content: string | null;
-    readonly url: string | null;
-    readonly urls: Array<{
-        [key: string]: unknown;
-    }> | null;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -8411,6 +9255,280 @@ export type UserAddressListResponse = {
     data: UserAddressList;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type UserAddressRequest = {
+    /**
+     * * `permanent` - Permanent
+     * * `contact` - Contact
+     * * `shipping` - Shipping
+     * * `billing` - Billing
+     * * `business` - Business
+     */
+    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business';
+    line_1?: string | null;
+    line_2?: string | null;
+    city?: string | null;
+    state_province?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    postal_code?: string | null;
+};
+
 export type UserAddressResponse = {
     status: string;
     data: UserAddress;
@@ -8504,6 +9622,41 @@ export type UserBankAccountList = Array<UserBankAccount>;
 export type UserBankAccountListResponse = {
     status: string;
     data: UserBankAccountList;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type UserBankAccountRequest = {
+    name?: string | null;
+    number?: string | null;
+    type?: string | null;
+    /**
+     * * `individual` - Individual
+     * * `business` - Business
+     */
+    beneficiary_type?: 'individual' | 'business' | null;
+    owner?: BankOwnerRequest | null;
+    bank_name?: string | null;
+    bank_code?: string | null;
+    bank_currency?: string | null;
+    branch_code?: string | null;
+    branch_address?: UserBankBranchAddressRequest;
+    branch_address_text?: string | null;
+    routing_number?: string | null;
+    swift?: string | null;
+    iban?: string | null;
+    bic?: string | null;
+    clabe?: string | null;
+    check_digit?: string | null;
+    pix_key?: string | null;
+    br_code?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
 };
 
 export type UserBankAccountResponse = {
@@ -8784,8 +9937,274 @@ export type UserBankBranchAddress = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type UserCreateBankAccount = {
-    readonly id: number;
+export type UserBankBranchAddressRequest = {
+    line_1?: string | null;
+    line_2?: string | null;
+    city?: string | null;
+    state_province?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    postal_code?: string | null;
+    state_code?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type UserCreateBankAccountRequest = {
     name?: string | null;
     number?: string | null;
     type?: string | null;
@@ -8794,12 +10213,12 @@ export type UserCreateBankAccount = {
      * * `business` - Business
      */
     beneficiary_type?: 'individual' | 'business' | null;
-    owner?: BankOwner | null;
+    owner?: BankOwnerRequest | null;
     bank_name?: string | null;
     bank_code?: string | null;
     bank_currency?: string | null;
     branch_code?: string | null;
-    branch_address?: UserBankBranchAddress;
+    branch_address?: UserBankBranchAddressRequest;
     branch_address_text?: string | null;
     routing_number?: string | null;
     swift?: string | null;
@@ -8809,26 +10228,13 @@ export type UserCreateBankAccount = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
-    readonly code: string | null;
     metadata?: {
         [key: string]: unknown;
     } | null;
-    /**
-     * * `obsolete` - Obsolete
-     * * `declined` - Declined
-     * * `pending` - Pending
-     * * `incomplete` - Incomplete
-     * * `verified` - Verified
-     */
-    status: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
-    readonly currencies: Array<ReducedAsset>;
-    readonly account_currencies: Array<ReducedAccountAsset>;
     /**
      * * `withdraw` - Withdraw
      */
     action?: 'withdraw';
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -8837,24 +10243,12 @@ export type UserCreateBankAccount = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type UserCreateDocument = {
-    readonly id: number;
-    file: string;
-    /**
-     * * `obsolete` - Obsolete
-     * * `declined` - Declined
-     * * `pending` - Pending
-     * * `incomplete` - Incomplete
-     * * `verified` - Verified
-     */
-    status: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+export type UserCreateDocumentRequest = {
+    file: Blob | File;
     metadata?: {
         [key: string]: unknown;
     } | null;
-    readonly note: string | null;
     expires?: number | null;
-    readonly created: number;
-    readonly updated: number;
 };
 
 /**
@@ -8863,13 +10257,11 @@ export type UserCreateDocument = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type UserCreateWalletAccount = {
-    readonly id: number;
+export type UserCreateWalletAccountRequest = {
     username?: string | null;
     email?: string | null;
     mobile?: string | null;
     name?: string | null;
-    readonly code: string | null;
     /**
      * * `paypal` - Paypal
      * * `venmo` - Venmo
@@ -8881,26 +10273,18 @@ export type UserCreateWalletAccount = {
         [key: string]: unknown;
     } | null;
     /**
-     * * `obsolete` - Obsolete
-     * * `declined` - Declined
-     * * `pending` - Pending
-     * * `incomplete` - Incomplete
-     * * `verified` - Verified
-     */
-    status: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
-    readonly currencies: Array<ReducedAsset>;
-    readonly account_currencies: Array<ReducedAccountAsset>;
-    /**
      * * `withdraw` - Withdraw
      */
     action?: 'withdraw';
-    readonly created: number;
-    readonly updated: number;
 };
 
 export type UserDisallowedTransactionSubtype = {
     subtype: ReducedTransactionSubtype;
     currency: ReducedAsset;
+};
+
+export type UserDisallowedTransactionSubtypeRequest = {
+    subtype: ReducedTransactionSubtypeRequest;
 };
 
 /**
@@ -9066,6 +10450,19 @@ export type UserSettings = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
+export type UserSettingsRequest = {
+    allow_transactions?: boolean;
+    allow_debit_transactions?: boolean;
+    allow_credit_transactions?: boolean;
+    disallowed_transaction_subtypes: Array<UserDisallowedTransactionSubtypeRequest>;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
 export type UserVerification = {
     readonly email: boolean;
     readonly mobile: boolean;
@@ -9142,24 +10539,47 @@ export type UserWalletAccountListResponse = {
     data: UserWalletAccountList;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type UserWalletAccountRequest = {
+    username?: string | null;
+    email?: string | null;
+    mobile?: string | null;
+    name?: string | null;
+    /**
+     * * `paypal` - Paypal
+     * * `venmo` - Venmo
+     * * `other` - Other
+     */
+    type?: 'paypal' | 'venmo' | 'other';
+    wallet_currency?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
 export type UserWalletAccountResponse = {
     status: string;
     data: UserWalletAccount;
 };
 
-export type VerifyDeactivate = {
+export type VerifyDeactivateRequest = {
     key: string;
 };
 
-export type VerifyEmail = {
+export type VerifyEmailRequest = {
     key: string;
 };
 
-export type VerifyMobile = {
+export type VerifyMobileRequest = {
     otp: string;
 };
 
-export type VerifyRequestDelete = {
+export type VerifyRequestDeleteRequest = {
     key: string;
 };
 
@@ -10294,7 +11714,7 @@ export type CompanyWalletAccountWritable = {
     } | null;
 };
 
-export type CreateAccountAccountAssetWritable = {
+export type CreateAccountAccountAssetRequestWritable = {
     currency: string;
     active?: boolean;
     metadata?: {
@@ -10308,7 +11728,7 @@ export type CreateAccountAccountAssetWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateCompanyWritable = {
+export type CreateCompanyRequestWritable = {
     id: string;
     name?: string | null;
     legal_name?: string | null;
@@ -10570,8 +11990,8 @@ export type CreateCompanyWritable = {
      * * `ZW` - Zimbabwe
      */
     country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
-    logo?: string | null;
-    icon?: string | null;
+    logo?: Blob | File | null;
+    icon?: Blob | File | null;
     public?: boolean;
     metadata?: {
         [key: string]: unknown;
@@ -10595,7 +12015,7 @@ export type CreateCompanyWritable = {
  * - The class this mixin is attached to must have a Meta.model defined.
  * - The Meta.model class must have a PERMISSION_TYPE defined.
  */
-export type CreateCreditTransactionWritable = {
+export type CreateCreditTransactionRequestWritable = {
     id?: string;
     amount: number;
     currency: string;
@@ -10613,36 +12033,6 @@ export type CreateCreditTransactionWritable = {
      * * `Pending` - Pending
      */
     status?: 'Initiating' | 'Quoted' | 'Pending';
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type CreateCryptoAccountWritable = {
-    address: string;
-    name?: string | null;
-    /**
-     * * `bitcoin` - Bitcoin
-     * * `ethereum` - Ethereum
-     * * `stellar` - Stellar
-     * * `other` - Other
-     */
-    crypto_type?: 'bitcoin' | 'ethereum' | 'stellar' | 'other';
-    /**
-     * * `testnet` - Testnet
-     * * `mainnet` - Mainnet
-     */
-    network?: 'testnet' | 'mainnet';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    /**
-     * * `withdraw` - Withdraw
-     */
-    action?: 'withdraw';
 };
 
 /**
@@ -10655,7 +12045,7 @@ export type CreateCryptoAccountWritable = {
  * - The class this mixin is attached to must have a Meta.model defined.
  * - The Meta.model class must have a PERMISSION_TYPE defined.
  */
-export type CreateDebitTransactionWritable = {
+export type CreateDebitTransactionRequestWritable = {
     id?: string;
     amount: number;
     currency: string;
@@ -10681,62 +12071,7 @@ export type CreateDebitTransactionWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateDeviceWritable = {
-    imei: string;
-    name?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type CreateDeviceAppWritable = {
-    name?: string | null;
-    /**
-     * * `expo` - Expo
-     */
-    type: 'expo';
-    token?: string | null;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type CreateEmailWritable = {
-    email: string;
-    primary?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type CreateMfaAuthenticatorWritable = {
-    /**
-     * * `totp` - Totp
-     * * `sms` - Sms
-     * * `static` - Static
-     */
-    type: 'totp' | 'sms' | 'static';
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type CreateMetricWritable = {
+export type CreateMetricRequestWritable = {
     name?: string | null;
     slug?: string | null;
     /**
@@ -10770,18 +12105,8 @@ export type CreateMetricWritable = {
     } | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type CreateMobileWritable = {
-    number: string;
-};
-
-export type CreateMultiTransactionWritable = {
-    transactions: Array<ExplicitCreateTransactionWritable>;
+export type CreateMultiTransactionRequestWritable = {
+    transactions: Array<ExplicitCreateTransactionRequestWritable>;
 };
 
 /**
@@ -10790,7 +12115,7 @@ export type CreateMultiTransactionWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateStatementWritable = {
+export type CreateStatementRequestWritable = {
     account: string;
     timezone: string;
     start_date?: number | null;
@@ -10806,9 +12131,9 @@ export type CreateStatementWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type CreateTransactionCollectionWritable = {
+export type CreateTransactionCollectionRequestWritable = {
     id?: string;
-    transactions: Array<CreateTransactionCollectionTransactionWritable>;
+    transactions: Array<CreateTransactionCollectionTransactionRequestWritable>;
     /**
      * * `Initiating` - Initiating
      * * `Quoted` - Quoted
@@ -10827,7 +12152,7 @@ export type CreateTransactionCollectionWritable = {
  * - The class this mixin is attached to must have a Meta.model defined.
  * - The Meta.model class must have a PERMISSION_TYPE defined.
  */
-export type CreateTransactionCollectionTransactionWritable = {
+export type CreateTransactionCollectionTransactionRequestWritable = {
     id?: string;
     parent?: string;
     partner?: string;
@@ -11014,7 +12339,7 @@ export type EmailResponseWritable = {
  * - The class this mixin is attached to must have a Meta.model defined.
  * - The Meta.model class must have a PERMISSION_TYPE defined.
  */
-export type ExplicitCreateTransactionWritable = {
+export type ExplicitCreateTransactionRequestWritable = {
     id?: string;
     /**
      * * `credit` - Credit
@@ -11921,7 +13246,7 @@ export type LegalTermVersionResponseWritable = {
     status: string;
 };
 
-export type LoginWritable = {
+export type LoginRequestWritable = {
     user: string;
     company: string;
     password: string;
@@ -12055,7 +13380,7 @@ export type OauthClientResponseWritable = {
     status: string;
 };
 
-export type OauthLoginWritable = {
+export type OauthLoginRequestWritable = {
     session: string;
     session_duration?: number | null;
     /**
@@ -12065,7 +13390,7 @@ export type OauthLoginWritable = {
     auth_method?: 'cookie' | 'token';
 };
 
-export type OauthRegisterWritable = {
+export type OauthRegisterRequestWritable = {
     session: string;
     terms_and_conditions?: boolean;
     privacy_policy?: boolean;
@@ -12079,7 +13404,15 @@ export type OauthRegisterWritable = {
     auth_method?: 'cookie' | 'token';
 };
 
+export type OauthSessionResponseWritable = {
+    status: string;
+};
+
 export type OauthVerifyWritable = {
+    session?: string;
+};
+
+export type OauthVerifyRequestWritable = {
     uri?: string;
     code?: string;
     session?: string;
@@ -12570,7 +13903,7 @@ export type PaginatedUserWalletAccountAssetListResponseWritable = {
     data: PaginatedUserWalletAccountAssetListWritable;
 };
 
-export type PasswordChangeWritable = {
+export type PasswordChangeRequestWritable = {
     old_password: string;
     new_password?: string;
     /**
@@ -12592,7 +13925,7 @@ export type PasswordChangeWritable = {
 /**
  * Serializer for confirming a password reset attempt.
  */
-export type PasswordResetConfirmWritable = {
+export type PasswordResetConfirmRequestWritable = {
     new_password?: string;
     /**
      * @deprecated
@@ -12618,31 +13951,269 @@ export type PasswordResetConfirmWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAccountAccountAssetWritable = {
-    active?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedCryptoAccountWritable = {
-    address?: string;
+export type PublicCompanyWritable = {
     name?: string | null;
+    legal_name?: string | null;
+    description?: string | null;
+    website?: string | null;
+    support_website?: string | null;
+    documentation_website?: string | null;
+    support_email?: string | null;
+    contact_email?: string | null;
     /**
-     * * `bitcoin` - Bitcoin
-     * * `ethereum` - Ethereum
-     * * `stellar` - Stellar
-     * * `other` - Other
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
      */
-    crypto_type?: 'bitcoin' | 'ethereum' | 'stellar' | 'other';
-    /**
-     * * `testnet` - Testnet
-     * * `mainnet` - Mainnet
-     */
-    network?: 'testnet' | 'mainnet';
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    logo?: string | null;
+    icon?: string | null;
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -12654,11 +14225,23 @@ export type PatchedCryptoAccountWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedDeviceWritable = {
-    name?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+export type PublicCompanyLegalTermWritable = {
+    name: string;
+    description?: string | null;
+};
+
+export type PublicCompanyLegalTermResponseWritable = {
+    status: string;
+    data: PublicCompanyLegalTermWritable;
+};
+
+export type PublicCompanyLegalTermVersionResponseWritable = {
+    status: string;
+};
+
+export type PublicCompanyResponseWritable = {
+    status: string;
+    data: PublicCompanyWritable;
 };
 
 /**
@@ -12667,37 +14250,138 @@ export type PatchedDeviceWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedDeviceAppWritable = {
+export type PublicCompanySettingsWritable = {
+    allow_session_durations?: boolean;
+    nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type PublicLegalTermWritable = {
+    name: string;
+    description?: string | null;
+};
+
+export type PublicLegalTermResponseWritable = {
+    status: string;
+    data: PublicLegalTermWritable;
+};
+
+export type PublicLegalTermVersionResponseWritable = {
+    status: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type ReducedAccountWritable = {
+    name?: string;
+    label?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type ReducedAccountAccountAssetWritable = {
+    active: boolean;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type ReducedAccountAssetWritable = {
+    active: boolean;
+};
+
+export type ReducedAccountAssetListWritable = Array<ReducedAccountAssetWritable>;
+
+export type ReducedAccountAssetListResponseWritable = {
+    status: string;
+    data: ReducedAccountAssetListWritable;
+};
+
+export type ReducedAccountAssetResponseWritable = {
+    status: string;
+    data: ReducedAccountAssetWritable;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type ReducedDeviceAppWritable = {
     name?: string | null;
     /**
      * * `expo` - Expo
      */
-    type?: 'expo';
+    type: 'expo';
+};
+
+export type ReducedTransactionSubtypeWritable = {
+    name: string;
+    label?: string | null;
+    /**
+     * * `credit` - Credit
+     * * `debit` - Debit
+     */
+    tx_type: 'credit' | 'debit';
+};
+
+export type RefreshedResponseWritable = {
+    status: string;
 };
 
 /**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
+ * Override company validation on the register serializer.
  */
-export type PatchedEmailWritable = {
-    primary?: boolean;
-};
-
-/**
- * Extended user information shown based on the default user info serializer.
- * Contain additional information about user permissions and settings.
- */
-export type PatchedExtendedUserInfoWritable = {
-    username?: string | null;
-    first_name?: string | null;
-    middle_name?: string | null;
-    last_name?: string | null;
-    profile?: string | null;
+export type RegisterCompanyRequestWritable = {
+    first_name?: string;
+    middle_name?: string;
+    last_name?: string;
+    username?: string;
+    email?: string;
+    mobile?: string;
+    company: CreateCompanyRequestWritable;
     id_number?: string | null;
     birth_date?: string | null;
     language?: string;
+    /**
+     * * `male` - Male
+     * * `female` - Female
+     * * `other` - Other
+     * * `not_specified` - Not Specified
+     */
+    gender?: 'male' | 'female' | 'other' | 'not_specified' | null;
+    /**
+     * * `mr` - Mr
+     * * `mrs` - Mrs
+     * * `ms` - Ms
+     * * `mx` - Mx
+     */
+    title?: 'mr' | 'mrs' | 'ms' | 'mx' | null;
+    /**
+     * * `single` - Single
+     * * `married` - Married
+     * * `divorced` - Divorced
+     * * `widowed` - Widowed
+     */
+    marital_status?: 'single' | 'married' | 'divorced' | 'widowed' | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -13202,818 +14886,27 @@ export type PatchedExtendedUserInfoWritable = {
      * * `ZW` - Zimbabwe
      */
     residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
-    /**
-     * * `male` - Male
-     * * `female` - Female
-     * * `other` - Other
-     * * `not_specified` - Not Specified
-     */
-    gender?: 'male' | 'female' | 'other' | 'not_specified' | null;
-    /**
-     * * `mr` - Mr
-     * * `mrs` - Mrs
-     * * `ms` - Ms
-     * * `mx` - Mx
-     */
-    title?: 'mr' | 'mrs' | 'ms' | 'mx' | null;
-    /**
-     * * `single` - Single
-     * * `married` - Married
-     * * `divorced` - Divorced
-     * * `widowed` - Widowed
-     */
-    marital_status?: 'single' | 'married' | 'divorced' | 'widowed' | null;
-    fathers_name?: string | null;
-    mothers_name?: string | null;
-    grandfathers_name?: string | null;
-    grandmothers_name?: string | null;
-    central_bank_number?: string | null;
     timezone?: string | null;
-    website?: string | null;
-    business_name?: string | null;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedMobileWritable = {
-    primary?: boolean;
-};
-
-/**
- * A mixin that handles the application of permissions to properties on a
- * serializer using the built-in permissions system.
- *
- * NOTE : This only works if the following conditions are met:
- * - The request context must contain a user.
- * - The class this mixin is attached must be a serializer.
- * - The class this mixin is attached to must have a Meta.model defined.
- * - The Meta.model class must have a PERMISSION_TYPE defined.
- */
-export type PatchedUpdateExtendedTransactionWritable = {
+    password?: string;
     /**
-     * * `Quoted` - Quoted
-     * * `Pending` - Pending
+     * @deprecated
      */
-    status?: 'Quoted' | 'Pending';
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedUpdateLegalTermVersionWritable = {
-    accepted?: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedUserAddressWritable = {
+    password1?: string;
     /**
-     * * `permanent` - Permanent
-     * * `contact` - Contact
-     * * `shipping` - Shipping
-     * * `billing` - Billing
-     * * `business` - Business
+     * @deprecated
      */
-    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business';
-    line_1?: string | null;
-    line_2?: string | null;
-    city?: string | null;
-    state_province?: string | null;
+    password2?: string;
+    terms_and_conditions?: boolean;
+    privacy_policy?: boolean;
+    legal_term_versions?: Array<number>;
     /**
-     * * `AF` - Afghanistan
-     * * `AX` - Åland Islands
-     * * `AL` - Albania
-     * * `DZ` - Algeria
-     * * `AS` - American Samoa
-     * * `AD` - Andorra
-     * * `AO` - Angola
-     * * `AI` - Anguilla
-     * * `AQ` - Antarctica
-     * * `AG` - Antigua and Barbuda
-     * * `AR` - Argentina
-     * * `AM` - Armenia
-     * * `AW` - Aruba
-     * * `AU` - Australia
-     * * `AT` - Austria
-     * * `AZ` - Azerbaijan
-     * * `BS` - Bahamas
-     * * `BH` - Bahrain
-     * * `BD` - Bangladesh
-     * * `BB` - Barbados
-     * * `BY` - Belarus
-     * * `BE` - Belgium
-     * * `BZ` - Belize
-     * * `BJ` - Benin
-     * * `BM` - Bermuda
-     * * `BT` - Bhutan
-     * * `BO` - Bolivia
-     * * `BQ` - Bonaire, Sint Eustatius and Saba
-     * * `BA` - Bosnia and Herzegovina
-     * * `BW` - Botswana
-     * * `BV` - Bouvet Island
-     * * `BR` - Brazil
-     * * `IO` - British Indian Ocean Territory
-     * * `BN` - Brunei
-     * * `BG` - Bulgaria
-     * * `BF` - Burkina Faso
-     * * `BI` - Burundi
-     * * `CV` - Cabo Verde
-     * * `KH` - Cambodia
-     * * `CM` - Cameroon
-     * * `CA` - Canada
-     * * `KY` - Cayman Islands
-     * * `CF` - Central African Republic
-     * * `TD` - Chad
-     * * `CL` - Chile
-     * * `CN` - China
-     * * `CX` - Christmas Island
-     * * `CC` - Cocos (Keeling) Islands
-     * * `CO` - Colombia
-     * * `KM` - Comoros
-     * * `CG` - Congo
-     * * `CD` - Congo (the Democratic Republic of the)
-     * * `CK` - Cook Islands
-     * * `CR` - Costa Rica
-     * * `CI` - Côte d'Ivoire
-     * * `HR` - Croatia
-     * * `CU` - Cuba
-     * * `CW` - Curaçao
-     * * `CY` - Cyprus
-     * * `CZ` - Czechia
-     * * `DK` - Denmark
-     * * `DJ` - Djibouti
-     * * `DM` - Dominica
-     * * `DO` - Dominican Republic
-     * * `EC` - Ecuador
-     * * `EG` - Egypt
-     * * `SV` - El Salvador
-     * * `GQ` - Equatorial Guinea
-     * * `ER` - Eritrea
-     * * `EE` - Estonia
-     * * `SZ` - Eswatini
-     * * `ET` - Ethiopia
-     * * `FK` - Falkland Islands (Malvinas)
-     * * `FO` - Faroe Islands
-     * * `FJ` - Fiji
-     * * `FI` - Finland
-     * * `FR` - France
-     * * `GF` - French Guiana
-     * * `PF` - French Polynesia
-     * * `TF` - French Southern Territories
-     * * `GA` - Gabon
-     * * `GM` - Gambia
-     * * `GE` - Georgia
-     * * `DE` - Germany
-     * * `GH` - Ghana
-     * * `GI` - Gibraltar
-     * * `GR` - Greece
-     * * `GL` - Greenland
-     * * `GD` - Grenada
-     * * `GP` - Guadeloupe
-     * * `GU` - Guam
-     * * `GT` - Guatemala
-     * * `GG` - Guernsey
-     * * `GN` - Guinea
-     * * `GW` - Guinea-Bissau
-     * * `GY` - Guyana
-     * * `HT` - Haiti
-     * * `HM` - Heard Island and McDonald Islands
-     * * `VA` - Holy See
-     * * `HN` - Honduras
-     * * `HK` - Hong Kong
-     * * `HU` - Hungary
-     * * `IS` - Iceland
-     * * `IN` - India
-     * * `ID` - Indonesia
-     * * `IR` - Iran
-     * * `IQ` - Iraq
-     * * `IE` - Ireland
-     * * `IM` - Isle of Man
-     * * `IL` - Israel
-     * * `IT` - Italy
-     * * `JM` - Jamaica
-     * * `JP` - Japan
-     * * `JE` - Jersey
-     * * `JO` - Jordan
-     * * `KZ` - Kazakhstan
-     * * `KE` - Kenya
-     * * `KI` - Kiribati
-     * * `KW` - Kuwait
-     * * `KG` - Kyrgyzstan
-     * * `LA` - Laos
-     * * `LV` - Latvia
-     * * `LB` - Lebanon
-     * * `LS` - Lesotho
-     * * `LR` - Liberia
-     * * `LY` - Libya
-     * * `LI` - Liechtenstein
-     * * `LT` - Lithuania
-     * * `LU` - Luxembourg
-     * * `MO` - Macao
-     * * `MG` - Madagascar
-     * * `MW` - Malawi
-     * * `MY` - Malaysia
-     * * `MV` - Maldives
-     * * `ML` - Mali
-     * * `MT` - Malta
-     * * `MH` - Marshall Islands
-     * * `MQ` - Martinique
-     * * `MR` - Mauritania
-     * * `MU` - Mauritius
-     * * `YT` - Mayotte
-     * * `MX` - Mexico
-     * * `FM` - Micronesia
-     * * `MD` - Moldova
-     * * `MC` - Monaco
-     * * `MN` - Mongolia
-     * * `ME` - Montenegro
-     * * `MS` - Montserrat
-     * * `MA` - Morocco
-     * * `MZ` - Mozambique
-     * * `MM` - Myanmar
-     * * `NA` - Namibia
-     * * `NR` - Nauru
-     * * `NP` - Nepal
-     * * `NL` - Netherlands
-     * * `NC` - New Caledonia
-     * * `NZ` - New Zealand
-     * * `NI` - Nicaragua
-     * * `NE` - Niger
-     * * `NG` - Nigeria
-     * * `NU` - Niue
-     * * `NF` - Norfolk Island
-     * * `KP` - North Korea
-     * * `MK` - North Macedonia
-     * * `MP` - Northern Mariana Islands
-     * * `NO` - Norway
-     * * `OM` - Oman
-     * * `PK` - Pakistan
-     * * `PW` - Palau
-     * * `PS` - Palestine, State of
-     * * `PA` - Panama
-     * * `PG` - Papua New Guinea
-     * * `PY` - Paraguay
-     * * `PE` - Peru
-     * * `PH` - Philippines
-     * * `PN` - Pitcairn
-     * * `PL` - Poland
-     * * `PT` - Portugal
-     * * `PR` - Puerto Rico
-     * * `QA` - Qatar
-     * * `RE` - Réunion
-     * * `RO` - Romania
-     * * `RU` - Russia
-     * * `RW` - Rwanda
-     * * `BL` - Saint Barthélemy
-     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
-     * * `KN` - Saint Kitts and Nevis
-     * * `LC` - Saint Lucia
-     * * `MF` - Saint Martin (French part)
-     * * `PM` - Saint Pierre and Miquelon
-     * * `VC` - Saint Vincent and the Grenadines
-     * * `WS` - Samoa
-     * * `SM` - San Marino
-     * * `ST` - Sao Tome and Principe
-     * * `SA` - Saudi Arabia
-     * * `SN` - Senegal
-     * * `RS` - Serbia
-     * * `SC` - Seychelles
-     * * `SL` - Sierra Leone
-     * * `SG` - Singapore
-     * * `SX` - Sint Maarten (Dutch part)
-     * * `SK` - Slovakia
-     * * `SI` - Slovenia
-     * * `SB` - Solomon Islands
-     * * `SO` - Somalia
-     * * `ZA` - South Africa
-     * * `GS` - South Georgia and the South Sandwich Islands
-     * * `KR` - South Korea
-     * * `SS` - South Sudan
-     * * `ES` - Spain
-     * * `LK` - Sri Lanka
-     * * `SD` - Sudan
-     * * `SR` - Suriname
-     * * `SJ` - Svalbard and Jan Mayen
-     * * `SE` - Sweden
-     * * `CH` - Switzerland
-     * * `SY` - Syria
-     * * `TW` - Taiwan
-     * * `TJ` - Tajikistan
-     * * `TZ` - Tanzania
-     * * `TH` - Thailand
-     * * `TL` - Timor-Leste
-     * * `TG` - Togo
-     * * `TK` - Tokelau
-     * * `TO` - Tonga
-     * * `TT` - Trinidad and Tobago
-     * * `TN` - Tunisia
-     * * `TR` - Türkiye
-     * * `TM` - Turkmenistan
-     * * `TC` - Turks and Caicos Islands
-     * * `TV` - Tuvalu
-     * * `UG` - Uganda
-     * * `UA` - Ukraine
-     * * `AE` - United Arab Emirates
-     * * `GB` - United Kingdom
-     * * `UM` - United States Minor Outlying Islands
-     * * `US` - United States of America
-     * * `UY` - Uruguay
-     * * `UZ` - Uzbekistan
-     * * `VU` - Vanuatu
-     * * `VE` - Venezuela
-     * * `VN` - Vietnam
-     * * `VG` - Virgin Islands (British)
-     * * `VI` - Virgin Islands (U.S.)
-     * * `WF` - Wallis and Futuna
-     * * `EH` - Western Sahara
-     * * `YE` - Yemen
-     * * `ZM` - Zambia
-     * * `ZW` - Zimbabwe
+     * * `cookie` - Cookie
+     * * `token` - Token
      */
-    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
-    postal_code?: string | null;
+    auth_method?: 'cookie' | 'token';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedUserBankAccountWritable = {
-    name?: string | null;
-    number?: string | null;
-    type?: string | null;
-    /**
-     * * `individual` - Individual
-     * * `business` - Business
-     */
-    beneficiary_type?: 'individual' | 'business' | null;
-    owner?: BankOwner | null;
-    bank_name?: string | null;
-    bank_code?: string | null;
-    bank_currency?: string | null;
-    branch_code?: string | null;
-    branch_address?: UserBankBranchAddress;
-    branch_address_text?: string | null;
-    routing_number?: string | null;
-    swift?: string | null;
-    iban?: string | null;
-    bic?: string | null;
-    clabe?: string | null;
-    check_digit?: string | null;
-    pix_key?: string | null;
-    br_code?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PatchedUserWalletAccountWritable = {
-    username?: string | null;
-    email?: string | null;
-    mobile?: string | null;
-    name?: string | null;
-    /**
-     * * `paypal` - Paypal
-     * * `venmo` - Venmo
-     * * `other` - Other
-     */
-    type?: 'paypal' | 'venmo' | 'other';
-    wallet_currency?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PublicCompanyWritable = {
-    name?: string | null;
-    legal_name?: string | null;
-    description?: string | null;
-    website?: string | null;
-    support_website?: string | null;
-    documentation_website?: string | null;
-    support_email?: string | null;
-    contact_email?: string | null;
-    /**
-     * * `AF` - Afghanistan
-     * * `AX` - Åland Islands
-     * * `AL` - Albania
-     * * `DZ` - Algeria
-     * * `AS` - American Samoa
-     * * `AD` - Andorra
-     * * `AO` - Angola
-     * * `AI` - Anguilla
-     * * `AQ` - Antarctica
-     * * `AG` - Antigua and Barbuda
-     * * `AR` - Argentina
-     * * `AM` - Armenia
-     * * `AW` - Aruba
-     * * `AU` - Australia
-     * * `AT` - Austria
-     * * `AZ` - Azerbaijan
-     * * `BS` - Bahamas
-     * * `BH` - Bahrain
-     * * `BD` - Bangladesh
-     * * `BB` - Barbados
-     * * `BY` - Belarus
-     * * `BE` - Belgium
-     * * `BZ` - Belize
-     * * `BJ` - Benin
-     * * `BM` - Bermuda
-     * * `BT` - Bhutan
-     * * `BO` - Bolivia
-     * * `BQ` - Bonaire, Sint Eustatius and Saba
-     * * `BA` - Bosnia and Herzegovina
-     * * `BW` - Botswana
-     * * `BV` - Bouvet Island
-     * * `BR` - Brazil
-     * * `IO` - British Indian Ocean Territory
-     * * `BN` - Brunei
-     * * `BG` - Bulgaria
-     * * `BF` - Burkina Faso
-     * * `BI` - Burundi
-     * * `CV` - Cabo Verde
-     * * `KH` - Cambodia
-     * * `CM` - Cameroon
-     * * `CA` - Canada
-     * * `KY` - Cayman Islands
-     * * `CF` - Central African Republic
-     * * `TD` - Chad
-     * * `CL` - Chile
-     * * `CN` - China
-     * * `CX` - Christmas Island
-     * * `CC` - Cocos (Keeling) Islands
-     * * `CO` - Colombia
-     * * `KM` - Comoros
-     * * `CG` - Congo
-     * * `CD` - Congo (the Democratic Republic of the)
-     * * `CK` - Cook Islands
-     * * `CR` - Costa Rica
-     * * `CI` - Côte d'Ivoire
-     * * `HR` - Croatia
-     * * `CU` - Cuba
-     * * `CW` - Curaçao
-     * * `CY` - Cyprus
-     * * `CZ` - Czechia
-     * * `DK` - Denmark
-     * * `DJ` - Djibouti
-     * * `DM` - Dominica
-     * * `DO` - Dominican Republic
-     * * `EC` - Ecuador
-     * * `EG` - Egypt
-     * * `SV` - El Salvador
-     * * `GQ` - Equatorial Guinea
-     * * `ER` - Eritrea
-     * * `EE` - Estonia
-     * * `SZ` - Eswatini
-     * * `ET` - Ethiopia
-     * * `FK` - Falkland Islands (Malvinas)
-     * * `FO` - Faroe Islands
-     * * `FJ` - Fiji
-     * * `FI` - Finland
-     * * `FR` - France
-     * * `GF` - French Guiana
-     * * `PF` - French Polynesia
-     * * `TF` - French Southern Territories
-     * * `GA` - Gabon
-     * * `GM` - Gambia
-     * * `GE` - Georgia
-     * * `DE` - Germany
-     * * `GH` - Ghana
-     * * `GI` - Gibraltar
-     * * `GR` - Greece
-     * * `GL` - Greenland
-     * * `GD` - Grenada
-     * * `GP` - Guadeloupe
-     * * `GU` - Guam
-     * * `GT` - Guatemala
-     * * `GG` - Guernsey
-     * * `GN` - Guinea
-     * * `GW` - Guinea-Bissau
-     * * `GY` - Guyana
-     * * `HT` - Haiti
-     * * `HM` - Heard Island and McDonald Islands
-     * * `VA` - Holy See
-     * * `HN` - Honduras
-     * * `HK` - Hong Kong
-     * * `HU` - Hungary
-     * * `IS` - Iceland
-     * * `IN` - India
-     * * `ID` - Indonesia
-     * * `IR` - Iran
-     * * `IQ` - Iraq
-     * * `IE` - Ireland
-     * * `IM` - Isle of Man
-     * * `IL` - Israel
-     * * `IT` - Italy
-     * * `JM` - Jamaica
-     * * `JP` - Japan
-     * * `JE` - Jersey
-     * * `JO` - Jordan
-     * * `KZ` - Kazakhstan
-     * * `KE` - Kenya
-     * * `KI` - Kiribati
-     * * `KW` - Kuwait
-     * * `KG` - Kyrgyzstan
-     * * `LA` - Laos
-     * * `LV` - Latvia
-     * * `LB` - Lebanon
-     * * `LS` - Lesotho
-     * * `LR` - Liberia
-     * * `LY` - Libya
-     * * `LI` - Liechtenstein
-     * * `LT` - Lithuania
-     * * `LU` - Luxembourg
-     * * `MO` - Macao
-     * * `MG` - Madagascar
-     * * `MW` - Malawi
-     * * `MY` - Malaysia
-     * * `MV` - Maldives
-     * * `ML` - Mali
-     * * `MT` - Malta
-     * * `MH` - Marshall Islands
-     * * `MQ` - Martinique
-     * * `MR` - Mauritania
-     * * `MU` - Mauritius
-     * * `YT` - Mayotte
-     * * `MX` - Mexico
-     * * `FM` - Micronesia
-     * * `MD` - Moldova
-     * * `MC` - Monaco
-     * * `MN` - Mongolia
-     * * `ME` - Montenegro
-     * * `MS` - Montserrat
-     * * `MA` - Morocco
-     * * `MZ` - Mozambique
-     * * `MM` - Myanmar
-     * * `NA` - Namibia
-     * * `NR` - Nauru
-     * * `NP` - Nepal
-     * * `NL` - Netherlands
-     * * `NC` - New Caledonia
-     * * `NZ` - New Zealand
-     * * `NI` - Nicaragua
-     * * `NE` - Niger
-     * * `NG` - Nigeria
-     * * `NU` - Niue
-     * * `NF` - Norfolk Island
-     * * `KP` - North Korea
-     * * `MK` - North Macedonia
-     * * `MP` - Northern Mariana Islands
-     * * `NO` - Norway
-     * * `OM` - Oman
-     * * `PK` - Pakistan
-     * * `PW` - Palau
-     * * `PS` - Palestine, State of
-     * * `PA` - Panama
-     * * `PG` - Papua New Guinea
-     * * `PY` - Paraguay
-     * * `PE` - Peru
-     * * `PH` - Philippines
-     * * `PN` - Pitcairn
-     * * `PL` - Poland
-     * * `PT` - Portugal
-     * * `PR` - Puerto Rico
-     * * `QA` - Qatar
-     * * `RE` - Réunion
-     * * `RO` - Romania
-     * * `RU` - Russia
-     * * `RW` - Rwanda
-     * * `BL` - Saint Barthélemy
-     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
-     * * `KN` - Saint Kitts and Nevis
-     * * `LC` - Saint Lucia
-     * * `MF` - Saint Martin (French part)
-     * * `PM` - Saint Pierre and Miquelon
-     * * `VC` - Saint Vincent and the Grenadines
-     * * `WS` - Samoa
-     * * `SM` - San Marino
-     * * `ST` - Sao Tome and Principe
-     * * `SA` - Saudi Arabia
-     * * `SN` - Senegal
-     * * `RS` - Serbia
-     * * `SC` - Seychelles
-     * * `SL` - Sierra Leone
-     * * `SG` - Singapore
-     * * `SX` - Sint Maarten (Dutch part)
-     * * `SK` - Slovakia
-     * * `SI` - Slovenia
-     * * `SB` - Solomon Islands
-     * * `SO` - Somalia
-     * * `ZA` - South Africa
-     * * `GS` - South Georgia and the South Sandwich Islands
-     * * `KR` - South Korea
-     * * `SS` - South Sudan
-     * * `ES` - Spain
-     * * `LK` - Sri Lanka
-     * * `SD` - Sudan
-     * * `SR` - Suriname
-     * * `SJ` - Svalbard and Jan Mayen
-     * * `SE` - Sweden
-     * * `CH` - Switzerland
-     * * `SY` - Syria
-     * * `TW` - Taiwan
-     * * `TJ` - Tajikistan
-     * * `TZ` - Tanzania
-     * * `TH` - Thailand
-     * * `TL` - Timor-Leste
-     * * `TG` - Togo
-     * * `TK` - Tokelau
-     * * `TO` - Tonga
-     * * `TT` - Trinidad and Tobago
-     * * `TN` - Tunisia
-     * * `TR` - Türkiye
-     * * `TM` - Turkmenistan
-     * * `TC` - Turks and Caicos Islands
-     * * `TV` - Tuvalu
-     * * `UG` - Uganda
-     * * `UA` - Ukraine
-     * * `AE` - United Arab Emirates
-     * * `GB` - United Kingdom
-     * * `UM` - United States Minor Outlying Islands
-     * * `US` - United States of America
-     * * `UY` - Uruguay
-     * * `UZ` - Uzbekistan
-     * * `VU` - Vanuatu
-     * * `VE` - Venezuela
-     * * `VN` - Vietnam
-     * * `VG` - Virgin Islands (British)
-     * * `VI` - Virgin Islands (U.S.)
-     * * `WF` - Wallis and Futuna
-     * * `EH` - Western Sahara
-     * * `YE` - Yemen
-     * * `ZM` - Zambia
-     * * `ZW` - Zimbabwe
-     */
-    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
-    logo?: string | null;
-    icon?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PublicCompanyLegalTermWritable = {
-    name: string;
-    description?: string | null;
-};
-
-export type PublicCompanyLegalTermResponseWritable = {
-    status: string;
-    data: PublicCompanyLegalTermWritable;
-};
-
-export type PublicCompanyLegalTermVersionResponseWritable = {
-    status: string;
-};
-
-export type PublicCompanyResponseWritable = {
-    status: string;
-    data: PublicCompanyWritable;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PublicCompanySettingsWritable = {
-    allow_session_durations?: boolean;
-    nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-    residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type PublicLegalTermWritable = {
-    name: string;
-    description?: string | null;
-};
-
-export type PublicLegalTermResponseWritable = {
-    status: string;
-    data: PublicLegalTermWritable;
-};
-
-export type PublicLegalTermVersionResponseWritable = {
-    status: string;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type ReducedAccountWritable = {
-    name?: string;
-    label?: string | null;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type ReducedAccountAccountAssetWritable = {
-    active: boolean;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type ReducedAccountAssetWritable = {
-    active: boolean;
-};
-
-export type ReducedAccountAssetListWritable = Array<ReducedAccountAssetWritable>;
-
-export type ReducedAccountAssetListResponseWritable = {
-    status: string;
-    data: ReducedAccountAssetListWritable;
-};
-
-export type ReducedAccountAssetResponseWritable = {
-    status: string;
-    data: ReducedAccountAssetWritable;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type ReducedDeviceAppWritable = {
-    name?: string | null;
-    /**
-     * * `expo` - Expo
-     */
-    type: 'expo';
-};
-
-export type ReducedTransactionSubtypeWritable = {
-    name: string;
-    label?: string | null;
-    /**
-     * * `credit` - Credit
-     * * `debit` - Debit
-     */
-    tx_type: 'credit' | 'debit';
-};
-
-/**
- * A condensed user serializer showing only the necessary user information
- * in order to identifiy the user.
- */
-export type ReducedUserInfoWritable = {
-    profile?: string | null;
-};
-
-export type RefreshedResponseWritable = {
-    status: string;
-};
-
-export type RegisterWritable = {
+export type RegisterRequestWritable = {
     first_name?: string;
     middle_name?: string;
     last_name?: string;
@@ -14572,565 +15465,6 @@ export type RegisterWritable = {
 };
 
 /**
- * Override company validation on the register serializer.
- */
-export type RegisterCompanyWritable = {
-    first_name?: string;
-    middle_name?: string;
-    last_name?: string;
-    username?: string;
-    email?: string;
-    mobile?: string;
-    company: CreateCompanyWritable;
-    id_number?: string | null;
-    birth_date?: string | null;
-    language?: string;
-    /**
-     * * `male` - Male
-     * * `female` - Female
-     * * `other` - Other
-     * * `not_specified` - Not Specified
-     */
-    gender?: 'male' | 'female' | 'other' | 'not_specified' | null;
-    /**
-     * * `mr` - Mr
-     * * `mrs` - Mrs
-     * * `ms` - Ms
-     * * `mx` - Mx
-     */
-    title?: 'mr' | 'mrs' | 'ms' | 'mx' | null;
-    /**
-     * * `single` - Single
-     * * `married` - Married
-     * * `divorced` - Divorced
-     * * `widowed` - Widowed
-     */
-    marital_status?: 'single' | 'married' | 'divorced' | 'widowed' | null;
-    /**
-     * * `AF` - Afghanistan
-     * * `AX` - Åland Islands
-     * * `AL` - Albania
-     * * `DZ` - Algeria
-     * * `AS` - American Samoa
-     * * `AD` - Andorra
-     * * `AO` - Angola
-     * * `AI` - Anguilla
-     * * `AQ` - Antarctica
-     * * `AG` - Antigua and Barbuda
-     * * `AR` - Argentina
-     * * `AM` - Armenia
-     * * `AW` - Aruba
-     * * `AU` - Australia
-     * * `AT` - Austria
-     * * `AZ` - Azerbaijan
-     * * `BS` - Bahamas
-     * * `BH` - Bahrain
-     * * `BD` - Bangladesh
-     * * `BB` - Barbados
-     * * `BY` - Belarus
-     * * `BE` - Belgium
-     * * `BZ` - Belize
-     * * `BJ` - Benin
-     * * `BM` - Bermuda
-     * * `BT` - Bhutan
-     * * `BO` - Bolivia
-     * * `BQ` - Bonaire, Sint Eustatius and Saba
-     * * `BA` - Bosnia and Herzegovina
-     * * `BW` - Botswana
-     * * `BV` - Bouvet Island
-     * * `BR` - Brazil
-     * * `IO` - British Indian Ocean Territory
-     * * `BN` - Brunei
-     * * `BG` - Bulgaria
-     * * `BF` - Burkina Faso
-     * * `BI` - Burundi
-     * * `CV` - Cabo Verde
-     * * `KH` - Cambodia
-     * * `CM` - Cameroon
-     * * `CA` - Canada
-     * * `KY` - Cayman Islands
-     * * `CF` - Central African Republic
-     * * `TD` - Chad
-     * * `CL` - Chile
-     * * `CN` - China
-     * * `CX` - Christmas Island
-     * * `CC` - Cocos (Keeling) Islands
-     * * `CO` - Colombia
-     * * `KM` - Comoros
-     * * `CG` - Congo
-     * * `CD` - Congo (the Democratic Republic of the)
-     * * `CK` - Cook Islands
-     * * `CR` - Costa Rica
-     * * `CI` - Côte d'Ivoire
-     * * `HR` - Croatia
-     * * `CU` - Cuba
-     * * `CW` - Curaçao
-     * * `CY` - Cyprus
-     * * `CZ` - Czechia
-     * * `DK` - Denmark
-     * * `DJ` - Djibouti
-     * * `DM` - Dominica
-     * * `DO` - Dominican Republic
-     * * `EC` - Ecuador
-     * * `EG` - Egypt
-     * * `SV` - El Salvador
-     * * `GQ` - Equatorial Guinea
-     * * `ER` - Eritrea
-     * * `EE` - Estonia
-     * * `SZ` - Eswatini
-     * * `ET` - Ethiopia
-     * * `FK` - Falkland Islands (Malvinas)
-     * * `FO` - Faroe Islands
-     * * `FJ` - Fiji
-     * * `FI` - Finland
-     * * `FR` - France
-     * * `GF` - French Guiana
-     * * `PF` - French Polynesia
-     * * `TF` - French Southern Territories
-     * * `GA` - Gabon
-     * * `GM` - Gambia
-     * * `GE` - Georgia
-     * * `DE` - Germany
-     * * `GH` - Ghana
-     * * `GI` - Gibraltar
-     * * `GR` - Greece
-     * * `GL` - Greenland
-     * * `GD` - Grenada
-     * * `GP` - Guadeloupe
-     * * `GU` - Guam
-     * * `GT` - Guatemala
-     * * `GG` - Guernsey
-     * * `GN` - Guinea
-     * * `GW` - Guinea-Bissau
-     * * `GY` - Guyana
-     * * `HT` - Haiti
-     * * `HM` - Heard Island and McDonald Islands
-     * * `VA` - Holy See
-     * * `HN` - Honduras
-     * * `HK` - Hong Kong
-     * * `HU` - Hungary
-     * * `IS` - Iceland
-     * * `IN` - India
-     * * `ID` - Indonesia
-     * * `IR` - Iran
-     * * `IQ` - Iraq
-     * * `IE` - Ireland
-     * * `IM` - Isle of Man
-     * * `IL` - Israel
-     * * `IT` - Italy
-     * * `JM` - Jamaica
-     * * `JP` - Japan
-     * * `JE` - Jersey
-     * * `JO` - Jordan
-     * * `KZ` - Kazakhstan
-     * * `KE` - Kenya
-     * * `KI` - Kiribati
-     * * `KW` - Kuwait
-     * * `KG` - Kyrgyzstan
-     * * `LA` - Laos
-     * * `LV` - Latvia
-     * * `LB` - Lebanon
-     * * `LS` - Lesotho
-     * * `LR` - Liberia
-     * * `LY` - Libya
-     * * `LI` - Liechtenstein
-     * * `LT` - Lithuania
-     * * `LU` - Luxembourg
-     * * `MO` - Macao
-     * * `MG` - Madagascar
-     * * `MW` - Malawi
-     * * `MY` - Malaysia
-     * * `MV` - Maldives
-     * * `ML` - Mali
-     * * `MT` - Malta
-     * * `MH` - Marshall Islands
-     * * `MQ` - Martinique
-     * * `MR` - Mauritania
-     * * `MU` - Mauritius
-     * * `YT` - Mayotte
-     * * `MX` - Mexico
-     * * `FM` - Micronesia
-     * * `MD` - Moldova
-     * * `MC` - Monaco
-     * * `MN` - Mongolia
-     * * `ME` - Montenegro
-     * * `MS` - Montserrat
-     * * `MA` - Morocco
-     * * `MZ` - Mozambique
-     * * `MM` - Myanmar
-     * * `NA` - Namibia
-     * * `NR` - Nauru
-     * * `NP` - Nepal
-     * * `NL` - Netherlands
-     * * `NC` - New Caledonia
-     * * `NZ` - New Zealand
-     * * `NI` - Nicaragua
-     * * `NE` - Niger
-     * * `NG` - Nigeria
-     * * `NU` - Niue
-     * * `NF` - Norfolk Island
-     * * `KP` - North Korea
-     * * `MK` - North Macedonia
-     * * `MP` - Northern Mariana Islands
-     * * `NO` - Norway
-     * * `OM` - Oman
-     * * `PK` - Pakistan
-     * * `PW` - Palau
-     * * `PS` - Palestine, State of
-     * * `PA` - Panama
-     * * `PG` - Papua New Guinea
-     * * `PY` - Paraguay
-     * * `PE` - Peru
-     * * `PH` - Philippines
-     * * `PN` - Pitcairn
-     * * `PL` - Poland
-     * * `PT` - Portugal
-     * * `PR` - Puerto Rico
-     * * `QA` - Qatar
-     * * `RE` - Réunion
-     * * `RO` - Romania
-     * * `RU` - Russia
-     * * `RW` - Rwanda
-     * * `BL` - Saint Barthélemy
-     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
-     * * `KN` - Saint Kitts and Nevis
-     * * `LC` - Saint Lucia
-     * * `MF` - Saint Martin (French part)
-     * * `PM` - Saint Pierre and Miquelon
-     * * `VC` - Saint Vincent and the Grenadines
-     * * `WS` - Samoa
-     * * `SM` - San Marino
-     * * `ST` - Sao Tome and Principe
-     * * `SA` - Saudi Arabia
-     * * `SN` - Senegal
-     * * `RS` - Serbia
-     * * `SC` - Seychelles
-     * * `SL` - Sierra Leone
-     * * `SG` - Singapore
-     * * `SX` - Sint Maarten (Dutch part)
-     * * `SK` - Slovakia
-     * * `SI` - Slovenia
-     * * `SB` - Solomon Islands
-     * * `SO` - Somalia
-     * * `ZA` - South Africa
-     * * `GS` - South Georgia and the South Sandwich Islands
-     * * `KR` - South Korea
-     * * `SS` - South Sudan
-     * * `ES` - Spain
-     * * `LK` - Sri Lanka
-     * * `SD` - Sudan
-     * * `SR` - Suriname
-     * * `SJ` - Svalbard and Jan Mayen
-     * * `SE` - Sweden
-     * * `CH` - Switzerland
-     * * `SY` - Syria
-     * * `TW` - Taiwan
-     * * `TJ` - Tajikistan
-     * * `TZ` - Tanzania
-     * * `TH` - Thailand
-     * * `TL` - Timor-Leste
-     * * `TG` - Togo
-     * * `TK` - Tokelau
-     * * `TO` - Tonga
-     * * `TT` - Trinidad and Tobago
-     * * `TN` - Tunisia
-     * * `TR` - Türkiye
-     * * `TM` - Turkmenistan
-     * * `TC` - Turks and Caicos Islands
-     * * `TV` - Tuvalu
-     * * `UG` - Uganda
-     * * `UA` - Ukraine
-     * * `AE` - United Arab Emirates
-     * * `GB` - United Kingdom
-     * * `UM` - United States Minor Outlying Islands
-     * * `US` - United States of America
-     * * `UY` - Uruguay
-     * * `UZ` - Uzbekistan
-     * * `VU` - Vanuatu
-     * * `VE` - Venezuela
-     * * `VN` - Vietnam
-     * * `VG` - Virgin Islands (British)
-     * * `VI` - Virgin Islands (U.S.)
-     * * `WF` - Wallis and Futuna
-     * * `EH` - Western Sahara
-     * * `YE` - Yemen
-     * * `ZM` - Zambia
-     * * `ZW` - Zimbabwe
-     */
-    nationality?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
-    /**
-     * * `AF` - Afghanistan
-     * * `AX` - Åland Islands
-     * * `AL` - Albania
-     * * `DZ` - Algeria
-     * * `AS` - American Samoa
-     * * `AD` - Andorra
-     * * `AO` - Angola
-     * * `AI` - Anguilla
-     * * `AQ` - Antarctica
-     * * `AG` - Antigua and Barbuda
-     * * `AR` - Argentina
-     * * `AM` - Armenia
-     * * `AW` - Aruba
-     * * `AU` - Australia
-     * * `AT` - Austria
-     * * `AZ` - Azerbaijan
-     * * `BS` - Bahamas
-     * * `BH` - Bahrain
-     * * `BD` - Bangladesh
-     * * `BB` - Barbados
-     * * `BY` - Belarus
-     * * `BE` - Belgium
-     * * `BZ` - Belize
-     * * `BJ` - Benin
-     * * `BM` - Bermuda
-     * * `BT` - Bhutan
-     * * `BO` - Bolivia
-     * * `BQ` - Bonaire, Sint Eustatius and Saba
-     * * `BA` - Bosnia and Herzegovina
-     * * `BW` - Botswana
-     * * `BV` - Bouvet Island
-     * * `BR` - Brazil
-     * * `IO` - British Indian Ocean Territory
-     * * `BN` - Brunei
-     * * `BG` - Bulgaria
-     * * `BF` - Burkina Faso
-     * * `BI` - Burundi
-     * * `CV` - Cabo Verde
-     * * `KH` - Cambodia
-     * * `CM` - Cameroon
-     * * `CA` - Canada
-     * * `KY` - Cayman Islands
-     * * `CF` - Central African Republic
-     * * `TD` - Chad
-     * * `CL` - Chile
-     * * `CN` - China
-     * * `CX` - Christmas Island
-     * * `CC` - Cocos (Keeling) Islands
-     * * `CO` - Colombia
-     * * `KM` - Comoros
-     * * `CG` - Congo
-     * * `CD` - Congo (the Democratic Republic of the)
-     * * `CK` - Cook Islands
-     * * `CR` - Costa Rica
-     * * `CI` - Côte d'Ivoire
-     * * `HR` - Croatia
-     * * `CU` - Cuba
-     * * `CW` - Curaçao
-     * * `CY` - Cyprus
-     * * `CZ` - Czechia
-     * * `DK` - Denmark
-     * * `DJ` - Djibouti
-     * * `DM` - Dominica
-     * * `DO` - Dominican Republic
-     * * `EC` - Ecuador
-     * * `EG` - Egypt
-     * * `SV` - El Salvador
-     * * `GQ` - Equatorial Guinea
-     * * `ER` - Eritrea
-     * * `EE` - Estonia
-     * * `SZ` - Eswatini
-     * * `ET` - Ethiopia
-     * * `FK` - Falkland Islands (Malvinas)
-     * * `FO` - Faroe Islands
-     * * `FJ` - Fiji
-     * * `FI` - Finland
-     * * `FR` - France
-     * * `GF` - French Guiana
-     * * `PF` - French Polynesia
-     * * `TF` - French Southern Territories
-     * * `GA` - Gabon
-     * * `GM` - Gambia
-     * * `GE` - Georgia
-     * * `DE` - Germany
-     * * `GH` - Ghana
-     * * `GI` - Gibraltar
-     * * `GR` - Greece
-     * * `GL` - Greenland
-     * * `GD` - Grenada
-     * * `GP` - Guadeloupe
-     * * `GU` - Guam
-     * * `GT` - Guatemala
-     * * `GG` - Guernsey
-     * * `GN` - Guinea
-     * * `GW` - Guinea-Bissau
-     * * `GY` - Guyana
-     * * `HT` - Haiti
-     * * `HM` - Heard Island and McDonald Islands
-     * * `VA` - Holy See
-     * * `HN` - Honduras
-     * * `HK` - Hong Kong
-     * * `HU` - Hungary
-     * * `IS` - Iceland
-     * * `IN` - India
-     * * `ID` - Indonesia
-     * * `IR` - Iran
-     * * `IQ` - Iraq
-     * * `IE` - Ireland
-     * * `IM` - Isle of Man
-     * * `IL` - Israel
-     * * `IT` - Italy
-     * * `JM` - Jamaica
-     * * `JP` - Japan
-     * * `JE` - Jersey
-     * * `JO` - Jordan
-     * * `KZ` - Kazakhstan
-     * * `KE` - Kenya
-     * * `KI` - Kiribati
-     * * `KW` - Kuwait
-     * * `KG` - Kyrgyzstan
-     * * `LA` - Laos
-     * * `LV` - Latvia
-     * * `LB` - Lebanon
-     * * `LS` - Lesotho
-     * * `LR` - Liberia
-     * * `LY` - Libya
-     * * `LI` - Liechtenstein
-     * * `LT` - Lithuania
-     * * `LU` - Luxembourg
-     * * `MO` - Macao
-     * * `MG` - Madagascar
-     * * `MW` - Malawi
-     * * `MY` - Malaysia
-     * * `MV` - Maldives
-     * * `ML` - Mali
-     * * `MT` - Malta
-     * * `MH` - Marshall Islands
-     * * `MQ` - Martinique
-     * * `MR` - Mauritania
-     * * `MU` - Mauritius
-     * * `YT` - Mayotte
-     * * `MX` - Mexico
-     * * `FM` - Micronesia
-     * * `MD` - Moldova
-     * * `MC` - Monaco
-     * * `MN` - Mongolia
-     * * `ME` - Montenegro
-     * * `MS` - Montserrat
-     * * `MA` - Morocco
-     * * `MZ` - Mozambique
-     * * `MM` - Myanmar
-     * * `NA` - Namibia
-     * * `NR` - Nauru
-     * * `NP` - Nepal
-     * * `NL` - Netherlands
-     * * `NC` - New Caledonia
-     * * `NZ` - New Zealand
-     * * `NI` - Nicaragua
-     * * `NE` - Niger
-     * * `NG` - Nigeria
-     * * `NU` - Niue
-     * * `NF` - Norfolk Island
-     * * `KP` - North Korea
-     * * `MK` - North Macedonia
-     * * `MP` - Northern Mariana Islands
-     * * `NO` - Norway
-     * * `OM` - Oman
-     * * `PK` - Pakistan
-     * * `PW` - Palau
-     * * `PS` - Palestine, State of
-     * * `PA` - Panama
-     * * `PG` - Papua New Guinea
-     * * `PY` - Paraguay
-     * * `PE` - Peru
-     * * `PH` - Philippines
-     * * `PN` - Pitcairn
-     * * `PL` - Poland
-     * * `PT` - Portugal
-     * * `PR` - Puerto Rico
-     * * `QA` - Qatar
-     * * `RE` - Réunion
-     * * `RO` - Romania
-     * * `RU` - Russia
-     * * `RW` - Rwanda
-     * * `BL` - Saint Barthélemy
-     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
-     * * `KN` - Saint Kitts and Nevis
-     * * `LC` - Saint Lucia
-     * * `MF` - Saint Martin (French part)
-     * * `PM` - Saint Pierre and Miquelon
-     * * `VC` - Saint Vincent and the Grenadines
-     * * `WS` - Samoa
-     * * `SM` - San Marino
-     * * `ST` - Sao Tome and Principe
-     * * `SA` - Saudi Arabia
-     * * `SN` - Senegal
-     * * `RS` - Serbia
-     * * `SC` - Seychelles
-     * * `SL` - Sierra Leone
-     * * `SG` - Singapore
-     * * `SX` - Sint Maarten (Dutch part)
-     * * `SK` - Slovakia
-     * * `SI` - Slovenia
-     * * `SB` - Solomon Islands
-     * * `SO` - Somalia
-     * * `ZA` - South Africa
-     * * `GS` - South Georgia and the South Sandwich Islands
-     * * `KR` - South Korea
-     * * `SS` - South Sudan
-     * * `ES` - Spain
-     * * `LK` - Sri Lanka
-     * * `SD` - Sudan
-     * * `SR` - Suriname
-     * * `SJ` - Svalbard and Jan Mayen
-     * * `SE` - Sweden
-     * * `CH` - Switzerland
-     * * `SY` - Syria
-     * * `TW` - Taiwan
-     * * `TJ` - Tajikistan
-     * * `TZ` - Tanzania
-     * * `TH` - Thailand
-     * * `TL` - Timor-Leste
-     * * `TG` - Togo
-     * * `TK` - Tokelau
-     * * `TO` - Tonga
-     * * `TT` - Trinidad and Tobago
-     * * `TN` - Tunisia
-     * * `TR` - Türkiye
-     * * `TM` - Turkmenistan
-     * * `TC` - Turks and Caicos Islands
-     * * `TV` - Tuvalu
-     * * `UG` - Uganda
-     * * `UA` - Ukraine
-     * * `AE` - United Arab Emirates
-     * * `GB` - United Kingdom
-     * * `UM` - United States Minor Outlying Islands
-     * * `US` - United States of America
-     * * `UY` - Uruguay
-     * * `UZ` - Uzbekistan
-     * * `VU` - Vanuatu
-     * * `VE` - Venezuela
-     * * `VN` - Vietnam
-     * * `VG` - Virgin Islands (British)
-     * * `VI` - Virgin Islands (U.S.)
-     * * `WF` - Wallis and Futuna
-     * * `EH` - Western Sahara
-     * * `YE` - Yemen
-     * * `ZM` - Zambia
-     * * `ZW` - Zimbabwe
-     */
-    residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
-    timezone?: string | null;
-    password?: string;
-    /**
-     * @deprecated
-     */
-    password1?: string;
-    /**
-     * @deprecated
-     */
-    password2?: string;
-    terms_and_conditions?: boolean;
-    privacy_policy?: boolean;
-    legal_term_versions?: Array<number>;
-    /**
-     * * `cookie` - Cookie
-     * * `token` - Token
-     */
-    auth_method?: 'cookie' | 'token';
-};
-
-/**
  * A ModelSerializer that takes additional arguments for
  * "fields", "omit" and "expand" in order to
  * control which fields are displayed, and whether to replace simple
@@ -15237,34 +15571,6 @@ export type TransactionSubtypeListResponseWritable = {
 export type TransactionSubtypeResponseWritable = {
     status: string;
     data: TransactionSubtypeWritable;
-};
-
-/**
- * A mixin that handles the application of permissions to properties on a
- * serializer using the built-in permissions system.
- *
- * NOTE : This only works if the following conditions are met:
- * - The request context must contain a user.
- * - The class this mixin is attached must be a serializer.
- * - The class this mixin is attached to must have a Meta.model defined.
- * - The Meta.model class must have a PERMISSION_TYPE defined.
- */
-export type UpdateExtendedTransactionWritable = {
-    /**
-     * * `Quoted` - Quoted
-     * * `Pending` - Pending
-     */
-    status?: 'Quoted' | 'Pending';
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type UpdateLegalTermVersionWritable = {
-    accepted: boolean;
 };
 
 /**
@@ -15633,79 +15939,13 @@ export type UserBankAccountResponseWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type UserCreateBankAccountWritable = {
-    name?: string | null;
-    number?: string | null;
-    type?: string | null;
-    /**
-     * * `individual` - Individual
-     * * `business` - Business
-     */
-    beneficiary_type?: 'individual' | 'business' | null;
-    owner?: BankOwner | null;
-    bank_name?: string | null;
-    bank_code?: string | null;
-    bank_currency?: string | null;
-    branch_code?: string | null;
-    branch_address?: UserBankBranchAddress;
-    branch_address_text?: string | null;
-    routing_number?: string | null;
-    swift?: string | null;
-    iban?: string | null;
-    bic?: string | null;
-    clabe?: string | null;
-    check_digit?: string | null;
-    pix_key?: string | null;
-    br_code?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    /**
-     * * `withdraw` - Withdraw
-     */
-    action?: 'withdraw';
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type UserCreateDocumentWritable = {
-    file: string;
+export type UserCreateDocumentRequestWritable = {
+    file: Blob | File;
     type: number;
     metadata?: {
         [key: string]: unknown;
     } | null;
     expires?: number | null;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type UserCreateWalletAccountWritable = {
-    username?: string | null;
-    email?: string | null;
-    mobile?: string | null;
-    name?: string | null;
-    /**
-     * * `paypal` - Paypal
-     * * `venmo` - Venmo
-     * * `other` - Other
-     */
-    type?: 'paypal' | 'venmo' | 'other';
-    wallet_currency?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    /**
-     * * `withdraw` - Withdraw
-     */
-    action?: 'withdraw';
 };
 
 export type UserDisallowedTransactionSubtypeWritable = {
@@ -16003,7 +16243,7 @@ export type AccountsListResponses = {
 export type AccountsListResponse = AccountsListResponses[keyof AccountsListResponses];
 
 export type AccountsCreateData = {
-    body?: AccountWritable;
+    body?: AccountRequest;
     path?: never;
     query?: never;
     url: '/3/accounts/';
@@ -16083,7 +16323,7 @@ export type AccountsCurrenciesListResponses = {
 export type AccountsCurrenciesListResponse = AccountsCurrenciesListResponses[keyof AccountsCurrenciesListResponses];
 
 export type AccountsCurrenciesCreateData = {
-    body: CreateAccountAccountAssetWritable;
+    body: CreateAccountAccountAssetRequestWritable;
     path: {
         reference: string;
     };
@@ -16114,7 +16354,7 @@ export type AccountsCurrenciesRetrieveResponses = {
 export type AccountsCurrenciesRetrieveResponse = AccountsCurrenciesRetrieveResponses[keyof AccountsCurrenciesRetrieveResponses];
 
 export type AccountsCurrenciesPartialUpdateData = {
-    body?: PatchedAccountAccountAssetWritable;
+    body?: PatchedAccountAccountAssetRequest;
     path: {
         code: string;
         reference: string;
@@ -16130,7 +16370,7 @@ export type AccountsCurrenciesPartialUpdateResponses = {
 export type AccountsCurrenciesPartialUpdateResponse = AccountsCurrenciesPartialUpdateResponses[keyof AccountsCurrenciesPartialUpdateResponses];
 
 export type AccountsCurrenciesUpdateData = {
-    body: AccountAccountAssetWritable;
+    body: AccountAccountAssetRequest;
     path: {
         code: string;
         reference: string;
@@ -16243,7 +16483,7 @@ export type AuthRetrieveResponses = {
 export type AuthRetrieveResponse = AuthRetrieveResponses[keyof AuthRetrieveResponses];
 
 export type AuthRegisterCompanyData = {
-    body: RegisterCompanyWritable;
+    body: RegisterCompanyRequestWritable;
     path?: never;
     query?: never;
     url: '/3/auth/company/register/';
@@ -16256,7 +16496,7 @@ export type AuthRegisterCompanyResponses = {
 export type AuthRegisterCompanyResponse = AuthRegisterCompanyResponses[keyof AuthRegisterCompanyResponses];
 
 export type AuthDeactivateData = {
-    body: Deactivate;
+    body: DeactivateRequest;
     path?: never;
     query?: never;
     url: '/3/auth/deactivate/';
@@ -16269,7 +16509,7 @@ export type AuthDeactivateResponses = {
 export type AuthDeactivateResponse = AuthDeactivateResponses[keyof AuthDeactivateResponses];
 
 export type AuthDeactivateVerifyData = {
-    body: VerifyDeactivate;
+    body: VerifyDeactivateRequest;
     path?: never;
     query?: never;
     url: '/3/auth/deactivate/verify/';
@@ -16282,7 +16522,7 @@ export type AuthDeactivateVerifyResponses = {
 export type AuthDeactivateVerifyResponse = AuthDeactivateVerifyResponses[keyof AuthDeactivateVerifyResponses];
 
 export type AuthEmailVerifyData = {
-    body: VerifyEmail;
+    body: VerifyEmailRequest;
     path?: never;
     query?: never;
     url: '/3/auth/email/verify/';
@@ -16295,7 +16535,7 @@ export type AuthEmailVerifyResponses = {
 export type AuthEmailVerifyResponse = AuthEmailVerifyResponses[keyof AuthEmailVerifyResponses];
 
 export type AuthEmailVerifyResendData = {
-    body: ResendVerifyEmail;
+    body: ResendVerifyEmailRequest;
     path?: never;
     query?: never;
     url: '/3/auth/email/verify/resend/';
@@ -16308,7 +16548,7 @@ export type AuthEmailVerifyResendResponses = {
 export type AuthEmailVerifyResendResponse = AuthEmailVerifyResendResponses[keyof AuthEmailVerifyResendResponses];
 
 export type AuthJwtCreateData = {
-    body?: CreateJwt;
+    body?: CreateJwtRequest;
     path?: never;
     query?: never;
     url: '/3/auth/jwt/';
@@ -16321,7 +16561,7 @@ export type AuthJwtCreateResponses = {
 export type AuthJwtCreateResponse = AuthJwtCreateResponses[keyof AuthJwtCreateResponses];
 
 export type AuthLoginData = {
-    body: LoginWritable;
+    body: LoginRequestWritable;
     path?: never;
     query?: never;
     url: '/3/auth/login/';
@@ -16334,7 +16574,7 @@ export type AuthLoginResponses = {
 export type AuthLoginResponse = AuthLoginResponses[keyof AuthLoginResponses];
 
 export type AuthLogoutData = {
-    body?: Logout;
+    body?: LogoutRequest;
     path?: never;
     query?: never;
     url: '/3/auth/logout/';
@@ -16372,7 +16612,7 @@ export type AuthMfaAuthenticatorsListResponses = {
 export type AuthMfaAuthenticatorsListResponse = AuthMfaAuthenticatorsListResponses[keyof AuthMfaAuthenticatorsListResponses];
 
 export type AuthMfaAuthenticatorsCreateData = {
-    body: CreateMfaAuthenticatorWritable;
+    body: CreateMfaAuthenticatorRequest;
     path?: never;
     query?: never;
     url: '/3/auth/mfa/authenticators/';
@@ -16415,7 +16655,7 @@ export type AuthMfaAuthenticatorsRetrieveResponses = {
 export type AuthMfaAuthenticatorsRetrieveResponse = AuthMfaAuthenticatorsRetrieveResponses[keyof AuthMfaAuthenticatorsRetrieveResponses];
 
 export type AuthMfaDeliverData = {
-    body?: MfaDeliver;
+    body?: MfaDeliverRequest;
     path?: never;
     query?: never;
     url: '/3/auth/mfa/deliver/';
@@ -16428,7 +16668,7 @@ export type AuthMfaDeliverResponses = {
 export type AuthMfaDeliverResponse = AuthMfaDeliverResponses[keyof AuthMfaDeliverResponses];
 
 export type AuthMfaVerifyData = {
-    body: MfaVerify;
+    body: MfaVerifyRequest;
     path?: never;
     query?: never;
     url: '/3/auth/mfa/verify/';
@@ -16441,7 +16681,7 @@ export type AuthMfaVerifyResponses = {
 export type AuthMfaVerifyResponse = AuthMfaVerifyResponses[keyof AuthMfaVerifyResponses];
 
 export type AuthMobileVerifyData = {
-    body: VerifyMobile;
+    body: VerifyMobileRequest;
     path?: never;
     query?: never;
     url: '/3/auth/mobile/verify/';
@@ -16454,7 +16694,7 @@ export type AuthMobileVerifyResponses = {
 export type AuthMobileVerifyResponse = AuthMobileVerifyResponses[keyof AuthMobileVerifyResponses];
 
 export type AuthMobileVerifyResendData = {
-    body: ResendVerifyMobile;
+    body: ResendVerifyMobileRequest;
     path?: never;
     query?: never;
     url: '/3/auth/mobile/verify/resend/';
@@ -16467,7 +16707,7 @@ export type AuthMobileVerifyResendResponses = {
 export type AuthMobileVerifyResendResponse = AuthMobileVerifyResendResponses[keyof AuthMobileVerifyResendResponses];
 
 export type AuthOauthAuthorizeCreateData = {
-    body: OauthAuthorizeWritable;
+    body: OauthAuthorizeRequest;
     path?: never;
     query?: never;
     url: '/3/auth/oauth/authorize/';
@@ -16480,7 +16720,7 @@ export type AuthOauthAuthorizeCreateResponses = {
 export type AuthOauthAuthorizeCreateResponse = AuthOauthAuthorizeCreateResponses[keyof AuthOauthAuthorizeCreateResponses];
 
 export type AuthOauthLoginCreateData = {
-    body: OauthLoginWritable;
+    body: OauthLoginRequestWritable;
     path?: never;
     query?: never;
     url: '/3/auth/oauth/login/';
@@ -16493,7 +16733,7 @@ export type AuthOauthLoginCreateResponses = {
 export type AuthOauthLoginCreateResponse = AuthOauthLoginCreateResponses[keyof AuthOauthLoginCreateResponses];
 
 export type AuthOauthRegisterCreateData = {
-    body: OauthRegisterWritable;
+    body: OauthRegisterRequestWritable;
     path?: never;
     query?: never;
     url: '/3/auth/oauth/register/';
@@ -16506,7 +16746,7 @@ export type AuthOauthRegisterCreateResponses = {
 export type AuthOauthRegisterCreateResponse = AuthOauthRegisterCreateResponses[keyof AuthOauthRegisterCreateResponses];
 
 export type AuthOauthSessionCreateData = {
-    body: OauthSession;
+    body: OauthSessionRequest;
     path?: never;
     query?: never;
     url: '/3/auth/oauth/session/';
@@ -16519,7 +16759,7 @@ export type AuthOauthSessionCreateResponses = {
 export type AuthOauthSessionCreateResponse = AuthOauthSessionCreateResponses[keyof AuthOauthSessionCreateResponses];
 
 export type AuthOauthVerifyCreateData = {
-    body?: OauthVerifyWritable;
+    body?: OauthVerifyRequestWritable;
     path?: never;
     query?: never;
     url: '/3/auth/oauth/verify/';
@@ -16532,7 +16772,7 @@ export type AuthOauthVerifyCreateResponses = {
 export type AuthOauthVerifyCreateResponse = AuthOauthVerifyCreateResponses[keyof AuthOauthVerifyCreateResponses];
 
 export type AuthPasswordChangeData = {
-    body: PasswordChangeWritable;
+    body: PasswordChangeRequestWritable;
     path?: never;
     query?: never;
     url: '/3/auth/password/change/';
@@ -16545,7 +16785,7 @@ export type AuthPasswordChangeResponses = {
 export type AuthPasswordChangeResponse = AuthPasswordChangeResponses[keyof AuthPasswordChangeResponses];
 
 export type AuthPasswordResetData = {
-    body: PasswordReset;
+    body: PasswordResetRequest;
     path?: never;
     query?: never;
     url: '/3/auth/password/reset/';
@@ -16558,7 +16798,7 @@ export type AuthPasswordResetResponses = {
 export type AuthPasswordResetResponse = AuthPasswordResetResponses[keyof AuthPasswordResetResponses];
 
 export type AuthPasswordResetConfirmData = {
-    body: PasswordResetConfirmWritable;
+    body: PasswordResetConfirmRequestWritable;
     path?: never;
     query?: never;
     url: '/3/auth/password/reset/confirm/';
@@ -16571,7 +16811,7 @@ export type AuthPasswordResetConfirmResponses = {
 export type AuthPasswordResetConfirmResponse = AuthPasswordResetConfirmResponses[keyof AuthPasswordResetConfirmResponses];
 
 export type AuthRefreshCreateData = {
-    body?: Refresh;
+    body?: RefreshRequest;
     path?: never;
     query?: never;
     url: '/3/auth/refresh/';
@@ -16584,7 +16824,7 @@ export type AuthRefreshCreateResponses = {
 export type AuthRefreshCreateResponse = AuthRefreshCreateResponses[keyof AuthRefreshCreateResponses];
 
 export type AuthRegisterData = {
-    body: RegisterWritable;
+    body: RegisterRequestWritable;
     path?: never;
     query?: never;
     url: '/3/auth/register/';
@@ -16597,7 +16837,7 @@ export type AuthRegisterResponses = {
 export type AuthRegisterResponse = AuthRegisterResponses[keyof AuthRegisterResponses];
 
 export type AuthRequestDeleteData = {
-    body: RequestDelete;
+    body: RequestDeleteRequest;
     path?: never;
     query?: never;
     url: '/3/auth/request-delete/';
@@ -16610,7 +16850,7 @@ export type AuthRequestDeleteResponses = {
 export type AuthRequestDeleteResponse = AuthRequestDeleteResponses[keyof AuthRequestDeleteResponses];
 
 export type AuthRequestDeleteVerifyData = {
-    body: VerifyRequestDelete;
+    body: VerifyRequestDeleteRequest;
     path?: never;
     query?: never;
     url: '/3/auth/request-delete/verify/';
@@ -16659,7 +16899,7 @@ export type AuthTokensListResponses = {
 export type AuthTokensListResponse = AuthTokensListResponses[keyof AuthTokensListResponses];
 
 export type AuthTokensCreateData = {
-    body: CreateAuthToken;
+    body: CreateAuthTokenRequest;
     path?: never;
     query?: never;
     url: '/3/auth/tokens/';
@@ -16891,7 +17131,7 @@ export type ExportsListResponses = {
 export type ExportsListResponse = ExportsListResponses[keyof ExportsListResponses];
 
 export type ExportsCreateData = {
-    body: CreateExport;
+    body: CreateExportRequest;
     path?: never;
     query?: never;
     url: '/3/exports/';
@@ -17320,7 +17560,7 @@ export type MetricsListResponses = {
 export type MetricsListResponse = MetricsListResponses[keyof MetricsListResponses];
 
 export type MetricsCreateData = {
-    body: CreateMetricWritable;
+    body: CreateMetricRequestWritable;
     path?: never;
     query?: never;
     url: '/3/metrics/';
@@ -17747,7 +17987,7 @@ export type StatementsListResponses = {
 export type StatementsListResponse = StatementsListResponses[keyof StatementsListResponses];
 
 export type StatementsCreateData = {
-    body: CreateStatementWritable;
+    body: CreateStatementRequestWritable;
     path?: never;
     query?: never;
     url: '/3/statements/';
@@ -17877,7 +18117,7 @@ export type TransactionCollectionsListResponses = {
 export type TransactionCollectionsListResponse = TransactionCollectionsListResponses[keyof TransactionCollectionsListResponses];
 
 export type TransactionCollectionsCreateData = {
-    body: CreateTransactionCollectionWritable;
+    body: CreateTransactionCollectionRequestWritable;
     path?: never;
     query?: never;
     url: '/3/transaction-collections/';
@@ -17978,7 +18218,7 @@ export type TransactionsListResponses = {
 export type TransactionsListResponse = TransactionsListResponses[keyof TransactionsListResponses];
 
 export type TransactionsCreateData = {
-    body: CreateMultiTransactionWritable;
+    body: CreateMultiTransactionRequestWritable;
     path?: never;
     query?: never;
     url: '/3/transactions/';
@@ -18006,7 +18246,7 @@ export type TransactionsRetrieveResponses = {
 export type TransactionsRetrieveResponse = TransactionsRetrieveResponses[keyof TransactionsRetrieveResponses];
 
 export type TransactionsPartialUpdateData = {
-    body?: PatchedUpdateExtendedTransactionWritable;
+    body?: PatchedUpdateExtendedTransactionRequest;
     path: {
         tx_code: string;
     };
@@ -18021,7 +18261,7 @@ export type TransactionsPartialUpdateResponses = {
 export type TransactionsPartialUpdateResponse = TransactionsPartialUpdateResponses[keyof TransactionsPartialUpdateResponses];
 
 export type TransactionsUpdateData = {
-    body?: UpdateExtendedTransactionWritable;
+    body?: UpdateExtendedTransactionRequest;
     path: {
         tx_code: string;
     };
@@ -18076,7 +18316,7 @@ export type TransactionsMessagesRetrieveResponses = {
 export type TransactionsMessagesRetrieveResponse = TransactionsMessagesRetrieveResponses[keyof TransactionsMessagesRetrieveResponses];
 
 export type TransactionsCreditCreateData = {
-    body: CreateCreditTransactionWritable;
+    body: CreateCreditTransactionRequestWritable;
     path?: never;
     query?: never;
     url: '/3/transactions/credit/';
@@ -18089,7 +18329,7 @@ export type TransactionsCreditCreateResponses = {
 export type TransactionsCreditCreateResponse = TransactionsCreditCreateResponses[keyof TransactionsCreditCreateResponses];
 
 export type TransactionsDebitCreateData = {
-    body: CreateDebitTransactionWritable;
+    body: CreateDebitTransactionRequestWritable;
     path?: never;
     query?: never;
     url: '/3/transactions/debit/';
@@ -18115,7 +18355,7 @@ export type TransactionTotalsRetrieveResponses = {
 export type TransactionTotalsRetrieveResponse = TransactionTotalsRetrieveResponses[keyof TransactionTotalsRetrieveResponses];
 
 export type TransactionsTransferCreateData = {
-    body: CreateTransferTransaction;
+    body: CreateTransferTransactionRequest;
     path?: never;
     query?: never;
     url: '/3/transactions/transfer/';
@@ -18141,7 +18381,7 @@ export type UserRetrieveResponses = {
 export type UserRetrieveResponse = UserRetrieveResponses[keyof UserRetrieveResponses];
 
 export type UserPartialUpdateData = {
-    body?: PatchedExtendedUserInfoWritable;
+    body?: PatchedExtendedUserInfoRequest;
     path?: never;
     query?: never;
     url: '/3/user/';
@@ -18154,7 +18394,7 @@ export type UserPartialUpdateResponses = {
 export type UserPartialUpdateResponse = UserPartialUpdateResponses[keyof UserPartialUpdateResponses];
 
 export type UserUpdateData = {
-    body: ExtendedUserInfoWritable;
+    body: ExtendedUserInfoRequest;
     path?: never;
     query?: never;
     url: '/3/user/';
@@ -18180,7 +18420,7 @@ export type UserAddressesListResponses = {
 export type UserAddressesListResponse = UserAddressesListResponses[keyof UserAddressesListResponses];
 
 export type UserAddressesCreateData = {
-    body?: UserAddressWritable;
+    body?: UserAddressRequest;
     path?: never;
     query?: never;
     url: '/3/user/addresses/';
@@ -18223,7 +18463,7 @@ export type UserAddressesRetrieveResponses = {
 export type UserAddressesRetrieveResponse = UserAddressesRetrieveResponses[keyof UserAddressesRetrieveResponses];
 
 export type UserAddressesPartialUpdateData = {
-    body?: PatchedUserAddressWritable;
+    body?: PatchedUserAddressRequest;
     path: {
         id: string;
     };
@@ -18238,7 +18478,7 @@ export type UserAddressesPartialUpdateResponses = {
 export type UserAddressesPartialUpdateResponse = UserAddressesPartialUpdateResponses[keyof UserAddressesPartialUpdateResponses];
 
 export type UserAddressesUpdateData = {
-    body?: UserAddressWritable;
+    body?: UserAddressRequest;
     path: {
         id: string;
     };
@@ -18279,7 +18519,7 @@ export type UserBankAccountsListResponses = {
 export type UserBankAccountsListResponse = UserBankAccountsListResponses[keyof UserBankAccountsListResponses];
 
 export type UserBankAccountsCreateData = {
-    body?: UserCreateBankAccountWritable;
+    body?: UserCreateBankAccountRequest;
     path?: never;
     query?: never;
     url: '/3/user/bank-accounts/';
@@ -18322,7 +18562,7 @@ export type UserBankAccountsRetrieveResponses = {
 export type UserBankAccountsRetrieveResponse = UserBankAccountsRetrieveResponses[keyof UserBankAccountsRetrieveResponses];
 
 export type UserBankAccountsPartialUpdateData = {
-    body?: PatchedUserBankAccountWritable;
+    body?: PatchedUserBankAccountRequest;
     path: {
         id: string;
     };
@@ -18337,7 +18577,7 @@ export type UserBankAccountsPartialUpdateResponses = {
 export type UserBankAccountsPartialUpdateResponse = UserBankAccountsPartialUpdateResponses[keyof UserBankAccountsPartialUpdateResponses];
 
 export type UserBankAccountsUpdateData = {
-    body?: UserBankAccountWritable;
+    body?: UserBankAccountRequest;
     path: {
         id: string;
     };
@@ -18367,7 +18607,7 @@ export type UserBankAccountsAccountCurrenciesListResponses = {
 export type UserBankAccountsAccountCurrenciesListResponse = UserBankAccountsAccountCurrenciesListResponses[keyof UserBankAccountsAccountCurrenciesListResponses];
 
 export type UserBankAccountsAccountCurrenciesCreateData = {
-    body: CreateUserBankAccountAccountAsset;
+    body: CreateUserBankAccountAccountAssetRequest;
     path: {
         id: string;
     };
@@ -18429,7 +18669,7 @@ export type UserBankAccountsCurrenciesListResponses = {
 export type UserBankAccountsCurrenciesListResponse = UserBankAccountsCurrenciesListResponses[keyof UserBankAccountsCurrenciesListResponses];
 
 export type UserBankAccountsCurrenciesCreateData = {
-    body: CreateUserBankAccountAsset;
+    body: CreateUserBankAccountAssetRequest;
     path: {
         id: string;
     };
@@ -18535,7 +18775,7 @@ export type UserCryptoAccountsListResponses = {
 export type UserCryptoAccountsListResponse = UserCryptoAccountsListResponses[keyof UserCryptoAccountsListResponses];
 
 export type UserCryptoAccountsCreateData = {
-    body: CreateCryptoAccountWritable;
+    body: CreateCryptoAccountRequest;
     path?: never;
     query?: never;
     url: '/3/user/crypto-accounts/';
@@ -18578,7 +18818,7 @@ export type UserCryptoAccountsRetrieveResponses = {
 export type UserCryptoAccountsRetrieveResponse = UserCryptoAccountsRetrieveResponses[keyof UserCryptoAccountsRetrieveResponses];
 
 export type UserCryptoAccountsPartialUpdateData = {
-    body?: PatchedCryptoAccountWritable;
+    body?: PatchedCryptoAccountRequest;
     path: {
         id: string;
     };
@@ -18593,7 +18833,7 @@ export type UserCryptoAccountsPartialUpdateResponses = {
 export type UserCryptoAccountsPartialUpdateResponse = UserCryptoAccountsPartialUpdateResponses[keyof UserCryptoAccountsPartialUpdateResponses];
 
 export type UserCryptoAccountsUpdateData = {
-    body: CryptoAccountWritable;
+    body: CryptoAccountRequest;
     path: {
         id: string;
     };
@@ -18623,7 +18863,7 @@ export type UserCryptoAccountsAccountCurrenciesListResponses = {
 export type UserCryptoAccountsAccountCurrenciesListResponse = UserCryptoAccountsAccountCurrenciesListResponses[keyof UserCryptoAccountsAccountCurrenciesListResponses];
 
 export type UserCryptoAccountsAccountCurrenciesCreateData = {
-    body: CreateCryptoAccountAccountAsset;
+    body: CreateCryptoAccountAccountAssetRequest;
     path: {
         id: string;
     };
@@ -18685,7 +18925,7 @@ export type UserCryptoAccountsCurrenciesListResponses = {
 export type UserCryptoAccountsCurrenciesListResponse = UserCryptoAccountsCurrenciesListResponses[keyof UserCryptoAccountsCurrenciesListResponses];
 
 export type UserCryptoAccountsCurrenciesCreateData = {
-    body: CreateCryptoAccountAsset;
+    body: CreateCryptoAccountAssetRequest;
     path: {
         id: string;
     };
@@ -18747,7 +18987,7 @@ export type UserDevicesListResponses = {
 export type UserDevicesListResponse = UserDevicesListResponses[keyof UserDevicesListResponses];
 
 export type UserDevicesCreateData = {
-    body: CreateDeviceWritable;
+    body: CreateDeviceRequest;
     path?: never;
     query?: never;
     url: '/3/user/devices/';
@@ -18792,7 +19032,7 @@ export type UserDevicesAppsRetrieveResponses = {
 export type UserDevicesAppsRetrieveResponse = UserDevicesAppsRetrieveResponses[keyof UserDevicesAppsRetrieveResponses];
 
 export type UserDevicesAppsPartialUpdateData = {
-    body?: PatchedDeviceAppWritable;
+    body?: PatchedDeviceAppRequest;
     path: {
         app_id: string;
         device_id: string;
@@ -18808,7 +19048,7 @@ export type UserDevicesAppsPartialUpdateResponses = {
 export type UserDevicesAppsPartialUpdateResponse = UserDevicesAppsPartialUpdateResponses[keyof UserDevicesAppsPartialUpdateResponses];
 
 export type UserDevicesAppsUpdateData = {
-    body: DeviceAppWritable;
+    body: DeviceAppRequest;
     path: {
         app_id: string;
         device_id: string;
@@ -18854,7 +19094,7 @@ export type UserDevicesRetrieveResponses = {
 export type UserDevicesRetrieveResponse = UserDevicesRetrieveResponses[keyof UserDevicesRetrieveResponses];
 
 export type UserDevicesPartialUpdateData = {
-    body?: PatchedDeviceWritable;
+    body?: PatchedDeviceRequest;
     path: {
         id: string;
     };
@@ -18869,7 +19109,7 @@ export type UserDevicesPartialUpdateResponses = {
 export type UserDevicesPartialUpdateResponse = UserDevicesPartialUpdateResponses[keyof UserDevicesPartialUpdateResponses];
 
 export type UserDevicesUpdateData = {
-    body?: DeviceWritable;
+    body?: DeviceRequest;
     path: {
         id: string;
     };
@@ -18908,7 +19148,7 @@ export type UserDevicesAppsListResponses = {
 export type UserDevicesAppsListResponse = UserDevicesAppsListResponses[keyof UserDevicesAppsListResponses];
 
 export type UserDevicesAppsCreateData = {
-    body: CreateDeviceAppWritable;
+    body: CreateDeviceAppRequest;
     path: {
         id: string;
     };
@@ -18945,7 +19185,7 @@ export type UserDocumentsListResponses = {
 export type UserDocumentsListResponse = UserDocumentsListResponses[keyof UserDocumentsListResponses];
 
 export type UserDocumentsCreateData = {
-    body: UserCreateDocumentWritable;
+    body: UserCreateDocumentRequestWritable;
     path?: never;
     query?: never;
     url: '/3/user/documents/';
@@ -19001,7 +19241,7 @@ export type UserEmailsListResponses = {
 export type UserEmailsListResponse = UserEmailsListResponses[keyof UserEmailsListResponses];
 
 export type UserEmailsCreateData = {
-    body: CreateEmailWritable;
+    body: CreateEmailRequest;
     path?: never;
     query?: never;
     url: '/3/user/emails/';
@@ -19044,7 +19284,7 @@ export type UserEmailsRetrieveResponses = {
 export type UserEmailsRetrieveResponse = UserEmailsRetrieveResponses[keyof UserEmailsRetrieveResponses];
 
 export type UserEmailsPartialUpdateData = {
-    body?: PatchedEmailWritable;
+    body?: PatchedEmailRequest;
     path: {
         id: string;
     };
@@ -19059,7 +19299,7 @@ export type UserEmailsPartialUpdateResponses = {
 export type UserEmailsPartialUpdateResponse = UserEmailsPartialUpdateResponses[keyof UserEmailsPartialUpdateResponses];
 
 export type UserEmailsUpdateData = {
-    body?: EmailWritable;
+    body?: EmailRequest;
     path: {
         id: string;
     };
@@ -19154,7 +19394,7 @@ export type UserLegalTermsVersionsRetrieveResponses = {
 export type UserLegalTermsVersionsRetrieveResponse = UserLegalTermsVersionsRetrieveResponses[keyof UserLegalTermsVersionsRetrieveResponses];
 
 export type UserLegalTermsVersionsPartialUpdateData = {
-    body?: PatchedUpdateLegalTermVersionWritable;
+    body?: PatchedUpdateLegalTermVersionRequest;
     path: {
         term_id: string;
         version_id: string;
@@ -19170,7 +19410,7 @@ export type UserLegalTermsVersionsPartialUpdateResponses = {
 export type UserLegalTermsVersionsPartialUpdateResponse = UserLegalTermsVersionsPartialUpdateResponses[keyof UserLegalTermsVersionsPartialUpdateResponses];
 
 export type UserLegalTermsVersionsUpdateData = {
-    body: UpdateLegalTermVersionWritable;
+    body: UpdateLegalTermVersionRequest;
     path: {
         term_id: string;
         version_id: string;
@@ -19236,7 +19476,7 @@ export type UserMobilesListResponses = {
 export type UserMobilesListResponse = UserMobilesListResponses[keyof UserMobilesListResponses];
 
 export type UserMobilesCreateData = {
-    body: CreateMobileWritable;
+    body: CreateMobileRequest;
     path?: never;
     query?: never;
     url: '/3/user/mobiles/';
@@ -19279,7 +19519,7 @@ export type UserMobilesRetrieveResponses = {
 export type UserMobilesRetrieveResponse = UserMobilesRetrieveResponses[keyof UserMobilesRetrieveResponses];
 
 export type UserMobilesPartialUpdateData = {
-    body?: PatchedMobileWritable;
+    body?: PatchedMobileRequest;
     path: {
         id: string;
     };
@@ -19294,7 +19534,7 @@ export type UserMobilesPartialUpdateResponses = {
 export type UserMobilesPartialUpdateResponse = UserMobilesPartialUpdateResponses[keyof UserMobilesPartialUpdateResponses];
 
 export type UserMobilesUpdateData = {
-    body?: MobileWritable;
+    body?: MobileRequest;
     path: {
         id: string;
     };
@@ -19334,7 +19574,7 @@ export type UserWalletAccountsListResponses = {
 export type UserWalletAccountsListResponse = UserWalletAccountsListResponses[keyof UserWalletAccountsListResponses];
 
 export type UserWalletAccountsCreateData = {
-    body?: UserCreateWalletAccountWritable;
+    body?: UserCreateWalletAccountRequest;
     path?: never;
     query?: never;
     url: '/3/user/wallet-accounts/';
@@ -19377,7 +19617,7 @@ export type UserWalletAccountsRetrieveResponses = {
 export type UserWalletAccountsRetrieveResponse = UserWalletAccountsRetrieveResponses[keyof UserWalletAccountsRetrieveResponses];
 
 export type UserWalletAccountsPartialUpdateData = {
-    body?: PatchedUserWalletAccountWritable;
+    body?: PatchedUserWalletAccountRequest;
     path: {
         id: string;
     };
@@ -19392,7 +19632,7 @@ export type UserWalletAccountsPartialUpdateResponses = {
 export type UserWalletAccountsPartialUpdateResponse = UserWalletAccountsPartialUpdateResponses[keyof UserWalletAccountsPartialUpdateResponses];
 
 export type UserWalletAccountsUpdateData = {
-    body?: UserWalletAccountWritable;
+    body?: UserWalletAccountRequest;
     path: {
         id: string;
     };
@@ -19422,7 +19662,7 @@ export type UserWalletAccountsAccountCurrenciesListResponses = {
 export type UserWalletAccountsAccountCurrenciesListResponse = UserWalletAccountsAccountCurrenciesListResponses[keyof UserWalletAccountsAccountCurrenciesListResponses];
 
 export type UserWalletAccountsAccountCurrenciesCreateData = {
-    body: CreateUserWalletAccountAccountAsset;
+    body: CreateUserWalletAccountAccountAssetRequest;
     path: {
         id: string;
     };
@@ -19493,7 +19733,7 @@ export type UserWalletAccountsCurrenciesListResponses = {
 export type UserWalletAccountsCurrenciesListResponse = UserWalletAccountsCurrenciesListResponses[keyof UserWalletAccountsCurrenciesListResponses];
 
 export type UserWalletAccountsCurrenciesCreateData = {
-    body: CreateUserWalletAccountAsset;
+    body: CreateUserWalletAccountAssetRequest;
     path: {
         id: string;
     };

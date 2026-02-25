@@ -839,7 +839,7 @@ export const companyPartialUpdate = <ThrowOnError extends boolean = false>(optio
     url: '/3/admin/company/',
     ...options,
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         ...options?.headers
     }
 });
@@ -852,7 +852,7 @@ export const companyUpdate = <ThrowOnError extends boolean = false>(options: Opt
     url: '/3/admin/company/',
     ...options,
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         ...options.headers
     }
 });
@@ -1011,7 +1011,7 @@ export const currenciesCreate = <ThrowOnError extends boolean = false>(options: 
     url: '/3/admin/currencies/',
     ...options,
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         ...options.headers
     }
 });
@@ -1033,7 +1033,7 @@ export const currenciesPartialUpdate = <ThrowOnError extends boolean = false>(op
     url: '/3/admin/currencies/{code}/',
     ...options,
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         ...options.headers
     }
 });
@@ -1046,7 +1046,7 @@ export const currenciesUpdate = <ThrowOnError extends boolean = false>(options: 
     url: '/3/admin/currencies/{code}/',
     ...options,
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         ...options.headers
     }
 });
@@ -1183,7 +1183,7 @@ export const groupsCreate = <ThrowOnError extends boolean = false>(options: Opti
     url: '/3/admin/groups/',
     ...options,
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         ...options.headers
     }
 });
@@ -1205,7 +1205,7 @@ export const groupsPartialUpdate = <ThrowOnError extends boolean = false>(option
     url: '/3/admin/groups/{group_name}/',
     ...options,
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         ...options.headers
     }
 });
@@ -1218,7 +1218,7 @@ export const groupsUpdate = <ThrowOnError extends boolean = false>(options: Opti
     url: '/3/admin/groups/{group_name}/',
     ...options,
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         ...options.headers
     }
 });
@@ -2548,7 +2548,7 @@ export const usersCreate = <ThrowOnError extends boolean = false>(options?: Opti
     url: '/3/admin/users/',
     ...options,
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         ...options?.headers
     }
 });
@@ -2570,7 +2570,7 @@ export const usersPartialUpdate = <ThrowOnError extends boolean = false>(options
     url: '/3/admin/users/{identifier}/',
     ...options,
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         ...options.headers
     }
 });
@@ -2583,7 +2583,7 @@ export const usersUpdate = <ThrowOnError extends boolean = false>(options: Optio
     url: '/3/admin/users/{identifier}/',
     ...options,
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         ...options.headers
     }
 });
@@ -3320,7 +3320,7 @@ export const usersDocumentsCreate = <ThrowOnError extends boolean = false>(optio
     url: '/3/admin/users/documents/',
     ...options,
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         ...options.headers
     }
 });
@@ -3920,13 +3920,13 @@ export const webhooksList = <ThrowOnError extends boolean = false>(options?: Opt
 /**
  * Create webhook
  */
-export const webhooksCreate = <ThrowOnError extends boolean = false>(options: Options<WebhooksCreateData, ThrowOnError>) => (options.client ?? client).post<WebhooksCreateResponses, unknown, ThrowOnError>({
+export const webhooksCreate = <ThrowOnError extends boolean = false>(options?: Options<WebhooksCreateData, ThrowOnError>) => (options?.client ?? client).post<WebhooksCreateResponses, unknown, ThrowOnError>({
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/3/admin/webhooks/',
     ...options,
     headers: {
         'Content-Type': 'application/json',
-        ...options.headers
+        ...options?.headers
     }
 });
 

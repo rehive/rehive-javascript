@@ -1150,7 +1150,7 @@ export const userPartialUpdate = <ThrowOnError extends boolean = false>(options?
     url: '/3/user/',
     ...options,
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         ...options?.headers
     }
 });
@@ -1163,7 +1163,7 @@ export const userUpdate = <ThrowOnError extends boolean = false>(options: Option
     url: '/3/user/',
     ...options,
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         ...options.headers
     }
 });
@@ -1703,7 +1703,7 @@ export const userDocumentsCreate = <ThrowOnError extends boolean = false>(option
     url: '/3/user/documents/',
     ...options,
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         ...options.headers
     }
 });
