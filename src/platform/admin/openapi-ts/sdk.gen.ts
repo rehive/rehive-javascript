@@ -838,10 +838,6 @@ export const companyPartialUpdate = <ThrowOnError extends boolean = false>(optio
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/3/admin/company/',
     ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options?.headers
-    }
 });
 
 /**
@@ -851,10 +847,6 @@ export const companyUpdate = <ThrowOnError extends boolean = false>(options: Opt
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/3/admin/company/',
     ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
 });
 
 /**
@@ -1010,10 +1002,6 @@ export const currenciesCreate = <ThrowOnError extends boolean = false>(options: 
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/3/admin/currencies/',
     ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
 });
 
 /**
@@ -1032,10 +1020,6 @@ export const currenciesPartialUpdate = <ThrowOnError extends boolean = false>(op
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/3/admin/currencies/{code}/',
     ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
 });
 
 /**
@@ -1045,10 +1029,6 @@ export const currenciesUpdate = <ThrowOnError extends boolean = false>(options: 
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/3/admin/currencies/{code}/',
     ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
 });
 
 /**
@@ -1182,10 +1162,6 @@ export const groupsCreate = <ThrowOnError extends boolean = false>(options: Opti
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/3/admin/groups/',
     ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
 });
 
 /**
@@ -1204,10 +1180,6 @@ export const groupsPartialUpdate = <ThrowOnError extends boolean = false>(option
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/3/admin/groups/{group_name}/',
     ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
 });
 
 /**
@@ -1217,10 +1189,6 @@ export const groupsUpdate = <ThrowOnError extends boolean = false>(options: Opti
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/3/admin/groups/{group_name}/',
     ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
 });
 
 /**
@@ -2547,10 +2515,6 @@ export const usersCreate = <ThrowOnError extends boolean = false>(options?: Opti
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/3/admin/users/',
     ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options?.headers
-    }
 });
 
 /**
@@ -2569,10 +2533,6 @@ export const usersPartialUpdate = <ThrowOnError extends boolean = false>(options
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/3/admin/users/{identifier}/',
     ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
 });
 
 /**
@@ -2582,10 +2542,6 @@ export const usersUpdate = <ThrowOnError extends boolean = false>(options: Optio
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/3/admin/users/{identifier}/',
     ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
 });
 
 /**
@@ -3319,10 +3275,6 @@ export const usersDocumentsCreate = <ThrowOnError extends boolean = false>(optio
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/3/admin/users/documents/',
     ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
 });
 
 /**
