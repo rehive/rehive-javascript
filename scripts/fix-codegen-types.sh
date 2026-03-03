@@ -33,21 +33,24 @@ done
 echo "Done. Generated type defaults updated."
 
 # ---------------------------------------------------------------------------
-# Remove Content-Type header for endpoints with file upload fields.
+# Fix file upload endpoints to use formDataBodySerializer.
 #
-# The generator hardcodes 'Content-Type': 'application/json' in sdk.gen.ts
-# for all endpoints. For endpoints whose request body contains Blob | File
-# fields, the Content-Type must NOT be set so the browser/runtime can
-# automatically set it to multipart/form-data with the correct boundary.
+# The generator hardcodes 'Content-Type': 'application/json' and uses
+# jsonBodySerializer for all endpoints. For endpoints whose request body
+# contains Blob | File fields, we need to:
+#   1. Use formDataBodySerializer so the body object is converted to FormData
+#   2. Delete the Content-Type header so the browser/runtime automatically
+#      sets it to multipart/form-data with the correct boundary
 #
 # Approach:
 #   1. Scan types.gen.ts to find *Data types whose body references a type
 #      that contains "Blob | File".
-#   2. In sdk.gen.ts, find the corresponding function (matched via
-#      Options<DataType>) and remove the headers block entirely.
+#   2. In sdk.gen.ts, add the formDataBodySerializer import, replace the
+#      Content-Type header with null (to delete it from merged headers),
+#      and spread formDataBodySerializer into the request options.
 # ---------------------------------------------------------------------------
 
-echo "Removing Content-Type for file upload endpoints..."
+echo "Fixing file upload endpoints to use formDataBodySerializer..."
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -65,12 +68,18 @@ for types_file in src/*/openapi-ts/types.gen.ts src/*/*/openapi-ts/types.gen.ts;
     continue
   fi
 
-  # Remove the Content-Type headers block for all matching data types at once.
   python3 -c "
 import re, sys
 
 with open('$sdk_file') as f:
     content = f.read()
+
+# Add formDataBodySerializer import if not present
+if 'formDataBodySerializer' not in content:
+    content = content.replace(
+        \"import type { Client, Options as Options2, TDataShape } from './client';\",
+        \"import type { Client, Options as Options2, TDataShape } from './client';\nimport { formDataBodySerializer } from './core/bodySerializer.gen';\",
+    )
 
 data_types = '''$multipart_data_types'''.strip().split('\n')
 count = 0
@@ -79,15 +88,23 @@ for data_type in data_types:
     data_type = data_type.strip()
     if not data_type:
         continue
-    # Remove the entire headers block from functions using this Data type.
+    # Replace the headers block with formDataBodySerializer + Content-Type: null
     pattern = (
         r'(Options<' + re.escape(data_type) + r',.*?\.\.\.options,\n)'
         r'    headers: \{\n'
         r\"        'Content-Type': 'application/json',\n\"
-        r'        \.\.\.options(?:\?)?\.headers\n'
+        r'        \.\.\.options((?:\?)?)\.headers\n'
         r'    \}\n'
     )
-    new_content, n = re.subn(pattern, r'\1', content, flags=re.DOTALL)
+    replacement = (
+        r'\1'
+        r'    ...formDataBodySerializer,\n'
+        r'    headers: {\n'
+        r\"        'Content-Type': null,\n\"
+        r'        ...options\2.headers\n'
+        r'    }\n'
+    )
+    new_content, n = re.subn(pattern, replacement, content, flags=re.DOTALL)
     if n > 0:
         content = new_content
         count += n
@@ -95,8 +112,8 @@ for data_type in data_types:
 if count > 0:
     with open('$sdk_file', 'w') as f:
         f.write(content)
-    print(f'  Removed {count} Content-Type header(s) in: $sdk_file')
+    print(f'  Fixed {count} file upload endpoint(s) in: $sdk_file')
 "
 done
 
-echo "Done. File upload endpoint headers updated."
+echo "Done. File upload endpoints updated."
