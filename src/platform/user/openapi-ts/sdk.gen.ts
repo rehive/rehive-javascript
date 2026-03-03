@@ -1149,10 +1149,6 @@ export const userPartialUpdate = <ThrowOnError extends boolean = false>(options?
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/3/user/',
     ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options?.headers
-    }
 });
 
 /**
@@ -1162,10 +1158,6 @@ export const userUpdate = <ThrowOnError extends boolean = false>(options: Option
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/3/user/',
     ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
 });
 
 /**
@@ -1702,10 +1694,6 @@ export const userDocumentsCreate = <ThrowOnError extends boolean = false>(option
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/3/user/documents/',
     ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
 });
 
 export const userDocumentsDestroy = <ThrowOnError extends boolean = false>(options: Options<UserDocumentsDestroyData, ThrowOnError>) => (options.client ?? client).delete<UserDocumentsDestroyResponses, unknown, ThrowOnError>({
