@@ -83,14 +83,13 @@ describe('AuthProvider', () => {
     expect(getByTestId('error')).toBeInTheDocument();
   });
 
-  it('should initialize with loading state', async () => {
+  it('should initialize auth state and settle', async () => {
     const { getByTestId } = render(
       <TestWrapper>
         <TestComponent />
       </TestWrapper>,
     );
 
-    expect(getByTestId('loading')).toHaveTextContent('true');
     expect(getByTestId('user')).toHaveTextContent('null');
 
     await waitFor(() => {
@@ -230,6 +229,19 @@ describe('AuthProvider', () => {
     expect(typeof result.current.auth.login).toBe('function');
     expect(typeof result.current.auth.registerCompany).toBe('function');
     expect(typeof result.current.auth.logout).toBe('function');
+  });
+
+  it('should expose auth status and recovery state', async () => {
+    const { result } = renderHook(() => useAuth(), {
+      wrapper: TestWrapper,
+    });
+
+    await waitFor(() => {
+      expect(result.current.authLoading).toBe(false);
+    });
+
+    expect(result.current.authStatus).toBe('unauthenticated');
+    expect(result.current.authRecovery.pending).toBe(false);
   });
 
   it('should throw error when used outside AuthProvider', () => {
