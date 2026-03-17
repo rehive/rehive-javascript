@@ -352,6 +352,45 @@ describe('createAuth', () => {
       expect(auth.getStatus()).toBe('recoverable');
       expect(auth.getState().recovery.pending).toBe(true);
     });
+
+    it('should refresh and keep the session when validation hits an unauthorized error', async () => {
+      const auth = createAuth({ storage: 'memory', enableCrossTabSync: false });
+
+      await auth.login({
+        user: 'test@example.com',
+        password: 'password123',
+        company: 'test-co',
+      });
+
+      mockFetch
+        .mockResolvedValueOnce({
+          ok: false,
+          status: 401,
+          json: async () => ({ message: 'Unauthorized' }),
+          text: async () => JSON.stringify({ message: 'Unauthorized' }),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          status: 200,
+          json: async () => ({
+            data: {
+              id: 'user-123',
+              email: 'test@example.com',
+              company: 'test-co',
+            },
+          }),
+          text: async () => '',
+        });
+
+      const isValid = await auth.validateActiveSession({
+        retryCount: 0,
+      });
+
+      expect(isValid).toBe(true);
+      expect(mockAuthRefreshCreate).toHaveBeenCalledTimes(1);
+      expect(auth.getStatus()).toBe('authenticated');
+      expect(auth.getActiveSession()?.token).toBe(mockLoginResponse.data.token);
+    });
   });
 
   describe('listeners', () => {

@@ -899,16 +899,21 @@ export function createAuth(config: AuthConfig = {}): Auth {
     options: ValidateSessionOptions = {},
   ): Promise<boolean> {
     await initialize();
-    const activeSession = getActiveSession();
-
-    if (!activeSession?.token) {
+    if (!getActiveSession()?.token) {
       return false;
     }
 
     const retryCount = options.retryCount ?? 1;
     const retryDelayMs = options.retryDelayMs ?? 400;
+    let refreshAttempted = false;
 
     for (let attempt = 0; attempt <= retryCount; attempt += 1) {
+      const activeSession = getActiveSession();
+
+      if (!activeSession?.token) {
+        return false;
+      }
+
       try {
         await fetchUserForToken(activeSession.token);
         return true;
@@ -924,6 +929,28 @@ export function createAuth(config: AuthConfig = {}): Auth {
               : undefined;
 
         if (status === 401 || status === 403) {
+          if (!refreshAttempted && activeSession.refresh_token) {
+            refreshAttempted = true;
+
+            try {
+              await refresh();
+            } catch {
+              return false;
+            }
+
+            const refreshedSession = getActiveSession();
+            if (!refreshedSession?.token) {
+              return false;
+            }
+
+            try {
+              await fetchUserForToken(refreshedSession.token);
+              return true;
+            } catch {
+              return false;
+            }
+          }
+
           if (attempt < retryCount) {
             await sleep(retryDelayMs);
             continue;
