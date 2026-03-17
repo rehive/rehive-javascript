@@ -1,5 +1,14 @@
 export { createAuth } from './auth/create-auth.js';
-export type { Auth, AuthConfig, LoginParams, RegisterParams, RegisterCompanyParams } from './auth/create-auth.js';
+export type {
+  Auth,
+  AuthConfig,
+  LoginParams,
+  RegisterParams,
+  RegisterCompanyParams,
+  ImportTokenOptions,
+  ValidateSessionOptions,
+  SessionPatch,
+} from './auth/create-auth.js';
 
 export { createUserApi } from './platform/user/create-api.js';
 export { createAdminApi } from './platform/admin/create-api.js';
@@ -13,7 +22,14 @@ export type {
   UserSession,
   AuthSession,
   AuthState,
+  AuthStatus,
+  AuthRecoveryState,
+  AuthSnapshot,
+  AuthEvent,
+  AuthEventType,
   SessionListener,
   ErrorListener,
+  AuthStateListener,
+  AuthEventListener,
   StorageAdapter,
 } from './auth/types/index.js';

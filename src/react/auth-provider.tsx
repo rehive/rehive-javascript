@@ -1,10 +1,34 @@
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  type ReactNode,
+} from 'react';
 import { createAuth } from '../auth/create-auth.js';
-import type { Auth, AuthConfig, LoginParams, RegisterParams, RegisterCompanyParams } from '../auth/create-auth.js';
-import type { AuthSession } from '../auth/types/index.js';
+import type {
+  Auth,
+  AuthConfig,
+  ImportTokenOptions,
+  LoginParams,
+  RegisterParams,
+  RegisterCompanyParams,
+  SessionPatch,
+  ValidateSessionOptions,
+} from '../auth/create-auth.js';
+import type {
+  AuthRecoveryState,
+  AuthSession,
+  AuthSnapshot,
+  AuthStatus,
+} from '../auth/types/index.js';
 
 export interface AuthContextType {
   authUser: AuthSession | null | undefined;
+  authStatus: AuthStatus;
+  authState: AuthSnapshot;
+  authRecovery: AuthRecoveryState;
   refreshCallback: () => Promise<void>;
   login: (params: LoginParams) => Promise<AuthSession>;
   register: (params: RegisterParams) => Promise<AuthSession>;
@@ -19,6 +43,15 @@ export interface AuthContextType {
   switchToSession: (userId: string, company?: string) => Promise<AuthSession | null>;
   clearAllSessions: () => Promise<void>;
   logoutAll: () => Promise<void>;
+  importToken: (token: string, options?: ImportTokenOptions) => Promise<AuthSession>;
+  validateActiveSession: (options?: ValidateSessionOptions) => Promise<boolean>;
+  syncActiveSessionUser: () => Promise<AuthSession | null>;
+  updateSession: (
+    userId: string,
+    company: string | undefined,
+    patch: SessionPatch,
+  ) => Promise<AuthSession | null>;
+  expireActiveSession: () => Promise<AuthRecoveryState>;
   auth: Auth;
 }
 
@@ -31,124 +64,122 @@ export interface AuthProviderProps {
 
 export const AuthProvider = ({ children, config }: AuthProviderProps) => {
   const [auth] = useState(() => createAuth(config));
-  const [authUser, setAuthUser] = useState<AuthSession | null | undefined>(undefined);
-  const [authLoading, setAuthLoading] = useState(true);
-  const [authError, setAuthError] = useState<Error | null>(null);
+  const [authState, setAuthState] = useState<AuthSnapshot>(() => auth.getState());
+  const [pendingActionCount, setPendingActionCount] = useState(0);
 
-  const refreshCallback = useCallback(() => auth.refresh(), [auth]);
+  const runWithLoading = useCallback(
+    async function <T>(operation: () => Promise<T>): Promise<T> {
+      setPendingActionCount((count) => count + 1);
+      try {
+        return await operation();
+      } finally {
+        setPendingActionCount((count) => Math.max(0, count - 1));
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
-    const unsubscribeSession = auth.subscribe(setAuthUser);
-    const unsubscribeError = auth.subscribeToErrors(setAuthError);
-
+    const unsubscribeState = auth.subscribeToState(setAuthState);
     return () => {
-      unsubscribeSession();
-      unsubscribeError();
+      unsubscribeState();
     };
   }, [auth]);
 
-  useEffect(() => {
-    const initializeAuth = async () => {
-      try {
-        if (!config.token) {
-          await new Promise((resolve) => setTimeout(resolve, 10));
-        }
-        const session = auth.getActiveSession();
-        setAuthUser(session);
-      } catch (error) {
-        console.error('Error initializing auth:', error);
-        setAuthUser(null);
-      } finally {
-        setAuthLoading(false);
+  const refreshCallback = useCallback(() => auth.refresh(), [auth]);
+
+  const login = useCallback(
+    (params: LoginParams): Promise<AuthSession> =>
+      runWithLoading(() => auth.login(params)),
+    [auth, runWithLoading],
+  );
+
+  const register = useCallback(
+    (params: RegisterParams): Promise<AuthSession> =>
+      runWithLoading(() => auth.register(params)),
+    [auth, runWithLoading],
+  );
+
+  const registerCompany = useCallback(
+    (params: RegisterCompanyParams): Promise<AuthSession> =>
+      runWithLoading(() => auth.registerCompany(params)),
+    [auth, runWithLoading],
+  );
+
+  const logout = useCallback(
+    (): Promise<void> => runWithLoading(() => auth.logout()),
+    [auth, runWithLoading],
+  );
+
+  const deleteChallenge = useCallback(
+    async (challengeId: string | undefined): Promise<void> => {
+      if (!challengeId) {
+        return;
       }
-    };
+      await runWithLoading(() => auth.deleteChallenge(challengeId));
+    },
+    [auth, runWithLoading],
+  );
 
-    initializeAuth();
-  }, [auth, config.token]);
+  const switchToSession = useCallback(
+    (userId: string, company?: string): Promise<AuthSession | null> =>
+      runWithLoading(() => auth.switchToSession(userId, company)),
+    [auth, runWithLoading],
+  );
 
-  const login = async (params: LoginParams): Promise<AuthSession> => {
-    setAuthLoading(true);
-    try {
-      return await auth.login(params);
-    } finally {
-      setAuthLoading(false);
-    }
-  };
+  const clearAllSessions = useCallback(
+    (): Promise<void> => runWithLoading(() => auth.clearAllSessions()),
+    [auth, runWithLoading],
+  );
 
-  const register = async (params: RegisterParams): Promise<AuthSession> => {
-    setAuthLoading(true);
-    try {
-      return await auth.register(params);
-    } finally {
-      setAuthLoading(false);
-    }
-  };
+  const logoutAll = useCallback(
+    (): Promise<void> => runWithLoading(() => auth.logoutAll()),
+    [auth, runWithLoading],
+  );
 
-  const registerCompany = async (params: RegisterCompanyParams): Promise<AuthSession> => {
-    setAuthLoading(true);
-    try {
-      return await auth.registerCompany(params);
-    } finally {
-      setAuthLoading(false);
-    }
-  };
+  const importToken = useCallback(
+    (token: string, options?: ImportTokenOptions): Promise<AuthSession> =>
+      runWithLoading(() => auth.importToken(token, options)),
+    [auth, runWithLoading],
+  );
 
-  const logout = async (): Promise<void> => {
-    setAuthLoading(true);
-    try {
-      await auth.logout();
-    } finally {
-      setAuthLoading(false);
-    }
-  };
+  const validateActiveSession = useCallback(
+    (options?: ValidateSessionOptions): Promise<boolean> =>
+      auth.validateActiveSession(options),
+    [auth],
+  );
 
-  const deleteChallenge = async (challengeId: string | undefined): Promise<void> => {
-    if (!challengeId) return;
-    setAuthLoading(true);
-    try {
-      await auth.deleteChallenge(challengeId);
-    } finally {
-      setAuthLoading(false);
-    }
-  };
+  const syncActiveSessionUser = useCallback(
+    (): Promise<AuthSession | null> => runWithLoading(() => auth.syncActiveSessionUser()),
+    [auth, runWithLoading],
+  );
 
-  const getSessions = (): AuthSession[] => auth.getSessions();
+  const updateSession = useCallback(
+    (
+      userId: string,
+      company: string | undefined,
+      patch: SessionPatch,
+    ): Promise<AuthSession | null> =>
+      runWithLoading(() => auth.updateSession(userId, company, patch)),
+    [auth, runWithLoading],
+  );
 
-  const getSessionsByCompany = (company: string): AuthSession[] =>
-    auth.getSessionsByCompany(company);
+  const expireActiveSession = useCallback(
+    (): Promise<AuthRecoveryState> =>
+      runWithLoading(() => auth.expireActiveSession()),
+    [auth, runWithLoading],
+  );
 
-  const switchToSession = async (
-    userId: string,
-    company?: string,
-  ): Promise<AuthSession | null> => {
-    setAuthLoading(true);
-    try {
-      return await auth.switchToSession(userId, company);
-    } finally {
-      setAuthLoading(false);
-    }
-  };
-
-  const clearAllSessions = async (): Promise<void> => {
-    setAuthLoading(true);
-    try {
-      await auth.clearAllSessions();
-    } finally {
-      setAuthLoading(false);
-    }
-  };
-
-  const logoutAll = async (): Promise<void> => {
-    setAuthLoading(true);
-    try {
-      await auth.logoutAll();
-    } finally {
-      setAuthLoading(false);
-    }
-  };
+  const authLoading =
+    pendingActionCount > 0 ||
+    authState.status === 'loading' ||
+    authState.status === 'refreshing';
 
   const contextValue: AuthContextType = {
-    authUser,
+    authUser: authState.session,
+    authStatus: authState.status,
+    authState,
+    authRecovery: authState.recovery,
     refreshCallback,
     login,
     register,
@@ -156,13 +187,18 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
     logout,
     refresh: refreshCallback,
     authLoading,
-    authError,
+    authError: authState.error,
     deleteChallenge,
-    getSessions,
-    getSessionsByCompany,
+    getSessions: auth.getSessions,
+    getSessionsByCompany: auth.getSessionsByCompany,
     switchToSession,
     clearAllSessions,
     logoutAll,
+    importToken,
+    validateActiveSession,
+    syncActiveSessionUser,
+    updateSession,
+    expireActiveSession,
     auth,
   };
 
