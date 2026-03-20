@@ -928,10 +928,11 @@ export type Auth = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly created: number;
     readonly updated: number;
     settings: UserSettings;
@@ -950,6 +951,7 @@ export type AuthResponse = {
  */
 export type AuthToken = {
     token_key: string;
+    readonly label: string;
     readonly expires: number;
     readonly created: number;
 };
@@ -2302,6 +2304,7 @@ export type CreateAccountAccountAssetRequest = {
 export type CreateAuthTokenRequest = {
     password: string;
     duration?: number | null;
+    label?: string | null;
 };
 
 /**
@@ -2922,10 +2925,11 @@ export type CryptoAccount = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
@@ -3972,10 +3976,11 @@ export type ExtendedUserInfo = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly created: number;
     readonly updated: number;
     settings: UserSettings;
@@ -6429,6 +6434,10 @@ export type PatchedExtendedUserInfoRequest = {
  */
 export type PatchedMobileRequest = {
     primary?: boolean;
+};
+
+export type PatchedUpdateAuthTokenRequest = {
+    label?: string | null;
 };
 
 /**
@@ -8935,6 +8944,10 @@ export type TransactionSubtypeResponse = {
     data: TransactionSubtype;
 };
 
+export type UpdateAuthTokenRequest = {
+    label?: string | null;
+};
+
 /**
  * A mixin that handles the application of permissions to properties on a
  * serializer using the built-in permissions system.
@@ -9240,10 +9253,11 @@ export type UserAddress = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly created: number;
     readonly updated: number;
 };
@@ -9573,10 +9587,11 @@ export type UserBankAccount = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly currencies: Array<ReducedAsset>;
     readonly account_currencies: Array<ReducedAccountAsset>;
     /**
@@ -10301,10 +10316,11 @@ export type UserDocument = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -10495,10 +10511,11 @@ export type UserWalletAccount = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly currencies: Array<ReducedAsset>;
     readonly account_currencies: Array<ReducedAccountAsset>;
     /**
@@ -16940,6 +16957,36 @@ export type AuthTokensRetrieveResponses = {
 };
 
 export type AuthTokensRetrieveResponse = AuthTokensRetrieveResponses[keyof AuthTokensRetrieveResponses];
+
+export type AuthTokensPartialUpdateData = {
+    body?: PatchedUpdateAuthTokenRequest;
+    path: {
+        token_key: string;
+    };
+    query?: never;
+    url: '/3/auth/tokens/{token_key}/';
+};
+
+export type AuthTokensPartialUpdateResponses = {
+    200: AuthTokenResponse;
+};
+
+export type AuthTokensPartialUpdateResponse = AuthTokensPartialUpdateResponses[keyof AuthTokensPartialUpdateResponses];
+
+export type AuthTokensUpdateData = {
+    body?: UpdateAuthTokenRequest;
+    path: {
+        token_key: string;
+    };
+    query?: never;
+    url: '/3/auth/tokens/{token_key}/';
+};
+
+export type AuthTokensUpdateResponses = {
+    200: AuthTokenResponse;
+};
+
+export type AuthTokensUpdateResponse = AuthTokensUpdateResponses[keyof AuthTokensUpdateResponses];
 
 export type CompanyRetrieveData = {
     body?: never;

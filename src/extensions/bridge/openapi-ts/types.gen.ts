@@ -49,6 +49,22 @@ export type AdminCompanyResponse = {
     data: AdminCompany;
 };
 
+export type AdminCreateLiquidationAddress = {
+    wallet?: string;
+    account_currency?: string;
+    /**
+     * * `solana` - Solana
+     * * `base` - Base
+     * * `ethereum` - Ethereum
+     * * `stellar` - Stellar
+     * * `tron` - Tron
+     * * `polygon` - Polygon
+     * * `arbitrum` - Arbitrum
+     * * `optimism` - Optimism
+     */
+    chain: 'solana' | 'base' | 'ethereum' | 'stellar' | 'tron' | 'polygon' | 'arbitrum' | 'optimism';
+};
+
 /**
  * A ModelSerializer that takes additional arguments for
  * "fields", "omit" and "expand" in order to
@@ -58,9 +74,22 @@ export type AdminCompanyResponse = {
 export type AdminCreatePayoutConfiguration = {
     /**
      * * `solana` - Solana
+     * * `base` - Base
      */
-    destination_chain: 'solana';
+    destination_chain: 'solana' | 'base';
     destination_address: string;
+};
+
+export type AdminCreateVirtualAccount = {
+    wallet?: string;
+    account_currency?: string;
+    /**
+     * * `usd` - Usd
+     * * `eur` - Eur
+     * * `mxn` - Mxn
+     * * `brl` - Brl
+     */
+    source_currency?: 'usd' | 'eur' | 'mxn' | 'brl';
 };
 
 export type AdminCryptoReturnPolicy = {
@@ -103,8 +132,9 @@ export type AdminCurrency = {
     bridge_code?: 'usdc' | 'eurc';
     /**
      * * `solana` - Solana
+     * * `base` - Base
      */
-    bridge_chain?: 'solana';
+    bridge_chain?: 'solana' | 'base';
     readonly display_code: string | null;
     readonly description: string | null;
     readonly symbol: string | null;
@@ -191,6 +221,9 @@ export type AdminPaymentProcessorQuote = {
     };
     amount?: string | null;
     expiration_date?: string | null;
+    user: {
+        [key: string]: unknown;
+    };
     payer_user?: {
         [key: string]: unknown;
     };
@@ -226,8 +259,9 @@ export type AdminPayoutConfiguration = {
     wallet: AdminWallet;
     /**
      * * `solana` - Solana
+     * * `base` - Base
      */
-    destination_chain: 'solana';
+    destination_chain: 'solana' | 'base';
     destination_address: string;
     readonly created: string;
     readonly updated: string;
@@ -391,8 +425,9 @@ export type Currency = {
     bridge_code?: 'usdc' | 'eurc' | 'usd' | 'eur' | 'mxn' | 'brl';
     /**
      * * `solana` - Solana
+     * * `base` - Base
      */
-    bridge_chain?: 'solana';
+    bridge_chain?: 'solana' | 'base';
     display_code?: string | null;
     description?: string | null;
     symbol?: string | null;
@@ -498,6 +533,18 @@ export type PaginatedCurrencyListResponse = {
     data: PaginatedCurrencyList;
 };
 
+export type PaginatedUserStaticTemplateList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<UserStaticTemplate>;
+};
+
+export type PaginatedUserStaticTemplateListResponse = {
+    status: string;
+    data: PaginatedUserStaticTemplateList;
+};
+
 export type PaginatedUserVirtualAccountList = {
     count?: number;
     next?: string | null;
@@ -538,8 +585,9 @@ export type PatchedAdminCurrency = {
     bridge_code?: 'usdc' | 'eurc';
     /**
      * * `solana` - Solana
+     * * `base` - Base
      */
-    bridge_chain?: 'solana';
+    bridge_chain?: 'solana' | 'base';
     readonly display_code?: string | null;
     readonly description?: string | null;
     readonly symbol?: string | null;
@@ -559,8 +607,9 @@ export type PatchedAdminPayoutConfiguration = {
     wallet?: AdminWallet;
     /**
      * * `solana` - Solana
+     * * `base` - Base
      */
-    destination_chain?: 'solana';
+    destination_chain?: 'solana' | 'base';
     destination_address?: string;
     readonly created?: string;
     readonly updated?: string;
@@ -620,6 +669,17 @@ export type UserCreateCustomerKycLink = {
     customer_type?: 'individual' | 'business';
     endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'cards'> | null;
     redirect_uri?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type UserCreateStaticTemplate = {
+    account: string;
+    currency: string;
 };
 
 /**
@@ -719,6 +779,28 @@ export type UserResponse = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
+export type UserStaticTemplate = {
+    readonly id: string;
+    wallet: UserReducedWallet;
+    readonly bridge_id: string | null;
+    readonly deposit_instructions: {
+        [key: string]: unknown;
+    };
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type UserStaticTemplateResponse = {
+    status: string;
+    data: UserStaticTemplate;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
 export type UserVirtualAccount = {
     readonly id: string;
     wallet: UserReducedWallet;
@@ -791,8 +873,9 @@ export type AdminCreatePayoutConfigurationWritable = {
     currency: string;
     /**
      * * `solana` - Solana
+     * * `base` - Base
      */
-    destination_chain: 'solana';
+    destination_chain: 'solana' | 'base';
     destination_address: string;
 };
 
@@ -834,8 +917,9 @@ export type AdminCurrencyWritable = {
     bridge_code?: 'usdc' | 'eurc';
     /**
      * * `solana` - Solana
+     * * `base` - Base
      */
-    bridge_chain?: 'solana';
+    bridge_chain?: 'solana' | 'base';
 };
 
 export type AdminCurrencyResponseWritable = {
@@ -871,8 +955,9 @@ export type AdminPaymentProcessorQuoteResponseResponseWritable = {
 export type AdminPayoutConfigurationWritable = {
     /**
      * * `solana` - Solana
+     * * `base` - Base
      */
-    destination_chain: 'solana';
+    destination_chain: 'solana' | 'base';
     destination_address: string;
 };
 
@@ -1001,6 +1086,18 @@ export type PaginatedAdminWalletListResponseWritable = {
     data: PaginatedAdminWalletListWritable;
 };
 
+export type PaginatedUserStaticTemplateListWritable = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<UserStaticTemplateWritable>;
+};
+
+export type PaginatedUserStaticTemplateListResponseWritable = {
+    status: string;
+    data: PaginatedUserStaticTemplateListWritable;
+};
+
 export type PaginatedUserVirtualAccountListWritable = {
     count?: number;
     next?: string | null;
@@ -1039,8 +1136,9 @@ export type PatchedAdminCurrencyWritable = {
     bridge_code?: 'usdc' | 'eurc';
     /**
      * * `solana` - Solana
+     * * `base` - Base
      */
-    bridge_chain?: 'solana';
+    bridge_chain?: 'solana' | 'base';
 };
 
 /**
@@ -1052,8 +1150,9 @@ export type PatchedAdminCurrencyWritable = {
 export type PatchedAdminPayoutConfigurationWritable = {
     /**
      * * `solana` - Solana
+     * * `base` - Base
      */
-    destination_chain?: 'solana';
+    destination_chain?: 'solana' | 'base';
     destination_address?: string;
 };
 
@@ -1112,6 +1211,21 @@ export type UserReducedWalletWritable = {
 export type UserResponseWritable = {
     status: string;
     data: UserWritable;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type UserStaticTemplateWritable = {
+    [key: string]: unknown;
+};
+
+export type UserStaticTemplateResponseWritable = {
+    status: string;
+    data: UserStaticTemplateWritable;
 };
 
 /**
@@ -1361,6 +1475,19 @@ export type AdminLiquidationAddressesListResponses = {
 
 export type AdminLiquidationAddressesListResponse = AdminLiquidationAddressesListResponses[keyof AdminLiquidationAddressesListResponses];
 
+export type AdminLiquidationAddressesCreateData = {
+    body: AdminCreateLiquidationAddress;
+    path?: never;
+    query?: never;
+    url: '/admin/liquidation-addresses/';
+};
+
+export type AdminLiquidationAddressesCreateResponses = {
+    201: AdminLiquidationAddressResponse;
+};
+
+export type AdminLiquidationAddressesCreateResponse = AdminLiquidationAddressesCreateResponses[keyof AdminLiquidationAddressesCreateResponses];
+
 export type AdminLiquidationAddressesRetrieveData = {
     body?: never;
     path: {
@@ -1592,6 +1719,19 @@ export type AdminVirtualAccountsListResponses = {
 
 export type AdminVirtualAccountsListResponse = AdminVirtualAccountsListResponses[keyof AdminVirtualAccountsListResponses];
 
+export type AdminVirtualAccountsCreateData = {
+    body?: AdminCreateVirtualAccount;
+    path?: never;
+    query?: never;
+    url: '/admin/virtual-accounts/';
+};
+
+export type AdminVirtualAccountsCreateResponses = {
+    201: AdminVirtualAccountResponse;
+};
+
+export type AdminVirtualAccountsCreateResponse = AdminVirtualAccountsCreateResponses[keyof AdminVirtualAccountsCreateResponses];
+
 export type AdminVirtualAccountsRetrieveData = {
     body?: never;
     path: {
@@ -1790,6 +1930,56 @@ export type UserKycLinksCreateResponses = {
 };
 
 export type UserKycLinksCreateResponse = UserKycLinksCreateResponses[keyof UserKycLinksCreateResponses];
+
+export type UserStaticTemplatesListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/user/static-templates/';
+};
+
+export type UserStaticTemplatesListResponses = {
+    200: PaginatedUserStaticTemplateListResponse;
+};
+
+export type UserStaticTemplatesListResponse = UserStaticTemplatesListResponses[keyof UserStaticTemplatesListResponses];
+
+export type UserStaticTemplatesCreateData = {
+    body: UserCreateStaticTemplate;
+    path?: never;
+    query?: never;
+    url: '/user/static-templates/';
+};
+
+export type UserStaticTemplatesCreateResponses = {
+    201: UserStaticTemplateResponse;
+};
+
+export type UserStaticTemplatesCreateResponse = UserStaticTemplatesCreateResponses[keyof UserStaticTemplatesCreateResponses];
+
+export type UserStaticTemplatesRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/user/static-templates/{identifier}/';
+};
+
+export type UserStaticTemplatesRetrieveResponses = {
+    200: UserStaticTemplateResponse;
+};
+
+export type UserStaticTemplatesRetrieveResponse = UserStaticTemplatesRetrieveResponses[keyof UserStaticTemplatesRetrieveResponses];
 
 export type UserVirtualAccountsListData = {
     body?: never;

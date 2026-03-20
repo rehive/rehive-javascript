@@ -168,6 +168,7 @@ export type AdminAccount = {
     label?: string | null;
     primary?: boolean;
     recon?: boolean;
+    hidden?: boolean;
     user: ReducedUserInfo;
     readonly currencies: Array<AdminReducedAccountAccountAsset>;
     metadata?: {
@@ -469,6 +470,7 @@ export type AdminAssetResponse = {
 export type AdminAuthToken = {
     readonly token_key: string;
     user: ReducedUserInfo;
+    readonly label: string;
     readonly expires: number;
     readonly created: number;
 };
@@ -1480,6 +1482,7 @@ export type AdminCreateAccountRequest = {
     label?: string | null;
     primary?: boolean;
     recon?: boolean;
+    hidden?: boolean;
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -1515,6 +1518,7 @@ export type AdminCreateAssetRequest = {
 export type AdminCreateAuthTokenRequest = {
     duration?: number | null;
     user: string;
+    label?: string | null;
 };
 
 /**
@@ -1634,10 +1638,11 @@ export type AdminCreateCryptoAccountRequest = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     archived?: boolean;
     /**
      * * `withdraw` - Withdraw
@@ -2297,10 +2302,11 @@ export type AdminCreateUserAddressRequest = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     archived?: boolean;
 };
 
@@ -2358,10 +2364,11 @@ export type AdminCreateUserBankAccountRequest = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -2384,10 +2391,11 @@ export type AdminCreateUserDocumentRequest = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -3041,10 +3049,11 @@ export type AdminCreateUserWalletAccountRequest = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     archived?: boolean;
     /**
      * * `withdraw` - Withdraw
@@ -3084,10 +3093,11 @@ export type AdminCryptoAccount = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly currencies: Array<ReducedAsset>;
     readonly account_currencies: Array<ReducedAccountAsset>;
     archived?: boolean;
@@ -3159,10 +3169,11 @@ export type AdminCryptoAccountRequest = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     archived?: boolean;
     /**
      * * `withdraw` - Withdraw
@@ -3426,6 +3437,7 @@ export type AdminExtendedAccount = {
     label?: string | null;
     primary?: boolean;
     recon?: boolean;
+    hidden?: boolean;
     user: ReducedUserInfo;
     readonly currencies: Array<AdminAccountAccountAsset>;
     metadata?: {
@@ -3445,6 +3457,7 @@ export type AdminExtendedAuthToken = {
     readonly token_key: string;
     readonly token: string;
     user: ReducedUserInfo;
+    readonly label: string;
     readonly expires: number;
     readonly created: number;
 };
@@ -3558,6 +3571,7 @@ export type AdminExtendedRequest = {
     readonly id: number;
     user: ReducedUserInfo;
     readonly key: string | null;
+    readonly token_key: string | null;
     readonly scheme: string;
     readonly path: string | null;
     readonly method: string;
@@ -4366,10 +4380,11 @@ export type AdminExtendedUserInfo = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly created: number;
     readonly updated: number;
     deactivated?: boolean;
@@ -5794,6 +5809,7 @@ export type AdminRequest = {
     readonly id: number;
     user: ReducedUserInfo;
     readonly key: string | null;
+    readonly token_key: string | null;
     readonly scheme: string;
     readonly path: string | null;
     readonly method: string;
@@ -6286,7 +6302,8 @@ export type AdminUpdateAssetRequest = {
  * values with complex, nested serializations
  */
 export type AdminUpdateAuthTokenRequest = {
-    expires: number;
+    label?: string | null;
+    expires?: number;
 };
 
 /**
@@ -6364,6 +6381,7 @@ export type AdminUpdateExtendedAccountRequest = {
     label?: string | null;
     primary?: boolean;
     recon?: boolean;
+    hidden?: boolean;
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -6670,10 +6688,11 @@ export type AdminUpdateUserDocumentRequest = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -7238,10 +7257,11 @@ export type AdminUpdateUserInfoRequest = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     deactivated?: boolean;
     /**
      * * `retaining` - Retaining
@@ -7543,10 +7563,11 @@ export type AdminUserAddress = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     archived?: boolean;
     readonly created: number;
     readonly updated: number;
@@ -7828,10 +7849,11 @@ export type AdminUserAddressRequest = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     archived?: boolean;
 };
 
@@ -7877,10 +7899,11 @@ export type AdminUserBankAccount = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -7960,10 +7983,11 @@ export type AdminUserBankAccountRequest = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -8529,10 +8553,11 @@ export type AdminUserDocument = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly metadata: {
         [key: string]: unknown;
     } | null;
@@ -9146,10 +9171,11 @@ export type AdminUserInfo = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly created: number;
     readonly updated: number;
     deactivated?: boolean;
@@ -9350,10 +9376,11 @@ export type AdminUserWalletAccount = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly currencies: Array<ReducedAsset>;
     archived?: boolean;
     /**
@@ -9420,10 +9447,11 @@ export type AdminUserWalletAccountRequest = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     archived?: boolean;
     /**
      * * `withdraw` - Withdraw
@@ -11456,10 +11484,11 @@ export type ExtendedUserInfo = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly created: number;
     readonly updated: number;
     settings: UserSettings;
@@ -12944,10 +12973,11 @@ export type PatchedAdminCryptoAccountRequest = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     archived?: boolean;
     /**
      * * `withdraw` - Withdraw
@@ -13112,6 +13142,7 @@ export type PatchedAdminUpdateAssetRequest = {
  * values with complex, nested serializations
  */
 export type PatchedAdminUpdateAuthTokenRequest = {
+    label?: string | null;
     expires?: number;
 };
 
@@ -13190,6 +13221,7 @@ export type PatchedAdminUpdateExtendedAccountRequest = {
     label?: string | null;
     primary?: boolean;
     recon?: boolean;
+    hidden?: boolean;
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -13407,10 +13439,11 @@ export type PatchedAdminUpdateUserDocumentRequest = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -13975,10 +14008,11 @@ export type PatchedAdminUpdateUserInfoRequest = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     deactivated?: boolean;
     /**
      * * `retaining` - Retaining
@@ -14278,10 +14312,11 @@ export type PatchedAdminUserAddressRequest = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     archived?: boolean;
 };
 
@@ -14319,10 +14354,11 @@ export type PatchedAdminUserBankAccountRequest = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -14371,10 +14407,11 @@ export type PatchedAdminUserWalletAccountRequest = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     archived?: boolean;
     /**
      * * `withdraw` - Withdraw
@@ -15153,6 +15190,7 @@ export type AdminAccountWritable = {
     label?: string | null;
     primary?: boolean;
     recon?: boolean;
+    hidden?: boolean;
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -15980,6 +16018,7 @@ export type AdminCreateAccountRequestWritable = {
     label?: string | null;
     primary?: boolean;
     recon?: boolean;
+    hidden?: boolean;
     user?: string | null;
     metadata?: {
         [key: string]: unknown;
@@ -16104,10 +16143,11 @@ export type AdminCreateCryptoAccountRequestWritable = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     archived?: boolean;
     /**
      * * `withdraw` - Withdraw
@@ -16838,10 +16878,11 @@ export type AdminCreateUserAddressRequestWritable = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     archived?: boolean;
 };
 
@@ -16880,10 +16921,11 @@ export type AdminCreateUserBankAccountRequestWritable = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -16909,10 +16951,11 @@ export type AdminCreateUserDocumentRequestWritable = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -17559,10 +17602,11 @@ export type AdminCreateUserWalletAccountRequestWritable = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     archived?: boolean;
     /**
      * * `withdraw` - Withdraw
@@ -17599,10 +17643,11 @@ export type AdminCryptoAccountWritable = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     archived?: boolean;
     /**
      * * `withdraw` - Withdraw
@@ -17814,6 +17859,7 @@ export type AdminExtendedAccountWritable = {
     label?: string | null;
     primary?: boolean;
     recon?: boolean;
+    hidden?: boolean;
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -20112,10 +20158,11 @@ export type AdminUpdateUserDocumentRequestWritable = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -20681,10 +20728,11 @@ export type AdminUpdateUserInfoRequestWritable = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     deactivated?: boolean;
     /**
      * * `retaining` - Retaining
@@ -20984,10 +21032,11 @@ export type AdminUserAddressWritable = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     archived?: boolean;
 };
 
@@ -21030,10 +21079,11 @@ export type AdminUserBankAccountWritable = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -21766,10 +21816,11 @@ export type AdminUserWalletAccountWritable = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     archived?: boolean;
     /**
      * * `withdraw` - Withdraw
@@ -23701,10 +23752,11 @@ export type PatchedAdminUpdateUserDocumentRequestWritable = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -24270,10 +24322,11 @@ export type PatchedAdminUpdateUserInfoRequestWritable = {
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
+     * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     deactivated?: boolean;
     /**
      * * `retaining` - Retaining
@@ -24887,6 +24940,7 @@ export type AccountsListData = {
         currency?: string;
         definition?: string;
         group?: string;
+        hidden?: boolean;
         name?: string;
         orderby?: string;
         /**
@@ -27621,6 +27675,11 @@ export type RequestsListData = {
     path?: never;
     query?: {
         content_type?: string;
+        created?: string;
+        created__gt?: string;
+        created__gte?: string;
+        created__lt?: string;
+        created__lte?: string;
         key?: string;
         method?: string;
         method__in?: string;
@@ -27638,6 +27697,7 @@ export type RequestsListData = {
         resource_id?: string;
         scheme?: string;
         status_code?: number;
+        token_key?: string;
         user?: string;
     };
     url: '/3/admin/requests/';
@@ -30733,6 +30793,9 @@ export type UsersTokensListData = {
         created__lt?: string;
         created__lte?: string;
         expires__isnull?: boolean;
+        group?: string;
+        group__in?: string;
+        group__section?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -30814,7 +30877,7 @@ export type UsersTokensPartialUpdateResponses = {
 export type UsersTokensPartialUpdateResponse = UsersTokensPartialUpdateResponses[keyof UsersTokensPartialUpdateResponses];
 
 export type UsersTokensUpdateData = {
-    body: AdminUpdateAuthTokenRequest;
+    body?: AdminUpdateAuthTokenRequest;
     path: {
         token_key: string;
     };
