@@ -271,6 +271,7 @@ export type CompanyConfiguration = {
     readonly request_notification_id: string | null;
     reminder_default?: boolean;
     request_param_config?: string | null;
+    generate_user_operational_accounts?: boolean;
 };
 
 export type CompanyConfigurationResponse = {
@@ -654,6 +655,7 @@ export type PatchedCompanyConfiguration = {
     readonly request_notification_id?: string | null;
     reminder_default?: boolean;
     request_param_config?: string | null;
+    generate_user_operational_accounts?: boolean;
 };
 
 /**
@@ -1391,6 +1393,7 @@ export type CompanyConfigurationWritable = {
     base_redirect_url?: string | null;
     reminder_default?: boolean;
     request_param_config?: string | null;
+    generate_user_operational_accounts?: boolean;
 };
 
 export type CompanyConfigurationResponseWritable = {
@@ -1717,6 +1720,7 @@ export type PatchedCompanyConfigurationWritable = {
     base_redirect_url?: string | null;
     reminder_default?: boolean;
     request_param_config?: string | null;
+    generate_user_operational_accounts?: boolean;
 };
 
 /**

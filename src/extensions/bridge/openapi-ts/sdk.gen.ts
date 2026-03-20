@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { ActivateCreateData, ActivateCreateResponses, AdminCompanyPartialUpdateData, AdminCompanyPartialUpdateResponses, AdminCompanyRetrieveData, AdminCompanyRetrieveResponses, AdminCompanyUpdateData, AdminCompanyUpdateResponses, AdminCryptoReturnPoliciesCreateData, AdminCryptoReturnPoliciesCreateResponses, AdminCryptoReturnPoliciesDestroyData, AdminCryptoReturnPoliciesDestroyResponses, AdminCryptoReturnPoliciesListData, AdminCryptoReturnPoliciesListResponses, AdminCryptoReturnPoliciesPartialUpdateData, AdminCryptoReturnPoliciesPartialUpdateResponses, AdminCryptoReturnPoliciesRetrieveData, AdminCryptoReturnPoliciesRetrieveResponses, AdminCryptoReturnPoliciesUpdateData, AdminCryptoReturnPoliciesUpdateResponses, AdminCurrenciesListData, AdminCurrenciesListResponses, AdminCurrenciesPartialUpdateData, AdminCurrenciesPartialUpdateResponses, AdminCurrenciesRetrieveData, AdminCurrenciesRetrieveResponses, AdminCurrenciesUpdateData, AdminCurrenciesUpdateResponses, AdminLiquidationAddressesListData, AdminLiquidationAddressesListResponses, AdminLiquidationAddressesRetrieveData, AdminLiquidationAddressesRetrieveResponses, AdminOperationalAccountsLiquidationAddressCreateData, AdminOperationalAccountsLiquidationAddressCreateResponses, AdminOperationalAccountsVirtualAccountCreateData, AdminOperationalAccountsVirtualAccountCreateResponses, AdminPaymentProcessorQuoteCreateData, AdminPaymentProcessorQuoteCreateResponses, AdminPayoutConfigurationsCreateData, AdminPayoutConfigurationsCreateResponses, AdminPayoutConfigurationsDestroyData, AdminPayoutConfigurationsDestroyResponses, AdminPayoutConfigurationsListData, AdminPayoutConfigurationsListResponses, AdminPayoutConfigurationsPartialUpdateData, AdminPayoutConfigurationsPartialUpdateResponses, AdminPayoutConfigurationsRetrieveData, AdminPayoutConfigurationsRetrieveResponses, AdminPayoutConfigurationsUpdateData, AdminPayoutConfigurationsUpdateResponses, AdminTransactionTransitionsListData, AdminTransactionTransitionsListResponses, AdminTransactionTransitionsProcessCreateData, AdminTransactionTransitionsProcessCreateResponses, AdminTransactionTransitionsRetrieveData, AdminTransactionTransitionsRetrieveResponses, AdminVirtualAccountsListData, AdminVirtualAccountsListResponses, AdminVirtualAccountsRetrieveData, AdminVirtualAccountsRetrieveResponses, AdminWalletsListData, AdminWalletsListResponses, AdminWalletsRetrieveData, AdminWalletsRetrieveResponses, BridgeWebhookCreateData, BridgeWebhookCreateResponses, DeactivateCreateData, DeactivateCreateResponses, UserCryptoDepositCreateData, UserCryptoDepositCreateResponses, UserCurrenciesListData, UserCurrenciesListResponses, UserCurrenciesRetrieveData, UserCurrenciesRetrieveResponses, UserExchangeRatesRetrieveData, UserExchangeRatesRetrieveResponses, UserKycLinksCreateData, UserKycLinksCreateResponses, UserPartialUpdateData, UserPartialUpdateResponses, UserRetrieveData, UserRetrieveResponses, UserUpdateData, UserUpdateResponses, UserVirtualAccountsCreateData, UserVirtualAccountsCreateResponses, UserVirtualAccountsListData, UserVirtualAccountsListResponses, UserVirtualAccountsRetrieveData, UserVirtualAccountsRetrieveResponses, WebhookCreateData, WebhookCreateResponses } from './types.gen';
+import type { ActivateCreateData, ActivateCreateResponses, AdminCompanyPartialUpdateData, AdminCompanyPartialUpdateResponses, AdminCompanyRetrieveData, AdminCompanyRetrieveResponses, AdminCompanyUpdateData, AdminCompanyUpdateResponses, AdminCryptoReturnPoliciesCreateData, AdminCryptoReturnPoliciesCreateResponses, AdminCryptoReturnPoliciesDestroyData, AdminCryptoReturnPoliciesDestroyResponses, AdminCryptoReturnPoliciesListData, AdminCryptoReturnPoliciesListResponses, AdminCryptoReturnPoliciesPartialUpdateData, AdminCryptoReturnPoliciesPartialUpdateResponses, AdminCryptoReturnPoliciesRetrieveData, AdminCryptoReturnPoliciesRetrieveResponses, AdminCryptoReturnPoliciesUpdateData, AdminCryptoReturnPoliciesUpdateResponses, AdminCurrenciesListData, AdminCurrenciesListResponses, AdminCurrenciesPartialUpdateData, AdminCurrenciesPartialUpdateResponses, AdminCurrenciesRetrieveData, AdminCurrenciesRetrieveResponses, AdminCurrenciesUpdateData, AdminCurrenciesUpdateResponses, AdminLiquidationAddressesCreateData, AdminLiquidationAddressesCreateResponses, AdminLiquidationAddressesListData, AdminLiquidationAddressesListResponses, AdminLiquidationAddressesRetrieveData, AdminLiquidationAddressesRetrieveResponses, AdminOperationalAccountsLiquidationAddressCreateData, AdminOperationalAccountsLiquidationAddressCreateResponses, AdminOperationalAccountsVirtualAccountCreateData, AdminOperationalAccountsVirtualAccountCreateResponses, AdminPaymentProcessorQuoteCreateData, AdminPaymentProcessorQuoteCreateResponses, AdminPayoutConfigurationsCreateData, AdminPayoutConfigurationsCreateResponses, AdminPayoutConfigurationsDestroyData, AdminPayoutConfigurationsDestroyResponses, AdminPayoutConfigurationsListData, AdminPayoutConfigurationsListResponses, AdminPayoutConfigurationsPartialUpdateData, AdminPayoutConfigurationsPartialUpdateResponses, AdminPayoutConfigurationsRetrieveData, AdminPayoutConfigurationsRetrieveResponses, AdminPayoutConfigurationsUpdateData, AdminPayoutConfigurationsUpdateResponses, AdminTransactionTransitionsListData, AdminTransactionTransitionsListResponses, AdminTransactionTransitionsProcessCreateData, AdminTransactionTransitionsProcessCreateResponses, AdminTransactionTransitionsRetrieveData, AdminTransactionTransitionsRetrieveResponses, AdminVirtualAccountsCreateData, AdminVirtualAccountsCreateResponses, AdminVirtualAccountsListData, AdminVirtualAccountsListResponses, AdminVirtualAccountsRetrieveData, AdminVirtualAccountsRetrieveResponses, AdminWalletsListData, AdminWalletsListResponses, AdminWalletsRetrieveData, AdminWalletsRetrieveResponses, BridgeWebhookCreateData, BridgeWebhookCreateResponses, DeactivateCreateData, DeactivateCreateResponses, UserCryptoDepositCreateData, UserCryptoDepositCreateResponses, UserCurrenciesListData, UserCurrenciesListResponses, UserCurrenciesRetrieveData, UserCurrenciesRetrieveResponses, UserExchangeRatesRetrieveData, UserExchangeRatesRetrieveResponses, UserKycLinksCreateData, UserKycLinksCreateResponses, UserPartialUpdateData, UserPartialUpdateResponses, UserRetrieveData, UserRetrieveResponses, UserStaticTemplatesCreateData, UserStaticTemplatesCreateResponses, UserStaticTemplatesListData, UserStaticTemplatesListResponses, UserStaticTemplatesRetrieveData, UserStaticTemplatesRetrieveResponses, UserUpdateData, UserUpdateResponses, UserVirtualAccountsCreateData, UserVirtualAccountsCreateResponses, UserVirtualAccountsListData, UserVirtualAccountsListResponses, UserVirtualAccountsRetrieveData, UserVirtualAccountsRetrieveResponses, WebhookCreateData, WebhookCreateResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -139,6 +139,16 @@ export const adminLiquidationAddressesList = <ThrowOnError extends boolean = fal
     ...options
 });
 
+export const adminLiquidationAddressesCreate = <ThrowOnError extends boolean = false>(options: Options<AdminLiquidationAddressesCreateData, ThrowOnError>) => (options.client ?? client).post<AdminLiquidationAddressesCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/admin/liquidation-addresses/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
 export const adminLiquidationAddressesRetrieve = <ThrowOnError extends boolean = false>(options: Options<AdminLiquidationAddressesRetrieveData, ThrowOnError>) => (options.client ?? client).get<AdminLiquidationAddressesRetrieveResponses, unknown, ThrowOnError>({
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/admin/liquidation-addresses/{identifier}/',
@@ -251,6 +261,16 @@ export const adminVirtualAccountsList = <ThrowOnError extends boolean = false>(o
     ...options
 });
 
+export const adminVirtualAccountsCreate = <ThrowOnError extends boolean = false>(options?: Options<AdminVirtualAccountsCreateData, ThrowOnError>) => (options?.client ?? client).post<AdminVirtualAccountsCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/admin/virtual-accounts/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
 export const adminVirtualAccountsRetrieve = <ThrowOnError extends boolean = false>(options: Options<AdminVirtualAccountsRetrieveData, ThrowOnError>) => (options.client ?? client).get<AdminVirtualAccountsRetrieveResponses, unknown, ThrowOnError>({
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/admin/virtual-accounts/{identifier}/',
@@ -349,6 +369,28 @@ export const userKycLinksCreate = <ThrowOnError extends boolean = false>(options
         'Content-Type': 'application/json',
         ...options?.headers
     }
+});
+
+export const userStaticTemplatesList = <ThrowOnError extends boolean = false>(options?: Options<UserStaticTemplatesListData, ThrowOnError>) => (options?.client ?? client).get<UserStaticTemplatesListResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/user/static-templates/',
+    ...options
+});
+
+export const userStaticTemplatesCreate = <ThrowOnError extends boolean = false>(options: Options<UserStaticTemplatesCreateData, ThrowOnError>) => (options.client ?? client).post<UserStaticTemplatesCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/user/static-templates/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const userStaticTemplatesRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserStaticTemplatesRetrieveData, ThrowOnError>) => (options.client ?? client).get<UserStaticTemplatesRetrieveResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/user/static-templates/{identifier}/',
+    ...options
 });
 
 export const userVirtualAccountsList = <ThrowOnError extends boolean = false>(options?: Options<UserVirtualAccountsListData, ThrowOnError>) => (options?.client ?? client).get<UserVirtualAccountsListResponses, unknown, ThrowOnError>({

@@ -856,7 +856,7 @@ export const companyUpdate = <ThrowOnError extends boolean = false>(options: Opt
     ...formDataBodySerializer,
     headers: {
         'Content-Type': null,
-        ...options?.headers
+        ...options.headers
     }
 });
 
@@ -1016,7 +1016,7 @@ export const currenciesCreate = <ThrowOnError extends boolean = false>(options: 
     ...formDataBodySerializer,
     headers: {
         'Content-Type': null,
-        ...options?.headers
+        ...options.headers
     }
 });
 
@@ -1039,7 +1039,7 @@ export const currenciesPartialUpdate = <ThrowOnError extends boolean = false>(op
     ...formDataBodySerializer,
     headers: {
         'Content-Type': null,
-        ...options?.headers
+        ...options.headers
     }
 });
 
@@ -1053,7 +1053,7 @@ export const currenciesUpdate = <ThrowOnError extends boolean = false>(options: 
     ...formDataBodySerializer,
     headers: {
         'Content-Type': null,
-        ...options?.headers
+        ...options.headers
     }
 });
 
@@ -1191,7 +1191,7 @@ export const groupsCreate = <ThrowOnError extends boolean = false>(options: Opti
     ...formDataBodySerializer,
     headers: {
         'Content-Type': null,
-        ...options?.headers
+        ...options.headers
     }
 });
 
@@ -1214,7 +1214,7 @@ export const groupsPartialUpdate = <ThrowOnError extends boolean = false>(option
     ...formDataBodySerializer,
     headers: {
         'Content-Type': null,
-        ...options?.headers
+        ...options.headers
     }
 });
 
@@ -1228,7 +1228,7 @@ export const groupsUpdate = <ThrowOnError extends boolean = false>(options: Opti
     ...formDataBodySerializer,
     headers: {
         'Content-Type': null,
-        ...options?.headers
+        ...options.headers
     }
 });
 
@@ -2582,7 +2582,7 @@ export const usersPartialUpdate = <ThrowOnError extends boolean = false>(options
     ...formDataBodySerializer,
     headers: {
         'Content-Type': null,
-        ...options?.headers
+        ...options.headers
     }
 });
 
@@ -2596,7 +2596,7 @@ export const usersUpdate = <ThrowOnError extends boolean = false>(options: Optio
     ...formDataBodySerializer,
     headers: {
         'Content-Type': null,
-        ...options?.headers
+        ...options.headers
     }
 });
 
@@ -3334,7 +3334,7 @@ export const usersDocumentsCreate = <ThrowOnError extends boolean = false>(optio
     ...formDataBodySerializer,
     headers: {
         'Content-Type': null,
-        ...options?.headers
+        ...options.headers
     }
 });
 
