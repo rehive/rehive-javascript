@@ -177,6 +177,7 @@ export function createAuth(config: AuthConfig = {}): Auth {
   let isRefreshing = false;
   let loadAuthStatePromise: Promise<AuthState> | null = null;
   let initialized = false;
+  let initializePromise: Promise<void> | null = null;
   let lastError: Error | null = null;
   let lastExpiredSession: AuthSession | null = null;
 
@@ -399,16 +400,22 @@ export function createAuth(config: AuthConfig = {}): Auth {
     if (initialized) {
       return;
     }
-    initialized = true;
-
-    if (!permanentToken) {
-      if (enableCrossTabSync) {
-        setupCrossTabSync();
-      }
-      await loadAuthState();
+    if (initializePromise) {
+      return initializePromise;
     }
 
-    notifyAll({ type: 'initialized' });
+    initializePromise = (async () => {
+      if (!permanentToken) {
+        if (enableCrossTabSync) {
+          setupCrossTabSync();
+        }
+        await loadAuthState();
+      }
+      initialized = true;
+      notifyAll({ type: 'initialized' });
+    })();
+
+    return initializePromise;
   }
 
   async function fetchUserForToken(token: string): Promise<any> {
