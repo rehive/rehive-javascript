@@ -935,6 +935,7 @@ export function createAuth(config: AuthConfig = {}): Auth {
             try {
               await refresh();
             } catch {
+              await expireActiveSession();
               return false;
             }
 
@@ -947,6 +948,7 @@ export function createAuth(config: AuthConfig = {}): Auth {
               await fetchUserForToken(refreshedSession.token);
               return true;
             } catch {
+              await expireActiveSession();
               return false;
             }
           }
@@ -955,6 +957,7 @@ export function createAuth(config: AuthConfig = {}): Auth {
             await sleep(retryDelayMs);
             continue;
           }
+          await expireActiveSession();
           return false;
         }
 
@@ -963,7 +966,7 @@ export function createAuth(config: AuthConfig = {}): Auth {
           continue;
         }
 
-        return true;
+        return false;
       }
     }
 

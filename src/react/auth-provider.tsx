@@ -176,7 +176,7 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
     authState.status === 'refreshing';
 
   const contextValue: AuthContextType = {
-    authUser: authState.session,
+    authUser: authState.initialized ? authState.session : undefined,
     authStatus: authState.status,
     authState,
     authRecovery: authState.recovery,
