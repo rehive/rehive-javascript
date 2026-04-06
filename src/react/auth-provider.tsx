@@ -2,8 +2,8 @@ import {
   createContext,
   useContext,
   useState,
-  useEffect,
   useCallback,
+  useSyncExternalStore,
   type ReactNode,
 } from 'react';
 import { createAuth } from '../auth/create-auth.js';
@@ -64,8 +64,14 @@ export interface AuthProviderProps {
 
 export const AuthProvider = ({ children, config }: AuthProviderProps) => {
   const [auth] = useState(() => createAuth(config));
-  const [authState, setAuthState] = useState<AuthSnapshot>(() => auth.getState());
   const [pendingActionCount, setPendingActionCount] = useState(0);
+
+  const subscribe = useCallback(
+    (onStoreChange: () => void) => auth.subscribeToState(() => onStoreChange()),
+    [auth],
+  );
+  const getSnapshot = useCallback((): AuthSnapshot => auth.getState(), [auth]);
+  const authState = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 
   const runWithLoading = useCallback(
     async function <T>(operation: () => Promise<T>): Promise<T> {
@@ -78,13 +84,6 @@ export const AuthProvider = ({ children, config }: AuthProviderProps) => {
     },
     [],
   );
-
-  useEffect(() => {
-    const unsubscribeState = auth.subscribeToState(setAuthState);
-    return () => {
-      unsubscribeState();
-    };
-  }, [auth]);
 
   const refreshCallback = useCallback(() => auth.refresh(), [auth]);
 

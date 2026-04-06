@@ -178,6 +178,7 @@ export function createAuth(config: AuthConfig = {}): Auth {
   let loadAuthStatePromise: Promise<AuthState> | null = null;
   let initialized = false;
   let initializePromise: Promise<void> | null = null;
+  let cachedSnapshot: AuthSnapshot | null = null;
   let lastError: Error | null = null;
   let lastExpiredSession: AuthSession | null = null;
 
@@ -237,8 +238,11 @@ export function createAuth(config: AuthConfig = {}): Auth {
   }
 
   function getState(): AuthSnapshot {
+    if (cachedSnapshot) {
+      return cachedSnapshot;
+    }
     const state = getCurrentState();
-    return {
+    cachedSnapshot = {
       status: getStatus(state),
       session: getActiveSessionFromState(state),
       sessions: state.sessions,
@@ -248,6 +252,11 @@ export function createAuth(config: AuthConfig = {}): Auth {
       error: lastError,
       recovery: buildRecoveryState(state),
     };
+    return cachedSnapshot;
+  }
+
+  function invalidateSnapshot(): void {
+    cachedSnapshot = null;
   }
 
   function emit(event: Omit<AuthEvent, 'snapshot'>): void {
@@ -260,6 +269,7 @@ export function createAuth(config: AuthConfig = {}): Auth {
   }
 
   function notifyAll(event?: Omit<AuthEvent, 'snapshot'>): void {
+    invalidateSnapshot();
     const snapshot = getState();
     sessionListeners.forEach((listener) => listener(snapshot.session));
     errorListeners.forEach((listener) => listener(snapshot.error));
