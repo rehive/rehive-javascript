@@ -25,7 +25,7 @@ export type LoginParams = {
   user: string;
   password: string;
   company: string;
-  session_duration?: number;
+  session_duration?: number | null;
 };
 
 export type RegisterParams = {
@@ -38,7 +38,7 @@ export type RegisterParams = {
   last_name?: string;
   terms_and_conditions?: boolean;
   privacy_policy?: boolean;
-  session_duration?: number;
+  session_duration?: number | null;
 };
 
 export type RegisterCompanyParams = RegisterCompanyRequestWritable;
@@ -232,12 +232,15 @@ export function createAuth(config: AuthConfig = {}): Auth {
   async function login(params: LoginParams): Promise<AuthSession> {
     await initialize();
     try {
-      const sessionDuration = params.session_duration ?? 900;
+      // Default to 900s unless explicitly set to null (no custom duration)
+      const sessionDuration = params.session_duration === null
+        ? undefined
+        : (params.session_duration ?? 900);
       const body: LoginRequestWritable = {
         user: params.user,
         password: params.password,
         company: params.company,
-        session_duration: sessionDuration,
+        ...(sessionDuration != null && { session_duration: sessionDuration }),
         auth_method: 'token',
       };
 
@@ -250,7 +253,7 @@ export function createAuth(config: AuthConfig = {}): Auth {
         refresh_token: data.refresh_token,
         challenges: data.challenges,
         expires: data.expires,
-        session_duration: sessionDuration,
+        session_duration: sessionDuration ?? 900,
         company: params.company,
       };
 
@@ -285,7 +288,10 @@ export function createAuth(config: AuthConfig = {}): Auth {
   async function register(params: RegisterParams): Promise<AuthSession> {
     await initialize();
     try {
-      const sessionDuration = params.session_duration ?? 900;
+      // Default to 900s unless explicitly set to null (no custom duration)
+      const sessionDuration = params.session_duration === null
+        ? undefined
+        : (params.session_duration ?? 900);
       const body: RegisterRequestWritable = {
         email: params.email,
         mobile: params.mobile,
@@ -297,7 +303,7 @@ export function createAuth(config: AuthConfig = {}): Auth {
         last_name: params.last_name,
         terms_and_conditions: params.terms_and_conditions,
         privacy_policy: params.privacy_policy,
-        session_duration: sessionDuration,
+        ...(sessionDuration != null && { session_duration: sessionDuration }),
       };
 
       const result: any = await authRegister({ client, body, throwOnError: true });
@@ -309,7 +315,7 @@ export function createAuth(config: AuthConfig = {}): Auth {
         refresh_token: data.refresh_token,
         challenges: data.challenges,
         expires: data.expires,
-        session_duration: sessionDuration,
+        session_duration: sessionDuration ?? 900,
         company: params.company,
       };
 
@@ -427,9 +433,10 @@ export function createAuth(config: AuthConfig = {}): Auth {
           throw new Error('No active session, token, or refresh token found');
         }
 
+        const refreshDuration = session.session_duration ?? 900;
         const result: any = await authRefreshCreate({
           client,
-          body: { session_duration: session.session_duration ?? 900 },
+          body: { ...(refreshDuration != null && { session_duration: refreshDuration }) },
           headers: { Authorization: `Refresh-Token ${session.refresh_token}` },
           throwOnError: true,
         });
@@ -440,7 +447,7 @@ export function createAuth(config: AuthConfig = {}): Auth {
           ...session,
           refresh_token: data.refresh_token,
           expires: data.expires,
-          session_duration: session.session_duration ?? 900,
+          session_duration: refreshDuration,
           company: session.company,
         };
 
