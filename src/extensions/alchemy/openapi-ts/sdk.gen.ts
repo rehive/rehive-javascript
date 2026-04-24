@@ -2,9 +2,9 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { ActivateCreateData, ActivateCreateResponses, AdminAddressesListData, AdminAddressesListResponses, AdminAddressesRetrieveData, AdminAddressesRetrieveResponses, AdminCompanyPartialUpdateData, AdminCompanyPartialUpdateResponses, AdminCompanyRetrieveData, AdminCompanyRetrieveResponses, AdminCompanyUpdateData, AdminCompanyUpdateResponses, AdminOnchainTransactionsListData, AdminOnchainTransactionsListResponses, AdminOnchainTransactionsRetrieveData, AdminOnchainTransactionsRetrieveResponses, AlchemyWebhookCreateData, AlchemyWebhookCreateResponses, DeactivateCreateData, DeactivateCreateResponses, UserAccountAddressLookupCreateData, UserAccountAddressLookupCreateResponses, UserAddressesCreateData, UserAddressesCreateResponses, UserAddressesListData, UserAddressesListResponses, UserAddressesRetrieveData, UserAddressesRetrieveResponses, UserOnchainTransactionsCancelCreateData, UserOnchainTransactionsCancelCreateResponses, UserOnchainTransactionsListData, UserOnchainTransactionsListResponses, UserOnchainTransactionsPartialUpdateData, UserOnchainTransactionsPartialUpdateResponses, UserOnchainTransactionsRetrieveData, UserOnchainTransactionsRetrieveResponses, UserOnchainTransactionsUpdateData, UserOnchainTransactionsUpdateResponses, WebhookCreateData, WebhookCreateResponses } from './types.gen';
+import type { ActivateCreateData, ActivateCreateResponses, AdminAddressesCreateData, AdminAddressesCreateResponses, AdminAddressesDestroyData, AdminAddressesDestroyResponses, AdminAddressesListData, AdminAddressesListResponses, AdminAddressesRetrieveData, AdminAddressesRetrieveResponses, AdminCompanyPartialUpdateData, AdminCompanyPartialUpdateResponses, AdminCompanyRetrieveData, AdminCompanyRetrieveResponses, AdminCompanyUpdateData, AdminCompanyUpdateResponses, AdminOnchainTransactionsListData, AdminOnchainTransactionsListResponses, AdminOnchainTransactionsRetrieveData, AdminOnchainTransactionsRetrieveResponses, AlchemyWebhookCreateData, AlchemyWebhookCreateResponses, DeactivateCreateData, DeactivateCreateResponses, UserAccountAddressLookupCreateData, UserAccountAddressLookupCreateResponses, UserAddressesCreateData, UserAddressesCreateResponses, UserAddressesListData, UserAddressesListResponses, UserAddressesRetrieveData, UserAddressesRetrieveResponses, UserCollectionsPartialUpdateData, UserCollectionsPartialUpdateResponses, UserCollectionsRetrieveData, UserCollectionsRetrieveResponses, UserCollectionsUpdateData, UserCollectionsUpdateResponses, UserOnchainTransactionsCancelCreateData, UserOnchainTransactionsCancelCreateResponses, UserOnchainTransactionsListData, UserOnchainTransactionsListResponses, UserOnchainTransactionsPartialUpdateData, UserOnchainTransactionsPartialUpdateResponses, UserOnchainTransactionsRetrieveData, UserOnchainTransactionsRetrieveResponses, UserOnchainTransactionsUpdateData, UserOnchainTransactionsUpdateResponses, WebhookCreateData, WebhookCreateResponses } from './types.gen';
 
-export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
+export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
      * You can provide a client instance returned by `createClient()` instead of
      * individual options. This might be also useful if you want to implement a
@@ -30,6 +30,22 @@ export const activateCreate = <ThrowOnError extends boolean = false>(options: Op
 export const adminAddressesList = <ThrowOnError extends boolean = false>(options?: Options<AdminAddressesListData, ThrowOnError>) => (options?.client ?? client).get<AdminAddressesListResponses, unknown, ThrowOnError>({
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/admin/addresses/',
+    ...options
+});
+
+export const adminAddressesCreate = <ThrowOnError extends boolean = false>(options: Options<AdminAddressesCreateData, ThrowOnError>) => (options.client ?? client).post<AdminAddressesCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/admin/addresses/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const adminAddressesDestroy = <ThrowOnError extends boolean = false>(options: Options<AdminAddressesDestroyData, ThrowOnError>) => (options.client ?? client).delete<AdminAddressesDestroyResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/admin/addresses/{identifier}/',
     ...options
 });
 
@@ -125,6 +141,32 @@ export const userAddressesRetrieve = <ThrowOnError extends boolean = false>(opti
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/user/addresses/{identifier}/',
     ...options
+});
+
+export const userCollectionsRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserCollectionsRetrieveData, ThrowOnError>) => (options.client ?? client).get<UserCollectionsRetrieveResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/user/collections/{identifier}/',
+    ...options
+});
+
+export const userCollectionsPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<UserCollectionsPartialUpdateData, ThrowOnError>) => (options.client ?? client).patch<UserCollectionsPartialUpdateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/user/collections/{identifier}/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const userCollectionsUpdate = <ThrowOnError extends boolean = false>(options: Options<UserCollectionsUpdateData, ThrowOnError>) => (options.client ?? client).put<UserCollectionsUpdateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/user/collections/{identifier}/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
 });
 
 export const userOnchainTransactionsList = <ThrowOnError extends boolean = false>(options?: Options<UserOnchainTransactionsListData, ThrowOnError>) => (options?.client ?? client).get<UserOnchainTransactionsListResponses, unknown, ThrowOnError>({

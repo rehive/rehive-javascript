@@ -134,7 +134,7 @@ export type AdminCreateConversion = {
      * * `complete` - Complete
      * * `failed` - Failed
      */
-    status: 'quoted' | 'pending' | 'complete' | 'failed';
+    readonly status: 'quoted' | 'pending' | 'complete' | 'failed';
     readonly collection: string | null;
     readonly txns: Array<string>;
     metadata?: {
@@ -771,7 +771,7 @@ export type UserCreateConversion = {
      * * `complete` - Complete
      * * `failed` - Failed
      */
-    status: 'quoted' | 'pending' | 'complete' | 'failed';
+    readonly status: 'quoted' | 'pending' | 'complete' | 'failed';
     readonly collection: string | null;
     readonly txns: Array<string>;
     metadata?: {

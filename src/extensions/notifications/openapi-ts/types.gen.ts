@@ -35,7 +35,7 @@ export type AdminCompany = {
      * * `test` - Test
      * * `production` - Production
      */
-    mode: 'test' | 'production';
+    readonly mode: 'test' | 'production';
     quotas: Quotas;
     bimi_selector_header?: string | null;
     name?: string | null;
@@ -117,7 +117,7 @@ export type AdminLog = {
      * * `push` - push
      * * `system` - system
      */
-    type: 'email' | 'sms' | 'push' | 'system';
+    readonly type: 'email' | 'sms' | 'push' | 'system';
     readonly user: string | null;
     recipient: string;
     readonly text_message: string | null;
@@ -153,7 +153,7 @@ export type AdminNotification = {
      * * `push` - push
      * * `system` - system
      */
-    type: 'email' | 'sms' | 'push' | 'system';
+    readonly type: 'email' | 'sms' | 'push' | 'system';
     template?: AdminReducedTemplate | null;
     name: string;
     subject?: string | null;
@@ -246,7 +246,7 @@ export type AdminTriggerNotification = {
      * * `completed` - completed
      * * `failed` - failed
      */
-    status: 'pending' | 'processing' | 'completed' | 'failed';
+    readonly status: 'pending' | 'processing' | 'completed' | 'failed';
 };
 
 /**
@@ -274,7 +274,7 @@ export type LayoutTemplate = {
      * * `push` - push
      * * `system` - system
      */
-    type: 'email' | 'sms' | 'push' | 'system';
+    readonly type: 'email' | 'sms' | 'push' | 'system';
     readonly html_layout: string | null;
     readonly text_layout: string | null;
     readonly sms_layout: string | null;
@@ -425,7 +425,7 @@ export type PatchedAdminCompany = {
      * * `test` - Test
      * * `production` - Production
      */
-    mode?: 'test' | 'production';
+    readonly mode?: 'test' | 'production';
     quotas?: Quotas;
     bimi_selector_header?: string | null;
     name?: string | null;
@@ -522,7 +522,7 @@ export type PatchedUserLog = {
      * * `push` - push
      * * `system` - system
      */
-    type?: 'email' | 'sms' | 'push' | 'system';
+    readonly type?: 'email' | 'sms' | 'push' | 'system';
     readonly subject?: string | null;
     readonly text_message?: string | null;
     readonly html_message?: string | null;
@@ -586,7 +586,7 @@ export type UserLog = {
      * * `push` - push
      * * `system` - system
      */
-    type: 'email' | 'sms' | 'push' | 'system';
+    readonly type: 'email' | 'sms' | 'push' | 'system';
     readonly subject: string | null;
     readonly text_message: string | null;
     readonly html_message: string | null;

@@ -932,7 +932,7 @@ export type Auth = {
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly created: number;
     readonly updated: number;
     settings: UserSettings;
@@ -1003,13 +1003,13 @@ export type AuthenticatorChallenge = {
      * * `authorization` - Authorization
      * * `setup` - Setup
      */
-    type: 'authentication' | 'authorization' | 'setup';
+    readonly type: 'authentication' | 'authorization' | 'setup';
     /**
      * * `ephemeral` - Ephemeral
      * * `durable` - Durable
      * * `permanent` - Permanent
      */
-    durability: 'ephemeral' | 'durable' | 'permanent';
+    readonly durability: 'ephemeral' | 'durable' | 'permanent';
     readonly authenticator_types: Array<'totp' | 'sms' | 'static'>;
     readonly created: number;
 };
@@ -1869,14 +1869,14 @@ export type Company = {
      * * `test` - Test
      * * `production` - Production
      */
-    mode: 'test' | 'production';
+    readonly mode: 'test' | 'production';
     /**
      * * `pending` - Pending
      * * `active` - Active
      * * `restricted` - Restricted
      * * `suspended` - Suspended
      */
-    status: 'pending' | 'active' | 'restricted' | 'suspended';
+    readonly status: 'pending' | 'active' | 'restricted' | 'suspended';
     readonly created: number;
     readonly updated: number;
 };
@@ -1892,6 +1892,7 @@ export type CompanyBankAccount = {
     name?: string | null;
     number?: string | null;
     type?: string | null;
+    payment_method?: string | null;
     bank_name?: string | null;
     bank_code?: string | null;
     bank_currency?: string | null;
@@ -1905,6 +1906,7 @@ export type CompanyBankAccount = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
+    sort_code?: string | null;
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -1912,7 +1914,7 @@ export type CompanyBankAccount = {
     /**
      * * `withdraw` - Withdraw
      */
-    action: 'withdraw';
+    readonly action: 'withdraw';
     readonly created: number;
     readonly updated: number;
 };
@@ -2290,7 +2292,7 @@ export type CompanyWalletAccount = {
     /**
      * * `withdraw` - Withdraw
      */
-    action: 'withdraw';
+    readonly action: 'withdraw';
     readonly created: number;
     readonly updated: number;
 };
@@ -2781,6 +2783,7 @@ export type CreateMetricRequest = {
  */
 export type CreateMobileRequest = {
     number: string;
+    primary?: boolean;
 };
 
 export type CreateMultiTransactionRequest = {
@@ -2929,12 +2932,12 @@ export type CryptoAccount = {
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
      */
-    action: 'withdraw' | 'deposit';
+    readonly action: 'withdraw' | 'deposit';
     readonly created: number;
     readonly updated: number;
 };
@@ -3185,7 +3188,7 @@ export type Export = {
      * * `transaction` - Transaction
      * * `user` - User
      */
-    resource: 'account' | 'account_currency' | 'transaction' | 'user';
+    readonly resource: 'account' | 'account_currency' | 'transaction' | 'user';
     query?: {
         [key: string]: unknown;
     } | null;
@@ -3195,7 +3198,7 @@ export type Export = {
      * * `complete` - Complete
      * * `failed` - Failed
      */
-    status: 'queued' | 'processing' | 'complete' | 'failed';
+    readonly status: 'queued' | 'processing' | 'complete' | 'failed';
     progress: number;
     count?: number | null;
     page_size?: number;
@@ -3203,7 +3206,7 @@ export type Export = {
      * * `json` - JSON
      * * `csv` - CSV
      */
-    file_format: 'json' | 'csv';
+    readonly file_format: 'json' | 'csv';
     readonly created: number;
     readonly updated: number;
 };
@@ -3297,7 +3300,7 @@ export type ExtendedExport = {
      * * `transaction` - Transaction
      * * `user` - User
      */
-    resource: 'account' | 'account_currency' | 'transaction' | 'user';
+    readonly resource: 'account' | 'account_currency' | 'transaction' | 'user';
     readonly query: {
         [key: string]: unknown;
     } | null;
@@ -3307,7 +3310,7 @@ export type ExtendedExport = {
      * * `complete` - Complete
      * * `failed` - Failed
      */
-    status: 'queued' | 'processing' | 'complete' | 'failed';
+    readonly status: 'queued' | 'processing' | 'complete' | 'failed';
     progress: number;
     readonly count: number | null;
     readonly page_size: number;
@@ -3316,7 +3319,7 @@ export type ExtendedExport = {
      * * `json` - JSON
      * * `csv` - CSV
      */
-    file_format: 'json' | 'csv';
+    readonly file_format: 'json' | 'csv';
     readonly created: number;
     readonly updated: number;
 };
@@ -3368,7 +3371,7 @@ export type ExtendedTransaction = {
      * * `credit` - Credit
      * * `debit` - Debit
      */
-    tx_type: 'credit' | 'debit';
+    readonly tx_type: 'credit' | 'debit';
     readonly subtype: string | null;
     readonly note: string;
     readonly metadata: {
@@ -3381,7 +3384,7 @@ export type ExtendedTransaction = {
      * * `Complete` - Complete
      * * `Failed` - Failed
      */
-    status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
+    readonly status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
     readonly reference: string | null;
     readonly amount: number;
     readonly fee: number;
@@ -3980,7 +3983,7 @@ export type ExtendedUserInfo = {
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly created: number;
     readonly updated: number;
     settings: UserSettings;
@@ -4628,12 +4631,13 @@ export type GroupPermission = {
      * * `admin` - Admin
      * * `user` - User
      */
-    section: 'system' | 'admin' | 'user';
+    readonly section: 'system' | 'admin' | 'user';
     /**
      * * `accesscontrolrule` - Access Control Rule
      * * `account` - Account
      * * `accountdefinition` - Account Definition
      * * `address` - Address
+     * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
      * * `company` - Company
@@ -4658,14 +4662,14 @@ export type GroupPermission = {
      * * `user` - User
      * * `webhook` - Webhook
      */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
      * * `change` - Change
      * * `delete` - Delete
      */
-    level: 'view' | 'add' | 'change' | 'delete';
+    readonly level: 'view' | 'add' | 'change' | 'delete';
     readonly properties: {
         [key: string]: unknown;
     };
@@ -4824,7 +4828,7 @@ export type GroupTierRequirementSetItem = {
     /**
      * * `resource` - Resource
      */
-    type: 'resource';
+    readonly type: 'resource';
     rule: GroupTierRequirementSetItemRule;
     name?: string | null;
     description?: string | null;
@@ -4879,7 +4883,7 @@ export type LegalTerm = {
      * * `system` - System
      * * `company` - Company
      */
-    type: 'system' | 'company';
+    readonly type: 'system' | 'company';
     readonly name: string;
     readonly description: string | null;
     readonly versions: Array<ReducedLegalTermVersion>;
@@ -4987,7 +4991,7 @@ export type MfatotpDeviceDetail = {
      * * `SHA256` - SHA256
      * * `SHA512` - SHA512
      */
-    algorithm: 'SHA1' | 'SHA256' | 'SHA512';
+    readonly algorithm: 'SHA1' | 'SHA256' | 'SHA512';
     readonly otpauth_url: string;
     readonly issuer: string;
     readonly account: string;
@@ -5049,7 +5053,7 @@ export type MaskedMfatotpDeviceDetail = {
      * * `SHA256` - SHA256
      * * `SHA512` - SHA512
      */
-    algorithm: 'SHA1' | 'SHA256' | 'SHA512';
+    readonly algorithm: 'SHA1' | 'SHA256' | 'SHA512';
     readonly otpauth_url: string;
     readonly issuer: string;
     readonly account: string;
@@ -5089,7 +5093,7 @@ export type Metric = {
      * * `user_active_count` - User Active Count
      * * `user_transacted_in_30days_count` - User Transacted In 30Days Count
      */
-    type: 'account_count' | 'transaction_count' | 'transaction_complete_count' | 'transaction_failed_count' | 'transaction_pending_count' | 'transaction_complete_sum' | 'transaction_failed_sum' | 'transaction_pending_sum' | 'transaction_balance_sum' | 'transaction_available_balance_sum' | 'user_count' | 'user_active_count' | 'user_transacted_in_30days_count';
+    readonly type: 'account_count' | 'transaction_count' | 'transaction_complete_count' | 'transaction_failed_count' | 'transaction_pending_count' | 'transaction_complete_sum' | 'transaction_failed_sum' | 'transaction_pending_sum' | 'transaction_balance_sum' | 'transaction_available_balance_sum' | 'user_count' | 'user_active_count' | 'user_transacted_in_30days_count';
     currency: ReducedAsset;
     readonly timezone: string;
     readonly query: {
@@ -5099,7 +5103,7 @@ export type Metric = {
      * * `accumulate` - Accumulate
      * * `set` - Set
      */
-    method: 'accumulate' | 'set';
+    readonly method: 'accumulate' | 'set';
     readonly created: number;
     readonly updated: number;
 };
@@ -5193,7 +5197,7 @@ export type OauthClient = {
      * * `apple` - Apple
      * * `google` - Google
      */
-    provider: 'apple' | 'google';
+    readonly provider: 'apple' | 'google';
     readonly application: string;
     readonly client_id: string;
     readonly created: number;
@@ -6752,6 +6756,7 @@ export type PatchedUserBankAccountRequest = {
     name?: string | null;
     number?: string | null;
     type?: string | null;
+    payment_method?: string | null;
     /**
      * * `individual` - Individual
      * * `business` - Business
@@ -6772,6 +6777,7 @@ export type PatchedUserBankAccountRequest = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
+    sort_code?: string | null;
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -7087,14 +7093,14 @@ export type PublicCompany = {
      * * `test` - Test
      * * `production` - Production
      */
-    mode: 'test' | 'production';
+    readonly mode: 'test' | 'production';
     /**
      * * `pending` - Pending
      * * `active` - Active
      * * `restricted` - Restricted
      * * `suspended` - Suspended
      */
-    status: 'pending' | 'active' | 'restricted' | 'suspended';
+    readonly status: 'pending' | 'active' | 'restricted' | 'suspended';
     readonly created: number;
     readonly updated: number;
 };
@@ -7111,7 +7117,7 @@ export type PublicCompanyLegalTerm = {
      * * `system` - System
      * * `company` - Company
      */
-    type: 'system' | 'company';
+    readonly type: 'system' | 'company';
     name: string;
     description?: string | null;
     readonly groups: Array<string>;
@@ -7205,7 +7211,7 @@ export type PublicLegalTerm = {
      * * `system` - System
      * * `company` - Company
      */
-    type: 'system' | 'company';
+    readonly type: 'system' | 'company';
     name: string;
     description?: string | null;
     readonly groups: Array<string>;
@@ -7515,7 +7521,7 @@ export type ReducedService = {
      * * `public` - Public
      * * `private` - Private
      */
-    type: 'system' | 'public' | 'private';
+    readonly type: 'system' | 'public' | 'private';
 };
 
 export type ReducedTransactionSubtype = {
@@ -8709,7 +8715,7 @@ export type Statement = {
      * * `complete` - Complete
      * * `failed` - Failed
      */
-    status: 'queued' | 'processing' | 'complete' | 'failed';
+    readonly status: 'queued' | 'processing' | 'complete' | 'failed';
     readonly created: number;
     readonly updated: number;
 };
@@ -8751,7 +8757,7 @@ export type Transaction = {
      * * `credit` - Credit
      * * `debit` - Debit
      */
-    tx_type: 'credit' | 'debit';
+    readonly tx_type: 'credit' | 'debit';
     readonly subtype: string | null;
     readonly note: string;
     readonly metadata: {
@@ -8764,7 +8770,7 @@ export type Transaction = {
      * * `Complete` - Complete
      * * `Failed` - Failed
      */
-    status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
+    readonly status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
     readonly reference: string | null;
     readonly amount: number;
     readonly fee: number;
@@ -8809,7 +8815,7 @@ export type TransactionCollection = {
      * * `Complete` - Complete
      * * `Failed` - Failed
      */
-    status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
+    readonly status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
     readonly created: number;
     readonly updated: number;
 };
@@ -8839,7 +8845,7 @@ export type TransactionCollectionTransaction = {
      * * `credit` - Credit
      * * `debit` - Debit
      */
-    tx_type: 'credit' | 'debit';
+    readonly tx_type: 'credit' | 'debit';
     readonly subtype: string | null;
     readonly note: string;
     readonly metadata: {
@@ -8852,7 +8858,7 @@ export type TransactionCollectionTransaction = {
      * * `Complete` - Complete
      * * `Failed` - Failed
      */
-    status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
+    readonly status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
     readonly reference: string | null;
     readonly amount: number;
     readonly fee: number;
@@ -8893,7 +8899,7 @@ export type TransactionMessage = {
      * * `warning` - Warning
      * * `error` - Error
      */
-    level: 'info' | 'warning' | 'error';
+    readonly level: 'info' | 'warning' | 'error';
     message: string;
     readonly created: number;
     readonly updated: number;
@@ -8919,14 +8925,14 @@ export type TransactionSubtype = {
      * * `credit` - Credit
      * * `debit` - Debit
      */
-    tx_type: 'credit' | 'debit';
+    readonly tx_type: 'credit' | 'debit';
     /**
      * * `partner` - Partner
      * * `single` - Single
      *
      * @deprecated
      */
-    usage_type: 'partner' | 'single' | null;
+    readonly usage_type: 'partner' | 'single' | null;
     partner: ReducedTransactionSubtype;
     readonly created: number;
     readonly updated: number;
@@ -9257,7 +9263,7 @@ export type UserAddress = {
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly created: number;
     readonly updated: number;
 };
@@ -9559,6 +9565,7 @@ export type UserBankAccount = {
     name?: string | null;
     number?: string | null;
     type?: string | null;
+    payment_method?: string | null;
     /**
      * * `individual` - Individual
      * * `business` - Business
@@ -9579,6 +9586,7 @@ export type UserBankAccount = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
+    sort_code?: string | null;
     readonly code: string | null;
     metadata?: {
         [key: string]: unknown;
@@ -9591,14 +9599,14 @@ export type UserBankAccount = {
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly currencies: Array<ReducedAsset>;
     readonly account_currencies: Array<ReducedAccountAsset>;
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
      */
-    action: 'withdraw' | 'deposit';
+    readonly action: 'withdraw' | 'deposit';
     readonly created: number;
     readonly updated: number;
 };
@@ -9649,6 +9657,7 @@ export type UserBankAccountRequest = {
     name?: string | null;
     number?: string | null;
     type?: string | null;
+    payment_method?: string | null;
     /**
      * * `individual` - Individual
      * * `business` - Business
@@ -9669,6 +9678,7 @@ export type UserBankAccountRequest = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
+    sort_code?: string | null;
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -10223,6 +10233,7 @@ export type UserCreateBankAccountRequest = {
     name?: string | null;
     number?: string | null;
     type?: string | null;
+    payment_method?: string | null;
     /**
      * * `individual` - Individual
      * * `business` - Business
@@ -10243,6 +10254,7 @@ export type UserCreateBankAccountRequest = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
+    sort_code?: string | null;
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -10320,7 +10332,7 @@ export type UserDocument = {
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -10375,7 +10387,7 @@ export type UserMessage = {
      * * `warning` - Warning
      * * `error` - Error
      */
-    level: 'info' | 'warning' | 'error';
+    readonly level: 'info' | 'warning' | 'error';
     message: string;
     readonly created: number;
     readonly updated: number;
@@ -10399,12 +10411,13 @@ export type UserPermission = {
      * * `admin` - Admin
      * * `user` - User
      */
-    section: 'system' | 'admin' | 'user';
+    readonly section: 'system' | 'admin' | 'user';
     /**
      * * `accesscontrolrule` - Access Control Rule
      * * `account` - Account
      * * `accountdefinition` - Account Definition
      * * `address` - Address
+     * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
      * * `company` - Company
@@ -10429,14 +10442,14 @@ export type UserPermission = {
      * * `user` - User
      * * `webhook` - Webhook
      */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
      * * `change` - Change
      * * `delete` - Delete
      */
-    level: 'view' | 'add' | 'change' | 'delete';
+    readonly level: 'view' | 'add' | 'change' | 'delete';
     readonly properties: {
         [key: string]: unknown;
     };
@@ -10515,14 +10528,14 @@ export type UserWalletAccount = {
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly currencies: Array<ReducedAsset>;
     readonly account_currencies: Array<ReducedAccountAsset>;
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
      */
-    action: 'withdraw' | 'deposit';
+    readonly action: 'withdraw' | 'deposit';
     readonly created: number;
     readonly updated: number;
 };
@@ -11648,6 +11661,7 @@ export type CompanyBankAccountWritable = {
     name?: string | null;
     number?: string | null;
     type?: string | null;
+    payment_method?: string | null;
     bank_name?: string | null;
     bank_code?: string | null;
     bank_currency?: string | null;
@@ -11661,6 +11675,7 @@ export type CompanyBankAccountWritable = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
+    sort_code?: string | null;
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -15886,6 +15901,7 @@ export type UserBankAccountWritable = {
     name?: string | null;
     number?: string | null;
     type?: string | null;
+    payment_method?: string | null;
     /**
      * * `individual` - Individual
      * * `business` - Business
@@ -15906,6 +15922,7 @@ export type UserBankAccountWritable = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
+    sort_code?: string | null;
     metadata?: {
         [key: string]: unknown;
     } | null;

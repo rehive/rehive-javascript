@@ -108,7 +108,7 @@ export type AdminRefund = {
      * * `complete` - Complete
      * * `failed` - Failed
      */
-    status: 'pending' | 'processing' | 'complete' | 'failed';
+    readonly status: 'pending' | 'processing' | 'complete' | 'failed';
     /**
      * * `native` - Native
      */
@@ -329,7 +329,7 @@ export type CreateRefund = {
      * * `complete` - Complete
      * * `failed` - Failed
      */
-    status: 'pending' | 'processing' | 'complete' | 'failed';
+    readonly status: 'pending' | 'processing' | 'complete' | 'failed';
     /**
      * * `native` - Native
      */
@@ -938,7 +938,7 @@ export type Refund = {
      * * `complete` - Complete
      * * `failed` - Failed
      */
-    status: 'pending' | 'processing' | 'complete' | 'failed';
+    readonly status: 'pending' | 'processing' | 'complete' | 'failed';
     /**
      * * `native` - Native
      */

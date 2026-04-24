@@ -306,7 +306,7 @@ export type AdminBusiness = {
      * * `incomplete` - incomplete
      * * `verified` - verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -327,7 +327,7 @@ export type AdminBusinessAutomatedPayoutDestination = {
      * * `bank` - bank
      * * `bitcoin` - bitcoin
      */
-    type: 'native' | 'bank' | 'bitcoin';
+    readonly type: 'native' | 'bank' | 'bitcoin';
     readonly percentage: number;
     readonly account: string | null;
     readonly bitcoin_account: string | null;
@@ -371,7 +371,7 @@ export type AdminBusinessDocument = {
      * * `trade_certificate` - trade_certificate
      * * `shareholder_identification` - shareholder_identification
      */
-    type: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification';
+    readonly type: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification';
     /**
      * * `obsolete` - obsolete
      * * `declined` - declined
@@ -411,7 +411,7 @@ export type AdminBusinessPayout = {
      * * `complete` - complete
      * * `quarantined` - quarantined
      */
-    status: 'queued' | 'processing' | 'failed' | 'complete' | 'quarantined';
+    readonly status: 'queued' | 'processing' | 'failed' | 'complete' | 'quarantined';
     currency: Currency;
     readonly amount: number;
     readonly destinations: Array<AdminBusinessPayoutDestination>;
@@ -433,7 +433,7 @@ export type AdminBusinessPayoutDestination = {
      * * `bank` - bank
      * * `bitcoin` - bitcoin
      */
-    type: 'native' | 'bank' | 'bitcoin';
+    readonly type: 'native' | 'bank' | 'bitcoin';
     readonly percentage: number;
     readonly account: string | null;
     readonly bitcoin_account: string | null;
@@ -590,7 +590,7 @@ export type AdminCreateBusinessPayout = {
      * * `complete` - complete
      * * `quarantined` - quarantined
      */
-    status: 'queued' | 'processing' | 'failed' | 'complete' | 'quarantined';
+    readonly status: 'queued' | 'processing' | 'failed' | 'complete' | 'quarantined';
     readonly amount: number;
     destinations?: Array<AdminCreateBusinessPayoutDestination>;
 };
@@ -1675,7 +1675,7 @@ export type ManagerBusiness = {
      * * `incomplete` - incomplete
      * * `verified` - verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -1696,7 +1696,7 @@ export type ManagerBusinessAutomatedPayoutDestination = {
      * * `bank` - bank
      * * `bitcoin` - bitcoin
      */
-    type: 'native' | 'bank' | 'bitcoin';
+    readonly type: 'native' | 'bank' | 'bitcoin';
     readonly percentage: number;
     readonly account: string | null;
     readonly bitcoin_account: string | null;
@@ -1719,7 +1719,7 @@ export type ManagerBusinessDocument = {
      * * `trade_certificate` - trade_certificate
      * * `shareholder_identification` - shareholder_identification
      */
-    type: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification';
+    readonly type: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification';
     /**
      * * `obsolete` - obsolete
      * * `declined` - declined
@@ -1728,7 +1728,7 @@ export type ManagerBusinessDocument = {
      * * `incomplete` - incomplete
      * * `verified` - verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -1864,7 +1864,7 @@ export type ManagerBusinessPayout = {
      * * `complete` - complete
      * * `quarantined` - quarantined
      */
-    status: 'queued' | 'processing' | 'failed' | 'complete' | 'quarantined';
+    readonly status: 'queued' | 'processing' | 'failed' | 'complete' | 'quarantined';
     currency: Currency;
     readonly amount: number;
     readonly destinations: Array<ManagerBusinessPayoutDestination>;
@@ -1886,7 +1886,7 @@ export type ManagerBusinessPayoutDestination = {
      * * `bank` - bank
      * * `bitcoin` - bitcoin
      */
-    type: 'native' | 'bank' | 'bitcoin';
+    readonly type: 'native' | 'bank' | 'bitcoin';
     readonly percentage: number;
     readonly account: string | null;
     readonly bitcoin_account: string | null;
@@ -2285,7 +2285,7 @@ export type ManagerCreateBusiness = {
      * * `incomplete` - incomplete
      * * `verified` - verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -2318,7 +2318,7 @@ export type ManagerCreateBusinessDocument = {
      * * `incomplete` - incomplete
      * * `verified` - verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -2400,7 +2400,7 @@ export type ManagerCreateBusinessPayout = {
      * * `complete` - complete
      * * `quarantined` - quarantined
      */
-    status: 'queued' | 'processing' | 'failed' | 'complete' | 'quarantined';
+    readonly status: 'queued' | 'processing' | 'failed' | 'complete' | 'quarantined';
     readonly amount: number;
     destinations?: Array<ManagerCreateBusinessPayoutDestination>;
 };
@@ -2756,7 +2756,7 @@ export type ManagerUpdateBusiness = {
      * * `incomplete` - incomplete
      * * `verified` - verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -3108,7 +3108,7 @@ export type PatchedAdminBusinessDocument = {
      * * `trade_certificate` - trade_certificate
      * * `shareholder_identification` - shareholder_identification
      */
-    type?: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification';
+    readonly type?: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification';
     /**
      * * `obsolete` - obsolete
      * * `declined` - declined
@@ -3739,7 +3739,7 @@ export type PatchedManagerUpdateBusiness = {
      * * `incomplete` - incomplete
      * * `verified` - verified
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -4097,7 +4097,7 @@ export type UserBusiness = {
      * * `ZM` - Zambia
      * * `ZW` - Zimbabwe
      */
-    address_country: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | null;
+    readonly address_country: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | null;
     readonly address_postal_code: string | null;
     readonly metadata: {
         [key: string]: unknown;
