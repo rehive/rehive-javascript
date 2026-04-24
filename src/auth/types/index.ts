@@ -24,5 +24,53 @@ export interface AuthState {
   activeSessionIndex: number;
 }
 
+export type AuthStatus =
+  | 'loading'
+  | 'authenticated'
+  | 'refreshing'
+  | 'recoverable'
+  | 'unauthenticated';
+
+export interface AuthRecoveryState {
+  pending: boolean;
+  expiredSession: AuthSession | null;
+  remainingSessions: AuthSession[];
+}
+
+export interface AuthSnapshot {
+  status: AuthStatus;
+  session: AuthSession | null;
+  sessions: AuthSession[];
+  activeSessionIndex: number;
+  isRefreshing: boolean;
+  initialized: boolean;
+  error: Error | null;
+  recovery: AuthRecoveryState;
+}
+
+export type AuthEventType =
+  | 'initialized'
+  | 'login'
+  | 'register'
+  | 'register-company'
+  | 'logout'
+  | 'logout-all'
+  | 'refresh'
+  | 'session-imported'
+  | 'session-updated'
+  | 'session-switched'
+  | 'session-expired'
+  | 'session-cleared'
+  | 'error';
+
+export interface AuthEvent {
+  type: AuthEventType;
+  snapshot: AuthSnapshot;
+  session?: AuthSession | null;
+  error?: Error | null;
+}
+
 export type SessionListener = (session: AuthSession | null) => void;
 export type ErrorListener = (error: Error | null) => void;
+export type AuthStateListener = (snapshot: AuthSnapshot) => void;
+export type AuthEventListener = (event: AuthEvent) => void;
