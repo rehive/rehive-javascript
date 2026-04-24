@@ -11,6 +11,7 @@ const mockAuthRegister = jest.fn();
 const mockAuthRegisterCompany = jest.fn();
 const mockAuthLogout = jest.fn();
 const mockAuthRefreshCreate = jest.fn();
+const mockFetch = jest.fn();
 
 jest.mock('../../platform/user/openapi-ts/sdk.gen.js', () => ({
   authLogin: (...args: any[]) => mockAuthLogin(...args),
@@ -29,6 +30,7 @@ import { createAuth } from '../../auth/create-auth.js';
 describe('createAuth', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    global.fetch = mockFetch as unknown as typeof fetch;
 
     mockAuthLogin.mockImplementation(async (opts: any) => {
       if (opts?.body?.password === 'wrong-password') {
@@ -40,6 +42,18 @@ describe('createAuth', () => {
     mockAuthRegisterCompany.mockResolvedValue(mockRegisterCompanyResponse);
     mockAuthLogout.mockResolvedValue(mockLogoutResponse);
     mockAuthRefreshCreate.mockResolvedValue(mockRefreshResponse);
+    mockFetch.mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        data: {
+          id: 'user-123',
+          email: 'test@example.com',
+          company: 'test-co',
+        },
+      }),
+      text: async () => '',
+    });
   });
 
   describe('initialization', () => {
@@ -270,6 +284,112 @@ describe('createAuth', () => {
 
       const nonExistent = auth.getSessionsByCompany('company-2');
       expect(nonExistent).toHaveLength(0);
+    });
+  });
+
+  describe('session lifecycle helpers', () => {
+    it('should import a token as the active session', async () => {
+      const auth = createAuth({ storage: 'memory', enableCrossTabSync: false });
+
+      const session = await auth.importToken('legacy-token', {
+        sessionDuration: 3600,
+      });
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://api.rehive.com/3/user/',
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            Authorization: 'Token legacy-token',
+          }),
+        }),
+      );
+      expect(session.token).toBe('legacy-token');
+      expect(session.company).toBe('test-co');
+      expect(auth.getActiveSession()?.token).toBe('legacy-token');
+      expect(auth.getStatus()).toBe('authenticated');
+    });
+
+    it('should expose recoverable state after expiring the active session', async () => {
+      const auth = createAuth({ storage: 'memory', enableCrossTabSync: false });
+
+      const loginResponse1 = {
+        ...mockLoginResponse,
+        data: {
+          ...mockLoginResponse.data,
+          user: { ...mockLoginResponse.data.user, id: 'user-1' },
+          token: 'token-1',
+        },
+      };
+      const loginResponse2 = {
+        ...mockLoginResponse,
+        data: {
+          ...mockLoginResponse.data,
+          user: { ...mockLoginResponse.data.user, id: 'user-2' },
+          token: 'token-2',
+        },
+      };
+      mockAuthLogin
+        .mockResolvedValueOnce(loginResponse1)
+        .mockResolvedValueOnce(loginResponse2);
+
+      await auth.login({
+        user: 'one@example.com',
+        password: 'password123',
+        company: 'company-1',
+      });
+      await auth.login({
+        user: 'two@example.com',
+        password: 'password123',
+        company: 'company-2',
+      });
+
+      const recovery = await auth.expireActiveSession();
+
+      expect(recovery.pending).toBe(true);
+      expect(recovery.expiredSession?.token).toBe('token-2');
+      expect(recovery.remainingSessions).toHaveLength(1);
+      expect(recovery.remainingSessions[0].token).toBe('token-1');
+      expect(auth.getStatus()).toBe('recoverable');
+      expect(auth.getState().recovery.pending).toBe(true);
+    });
+
+    it('should refresh and keep the session when validation hits an unauthorized error', async () => {
+      const auth = createAuth({ storage: 'memory', enableCrossTabSync: false });
+
+      await auth.login({
+        user: 'test@example.com',
+        password: 'password123',
+        company: 'test-co',
+      });
+
+      mockFetch
+        .mockResolvedValueOnce({
+          ok: false,
+          status: 401,
+          json: async () => ({ message: 'Unauthorized' }),
+          text: async () => JSON.stringify({ message: 'Unauthorized' }),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          status: 200,
+          json: async () => ({
+            data: {
+              id: 'user-123',
+              email: 'test@example.com',
+              company: 'test-co',
+            },
+          }),
+          text: async () => '',
+        });
+
+      const isValid = await auth.validateActiveSession({
+        retryCount: 0,
+      });
+
+      expect(isValid).toBe(true);
+      expect(mockAuthRefreshCreate).toHaveBeenCalledTimes(1);
+      expect(auth.getStatus()).toBe('authenticated');
+      expect(auth.getActiveSession()?.token).toBe(mockLoginResponse.data.token);
     });
   });
 

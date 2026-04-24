@@ -1,6 +1,6 @@
 {
   "name": "rehive",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "description": "SDK for Rehive Platform and Extensions",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

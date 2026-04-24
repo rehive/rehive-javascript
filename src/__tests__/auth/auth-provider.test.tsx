@@ -44,12 +44,18 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => (
   </AuthProvider>
 );
 
+const describeAuthUser = (authUser: unknown): string => {
+  if (authUser === undefined) return 'undefined';
+  if (authUser === null) return 'null';
+  return (authUser as { user: { id: string } }).user.id;
+};
+
 const TestComponent = () => {
   const auth = useAuth();
   return (
     <div>
       <span data-testid="loading">{auth.authLoading.toString()}</span>
-      <span data-testid="user">{auth.authUser?.user.id || 'null'}</span>
+      <span data-testid="user">{describeAuthUser(auth.authUser)}</span>
       <span data-testid="error">{auth.authError?.message || 'null'}</span>
     </div>
   );
@@ -83,19 +89,20 @@ describe('AuthProvider', () => {
     expect(getByTestId('error')).toBeInTheDocument();
   });
 
-  it('should initialize with loading state', async () => {
+  it('should expose authUser as undefined during bootstrap and null after hydration', async () => {
     const { getByTestId } = render(
       <TestWrapper>
         <TestComponent />
       </TestWrapper>,
     );
 
-    expect(getByTestId('loading')).toHaveTextContent('true');
-    expect(getByTestId('user')).toHaveTextContent('null');
+    expect(getByTestId('user')).toHaveTextContent('undefined');
 
     await waitFor(() => {
       expect(getByTestId('loading')).toHaveTextContent('false');
     });
+
+    expect(getByTestId('user')).toHaveTextContent('null');
   });
 
   it('should handle login through useAuth hook', async () => {
@@ -230,6 +237,19 @@ describe('AuthProvider', () => {
     expect(typeof result.current.auth.login).toBe('function');
     expect(typeof result.current.auth.registerCompany).toBe('function');
     expect(typeof result.current.auth.logout).toBe('function');
+  });
+
+  it('should expose auth status and recovery state', async () => {
+    const { result } = renderHook(() => useAuth(), {
+      wrapper: TestWrapper,
+    });
+
+    await waitFor(() => {
+      expect(result.current.authLoading).toBe(false);
+    });
+
+    expect(result.current.authStatus).toBe('unauthenticated');
+    expect(result.current.authRecovery.pending).toBe(false);
   });
 
   it('should throw error when used outside AuthProvider', () => {
