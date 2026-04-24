@@ -255,6 +255,23 @@ const auth = createAuth({
 });
 ```
 
+## Session Duration
+
+By default, the SDK requests a 900-second (15-minute) session duration on login and register. You can customize this or disable it entirely for companies with custom session durations disabled (`allow_session_durations: false`):
+
+```typescript
+// Use a custom session duration (in seconds)
+await auth.login({ user: "user@example.com", password: "pass", company: "myco", session_duration: 3600 });
+
+// Opt out of custom session duration (for companies with allow_session_durations disabled)
+await auth.login({ user: "user@example.com", password: "pass", company: "myco", session_duration: null });
+
+// Use the default (900 seconds)
+await auth.login({ user: "user@example.com", password: "pass", company: "myco" });
+```
+
+The same `session_duration` option is available on `auth.register()`.
+
 ## Architecture
 
 ```
