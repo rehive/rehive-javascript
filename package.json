@@ -6,8 +6,8 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
+    "build": "NODE_OPTIONS=--max-old-space-size=8192 tsup",
+    "dev": "NODE_OPTIONS=--max-old-space-size=8192 tsup --watch",
     "codegen:openapi-ts": "bash scripts/codegen-openapi-ts.sh",
     "codegen:openapi-ts:clean": "rm -rf src/platform/user/openapi-ts src/platform/admin/openapi-ts src/extensions/conversion/openapi-ts src/extensions/mass-send/openapi-ts src/extensions/notifications/openapi-ts src/extensions/products/openapi-ts src/extensions/rewards/openapi-ts src/extensions/stellar/openapi-ts src/extensions/stellar-testnet/openapi-ts src/extensions/business/openapi-ts src/extensions/payment-requests/openapi-ts src/extensions/bridge/openapi-ts src/extensions/app/openapi-ts src/extensions/billing/openapi-ts src/extensions/builder/openapi-ts src/extensions/rain/openapi-ts src/extensions/alchemy/openapi-ts && npm run codegen:openapi-ts",
     "typecheck": "tsc --noEmit",
