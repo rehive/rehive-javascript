@@ -35,7 +35,7 @@ export type AdminCompany = {
      * * `test` - Test
      * * `production` - Production
      */
-    mode: 'test' | 'production';
+    readonly mode: 'test' | 'production';
     bridge_api_key: string;
     readonly bridge_webhook_id: string | null;
     readonly admin_user_bridge_id: string | null;
@@ -84,12 +84,13 @@ export type AdminCreateVirtualAccount = {
     wallet?: string;
     account_currency?: string;
     /**
+     * * `gbp` - Gbp
      * * `usd` - Usd
      * * `eur` - Eur
      * * `mxn` - Mxn
      * * `brl` - Brl
      */
-    source_currency?: 'usd' | 'eur' | 'mxn' | 'brl';
+    source_currency?: 'gbp' | 'usd' | 'eur' | 'mxn' | 'brl';
 };
 
 export type AdminCryptoReturnPolicy = {
@@ -128,8 +129,9 @@ export type AdminCurrency = {
     /**
      * * `usdc` - Usdc
      * * `eurc` - Eurc
+     * * `usdt` - Usdt
      */
-    bridge_code?: 'usdc' | 'eurc';
+    bridge_code?: 'usdc' | 'eurc' | 'usdt';
     /**
      * * `solana` - Solana
      * * `base` - Base
@@ -154,6 +156,26 @@ export type AdminCurrencyResponse = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
+export type AdminFundsRequest = {
+    readonly id: string;
+    readonly user: string;
+    readonly bridge_id: string;
+    readonly fraud: boolean;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type AdminFundsRequestResponse = {
+    status: string;
+    data: AdminFundsRequest;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
 export type AdminLiquidationAddress = {
     readonly id: string;
     wallet: UserReducedWallet;
@@ -161,12 +183,14 @@ export type AdminLiquidationAddress = {
     /**
      * * `usdc` - Usdc
      * * `eurc` - Eurc
+     * * `usdt` - Usdt
+     * * `gbp` - Gbp
      * * `usd` - Usd
      * * `eur` - Eur
      * * `mxn` - Mxn
      * * `brl` - Brl
      */
-    bridge_currency: 'usdc' | 'eurc' | 'usd' | 'eur' | 'mxn' | 'brl';
+    readonly bridge_currency: 'usdc' | 'eurc' | 'usdt' | 'gbp' | 'usd' | 'eur' | 'mxn' | 'brl';
     readonly address: string;
     readonly memo: string | null;
     readonly bridge_id: string | null;
@@ -199,12 +223,13 @@ export type AdminOperationalAccountLiquidationAddress = {
 export type AdminOperationalAccountVirtualAccount = {
     account_currency: string;
     /**
+     * * `gbp` - Gbp
      * * `usd` - Usd
      * * `eur` - Eur
      * * `mxn` - Mxn
      * * `brl` - Brl
      */
-    source_currency?: 'usd' | 'eur' | 'mxn' | 'brl';
+    source_currency?: 'gbp' | 'usd' | 'eur' | 'mxn' | 'brl';
 };
 
 /**
@@ -288,7 +313,7 @@ export type AdminTransactionTransition = {
      * * `Complete` - Complete
      * * `Failed` - Failed
      */
-    from_status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
+    readonly from_status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
     /**
      * * `Initiating` - Initiating
      * * `Quoted` - Quoted
@@ -296,7 +321,7 @@ export type AdminTransactionTransition = {
      * * `Complete` - Complete
      * * `Failed` - Failed
      */
-    to_status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
+    readonly to_status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
     /**
      * * `queued` - Queued
      * * `pending` - Pending
@@ -306,7 +331,7 @@ export type AdminTransactionTransition = {
      * * `approved` - Approved
      * * `declined` - Declined
      */
-    status: 'queued' | 'pending' | 'awaiting_verification' | 'awaiting_balance' | 'paused' | 'approved' | 'declined';
+    readonly status: 'queued' | 'pending' | 'awaiting_verification' | 'awaiting_balance' | 'paused' | 'approved' | 'declined';
     readonly created: number;
     readonly updated: number;
 };
@@ -329,7 +354,7 @@ export type AdminUpdateCompany = {
      * * `test` - Test
      * * `production` - Production
      */
-    mode: 'test' | 'production';
+    readonly mode: 'test' | 'production';
     bridge_api_key?: string;
     readonly bridge_webhook_id: string | null;
     admin_user_bridge_id?: string | null;
@@ -344,18 +369,55 @@ export type AdminUpdateCompany = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
+export type AdminUser = {
+    readonly id: string;
+    readonly bridge_id: string | null;
+    /**
+     * * `individual` - Individual
+     * * `business` - Business
+     */
+    readonly bridge_type: 'individual' | 'business';
+    /**
+     * * `active` - Active
+     * * `awaiting_questionnaire` - Awaiting Questionnaire
+     * * `awaiting_ubo` - Awaiting Ubo
+     * * `incomplete` - Incomplete
+     * * `not_started` - Not Started
+     * * `offboarded` - Offboarded
+     * * `paused` - Paused
+     * * `rejected` - Rejected
+     * * `under_review` - Under Review
+     */
+    readonly bridge_status: 'active' | 'awaiting_questionnaire' | 'awaiting_ubo' | 'incomplete' | 'not_started' | 'offboarded' | 'paused' | 'rejected' | 'under_review';
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type AdminUserResponse = {
+    status: string;
+    data: AdminUser;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
 export type AdminVirtualAccount = {
     readonly id: string;
     wallet: UserReducedWallet;
     /**
      * * `usdc` - Usdc
      * * `eurc` - Eurc
+     * * `usdt` - Usdt
+     * * `gbp` - Gbp
      * * `usd` - Usd
      * * `eur` - Eur
      * * `mxn` - Mxn
      * * `brl` - Brl
      */
-    source_currency: 'usdc' | 'eurc' | 'usd' | 'eur' | 'mxn' | 'brl';
+    readonly source_currency: 'usdc' | 'eurc' | 'usdt' | 'gbp' | 'usd' | 'eur' | 'mxn' | 'brl';
     readonly bank_account: string | null;
     readonly bank_account_details: string;
     readonly bridge_id: string | null;
@@ -417,12 +479,14 @@ export type Currency = {
     /**
      * * `usdc` - Usdc
      * * `eurc` - Eurc
+     * * `usdt` - Usdt
+     * * `gbp` - Gbp
      * * `usd` - Usd
      * * `eur` - Eur
      * * `mxn` - Mxn
      * * `brl` - Brl
      */
-    bridge_code?: 'usdc' | 'eurc' | 'usd' | 'eur' | 'mxn' | 'brl';
+    bridge_code?: 'usdc' | 'eurc' | 'usdt' | 'gbp' | 'usd' | 'eur' | 'mxn' | 'brl';
     /**
      * * `solana` - Solana
      * * `base` - Base
@@ -461,6 +525,18 @@ export type PaginatedAdminCurrencyListResponse = {
     data: PaginatedAdminCurrencyList;
 };
 
+export type PaginatedAdminFundsRequestList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminFundsRequest>;
+};
+
+export type PaginatedAdminFundsRequestListResponse = {
+    status: string;
+    data: PaginatedAdminFundsRequestList;
+};
+
 export type PaginatedAdminLiquidationAddressList = {
     count?: number;
     next?: string | null;
@@ -497,6 +573,18 @@ export type PaginatedAdminTransactionTransitionListResponse = {
     data: PaginatedAdminTransactionTransitionList;
 };
 
+export type PaginatedAdminUserList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminUser>;
+};
+
+export type PaginatedAdminUserListResponse = {
+    status: string;
+    data: PaginatedAdminUserList;
+};
+
 export type PaginatedAdminVirtualAccountList = {
     count?: number;
     next?: string | null;
@@ -531,6 +619,18 @@ export type PaginatedCurrencyList = {
 export type PaginatedCurrencyListResponse = {
     status: string;
     data: PaginatedCurrencyList;
+};
+
+export type PaginatedUserExternalWalletList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<UserExternalWallet>;
+};
+
+export type PaginatedUserExternalWalletListResponse = {
+    status: string;
+    data: PaginatedUserExternalWalletList;
 };
 
 export type PaginatedUserStaticTemplateList = {
@@ -581,8 +681,9 @@ export type PatchedAdminCurrency = {
     /**
      * * `usdc` - Usdc
      * * `eurc` - Eurc
+     * * `usdt` - Usdt
      */
-    bridge_code?: 'usdc' | 'eurc';
+    bridge_code?: 'usdc' | 'eurc' | 'usdt';
     /**
      * * `solana` - Solana
      * * `base` - Base
@@ -628,7 +729,7 @@ export type PatchedAdminUpdateCompany = {
      * * `test` - Test
      * * `production` - Production
      */
-    mode?: 'test' | 'production';
+    readonly mode?: 'test' | 'production';
     bridge_api_key?: string;
     readonly bridge_webhook_id?: string | null;
     admin_user_bridge_id?: string | null;
@@ -671,6 +772,32 @@ export type UserCreateCustomerKycLink = {
     redirect_uri?: string | null;
 };
 
+export type UserCreateExternalWallet = {
+    /**
+     * * `solana` - Solana
+     * * `base` - Base
+     * * `ethereum` - Ethereum
+     * * `stellar` - Stellar
+     * * `tron` - Tron
+     * * `polygon` - Polygon
+     * * `arbitrum` - Arbitrum
+     * * `optimism` - Optimism
+     */
+    chain: 'solana' | 'base' | 'ethereum' | 'stellar' | 'tron' | 'polygon' | 'arbitrum' | 'optimism';
+    address: string;
+    /**
+     * * `usdc` - Usdc
+     * * `eurc` - Eurc
+     * * `usdt` - Usdt
+     * * `gbp` - Gbp
+     * * `usd` - Usd
+     * * `eur` - Eur
+     * * `mxn` - Mxn
+     * * `brl` - Brl
+     */
+    currency: 'usdc' | 'eurc' | 'usdt' | 'gbp' | 'usd' | 'eur' | 'mxn' | 'brl';
+};
+
 /**
  * A ModelSerializer that takes additional arguments for
  * "fields", "omit" and "expand" in order to
@@ -692,16 +819,17 @@ export type UserCreateVirtualAccount = {
     account: string;
     currency: string;
     /**
+     * * `gbp` - Gbp
      * * `usd` - Usd
      * * `eur` - Eur
      * * `mxn` - Mxn
      * * `brl` - Brl
      */
-    source_currency?: 'usd' | 'eur' | 'mxn' | 'brl';
+    source_currency?: 'gbp' | 'usd' | 'eur' | 'mxn' | 'brl';
 };
 
 export type UserCryptoDeposit = {
-    account_currency: string;
+    account_currency?: string;
     /**
      * * `solana` - Solana
      * * `base` - Base
@@ -713,6 +841,7 @@ export type UserCryptoDeposit = {
      * * `optimism` - Optimism
      */
     chain: 'solana' | 'base' | 'ethereum' | 'stellar' | 'tron' | 'polygon' | 'arbitrum' | 'optimism';
+    external_wallet?: string;
 };
 
 export type UserCryptoDepositResponse = {
@@ -753,6 +882,46 @@ export type UserExchangeRateResponse = {
 export type UserExchangeRateResponseResponse = {
     status: string;
     data: UserExchangeRateResponse;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type UserExternalWallet = {
+    readonly id: string;
+    /**
+     * * `solana` - Solana
+     * * `base` - Base
+     * * `ethereum` - Ethereum
+     * * `stellar` - Stellar
+     * * `tron` - Tron
+     * * `polygon` - Polygon
+     * * `arbitrum` - Arbitrum
+     * * `optimism` - Optimism
+     */
+    readonly chain: 'solana' | 'base' | 'ethereum' | 'stellar' | 'tron' | 'polygon' | 'arbitrum' | 'optimism';
+    readonly address: string;
+    /**
+     * * `usdc` - Usdc
+     * * `eurc` - Eurc
+     * * `usdt` - Usdt
+     * * `gbp` - Gbp
+     * * `usd` - Usd
+     * * `eur` - Eur
+     * * `mxn` - Mxn
+     * * `brl` - Brl
+     */
+    readonly currency: 'usdc' | 'eurc' | 'usdt' | 'gbp' | 'usd' | 'eur' | 'mxn' | 'brl';
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type UserExternalWalletResponse = {
+    status: string;
+    data: UserExternalWallet;
 };
 
 /**
@@ -807,12 +976,14 @@ export type UserVirtualAccount = {
     /**
      * * `usdc` - Usdc
      * * `eurc` - Eurc
+     * * `usdt` - Usdt
+     * * `gbp` - Gbp
      * * `usd` - Usd
      * * `eur` - Eur
      * * `mxn` - Mxn
      * * `brl` - Brl
      */
-    source_currency: 'usdc' | 'eurc' | 'usd' | 'eur' | 'mxn' | 'brl';
+    readonly source_currency: 'usdc' | 'eurc' | 'usdt' | 'gbp' | 'usd' | 'eur' | 'mxn' | 'brl';
     readonly bank_account: string | null;
     readonly bank_account_details: string;
     readonly bridge_id: string | null;
@@ -837,10 +1008,11 @@ export type Webhook = {
      * * `currency.update` - Currency Update
      * * `transaction.initiate` - Transaction Initiate
      * * `transaction.execute` - Transaction Execute
+     * * `transaction.update` - Transaction Update
      * * `transaction.transition.update` - Transaction Transition Update
      * * `user.update` - User Update
      */
-    event: 'account.currency.create' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'currency.create' | 'currency.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.update' | 'user.update';
+    event: 'account.currency.create' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'currency.create' | 'currency.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.update' | 'transaction.transition.update' | 'user.update';
     company: string;
     data: {
         [key: string]: unknown;
@@ -913,8 +1085,9 @@ export type AdminCurrencyWritable = {
     /**
      * * `usdc` - Usdc
      * * `eurc` - Eurc
+     * * `usdt` - Usdt
      */
-    bridge_code?: 'usdc' | 'eurc';
+    bridge_code?: 'usdc' | 'eurc' | 'usdt';
     /**
      * * `solana` - Solana
      * * `base` - Base
@@ -925,6 +1098,10 @@ export type AdminCurrencyWritable = {
 export type AdminCurrencyResponseWritable = {
     status: string;
     data: AdminCurrencyWritable;
+};
+
+export type AdminFundsRequestResponseWritable = {
+    status: string;
 };
 
 /**
@@ -984,6 +1161,10 @@ export type AdminUpdateCompanyWritable = {
     exchange_rate_override_bps?: number | null;
 };
 
+export type AdminUserResponseWritable = {
+    status: string;
+};
+
 /**
  * A ModelSerializer that takes additional arguments for
  * "fields", "omit" and "expand" in order to
@@ -1026,6 +1207,18 @@ export type PaginatedAdminCurrencyListResponseWritable = {
     data: PaginatedAdminCurrencyListWritable;
 };
 
+export type PaginatedAdminFundsRequestListWritable = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<unknown>;
+};
+
+export type PaginatedAdminFundsRequestListResponseWritable = {
+    status: string;
+    data: PaginatedAdminFundsRequestListWritable;
+};
+
 export type PaginatedAdminLiquidationAddressListWritable = {
     count?: number;
     next?: string | null;
@@ -1062,6 +1255,18 @@ export type PaginatedAdminTransactionTransitionListResponseWritable = {
     data: PaginatedAdminTransactionTransitionListWritable;
 };
 
+export type PaginatedAdminUserListWritable = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<unknown>;
+};
+
+export type PaginatedAdminUserListResponseWritable = {
+    status: string;
+    data: PaginatedAdminUserListWritable;
+};
+
 export type PaginatedAdminVirtualAccountListWritable = {
     count?: number;
     next?: string | null;
@@ -1084,6 +1289,18 @@ export type PaginatedAdminWalletListWritable = {
 export type PaginatedAdminWalletListResponseWritable = {
     status: string;
     data: PaginatedAdminWalletListWritable;
+};
+
+export type PaginatedUserExternalWalletListWritable = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<unknown>;
+};
+
+export type PaginatedUserExternalWalletListResponseWritable = {
+    status: string;
+    data: PaginatedUserExternalWalletListWritable;
 };
 
 export type PaginatedUserStaticTemplateListWritable = {
@@ -1132,8 +1349,9 @@ export type PatchedAdminCurrencyWritable = {
     /**
      * * `usdc` - Usdc
      * * `eurc` - Eurc
+     * * `usdt` - Usdt
      */
-    bridge_code?: 'usdc' | 'eurc';
+    bridge_code?: 'usdc' | 'eurc' | 'usdt';
     /**
      * * `solana` - Solana
      * * `base` - Base
@@ -1195,6 +1413,10 @@ export type UserCryptoDepositResponseResponseWritable = {
 };
 
 export type UserCustomerKycLinkResponseWritable = {
+    status: string;
+};
+
+export type UserExternalWalletResponseWritable = {
     status: string;
 };
 
@@ -1448,6 +1670,46 @@ export type AdminCurrenciesUpdateResponses = {
 
 export type AdminCurrenciesUpdateResponse = AdminCurrenciesUpdateResponses[keyof AdminCurrenciesUpdateResponses];
 
+export type AdminFundsRequestsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        bridge_id?: string;
+        fraud?: boolean;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        user?: string;
+    };
+    url: '/admin/funds-requests/';
+};
+
+export type AdminFundsRequestsListResponses = {
+    200: PaginatedAdminFundsRequestListResponse;
+};
+
+export type AdminFundsRequestsListResponse = AdminFundsRequestsListResponses[keyof AdminFundsRequestsListResponses];
+
+export type AdminFundsRequestsRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/admin/funds-requests/{identifier}/';
+};
+
+export type AdminFundsRequestsRetrieveResponses = {
+    200: AdminFundsRequestResponse;
+};
+
+export type AdminFundsRequestsRetrieveResponse = AdminFundsRequestsRetrieveResponses[keyof AdminFundsRequestsRetrieveResponses];
+
 export type AdminLiquidationAddressesListData = {
     body?: never;
     path?: never;
@@ -1691,6 +1953,47 @@ export type AdminTransactionTransitionsProcessCreateResponses = {
 
 export type AdminTransactionTransitionsProcessCreateResponse = AdminTransactionTransitionsProcessCreateResponses[keyof AdminTransactionTransitionsProcessCreateResponses];
 
+export type AdminUsersListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        bridge_id?: string;
+        bridge_status?: string;
+        bridge_type?: string;
+        id?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/admin/users/';
+};
+
+export type AdminUsersListResponses = {
+    200: PaginatedAdminUserListResponse;
+};
+
+export type AdminUsersListResponse = AdminUsersListResponses[keyof AdminUsersListResponses];
+
+export type AdminUsersRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/admin/users/{identifier}/';
+};
+
+export type AdminUsersRetrieveResponses = {
+    200: AdminUserResponse;
+};
+
+export type AdminUsersRetrieveResponse = AdminUsersRetrieveResponses[keyof AdminUsersRetrieveResponses];
+
 export type AdminVirtualAccountsListData = {
     body?: never;
     path?: never;
@@ -1917,6 +2220,56 @@ export type UserExchangeRatesRetrieveResponses = {
 };
 
 export type UserExchangeRatesRetrieveResponse = UserExchangeRatesRetrieveResponses[keyof UserExchangeRatesRetrieveResponses];
+
+export type UserExternalWalletsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/user/external-wallets/';
+};
+
+export type UserExternalWalletsListResponses = {
+    200: PaginatedUserExternalWalletListResponse;
+};
+
+export type UserExternalWalletsListResponse = UserExternalWalletsListResponses[keyof UserExternalWalletsListResponses];
+
+export type UserExternalWalletsCreateData = {
+    body: UserCreateExternalWallet;
+    path?: never;
+    query?: never;
+    url: '/user/external-wallets/';
+};
+
+export type UserExternalWalletsCreateResponses = {
+    201: UserExternalWalletResponse;
+};
+
+export type UserExternalWalletsCreateResponse = UserExternalWalletsCreateResponses[keyof UserExternalWalletsCreateResponses];
+
+export type UserExternalWalletsRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/user/external-wallets/{identifier}/';
+};
+
+export type UserExternalWalletsRetrieveResponses = {
+    200: UserExternalWalletResponse;
+};
+
+export type UserExternalWalletsRetrieveResponse = UserExternalWalletsRetrieveResponses[keyof UserExternalWalletsRetrieveResponses];
 
 export type UserKycLinksCreateData = {
     body?: UserCreateCustomerKycLink;

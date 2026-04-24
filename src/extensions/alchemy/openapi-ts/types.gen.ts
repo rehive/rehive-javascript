@@ -6,9 +6,13 @@ export type ClientOptions = {
 
 /**
  * Serializer for looking up a crypto address from a Rehive account reference.
+ * Accepts an account reference and chain, resolves the account_currency UUID
+ * via Rehive, then calls the Bridge extension to get a liquidation address.
  */
 export type AccountAddressLookup = {
     account: string;
+    currency_code: string;
+    chain: string;
     readonly address: string;
 };
 
@@ -89,13 +93,23 @@ export type AdminCompany = {
      * * `test` - Test
      * * `production` - Production
      */
-    mode: 'test' | 'production';
-    alchemy_key?: string | null;
+    readonly mode: 'test' | 'production';
 };
 
 export type AdminCompanyResponse = {
     status?: string;
     data?: AdminCompany;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminCreateAddress = {
+    address: string;
+    rehive_account: string;
 };
 
 /**
@@ -115,20 +129,21 @@ export type AdminOnchainTransaction = {
      * * `failed` - Failed
      * * `cancelled` - Cancelled
      */
-    status: 'pending' | 'signed' | 'broadcast' | 'confirmed' | 'failed' | 'cancelled';
+    readonly status: 'pending' | 'signed' | 'broadcast' | 'confirmed' | 'failed' | 'cancelled';
     /**
      * * `ETH_SEPOLIA` - Eth Sepolia
      * * `ETH_MAINNET` - Eth Mainnet
      * * `BASE_MAINNET` - Base Mainnet
      * * `BASE_SEPOLIA` - Base Sepolia
      */
-    chain: 'ETH_SEPOLIA' | 'ETH_MAINNET' | 'BASE_MAINNET' | 'BASE_SEPOLIA';
+    readonly chain: 'ETH_SEPOLIA' | 'ETH_MAINNET' | 'BASE_MAINNET' | 'BASE_SEPOLIA';
     readonly from_address: string;
     readonly destination_address: string;
     readonly amount: string;
     readonly rehive_transaction_id: string;
     readonly unsigned_transaction_blob: unknown;
     currency: Currency;
+    readonly collection: string;
     address: AdminAddress;
     readonly created: number;
     readonly updated: number;
@@ -159,14 +174,14 @@ export type Currency = {
      * * `USDC` - Usdc
      * * `ETH` - Eth
      */
-    onchain_code: 'USDC' | 'ETH';
+    readonly onchain_code: 'USDC' | 'ETH';
     /**
      * * `ETH_SEPOLIA` - Eth Sepolia
      * * `ETH_MAINNET` - Eth Mainnet
      * * `BASE_MAINNET` - Base Mainnet
      * * `BASE_SEPOLIA` - Base Sepolia
      */
-    chain: 'ETH_SEPOLIA' | 'ETH_MAINNET' | 'BASE_MAINNET' | 'BASE_SEPOLIA';
+    readonly chain: 'ETH_SEPOLIA' | 'ETH_MAINNET' | 'BASE_MAINNET' | 'BASE_SEPOLIA';
     readonly token_address: string;
     readonly display_code: string;
     readonly description: string;
@@ -193,6 +208,7 @@ export type Deactivate = {
 export type OnchainTransaction = {
     readonly identifier: string;
     hash?: string | null;
+    user_op_hash?: string | null;
     /**
      * * `pending` - Pending
      * * `signed` - Signed
@@ -208,13 +224,14 @@ export type OnchainTransaction = {
      * * `BASE_MAINNET` - Base Mainnet
      * * `BASE_SEPOLIA` - Base Sepolia
      */
-    chain: 'ETH_SEPOLIA' | 'ETH_MAINNET' | 'BASE_MAINNET' | 'BASE_SEPOLIA';
+    readonly chain: 'ETH_SEPOLIA' | 'ETH_MAINNET' | 'BASE_MAINNET' | 'BASE_SEPOLIA';
     readonly from_address: string;
     readonly destination_address: string;
     readonly amount: string;
     readonly rehive_transaction_id: string;
     readonly unsigned_transaction_blob: unknown;
     currency: Currency;
+    readonly collection: string;
     readonly created: number;
     readonly updated: number;
 };
@@ -286,8 +303,7 @@ export type PatchedAdminCompany = {
      * * `test` - Test
      * * `production` - Production
      */
-    mode?: 'test' | 'production';
-    alchemy_key?: string | null;
+    readonly mode?: 'test' | 'production';
 };
 
 /**
@@ -299,6 +315,7 @@ export type PatchedAdminCompany = {
 export type PatchedOnchainTransaction = {
     readonly identifier?: string;
     hash?: string | null;
+    user_op_hash?: string | null;
     /**
      * * `pending` - Pending
      * * `signed` - Signed
@@ -314,15 +331,61 @@ export type PatchedOnchainTransaction = {
      * * `BASE_MAINNET` - Base Mainnet
      * * `BASE_SEPOLIA` - Base Sepolia
      */
-    chain?: 'ETH_SEPOLIA' | 'ETH_MAINNET' | 'BASE_MAINNET' | 'BASE_SEPOLIA';
+    readonly chain?: 'ETH_SEPOLIA' | 'ETH_MAINNET' | 'BASE_MAINNET' | 'BASE_SEPOLIA';
     readonly from_address?: string;
     readonly destination_address?: string;
     readonly amount?: string;
     readonly rehive_transaction_id?: string;
     readonly unsigned_transaction_blob?: unknown;
     currency?: Currency;
+    readonly collection?: string;
     readonly created?: number;
     readonly updated?: number;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type PatchedTransactionCollection = {
+    readonly identifier?: string;
+    hash?: string;
+    /**
+     * * `pending` - Pending
+     * * `signed` - Signed
+     * * `broadcast` - Broadcast
+     * * `confirmed` - Confirmed
+     * * `failed` - Failed
+     * * `cancelled` - Cancelled
+     */
+    readonly status?: 'pending' | 'signed' | 'broadcast' | 'confirmed' | 'failed' | 'cancelled';
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type TransactionCollection = {
+    readonly identifier: string;
+    hash: string;
+    /**
+     * * `pending` - Pending
+     * * `signed` - Signed
+     * * `broadcast` - Broadcast
+     * * `confirmed` - Confirmed
+     * * `failed` - Failed
+     * * `cancelled` - Cancelled
+     */
+    readonly status: 'pending' | 'signed' | 'broadcast' | 'confirmed' | 'failed' | 'cancelled';
+};
+
+export type TransactionCollectionResponse = {
+    status?: string;
+    data?: TransactionCollection;
 };
 
 /**
@@ -345,10 +408,11 @@ export type Webhook = {
      * * `currency.create` - Currency Create
      * * `currency.update` - Currency Update
      * * `transaction.initiate` - Transaction Initiate
+     * * `transaction.update` - Transaction Update
      * * `transaction.transition.update` - Transaction Transition Update
      * * `user.update` - User Update
      */
-    event: 'account.currency.create' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'currency.create' | 'currency.update' | 'transaction.initiate' | 'transaction.transition.update' | 'user.update';
+    event: 'account.currency.create' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'currency.create' | 'currency.update' | 'transaction.initiate' | 'transaction.update' | 'transaction.transition.update' | 'user.update';
     company: string;
     data: unknown;
 };
@@ -384,19 +448,8 @@ export type AdminAddressResponseWritable = {
     data?: AdminAddressWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type AdminCompanyWritable = {
-    alchemy_key?: string | null;
-};
-
 export type AdminCompanyResponseWritable = {
     status?: string;
-    data?: AdminCompanyWritable;
 };
 
 /**
@@ -422,6 +475,7 @@ export type AdminOnchainTransactionResponseWritable = {
  */
 export type OnchainTransactionWritable = {
     hash?: string | null;
+    user_op_hash?: string | null;
     /**
      * * `pending` - Pending
      * * `signed` - Signed
@@ -492,18 +546,9 @@ export type PaginatedOnchainTransactionListResponseWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
-export type PatchedAdminCompanyWritable = {
-    alchemy_key?: string | null;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedOnchainTransactionWritable = {
     hash?: string | null;
+    user_op_hash?: string | null;
     /**
      * * `pending` - Pending
      * * `signed` - Signed
@@ -513,6 +558,31 @@ export type PatchedOnchainTransactionWritable = {
      * * `cancelled` - Cancelled
      */
     status?: 'pending' | 'signed' | 'broadcast' | 'confirmed' | 'failed' | 'cancelled';
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type PatchedTransactionCollectionWritable = {
+    hash?: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type TransactionCollectionWritable = {
+    hash: string;
+};
+
+export type TransactionCollectionResponseWritable = {
+    status?: string;
+    data?: TransactionCollectionWritable;
 };
 
 export type ActivateCreateData = {
@@ -553,6 +623,34 @@ export type AdminAddressesListResponses = {
 
 export type AdminAddressesListResponse = AdminAddressesListResponses[keyof AdminAddressesListResponses];
 
+export type AdminAddressesCreateData = {
+    body: AdminCreateAddress;
+    path?: never;
+    query?: never;
+    url: '/admin/addresses/';
+};
+
+export type AdminAddressesCreateResponses = {
+    201: AdminAddressResponse;
+};
+
+export type AdminAddressesCreateResponse = AdminAddressesCreateResponses[keyof AdminAddressesCreateResponses];
+
+export type AdminAddressesDestroyData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/admin/addresses/{identifier}/';
+};
+
+export type AdminAddressesDestroyResponses = {
+    200: AdminAddressResponse;
+};
+
+export type AdminAddressesDestroyResponse = AdminAddressesDestroyResponses[keyof AdminAddressesDestroyResponses];
+
 export type AdminAddressesRetrieveData = {
     body?: never;
     path: {
@@ -582,7 +680,7 @@ export type AdminCompanyRetrieveResponses = {
 export type AdminCompanyRetrieveResponse = AdminCompanyRetrieveResponses[keyof AdminCompanyRetrieveResponses];
 
 export type AdminCompanyPartialUpdateData = {
-    body?: PatchedAdminCompanyWritable;
+    body?: PatchedAdminCompany;
     path?: never;
     query?: never;
     url: '/admin/company/';
@@ -595,7 +693,7 @@ export type AdminCompanyPartialUpdateResponses = {
 export type AdminCompanyPartialUpdateResponse = AdminCompanyPartialUpdateResponses[keyof AdminCompanyPartialUpdateResponses];
 
 export type AdminCompanyUpdateData = {
-    body?: AdminCompanyWritable;
+    body?: AdminCompany;
     path?: never;
     query?: never;
     url: '/admin/company/';
@@ -754,6 +852,51 @@ export type UserAddressesRetrieveResponses = {
 };
 
 export type UserAddressesRetrieveResponse = UserAddressesRetrieveResponses[keyof UserAddressesRetrieveResponses];
+
+export type UserCollectionsRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/user/collections/{identifier}/';
+};
+
+export type UserCollectionsRetrieveResponses = {
+    200: TransactionCollectionResponse;
+};
+
+export type UserCollectionsRetrieveResponse = UserCollectionsRetrieveResponses[keyof UserCollectionsRetrieveResponses];
+
+export type UserCollectionsPartialUpdateData = {
+    body?: PatchedTransactionCollectionWritable;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/user/collections/{identifier}/';
+};
+
+export type UserCollectionsPartialUpdateResponses = {
+    200: TransactionCollectionResponse;
+};
+
+export type UserCollectionsPartialUpdateResponse = UserCollectionsPartialUpdateResponses[keyof UserCollectionsPartialUpdateResponses];
+
+export type UserCollectionsUpdateData = {
+    body: TransactionCollectionWritable;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/user/collections/{identifier}/';
+};
+
+export type UserCollectionsUpdateResponses = {
+    200: TransactionCollectionResponse;
+};
+
+export type UserCollectionsUpdateResponse = UserCollectionsUpdateResponses[keyof UserCollectionsUpdateResponses];
 
 export type UserOnchainTransactionsListData = {
     body?: never;

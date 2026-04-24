@@ -57,7 +57,7 @@ export type AdminCreateDomain = {
      * * `active` - Active
      * * `inactive` - Inactive
      */
-    status: 'active' | 'inactive';
+    readonly status: 'active' | 'inactive';
     readonly created: number;
     readonly updated: number;
 };
@@ -89,7 +89,7 @@ export type AdminDomain = {
      * * `native` - Native
      * * `client` - Client
      */
-    host: 'native' | 'client';
+    readonly host: 'native' | 'client';
     readonly domain: string;
     /**
      * * `active` - Active
@@ -354,7 +354,7 @@ export type PatchedAdminDomain = {
      * * `native` - Native
      * * `client` - Client
      */
-    host?: 'native' | 'client';
+    readonly host?: 'native' | 'client';
     readonly domain?: string;
     /**
      * * `active` - Active

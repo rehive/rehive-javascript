@@ -93,6 +93,7 @@ export interface ResolvedRequestOptions<
   ThrowOnError extends boolean = boolean,
   Url extends string = string,
 > extends RequestOptions<unknown, TResponseStyle, ThrowOnError, Url> {
+  headers: Headers;
   serializedBody?: string;
 }
 
@@ -152,7 +153,7 @@ type SseFn = <
   ThrowOnError extends boolean = false,
   TResponseStyle extends ResponseStyle = 'data',
 >(
-  options: Omit<RequestOptions<TData, TResponseStyle, ThrowOnError>, 'method'>,
+  options: Omit<RequestOptions<never, TResponseStyle, ThrowOnError>, 'method'>,
 ) => Promise<ServerSentEventsResult<TData, TError>>;
 
 type RequestFn = <

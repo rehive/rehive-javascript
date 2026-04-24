@@ -558,7 +558,7 @@ export type AdminMemo = {
     /**
      * Memo type
      */
-    memo_type?: 'MEMO_TEXT' | 'MEMO_ID' | 'MEMO_HASH' | 'MEMO_RETURN';
+    readonly memo_type?: 'MEMO_TEXT' | 'MEMO_ID' | 'MEMO_HASH' | 'MEMO_RETURN';
     /**
      * Rehive account
      */
@@ -676,7 +676,7 @@ export type Transaction = {
     /**
      * Tx type
      */
-    tx_type?: 'debit' | 'credit' | 'deposit' | 'withdraw' | 'transfer' | 'fund' | 'issue' | 'asset_auth';
+    readonly tx_type?: 'debit' | 'credit' | 'deposit' | 'withdraw' | 'transfer' | 'fund' | 'issue' | 'asset_auth';
     /**
      * Amount
      */
@@ -688,7 +688,7 @@ export type Transaction = {
     /**
      * Status
      */
-    status?: 'Initiated' | 'Quoted' | 'Unfunded' | 'Funded' | 'Waiting' | 'Pending' | 'Confirmed' | 'Complete' | 'Failed' | 'Cancelled';
+    readonly status?: 'Initiated' | 'Quoted' | 'Unfunded' | 'Funded' | 'Waiting' | 'Pending' | 'Confirmed' | 'Complete' | 'Failed' | 'Cancelled';
     /**
      * Fee
      */
@@ -908,7 +908,7 @@ export type AdminTransaction = {
     /**
      * Tx type
      */
-    tx_type?: 'debit' | 'credit' | 'deposit' | 'withdraw' | 'transfer' | 'fund' | 'issue' | 'asset_auth';
+    readonly tx_type?: 'debit' | 'credit' | 'deposit' | 'withdraw' | 'transfer' | 'fund' | 'issue' | 'asset_auth';
     /**
      * Amount
      */
@@ -920,7 +920,7 @@ export type AdminTransaction = {
     /**
      * Status
      */
-    status?: 'Initiated' | 'Quoted' | 'Unfunded' | 'Funded' | 'Waiting' | 'Pending' | 'Confirmed' | 'Complete' | 'Failed' | 'Cancelled';
+    readonly status?: 'Initiated' | 'Quoted' | 'Unfunded' | 'Funded' | 'Waiting' | 'Pending' | 'Confirmed' | 'Complete' | 'Failed' | 'Cancelled';
     /**
      * Fee
      */
@@ -1065,7 +1065,7 @@ export type AdminUserMemo = {
     /**
      * Memo type
      */
-    memo_type?: 'MEMO_TEXT' | 'MEMO_ID' | 'MEMO_HASH' | 'MEMO_RETURN';
+    readonly memo_type?: 'MEMO_TEXT' | 'MEMO_ID' | 'MEMO_HASH' | 'MEMO_RETURN';
     /**
      * Rehive account
      */
@@ -1127,7 +1127,7 @@ export type WarmstorageAccount = {
     /**
      * Type
      */
-    type?: 'deposit' | 'withdraw' | 'issue';
+    readonly type?: 'deposit' | 'withdraw' | 'issue';
     /**
      * Primary
      */
@@ -1427,7 +1427,7 @@ export type UserMemo = {
     /**
      * Memo type
      */
-    memo_type?: 'MEMO_TEXT' | 'MEMO_ID' | 'MEMO_HASH' | 'MEMO_RETURN';
+    readonly memo_type?: 'MEMO_TEXT' | 'MEMO_ID' | 'MEMO_HASH' | 'MEMO_RETURN';
     /**
      * Rehive account
      */

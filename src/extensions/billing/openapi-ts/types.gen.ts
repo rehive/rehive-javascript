@@ -86,7 +86,7 @@ export type AdminListProduct = {
      * * `primary` - Primary
      * * `usage` - Usage
      */
-    type: 'primary' | 'usage';
+    readonly type: 'primary' | 'usage';
     name: string;
     slug: string;
 };
@@ -127,7 +127,7 @@ export type AdminSubscription = {
      * * `canceled` - Canceled
      * * `paused` - Paused
      */
-    status: 'pending' | 'incomplete' | 'incomplete_payment' | 'incomplete_expired' | 'trial_live' | 'trial_expired' | 'past_due' | 'unpaid' | 'active' | 'canceled' | 'paused';
+    readonly status: 'pending' | 'incomplete' | 'incomplete_payment' | 'incomplete_expired' | 'trial_live' | 'trial_expired' | 'past_due' | 'unpaid' | 'active' | 'canceled' | 'paused';
     readonly created: number;
     /**
      * Get the modified stripe subscription data.
@@ -210,7 +210,7 @@ export type UserSubscription = {
      * * `canceled` - Canceled
      * * `paused` - Paused
      */
-    status: 'pending' | 'incomplete' | 'incomplete_payment' | 'incomplete_expired' | 'trial_live' | 'trial_expired' | 'past_due' | 'unpaid' | 'active' | 'canceled' | 'paused';
+    readonly status: 'pending' | 'incomplete' | 'incomplete_payment' | 'incomplete_expired' | 'trial_live' | 'trial_expired' | 'past_due' | 'unpaid' | 'active' | 'canceled' | 'paused';
     readonly created: number;
     /**
      * Get the modified stripe subscription data.

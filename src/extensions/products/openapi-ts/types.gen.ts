@@ -96,7 +96,7 @@ export type AdminCreatePayment = {
      * * `complete` - complete
      * * `failed` - failed
      */
-    status: 'pending' | 'complete' | 'failed';
+    readonly status: 'pending' | 'complete' | 'failed';
     readonly collection: string | null;
     readonly created: number;
     readonly updated: number;
@@ -194,7 +194,7 @@ export type AdminCreateRefund = {
      * * `complete` - complete
      * * `failed` - failed
      */
-    status: 'pending' | 'complete' | 'failed';
+    readonly status: 'pending' | 'complete' | 'failed';
     item: string;
     quantity: number;
     reason?: string | null;
@@ -313,7 +313,7 @@ export type AdminCreateVoucherImport = {
      * * `complete` - Complete
      * * `failed` - Failed
      */
-    status: 'queued' | 'processing' | 'complete' | 'failed';
+    readonly status: 'queued' | 'processing' | 'complete' | 'failed';
     readonly errors: Array<string>;
 };
 
@@ -427,7 +427,7 @@ export type AdminPayment = {
     /**
      * * `rehive` - rehive
      */
-    type: 'rehive';
+    readonly type: 'rehive';
     readonly amount: number;
     /**
      * * `pending` - pending
@@ -503,7 +503,7 @@ export type AdminRefund = {
     /**
      * * `rehive` - rehive
      */
-    type: 'rehive';
+    readonly type: 'rehive';
     readonly amount: number;
     /**
      * * `pending` - pending
@@ -759,7 +759,7 @@ export type CreatePayment = {
      * * `complete` - complete
      * * `failed` - failed
      */
-    status: 'pending' | 'complete' | 'failed';
+    readonly status: 'pending' | 'complete' | 'failed';
     readonly collection: string | null;
     readonly created: number;
     readonly updated: number;
@@ -860,7 +860,7 @@ export type ExtendedOrder = {
      * * `complete` - complete
      * * `failed` - failed
      */
-    status: 'pending' | 'reserved' | 'placed' | 'complete' | 'failed';
+    readonly status: 'pending' | 'reserved' | 'placed' | 'complete' | 'failed';
     currency: Currency;
     readonly total_price: number;
     readonly items: Array<OrderItem>;
@@ -981,7 +981,7 @@ export type ManagerCreateRefund = {
      * * `complete` - complete
      * * `failed` - failed
      */
-    status: 'pending' | 'complete' | 'failed';
+    readonly status: 'pending' | 'complete' | 'failed';
     item: string;
     quantity: number;
     reason?: string | null;
@@ -1007,7 +1007,7 @@ export type ManagerCreateSeller = {
      * * `pending` - Pending
      * * `verified` - Verified
      */
-    status: 'declined' | 'pending' | 'verified';
+    readonly status: 'declined' | 'pending' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -1086,7 +1086,7 @@ export type ManagerCreateVoucherImport = {
      * * `complete` - Complete
      * * `failed` - Failed
      */
-    status: 'queued' | 'processing' | 'complete' | 'failed';
+    readonly status: 'queued' | 'processing' | 'complete' | 'failed';
     readonly errors: Array<string>;
 };
 
@@ -1199,7 +1199,7 @@ export type ManagerPayment = {
     /**
      * * `rehive` - rehive
      */
-    type: 'rehive';
+    readonly type: 'rehive';
     readonly amount: number;
     /**
      * * `pending` - pending
@@ -1274,7 +1274,7 @@ export type ManagerRefund = {
     /**
      * * `rehive` - rehive
      */
-    type: 'rehive';
+    readonly type: 'rehive';
     readonly amount: number;
     /**
      * * `pending` - pending
@@ -1312,7 +1312,7 @@ export type ManagerSeller = {
      * * `pending` - Pending
      * * `verified` - Verified
      */
-    status: 'declined' | 'pending' | 'verified';
+    readonly status: 'declined' | 'pending' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -1475,7 +1475,7 @@ export type MaskedShortVoucher = {
      * * `redeemed` - redeemed
      * * `partially_redeemed` - partially_redeemed
      */
-    status: 'available' | 'reserved' | 'purchased' | 'redeemed' | 'partially_redeemed';
+    readonly status: 'available' | 'reserved' | 'purchased' | 'redeemed' | 'partially_redeemed';
     readonly created: number;
     readonly updated: number;
 };
@@ -1496,7 +1496,7 @@ export type Order = {
      * * `complete` - complete
      * * `failed` - failed
      */
-    status: 'pending' | 'reserved' | 'placed' | 'complete' | 'failed';
+    readonly status: 'pending' | 'reserved' | 'placed' | 'complete' | 'failed';
     currency: Currency;
     readonly total_price: number;
     readonly shipping_address: {
@@ -2075,7 +2075,7 @@ export type PatchedAdminPayment = {
     /**
      * * `rehive` - rehive
      */
-    type?: 'rehive';
+    readonly type?: 'rehive';
     readonly amount?: number;
     /**
      * * `pending` - pending
@@ -2099,7 +2099,7 @@ export type PatchedAdminRefund = {
     /**
      * * `rehive` - rehive
      */
-    type?: 'rehive';
+    readonly type?: 'rehive';
     readonly amount?: number;
     /**
      * * `pending` - pending
@@ -2365,7 +2365,7 @@ export type PatchedManagerPayment = {
     /**
      * * `rehive` - rehive
      */
-    type?: 'rehive';
+    readonly type?: 'rehive';
     readonly amount?: number;
     /**
      * * `pending` - pending
@@ -2389,7 +2389,7 @@ export type PatchedManagerRefund = {
     /**
      * * `rehive` - rehive
      */
-    type?: 'rehive';
+    readonly type?: 'rehive';
     readonly amount?: number;
     /**
      * * `pending` - pending
@@ -2422,7 +2422,7 @@ export type PatchedManagerSeller = {
      * * `pending` - Pending
      * * `verified` - Verified
      */
-    status?: 'declined' | 'pending' | 'verified';
+    readonly status?: 'declined' | 'pending' | 'verified';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -2580,7 +2580,7 @@ export type PatchedUserUpdateOrder = {
      * * `complete` - complete
      * * `failed` - failed
      */
-    status?: 'pending' | 'reserved' | 'placed' | 'complete' | 'failed';
+    readonly status?: 'pending' | 'reserved' | 'placed' | 'complete' | 'failed';
     currency?: Currency;
     readonly total_price?: number;
     readonly items?: Array<OrderItem>;
@@ -2627,14 +2627,14 @@ export type Payment = {
     /**
      * * `rehive` - rehive
      */
-    type: 'rehive';
+    readonly type: 'rehive';
     readonly amount: number;
     /**
      * * `pending` - pending
      * * `complete` - complete
      * * `failed` - failed
      */
-    status: 'pending' | 'complete' | 'failed';
+    readonly status: 'pending' | 'complete' | 'failed';
     readonly collection: string | null;
     readonly created: number;
     readonly updated: number;
@@ -2794,13 +2794,13 @@ export type Redemption = {
      * * `fund` - fund
      * * `defund` - defund
      */
-    type: 'claim' | 'fund' | 'defund';
+    readonly type: 'claim' | 'fund' | 'defund';
     /**
      * * `pending` - pending
      * * `complete` - complete
      * * `failed` - failed
      */
-    status: 'pending' | 'complete' | 'failed';
+    readonly status: 'pending' | 'complete' | 'failed';
     voucher: MaskedShortVoucher;
     readonly user: string;
     readonly code: string | null;
@@ -2826,14 +2826,14 @@ export type Refund = {
     /**
      * * `rehive` - rehive
      */
-    type: 'rehive';
+    readonly type: 'rehive';
     readonly amount: number;
     /**
      * * `pending` - pending
      * * `complete` - complete
      * * `failed` - failed
      */
-    status: 'pending' | 'complete' | 'failed';
+    readonly status: 'pending' | 'complete' | 'failed';
     readonly item: string;
     readonly quantity: number | null;
     readonly reason: string | null;
@@ -2862,7 +2862,7 @@ export type Seller = {
      * * `pending` - Pending
      * * `verified` - Verified
      */
-    status: 'declined' | 'pending' | 'verified';
+    readonly status: 'declined' | 'pending' | 'verified';
     readonly metadata: {
         [key: string]: unknown;
     };
@@ -2946,7 +2946,7 @@ export type ShortVoucher = {
      * * `redeemed` - redeemed
      * * `partially_redeemed` - partially_redeemed
      */
-    status: 'available' | 'reserved' | 'purchased' | 'redeemed' | 'partially_redeemed';
+    readonly status: 'available' | 'reserved' | 'purchased' | 'redeemed' | 'partially_redeemed';
     readonly created: number;
     readonly updated: number;
 };
@@ -3009,7 +3009,7 @@ export type UserUpdateOrder = {
      * * `complete` - complete
      * * `failed` - failed
      */
-    status: 'pending' | 'reserved' | 'placed' | 'complete' | 'failed';
+    readonly status: 'pending' | 'reserved' | 'placed' | 'complete' | 'failed';
     currency: Currency;
     readonly total_price: number;
     readonly items: Array<OrderItem>;
@@ -3075,7 +3075,7 @@ export type Voucher = {
      * * `redeemed` - redeemed
      * * `partially_redeemed` - partially_redeemed
      */
-    status: 'available' | 'reserved' | 'purchased' | 'redeemed' | 'partially_redeemed';
+    readonly status: 'available' | 'reserved' | 'purchased' | 'redeemed' | 'partially_redeemed';
     readonly code: string;
     readonly account: string | null;
     readonly serial: string | null;
@@ -3097,13 +3097,13 @@ export type VoucherAction = {
      * * `fund` - fund
      * * `defund` - defund
      */
-    type: 'claim' | 'fund' | 'defund';
+    readonly type: 'claim' | 'fund' | 'defund';
     /**
      * * `pending` - pending
      * * `complete` - complete
      * * `failed` - failed
      */
-    status: 'pending' | 'complete' | 'failed';
+    readonly status: 'pending' | 'complete' | 'failed';
     readonly code: string | null;
     readonly amount: number;
     readonly collection: string | null;
@@ -3133,7 +3133,7 @@ export type VoucherImport = {
      * * `complete` - Complete
      * * `failed` - Failed
      */
-    status: 'queued' | 'processing' | 'complete' | 'failed';
+    readonly status: 'queued' | 'processing' | 'complete' | 'failed';
     readonly errors: Array<string>;
 };
 
@@ -3186,7 +3186,7 @@ export type VoucherSchema = {
      * * `months` - Months
      * * `years` - Years
      */
-    lifespan_unit: 'seconds' | 'minutes' | 'hours' | 'days' | 'weeks' | 'months' | 'years';
+    readonly lifespan_unit: 'seconds' | 'minutes' | 'hours' | 'days' | 'weeks' | 'months' | 'years';
 };
 
 export type Webhook = {

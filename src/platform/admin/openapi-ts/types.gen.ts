@@ -422,6 +422,44 @@ export type AdminAccountResponse = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
+export type AdminAlert = {
+    readonly id: string;
+    readonly transaction: string | null;
+    user: ReducedUserInfo;
+    author: ReducedUserInfo;
+    name: string;
+    description?: string | null;
+    /**
+     * * `info` - Info
+     * * `low` - Low
+     * * `medium` - Medium
+     * * `high` - High
+     * * `critical` - Critical
+     */
+    priority?: 'info' | 'low' | 'medium' | 'high' | 'critical';
+    /**
+     * * `open` - Open
+     * * `assigned` - Assigned
+     * * `paused` - Paused
+     * * `closed` - Closed
+     * * `reopened` - Reopened
+     */
+    status: 'open' | 'assigned' | 'paused' | 'closed' | 'reopened';
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    readonly external: boolean;
+    archived?: boolean;
+    readonly created: string;
+    readonly updated: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
 export type AdminAppendTransactionCollectionMultiTransactionRequest = {
     transactions: Array<AdminAppendTransactionCollectionTransactionRequest>;
 };
@@ -493,7 +531,7 @@ export type AdminAuthenticatorRule = {
      * * `authorization` - Authorization
      * * `setup` - Setup
      */
-    type: 'authentication' | 'authorization' | 'setup';
+    readonly type: 'authentication' | 'authorization' | 'setup';
     /**
      * * `ephemeral` - Ephemeral
      * * `durable` - Durable
@@ -795,7 +833,7 @@ export type AdminCompany = {
      * * `test` - Test
      * * `production` - Production
      */
-    mode: 'test' | 'production';
+    readonly mode: 'test' | 'production';
     /**
      * * `pending` - Pending
      * * `active` - Active
@@ -855,6 +893,7 @@ export type AdminCompanyBankAccount = {
     name?: string | null;
     number?: string | null;
     type?: string | null;
+    payment_method?: string | null;
     bank_name?: string | null;
     bank_code?: string | null;
     bank_currency?: string | null;
@@ -868,6 +907,7 @@ export type AdminCompanyBankAccount = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
+    sort_code?: string | null;
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -914,6 +954,7 @@ export type AdminCompanyBankAccountRequest = {
     name?: string | null;
     number?: string | null;
     type?: string | null;
+    payment_method?: string | null;
     bank_name?: string | null;
     bank_code?: string | null;
     bank_currency?: string | null;
@@ -927,6 +968,7 @@ export type AdminCompanyBankAccountRequest = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
+    sort_code?: string | null;
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -956,7 +998,7 @@ export type AdminCompanyLink = {
      * * `pending` - Pending
      * * `complete` - Complete
      */
-    status: 'pending' | 'complete';
+    readonly status: 'pending' | 'complete';
     readonly created: number;
     readonly updated: number;
 };
@@ -973,7 +1015,7 @@ export type AdminCompanyLinkCounterparty = {
      * * `pending` - Pending
      * * `complete` - Complete
      */
-    status: 'pending' | 'complete';
+    readonly status: 'pending' | 'complete';
 };
 
 export type AdminCompanyLinkResponse = {
@@ -1487,6 +1529,40 @@ export type AdminCreateAccountRequest = {
         [key: string]: unknown;
     } | null;
     archived?: boolean;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminCreateAlertRequest = {
+    name: string;
+    description?: string | null;
+    /**
+     * * `info` - Info
+     * * `low` - Low
+     * * `medium` - Medium
+     * * `high` - High
+     * * `critical` - Critical
+     */
+    priority?: 'info' | 'low' | 'medium' | 'high' | 'critical';
+    /**
+     * * `open` - Open
+     * * `assigned` - Assigned
+     * * `paused` - Paused
+     * * `closed` - Closed
+     * * `reopened` - Reopened
+     */
+    status: 'open' | 'assigned' | 'paused' | 'closed' | 'reopened';
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+    actions?: Array<{
+        [key: string]: unknown;
+    }>;
 };
 
 /**
@@ -2341,6 +2417,7 @@ export type AdminCreateUserBankAccountRequest = {
     owner?: BankOwnerRequest | null;
     number?: string | null;
     type?: string | null;
+    payment_method?: string | null;
     /**
      * * `individual` - Individual
      * * `business` - Business
@@ -2360,6 +2437,7 @@ export type AdminCreateUserBankAccountRequest = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
+    sort_code?: string | null;
     /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
@@ -3378,7 +3456,7 @@ export type AdminExport = {
      * * `transaction` - Transaction
      * * `user` - User
      */
-    resource: 'account' | 'account_currency' | 'transaction' | 'user';
+    readonly resource: 'account' | 'account_currency' | 'transaction' | 'user';
     query?: {
         [key: string]: unknown;
     } | null;
@@ -3388,7 +3466,7 @@ export type AdminExport = {
      * * `complete` - Complete
      * * `failed` - Failed
      */
-    status: 'queued' | 'processing' | 'complete' | 'failed';
+    readonly status: 'queued' | 'processing' | 'complete' | 'failed';
     progress: number;
     count?: number | null;
     page_size?: number;
@@ -3396,7 +3474,7 @@ export type AdminExport = {
      * * `json` - JSON
      * * `csv` - CSV
      */
-    file_format: 'json' | 'csv';
+    readonly file_format: 'json' | 'csv';
     readonly created: number;
     readonly updated: number;
     user: ReducedUserInfo;
@@ -3453,6 +3531,86 @@ export type AdminExtendedAccountResponse = {
     data: AdminExtendedAccount;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminExtendedAlert = {
+    readonly id: string;
+    readonly transaction: string | null;
+    user: ReducedUserInfo;
+    author: ReducedUserInfo;
+    name: string;
+    description?: string | null;
+    /**
+     * * `info` - Info
+     * * `low` - Low
+     * * `medium` - Medium
+     * * `high` - High
+     * * `critical` - Critical
+     */
+    priority?: 'info' | 'low' | 'medium' | 'high' | 'critical';
+    /**
+     * * `open` - Open
+     * * `assigned` - Assigned
+     * * `paused` - Paused
+     * * `closed` - Closed
+     * * `reopened` - Reopened
+     */
+    status: 'open' | 'assigned' | 'paused' | 'closed' | 'reopened';
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    readonly external: boolean;
+    archived?: boolean;
+    readonly created: string;
+    readonly updated: string;
+    actions?: Array<{
+        [key: string]: unknown;
+    }>;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminExtendedAlertRequest = {
+    name: string;
+    description?: string | null;
+    /**
+     * * `info` - Info
+     * * `low` - Low
+     * * `medium` - Medium
+     * * `high` - High
+     * * `critical` - Critical
+     */
+    priority?: 'info' | 'low' | 'medium' | 'high' | 'critical';
+    /**
+     * * `open` - Open
+     * * `assigned` - Assigned
+     * * `paused` - Paused
+     * * `closed` - Closed
+     * * `reopened` - Reopened
+     */
+    status: 'open' | 'assigned' | 'paused' | 'closed' | 'reopened';
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+    actions?: Array<{
+        [key: string]: unknown;
+    }>;
+};
+
+export type AdminExtendedAlertResponse = {
+    status: string;
+    data: AdminExtendedAlert;
+};
+
 export type AdminExtendedAuthToken = {
     readonly token_key: string;
     readonly token: string;
@@ -3487,7 +3645,7 @@ export type AdminExtendedExport = {
      * * `transaction` - Transaction
      * * `user` - User
      */
-    resource: 'account' | 'account_currency' | 'transaction' | 'user';
+    readonly resource: 'account' | 'account_currency' | 'transaction' | 'user';
     readonly query: {
         [key: string]: unknown;
     } | null;
@@ -3497,7 +3655,7 @@ export type AdminExtendedExport = {
      * * `complete` - Complete
      * * `failed` - Failed
      */
-    status: 'queued' | 'processing' | 'complete' | 'failed';
+    readonly status: 'queued' | 'processing' | 'complete' | 'failed';
     progress: number;
     readonly count: number | null;
     readonly page_size: number;
@@ -3506,7 +3664,7 @@ export type AdminExtendedExport = {
      * * `json` - JSON
      * * `csv` - CSV
      */
-    file_format: 'json' | 'csv';
+    readonly file_format: 'json' | 'csv';
     readonly created: number;
     readonly updated: number;
     user: ReducedUserInfo;
@@ -3595,6 +3753,7 @@ export type AdminExtendedRequest = {
      * * `accountdefinition` - Account Definition
      * * `accountdefinitiongroup` - Account Definition Group
      * * `accountdefinitiongroupcurrency` - Account Definition Group Currency
+     * * `alert` - Alert
      * * `currency` - Currency
      * * `authenticator` - Authenticator
      * * `authenticatorchallenge` - Authenticator Challenge
@@ -3667,7 +3826,7 @@ export type AdminExtendedRequest = {
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
     readonly resource_id: string | null;
     /**
      * Return a response object. This has to be unpickled from a stored
@@ -3706,7 +3865,7 @@ export type AdminExtendedTransaction = {
      * * `credit` - Credit
      * * `debit` - Debit
      */
-    tx_type: 'credit' | 'debit';
+    readonly tx_type: 'credit' | 'debit';
     readonly subtype: string | null;
     note?: string;
     metadata?: {
@@ -3719,7 +3878,7 @@ export type AdminExtendedTransaction = {
      * * `Complete` - Complete
      * * `Failed` - Failed
      */
-    status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
+    readonly status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
     readonly reference: string | null;
     readonly amount: number;
     readonly fee: number;
@@ -3782,7 +3941,7 @@ export type AdminExtendedTransactionTransition = {
      * * `approved` - Approved
      * * `declined` - Declined
      */
-    status: 'queued' | 'pending' | 'approved' | 'declined';
+    readonly status: 'queued' | 'pending' | 'approved' | 'declined';
     /**
      * * `Initiating` - Initiating
      * * `Quoted` - Quoted
@@ -3790,7 +3949,7 @@ export type AdminExtendedTransactionTransition = {
      * * `Complete` - Complete
      * * `Failed` - Failed
      */
-    from_status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
+    readonly from_status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
     /**
      * * `Initiating` - Initiating
      * * `Quoted` - Quoted
@@ -3798,7 +3957,7 @@ export type AdminExtendedTransactionTransition = {
      * * `Complete` - Complete
      * * `Failed` - Failed
      */
-    to_status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
+    readonly to_status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
     readonly index: number;
     readonly archived: boolean;
     readonly created: number;
@@ -4384,7 +4543,7 @@ export type AdminExtendedUserInfo = {
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly created: number;
     readonly updated: number;
     deactivated?: boolean;
@@ -4565,12 +4724,13 @@ export type AdminGroupPermission = {
      * * `admin` - Admin
      * * `user` - User
      */
-    section: 'system' | 'admin' | 'user';
+    readonly section: 'system' | 'admin' | 'user';
     /**
      * * `accesscontrolrule` - Access Control Rule
      * * `account` - Account
      * * `accountdefinition` - Account Definition
      * * `address` - Address
+     * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
      * * `company` - Company
@@ -4595,14 +4755,14 @@ export type AdminGroupPermission = {
      * * `user` - User
      * * `webhook` - Webhook
      */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
      * * `change` - Change
      * * `delete` - Delete
      */
-    level: 'view' | 'add' | 'change' | 'delete';
+    readonly level: 'view' | 'add' | 'change' | 'delete';
     properties?: {
         [key: string]: unknown;
     } | null;
@@ -4825,7 +4985,7 @@ export type AdminLegalTerm = {
      * * `system` - System
      * * `company` - Company
      */
-    type: 'system' | 'company';
+    readonly type: 'system' | 'company';
     name: string;
     description?: string | null;
     readonly groups: Array<string>;
@@ -4896,7 +5056,7 @@ export type AdminMfaAuthenticator = {
      * * `sms` - Sms
      * * `static` - Static
      */
-    type: 'totp' | 'sms' | 'static';
+    readonly type: 'totp' | 'sms' | 'static';
     user: ReducedUserInfo;
     readonly verified: boolean;
 };
@@ -4934,7 +5094,7 @@ export type AdminMetric = {
      * * `user_active_count` - User Active Count
      * * `user_transacted_in_30days_count` - User Transacted In 30Days Count
      */
-    type: 'account_count' | 'transaction_count' | 'transaction_complete_count' | 'transaction_failed_count' | 'transaction_pending_count' | 'transaction_complete_sum' | 'transaction_failed_sum' | 'transaction_pending_sum' | 'transaction_balance_sum' | 'transaction_available_balance_sum' | 'user_count' | 'user_active_count' | 'user_transacted_in_30days_count';
+    readonly type: 'account_count' | 'transaction_count' | 'transaction_complete_count' | 'transaction_failed_count' | 'transaction_pending_count' | 'transaction_complete_sum' | 'transaction_failed_sum' | 'transaction_pending_sum' | 'transaction_balance_sum' | 'transaction_available_balance_sum' | 'user_count' | 'user_active_count' | 'user_transacted_in_30days_count';
     currency: ReducedAsset;
     readonly timezone: string;
     readonly query: {
@@ -4944,7 +5104,7 @@ export type AdminMetric = {
      * * `accumulate` - Accumulate
      * * `set` - Set
      */
-    method: 'accumulate' | 'set';
+    readonly method: 'accumulate' | 'set';
     readonly created: number;
     readonly updated: number;
     user: ReducedUserInfo;
@@ -5833,6 +5993,7 @@ export type AdminRequest = {
      * * `accountdefinition` - Account Definition
      * * `accountdefinitiongroup` - Account Definition Group
      * * `accountdefinitiongroupcurrency` - Account Definition Group Currency
+     * * `alert` - Alert
      * * `currency` - Currency
      * * `authenticator` - Authenticator
      * * `authenticatorchallenge` - Authenticator Challenge
@@ -5905,7 +6066,7 @@ export type AdminRequest = {
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
     readonly resource_id: string | null;
     readonly created: number;
     readonly updated: number;
@@ -5930,7 +6091,7 @@ export type AdminService = {
      * * `public` - Public
      * * `private` - Private
      */
-    type: 'system' | 'public' | 'private';
+    readonly type: 'system' | 'public' | 'private';
     name: string;
     description?: string | null;
     tags?: Array<string> | null;
@@ -5981,7 +6142,7 @@ export type AdminStatement = {
      * * `complete` - Complete
      * * `failed` - Failed
      */
-    status: 'queued' | 'processing' | 'complete' | 'failed';
+    readonly status: 'queued' | 'processing' | 'complete' | 'failed';
     readonly created: number;
     readonly updated: number;
     archived?: boolean;
@@ -6012,7 +6173,7 @@ export type AdminTransaction = {
      * * `credit` - Credit
      * * `debit` - Debit
      */
-    tx_type: 'credit' | 'debit';
+    readonly tx_type: 'credit' | 'debit';
     readonly subtype: string | null;
     readonly note: string;
     readonly metadata: {
@@ -6025,7 +6186,7 @@ export type AdminTransaction = {
      * * `Complete` - Complete
      * * `Failed` - Failed
      */
-    status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
+    readonly status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
     readonly reference: string | null;
     readonly amount: number;
     readonly fee: number;
@@ -6060,7 +6221,7 @@ export type AdminTransactionCollection = {
      * * `Complete` - Complete
      * * `Failed` - Failed
      */
-    status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
+    readonly status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
     archived?: boolean;
     readonly created: number;
     readonly updated: number;
@@ -6091,7 +6252,7 @@ export type AdminTransactionCollectionTransaction = {
      * * `credit` - Credit
      * * `debit` - Debit
      */
-    tx_type: 'credit' | 'debit';
+    readonly tx_type: 'credit' | 'debit';
     readonly subtype: string | null;
     readonly note: string;
     readonly metadata: {
@@ -6104,7 +6265,7 @@ export type AdminTransactionCollectionTransaction = {
      * * `Complete` - Complete
      * * `Failed` - Failed
      */
-    status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
+    readonly status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
     readonly reference: string | null;
     readonly amount: number;
     readonly fee: number;
@@ -6189,14 +6350,14 @@ export type AdminTransactionSubtype = {
      * * `credit` - Credit
      * * `debit` - Debit
      */
-    tx_type: 'credit' | 'debit';
+    readonly tx_type: 'credit' | 'debit';
     /**
      * * `partner` - Partner
      * * `single` - Single
      *
      * @deprecated
      */
-    usage_type: 'partner' | 'single' | null;
+    readonly usage_type: 'partner' | 'single' | null;
     partner: ReducedTransactionSubtype;
     archived?: boolean;
     readonly created: number;
@@ -6231,7 +6392,7 @@ export type AdminTransactionTransition = {
      * * `approved` - Approved
      * * `declined` - Declined
      */
-    status: 'queued' | 'pending' | 'approved' | 'declined';
+    readonly status: 'queued' | 'pending' | 'approved' | 'declined';
     /**
      * * `Initiating` - Initiating
      * * `Quoted` - Quoted
@@ -6239,7 +6400,7 @@ export type AdminTransactionTransition = {
      * * `Complete` - Complete
      * * `Failed` - Failed
      */
-    from_status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
+    readonly from_status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
     /**
      * * `Initiating` - Initiating
      * * `Quoted` - Quoted
@@ -6247,7 +6408,7 @@ export type AdminTransactionTransition = {
      * * `Complete` - Complete
      * * `Failed` - Failed
      */
-    to_status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
+    readonly to_status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
     readonly index: number;
     readonly archived: boolean;
     readonly created: number;
@@ -6580,12 +6741,13 @@ export type AdminUpdateServicePermission = {
      * * `admin` - Admin
      * * `user` - User
      */
-    section: 'system' | 'admin' | 'user';
+    readonly section: 'system' | 'admin' | 'user';
     /**
      * * `accesscontrolrule` - Access Control Rule
      * * `account` - Account
      * * `accountdefinition` - Account Definition
      * * `address` - Address
+     * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
      * * `company` - Company
@@ -6610,14 +6772,14 @@ export type AdminUpdateServicePermission = {
      * * `user` - User
      * * `webhook` - Webhook
      */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
      * * `change` - Change
      * * `delete` - Delete
      */
-    level: 'view' | 'add' | 'change' | 'delete';
+    readonly level: 'view' | 'add' | 'change' | 'delete';
 };
 
 export type AdminUpdateServicePermissionResponse = {
@@ -7875,6 +8037,7 @@ export type AdminUserBankAccount = {
     owner?: BankOwner | null;
     number?: string | null;
     type?: string | null;
+    payment_method?: string | null;
     /**
      * * `individual` - Individual
      * * `business` - Business
@@ -7894,6 +8057,7 @@ export type AdminUserBankAccount = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
+    sort_code?: string | null;
     readonly code: string | null;
     /**
      * * `obsolete` - Obsolete
@@ -7960,6 +8124,7 @@ export type AdminUserBankAccountRequest = {
     owner?: BankOwnerRequest | null;
     number?: string | null;
     type?: string | null;
+    payment_method?: string | null;
     /**
      * * `individual` - Individual
      * * `business` - Business
@@ -7979,6 +8144,7 @@ export type AdminUserBankAccountRequest = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
+    sort_code?: string | null;
     /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
@@ -8557,7 +8723,7 @@ export type AdminUserDocument = {
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly metadata: {
         [key: string]: unknown;
     } | null;
@@ -9175,7 +9341,7 @@ export type AdminUserInfo = {
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly created: number;
     readonly updated: number;
     deactivated?: boolean;
@@ -9201,7 +9367,7 @@ export type AdminUserLegalTerm = {
      * * `system` - System
      * * `company` - Company
      */
-    type: 'system' | 'company';
+    readonly type: 'system' | 'company';
     name: string;
     description?: string | null;
     readonly versions: Array<AdminReducedUserLegalTermVersion>;
@@ -9288,12 +9454,13 @@ export type AdminUserPermission = {
      * * `admin` - Admin
      * * `user` - User
      */
-    section: 'system' | 'admin' | 'user';
+    readonly section: 'system' | 'admin' | 'user';
     /**
      * * `accesscontrolrule` - Access Control Rule
      * * `account` - Account
      * * `accountdefinition` - Account Definition
      * * `address` - Address
+     * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
      * * `company` - Company
@@ -9318,14 +9485,14 @@ export type AdminUserPermission = {
      * * `user` - User
      * * `webhook` - Webhook
      */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
      * * `change` - Change
      * * `delete` - Delete
      */
-    level: 'view' | 'add' | 'change' | 'delete';
+    readonly level: 'view' | 'add' | 'change' | 'delete';
     properties?: {
         [key: string]: unknown;
     } | null;
@@ -9511,8 +9678,10 @@ export type AdminWebhook = {
      * * `transaction.transition.create` - Transaction Transition Create
      * * `transaction.transition.update` - Transaction Transition Update
      * * `mfa.sms.verify` - Mfa Sms Verify
+     * * `alert.create` - Alert Create
+     * * `alert.update` - Alert Update
      */
-    event: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'address.create' | 'address.update' | 'document.create' | 'document.update' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify';
+    event: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'address.create' | 'address.update' | 'document.create' | 'document.update' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify' | 'alert.create' | 'alert.update';
     secret?: string;
     condition?: string | null;
     enabled?: boolean;
@@ -9602,13 +9771,13 @@ export type AuthenticatorChallenge = {
      * * `authorization` - Authorization
      * * `setup` - Setup
      */
-    type: 'authentication' | 'authorization' | 'setup';
+    readonly type: 'authentication' | 'authorization' | 'setup';
     /**
      * * `ephemeral` - Ephemeral
      * * `durable` - Durable
      * * `permanent` - Permanent
      */
-    durability: 'ephemeral' | 'durable' | 'permanent';
+    readonly durability: 'ephemeral' | 'durable' | 'permanent';
     readonly authenticator_types: Array<'totp' | 'sms' | 'static'>;
     readonly created: number;
 };
@@ -10827,6 +10996,7 @@ export type CreatePermissionRequest = {
      * * `account` - Account
      * * `accountdefinition` - Account Definition
      * * `address` - Address
+     * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
      * * `company` - Company
@@ -10851,7 +11021,7 @@ export type CreatePermissionRequest = {
      * * `user` - User
      * * `webhook` - Webhook
      */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -11488,7 +11658,7 @@ export type ExtendedUserInfo = {
      * * `incomplete` - Incomplete
      * * `verified` - Verified
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly created: number;
     readonly updated: number;
     settings: UserSettings;
@@ -11517,12 +11687,13 @@ export type GroupPermission = {
      * * `admin` - Admin
      * * `user` - User
      */
-    section: 'system' | 'admin' | 'user';
+    readonly section: 'system' | 'admin' | 'user';
     /**
      * * `accesscontrolrule` - Access Control Rule
      * * `account` - Account
      * * `accountdefinition` - Account Definition
      * * `address` - Address
+     * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
      * * `company` - Company
@@ -11547,14 +11718,14 @@ export type GroupPermission = {
      * * `user` - User
      * * `webhook` - Webhook
      */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
      * * `change` - Change
      * * `delete` - Delete
      */
-    level: 'view' | 'add' | 'change' | 'delete';
+    readonly level: 'view' | 'add' | 'change' | 'delete';
     readonly properties: {
         [key: string]: unknown;
     };
@@ -11705,7 +11876,7 @@ export type GroupTierRequirementSetItem = {
     /**
      * * `resource` - Resource
      */
-    type: 'resource';
+    readonly type: 'resource';
     rule: GroupTierRequirementSetItemRule;
     name?: string | null;
     description?: string | null;
@@ -11910,6 +12081,18 @@ export type PaginatedAdminAccountList = {
 export type PaginatedAdminAccountListResponse = {
     status: string;
     data: PaginatedAdminAccountList;
+};
+
+export type PaginatedAdminAlertList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminAlert>;
+};
+
+export type PaginatedAdminAlertListResponse = {
+    status: string;
+    data: PaginatedAdminAlertList;
 };
 
 export type PaginatedAdminAssetList = {
@@ -12541,6 +12724,7 @@ export type PatchedAdminCompanyBankAccountRequest = {
     name?: string | null;
     number?: string | null;
     type?: string | null;
+    payment_method?: string | null;
     bank_name?: string | null;
     bank_code?: string | null;
     bank_currency?: string | null;
@@ -12554,6 +12738,7 @@ export type PatchedAdminCompanyBankAccountRequest = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
+    sort_code?: string | null;
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -13041,6 +13226,40 @@ export type PatchedAdminEmailRequest = {
     primary?: boolean;
     verified?: boolean;
     archived?: boolean;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type PatchedAdminExtendedAlertRequest = {
+    name?: string;
+    description?: string | null;
+    /**
+     * * `info` - Info
+     * * `low` - Low
+     * * `medium` - Medium
+     * * `high` - High
+     * * `critical` - Critical
+     */
+    priority?: 'info' | 'low' | 'medium' | 'high' | 'critical';
+    /**
+     * * `open` - Open
+     * * `assigned` - Assigned
+     * * `paused` - Paused
+     * * `closed` - Closed
+     * * `reopened` - Reopened
+     */
+    status?: 'open' | 'assigned' | 'paused' | 'closed' | 'reopened';
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+    actions?: Array<{
+        [key: string]: unknown;
+    }>;
 };
 
 /**
@@ -14331,6 +14550,7 @@ export type PatchedAdminUserBankAccountRequest = {
     owner?: BankOwnerRequest | null;
     number?: string | null;
     type?: string | null;
+    payment_method?: string | null;
     /**
      * * `individual` - Individual
      * * `business` - Business
@@ -14350,6 +14570,7 @@ export type PatchedAdminUserBankAccountRequest = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
+    sort_code?: string | null;
     /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
@@ -14465,8 +14686,10 @@ export type PatchedAdminWebhookRequest = {
      * * `transaction.transition.create` - Transaction Transition Create
      * * `transaction.transition.update` - Transaction Transition Update
      * * `mfa.sms.verify` - Mfa Sms Verify
+     * * `alert.create` - Alert Create
+     * * `alert.update` - Alert Update
      */
-    event?: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'address.create' | 'address.update' | 'document.create' | 'document.update' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify';
+    event?: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'address.create' | 'address.update' | 'document.create' | 'document.update' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify' | 'alert.create' | 'alert.update';
     secret?: string;
     condition?: string | null;
     enabled?: boolean;
@@ -14515,12 +14738,13 @@ export type Permission = {
      * * `admin` - Admin
      * * `user` - User
      */
-    section: 'system' | 'admin' | 'user';
+    readonly section: 'system' | 'admin' | 'user';
     /**
      * * `accesscontrolrule` - Access Control Rule
      * * `account` - Account
      * * `accountdefinition` - Account Definition
      * * `address` - Address
+     * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
      * * `company` - Company
@@ -14545,14 +14769,14 @@ export type Permission = {
      * * `user` - User
      * * `webhook` - Webhook
      */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
      * * `change` - Change
      * * `delete` - Delete
      */
-    level: 'view' | 'add' | 'change' | 'delete';
+    readonly level: 'view' | 'add' | 'change' | 'delete';
 };
 
 export type PermissionResponse = {
@@ -14686,7 +14910,7 @@ export type ReducedCompany = {
      * * `test` - Test
      * * `production` - Production
      */
-    mode: 'test' | 'production';
+    readonly mode: 'test' | 'production';
 };
 
 /**
@@ -14804,7 +15028,7 @@ export type ReducedService = {
      * * `public` - Public
      * * `private` - Private
      */
-    type: 'system' | 'public' | 'private';
+    readonly type: 'system' | 'public' | 'private';
 };
 
 export type ReducedTransactionSubtype = {
@@ -14946,14 +15170,14 @@ export type TransactionSubtype = {
      * * `credit` - Credit
      * * `debit` - Debit
      */
-    tx_type: 'credit' | 'debit';
+    readonly tx_type: 'credit' | 'debit';
     /**
      * * `partner` - Partner
      * * `single` - Single
      *
      * @deprecated
      */
-    usage_type: 'partner' | 'single' | null;
+    readonly usage_type: 'partner' | 'single' | null;
     partner: ReducedTransactionSubtype;
     readonly created: number;
     readonly updated: number;
@@ -15003,12 +15227,13 @@ export type UserPermission = {
      * * `admin` - Admin
      * * `user` - User
      */
-    section: 'system' | 'admin' | 'user';
+    readonly section: 'system' | 'admin' | 'user';
     /**
      * * `accesscontrolrule` - Access Control Rule
      * * `account` - Account
      * * `accountdefinition` - Account Definition
      * * `address` - Address
+     * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
      * * `company` - Company
@@ -15033,14 +15258,14 @@ export type UserPermission = {
      * * `user` - User
      * * `webhook` - Webhook
      */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
      * * `change` - Change
      * * `delete` - Delete
      */
-    level: 'view' | 'add' | 'change' | 'delete';
+    readonly level: 'view' | 'add' | 'change' | 'delete';
     readonly properties: {
         [key: string]: unknown;
     };
@@ -15347,6 +15572,37 @@ export type AdminAccountDefinitionResponseWritable = {
 export type AdminAccountResponseWritable = {
     status: string;
     data: AdminAccountWritable;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminAlertWritable = {
+    name: string;
+    description?: string | null;
+    /**
+     * * `info` - Info
+     * * `low` - Low
+     * * `medium` - Medium
+     * * `high` - High
+     * * `critical` - Critical
+     */
+    priority?: 'info' | 'low' | 'medium' | 'high' | 'critical';
+    /**
+     * * `open` - Open
+     * * `assigned` - Assigned
+     * * `paused` - Paused
+     * * `closed` - Closed
+     * * `reopened` - Reopened
+     */
+    status: 'open' | 'assigned' | 'paused' | 'closed' | 'reopened';
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
 };
 
 /**
@@ -15737,6 +15993,7 @@ export type AdminCompanyBankAccountWritable = {
     name?: string | null;
     number?: string | null;
     type?: string | null;
+    payment_method?: string | null;
     bank_name?: string | null;
     bank_code?: string | null;
     bank_currency?: string | null;
@@ -15750,6 +16007,7 @@ export type AdminCompanyBankAccountWritable = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
+    sort_code?: string | null;
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -16032,6 +16290,42 @@ export type AdminCreateAccountRequestWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
+export type AdminCreateAlertRequestWritable = {
+    transaction?: string;
+    user?: string;
+    name: string;
+    description?: string | null;
+    /**
+     * * `info` - Info
+     * * `low` - Low
+     * * `medium` - Medium
+     * * `high` - High
+     * * `critical` - Critical
+     */
+    priority?: 'info' | 'low' | 'medium' | 'high' | 'critical';
+    /**
+     * * `open` - Open
+     * * `assigned` - Assigned
+     * * `paused` - Paused
+     * * `closed` - Closed
+     * * `reopened` - Reopened
+     */
+    status: 'open' | 'assigned' | 'paused' | 'closed' | 'reopened';
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+    actions?: Array<{
+        [key: string]: unknown;
+    }>;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
 export type AdminCreateAssetRequestWritable = {
     code?: string | null;
     display_code?: string | null;
@@ -16292,6 +16586,7 @@ export type AdminCreateGroupPermissionRequestWritable = {
      * * `account` - Account
      * * `accountdefinition` - Account Definition
      * * `address` - Address
+     * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
      * * `company` - Company
@@ -16316,7 +16611,7 @@ export type AdminCreateGroupPermissionRequestWritable = {
      * * `user` - User
      * * `webhook` - Webhook
      */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -16898,6 +17193,7 @@ export type AdminCreateUserBankAccountRequestWritable = {
     owner?: BankOwnerRequest | null;
     number?: string | null;
     type?: string | null;
+    payment_method?: string | null;
     /**
      * * `individual` - Individual
      * * `business` - Business
@@ -16917,6 +17213,7 @@ export type AdminCreateUserBankAccountRequestWritable = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
+    sort_code?: string | null;
     /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
@@ -17539,6 +17836,7 @@ export type AdminCreateUserPermissionRequestWritable = {
      * * `account` - Account
      * * `accountdefinition` - Account Definition
      * * `address` - Address
+     * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
      * * `company` - Company
@@ -17563,7 +17861,7 @@ export type AdminCreateUserPermissionRequestWritable = {
      * * `user` - User
      * * `webhook` - Webhook
      */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -17871,6 +18169,45 @@ export type AdminExtendedAccountResponseWritable = {
     data: AdminExtendedAccountWritable;
 };
 
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminExtendedAlertWritable = {
+    name: string;
+    description?: string | null;
+    /**
+     * * `info` - Info
+     * * `low` - Low
+     * * `medium` - Medium
+     * * `high` - High
+     * * `critical` - Critical
+     */
+    priority?: 'info' | 'low' | 'medium' | 'high' | 'critical';
+    /**
+     * * `open` - Open
+     * * `assigned` - Assigned
+     * * `paused` - Paused
+     * * `closed` - Closed
+     * * `reopened` - Reopened
+     */
+    status: 'open' | 'assigned' | 'paused' | 'closed' | 'reopened';
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+    actions?: Array<{
+        [key: string]: unknown;
+    }>;
+};
+
+export type AdminExtendedAlertResponseWritable = {
+    status: string;
+    data: AdminExtendedAlertWritable;
+};
+
 export type AdminExtendedAuthTokenWritable = {
     [key: string]: unknown;
 };
@@ -17939,6 +18276,7 @@ export type AdminExtendedRequestWritable = {
      * * `accountdefinition` - Account Definition
      * * `accountdefinitiongroup` - Account Definition Group
      * * `accountdefinitiongroupcurrency` - Account Definition Group Currency
+     * * `alert` - Alert
      * * `currency` - Currency
      * * `authenticator` - Authenticator
      * * `authenticatorchallenge` - Authenticator Challenge
@@ -18011,7 +18349,7 @@ export type AdminExtendedRequestWritable = {
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
 };
 
 export type AdminExtendedRequestResponseWritable = {
@@ -19639,6 +19977,7 @@ export type AdminRequestWritable = {
      * * `accountdefinition` - Account Definition
      * * `accountdefinitiongroup` - Account Definition Group
      * * `accountdefinitiongroupcurrency` - Account Definition Group Currency
+     * * `alert` - Alert
      * * `currency` - Currency
      * * `authenticator` - Authenticator
      * * `authenticatorchallenge` - Authenticator Challenge
@@ -19711,7 +20050,7 @@ export type AdminRequestWritable = {
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
 };
 
 /**
@@ -21056,6 +21395,7 @@ export type AdminUserBankAccountWritable = {
     owner?: BankOwner | null;
     number?: string | null;
     type?: string | null;
+    payment_method?: string | null;
     /**
      * * `individual` - Individual
      * * `business` - Business
@@ -21075,6 +21415,7 @@ export type AdminUserBankAccountWritable = {
     check_digit?: string | null;
     pix_key?: string | null;
     br_code?: string | null;
+    sort_code?: string | null;
     /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
@@ -21907,8 +22248,10 @@ export type AdminWebhookWritable = {
      * * `transaction.transition.create` - Transaction Transition Create
      * * `transaction.transition.update` - Transaction Transition Update
      * * `mfa.sms.verify` - Mfa Sms Verify
+     * * `alert.create` - Alert Create
+     * * `alert.update` - Alert Update
      */
-    event: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'address.create' | 'address.update' | 'document.create' | 'document.update' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify';
+    event: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'address.create' | 'address.update' | 'document.create' | 'document.update' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify' | 'alert.create' | 'alert.update';
     secret?: string;
     condition?: string | null;
     enabled?: boolean;
@@ -22785,6 +23128,18 @@ export type PaginatedAdminAccountListWritable = {
 export type PaginatedAdminAccountListResponseWritable = {
     status: string;
     data: PaginatedAdminAccountListWritable;
+};
+
+export type PaginatedAdminAlertListWritable = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminAlertWritable>;
+};
+
+export type PaginatedAdminAlertListResponseWritable = {
+    status: string;
+    data: PaginatedAdminAlertListWritable;
 };
 
 export type PaginatedAdminAssetListWritable = {
@@ -25406,6 +25761,101 @@ export type AccountsCurrenciesSettingsUpdateResponses = {
 };
 
 export type AccountsCurrenciesSettingsUpdateResponse = AccountsCurrenciesSettingsUpdateResponses[keyof AccountsCurrenciesSettingsUpdateResponses];
+
+export type AlertsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        author?: string;
+        created?: string;
+        created__gt?: string;
+        created__gte?: string;
+        created__lt?: string;
+        created__lte?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        priority?: string;
+        status?: string;
+        transaction?: string;
+        updated?: string;
+        updated__gt?: string;
+        updated__gte?: string;
+        updated__lt?: string;
+        updated__lte?: string;
+        user?: string;
+    };
+    url: '/3/admin/alerts/';
+};
+
+export type AlertsListResponses = {
+    200: PaginatedAdminAlertListResponse;
+};
+
+export type AlertsListResponse = AlertsListResponses[keyof AlertsListResponses];
+
+export type AlertsCreateData = {
+    body: AdminCreateAlertRequestWritable;
+    path?: never;
+    query?: never;
+    url: '/3/admin/alerts/';
+};
+
+export type AlertsCreateResponses = {
+    201: AdminExtendedAlertResponse;
+};
+
+export type AlertsCreateResponse = AlertsCreateResponses[keyof AlertsCreateResponses];
+
+export type AlertsRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/alerts/{identifier}/';
+};
+
+export type AlertsRetrieveResponses = {
+    200: AdminExtendedAlertResponse;
+};
+
+export type AlertsRetrieveResponse = AlertsRetrieveResponses[keyof AlertsRetrieveResponses];
+
+export type AlertsPartialUpdateData = {
+    body?: PatchedAdminExtendedAlertRequest;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/alerts/{identifier}/';
+};
+
+export type AlertsPartialUpdateResponses = {
+    200: AdminExtendedAlertResponse;
+};
+
+export type AlertsPartialUpdateResponse = AlertsPartialUpdateResponses[keyof AlertsPartialUpdateResponses];
+
+export type AlertsUpdateData = {
+    body: AdminExtendedAlertRequest;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/alerts/{identifier}/';
+};
+
+export type AlertsUpdateResponses = {
+    200: AdminExtendedAlertResponse;
+};
+
+export type AlertsUpdateResponse = AlertsUpdateResponses[keyof AlertsUpdateResponses];
 
 export type AuthDeactivateCreateData = {
     body: AdminDeactivateRequest;
@@ -28659,6 +29109,7 @@ export type UsersListData = {
         email__contains?: string;
         first_name?: string;
         first_name__contains?: string;
+        first_name__icontains?: string;
         group?: string;
         group__isnull?: boolean;
         id?: string;
@@ -28672,8 +29123,10 @@ export type UsersListData = {
         last_login__lt?: string | null;
         last_name?: string;
         last_name__contains?: string;
+        last_name__icontains?: string;
         middle_name?: string;
         middle_name__contains?: string;
+        middle_name__icontains?: string;
         mobile?: string;
         mobile__contains?: string;
         /**
