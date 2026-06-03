@@ -39,7 +39,7 @@ export type AdminCompany = {
     bridge_api_key: string;
     readonly bridge_webhook_id: string | null;
     readonly admin_user_bridge_id: string | null;
-    readonly bridge_default_endorsements: Array<'base' | 'sepa' | 'spei' | 'pix' | 'cards'>;
+    readonly bridge_default_endorsements: Array<'base' | 'sepa' | 'spei' | 'pix' | 'cards' | 'faster_payments'>;
     readonly bridge_tos_platform_legal_term: string | null;
     readonly exchange_rate_override_bps: number;
 };
@@ -52,6 +52,7 @@ export type AdminCompanyResponse = {
 export type AdminCreateLiquidationAddress = {
     wallet?: string;
     account_currency?: string;
+    external_wallet?: string;
     /**
      * * `solana` - Solana
      * * `base` - Base
@@ -83,6 +84,7 @@ export type AdminCreatePayoutConfiguration = {
 export type AdminCreateVirtualAccount = {
     wallet?: string;
     account_currency?: string;
+    external_wallet?: string;
     /**
      * * `gbp` - Gbp
      * * `usd` - Usd
@@ -156,13 +158,33 @@ export type AdminCurrencyResponse = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
+export type AdminDeposit = {
+    readonly transaction: string;
+    readonly bridge_id: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
 export type AdminFundsRequest = {
     readonly id: string;
     readonly user: string;
+    deposit: AdminDeposit | null;
     readonly bridge_id: string;
+    bridge_deposit: AdminFundsRequestBridgeDeposit;
     readonly fraud: boolean;
     readonly created: number;
     readonly updated: number;
+};
+
+export type AdminFundsRequestBridgeDeposit = {
+    readonly id: string;
+    readonly payment_rail: string;
+    readonly currency: string;
+    readonly amount: string;
 };
 
 export type AdminFundsRequestResponse = {
@@ -179,6 +201,7 @@ export type AdminFundsRequestResponse = {
 export type AdminLiquidationAddress = {
     readonly id: string;
     wallet: UserReducedWallet;
+    readonly external_wallet: string | null;
     readonly chain: string;
     /**
      * * `usdc` - Usdc
@@ -358,7 +381,7 @@ export type AdminUpdateCompany = {
     bridge_api_key?: string;
     readonly bridge_webhook_id: string | null;
     admin_user_bridge_id?: string | null;
-    bridge_default_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'cards'> | null;
+    bridge_default_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'cards' | 'faster_payments'> | null;
     bridge_tos_platform_legal_term?: string | null;
     exchange_rate_override_bps?: number | null;
 };
@@ -389,6 +412,9 @@ export type AdminUser = {
      * * `under_review` - Under Review
      */
     readonly bridge_status: 'active' | 'awaiting_questionnaire' | 'awaiting_ubo' | 'incomplete' | 'not_started' | 'offboarded' | 'paused' | 'rejected' | 'under_review';
+    readonly bridge_rejection_reasons: {
+        [key: string]: unknown;
+    } | null;
     readonly created: number;
     readonly updated: number;
 };
@@ -407,6 +433,7 @@ export type AdminUserResponse = {
 export type AdminVirtualAccount = {
     readonly id: string;
     wallet: UserReducedWallet;
+    readonly external_wallet: string | null;
     /**
      * * `usdc` - Usdc
      * * `eurc` - Eurc
@@ -733,7 +760,7 @@ export type PatchedAdminUpdateCompany = {
     bridge_api_key?: string;
     readonly bridge_webhook_id?: string | null;
     admin_user_bridge_id?: string | null;
-    bridge_default_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'cards'> | null;
+    bridge_default_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'cards' | 'faster_payments'> | null;
     bridge_tos_platform_legal_term?: string | null;
     exchange_rate_override_bps?: number | null;
 };
@@ -768,7 +795,7 @@ export type UserCreateCustomerKycLink = {
      * * `business` - Business
      */
     customer_type?: 'individual' | 'business';
-    endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'cards'> | null;
+    endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'cards' | 'faster_payments'> | null;
     redirect_uri?: string | null;
 };
 
@@ -796,6 +823,8 @@ export type UserCreateExternalWallet = {
      * * `brl` - Brl
      */
     currency: 'usdc' | 'eurc' | 'usdt' | 'gbp' | 'usd' | 'eur' | 'mxn' | 'brl';
+    account?: string | null;
+    account_currency?: string | null;
 };
 
 /**
@@ -816,8 +845,9 @@ export type UserCreateStaticTemplate = {
  * values with complex, nested serializations
  */
 export type UserCreateVirtualAccount = {
-    account: string;
-    currency: string;
+    account?: string;
+    currency?: string;
+    external_wallet?: string;
     /**
      * * `gbp` - Gbp
      * * `usd` - Usd
@@ -915,6 +945,8 @@ export type UserExternalWallet = {
      * * `brl` - Brl
      */
     readonly currency: 'usdc' | 'eurc' | 'usdt' | 'gbp' | 'usd' | 'eur' | 'mxn' | 'brl';
+    readonly account: string | null;
+    readonly account_currency: string | null;
     readonly created: number;
     readonly updated: number;
 };
@@ -973,6 +1005,7 @@ export type UserStaticTemplateResponse = {
 export type UserVirtualAccount = {
     readonly id: string;
     wallet: UserReducedWallet;
+    readonly external_wallet: string | null;
     /**
      * * `usdc` - Usdc
      * * `eurc` - Eurc
@@ -1156,7 +1189,7 @@ export type AdminTransactionTransitionResponseWritable = {
 export type AdminUpdateCompanyWritable = {
     bridge_api_key?: string;
     admin_user_bridge_id?: string | null;
-    bridge_default_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'cards'> | null;
+    bridge_default_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'cards' | 'faster_payments'> | null;
     bridge_tos_platform_legal_term?: string | null;
     exchange_rate_override_bps?: number | null;
 };
@@ -1383,7 +1416,7 @@ export type PatchedAdminPayoutConfigurationWritable = {
 export type PatchedAdminUpdateCompanyWritable = {
     bridge_api_key?: string;
     admin_user_bridge_id?: string | null;
-    bridge_default_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'cards'> | null;
+    bridge_default_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'cards' | 'faster_payments'> | null;
     bridge_tos_platform_legal_term?: string | null;
     exchange_rate_override_bps?: number | null;
 };
@@ -2003,6 +2036,7 @@ export type AdminVirtualAccountsListData = {
         bank_account?: string;
         bridge_id?: string;
         currency?: string;
+        external_wallet?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -2225,6 +2259,7 @@ export type UserExternalWalletsListData = {
     body?: never;
     path?: never;
     query?: {
+        address?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -2357,7 +2392,7 @@ export type UserVirtualAccountsListResponses = {
 export type UserVirtualAccountsListResponse = UserVirtualAccountsListResponses[keyof UserVirtualAccountsListResponses];
 
 export type UserVirtualAccountsCreateData = {
-    body: UserCreateVirtualAccount;
+    body?: UserCreateVirtualAccount;
     path?: never;
     query?: never;
     url: '/user/virtual-accounts/';

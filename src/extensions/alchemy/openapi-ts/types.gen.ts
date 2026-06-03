@@ -50,6 +50,9 @@ export type Address = {
     address: string;
     user: User;
     rehive_account: string;
+    readonly parent_address: string;
+    readonly subtype: string;
+    readonly provider: string;
     readonly created: number;
     readonly updated: number;
 };
@@ -70,6 +73,7 @@ export type AdminAddress = {
     readonly address: string;
     readonly rehive_account: string;
     user: User;
+    readonly parent_address: string;
     readonly created: number;
     readonly updated: number;
 };
@@ -110,6 +114,106 @@ export type AdminCompanyResponse = {
 export type AdminCreateAddress = {
     address: string;
     rehive_account: string;
+};
+
+/**
+ * Input for minting a new deposit address. Resolves the parent Address (by
+ * identifier or on-chain address) and the matching CompanyDepositFactory —
+ * keyed by either (company, chain, subtype) or (company, chain, provider),
+ * exactly one of which must be supplied — computes the CREATE2 address via
+ * RPC, creates the Address row, and subscribes it to Alchemy.
+ */
+export type AdminCreateDepositAddress = {
+    parent_address: string;
+    /**
+     * * `ETH_SEPOLIA` - Eth Sepolia
+     * * `ETH_MAINNET` - Eth Mainnet
+     * * `BASE_MAINNET` - Base Mainnet
+     * * `BASE_SEPOLIA` - Base Sepolia
+     */
+    chain: 'ETH_SEPOLIA' | 'ETH_MAINNET' | 'BASE_MAINNET' | 'BASE_SEPOLIA';
+    subtype?: string;
+    provider?: string;
+    readonly id: string;
+    readonly address: string;
+    readonly deposit_index: number;
+    readonly created: number;
+};
+
+export type AdminCreateDepositAddressResponse = {
+    status?: string;
+    data?: AdminCreateDepositAddress;
+};
+
+/**
+ * Create a CompanyDepositFactory row and (by default) deploy the on-chain
+ * factory. Exactly one of `subtype` or `provider` must be supplied — a
+ * factory is either bound to a Rehive payment-method subtype (and emits
+ * Rehive credits directly on sweep) or to a third-party provider tag (and
+ * records ProviderMonitoredDeposit rows for the provider's pending
+ * transactions to join against).
+ *
+ * The operator keypair is pulled from OPERATOR_ADDRESS / OPERATOR_PRIVATE_KEY
+ * env vars at create time, copied onto the row, and the private key is
+ * Fernet-encrypted under OPERATOR_KEY_MASTER before being written. The
+ * plaintext never touches the DB.
+ */
+export type AdminCreateDepositFactory = {
+    /**
+     * * `ETH_SEPOLIA` - Eth Sepolia
+     * * `ETH_MAINNET` - Eth Mainnet
+     * * `BASE_MAINNET` - Base Mainnet
+     * * `BASE_SEPOLIA` - Base Sepolia
+     */
+    chain: 'ETH_SEPOLIA' | 'ETH_MAINNET' | 'BASE_MAINNET' | 'BASE_SEPOLIA';
+    subtype?: string;
+    provider?: string;
+    deploy?: boolean;
+    readonly id: string;
+    /**
+     * * `ETH_SEPOLIA` - Eth Sepolia
+     * * `ETH_MAINNET` - Eth Mainnet
+     * * `BASE_MAINNET` - Base Mainnet
+     * * `BASE_SEPOLIA` - Base Sepolia
+     */
+    readonly chain_out: 'ETH_SEPOLIA' | 'ETH_MAINNET' | 'BASE_MAINNET' | 'BASE_SEPOLIA';
+    readonly subtype_out: string;
+    readonly provider_out: string;
+    readonly factory_address: string;
+    readonly implementation_address: string;
+    readonly operator_address_out: string;
+    readonly active: boolean;
+    readonly created: number;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminDepositFactory = {
+    readonly id: string;
+    /**
+     * * `ETH_SEPOLIA` - Eth Sepolia
+     * * `ETH_MAINNET` - Eth Mainnet
+     * * `BASE_MAINNET` - Base Mainnet
+     * * `BASE_SEPOLIA` - Base Sepolia
+     */
+    readonly chain: 'ETH_SEPOLIA' | 'ETH_MAINNET' | 'BASE_MAINNET' | 'BASE_SEPOLIA';
+    readonly subtype: string;
+    readonly provider: string;
+    readonly factory_address: string;
+    readonly implementation_address: string;
+    readonly operator_address: string;
+    readonly active: boolean;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type AdminDepositFactoryResponse = {
+    status?: string;
+    data?: AdminDepositFactory;
 };
 
 /**
@@ -265,6 +369,18 @@ export type PaginatedAdminAddressListResponse = {
     data?: PaginatedAdminAddressList;
 };
 
+export type PaginatedAdminDepositFactoryList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AdminDepositFactory>;
+};
+
+export type PaginatedAdminDepositFactoryListResponse = {
+    status?: string;
+    data?: PaginatedAdminDepositFactoryList;
+};
+
 export type PaginatedAdminOnchainTransactionList = {
     count: number;
     next?: string | null;
@@ -398,6 +514,27 @@ export type User = {
     identifier: string;
 };
 
+/**
+ * Request body for POST /user/addresses/. Two mutually-exclusive modes, both
+ * scoped to the calling user:
+ *
+ * * Direct registration — {address, rehive_account}
+ * * Deposit address      — {parent_address, chain, subtype} OR
+ * {parent_address, chain, provider}
+ * Mirrors the admin deposit-addresses endpoint: resolves the company's
+ * factory by (chain, subtype) or (chain, provider) — exactly one must
+ * be supplied — computes the next CREATE2 deposit address, creates the
+ * Address row, and subscribes it to Alchemy monitoring.
+ * `parent_address` accepts the parent's identifier or on-chain address
+ * and must resolve to one of the caller's own Address rows.
+ *
+ * The response is rendered with AddressSerializer.
+ */
+export type UserCreateAddress = {
+    address?: string;
+    rehive_account?: string;
+};
+
 export type Webhook = {
     id: string;
     /**
@@ -449,6 +586,10 @@ export type AdminAddressResponseWritable = {
 };
 
 export type AdminCompanyResponseWritable = {
+    status?: string;
+};
+
+export type AdminDepositFactoryResponseWritable = {
     status?: string;
 };
 
@@ -514,6 +655,18 @@ export type PaginatedAdminAddressListWritable = {
 export type PaginatedAdminAddressListResponseWritable = {
     status?: string;
     data?: PaginatedAdminAddressListWritable;
+};
+
+export type PaginatedAdminDepositFactoryListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
+export type PaginatedAdminDepositFactoryListResponseWritable = {
+    status?: string;
+    data?: PaginatedAdminDepositFactoryListWritable;
 };
 
 export type PaginatedAdminOnchainTransactionListWritable = {
@@ -585,6 +738,37 @@ export type TransactionCollectionResponseWritable = {
     data?: TransactionCollectionWritable;
 };
 
+/**
+ * Request body for POST /user/addresses/. Two mutually-exclusive modes, both
+ * scoped to the calling user:
+ *
+ * * Direct registration — {address, rehive_account}
+ * * Deposit address      — {parent_address, chain, subtype} OR
+ * {parent_address, chain, provider}
+ * Mirrors the admin deposit-addresses endpoint: resolves the company's
+ * factory by (chain, subtype) or (chain, provider) — exactly one must
+ * be supplied — computes the next CREATE2 deposit address, creates the
+ * Address row, and subscribes it to Alchemy monitoring.
+ * `parent_address` accepts the parent's identifier or on-chain address
+ * and must resolve to one of the caller's own Address rows.
+ *
+ * The response is rendered with AddressSerializer.
+ */
+export type UserCreateAddressWritable = {
+    address?: string;
+    rehive_account?: string;
+    parent_address?: string;
+    /**
+     * * `ETH_SEPOLIA` - Eth Sepolia
+     * * `ETH_MAINNET` - Eth Mainnet
+     * * `BASE_MAINNET` - Base Mainnet
+     * * `BASE_SEPOLIA` - Base Sepolia
+     */
+    chain?: 'ETH_SEPOLIA' | 'ETH_MAINNET' | 'BASE_MAINNET' | 'BASE_SEPOLIA';
+    subtype?: string;
+    provider?: string;
+};
+
 export type ActivateCreateData = {
     body: Activate;
     path?: never;
@@ -603,6 +787,8 @@ export type AdminAddressesListData = {
     path?: never;
     query?: {
         address?: string;
+        has_parent?: boolean;
+        has_rehive_account?: boolean;
         /**
          * A page number within the paginated result set.
          */
@@ -611,7 +797,9 @@ export type AdminAddressesListData = {
          * Number of results to return per page.
          */
         page_size?: number;
+        provider?: string;
         rehive_account?: string;
+        subtype?: string;
         user?: string;
     };
     url: '/admin/addresses/';
@@ -704,6 +892,69 @@ export type AdminCompanyUpdateResponses = {
 };
 
 export type AdminCompanyUpdateResponse = AdminCompanyUpdateResponses[keyof AdminCompanyUpdateResponses];
+
+export type AdminDepositAddressesCreateData = {
+    body: AdminCreateDepositAddress;
+    path?: never;
+    query?: never;
+    url: '/admin/deposit-addresses/';
+};
+
+export type AdminDepositAddressesCreateResponses = {
+    201: AdminCreateDepositAddressResponse;
+};
+
+export type AdminDepositAddressesCreateResponse = AdminDepositAddressesCreateResponses[keyof AdminDepositAddressesCreateResponses];
+
+export type AdminDepositFactoriesListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/admin/deposit-factories/';
+};
+
+export type AdminDepositFactoriesListResponses = {
+    200: PaginatedAdminDepositFactoryListResponse;
+};
+
+export type AdminDepositFactoriesListResponse = AdminDepositFactoriesListResponses[keyof AdminDepositFactoriesListResponses];
+
+export type AdminDepositFactoriesCreateData = {
+    body: AdminCreateDepositFactory;
+    path?: never;
+    query?: never;
+    url: '/admin/deposit-factories/';
+};
+
+export type AdminDepositFactoriesCreateResponses = {
+    201: AdminDepositFactoryResponse;
+};
+
+export type AdminDepositFactoriesCreateResponse = AdminDepositFactoriesCreateResponses[keyof AdminDepositFactoriesCreateResponses];
+
+export type AdminDepositFactoriesRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/admin/deposit-factories/{identifier}/';
+};
+
+export type AdminDepositFactoriesRetrieveResponses = {
+    200: AdminDepositFactoryResponse;
+};
+
+export type AdminDepositFactoriesRetrieveResponse = AdminDepositFactoriesRetrieveResponses[keyof AdminDepositFactoriesRetrieveResponses];
 
 export type AdminOnchainTransactionsListData = {
     body?: never;
@@ -807,6 +1058,9 @@ export type UserAddressesListData = {
     body?: never;
     path?: never;
     query?: {
+        address?: string;
+        has_parent?: boolean;
+        has_rehive_account?: boolean;
         /**
          * A page number within the paginated result set.
          */
@@ -815,6 +1069,9 @@ export type UserAddressesListData = {
          * Number of results to return per page.
          */
         page_size?: number;
+        provider?: string;
+        rehive_account?: string;
+        subtype?: string;
     };
     url: '/user/addresses/';
 };
@@ -826,7 +1083,7 @@ export type UserAddressesListResponses = {
 export type UserAddressesListResponse = UserAddressesListResponses[keyof UserAddressesListResponses];
 
 export type UserAddressesCreateData = {
-    body: AddressWritable;
+    body?: UserCreateAddressWritable;
     path?: never;
     query?: never;
     url: '/user/addresses/';

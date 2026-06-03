@@ -74,12 +74,21 @@ import re, sys
 with open('$sdk_file') as f:
     content = f.read()
 
-# Add formDataBodySerializer import if not present
-if 'formDataBodySerializer' not in content:
-    content = content.replace(
-        \"import type { Client, Options as Options2, TDataShape } from './client';\",
-        \"import type { Client, Options as Options2, TDataShape } from './client';\nimport { formDataBodySerializer } from './core/bodySerializer.gen';\",
-    )
+# Idempotency guard: this transform is only safe on fresh codegen output.
+# The usage-injection regex below has no 'already-applied' check, so running it
+# twice without regenerating double-injects formDataBodySerializer. If the file
+# was already processed, skip it. (Normal flow regenerates fresh, so this is a
+# no-op there; it only protects against a standalone re-run of this script.)
+if 'formDataBodySerializer' in content:
+    sys.exit(0)
+
+# Add formDataBodySerializer import. Anchor on the stable './client.gen' import
+# (the type-only './client' import varies with the spec's generated type list and
+# codegen version, e.g. 0.98.1 added RequestResult).
+content = content.replace(
+    \"import { client } from './client.gen';\",
+    \"import { client } from './client.gen';\nimport { formDataBodySerializer } from './core/bodySerializer.gen';\",
+)
 
 data_types = '''$multipart_data_types'''.strip().split('\n')
 count = 0
