@@ -364,14 +364,25 @@ export type AdminBusinessCategoryResponse = {
 export type AdminBusinessDocument = {
     readonly id: string;
     readonly file: string;
+    readonly files: Array<BusinessDocumentFile>;
     /**
      * * `incorporation_certificate` - incorporation_certificate
      * * `tax_certificate` - tax_certificate
      * * `financial_statement` - financial_statement
      * * `trade_certificate` - trade_certificate
      * * `shareholder_identification` - shareholder_identification
+     * * `incumbency_certificate` - incumbency_certificate
+     * * `partnership_agreement` - partnership_agreement
+     * * `power_of_attorney` - power_of_attorney
+     * * `proof_of_address` - proof_of_address
+     * * `proof_of_nature_of_business` - proof_of_nature_of_business
+     * * `self_declaration_form` - self_declaration_form
+     * * `state_registry` - state_registry
+     * * `trust_agreement` - trust_agreement
+     * * `transparency_registry_extract` - transparency_registry_extract
+     * * `other` - other
      */
-    readonly type: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification';
+    readonly type: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification' | 'incumbency_certificate' | 'partnership_agreement' | 'power_of_attorney' | 'proof_of_address' | 'proof_of_nature_of_business' | 'self_declaration_form' | 'state_registry' | 'trust_agreement' | 'transparency_registry_extract' | 'other';
     /**
      * * `obsolete` - obsolete
      * * `declined` - declined
@@ -547,15 +558,24 @@ export type AdminCompanyResponse = {
  */
 export type AdminCreateBusinessDocument = {
     readonly id: string;
-    file: string;
     /**
      * * `incorporation_certificate` - incorporation_certificate
      * * `tax_certificate` - tax_certificate
      * * `financial_statement` - financial_statement
      * * `trade_certificate` - trade_certificate
      * * `shareholder_identification` - shareholder_identification
+     * * `incumbency_certificate` - incumbency_certificate
+     * * `partnership_agreement` - partnership_agreement
+     * * `power_of_attorney` - power_of_attorney
+     * * `proof_of_address` - proof_of_address
+     * * `proof_of_nature_of_business` - proof_of_nature_of_business
+     * * `self_declaration_form` - self_declaration_form
+     * * `state_registry` - state_registry
+     * * `trust_agreement` - trust_agreement
+     * * `transparency_registry_extract` - transparency_registry_extract
+     * * `other` - other
      */
-    type: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification';
+    type: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification' | 'incumbency_certificate' | 'partnership_agreement' | 'power_of_attorney' | 'proof_of_address' | 'proof_of_nature_of_business' | 'self_declaration_form' | 'state_registry' | 'trust_agreement' | 'transparency_registry_extract' | 'other';
     /**
      * * `obsolete` - obsolete
      * * `declined` - declined
@@ -1039,6 +1059,20 @@ export type BusinessCategoryUpdate = {
 export type BusinessCategoryUpdateResponse = {
     status?: string;
     data?: BusinessCategoryUpdate;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type BusinessDocumentFile = {
+    readonly file: string;
+};
+
+export type BusinessDocumentFileWrite = {
+    file: string;
 };
 
 /**
@@ -1712,14 +1746,25 @@ export type ManagerBusinessAutomatedPayoutDestination = {
 export type ManagerBusinessDocument = {
     readonly id: string;
     readonly file: string;
+    readonly files: Array<BusinessDocumentFile>;
     /**
      * * `incorporation_certificate` - incorporation_certificate
      * * `tax_certificate` - tax_certificate
      * * `financial_statement` - financial_statement
      * * `trade_certificate` - trade_certificate
      * * `shareholder_identification` - shareholder_identification
+     * * `incumbency_certificate` - incumbency_certificate
+     * * `partnership_agreement` - partnership_agreement
+     * * `power_of_attorney` - power_of_attorney
+     * * `proof_of_address` - proof_of_address
+     * * `proof_of_nature_of_business` - proof_of_nature_of_business
+     * * `self_declaration_form` - self_declaration_form
+     * * `state_registry` - state_registry
+     * * `trust_agreement` - trust_agreement
+     * * `transparency_registry_extract` - transparency_registry_extract
+     * * `other` - other
      */
-    readonly type: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification';
+    readonly type: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification' | 'incumbency_certificate' | 'partnership_agreement' | 'power_of_attorney' | 'proof_of_address' | 'proof_of_nature_of_business' | 'self_declaration_form' | 'state_registry' | 'trust_agreement' | 'transparency_registry_extract' | 'other';
     /**
      * * `obsolete` - obsolete
      * * `declined` - declined
@@ -2301,15 +2346,24 @@ export type ManagerCreateBusiness = {
  */
 export type ManagerCreateBusinessDocument = {
     readonly id: string;
-    file: string;
     /**
      * * `incorporation_certificate` - incorporation_certificate
      * * `tax_certificate` - tax_certificate
      * * `financial_statement` - financial_statement
      * * `trade_certificate` - trade_certificate
      * * `shareholder_identification` - shareholder_identification
+     * * `incumbency_certificate` - incumbency_certificate
+     * * `partnership_agreement` - partnership_agreement
+     * * `power_of_attorney` - power_of_attorney
+     * * `proof_of_address` - proof_of_address
+     * * `proof_of_nature_of_business` - proof_of_nature_of_business
+     * * `self_declaration_form` - self_declaration_form
+     * * `state_registry` - state_registry
+     * * `trust_agreement` - trust_agreement
+     * * `transparency_registry_extract` - transparency_registry_extract
+     * * `other` - other
      */
-    type: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification';
+    type: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification' | 'incumbency_certificate' | 'partnership_agreement' | 'power_of_attorney' | 'proof_of_address' | 'proof_of_nature_of_business' | 'self_declaration_form' | 'state_registry' | 'trust_agreement' | 'transparency_registry_extract' | 'other';
     /**
      * * `obsolete` - obsolete
      * * `declined` - declined
@@ -3101,14 +3155,25 @@ export type PatchedAdminBusinessCategory = {
 export type PatchedAdminBusinessDocument = {
     readonly id?: string;
     readonly file?: string;
+    readonly files?: Array<BusinessDocumentFile>;
     /**
      * * `incorporation_certificate` - incorporation_certificate
      * * `tax_certificate` - tax_certificate
      * * `financial_statement` - financial_statement
      * * `trade_certificate` - trade_certificate
      * * `shareholder_identification` - shareholder_identification
+     * * `incumbency_certificate` - incumbency_certificate
+     * * `partnership_agreement` - partnership_agreement
+     * * `power_of_attorney` - power_of_attorney
+     * * `proof_of_address` - proof_of_address
+     * * `proof_of_nature_of_business` - proof_of_nature_of_business
+     * * `self_declaration_form` - self_declaration_form
+     * * `state_registry` - state_registry
+     * * `trust_agreement` - trust_agreement
+     * * `transparency_registry_extract` - transparency_registry_extract
+     * * `other` - other
      */
-    readonly type?: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification';
+    readonly type?: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification' | 'incumbency_certificate' | 'partnership_agreement' | 'power_of_attorney' | 'proof_of_address' | 'proof_of_nature_of_business' | 'self_declaration_form' | 'state_registry' | 'trust_agreement' | 'transparency_registry_extract' | 'other';
     /**
      * * `obsolete` - obsolete
      * * `declined` - declined
@@ -4557,15 +4622,29 @@ export type AdminCompanyResponseWritable = {
  * values with complex, nested serializations
  */
 export type AdminCreateBusinessDocumentWritable = {
-    file: string;
+    file?: string;
+    /**
+     * Multi-file upload. Submit as bracketed multipart keys: `files[<i>][file]` (binary) where `<i>` is the slot index (up to MAX_FLEXIBLE_FILES). Mutually exclusive with the legacy `file` field.
+     */
+    files?: Array<BusinessDocumentFileWrite>;
     /**
      * * `incorporation_certificate` - incorporation_certificate
      * * `tax_certificate` - tax_certificate
      * * `financial_statement` - financial_statement
      * * `trade_certificate` - trade_certificate
      * * `shareholder_identification` - shareholder_identification
+     * * `incumbency_certificate` - incumbency_certificate
+     * * `partnership_agreement` - partnership_agreement
+     * * `power_of_attorney` - power_of_attorney
+     * * `proof_of_address` - proof_of_address
+     * * `proof_of_nature_of_business` - proof_of_nature_of_business
+     * * `self_declaration_form` - self_declaration_form
+     * * `state_registry` - state_registry
+     * * `trust_agreement` - trust_agreement
+     * * `transparency_registry_extract` - transparency_registry_extract
+     * * `other` - other
      */
-    type: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification';
+    type: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification' | 'incumbency_certificate' | 'partnership_agreement' | 'power_of_attorney' | 'proof_of_address' | 'proof_of_nature_of_business' | 'self_declaration_form' | 'state_registry' | 'trust_agreement' | 'transparency_registry_extract' | 'other';
     /**
      * * `obsolete` - obsolete
      * * `declined` - declined
@@ -5945,15 +6024,29 @@ export type ManagerCreateBusinessWritable = {
  * values with complex, nested serializations
  */
 export type ManagerCreateBusinessDocumentWritable = {
-    file: string;
+    file?: string;
+    /**
+     * Multi-file upload. Submit as bracketed multipart keys: `files[<i>][file]` (binary) where `<i>` is the slot index (up to MAX_FLEXIBLE_FILES). Mutually exclusive with the legacy `file` field.
+     */
+    files?: Array<BusinessDocumentFileWrite>;
     /**
      * * `incorporation_certificate` - incorporation_certificate
      * * `tax_certificate` - tax_certificate
      * * `financial_statement` - financial_statement
      * * `trade_certificate` - trade_certificate
      * * `shareholder_identification` - shareholder_identification
+     * * `incumbency_certificate` - incumbency_certificate
+     * * `partnership_agreement` - partnership_agreement
+     * * `power_of_attorney` - power_of_attorney
+     * * `proof_of_address` - proof_of_address
+     * * `proof_of_nature_of_business` - proof_of_nature_of_business
+     * * `self_declaration_form` - self_declaration_form
+     * * `state_registry` - state_registry
+     * * `trust_agreement` - trust_agreement
+     * * `transparency_registry_extract` - transparency_registry_extract
+     * * `other` - other
      */
-    type: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification';
+    type: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification' | 'incumbency_certificate' | 'partnership_agreement' | 'power_of_attorney' | 'proof_of_address' | 'proof_of_nature_of_business' | 'self_declaration_form' | 'state_registry' | 'trust_agreement' | 'transparency_registry_extract' | 'other';
     metadata?: {
         [key: string]: unknown;
     } | null;

@@ -39,6 +39,8 @@ generate "billing"  "https://billing.services.rehive.com/schema.json"  "src/exte
 generate "builder"  "https://builder.services.rehive.com/schema.json"  "src/extensions/builder/openapi-ts"
 generate "rain"     "https://rain.services.rehive.com/schema.json"     "src/extensions/rain/openapi-ts"
 generate "alchemy"  "https://alchemy.services.rehive.com/schema.json"  "src/extensions/alchemy/openapi-ts"
+generate "sumsub"   "https://sumsub.services.rehive.com/schema.json"   "src/extensions/sumsub/openapi-ts"
+generate "mukuru"   "https://mukuru.services.rehive.com/schema.json"   "src/extensions/mukuru/openapi-ts"
 
 # Apply post-codegen type fixes (responseStyle defaults, etc.)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

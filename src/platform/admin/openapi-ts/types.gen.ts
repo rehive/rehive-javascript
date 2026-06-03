@@ -344,6 +344,9 @@ export type AdminAccountAssetLimit = {
     readonly created: number;
     readonly updated: number;
     readonly archived: boolean | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
 };
 
 export type AdminAccountAssetLimitResponse = {
@@ -427,6 +430,7 @@ export type AdminAlert = {
     readonly transaction: string | null;
     user: ReducedUserInfo;
     author: ReducedUserInfo;
+    policy: ReducedPolicy | null;
     name: string;
     description?: string | null;
     /**
@@ -452,6 +456,9 @@ export type AdminAlert = {
     archived?: boolean;
     readonly created: string;
     readonly updated: string;
+    actions?: Array<{
+        [key: string]: unknown;
+    }>;
 };
 
 /**
@@ -1361,12 +1368,9 @@ export type AdminCompanyWalletAccount = {
     email?: string | null;
     mobile?: string | null;
     name?: string | null;
-    /**
-     * * `paypal` - Paypal
-     * * `venmo` - Venmo
-     * * `other` - Other
-     */
-    type?: 'paypal' | 'venmo' | 'other';
+    type?: string | null;
+    payment_method?: string | null;
+    owner?: WalletOwner | null;
     wallet_currency?: string | null;
     metadata?: {
         [key: string]: unknown;
@@ -1415,12 +1419,9 @@ export type AdminCompanyWalletAccountRequest = {
     email?: string | null;
     mobile?: string | null;
     name?: string | null;
-    /**
-     * * `paypal` - Paypal
-     * * `venmo` - Venmo
-     * * `other` - Other
-     */
-    type?: 'paypal' | 'venmo' | 'other';
+    type?: string | null;
+    payment_method?: string | null;
+    owner?: WalletOwnerRequest | null;
     wallet_currency?: string | null;
     metadata?: {
         [key: string]: unknown;
@@ -1480,6 +1481,9 @@ export type AdminCreateAccountAccountAssetFeeRequest = {
 export type AdminCreateAccountAccountAssetLimitRequest = {
     begin?: number | null;
     end?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
 };
 
 export type AdminCreateAccountAccountAssetRequest = {
@@ -1532,10 +1536,9 @@ export type AdminCreateAccountRequest = {
 };
 
 /**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
+ * Detail-endpoint serializer. Same response shape as the base; adds the
+ * row-locking update() needed when appending actions on PATCH. Extend
+ * here (not on the base) to add fields that should not appear on list.
  */
 export type AdminCreateAlertRequest = {
     name: string;
@@ -1838,6 +1841,9 @@ export type AdminCreateGroupFeeRequest = {
 export type AdminCreateGroupLimitRequest = {
     begin?: number | null;
     end?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
 };
 
 export type AdminCreateGroupPermissionRequest = {
@@ -1894,6 +1900,9 @@ export type AdminCreateGroupTierFeeRequest = {
 export type AdminCreateGroupTierLimitRequest = {
     begin?: number | null;
     end?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
 };
 
 /**
@@ -1942,6 +1951,62 @@ export type AdminCreateMultiTransactionRequest = {
 
 export type AdminCreateMultiUserPermissionRequest = {
     [key: string]: unknown;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminCreatePolicyEffectRequest = {
+    /**
+     * * `create_account_asset_limit` - Create Account Asset Limit
+     * * `disable_user_transactions` - Disable User Transactions
+     * * `disable_user_transaction_type` - Disable User Transaction Type
+     * * `create_user_message` - Create User Message
+     * * `create_transaction_message` - Create Transaction Message
+     * * `create_user_alert` - Create User Alert
+     * * `create_transaction_alert` - Create Transaction Alert
+     */
+    type: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert';
+    label?: string | null;
+    params?: {
+        [key: string]: unknown;
+    };
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminCreatePolicyRequest = {
+    /**
+     * * `trigger` - Trigger
+     */
+    type?: 'trigger';
+    name: string;
+    label?: string | null;
+    description?: string | null;
+    tags?: Array<string> | null;
+    /**
+     * * `transaction.execute` - Transaction Execute
+     * * `transaction.initiate` - Transaction Initiate
+     * * `user.create` - User Create
+     * * `mobile.create` - Mobile Create
+     * * `mobile.create.conflict` - Mobile Create Conflict
+     * * `device.create` - Device Create
+     */
+    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create';
+    condition?: {
+        [key: string]: unknown;
+    } | null;
+    enabled?: boolean;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
 };
 
 export type AdminCreateServicePermissionRequest = {
@@ -2016,6 +2081,9 @@ export type AdminCreateTransactionMessageRequest = {
      */
     level?: 'info' | 'warning' | 'error';
     message: string;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
     archived?: boolean;
 };
 
@@ -3068,6 +3136,9 @@ export type AdminCreateUserMessageRequest = {
      */
     level?: 'info' | 'warning' | 'error';
     message: string;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
     archived?: boolean;
 };
 
@@ -3113,12 +3184,9 @@ export type AdminCreateUserWalletAccountRequest = {
     email?: string | null;
     mobile?: string | null;
     name?: string | null;
-    /**
-     * * `paypal` - Paypal
-     * * `venmo` - Venmo
-     * * `other` - Other
-     */
-    type?: 'paypal' | 'venmo' | 'other';
+    type?: string | null;
+    payment_method?: string | null;
+    owner?: WalletOwnerRequest | null;
     wallet_currency?: string | null;
     metadata?: {
         [key: string]: unknown;
@@ -3358,6 +3426,7 @@ export type AdminDocumentType = {
     name?: string | null;
     description?: string | null;
     related_resources?: Array<'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount'>;
+    file_rules?: unknown;
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -3376,6 +3445,7 @@ export type AdminDocumentTypeRequest = {
     name?: string | null;
     description?: string | null;
     related_resources?: Array<'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount'>;
+    file_rules?: unknown;
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -3532,16 +3602,16 @@ export type AdminExtendedAccountResponse = {
 };
 
 /**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
+ * Detail-endpoint serializer. Same response shape as the base; adds the
+ * row-locking update() needed when appending actions on PATCH. Extend
+ * here (not on the base) to add fields that should not appear on list.
  */
 export type AdminExtendedAlert = {
     readonly id: string;
     readonly transaction: string | null;
     user: ReducedUserInfo;
     author: ReducedUserInfo;
+    policy: ReducedPolicy | null;
     name: string;
     description?: string | null;
     /**
@@ -3573,10 +3643,9 @@ export type AdminExtendedAlert = {
 };
 
 /**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
+ * Detail-endpoint serializer. Same response shape as the base; adds the
+ * row-locking update() needed when appending actions on PATCH. Extend
+ * here (not on the base) to add fields that should not appear on list.
  */
 export type AdminExtendedAlertRequest = {
     name: string;
@@ -3730,6 +3799,7 @@ export type AdminExtendedRequest = {
     user: ReducedUserInfo;
     readonly key: string | null;
     readonly token_key: string | null;
+    readonly ip_address: string | null;
     readonly scheme: string;
     readonly path: string | null;
     readonly method: string;
@@ -3802,6 +3872,9 @@ export type AdminExtendedRequest = {
      * * `oauthsession` - Oauth Session
      * * `oidckey` - Oidc Key
      * * `permission` - Permission
+     * * `policy` - Policy
+     * * `policyeffect` - Policy Effect
+     * * `policylog` - Policy Log
      * * `recoverycode` - Recovery Code
      * * `refresh_token` - Refresh Token
      * * `request` - Request
@@ -3822,11 +3895,12 @@ export type AdminExtendedRequest = {
      * * `userlegaltermversion` - User Legal Term Version
      * * `usermessage` - User Message
      * * `userpermission` - User Permission
+     * * `walletowneraddress` - Wallet Owner Address
      * * `webhook` - Webhook
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
     readonly resource_id: string | null;
     /**
      * Return a response object. This has to be unpickled from a stored
@@ -4695,6 +4769,9 @@ export type AdminGroupLimit = {
     archived?: boolean;
     readonly begin: number;
     readonly end: number;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
     readonly created: number;
     readonly updated: number;
 };
@@ -4747,15 +4824,17 @@ export type AdminGroupPermission = {
      * * `notification` - Notification
      * * `oauthclient` - Oauth Client
      * * `permission` - Permission
+     * * `policy` - Policy
      * * `request` - Request
      * * `service` - Service
      * * `token` - Token
      * * `transaction` - Transaction
      * * `transactionsubtypes` - Transaction Subtypes
      * * `user` - User
+     * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'policy' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -4933,6 +5012,9 @@ export type AdminGroupTierLimit = {
     readonly begin: number;
     readonly end: number;
     archived?: boolean;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
     readonly created: number;
     readonly updated: number;
 };
@@ -5331,6 +5413,246 @@ export type AdminPartnerUserInfo = {
 export type AdminPasswordResetRequest = {
     force?: boolean;
     user: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminPolicy = {
+    readonly id: string;
+    author: ReducedUserInfo;
+    /**
+     * * `trigger` - Trigger
+     */
+    type?: 'trigger';
+    name: string;
+    label?: string | null;
+    description?: string | null;
+    tags?: Array<string> | null;
+    /**
+     * * `transaction.execute` - Transaction Execute
+     * * `transaction.initiate` - Transaction Initiate
+     * * `user.create` - User Create
+     * * `mobile.create` - Mobile Create
+     * * `mobile.create.conflict` - Mobile Create Conflict
+     * * `device.create` - Device Create
+     */
+    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create';
+    condition?: {
+        [key: string]: unknown;
+    } | null;
+    enabled?: boolean;
+    readonly effects: Array<AdminPolicyEffect>;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    readonly created: string;
+    readonly updated: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminPolicyEffect = {
+    readonly id: string;
+    /**
+     * * `create_account_asset_limit` - Create Account Asset Limit
+     * * `disable_user_transactions` - Disable User Transactions
+     * * `disable_user_transaction_type` - Disable User Transaction Type
+     * * `create_user_message` - Create User Message
+     * * `create_transaction_message` - Create Transaction Message
+     * * `create_user_alert` - Create User Alert
+     * * `create_transaction_alert` - Create Transaction Alert
+     */
+    type: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert';
+    label?: string | null;
+    params?: {
+        [key: string]: unknown;
+    };
+    readonly created: string;
+    readonly updated: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminPolicyEffectRequest = {
+    /**
+     * * `create_account_asset_limit` - Create Account Asset Limit
+     * * `disable_user_transactions` - Disable User Transactions
+     * * `disable_user_transaction_type` - Disable User Transaction Type
+     * * `create_user_message` - Create User Message
+     * * `create_transaction_message` - Create Transaction Message
+     * * `create_user_alert` - Create User Alert
+     * * `create_transaction_alert` - Create Transaction Alert
+     */
+    type: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert';
+    label?: string | null;
+    params?: {
+        [key: string]: unknown;
+    };
+};
+
+export type AdminPolicyEffectResponse = {
+    status: string;
+    data: AdminPolicyEffect;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminPolicyLog = {
+    readonly id: string;
+    policy: ReducedPolicy;
+    /**
+     * * `accesscontrolrule` - Access Control Rule
+     * * `account` - Account
+     * * `accountcurrency` - Account Currency
+     * * `accountcurrencylimit` - Account Currency Limit
+     * * `accountcurrencyfee` - Account Currency Fee
+     * * `accountdefinition` - Account Definition
+     * * `accountdefinitiongroup` - Account Definition Group
+     * * `accountdefinitiongroupcurrency` - Account Definition Group Currency
+     * * `alert` - Alert
+     * * `currency` - Currency
+     * * `authenticator` - Authenticator
+     * * `authenticatorchallenge` - Authenticator Challenge
+     * * `authenticatorrule` - Authenticator Rule
+     * * `backgroundtask` - Background Task
+     * * `bankowneraddress` - Bank Owner Address
+     * * `bankbranchaddress` - Bank Branch Address
+     * * `company` - Company
+     * * `companyaddress` - Company Address
+     * * `companybankaccount` - Company Bank Account
+     * * `companywalletaccount` - Company Wallet Account
+     * * `companyservice` - Company Service
+     * * `companynotification` - Company Notification
+     * * `device` - Device
+     * * `deviceapp` - Device App
+     * * `document` - Document
+     * * `documenttype` - Document Type
+     * * `export` - Export
+     * * `exportpage` - Export Page
+     * * `email` - Email
+     * * `group` - Group
+     * * `grouplimit` - Group Limit
+     * * `groupfee` - Group Fee
+     * * `grouppermission` - Group Permission
+     * * `grouptier` - Group Tier
+     * * `grouptierrequirement` - Group Tier Requirement
+     * * `grouptierlimit` - Group Tier Limit
+     * * `grouptierfee` - Group Tier Fee
+     * * `grouptierrequirementsetitem` - Group Tier Requirement Set Item
+     * * `grouptierrequirementset` - Group Tier Requirement Set
+     * * `legalterm` - Legal Term
+     * * `legaltermversion` - Legal Term Version
+     * * `metric` - Metric
+     * * `metric_schema` - Metric Schema
+     * * `metric_point` - Metric Point
+     * * `mfa` - Mfa
+     * * `mfasmsdevice` - Mfa Sms Device
+     * * `mfatotpdevice` - Mfa Totp Device
+     * * `mfastaticdevice` - Mfa Static Device
+     * * `mfatokenverification` - Mfa Token Verification
+     * * `mobile` - Mobile
+     * * `mobileconfirmation` - Mobile Confirmation
+     * * `notification` - Notification
+     * * `oauthclient` - Oauth Client
+     * * `oauthlink` - Oauth Link
+     * * `oauthsession` - Oauth Session
+     * * `oidckey` - Oidc Key
+     * * `permission` - Permission
+     * * `policy` - Policy
+     * * `policyeffect` - Policy Effect
+     * * `policylog` - Policy Log
+     * * `recoverycode` - Recovery Code
+     * * `refresh_token` - Refresh Token
+     * * `request` - Request
+     * * `resourcerequirementrule` - Resource Requirement Rule
+     * * `service` - Service
+     * * `statement` - Statement
+     * * `token` - Token
+     * * `transaction` - Transaction
+     * * `transactionfee` - Transaction Fee
+     * * `transactionsubtype` - Transaction Subtype
+     * * `transactionmessage` - Transaction Message
+     * * `transactioncollection` - Transaction Collection
+     * * `user` - User
+     * * `useraddress` - User Address
+     * * `userbankaccount` - User Bank Account
+     * * `userwalletaccount` - User Wallet Account
+     * * `usercryptoaccount` - User Crypto Account
+     * * `userlegaltermversion` - User Legal Term Version
+     * * `usermessage` - User Message
+     * * `userpermission` - User Permission
+     * * `walletowneraddress` - Wallet Owner Address
+     * * `webhook` - Webhook
+     * * `webhooktask` - Webhook Task
+     * * `webhookrequest` - Webhook Request
+     */
+    readonly resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest';
+    readonly resource_id: string | null;
+    readonly event: string;
+    readonly data: {
+        [key: string]: unknown;
+    };
+    readonly errors: Array<string>;
+    readonly created: string;
+};
+
+export type AdminPolicyLogResponse = {
+    status: string;
+    data: AdminPolicyLog;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminPolicyRequest = {
+    /**
+     * * `trigger` - Trigger
+     */
+    type?: 'trigger';
+    name: string;
+    label?: string | null;
+    description?: string | null;
+    tags?: Array<string> | null;
+    /**
+     * * `transaction.execute` - Transaction Execute
+     * * `transaction.initiate` - Transaction Initiate
+     * * `user.create` - User Create
+     * * `mobile.create` - Mobile Create
+     * * `mobile.create.conflict` - Mobile Create Conflict
+     * * `device.create` - Device Create
+     */
+    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create';
+    condition?: {
+        [key: string]: unknown;
+    } | null;
+    enabled?: boolean;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+export type AdminPolicyResponse = {
+    status: string;
+    data: AdminPolicy;
 };
 
 /**
@@ -5970,6 +6292,7 @@ export type AdminRequest = {
     user: ReducedUserInfo;
     readonly key: string | null;
     readonly token_key: string | null;
+    readonly ip_address: string | null;
     readonly scheme: string;
     readonly path: string | null;
     readonly method: string;
@@ -6042,6 +6365,9 @@ export type AdminRequest = {
      * * `oauthsession` - Oauth Session
      * * `oidckey` - Oidc Key
      * * `permission` - Permission
+     * * `policy` - Policy
+     * * `policyeffect` - Policy Effect
+     * * `policylog` - Policy Log
      * * `recoverycode` - Recovery Code
      * * `refresh_token` - Refresh Token
      * * `request` - Request
@@ -6062,11 +6388,12 @@ export type AdminRequest = {
      * * `userlegaltermversion` - User Legal Term Version
      * * `usermessage` - User Message
      * * `userpermission` - User Permission
+     * * `walletowneraddress` - Wallet Owner Address
      * * `webhook` - Webhook
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
     readonly resource_id: string | null;
     readonly created: number;
     readonly updated: number;
@@ -6324,6 +6651,9 @@ export type AdminTransactionMessage = {
      */
     level?: 'info' | 'warning' | 'error';
     message: string;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
     author: ReducedUserInfo | null;
     archived?: boolean;
     readonly created: number;
@@ -6625,6 +6955,9 @@ export type AdminUpdateGroupFeeRequest = {
 export type AdminUpdateGroupLimitRequest = {
     begin?: number | null;
     end?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
     archived?: boolean;
 };
 
@@ -6699,6 +7032,9 @@ export type AdminUpdateGroupTierFeeRequest = {
 export type AdminUpdateGroupTierLimitRequest = {
     begin?: number | null;
     end?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
     archived?: boolean;
 };
 
@@ -6764,15 +7100,17 @@ export type AdminUpdateServicePermission = {
      * * `notification` - Notification
      * * `oauthclient` - Oauth Client
      * * `permission` - Permission
+     * * `policy` - Policy
      * * `request` - Request
      * * `service` - Service
      * * `token` - Token
      * * `transaction` - Transaction
      * * `transactionsubtypes` - Transaction Subtypes
      * * `user` - User
+     * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'policy' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -8714,6 +9052,7 @@ export type AdminUserDocument = {
     readonly id: number;
     user: ReducedUserInfo;
     readonly file: string;
+    readonly files: Array<DocumentFile>;
     type: ReducedDocumentType;
     /**
      * * `obsolete` - Obsolete
@@ -9430,6 +9769,9 @@ export type AdminUserMessage = {
      */
     level?: 'info' | 'warning' | 'error';
     message: string;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
     archived?: boolean;
     author: ReducedUserInfo | null;
     readonly created: number;
@@ -9477,15 +9819,17 @@ export type AdminUserPermission = {
      * * `notification` - Notification
      * * `oauthclient` - Oauth Client
      * * `permission` - Permission
+     * * `policy` - Policy
      * * `request` - Request
      * * `service` - Service
      * * `token` - Token
      * * `transaction` - Transaction
      * * `transactionsubtypes` - Transaction Subtypes
      * * `user` - User
+     * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'policy' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -9529,12 +9873,9 @@ export type AdminUserWalletAccount = {
     mobile?: string | null;
     name?: string | null;
     readonly code: string | null;
-    /**
-     * * `paypal` - Paypal
-     * * `venmo` - Venmo
-     * * `other` - Other
-     */
-    type?: 'paypal' | 'venmo' | 'other';
+    type?: string | null;
+    payment_method?: string | null;
+    owner?: WalletOwner | null;
     wallet_currency?: string | null;
     metadata?: {
         [key: string]: unknown;
@@ -9600,12 +9941,9 @@ export type AdminUserWalletAccountRequest = {
     email?: string | null;
     mobile?: string | null;
     name?: string | null;
-    /**
-     * * `paypal` - Paypal
-     * * `venmo` - Venmo
-     * * `other` - Other
-     */
-    type?: 'paypal' | 'venmo' | 'other';
+    type?: string | null;
+    payment_method?: string | null;
+    owner?: WalletOwnerRequest | null;
     wallet_currency?: string | null;
     metadata?: {
         [key: string]: unknown;
@@ -9659,6 +9997,7 @@ export type AdminWebhook = {
      * * `email.update` - Email Update
      * * `mobile.create` - Mobile Create
      * * `mobile.update` - Mobile Update
+     * * `device.create` - Device Create
      * * `address.create` - Address Create
      * * `address.update` - Address Update
      * * `document.create` - Document Create
@@ -9668,6 +10007,9 @@ export type AdminWebhook = {
      * * `bank_account.delete` - Bank Account Delete
      * * `crypto_account.create` - Crypto Account Create
      * * `crypto_account.update` - Crypto Account Update
+     * * `wallet_account.create` - Wallet Account Create
+     * * `wallet_account.update` - Wallet Account Update
+     * * `wallet_account.delete` - Wallet Account Delete
      * * `account.create` - Account Create
      * * `account.update` - Account Update
      * * `account.currency.create` - Account Currency Create
@@ -9681,7 +10023,7 @@ export type AdminWebhook = {
      * * `alert.create` - Alert Create
      * * `alert.update` - Alert Update
      */
-    event: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'address.create' | 'address.update' | 'document.create' | 'document.update' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify' | 'alert.create' | 'alert.update';
+    event: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'device.create' | 'address.create' | 'address.update' | 'document.create' | 'document.update' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'wallet_account.create' | 'wallet_account.update' | 'wallet_account.delete' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify' | 'alert.create' | 'alert.update';
     secret?: string;
     condition?: string | null;
     enabled?: boolean;
@@ -11013,15 +11355,17 @@ export type CreatePermissionRequest = {
      * * `notification` - Notification
      * * `oauthclient` - Oauth Client
      * * `permission` - Permission
+     * * `policy` - Policy
      * * `request` - Request
      * * `service` - Service
      * * `token` - Token
      * * `transaction` - Transaction
      * * `transactionsubtypes` - Transaction Subtypes
      * * `user` - User
+     * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'policy' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -11061,6 +11405,24 @@ export type DeviceAppRequest = {
      * * `expo` - Expo
      */
     type: 'expo';
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type DocumentFile = {
+    readonly file: string;
+    readonly label: string | null;
+    readonly description: string | null;
+};
+
+export type DocumentFileWriteRequest = {
+    file: Blob | File;
+    label?: string;
+    description?: string;
 };
 
 export type ExtendedAuthenticated = {
@@ -11710,15 +12072,17 @@ export type GroupPermission = {
      * * `notification` - Notification
      * * `oauthclient` - Oauth Client
      * * `permission` - Permission
+     * * `policy` - Policy
      * * `request` - Request
      * * `service` - Service
      * * `token` - Token
      * * `transaction` - Transaction
      * * `transactionsubtypes` - Transaction Subtypes
      * * `user` - User
+     * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'policy' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -12357,6 +12721,42 @@ export type PaginatedAdminOauthClientList = {
 export type PaginatedAdminOauthClientListResponse = {
     status: string;
     data: PaginatedAdminOauthClientList;
+};
+
+export type PaginatedAdminPolicyEffectList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminPolicyEffect>;
+};
+
+export type PaginatedAdminPolicyEffectListResponse = {
+    status: string;
+    data: PaginatedAdminPolicyEffectList;
+};
+
+export type PaginatedAdminPolicyList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminPolicy>;
+};
+
+export type PaginatedAdminPolicyListResponse = {
+    status: string;
+    data: PaginatedAdminPolicyList;
+};
+
+export type PaginatedAdminPolicyLogList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminPolicyLog>;
+};
+
+export type PaginatedAdminPolicyLogListResponse = {
+    status: string;
+    data: PaginatedAdminPolicyLogList;
 };
 
 export type PaginatedAdminRequestList = {
@@ -13043,12 +13443,9 @@ export type PatchedAdminCompanyWalletAccountRequest = {
     email?: string | null;
     mobile?: string | null;
     name?: string | null;
-    /**
-     * * `paypal` - Paypal
-     * * `venmo` - Venmo
-     * * `other` - Other
-     */
-    type?: 'paypal' | 'venmo' | 'other';
+    type?: string | null;
+    payment_method?: string | null;
+    owner?: WalletOwnerRequest | null;
     wallet_currency?: string | null;
     metadata?: {
         [key: string]: unknown;
@@ -13103,6 +13500,32 @@ export type PatchedAdminCreateAccountAccountAssetFeeRequest = {
 export type PatchedAdminCreateAccountAccountAssetLimitRequest = {
     begin?: number | null;
     end?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type PatchedAdminCreatePolicyEffectRequest = {
+    /**
+     * * `create_account_asset_limit` - Create Account Asset Limit
+     * * `disable_user_transactions` - Disable User Transactions
+     * * `disable_user_transaction_type` - Disable User Transaction Type
+     * * `create_user_message` - Create User Message
+     * * `create_transaction_message` - Create Transaction Message
+     * * `create_user_alert` - Create User Alert
+     * * `create_transaction_alert` - Create Transaction Alert
+     */
+    type?: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert';
+    label?: string | null;
+    params?: {
+        [key: string]: unknown;
+    };
 };
 
 /**
@@ -13210,6 +13633,7 @@ export type PatchedAdminDocumentTypeRequest = {
     name?: string | null;
     description?: string | null;
     related_resources?: Array<'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount'>;
+    file_rules?: unknown;
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -13229,10 +13653,9 @@ export type PatchedAdminEmailRequest = {
 };
 
 /**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
+ * Detail-endpoint serializer. Same response shape as the base; adds the
+ * row-locking update() needed when appending actions on PATCH. Extend
+ * here (not on the base) to add fields that should not appear on list.
  */
 export type PatchedAdminExtendedAlertRequest = {
     name?: string;
@@ -13311,6 +13734,39 @@ export type PatchedAdminMobileRequest = {
     primary?: boolean;
     verified?: boolean;
     archived?: boolean;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type PatchedAdminPolicyRequest = {
+    /**
+     * * `trigger` - Trigger
+     */
+    type?: 'trigger';
+    name?: string;
+    label?: string | null;
+    description?: string | null;
+    tags?: Array<string> | null;
+    /**
+     * * `transaction.execute` - Transaction Execute
+     * * `transaction.initiate` - Transaction Initiate
+     * * `user.create` - User Create
+     * * `mobile.create` - Mobile Create
+     * * `mobile.create.conflict` - Mobile Create Conflict
+     * * `device.create` - Device Create
+     */
+    event?: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create';
+    condition?: {
+        [key: string]: unknown;
+    } | null;
+    enabled?: boolean;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
 };
 
 /**
@@ -13496,6 +13952,9 @@ export type PatchedAdminUpdateGroupFeeRequest = {
 export type PatchedAdminUpdateGroupLimitRequest = {
     begin?: number | null;
     end?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
     archived?: boolean;
 };
 
@@ -13565,6 +14024,9 @@ export type PatchedAdminUpdateGroupTierFeeRequest = {
 export type PatchedAdminUpdateGroupTierLimitRequest = {
     begin?: number | null;
     end?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
     archived?: boolean;
 };
 
@@ -14614,12 +15076,9 @@ export type PatchedAdminUserWalletAccountRequest = {
     email?: string | null;
     mobile?: string | null;
     name?: string | null;
-    /**
-     * * `paypal` - Paypal
-     * * `venmo` - Venmo
-     * * `other` - Other
-     */
-    type?: 'paypal' | 'venmo' | 'other';
+    type?: string | null;
+    payment_method?: string | null;
+    owner?: WalletOwnerRequest | null;
     wallet_currency?: string | null;
     metadata?: {
         [key: string]: unknown;
@@ -14667,6 +15126,7 @@ export type PatchedAdminWebhookRequest = {
      * * `email.update` - Email Update
      * * `mobile.create` - Mobile Create
      * * `mobile.update` - Mobile Update
+     * * `device.create` - Device Create
      * * `address.create` - Address Create
      * * `address.update` - Address Update
      * * `document.create` - Document Create
@@ -14676,6 +15136,9 @@ export type PatchedAdminWebhookRequest = {
      * * `bank_account.delete` - Bank Account Delete
      * * `crypto_account.create` - Crypto Account Create
      * * `crypto_account.update` - Crypto Account Update
+     * * `wallet_account.create` - Wallet Account Create
+     * * `wallet_account.update` - Wallet Account Update
+     * * `wallet_account.delete` - Wallet Account Delete
      * * `account.create` - Account Create
      * * `account.update` - Account Update
      * * `account.currency.create` - Account Currency Create
@@ -14689,7 +15152,7 @@ export type PatchedAdminWebhookRequest = {
      * * `alert.create` - Alert Create
      * * `alert.update` - Alert Update
      */
-    event?: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'address.create' | 'address.update' | 'document.create' | 'document.update' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify' | 'alert.create' | 'alert.update';
+    event?: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'device.create' | 'address.create' | 'address.update' | 'document.create' | 'document.update' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'wallet_account.create' | 'wallet_account.update' | 'wallet_account.delete' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify' | 'alert.create' | 'alert.update';
     secret?: string;
     condition?: string | null;
     enabled?: boolean;
@@ -14761,15 +15224,17 @@ export type Permission = {
      * * `notification` - Notification
      * * `oauthclient` - Oauth Client
      * * `permission` - Permission
+     * * `policy` - Policy
      * * `request` - Request
      * * `service` - Service
      * * `token` - Token
      * * `transaction` - Transaction
      * * `transactionsubtypes` - Transaction Subtypes
      * * `user` - User
+     * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'policy' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -14963,6 +15428,7 @@ export type ReducedDocumentType = {
     readonly id: number;
     readonly name: string | null;
     readonly description: string | null;
+    readonly file_rules: unknown;
 };
 
 /**
@@ -15010,6 +15476,23 @@ export type ReducedGroupTier = {
     readonly level: number;
     readonly name: string | null;
     readonly description: string | null;
+};
+
+/**
+ * Minimal serializer used when a policy is referenced as a nested object
+ * (e.g. on PolicyLog responses, on Alert responses). Returns just enough
+ * to identify the policy and to surface its lifecycle.
+ */
+export type ReducedPolicy = {
+    readonly id: string;
+    readonly name: string;
+    /**
+     * * `trigger` - Trigger
+     */
+    readonly type: 'trigger';
+    readonly label: string | null;
+    readonly created: string;
+    readonly updated: string;
 };
 
 /**
@@ -15250,15 +15733,17 @@ export type UserPermission = {
      * * `notification` - Notification
      * * `oauthclient` - Oauth Client
      * * `permission` - Permission
+     * * `policy` - Policy
      * * `request` - Request
      * * `service` - Service
      * * `token` - Token
      * * `transaction` - Transaction
      * * `transactionsubtypes` - Transaction Subtypes
      * * `user` - User
+     * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'policy' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -15319,6 +15804,580 @@ export type VerifyDeactivateRequest = {
 
 export type VerifyRequestDeleteRequest = {
     key: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type WalletOwner = {
+    first_name?: string | null;
+    middle_name?: string | null;
+    last_name?: string | null;
+    full_name?: string | null;
+    phone_number?: string | null;
+    email_address?: string | null;
+    company_name?: string | null;
+    ein_tin?: string | null;
+    address?: WalletOwnerAddress;
+    address_text?: string | null;
+    cpf_cpnj?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type WalletOwnerAddress = {
+    line_1?: string | null;
+    line_2?: string | null;
+    city?: string | null;
+    state_province?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    postal_code?: string | null;
+    state_code?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type WalletOwnerAddressRequest = {
+    line_1?: string | null;
+    line_2?: string | null;
+    city?: string | null;
+    state_province?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    postal_code?: string | null;
+    state_code?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type WalletOwnerRequest = {
+    first_name?: string | null;
+    middle_name?: string | null;
+    last_name?: string | null;
+    full_name?: string | null;
+    phone_number?: string | null;
+    email_address?: string | null;
+    company_name?: string | null;
+    ein_tin?: string | null;
+    address?: WalletOwnerAddressRequest;
+    address_text?: string | null;
+    cpf_cpnj?: string | null;
 };
 
 /**
@@ -15514,6 +16573,9 @@ export type AdminAccountAssetLimitWritable = {
      * * `debit` - Debit
      */
     tx_type: 'credit' | 'debit';
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
 };
 
 export type AdminAccountAssetLimitResponseWritable = {
@@ -15603,6 +16665,9 @@ export type AdminAlertWritable = {
         [key: string]: unknown;
     } | null;
     archived?: boolean;
+    actions?: Array<{
+        [key: string]: unknown;
+    }>;
 };
 
 /**
@@ -16123,12 +17188,9 @@ export type AdminCompanyWalletAccountWritable = {
     email?: string | null;
     mobile?: string | null;
     name?: string | null;
-    /**
-     * * `paypal` - Paypal
-     * * `venmo` - Venmo
-     * * `other` - Other
-     */
-    type?: 'paypal' | 'venmo' | 'other';
+    type?: string | null;
+    payment_method?: string | null;
+    owner?: WalletOwner | null;
     wallet_currency?: string | null;
     metadata?: {
         [key: string]: unknown;
@@ -16240,6 +17302,9 @@ export type AdminCreateAccountAccountAssetLimitRequestWritable = {
     value: number;
     begin?: number | null;
     end?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
 };
 
 export type AdminCreateAccountAccountAssetRequestWritable = {
@@ -16285,10 +17350,9 @@ export type AdminCreateAccountRequestWritable = {
 };
 
 /**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
+ * Detail-endpoint serializer. Same response shape as the base; adds the
+ * row-locking update() needed when appending actions on PATCH. Extend
+ * here (not on the base) to add fields that should not appear on list.
  */
 export type AdminCreateAlertRequestWritable = {
     transaction?: string;
@@ -16573,6 +17637,9 @@ export type AdminCreateGroupLimitRequestWritable = {
     currency: string;
     begin?: number | null;
     end?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
 };
 
 export type AdminCreateGroupPermissionRequestWritable = {
@@ -16603,15 +17670,17 @@ export type AdminCreateGroupPermissionRequestWritable = {
      * * `notification` - Notification
      * * `oauthclient` - Oauth Client
      * * `permission` - Permission
+     * * `policy` - Policy
      * * `request` - Request
      * * `service` - Service
      * * `token` - Token
      * * `transaction` - Transaction
      * * `transactionsubtypes` - Transaction Subtypes
      * * `user` - User
+     * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'policy' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -16701,6 +17770,9 @@ export type AdminCreateGroupTierLimitRequestWritable = {
     account_definition?: string | null;
     begin?: number | null;
     end?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
 };
 
 /**
@@ -17242,7 +18314,11 @@ export type AdminCreateUserBankAccountRequestWritable = {
  */
 export type AdminCreateUserDocumentRequestWritable = {
     user: string;
-    file: Blob | File;
+    file?: Blob | File;
+    /**
+     * Multi-file upload aligned with the document type's `file_rules`. Submit as bracketed multipart keys: `files[<i>][file]` (binary), `files[<i>][label]`, `files[<i>][description]` where `<i>` is the rule index (0..4). Mutually exclusive with the legacy `file` field; required when the document type defines `file_rules`.
+     */
+    files?: Array<DocumentFileWriteRequest>;
     type: number;
     /**
      * * `obsolete` - Obsolete
@@ -17853,15 +18929,17 @@ export type AdminCreateUserPermissionRequestWritable = {
      * * `notification` - Notification
      * * `oauthclient` - Oauth Client
      * * `permission` - Permission
+     * * `policy` - Policy
      * * `request` - Request
      * * `service` - Service
      * * `token` - Token
      * * `transaction` - Transaction
      * * `transactionsubtypes` - Transaction Subtypes
      * * `user` - User
+     * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'webhook';
+    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'policy' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -17886,12 +18964,9 @@ export type AdminCreateUserWalletAccountRequestWritable = {
     email?: string | null;
     mobile?: string | null;
     name?: string | null;
-    /**
-     * * `paypal` - Paypal
-     * * `venmo` - Venmo
-     * * `other` - Other
-     */
-    type?: 'paypal' | 'venmo' | 'other';
+    type?: string | null;
+    payment_method?: string | null;
+    owner?: WalletOwnerRequest | null;
     wallet_currency?: string | null;
     metadata?: {
         [key: string]: unknown;
@@ -18037,6 +19112,7 @@ export type AdminDocumentTypeWritable = {
     name?: string | null;
     description?: string | null;
     related_resources?: Array<'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount'>;
+    file_rules?: unknown;
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -18170,10 +19246,9 @@ export type AdminExtendedAccountResponseWritable = {
 };
 
 /**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
+ * Detail-endpoint serializer. Same response shape as the base; adds the
+ * row-locking update() needed when appending actions on PATCH. Extend
+ * here (not on the base) to add fields that should not appear on list.
  */
 export type AdminExtendedAlertWritable = {
     name: string;
@@ -18325,6 +19400,9 @@ export type AdminExtendedRequestWritable = {
      * * `oauthsession` - Oauth Session
      * * `oidckey` - Oidc Key
      * * `permission` - Permission
+     * * `policy` - Policy
+     * * `policyeffect` - Policy Effect
+     * * `policylog` - Policy Log
      * * `recoverycode` - Recovery Code
      * * `refresh_token` - Refresh Token
      * * `request` - Request
@@ -18345,11 +19423,12 @@ export type AdminExtendedRequestWritable = {
      * * `userlegaltermversion` - User Legal Term Version
      * * `usermessage` - User Message
      * * `userpermission` - User Permission
+     * * `walletowneraddress` - Wallet Owner Address
      * * `webhook` - Webhook
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
 };
 
 export type AdminExtendedRequestResponseWritable = {
@@ -19053,6 +20132,9 @@ export type AdminGroupLimitWritable = {
      */
     tx_type: 'credit' | 'debit';
     archived?: boolean;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
 };
 
 export type AdminGroupLimitListWritable = Array<AdminGroupLimitWritable>;
@@ -19180,6 +20262,9 @@ export type AdminGroupTierLimitWritable = {
     tx_type: 'credit' | 'debit';
     currency: string;
     archived?: boolean;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
 };
 
 export type AdminGroupTierLimitListWritable = Array<AdminGroupTierLimitWritable>;
@@ -19370,6 +20455,76 @@ export type AdminOauthClientResponseWritable = {
 
 export type AdminOverviewAssetResponseWritable = {
     status: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminPolicyWritable = {
+    /**
+     * * `trigger` - Trigger
+     */
+    type?: 'trigger';
+    name: string;
+    label?: string | null;
+    description?: string | null;
+    tags?: Array<string> | null;
+    /**
+     * * `transaction.execute` - Transaction Execute
+     * * `transaction.initiate` - Transaction Initiate
+     * * `user.create` - User Create
+     * * `mobile.create` - Mobile Create
+     * * `mobile.create.conflict` - Mobile Create Conflict
+     * * `device.create` - Device Create
+     */
+    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create';
+    condition?: {
+        [key: string]: unknown;
+    } | null;
+    enabled?: boolean;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type AdminPolicyEffectWritable = {
+    /**
+     * * `create_account_asset_limit` - Create Account Asset Limit
+     * * `disable_user_transactions` - Disable User Transactions
+     * * `disable_user_transaction_type` - Disable User Transaction Type
+     * * `create_user_message` - Create User Message
+     * * `create_transaction_message` - Create Transaction Message
+     * * `create_user_alert` - Create User Alert
+     * * `create_transaction_alert` - Create Transaction Alert
+     */
+    type: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert';
+    label?: string | null;
+    params?: {
+        [key: string]: unknown;
+    };
+};
+
+export type AdminPolicyEffectResponseWritable = {
+    status: string;
+    data: AdminPolicyEffectWritable;
+};
+
+export type AdminPolicyLogResponseWritable = {
+    status: string;
+};
+
+export type AdminPolicyResponseWritable = {
+    status: string;
+    data: AdminPolicyWritable;
 };
 
 /**
@@ -20026,6 +21181,9 @@ export type AdminRequestWritable = {
      * * `oauthsession` - Oauth Session
      * * `oidckey` - Oidc Key
      * * `permission` - Permission
+     * * `policy` - Policy
+     * * `policyeffect` - Policy Effect
+     * * `policylog` - Policy Log
      * * `recoverycode` - Recovery Code
      * * `refresh_token` - Refresh Token
      * * `request` - Request
@@ -20046,11 +21204,12 @@ export type AdminRequestWritable = {
      * * `userlegaltermversion` - User Legal Term Version
      * * `usermessage` - User Message
      * * `userpermission` - User Permission
+     * * `walletowneraddress` - Wallet Owner Address
      * * `webhook` - Webhook
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
 };
 
 /**
@@ -20156,6 +21315,9 @@ export type AdminTransactionMessageWritable = {
      */
     level?: 'info' | 'warning' | 'error';
     message: string;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
     archived?: boolean;
 };
 
@@ -20343,6 +21505,9 @@ export type AdminUpdateGroupLimitRequestWritable = {
     currency: string;
     begin?: number | null;
     end?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
     archived?: boolean;
 };
 
@@ -20426,6 +21591,9 @@ export type AdminUpdateGroupTierLimitRequestWritable = {
     account_definition?: string | null;
     begin?: number | null;
     end?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
     archived?: boolean;
 };
 
@@ -22107,6 +23275,9 @@ export type AdminUserMessageWritable = {
      */
     level?: 'info' | 'warning' | 'error';
     message: string;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
     archived?: boolean;
 };
 
@@ -22143,12 +23314,9 @@ export type AdminUserWalletAccountWritable = {
     email?: string | null;
     mobile?: string | null;
     name?: string | null;
-    /**
-     * * `paypal` - Paypal
-     * * `venmo` - Venmo
-     * * `other` - Other
-     */
-    type?: 'paypal' | 'venmo' | 'other';
+    type?: string | null;
+    payment_method?: string | null;
+    owner?: WalletOwner | null;
     wallet_currency?: string | null;
     metadata?: {
         [key: string]: unknown;
@@ -22229,6 +23397,7 @@ export type AdminWebhookWritable = {
      * * `email.update` - Email Update
      * * `mobile.create` - Mobile Create
      * * `mobile.update` - Mobile Update
+     * * `device.create` - Device Create
      * * `address.create` - Address Create
      * * `address.update` - Address Update
      * * `document.create` - Document Create
@@ -22238,6 +23407,9 @@ export type AdminWebhookWritable = {
      * * `bank_account.delete` - Bank Account Delete
      * * `crypto_account.create` - Crypto Account Create
      * * `crypto_account.update` - Crypto Account Update
+     * * `wallet_account.create` - Wallet Account Create
+     * * `wallet_account.update` - Wallet Account Update
+     * * `wallet_account.delete` - Wallet Account Delete
      * * `account.create` - Account Create
      * * `account.update` - Account Update
      * * `account.currency.create` - Account Currency Create
@@ -22251,7 +23423,7 @@ export type AdminWebhookWritable = {
      * * `alert.create` - Alert Create
      * * `alert.update` - Alert Update
      */
-    event: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'address.create' | 'address.update' | 'document.create' | 'document.update' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify' | 'alert.create' | 'alert.update';
+    event: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'device.create' | 'address.create' | 'address.update' | 'document.create' | 'document.update' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'wallet_account.create' | 'wallet_account.update' | 'wallet_account.delete' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify' | 'alert.create' | 'alert.update';
     secret?: string;
     condition?: string | null;
     enabled?: boolean;
@@ -23406,6 +24578,42 @@ export type PaginatedAdminOauthClientListResponseWritable = {
     data: PaginatedAdminOauthClientListWritable;
 };
 
+export type PaginatedAdminPolicyEffectListWritable = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminPolicyEffectWritable>;
+};
+
+export type PaginatedAdminPolicyEffectListResponseWritable = {
+    status: string;
+    data: PaginatedAdminPolicyEffectListWritable;
+};
+
+export type PaginatedAdminPolicyListWritable = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminPolicyWritable>;
+};
+
+export type PaginatedAdminPolicyListResponseWritable = {
+    status: string;
+    data: PaginatedAdminPolicyListWritable;
+};
+
+export type PaginatedAdminPolicyLogListWritable = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<unknown>;
+};
+
+export type PaginatedAdminPolicyLogListResponseWritable = {
+    status: string;
+    data: PaginatedAdminPolicyLogListWritable;
+};
+
 export type PaginatedAdminRequestListWritable = {
     count?: number;
     next?: string | null;
@@ -23816,6 +25024,9 @@ export type PatchedAdminCreateAccountAccountAssetLimitRequestWritable = {
     value?: number;
     begin?: number | null;
     end?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
 };
 
 /**
@@ -23962,6 +25173,9 @@ export type PatchedAdminUpdateGroupLimitRequestWritable = {
     currency?: string;
     begin?: number | null;
     end?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
     archived?: boolean;
 };
 
@@ -24040,6 +25254,9 @@ export type PatchedAdminUpdateGroupTierLimitRequestWritable = {
     account_definition?: string | null;
     begin?: number | null;
     end?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
     archived?: boolean;
 };
 
@@ -25772,6 +26989,8 @@ export type AlertsListData = {
         created__gte?: string;
         created__lt?: string;
         created__lte?: string;
+        name?: string;
+        name__icontains?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -25780,8 +26999,14 @@ export type AlertsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
+        policy__name?: string;
+        policy__name__icontains?: string;
         priority?: string;
         status?: string;
+        /**
+         * Multiple values may be separated by commas.
+         */
+        status__in?: Array<string>;
         transaction?: string;
         updated?: string;
         updated__gt?: string;
@@ -28120,6 +29345,279 @@ export type PermissionsRetrieveResponses = {
 
 export type PermissionsRetrieveResponse = PermissionsRetrieveResponses[keyof PermissionsRetrieveResponses];
 
+export type PoliciesListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        author?: string;
+        created?: string;
+        created__gt?: string;
+        created__gte?: string;
+        created__lt?: string;
+        created__lte?: string;
+        enabled?: boolean;
+        event?: string;
+        id?: string;
+        name?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        tag?: string;
+        type?: string;
+        updated?: string;
+        updated__gt?: string;
+        updated__gte?: string;
+        updated__lt?: string;
+        updated__lte?: string;
+    };
+    url: '/3/admin/policies/';
+};
+
+export type PoliciesListResponses = {
+    200: PaginatedAdminPolicyListResponse;
+};
+
+export type PoliciesListResponse = PoliciesListResponses[keyof PoliciesListResponses];
+
+export type PoliciesCreateData = {
+    body: AdminCreatePolicyRequest;
+    path?: never;
+    query?: never;
+    url: '/3/admin/policies/';
+};
+
+export type PoliciesCreateResponses = {
+    201: AdminPolicyResponse;
+};
+
+export type PoliciesCreateResponse = PoliciesCreateResponses[keyof PoliciesCreateResponses];
+
+export type PoliciesDestroyData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/policies/{identifier}/';
+};
+
+export type PoliciesDestroyResponses = {
+    200: ActionResponse;
+};
+
+export type PoliciesDestroyResponse = PoliciesDestroyResponses[keyof PoliciesDestroyResponses];
+
+export type PoliciesRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/policies/{identifier}/';
+};
+
+export type PoliciesRetrieveResponses = {
+    200: AdminPolicyResponse;
+};
+
+export type PoliciesRetrieveResponse = PoliciesRetrieveResponses[keyof PoliciesRetrieveResponses];
+
+export type PoliciesPartialUpdateData = {
+    body?: PatchedAdminPolicyRequest;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/policies/{identifier}/';
+};
+
+export type PoliciesPartialUpdateResponses = {
+    200: AdminPolicyResponse;
+};
+
+export type PoliciesPartialUpdateResponse = PoliciesPartialUpdateResponses[keyof PoliciesPartialUpdateResponses];
+
+export type PoliciesUpdateData = {
+    body: AdminPolicyRequest;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/policies/{identifier}/';
+};
+
+export type PoliciesUpdateResponses = {
+    200: AdminPolicyResponse;
+};
+
+export type PoliciesUpdateResponse = PoliciesUpdateResponses[keyof PoliciesUpdateResponses];
+
+export type PoliciesEffectsListData = {
+    body?: never;
+    path: {
+        policy_identifier: string;
+    };
+    query?: {
+        created?: string;
+        created__gt?: string;
+        created__gte?: string;
+        created__lt?: string;
+        created__lte?: string;
+        id?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        type?: string;
+        updated?: string;
+        updated__gt?: string;
+        updated__gte?: string;
+        updated__lt?: string;
+        updated__lte?: string;
+    };
+    url: '/3/admin/policies/{policy_identifier}/effects/';
+};
+
+export type PoliciesEffectsListResponses = {
+    200: PaginatedAdminPolicyEffectListResponse;
+};
+
+export type PoliciesEffectsListResponse = PoliciesEffectsListResponses[keyof PoliciesEffectsListResponses];
+
+export type PoliciesEffectsCreateData = {
+    body: AdminCreatePolicyEffectRequest;
+    path: {
+        policy_identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/policies/{policy_identifier}/effects/';
+};
+
+export type PoliciesEffectsCreateResponses = {
+    201: AdminPolicyEffectResponse;
+};
+
+export type PoliciesEffectsCreateResponse = PoliciesEffectsCreateResponses[keyof PoliciesEffectsCreateResponses];
+
+export type PoliciesEffectsDestroyData = {
+    body?: never;
+    path: {
+        identifier: string;
+        policy_identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/policies/{policy_identifier}/effects/{identifier}/';
+};
+
+export type PoliciesEffectsDestroyResponses = {
+    200: ActionResponse;
+};
+
+export type PoliciesEffectsDestroyResponse = PoliciesEffectsDestroyResponses[keyof PoliciesEffectsDestroyResponses];
+
+export type PoliciesEffectsRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+        policy_identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/policies/{policy_identifier}/effects/{identifier}/';
+};
+
+export type PoliciesEffectsRetrieveResponses = {
+    200: AdminPolicyEffectResponse;
+};
+
+export type PoliciesEffectsRetrieveResponse = PoliciesEffectsRetrieveResponses[keyof PoliciesEffectsRetrieveResponses];
+
+export type PoliciesEffectsPartialUpdateData = {
+    body?: PatchedAdminCreatePolicyEffectRequest;
+    path: {
+        identifier: string;
+        policy_identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/policies/{policy_identifier}/effects/{identifier}/';
+};
+
+export type PoliciesEffectsPartialUpdateResponses = {
+    200: AdminPolicyEffectResponse;
+};
+
+export type PoliciesEffectsPartialUpdateResponse = PoliciesEffectsPartialUpdateResponses[keyof PoliciesEffectsPartialUpdateResponses];
+
+export type PoliciesEffectsUpdateData = {
+    body: AdminCreatePolicyEffectRequest;
+    path: {
+        identifier: string;
+        policy_identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/policies/{policy_identifier}/effects/{identifier}/';
+};
+
+export type PoliciesEffectsUpdateResponses = {
+    200: AdminPolicyEffectResponse;
+};
+
+export type PoliciesEffectsUpdateResponse = PoliciesEffectsUpdateResponses[keyof PoliciesEffectsUpdateResponses];
+
+export type PolicyLogsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        created?: string;
+        created__gt?: string;
+        created__gte?: string;
+        created__lt?: string;
+        created__lte?: string;
+        id?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        policy?: string;
+        resource?: string;
+        resource_id?: string;
+    };
+    url: '/3/admin/policy-logs/';
+};
+
+export type PolicyLogsListResponses = {
+    200: PaginatedAdminPolicyLogListResponse;
+};
+
+export type PolicyLogsListResponse = PolicyLogsListResponses[keyof PolicyLogsListResponses];
+
+export type PolicyLogsRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/policy-logs/{identifier}/';
+};
+
+export type PolicyLogsRetrieveResponses = {
+    200: AdminPolicyLogResponse;
+};
+
+export type PolicyLogsRetrieveResponse = PolicyLogsRetrieveResponses[keyof PolicyLogsRetrieveResponses];
+
 export type RequestsListData = {
     body?: never;
     path?: never;
@@ -28130,6 +29628,7 @@ export type RequestsListData = {
         created__gte?: string;
         created__lt?: string;
         created__lte?: string;
+        ip_address?: string;
         key?: string;
         method?: string;
         method__in?: string;
@@ -28685,6 +30184,7 @@ export type TransactionCollectionsTransactionsListData = {
         created__gte?: string;
         created__lt?: string;
         created__lte?: string;
+        creator?: string;
         currency?: string;
         executed?: string | null;
         executed__gt?: string | null;
@@ -28865,6 +30365,7 @@ export type TransactionsListData = {
         created__gte?: string;
         created__lt?: string;
         created__lte?: string;
+        creator?: string;
         currency?: string;
         executed?: string | null;
         executed__gt?: string | null;

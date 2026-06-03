@@ -59,6 +59,12 @@ export type AdminCompany = {
     readonly mode: 'test' | 'production';
     readonly operational_account: string | null;
     rain_api_key: string;
+    rain_webhook_api_key: string;
+    readonly supported_groups: {
+        [key: string]: {
+            disallowed_nationalities?: Array<string>;
+        };
+    };
 };
 
 export type AdminCompanyResponse = {
@@ -147,6 +153,12 @@ export type AdminUpdateCompany = {
     readonly mode: 'test' | 'production';
     operational_account?: string | null;
     rain_api_key?: string;
+    rain_webhook_api_key?: string | null;
+    supported_groups?: {
+        [key: string]: {
+            disallowed_nationalities?: Array<string>;
+        };
+    };
 };
 
 /**
@@ -274,6 +286,12 @@ export type PatchedAdminUpdateCompany = {
     readonly mode?: 'test' | 'production';
     operational_account?: string | null;
     rain_api_key?: string;
+    rain_webhook_api_key?: string | null;
+    supported_groups?: {
+        [key: string]: {
+            disallowed_nationalities?: Array<string>;
+        };
+    };
 };
 
 /**
@@ -649,6 +667,26 @@ export type UserCardPin = {
 export type UserCardPinResponse = {
     status: string;
     data: UserCardPin;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type UserCompany = {
+    readonly id: string;
+    readonly supported_groups: {
+        [key: string]: {
+            disallowed_nationalities?: Array<string>;
+        };
+    };
+};
+
+export type UserCompanyResponse = {
+    status: string;
+    data: UserCompany;
 };
 
 /**
@@ -1041,6 +1079,7 @@ export type AdminCardWritable = {
  */
 export type AdminCompanyWritable = {
     rain_api_key: string;
+    rain_webhook_api_key: string;
 };
 
 export type AdminCompanyResponseWritable = {
@@ -1094,6 +1133,12 @@ export type AdminExtendedCardResponseWritable = {
 export type AdminUpdateCompanyWritable = {
     operational_account?: string | null;
     rain_api_key?: string;
+    rain_webhook_api_key?: string | null;
+    supported_groups?: {
+        [key: string]: {
+            disallowed_nationalities?: Array<string>;
+        };
+    };
 };
 
 export type PaginatedAdminCardListWritable = {
@@ -1170,6 +1215,12 @@ export type PatchedAdminCurrencyWritable = {
 export type PatchedAdminUpdateCompanyWritable = {
     operational_account?: string | null;
     rain_api_key?: string;
+    rain_webhook_api_key?: string | null;
+    supported_groups?: {
+        [key: string]: {
+            disallowed_nationalities?: Array<string>;
+        };
+    };
 };
 
 /**
@@ -1219,6 +1270,21 @@ export type UserApplicationResponseWritable = {
  */
 export type UserCardWritable = {
     [key: string]: unknown;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type UserCompanyWritable = {
+    [key: string]: unknown;
+};
+
+export type UserCompanyResponseWritable = {
+    status: string;
+    data: UserCompanyWritable;
 };
 
 /**
@@ -1645,6 +1711,19 @@ export type UserCardsPinUpdateResponses = {
 };
 
 export type UserCardsPinUpdateResponse = UserCardsPinUpdateResponses[keyof UserCardsPinUpdateResponses];
+
+export type UserCompanyRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/user/company/';
+};
+
+export type UserCompanyRetrieveResponses = {
+    200: UserCompanyResponse;
+};
+
+export type UserCompanyRetrieveResponse = UserCompanyRetrieveResponses[keyof UserCompanyRetrieveResponses];
 
 export type WebhookCreateData = {
     body: Webhook;

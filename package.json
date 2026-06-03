@@ -1,6 +1,6 @@
 {
   "name": "rehive",
-  "version": "4.2.2",
+  "version": "4.3.0",
   "description": "SDK for Rehive Platform and Extensions",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -9,7 +9,7 @@
     "build": "NODE_OPTIONS=--max-old-space-size=8192 tsup",
     "dev": "NODE_OPTIONS=--max-old-space-size=8192 tsup --watch",
     "codegen:openapi-ts": "bash scripts/codegen-openapi-ts.sh",
-    "codegen:openapi-ts:clean": "rm -rf src/platform/user/openapi-ts src/platform/admin/openapi-ts src/extensions/conversion/openapi-ts src/extensions/mass-send/openapi-ts src/extensions/notifications/openapi-ts src/extensions/products/openapi-ts src/extensions/rewards/openapi-ts src/extensions/stellar/openapi-ts src/extensions/stellar-testnet/openapi-ts src/extensions/business/openapi-ts src/extensions/payment-requests/openapi-ts src/extensions/bridge/openapi-ts src/extensions/app/openapi-ts src/extensions/billing/openapi-ts src/extensions/builder/openapi-ts src/extensions/rain/openapi-ts src/extensions/alchemy/openapi-ts && npm run codegen:openapi-ts",
+    "codegen:openapi-ts:clean": "rm -rf src/platform/user/openapi-ts src/platform/admin/openapi-ts src/extensions/conversion/openapi-ts src/extensions/mass-send/openapi-ts src/extensions/notifications/openapi-ts src/extensions/products/openapi-ts src/extensions/rewards/openapi-ts src/extensions/stellar/openapi-ts src/extensions/stellar-testnet/openapi-ts src/extensions/business/openapi-ts src/extensions/payment-requests/openapi-ts src/extensions/bridge/openapi-ts src/extensions/app/openapi-ts src/extensions/billing/openapi-ts src/extensions/builder/openapi-ts src/extensions/rain/openapi-ts src/extensions/alchemy/openapi-ts src/extensions/sumsub/openapi-ts src/extensions/mukuru/openapi-ts && npm run codegen:openapi-ts",
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -150,6 +150,16 @@
       "types": "./dist/extensions/alchemy.d.ts",
       "import": "./dist/extensions/alchemy.mjs",
       "require": "./dist/extensions/alchemy.js"
+    },
+    "./extensions/sumsub": {
+      "types": "./dist/extensions/sumsub.d.ts",
+      "import": "./dist/extensions/sumsub.mjs",
+      "require": "./dist/extensions/sumsub.js"
+    },
+    "./extensions/mukuru": {
+      "types": "./dist/extensions/mukuru.d.ts",
+      "import": "./dist/extensions/mukuru.mjs",
+      "require": "./dist/extensions/mukuru.js"
     },
     "./react": {
       "types": "./dist/react.d.ts",

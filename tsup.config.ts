@@ -21,6 +21,8 @@ export default defineConfig({
     'extensions/builder': 'src/extensions/builder/index.ts',
     'extensions/rain': 'src/extensions/rain/index.ts',
     'extensions/alchemy': 'src/extensions/alchemy/index.ts',
+    'extensions/sumsub': 'src/extensions/sumsub/index.ts',
+    'extensions/mukuru': 'src/extensions/mukuru/index.ts',
     react: 'src/react.tsx',
   },
   format: ['cjs', 'esm'],
