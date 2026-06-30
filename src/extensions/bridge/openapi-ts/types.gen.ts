@@ -648,6 +648,18 @@ export type PaginatedCurrencyListResponse = {
     data: PaginatedCurrencyList;
 };
 
+export type PaginatedTransactionList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<Transaction>;
+};
+
+export type PaginatedTransactionListResponse = {
+    status: string;
+    data: PaginatedTransactionList;
+};
+
 export type PaginatedUserExternalWalletList = {
     count?: number;
     next?: string | null;
@@ -771,10 +783,51 @@ export type PatchedAdminUpdateCompany = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
+export type PatchedUpdateTransaction = {
+    readonly id?: string;
+    readonly collection?: string;
+    wallet?: UserReducedWallet;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
 export type PatchedUser = {
     readonly id?: string;
     readonly bridge_id?: string;
     bridge_signed_agreement_id?: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type Transaction = {
+    readonly id: string;
+    readonly collection: string;
+    wallet: UserReducedWallet;
+};
+
+export type TransactionResponse = {
+    status: string;
+    data: Transaction;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type UpdateTransaction = {
+    readonly id: string;
+    readonly collection: string;
+    wallet: UserReducedWallet;
 };
 
 /**
@@ -1324,6 +1377,18 @@ export type PaginatedAdminWalletListResponseWritable = {
     data: PaginatedAdminWalletListWritable;
 };
 
+export type PaginatedTransactionListWritable = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<TransactionWritable>;
+};
+
+export type PaginatedTransactionListResponseWritable = {
+    status: string;
+    data: PaginatedTransactionListWritable;
+};
+
 export type PaginatedUserExternalWalletListWritable = {
     count?: number;
     next?: string | null;
@@ -1427,8 +1492,47 @@ export type PatchedAdminUpdateCompanyWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
+export type PatchedUpdateTransactionWritable = {
+    metadata?: {
+        [key: string]: unknown;
+    };
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
 export type PatchedUserWritable = {
     bridge_signed_agreement_id?: string;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type TransactionWritable = {
+    [key: string]: unknown;
+};
+
+export type TransactionResponseWritable = {
+    status: string;
+    data: TransactionWritable;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type UpdateTransactionWritable = {
+    metadata: {
+        [key: string]: unknown;
+    };
 };
 
 /**
@@ -2368,6 +2472,73 @@ export type UserStaticTemplatesRetrieveResponses = {
 };
 
 export type UserStaticTemplatesRetrieveResponse = UserStaticTemplatesRetrieveResponses[keyof UserStaticTemplatesRetrieveResponses];
+
+export type UserTransactionsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/user/transactions/';
+};
+
+export type UserTransactionsListResponses = {
+    200: PaginatedTransactionListResponse;
+};
+
+export type UserTransactionsListResponse = UserTransactionsListResponses[keyof UserTransactionsListResponses];
+
+export type UserTransactionsRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/user/transactions/{identifier}/';
+};
+
+export type UserTransactionsRetrieveResponses = {
+    200: TransactionResponse;
+};
+
+export type UserTransactionsRetrieveResponse = UserTransactionsRetrieveResponses[keyof UserTransactionsRetrieveResponses];
+
+export type UserTransactionsPartialUpdateData = {
+    body?: PatchedUpdateTransactionWritable;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/user/transactions/{identifier}/';
+};
+
+export type UserTransactionsPartialUpdateResponses = {
+    200: TransactionResponse;
+};
+
+export type UserTransactionsPartialUpdateResponse = UserTransactionsPartialUpdateResponses[keyof UserTransactionsPartialUpdateResponses];
+
+export type UserTransactionsUpdateData = {
+    body: UpdateTransactionWritable;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/user/transactions/{identifier}/';
+};
+
+export type UserTransactionsUpdateResponses = {
+    200: TransactionResponse;
+};
+
+export type UserTransactionsUpdateResponse = UserTransactionsUpdateResponses[keyof UserTransactionsUpdateResponses];
 
 export type UserVirtualAccountsListData = {
     body?: never;

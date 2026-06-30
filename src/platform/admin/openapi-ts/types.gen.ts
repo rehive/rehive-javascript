@@ -922,8 +922,9 @@ export type AdminCompanyBankAccount = {
     archived?: boolean;
     /**
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'deposit' | null;
+    action?: 'deposit' | 'origin' | null;
     readonly created: number;
     readonly updated: number;
 };
@@ -982,8 +983,9 @@ export type AdminCompanyBankAccountRequest = {
     archived?: boolean;
     /**
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'deposit' | null;
+    action?: 'deposit' | 'origin' | null;
 };
 
 export type AdminCompanyBankAccountResponse = {
@@ -1349,6 +1351,7 @@ export type AdminCompanySettings = {
     privacy_policy_url?: string | null;
     nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
 };
 
 export type AdminCompanySettingsResponse = {
@@ -1378,8 +1381,9 @@ export type AdminCompanyWalletAccount = {
     readonly currencies: Array<ReducedAsset>;
     /**
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'deposit' | null;
+    action?: 'deposit' | 'origin' | null;
     archived?: boolean;
     readonly created: number;
     readonly updated: number;
@@ -1428,8 +1432,9 @@ export type AdminCompanyWalletAccountRequest = {
     } | null;
     /**
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'deposit' | null;
+    action?: 'deposit' | 'origin' | null;
     archived?: boolean;
 };
 
@@ -1698,13 +1703,9 @@ export type AdminCreateCryptoAccountAssetRequest = {
 export type AdminCreateCryptoAccountRequest = {
     address: string;
     name?: string | null;
-    /**
-     * * `bitcoin` - Bitcoin
-     * * `ethereum` - Ethereum
-     * * `stellar` - Stellar
-     * * `other` - Other
-     */
-    crypto_type?: 'bitcoin' | 'ethereum' | 'stellar' | 'other';
+    crypto_type?: string;
+    wallet_type?: string | null;
+    owner?: CryptoOwnerRequest | null;
     /**
      * * `testnet` - Testnet
      * * `mainnet` - Mainnet
@@ -1726,8 +1727,9 @@ export type AdminCreateCryptoAccountRequest = {
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'withdraw' | 'deposit' | null;
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
 };
 
 /**
@@ -2522,8 +2524,9 @@ export type AdminCreateUserBankAccountRequest = {
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'withdraw' | 'deposit' | null;
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
 };
 
 /**
@@ -3107,6 +3110,514 @@ export type AdminCreateUserInfoRequest = {
     timezone?: string | null;
     website?: string | null;
     business_name?: string | null;
+    alias_name?: string | null;
+    legal_name?: string | null;
+    birth_place?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    birth_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    tax_number?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
     deactivated?: boolean;
     /**
      * * `retaining` - Retaining
@@ -3204,8 +3715,9 @@ export type AdminCreateUserWalletAccountRequest = {
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'withdraw' | 'deposit' | null;
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
 };
 
 /**
@@ -3219,13 +3731,9 @@ export type AdminCryptoAccount = {
     address: string;
     name?: string | null;
     readonly code: string | null;
-    /**
-     * * `bitcoin` - Bitcoin
-     * * `ethereum` - Ethereum
-     * * `stellar` - Stellar
-     * * `other` - Other
-     */
-    crypto_type?: 'bitcoin' | 'ethereum' | 'stellar' | 'other';
+    crypto_type?: string;
+    wallet_type?: string | null;
+    owner?: CryptoOwner | null;
     /**
      * * `testnet` - Testnet
      * * `mainnet` - Mainnet
@@ -3246,12 +3754,14 @@ export type AdminCryptoAccount = {
     status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
     readonly currencies: Array<ReducedAsset>;
     readonly account_currencies: Array<ReducedAccountAsset>;
+    readonly attestations: Array<CryptoAccountAttestation>;
     archived?: boolean;
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'withdraw' | 'deposit' | null;
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
     readonly created: number;
     readonly updated: number;
 };
@@ -3296,13 +3806,9 @@ export type AdminCryptoAccountAssetResponse = {
 export type AdminCryptoAccountRequest = {
     address: string;
     name?: string | null;
-    /**
-     * * `bitcoin` - Bitcoin
-     * * `ethereum` - Ethereum
-     * * `stellar` - Stellar
-     * * `other` - Other
-     */
-    crypto_type?: 'bitcoin' | 'ethereum' | 'stellar' | 'other';
+    crypto_type?: string;
+    wallet_type?: string | null;
+    owner?: CryptoOwnerRequest | null;
     /**
      * * `testnet` - Testnet
      * * `mainnet` - Mainnet
@@ -3324,8 +3830,9 @@ export type AdminCryptoAccountRequest = {
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'withdraw' | 'deposit' | null;
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
 };
 
 export type AdminCryptoAccountResponse = {
@@ -3570,6 +4077,50 @@ export type AdminExportPage = {
 export type AdminExportResponse = {
     status: string;
     data: AdminExport;
+};
+
+/**
+ * CRUD serializer for a saved, company-scoped export template: a reusable
+ * `query` (which may carry a column mapping) for a given resource.
+ */
+export type AdminExportTemplate = {
+    readonly id: string;
+    name: string;
+    /**
+     * * `account` - Account
+     * * `account_currency` - Account_Currency
+     * * `transaction` - Transaction
+     * * `user` - User
+     */
+    resource: 'account' | 'account_currency' | 'transaction' | 'user';
+    query?: {
+        [key: string]: unknown;
+    } | null;
+    readonly created: number;
+    readonly updated: number;
+};
+
+/**
+ * CRUD serializer for a saved, company-scoped export template: a reusable
+ * `query` (which may carry a column mapping) for a given resource.
+ */
+export type AdminExportTemplateRequest = {
+    name: string;
+    /**
+     * * `account` - Account
+     * * `account_currency` - Account_Currency
+     * * `transaction` - Transaction
+     * * `user` - User
+     */
+    resource: 'account' | 'account_currency' | 'transaction' | 'user';
+    query?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+export type AdminExportTemplateResponse = {
+    status: string;
+    data: AdminExportTemplate;
 };
 
 /**
@@ -3837,6 +4388,7 @@ export type AdminExtendedRequest = {
      * * `companywalletaccount` - Company Wallet Account
      * * `companyservice` - Company Service
      * * `companynotification` - Company Notification
+     * * `cryptoowneraddress` - Crypto Owner Address
      * * `device` - Device
      * * `deviceapp` - Device App
      * * `document` - Document
@@ -3892,6 +4444,7 @@ export type AdminExtendedRequest = {
      * * `userbankaccount` - User Bank Account
      * * `userwalletaccount` - User Wallet Account
      * * `usercryptoaccount` - User Crypto Account
+     * * `usercryptoaccountattestation` - User Crypto Account Attestation
      * * `userlegaltermversion` - User Legal Term Version
      * * `usermessage` - User Message
      * * `userpermission` - User Permission
@@ -3900,7 +4453,7 @@ export type AdminExtendedRequest = {
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
     readonly resource_id: string | null;
     /**
      * Return a response object. This has to be unpickled from a stored
@@ -3968,6 +4521,7 @@ export type AdminExtendedTransaction = {
      * @deprecated
      */
     readonly fees: Array<TransactionFee>;
+    readonly challenges: Array<TransactionAuthenticatorChallengeLog>;
     readonly inclusive: boolean;
     archived?: boolean;
     readonly executed: number | null;
@@ -4604,6 +5158,514 @@ export type AdminExtendedUserInfo = {
     timezone?: string | null;
     website?: string | null;
     business_name?: string | null;
+    alias_name?: string | null;
+    legal_name?: string | null;
+    birth_place?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    birth_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    tax_number?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
     /**
      * @deprecated
      */
@@ -5539,6 +6601,7 @@ export type AdminPolicyLog = {
      * * `companywalletaccount` - Company Wallet Account
      * * `companyservice` - Company Service
      * * `companynotification` - Company Notification
+     * * `cryptoowneraddress` - Crypto Owner Address
      * * `device` - Device
      * * `deviceapp` - Device App
      * * `document` - Document
@@ -5594,6 +6657,7 @@ export type AdminPolicyLog = {
      * * `userbankaccount` - User Bank Account
      * * `userwalletaccount` - User Wallet Account
      * * `usercryptoaccount` - User Crypto Account
+     * * `usercryptoaccountattestation` - User Crypto Account Attestation
      * * `userlegaltermversion` - User Legal Term Version
      * * `usermessage` - User Message
      * * `userpermission` - User Permission
@@ -5602,7 +6666,7 @@ export type AdminPolicyLog = {
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    readonly resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest';
+    readonly resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest';
     readonly resource_id: string | null;
     readonly event: string;
     readonly data: {
@@ -6279,6 +7343,514 @@ export type AdminRegisterRequest = {
      */
     marital_status?: 'single' | 'married' | 'divorced' | 'widowed' | null;
     timezone?: string | null;
+    alias_name?: string | null;
+    legal_name?: string | null;
+    birth_place?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    birth_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    tax_number?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
 };
 
 /**
@@ -6330,6 +7902,7 @@ export type AdminRequest = {
      * * `companywalletaccount` - Company Wallet Account
      * * `companyservice` - Company Service
      * * `companynotification` - Company Notification
+     * * `cryptoowneraddress` - Crypto Owner Address
      * * `device` - Device
      * * `deviceapp` - Device App
      * * `document` - Document
@@ -6385,6 +7958,7 @@ export type AdminRequest = {
      * * `userbankaccount` - User Bank Account
      * * `userwalletaccount` - User Wallet Account
      * * `usercryptoaccount` - User Crypto Account
+     * * `usercryptoaccountattestation` - User Crypto Account Attestation
      * * `userlegaltermversion` - User Legal Term Version
      * * `usermessage` - User Message
      * * `userpermission` - User Permission
@@ -6393,7 +7967,7 @@ export type AdminRequest = {
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
     readonly resource_id: string | null;
     readonly created: number;
     readonly updated: number;
@@ -6859,6 +8433,7 @@ export type AdminUpdateCompanySettingsRequest = {
     privacy_policy_url?: string | null;
     nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
 };
 
 /**
@@ -7753,6 +9328,514 @@ export type AdminUpdateUserInfoRequest = {
     timezone?: string | null;
     website?: string | null;
     business_name?: string | null;
+    alias_name?: string | null;
+    legal_name?: string | null;
+    birth_place?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    birth_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    tax_number?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
     /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
@@ -8415,8 +10498,9 @@ export type AdminUserBankAccount = {
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'withdraw' | 'deposit' | null;
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
     readonly created: number;
     readonly updated: number;
 };
@@ -8499,8 +10583,9 @@ export type AdminUserBankAccountRequest = {
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'withdraw' | 'deposit' | null;
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
 };
 
 export type AdminUserBankAccountResponse = {
@@ -9667,6 +11752,514 @@ export type AdminUserInfo = {
     timezone?: string | null;
     website?: string | null;
     business_name?: string | null;
+    alias_name?: string | null;
+    legal_name?: string | null;
+    birth_place?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    birth_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    tax_number?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
     /**
      * @deprecated
      */
@@ -9894,8 +12487,9 @@ export type AdminUserWalletAccount = {
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'withdraw' | 'deposit' | null;
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
     readonly created: number;
     readonly updated: number;
 };
@@ -9961,8 +12555,9 @@ export type AdminUserWalletAccountRequest = {
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'withdraw' | 'deposit' | null;
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
 };
 
 export type AdminUserWalletAccountResponse = {
@@ -11272,6 +13867,7 @@ export type CompanySettings = {
     privacy_policy_url?: string | null;
     nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
 };
 
 /**
@@ -11305,6 +13901,7 @@ export type CompanySettingsRequest = {
     privacy_policy_url?: string | null;
     nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
 };
 
 /**
@@ -11391,6 +13988,1648 @@ export type CreateUpdateGroupTierRequirementSetRequest = {
     condition: 'all' | 'any';
     min_condition_matches?: number | null;
     weight?: number | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type CryptoAccountAttestation = {
+    readonly id: string;
+    /**
+     * * `declaration_of_ownership` - Declaration Of Ownership
+     */
+    readonly type: 'declaration_of_ownership';
+    data?: {
+        [key: string]: unknown;
+    } | null;
+    readonly created: number;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type CryptoAccountAttestationRequest = {
+    data?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type CryptoOwner = {
+    first_name?: string | null;
+    middle_name?: string | null;
+    last_name?: string | null;
+    full_name?: string | null;
+    phone_number?: string | null;
+    email_address?: string | null;
+    company_name?: string | null;
+    ein_tin?: string | null;
+    /**
+     * * `self` - Self
+     * * `third` - Third
+     */
+    party?: 'self' | 'third' | null;
+    /**
+     * * `individual` - Individual
+     * * `business` - Business
+     */
+    type?: 'individual' | 'business' | null;
+    birth_date?: string | null;
+    birth_place?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    birth_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    id_number?: string | null;
+    id_type?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    id_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    lei?: string | null;
+    address?: CryptoOwnerAddress;
+    address_text?: string | null;
+    cpf_cpnj?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type CryptoOwnerAddress = {
+    line_1?: string | null;
+    line_2?: string | null;
+    city?: string | null;
+    state_province?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    postal_code?: string | null;
+    state_code?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type CryptoOwnerAddressRequest = {
+    line_1?: string | null;
+    line_2?: string | null;
+    city?: string | null;
+    state_province?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    postal_code?: string | null;
+    state_code?: string | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type CryptoOwnerRequest = {
+    first_name?: string | null;
+    middle_name?: string | null;
+    last_name?: string | null;
+    full_name?: string | null;
+    phone_number?: string | null;
+    email_address?: string | null;
+    company_name?: string | null;
+    ein_tin?: string | null;
+    /**
+     * * `self` - Self
+     * * `third` - Third
+     */
+    party?: 'self' | 'third' | null;
+    /**
+     * * `individual` - Individual
+     * * `business` - Business
+     */
+    type?: 'individual' | 'business' | null;
+    birth_date?: string | null;
+    birth_place?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    birth_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    id_number?: string | null;
+    id_type?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    id_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    lei?: string | null;
+    address?: CryptoOwnerAddressRequest;
+    address_text?: string | null;
+    cpf_cpnj?: string | null;
 };
 
 /**
@@ -12007,6 +16246,514 @@ export type ExtendedUserInfo = {
     timezone?: string | null;
     website?: string | null;
     business_name?: string | null;
+    alias_name?: string | null;
+    legal_name?: string | null;
+    birth_place?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    birth_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    tax_number?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
     /**
      * @deprecated
      */
@@ -12627,6 +17374,18 @@ export type PaginatedAdminExportListResponse = {
     data: PaginatedAdminExportList;
 };
 
+export type PaginatedAdminExportTemplateList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminExportTemplate>;
+};
+
+export type PaginatedAdminExportTemplateListResponse = {
+    status: string;
+    data: PaginatedAdminExportTemplateList;
+};
+
 export type PaginatedAdminGroupList = {
     count?: number;
     next?: string | null;
@@ -13145,8 +17904,9 @@ export type PatchedAdminCompanyBankAccountRequest = {
     archived?: boolean;
     /**
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'deposit' | null;
+    action?: 'deposit' | 'origin' | null;
 };
 
 /**
@@ -13452,8 +18212,9 @@ export type PatchedAdminCompanyWalletAccountRequest = {
     } | null;
     /**
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'deposit' | null;
+    action?: 'deposit' | 'origin' | null;
     archived?: boolean;
 };
 
@@ -13562,13 +18323,9 @@ export type PatchedAdminCreateUpdateLegalTermRequest = {
 export type PatchedAdminCryptoAccountRequest = {
     address?: string;
     name?: string | null;
-    /**
-     * * `bitcoin` - Bitcoin
-     * * `ethereum` - Ethereum
-     * * `stellar` - Stellar
-     * * `other` - Other
-     */
-    crypto_type?: 'bitcoin' | 'ethereum' | 'stellar' | 'other';
+    crypto_type?: string;
+    wallet_type?: string | null;
+    owner?: CryptoOwnerRequest | null;
     /**
      * * `testnet` - Testnet
      * * `mainnet` - Mainnet
@@ -13590,8 +18347,9 @@ export type PatchedAdminCryptoAccountRequest = {
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'withdraw' | 'deposit' | null;
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
 };
 
 /**
@@ -13650,6 +18408,24 @@ export type PatchedAdminEmailRequest = {
     primary?: boolean;
     verified?: boolean;
     archived?: boolean;
+};
+
+/**
+ * CRUD serializer for a saved, company-scoped export template: a reusable
+ * `query` (which may carry a column mapping) for a given resource.
+ */
+export type PatchedAdminExportTemplateRequest = {
+    name?: string;
+    /**
+     * * `account` - Account
+     * * `account_currency` - Account_Currency
+     * * `transaction` - Transaction
+     * * `user` - User
+     */
+    resource?: 'account' | 'account_currency' | 'transaction' | 'user';
+    query?: {
+        [key: string]: unknown;
+    } | null;
 };
 
 /**
@@ -13883,6 +18659,7 @@ export type PatchedAdminUpdateCompanySettingsRequest = {
     privacy_policy_url?: string | null;
     nationalities?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     residencies?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
 };
 
 /**
@@ -14685,6 +19462,514 @@ export type PatchedAdminUpdateUserInfoRequest = {
     timezone?: string | null;
     website?: string | null;
     business_name?: string | null;
+    alias_name?: string | null;
+    legal_name?: string | null;
+    birth_place?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    birth_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    tax_number?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
     /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
@@ -15049,8 +20334,9 @@ export type PatchedAdminUserBankAccountRequest = {
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'withdraw' | 'deposit' | null;
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
 };
 
 /**
@@ -15096,8 +20382,9 @@ export type PatchedAdminUserWalletAccountRequest = {
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'withdraw' | 'deposit' | null;
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
 };
 
 /**
@@ -15625,6 +20912,24 @@ export type TransactionAccountAsset = {
     readonly id: string;
     account: ReducedAccount;
     currency: ReducedAsset;
+};
+
+/**
+ * Curated challenge info for a transaction, read from the linked verification
+ * log's frozen `snapshot` (survives challenge deletion). Excludes internal-only
+ * fields (fingerprint, auth_token/user ids); exposes the challenge id, rule id,
+ * the authenticator that satisfied it, and the session login time (`login_at`).
+ * `obj` is a TransactionAuthenticatorChallengeLog join row.
+ */
+export type TransactionAuthenticatorChallengeLog = {
+    readonly id: string;
+    readonly challenge: string;
+    readonly rule_id: number;
+    readonly authenticator: {
+        [key: string]: unknown;
+    };
+    readonly login_at: number;
+    readonly created: number;
 };
 
 /**
@@ -17079,8 +22384,9 @@ export type AdminCompanyBankAccountWritable = {
     archived?: boolean;
     /**
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'deposit' | null;
+    action?: 'deposit' | 'origin' | null;
 };
 
 /**
@@ -17170,6 +22476,7 @@ export type AdminCompanySettingsWritable = {
     privacy_policy_url?: string | null;
     nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
 };
 
 export type AdminCompanySettingsResponseWritable = {
@@ -17197,8 +22504,9 @@ export type AdminCompanyWalletAccountWritable = {
     } | null;
     /**
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'deposit' | null;
+    action?: 'deposit' | 'origin' | null;
     archived?: boolean;
 };
 
@@ -17481,13 +22789,9 @@ export type AdminCreateCreditTransactionRequestWritable = {
 export type AdminCreateCryptoAccountRequestWritable = {
     address: string;
     name?: string | null;
-    /**
-     * * `bitcoin` - Bitcoin
-     * * `ethereum` - Ethereum
-     * * `stellar` - Stellar
-     * * `other` - Other
-     */
-    crypto_type?: 'bitcoin' | 'ethereum' | 'stellar' | 'other';
+    crypto_type?: string;
+    wallet_type?: string | null;
+    owner?: CryptoOwnerRequest | null;
     /**
      * * `testnet` - Testnet
      * * `mainnet` - Mainnet
@@ -17510,8 +22814,9 @@ export type AdminCreateCryptoAccountRequestWritable = {
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'withdraw' | 'deposit' | null;
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
 };
 
 /**
@@ -18302,8 +23607,9 @@ export type AdminCreateUserBankAccountRequestWritable = {
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'withdraw' | 'deposit' | null;
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
 };
 
 /**
@@ -18891,6 +24197,514 @@ export type AdminCreateUserInfoRequestWritable = {
     timezone?: string | null;
     website?: string | null;
     business_name?: string | null;
+    alias_name?: string | null;
+    legal_name?: string | null;
+    birth_place?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    birth_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    tax_number?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
     deactivated?: boolean;
     /**
      * * `retaining` - Retaining
@@ -18984,8 +24798,9 @@ export type AdminCreateUserWalletAccountRequestWritable = {
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'withdraw' | 'deposit' | null;
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
 };
 
 /**
@@ -18997,13 +24812,9 @@ export type AdminCreateUserWalletAccountRequestWritable = {
 export type AdminCryptoAccountWritable = {
     address: string;
     name?: string | null;
-    /**
-     * * `bitcoin` - Bitcoin
-     * * `ethereum` - Ethereum
-     * * `stellar` - Stellar
-     * * `other` - Other
-     */
-    crypto_type?: 'bitcoin' | 'ethereum' | 'stellar' | 'other';
+    crypto_type?: string;
+    wallet_type?: string | null;
+    owner?: CryptoOwner | null;
     /**
      * * `testnet` - Testnet
      * * `mainnet` - Mainnet
@@ -19025,8 +24836,9 @@ export type AdminCryptoAccountWritable = {
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'withdraw' | 'deposit' | null;
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
 };
 
 /**
@@ -19223,6 +25035,29 @@ export type AdminExportResponseWritable = {
 };
 
 /**
+ * CRUD serializer for a saved, company-scoped export template: a reusable
+ * `query` (which may carry a column mapping) for a given resource.
+ */
+export type AdminExportTemplateWritable = {
+    name: string;
+    /**
+     * * `account` - Account
+     * * `account_currency` - Account_Currency
+     * * `transaction` - Transaction
+     * * `user` - User
+     */
+    resource: 'account' | 'account_currency' | 'transaction' | 'user';
+    query?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+export type AdminExportTemplateResponseWritable = {
+    status: string;
+    data: AdminExportTemplateWritable;
+};
+
+/**
  * A ModelSerializer that takes additional arguments for
  * "fields", "omit" and "expand" in order to
  * control which fields are displayed, and whether to replace simple
@@ -19365,6 +25200,7 @@ export type AdminExtendedRequestWritable = {
      * * `companywalletaccount` - Company Wallet Account
      * * `companyservice` - Company Service
      * * `companynotification` - Company Notification
+     * * `cryptoowneraddress` - Crypto Owner Address
      * * `device` - Device
      * * `deviceapp` - Device App
      * * `document` - Document
@@ -19420,6 +25256,7 @@ export type AdminExtendedRequestWritable = {
      * * `userbankaccount` - User Bank Account
      * * `userwalletaccount` - User Wallet Account
      * * `usercryptoaccount` - User Crypto Account
+     * * `usercryptoaccountattestation` - User Crypto Account Attestation
      * * `userlegaltermversion` - User Legal Term Version
      * * `usermessage` - User Message
      * * `userpermission` - User Permission
@@ -19428,7 +25265,7 @@ export type AdminExtendedRequestWritable = {
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
 };
 
 export type AdminExtendedRequestResponseWritable = {
@@ -20024,6 +25861,514 @@ export type AdminExtendedUserInfoWritable = {
     timezone?: string | null;
     website?: string | null;
     business_name?: string | null;
+    alias_name?: string | null;
+    legal_name?: string | null;
+    birth_place?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    birth_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    tax_number?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
     deactivated?: boolean;
     /**
      * * `retaining` - Retaining
@@ -21111,6 +27456,514 @@ export type AdminRegisterRequestWritable = {
      */
     marital_status?: 'single' | 'married' | 'divorced' | 'widowed' | null;
     timezone?: string | null;
+    alias_name?: string | null;
+    legal_name?: string | null;
+    birth_place?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    birth_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    tax_number?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
 };
 
 /**
@@ -21146,6 +27999,7 @@ export type AdminRequestWritable = {
      * * `companywalletaccount` - Company Wallet Account
      * * `companyservice` - Company Service
      * * `companynotification` - Company Notification
+     * * `cryptoowneraddress` - Crypto Owner Address
      * * `device` - Device
      * * `deviceapp` - Device App
      * * `document` - Document
@@ -21201,6 +28055,7 @@ export type AdminRequestWritable = {
      * * `userbankaccount` - User Bank Account
      * * `userwalletaccount` - User Wallet Account
      * * `usercryptoaccount` - User Crypto Account
+     * * `usercryptoaccountattestation` - User Crypto Account Attestation
      * * `userlegaltermversion` - User Legal Term Version
      * * `usermessage` - User Message
      * * `userpermission` - User Permission
@@ -21209,7 +28064,7 @@ export type AdminRequestWritable = {
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
 };
 
 /**
@@ -21423,6 +28278,7 @@ export type AdminUpdateCompanySettingsRequestWritable = {
     privacy_policy_url?: string | null;
     nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
 };
 
 /**
@@ -22231,6 +29087,514 @@ export type AdminUpdateUserInfoRequestWritable = {
     timezone?: string | null;
     website?: string | null;
     business_name?: string | null;
+    alias_name?: string | null;
+    legal_name?: string | null;
+    birth_place?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    birth_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    tax_number?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
     /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
@@ -22600,8 +29964,9 @@ export type AdminUserBankAccountWritable = {
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'withdraw' | 'deposit' | null;
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
 };
 
 /**
@@ -23224,6 +30589,514 @@ export type AdminUserInfoWritable = {
     timezone?: string | null;
     website?: string | null;
     business_name?: string | null;
+    alias_name?: string | null;
+    legal_name?: string | null;
+    birth_place?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    birth_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    tax_number?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
     deactivated?: boolean;
     /**
      * * `retaining` - Retaining
@@ -23334,8 +31207,9 @@ export type AdminUserWalletAccountWritable = {
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
+     * * `origin` - Origin
      */
-    action?: 'withdraw' | 'deposit' | null;
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
 };
 
 /**
@@ -23493,6 +31367,7 @@ export type CompanySettingsWritable = {
     privacy_policy_url?: string | null;
     nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
 };
 
 /**
@@ -23529,6 +31404,18 @@ export type CreateUpdateGroupTierRequirementSetRequestWritable = {
     condition: 'all' | 'any';
     min_condition_matches?: number | null;
     weight?: number | null;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type CryptoAccountAttestationWritable = {
+    data?: {
+        [key: string]: unknown;
+    } | null;
 };
 
 export type ExtendedAuthenticatedWritable = {
@@ -24086,6 +31973,514 @@ export type ExtendedUserInfoWritable = {
     timezone?: string | null;
     website?: string | null;
     business_name?: string | null;
+    alias_name?: string | null;
+    legal_name?: string | null;
+    birth_place?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    birth_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    tax_number?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
 };
 
 export type GroupDisallowedTransactionSubtypeWritable = {
@@ -24480,6 +32875,18 @@ export type PaginatedAdminExportListWritable = {
 export type PaginatedAdminExportListResponseWritable = {
     status: string;
     data: PaginatedAdminExportListWritable;
+};
+
+export type PaginatedAdminExportTemplateListWritable = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminExportTemplateWritable>;
+};
+
+export type PaginatedAdminExportTemplateListResponseWritable = {
+    status: string;
+    data: PaginatedAdminExportTemplateListWritable;
 };
 
 export type PaginatedAdminGroupListWritable = {
@@ -25114,6 +33521,7 @@ export type PatchedAdminUpdateCompanySettingsRequestWritable = {
     privacy_policy_url?: string | null;
     nationalities?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     residencies?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
 };
 
 /**
@@ -25890,6 +34298,514 @@ export type PatchedAdminUpdateUserInfoRequestWritable = {
     timezone?: string | null;
     website?: string | null;
     business_name?: string | null;
+    alias_name?: string | null;
+    legal_name?: string | null;
+    birth_place?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    birth_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    tax_number?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
     /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
@@ -27866,6 +36782,102 @@ export type DocumentTypesUpdateResponses = {
 };
 
 export type DocumentTypesUpdateResponse = DocumentTypesUpdateResponses[keyof DocumentTypesUpdateResponses];
+
+export type ExportTemplatesListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        resource?: string;
+    };
+    url: '/3/admin/export-templates/';
+};
+
+export type ExportTemplatesListResponses = {
+    200: PaginatedAdminExportTemplateListResponse;
+};
+
+export type ExportTemplatesListResponse = ExportTemplatesListResponses[keyof ExportTemplatesListResponses];
+
+export type ExportTemplatesCreateData = {
+    body: AdminExportTemplateRequest;
+    path?: never;
+    query?: never;
+    url: '/3/admin/export-templates/';
+};
+
+export type ExportTemplatesCreateResponses = {
+    201: AdminExportTemplateResponse;
+};
+
+export type ExportTemplatesCreateResponse = ExportTemplatesCreateResponses[keyof ExportTemplatesCreateResponses];
+
+export type ExportTemplatesDestroyData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/export-templates/{identifier}/';
+};
+
+export type ExportTemplatesDestroyResponses = {
+    200: ActionResponse;
+};
+
+export type ExportTemplatesDestroyResponse = ExportTemplatesDestroyResponses[keyof ExportTemplatesDestroyResponses];
+
+export type ExportTemplatesRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/export-templates/{identifier}/';
+};
+
+export type ExportTemplatesRetrieveResponses = {
+    200: AdminExportTemplateResponse;
+};
+
+export type ExportTemplatesRetrieveResponse = ExportTemplatesRetrieveResponses[keyof ExportTemplatesRetrieveResponses];
+
+export type ExportTemplatesPartialUpdateData = {
+    body?: PatchedAdminExportTemplateRequest;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/export-templates/{identifier}/';
+};
+
+export type ExportTemplatesPartialUpdateResponses = {
+    200: AdminExportTemplateResponse;
+};
+
+export type ExportTemplatesPartialUpdateResponse = ExportTemplatesPartialUpdateResponses[keyof ExportTemplatesPartialUpdateResponses];
+
+export type ExportTemplatesUpdateData = {
+    body: AdminExportTemplateRequest;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/export-templates/{identifier}/';
+};
+
+export type ExportTemplatesUpdateResponses = {
+    200: AdminExportTemplateResponse;
+};
+
+export type ExportTemplatesUpdateResponse = ExportTemplatesUpdateResponses[keyof ExportTemplatesUpdateResponses];
 
 export type ExportsListData = {
     body?: never;

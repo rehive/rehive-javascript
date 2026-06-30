@@ -1356,6 +1356,7 @@ export type AdminLogsListData = {
         sent?: boolean;
         type?: string;
         type__in?: string;
+        user__identifier?: string;
     };
     url: '/admin/logs/';
 };

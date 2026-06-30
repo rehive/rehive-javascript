@@ -85,28 +85,35 @@ export type AdminDocumentType = {
      * * `PASSPORT` - Passport
      * * `DRIVERS` - Drivers
      * * `RESIDENCE_PERMIT` - Residence Permit
+     * * `VISA` - Visa
      * * `UTILITY_BILL` - Utility Bill
+     * * `UTILITY_BILL2` - Utility Bill2
      * * `SELFIE` - Selfie
      * * `VIDEO_SELFIE` - Video Selfie
+     * * `IDENTITY_VIDEO` - Identity Video
      * * `PROFILE_IMAGE` - Profile Image
      * * `ID_DOC_PHOTO` - Id Doc Photo
+     * * `EXTERNAL_DB_DOC` - External Db Doc
      * * `AGREEMENT` - Agreement
      * * `CONTRACT` - Contract
+     * * `SIGNED_CONTRACT` - Signed Contract
      * * `DRIVERS_TRANSLATION` - Drivers Translation
      * * `INVESTOR_DOC` - Investor Doc
      * * `VEHICLE_REGISTRATION_CERTIFICATE` - Vehicle Registration Certificate
      * * `INCOME_SOURCE` - Income Source
      * * `PAYMENT_METHOD` - Payment Method
+     * * `PAYMENT_SOURCE` - Payment Source
      * * `BANK_CARD` - Bank Card
      * * `ARBITRARY_DOC` - Arbitrary Doc
      * * `OTHER` - Other
+     * * `COMPANY_DOC` - Company Doc
+     * * `POWER_OF_ATTORNEY` - Power Of Attorney
+     * * `TRANSPARENCY_REGISTRY_EXTRACT` - Transparency Registry Extract
      */
-    sumsub_type: 'ID_CARD' | 'PASSPORT' | 'DRIVERS' | 'RESIDENCE_PERMIT' | 'UTILITY_BILL' | 'SELFIE' | 'VIDEO_SELFIE' | 'PROFILE_IMAGE' | 'ID_DOC_PHOTO' | 'AGREEMENT' | 'CONTRACT' | 'DRIVERS_TRANSLATION' | 'INVESTOR_DOC' | 'VEHICLE_REGISTRATION_CERTIFICATE' | 'INCOME_SOURCE' | 'PAYMENT_METHOD' | 'BANK_CARD' | 'ARBITRARY_DOC' | 'OTHER';
-    /**
-     * * `single` - Single
-     * * `double` - Double
-     */
-    kind?: 'single' | 'double';
+    sumsub_type: 'ID_CARD' | 'PASSPORT' | 'DRIVERS' | 'RESIDENCE_PERMIT' | 'VISA' | 'UTILITY_BILL' | 'UTILITY_BILL2' | 'SELFIE' | 'VIDEO_SELFIE' | 'IDENTITY_VIDEO' | 'PROFILE_IMAGE' | 'ID_DOC_PHOTO' | 'EXTERNAL_DB_DOC' | 'AGREEMENT' | 'CONTRACT' | 'SIGNED_CONTRACT' | 'DRIVERS_TRANSLATION' | 'INVESTOR_DOC' | 'VEHICLE_REGISTRATION_CERTIFICATE' | 'INCOME_SOURCE' | 'PAYMENT_METHOD' | 'PAYMENT_SOURCE' | 'BANK_CARD' | 'ARBITRARY_DOC' | 'OTHER' | 'COMPANY_DOC' | 'POWER_OF_ATTORNEY' | 'TRANSPARENCY_REGISTRY_EXTRACT';
+    readonly file_rules: {
+        [key: string]: unknown;
+    };
     readonly created: number;
     readonly updated: number;
 };
@@ -275,28 +282,35 @@ export type PatchedAdminDocumentType = {
      * * `PASSPORT` - Passport
      * * `DRIVERS` - Drivers
      * * `RESIDENCE_PERMIT` - Residence Permit
+     * * `VISA` - Visa
      * * `UTILITY_BILL` - Utility Bill
+     * * `UTILITY_BILL2` - Utility Bill2
      * * `SELFIE` - Selfie
      * * `VIDEO_SELFIE` - Video Selfie
+     * * `IDENTITY_VIDEO` - Identity Video
      * * `PROFILE_IMAGE` - Profile Image
      * * `ID_DOC_PHOTO` - Id Doc Photo
+     * * `EXTERNAL_DB_DOC` - External Db Doc
      * * `AGREEMENT` - Agreement
      * * `CONTRACT` - Contract
+     * * `SIGNED_CONTRACT` - Signed Contract
      * * `DRIVERS_TRANSLATION` - Drivers Translation
      * * `INVESTOR_DOC` - Investor Doc
      * * `VEHICLE_REGISTRATION_CERTIFICATE` - Vehicle Registration Certificate
      * * `INCOME_SOURCE` - Income Source
      * * `PAYMENT_METHOD` - Payment Method
+     * * `PAYMENT_SOURCE` - Payment Source
      * * `BANK_CARD` - Bank Card
      * * `ARBITRARY_DOC` - Arbitrary Doc
      * * `OTHER` - Other
+     * * `COMPANY_DOC` - Company Doc
+     * * `POWER_OF_ATTORNEY` - Power Of Attorney
+     * * `TRANSPARENCY_REGISTRY_EXTRACT` - Transparency Registry Extract
      */
-    sumsub_type?: 'ID_CARD' | 'PASSPORT' | 'DRIVERS' | 'RESIDENCE_PERMIT' | 'UTILITY_BILL' | 'SELFIE' | 'VIDEO_SELFIE' | 'PROFILE_IMAGE' | 'ID_DOC_PHOTO' | 'AGREEMENT' | 'CONTRACT' | 'DRIVERS_TRANSLATION' | 'INVESTOR_DOC' | 'VEHICLE_REGISTRATION_CERTIFICATE' | 'INCOME_SOURCE' | 'PAYMENT_METHOD' | 'BANK_CARD' | 'ARBITRARY_DOC' | 'OTHER';
-    /**
-     * * `single` - Single
-     * * `double` - Double
-     */
-    kind?: 'single' | 'double';
+    sumsub_type?: 'ID_CARD' | 'PASSPORT' | 'DRIVERS' | 'RESIDENCE_PERMIT' | 'VISA' | 'UTILITY_BILL' | 'UTILITY_BILL2' | 'SELFIE' | 'VIDEO_SELFIE' | 'IDENTITY_VIDEO' | 'PROFILE_IMAGE' | 'ID_DOC_PHOTO' | 'EXTERNAL_DB_DOC' | 'AGREEMENT' | 'CONTRACT' | 'SIGNED_CONTRACT' | 'DRIVERS_TRANSLATION' | 'INVESTOR_DOC' | 'VEHICLE_REGISTRATION_CERTIFICATE' | 'INCOME_SOURCE' | 'PAYMENT_METHOD' | 'PAYMENT_SOURCE' | 'BANK_CARD' | 'ARBITRARY_DOC' | 'OTHER' | 'COMPANY_DOC' | 'POWER_OF_ATTORNEY' | 'TRANSPARENCY_REGISTRY_EXTRACT';
+    readonly file_rules?: {
+        [key: string]: unknown;
+    };
     readonly created?: number;
     readonly updated?: number;
 };
@@ -496,28 +510,32 @@ export type AdminDocumentTypeWritable = {
      * * `PASSPORT` - Passport
      * * `DRIVERS` - Drivers
      * * `RESIDENCE_PERMIT` - Residence Permit
+     * * `VISA` - Visa
      * * `UTILITY_BILL` - Utility Bill
+     * * `UTILITY_BILL2` - Utility Bill2
      * * `SELFIE` - Selfie
      * * `VIDEO_SELFIE` - Video Selfie
+     * * `IDENTITY_VIDEO` - Identity Video
      * * `PROFILE_IMAGE` - Profile Image
      * * `ID_DOC_PHOTO` - Id Doc Photo
+     * * `EXTERNAL_DB_DOC` - External Db Doc
      * * `AGREEMENT` - Agreement
      * * `CONTRACT` - Contract
+     * * `SIGNED_CONTRACT` - Signed Contract
      * * `DRIVERS_TRANSLATION` - Drivers Translation
      * * `INVESTOR_DOC` - Investor Doc
      * * `VEHICLE_REGISTRATION_CERTIFICATE` - Vehicle Registration Certificate
      * * `INCOME_SOURCE` - Income Source
      * * `PAYMENT_METHOD` - Payment Method
+     * * `PAYMENT_SOURCE` - Payment Source
      * * `BANK_CARD` - Bank Card
      * * `ARBITRARY_DOC` - Arbitrary Doc
      * * `OTHER` - Other
+     * * `COMPANY_DOC` - Company Doc
+     * * `POWER_OF_ATTORNEY` - Power Of Attorney
+     * * `TRANSPARENCY_REGISTRY_EXTRACT` - Transparency Registry Extract
      */
-    sumsub_type: 'ID_CARD' | 'PASSPORT' | 'DRIVERS' | 'RESIDENCE_PERMIT' | 'UTILITY_BILL' | 'SELFIE' | 'VIDEO_SELFIE' | 'PROFILE_IMAGE' | 'ID_DOC_PHOTO' | 'AGREEMENT' | 'CONTRACT' | 'DRIVERS_TRANSLATION' | 'INVESTOR_DOC' | 'VEHICLE_REGISTRATION_CERTIFICATE' | 'INCOME_SOURCE' | 'PAYMENT_METHOD' | 'BANK_CARD' | 'ARBITRARY_DOC' | 'OTHER';
-    /**
-     * * `single` - Single
-     * * `double` - Double
-     */
-    kind?: 'single' | 'double';
+    sumsub_type: 'ID_CARD' | 'PASSPORT' | 'DRIVERS' | 'RESIDENCE_PERMIT' | 'VISA' | 'UTILITY_BILL' | 'UTILITY_BILL2' | 'SELFIE' | 'VIDEO_SELFIE' | 'IDENTITY_VIDEO' | 'PROFILE_IMAGE' | 'ID_DOC_PHOTO' | 'EXTERNAL_DB_DOC' | 'AGREEMENT' | 'CONTRACT' | 'SIGNED_CONTRACT' | 'DRIVERS_TRANSLATION' | 'INVESTOR_DOC' | 'VEHICLE_REGISTRATION_CERTIFICATE' | 'INCOME_SOURCE' | 'PAYMENT_METHOD' | 'PAYMENT_SOURCE' | 'BANK_CARD' | 'ARBITRARY_DOC' | 'OTHER' | 'COMPANY_DOC' | 'POWER_OF_ATTORNEY' | 'TRANSPARENCY_REGISTRY_EXTRACT';
 };
 
 export type AdminDocumentTypeResponseWritable = {
@@ -594,28 +612,32 @@ export type PatchedAdminDocumentTypeWritable = {
      * * `PASSPORT` - Passport
      * * `DRIVERS` - Drivers
      * * `RESIDENCE_PERMIT` - Residence Permit
+     * * `VISA` - Visa
      * * `UTILITY_BILL` - Utility Bill
+     * * `UTILITY_BILL2` - Utility Bill2
      * * `SELFIE` - Selfie
      * * `VIDEO_SELFIE` - Video Selfie
+     * * `IDENTITY_VIDEO` - Identity Video
      * * `PROFILE_IMAGE` - Profile Image
      * * `ID_DOC_PHOTO` - Id Doc Photo
+     * * `EXTERNAL_DB_DOC` - External Db Doc
      * * `AGREEMENT` - Agreement
      * * `CONTRACT` - Contract
+     * * `SIGNED_CONTRACT` - Signed Contract
      * * `DRIVERS_TRANSLATION` - Drivers Translation
      * * `INVESTOR_DOC` - Investor Doc
      * * `VEHICLE_REGISTRATION_CERTIFICATE` - Vehicle Registration Certificate
      * * `INCOME_SOURCE` - Income Source
      * * `PAYMENT_METHOD` - Payment Method
+     * * `PAYMENT_SOURCE` - Payment Source
      * * `BANK_CARD` - Bank Card
      * * `ARBITRARY_DOC` - Arbitrary Doc
      * * `OTHER` - Other
+     * * `COMPANY_DOC` - Company Doc
+     * * `POWER_OF_ATTORNEY` - Power Of Attorney
+     * * `TRANSPARENCY_REGISTRY_EXTRACT` - Transparency Registry Extract
      */
-    sumsub_type?: 'ID_CARD' | 'PASSPORT' | 'DRIVERS' | 'RESIDENCE_PERMIT' | 'UTILITY_BILL' | 'SELFIE' | 'VIDEO_SELFIE' | 'PROFILE_IMAGE' | 'ID_DOC_PHOTO' | 'AGREEMENT' | 'CONTRACT' | 'DRIVERS_TRANSLATION' | 'INVESTOR_DOC' | 'VEHICLE_REGISTRATION_CERTIFICATE' | 'INCOME_SOURCE' | 'PAYMENT_METHOD' | 'BANK_CARD' | 'ARBITRARY_DOC' | 'OTHER';
-    /**
-     * * `single` - Single
-     * * `double` - Double
-     */
-    kind?: 'single' | 'double';
+    sumsub_type?: 'ID_CARD' | 'PASSPORT' | 'DRIVERS' | 'RESIDENCE_PERMIT' | 'VISA' | 'UTILITY_BILL' | 'UTILITY_BILL2' | 'SELFIE' | 'VIDEO_SELFIE' | 'IDENTITY_VIDEO' | 'PROFILE_IMAGE' | 'ID_DOC_PHOTO' | 'EXTERNAL_DB_DOC' | 'AGREEMENT' | 'CONTRACT' | 'SIGNED_CONTRACT' | 'DRIVERS_TRANSLATION' | 'INVESTOR_DOC' | 'VEHICLE_REGISTRATION_CERTIFICATE' | 'INCOME_SOURCE' | 'PAYMENT_METHOD' | 'PAYMENT_SOURCE' | 'BANK_CARD' | 'ARBITRARY_DOC' | 'OTHER' | 'COMPANY_DOC' | 'POWER_OF_ATTORNEY' | 'TRANSPARENCY_REGISTRY_EXTRACT';
 };
 
 /**

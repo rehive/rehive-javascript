@@ -485,6 +485,17 @@ export type PatchedTransactionCollection = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
+export type PatchedUser = {
+    readonly identifier?: string;
+    private_key_exported?: number;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
 export type TransactionCollection = {
     readonly identifier: string;
     hash: string;
@@ -511,7 +522,8 @@ export type TransactionCollectionResponse = {
  * values with complex, nested serializations
  */
 export type User = {
-    identifier: string;
+    readonly identifier: string;
+    private_key_exported?: number;
 };
 
 /**
@@ -533,6 +545,11 @@ export type User = {
 export type UserCreateAddress = {
     address?: string;
     rehive_account?: string;
+};
+
+export type UserResponse = {
+    status?: string;
+    data?: User;
 };
 
 export type Webhook = {
@@ -729,6 +746,16 @@ export type PatchedTransactionCollectionWritable = {
  * control which fields are displayed, and whether to replace simple
  * values with complex, nested serializations
  */
+export type PatchedUserWritable = {
+    private_key_exported?: number;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
 export type TransactionCollectionWritable = {
     hash: string;
 };
@@ -736,6 +763,16 @@ export type TransactionCollectionWritable = {
 export type TransactionCollectionResponseWritable = {
     status?: string;
     data?: TransactionCollectionWritable;
+};
+
+/**
+ * A ModelSerializer that takes additional arguments for
+ * "fields", "omit" and "expand" in order to
+ * control which fields are displayed, and whether to replace simple
+ * values with complex, nested serializations
+ */
+export type UserWritable = {
+    private_key_exported?: number;
 };
 
 /**
@@ -767,6 +804,11 @@ export type UserCreateAddressWritable = {
     chain?: 'ETH_SEPOLIA' | 'ETH_MAINNET' | 'BASE_MAINNET' | 'BASE_SEPOLIA';
     subtype?: string;
     provider?: string;
+};
+
+export type UserResponseWritable = {
+    status?: string;
+    data?: UserWritable;
 };
 
 export type ActivateCreateData = {
@@ -1040,6 +1082,45 @@ export type DeactivateCreateResponses = {
 };
 
 export type DeactivateCreateResponse = DeactivateCreateResponses[keyof DeactivateCreateResponses];
+
+export type UserRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/user/';
+};
+
+export type UserRetrieveResponses = {
+    200: UserResponse;
+};
+
+export type UserRetrieveResponse = UserRetrieveResponses[keyof UserRetrieveResponses];
+
+export type UserPartialUpdateData = {
+    body?: PatchedUserWritable;
+    path?: never;
+    query?: never;
+    url: '/user/';
+};
+
+export type UserPartialUpdateResponses = {
+    200: UserResponse;
+};
+
+export type UserPartialUpdateResponse = UserPartialUpdateResponses[keyof UserPartialUpdateResponses];
+
+export type UserUpdateData = {
+    body?: UserWritable;
+    path?: never;
+    query?: never;
+    url: '/user/';
+};
+
+export type UserUpdateResponses = {
+    200: UserResponse;
+};
+
+export type UserUpdateResponse = UserUpdateResponses[keyof UserUpdateResponses];
 
 export type UserAccountAddressLookupCreateData = {
     body: AccountAddressLookup;
