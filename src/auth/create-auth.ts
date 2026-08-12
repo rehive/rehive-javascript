@@ -3,7 +3,7 @@ import {
   authLogin,
   authRegister,
   authRegisterCompany,
-  authRefreshCreate,
+  authRefresh,
   authLogout,
 } from '../platform/user/openapi-ts/sdk.gen.js';
 import type {
@@ -721,7 +721,7 @@ export function createAuth(config: AuthConfig = {}): Auth {
         }
 
         const refreshDuration = session.session_duration ?? 900;
-        const result: any = await authRefreshCreate({
+        const result: any = await authRefresh({
           client,
           body: { ...(refreshDuration != null && { session_duration: refreshDuration }) },
           headers: { Authorization: `Refresh-Token ${session.refresh_token}` },

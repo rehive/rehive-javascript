@@ -3,7 +3,7 @@
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
 import { formDataBodySerializer } from './core/bodySerializer.gen';
-import type { AccountCurrenciesListData, AccountCurrenciesListResponses, AccountDefinitionsListData, AccountDefinitionsListResponses, AccountDefinitionsRetrieveData, AccountDefinitionsRetrieveResponses, AccountsCreateData, AccountsCreateResponses, AccountsCurrenciesCreateData, AccountsCurrenciesCreateResponses, AccountsCurrenciesFeesListData, AccountsCurrenciesFeesListResponses, AccountsCurrenciesFeesRetrieveData, AccountsCurrenciesFeesRetrieveResponses, AccountsCurrenciesLimitsListData, AccountsCurrenciesLimitsListResponses, AccountsCurrenciesLimitsRetrieveData, AccountsCurrenciesLimitsRetrieveResponses, AccountsCurrenciesListData, AccountsCurrenciesListResponses, AccountsCurrenciesPartialUpdateData, AccountsCurrenciesPartialUpdateResponses, AccountsCurrenciesRetrieveData, AccountsCurrenciesRetrieveResponses, AccountsCurrenciesUpdateData, AccountsCurrenciesUpdateResponses, AccountsListData, AccountsListResponses, AccountsRetrieveData, AccountsRetrieveResponses, AuthDeactivateData, AuthDeactivateResponses, AuthDeactivateVerifyData, AuthDeactivateVerifyResponses, AuthEmailVerifyData, AuthEmailVerifyResendData, AuthEmailVerifyResendResponses, AuthEmailVerifyResponses, AuthJwtCreateData, AuthJwtCreateResponses, AuthLoginData, AuthLoginResponses, AuthLogoutData, AuthLogoutResponses, AuthMfaAuthenticatorsCreateData, AuthMfaAuthenticatorsCreateResponses, AuthMfaAuthenticatorsDestroyData, AuthMfaAuthenticatorsDestroyResponses, AuthMfaAuthenticatorsListData, AuthMfaAuthenticatorsListResponses, AuthMfaAuthenticatorsRetrieveData, AuthMfaAuthenticatorsRetrieveResponses, AuthMfaDeliverData, AuthMfaDeliverResponses, AuthMfaVerifyData, AuthMfaVerifyResponses, AuthMobileVerifyData, AuthMobileVerifyResendData, AuthMobileVerifyResendResponses, AuthMobileVerifyResponses, AuthOauthAuthorizeCreateData, AuthOauthAuthorizeCreateResponses, AuthOauthLoginCreateData, AuthOauthLoginCreateResponses, AuthOauthRegisterCreateData, AuthOauthRegisterCreateResponses, AuthOauthSessionCreateData, AuthOauthSessionCreateResponses, AuthOauthVerifyCreateData, AuthOauthVerifyCreateResponses, AuthPasswordChangeData, AuthPasswordChangeResponses, AuthPasswordResetConfirmData, AuthPasswordResetConfirmResponses, AuthPasswordResetData, AuthPasswordResetResponses, AuthRefreshCreateData, AuthRefreshCreateResponses, AuthRegisterCompanyData, AuthRegisterCompanyResponses, AuthRegisterData, AuthRegisterResponses, AuthRequestDeleteData, AuthRequestDeleteResponses, AuthRequestDeleteVerifyData, AuthRequestDeleteVerifyResponses, AuthRetrieveData, AuthRetrieveResponses, AuthTokensCreateData, AuthTokensCreateResponses, AuthTokensDestroyData, AuthTokensDestroyResponses, AuthTokensListData, AuthTokensListDestroyData, AuthTokensListDestroyResponses, AuthTokensListResponses, AuthTokensPartialUpdateData, AuthTokensPartialUpdateResponses, AuthTokensRetrieveData, AuthTokensRetrieveResponses, AuthTokensUpdateData, AuthTokensUpdateResponses, CompanyBankAccountsListData, CompanyBankAccountsListResponses, CompanyCurrenciesListData, CompanyCurrenciesListResponses, CompanyCurrenciesRetrieveData, CompanyCurrenciesRetrieveResponses, CompanyRetrieveData, CompanyRetrieveResponses, CompanyWalletAccountsListData, CompanyWalletAccountsListResponses, DocumentTypesListData, DocumentTypesListResponses, DocumentTypesRetrieveData, DocumentTypesRetrieveResponses, ExportsCreateData, ExportsCreateResponses, ExportsListData, ExportsListResponses, ExportsRetrieveData, ExportsRetrieveResponses, GroupsFeesListData, GroupsFeesListResponses, GroupsFeesRetrieveData, GroupsFeesRetrieveResponses, GroupsLimitsListData, GroupsLimitsListResponses, GroupsLimitsRetrieveData, GroupsLimitsRetrieveResponses, GroupsListData, GroupsListResponses, GroupsPermissionsListData, GroupsPermissionsListResponses, GroupsPermissionsRetrieveData, GroupsPermissionsRetrieveResponses, GroupsRetrieveData, GroupsRetrieveResponses, GroupsTiersFeesListData, GroupsTiersFeesListResponses, GroupsTiersFeesRetrieveData, GroupsTiersFeesRetrieveResponses, GroupsTiersLimitsListData, GroupsTiersLimitsListResponses, GroupsTiersLimitsRetrieveData, GroupsTiersLimitsRetrieveResponses, GroupsTiersListData, GroupsTiersListResponses, GroupsTiersRequirementSetsItemsListData, GroupsTiersRequirementSetsItemsListResponses, GroupsTiersRequirementSetsItemsRetrieveData, GroupsTiersRequirementSetsItemsRetrieveResponses, GroupsTiersRequirementSetsListData, GroupsTiersRequirementSetsListResponses, GroupsTiersRequirementSetsRetrieveData, GroupsTiersRequirementSetsRetrieveResponses, GroupsTiersRetrieveData, GroupsTiersRetrieveResponses, MetricsCreateData, MetricsCreateResponses, MetricsDestroyData, MetricsDestroyResponses, MetricsListData, MetricsListResponses, MetricsPointsListData, MetricsPointsListResponses, MetricsRetrieveData, MetricsRetrieveResponses, PermissionsListData, PermissionsListResponses, PermissionsRetrieveData, PermissionsRetrieveResponses, PublicCompaniesGroupsListData, PublicCompaniesGroupsListResponses, PublicCompaniesGroupsRetrieveData, PublicCompaniesGroupsRetrieveResponses, PublicCompaniesLegalTermsListData, PublicCompaniesLegalTermsListResponses, PublicCompaniesLegalTermsRetrieveData, PublicCompaniesLegalTermsRetrieveResponses, PublicCompaniesLegalTermsVersionsListData, PublicCompaniesLegalTermsVersionsListResponses, PublicCompaniesLegalTermsVersionsRetrieveData, PublicCompaniesLegalTermsVersionsRetrieveResponses, PublicCompaniesListData, PublicCompaniesListResponses, PublicCompaniesOauthClientsListData, PublicCompaniesOauthClientsListResponses, PublicCompaniesOauthClientsRetrieveData, PublicCompaniesOauthClientsRetrieveResponses, PublicCompaniesRetrieveData, PublicCompaniesRetrieveResponses, PublicLegalTermsListData, PublicLegalTermsListResponses, PublicLegalTermsRetrieveData, PublicLegalTermsRetrieveResponses, PublicLegalTermsVersionsListData, PublicLegalTermsVersionsListResponses, PublicLegalTermsVersionsRetrieveData, PublicLegalTermsVersionsRetrieveResponses, StatementsCreateData, StatementsCreateResponses, StatementsDestroyData, StatementsDestroyResponses, StatementsListData, StatementsListResponses, StatementsRetrieveData, StatementsRetrieveResponses, SubtypesListData, SubtypesListResponses, SubtypesRetrieveData, SubtypesRetrieveResponses, TransactionCollectionsCreateData, TransactionCollectionsCreateResponses, TransactionCollectionsListData, TransactionCollectionsListResponses, TransactionCollectionsRetrieveData, TransactionCollectionsRetrieveResponses, TransactionsCreateData, TransactionsCreateResponses, TransactionsCreditCreateData, TransactionsCreditCreateResponses, TransactionsDebitCreateData, TransactionsDebitCreateResponses, TransactionsListData, TransactionsListResponses, TransactionsMessagesListData, TransactionsMessagesListResponses, TransactionsMessagesRetrieveData, TransactionsMessagesRetrieveResponses, TransactionsPartialUpdateData, TransactionsPartialUpdateResponses, TransactionsRetrieveData, TransactionsRetrieveResponses, TransactionsTransferCreateData, TransactionsTransferCreateResponses, TransactionsUpdateData, TransactionsUpdateResponses, TransactionTotalsRetrieveData, TransactionTotalsRetrieveResponses, UserAddressesCreateData, UserAddressesCreateResponses, UserAddressesDestroyData, UserAddressesDestroyResponses, UserAddressesListData, UserAddressesListResponses, UserAddressesPartialUpdateData, UserAddressesPartialUpdateResponses, UserAddressesRetrieveData, UserAddressesRetrieveResponses, UserAddressesUpdateData, UserAddressesUpdateResponses, UserBankAccountsAccountCurrenciesCreateData, UserBankAccountsAccountCurrenciesCreateResponses, UserBankAccountsAccountCurrenciesDestroyData, UserBankAccountsAccountCurrenciesDestroyResponses, UserBankAccountsAccountCurrenciesListData, UserBankAccountsAccountCurrenciesListResponses, UserBankAccountsAccountCurrenciesRetrieveData, UserBankAccountsAccountCurrenciesRetrieveResponses, UserBankAccountsCreateData, UserBankAccountsCreateResponses, UserBankAccountsCurrenciesCreateData, UserBankAccountsCurrenciesCreateResponses, UserBankAccountsCurrenciesDestroyData, UserBankAccountsCurrenciesDestroyResponses, UserBankAccountsCurrenciesListData, UserBankAccountsCurrenciesListResponses, UserBankAccountsCurrenciesRetrieveData, UserBankAccountsCurrenciesRetrieveResponses, UserBankAccountsDestroyData, UserBankAccountsDestroyResponses, UserBankAccountsDocumentsRetrieve2Data, UserBankAccountsDocumentsRetrieve2Responses, UserBankAccountsDocumentsRetrieveData, UserBankAccountsDocumentsRetrieveResponses, UserBankAccountsListData, UserBankAccountsListResponses, UserBankAccountsPartialUpdateData, UserBankAccountsPartialUpdateResponses, UserBankAccountsRetrieveData, UserBankAccountsRetrieveResponses, UserBankAccountsUpdateData, UserBankAccountsUpdateResponses, UserCryptoAccountsAccountCurrenciesCreateData, UserCryptoAccountsAccountCurrenciesCreateResponses, UserCryptoAccountsAccountCurrenciesDestroyData, UserCryptoAccountsAccountCurrenciesDestroyResponses, UserCryptoAccountsAccountCurrenciesListData, UserCryptoAccountsAccountCurrenciesListResponses, UserCryptoAccountsAccountCurrenciesRetrieveData, UserCryptoAccountsAccountCurrenciesRetrieveResponses, UserCryptoAccountsAttestationsCreateData, UserCryptoAccountsAttestationsCreateResponses, UserCryptoAccountsAttestationsListData, UserCryptoAccountsAttestationsListResponses, UserCryptoAccountsAttestationsRetrieveData, UserCryptoAccountsAttestationsRetrieveResponses, UserCryptoAccountsCreateData, UserCryptoAccountsCreateResponses, UserCryptoAccountsCurrenciesCreateData, UserCryptoAccountsCurrenciesCreateResponses, UserCryptoAccountsCurrenciesDestroyData, UserCryptoAccountsCurrenciesDestroyResponses, UserCryptoAccountsCurrenciesListData, UserCryptoAccountsCurrenciesListResponses, UserCryptoAccountsCurrenciesRetrieveData, UserCryptoAccountsCurrenciesRetrieveResponses, UserCryptoAccountsDestroyData, UserCryptoAccountsDestroyResponses, UserCryptoAccountsListData, UserCryptoAccountsListResponses, UserCryptoAccountsPartialUpdateData, UserCryptoAccountsPartialUpdateResponses, UserCryptoAccountsRetrieveData, UserCryptoAccountsRetrieveResponses, UserCryptoAccountsUpdateData, UserCryptoAccountsUpdateResponses, UserDevicesAppsCreateData, UserDevicesAppsCreateResponses, UserDevicesAppsDestroyData, UserDevicesAppsDestroyResponses, UserDevicesAppsListData, UserDevicesAppsListResponses, UserDevicesAppsPartialUpdateData, UserDevicesAppsPartialUpdateResponses, UserDevicesAppsRetrieveData, UserDevicesAppsRetrieveResponses, UserDevicesAppsUpdateData, UserDevicesAppsUpdateResponses, UserDevicesCreateData, UserDevicesCreateResponses, UserDevicesDestroyData, UserDevicesDestroyResponses, UserDevicesListData, UserDevicesListResponses, UserDevicesPartialUpdateData, UserDevicesPartialUpdateResponses, UserDevicesRetrieveData, UserDevicesRetrieveResponses, UserDevicesUpdateData, UserDevicesUpdateResponses, UserDocumentsCreateData, UserDocumentsCreateResponses, UserDocumentsDestroyData, UserDocumentsDestroyResponses, UserDocumentsListData, UserDocumentsListResponses, UserDocumentsRetrieveData, UserDocumentsRetrieveResponses, UserEmailsCreateData, UserEmailsCreateResponses, UserEmailsDestroyData, UserEmailsDestroyResponses, UserEmailsListData, UserEmailsListResponses, UserEmailsPartialUpdateData, UserEmailsPartialUpdateResponses, UserEmailsRetrieveData, UserEmailsRetrieveResponses, UserEmailsUpdateData, UserEmailsUpdateResponses, UserLegalTermsListData, UserLegalTermsListResponses, UserLegalTermsRetrieveData, UserLegalTermsRetrieveResponses, UserLegalTermsVersionsListData, UserLegalTermsVersionsListResponses, UserLegalTermsVersionsPartialUpdateData, UserLegalTermsVersionsPartialUpdateResponses, UserLegalTermsVersionsRetrieveData, UserLegalTermsVersionsRetrieveResponses, UserLegalTermsVersionsUpdateData, UserLegalTermsVersionsUpdateResponses, UserMessagesListData, UserMessagesListResponses, UserMessagesRetrieveData, UserMessagesRetrieveResponses, UserMobilesCreateData, UserMobilesCreateResponses, UserMobilesDestroyData, UserMobilesDestroyResponses, UserMobilesListData, UserMobilesListResponses, UserMobilesPartialUpdateData, UserMobilesPartialUpdateResponses, UserMobilesRetrieveData, UserMobilesRetrieveResponses, UserMobilesUpdateData, UserMobilesUpdateResponses, UserPartialUpdateData, UserPartialUpdateResponses, UserRetrieveData, UserRetrieveResponses, UserUpdateData, UserUpdateResponses, UserWalletAccountsAccountCurrenciesCreateData, UserWalletAccountsAccountCurrenciesCreateResponses, UserWalletAccountsAccountCurrenciesDestroyData, UserWalletAccountsAccountCurrenciesDestroyResponses, UserWalletAccountsAccountCurrenciesListData, UserWalletAccountsAccountCurrenciesListResponses, UserWalletAccountsAccountCurrenciesRetrieveData, UserWalletAccountsAccountCurrenciesRetrieveResponses, UserWalletAccountsCreateData, UserWalletAccountsCreateResponses, UserWalletAccountsCurrenciesCreateData, UserWalletAccountsCurrenciesCreateResponses, UserWalletAccountsCurrenciesDestroyData, UserWalletAccountsCurrenciesDestroyResponses, UserWalletAccountsCurrenciesListData, UserWalletAccountsCurrenciesListResponses, UserWalletAccountsCurrenciesRetrieveData, UserWalletAccountsCurrenciesRetrieveResponses, UserWalletAccountsDestroyData, UserWalletAccountsDestroyResponses, UserWalletAccountsListData, UserWalletAccountsListResponses, UserWalletAccountsPartialUpdateData, UserWalletAccountsPartialUpdateResponses, UserWalletAccountsRetrieveData, UserWalletAccountsRetrieveResponses, UserWalletAccountsUpdateData, UserWalletAccountsUpdateResponses } from './types.gen';
+import type { AccountCurrenciesListData, AccountCurrenciesListResponses, AccountDefinitionsListData, AccountDefinitionsListResponses, AccountDefinitionsRetrieveData, AccountDefinitionsRetrieveResponses, AccountsCreateData, AccountsCreateResponses, AccountsCurrenciesCreateData, AccountsCurrenciesCreateResponses, AccountsCurrenciesEffectiveFeesListData, AccountsCurrenciesEffectiveFeesListResponses, AccountsCurrenciesEffectiveLimitsListData, AccountsCurrenciesEffectiveLimitsListResponses, AccountsCurrenciesFeesListData, AccountsCurrenciesFeesListResponses, AccountsCurrenciesFeesRetrieveData, AccountsCurrenciesFeesRetrieveResponses, AccountsCurrenciesLimitsListData, AccountsCurrenciesLimitsListResponses, AccountsCurrenciesLimitsRetrieveData, AccountsCurrenciesLimitsRetrieveResponses, AccountsCurrenciesListData, AccountsCurrenciesListResponses, AccountsCurrenciesPartialUpdateData, AccountsCurrenciesPartialUpdateResponses, AccountsCurrenciesRetrieveData, AccountsCurrenciesRetrieveResponses, AccountsCurrenciesUpdateData, AccountsCurrenciesUpdateResponses, AccountsListData, AccountsListResponses, AccountsRetrieveData, AccountsRetrieveResponses, AuthDeactivateData, AuthDeactivateResponses, AuthDeactivateVerifyData, AuthDeactivateVerifyResponses, AuthEmailVerifyData, AuthEmailVerifyResendData, AuthEmailVerifyResendResponses, AuthEmailVerifyResponses, AuthJwtCreateData, AuthJwtCreateResponses, AuthLoginData, AuthLoginResponses, AuthLogoutData, AuthLogoutResponses, AuthMfaAuthenticatorsCreateData, AuthMfaAuthenticatorsCreateResponses, AuthMfaAuthenticatorsDestroyData, AuthMfaAuthenticatorsDestroyResponses, AuthMfaAuthenticatorsListData, AuthMfaAuthenticatorsListResponses, AuthMfaAuthenticatorsRetrieveData, AuthMfaAuthenticatorsRetrieveResponses, AuthMfaDeliverData, AuthMfaDeliverResponses, AuthMfaVerifyData, AuthMfaVerifyResponses, AuthMobileVerifyData, AuthMobileVerifyResendData, AuthMobileVerifyResendResponses, AuthMobileVerifyResponses, AuthOauthAuthorizeData, AuthOauthAuthorizeResponses, AuthOauthLoginData, AuthOauthLoginResponses, AuthOauthRegisterData, AuthOauthRegisterResponses, AuthOauthSessionData, AuthOauthSessionResponses, AuthOauthVerifyData, AuthOauthVerifyResponses, AuthPasswordChangeData, AuthPasswordChangeResponses, AuthPasswordResetConfirmData, AuthPasswordResetConfirmResponses, AuthPasswordResetData, AuthPasswordResetResponses, AuthRefreshData, AuthRefreshResponses, AuthRegisterCompanyData, AuthRegisterCompanyResponses, AuthRegisterData, AuthRegisterResponses, AuthRequestDeleteData, AuthRequestDeleteResponses, AuthRequestDeleteVerifyData, AuthRequestDeleteVerifyResponses, AuthRetrieveData, AuthRetrieveResponses, AuthTokensCreateData, AuthTokensCreateResponses, AuthTokensDestroyData, AuthTokensDestroyResponses, AuthTokensListData, AuthTokensListDestroyData, AuthTokensListDestroyResponses, AuthTokensListResponses, AuthTokensPartialUpdateData, AuthTokensPartialUpdateResponses, AuthTokensRetrieveData, AuthTokensRetrieveResponses, AuthTokensUpdateData, AuthTokensUpdateResponses, CompanyBankAccountsListData, CompanyBankAccountsListResponses, CompanyCurrenciesListData, CompanyCurrenciesListResponses, CompanyCurrenciesRetrieveData, CompanyCurrenciesRetrieveResponses, CompanyRetrieveData, CompanyRetrieveResponses, CompanyWalletAccountsListData, CompanyWalletAccountsListResponses, DocumentTypesListData, DocumentTypesListResponses, DocumentTypesRetrieveData, DocumentTypesRetrieveResponses, ExportsCreateData, ExportsCreateResponses, ExportsListData, ExportsListResponses, ExportsRetrieveData, ExportsRetrieveResponses, GroupsFeesListData, GroupsFeesListResponses, GroupsFeesRetrieveData, GroupsFeesRetrieveResponses, GroupsLimitsListData, GroupsLimitsListResponses, GroupsLimitsRetrieveData, GroupsLimitsRetrieveResponses, GroupsListData, GroupsListResponses, GroupsPermissionsListData, GroupsPermissionsListResponses, GroupsPermissionsRetrieveData, GroupsPermissionsRetrieveResponses, GroupsRetrieveData, GroupsRetrieveResponses, GroupsTiersFeesListData, GroupsTiersFeesListResponses, GroupsTiersFeesRetrieveData, GroupsTiersFeesRetrieveResponses, GroupsTiersLimitsListData, GroupsTiersLimitsListResponses, GroupsTiersLimitsRetrieveData, GroupsTiersLimitsRetrieveResponses, GroupsTiersListData, GroupsTiersListResponses, GroupsTiersRequirementSetsItemsListData, GroupsTiersRequirementSetsItemsListResponses, GroupsTiersRequirementSetsItemsRetrieveData, GroupsTiersRequirementSetsItemsRetrieveResponses, GroupsTiersRequirementSetsListData, GroupsTiersRequirementSetsListResponses, GroupsTiersRequirementSetsRetrieveData, GroupsTiersRequirementSetsRetrieveResponses, GroupsTiersRetrieveData, GroupsTiersRetrieveResponses, MetricsCreateData, MetricsCreateResponses, MetricsDestroyData, MetricsDestroyResponses, MetricsListData, MetricsListResponses, MetricsPointsListData, MetricsPointsListResponses, MetricsRetrieveData, MetricsRetrieveResponses, PermissionsListData, PermissionsListResponses, PermissionsRetrieveData, PermissionsRetrieveResponses, PublicCompaniesGroupsListData, PublicCompaniesGroupsListResponses, PublicCompaniesGroupsRetrieveData, PublicCompaniesGroupsRetrieveResponses, PublicCompaniesLegalTermsListData, PublicCompaniesLegalTermsListResponses, PublicCompaniesLegalTermsRetrieveData, PublicCompaniesLegalTermsRetrieveResponses, PublicCompaniesLegalTermsVersionsListData, PublicCompaniesLegalTermsVersionsListResponses, PublicCompaniesLegalTermsVersionsRetrieveData, PublicCompaniesLegalTermsVersionsRetrieveResponses, PublicCompaniesListData, PublicCompaniesListResponses, PublicCompaniesOauthClientsListData, PublicCompaniesOauthClientsListResponses, PublicCompaniesOauthClientsRetrieveData, PublicCompaniesOauthClientsRetrieveResponses, PublicCompaniesRetrieveData, PublicCompaniesRetrieveResponses, PublicLegalTermsListData, PublicLegalTermsListResponses, PublicLegalTermsRetrieveData, PublicLegalTermsRetrieveResponses, PublicLegalTermsVersionsListData, PublicLegalTermsVersionsListResponses, PublicLegalTermsVersionsRetrieveData, PublicLegalTermsVersionsRetrieveResponses, StatementsCreateData, StatementsCreateResponses, StatementsDestroyData, StatementsDestroyResponses, StatementsListData, StatementsListResponses, StatementsRetrieveData, StatementsRetrieveResponses, SubtypesListData, SubtypesListResponses, SubtypesRetrieveData, SubtypesRetrieveResponses, TransactionCollectionsCreateData, TransactionCollectionsCreateResponses, TransactionCollectionsListData, TransactionCollectionsListResponses, TransactionCollectionsRetrieveData, TransactionCollectionsRetrieveResponses, TransactionsCreateData, TransactionsCreateResponses, TransactionsCreditCreateData, TransactionsCreditCreateResponses, TransactionsDebitCreateData, TransactionsDebitCreateResponses, TransactionsListData, TransactionsListResponses, TransactionsMessagesListData, TransactionsMessagesListResponses, TransactionsMessagesRetrieveData, TransactionsMessagesRetrieveResponses, TransactionsPartialUpdateData, TransactionsPartialUpdateResponses, TransactionsRetrieveData, TransactionsRetrieveResponses, TransactionsTransferCreateData, TransactionsTransferCreateResponses, TransactionsUpdateData, TransactionsUpdateResponses, TransactionTotalsRetrieveData, TransactionTotalsRetrieveResponses, UserAddressesCreateData, UserAddressesCreateResponses, UserAddressesDestroyData, UserAddressesDestroyResponses, UserAddressesListData, UserAddressesListResponses, UserAddressesPartialUpdateData, UserAddressesPartialUpdateResponses, UserAddressesRetrieveData, UserAddressesRetrieveResponses, UserAddressesUpdateData, UserAddressesUpdateResponses, UserBankAccountsAccountCurrenciesCreateData, UserBankAccountsAccountCurrenciesCreateResponses, UserBankAccountsAccountCurrenciesDestroyData, UserBankAccountsAccountCurrenciesDestroyResponses, UserBankAccountsAccountCurrenciesListData, UserBankAccountsAccountCurrenciesListResponses, UserBankAccountsAccountCurrenciesRetrieveData, UserBankAccountsAccountCurrenciesRetrieveResponses, UserBankAccountsCreateData, UserBankAccountsCreateResponses, UserBankAccountsCurrenciesCreateData, UserBankAccountsCurrenciesCreateResponses, UserBankAccountsCurrenciesDestroyData, UserBankAccountsCurrenciesDestroyResponses, UserBankAccountsCurrenciesListData, UserBankAccountsCurrenciesListResponses, UserBankAccountsCurrenciesRetrieveData, UserBankAccountsCurrenciesRetrieveResponses, UserBankAccountsDestroyData, UserBankAccountsDestroyResponses, UserBankAccountsDocumentsListData, UserBankAccountsDocumentsListResponses, UserBankAccountsDocumentsRetrieveData, UserBankAccountsDocumentsRetrieveResponses, UserBankAccountsListData, UserBankAccountsListResponses, UserBankAccountsPartialUpdateData, UserBankAccountsPartialUpdateResponses, UserBankAccountsRetrieveData, UserBankAccountsRetrieveResponses, UserBankAccountsUpdateData, UserBankAccountsUpdateResponses, UserCryptoAccountsAccountCurrenciesCreateData, UserCryptoAccountsAccountCurrenciesCreateResponses, UserCryptoAccountsAccountCurrenciesDestroyData, UserCryptoAccountsAccountCurrenciesDestroyResponses, UserCryptoAccountsAccountCurrenciesListData, UserCryptoAccountsAccountCurrenciesListResponses, UserCryptoAccountsAccountCurrenciesRetrieveData, UserCryptoAccountsAccountCurrenciesRetrieveResponses, UserCryptoAccountsAttestationsCreateData, UserCryptoAccountsAttestationsCreateResponses, UserCryptoAccountsAttestationsListData, UserCryptoAccountsAttestationsListResponses, UserCryptoAccountsAttestationsRetrieveData, UserCryptoAccountsAttestationsRetrieveResponses, UserCryptoAccountsCreateData, UserCryptoAccountsCreateResponses, UserCryptoAccountsCurrenciesCreateData, UserCryptoAccountsCurrenciesCreateResponses, UserCryptoAccountsCurrenciesDestroyData, UserCryptoAccountsCurrenciesDestroyResponses, UserCryptoAccountsCurrenciesListData, UserCryptoAccountsCurrenciesListResponses, UserCryptoAccountsCurrenciesRetrieveData, UserCryptoAccountsCurrenciesRetrieveResponses, UserCryptoAccountsDestroyData, UserCryptoAccountsDestroyResponses, UserCryptoAccountsListData, UserCryptoAccountsListResponses, UserCryptoAccountsPartialUpdateData, UserCryptoAccountsPartialUpdateResponses, UserCryptoAccountsRetrieveData, UserCryptoAccountsRetrieveResponses, UserCryptoAccountsUpdateData, UserCryptoAccountsUpdateResponses, UserDevicesAppsCreateData, UserDevicesAppsCreateResponses, UserDevicesAppsDestroyData, UserDevicesAppsDestroyResponses, UserDevicesAppsListData, UserDevicesAppsListResponses, UserDevicesAppsPartialUpdateData, UserDevicesAppsPartialUpdateResponses, UserDevicesAppsRetrieveData, UserDevicesAppsRetrieveResponses, UserDevicesAppsUpdateData, UserDevicesAppsUpdateResponses, UserDevicesCreateData, UserDevicesCreateResponses, UserDevicesDestroyData, UserDevicesDestroyResponses, UserDevicesListData, UserDevicesListResponses, UserDevicesPartialUpdateData, UserDevicesPartialUpdateResponses, UserDevicesRetrieveData, UserDevicesRetrieveResponses, UserDevicesUpdateData, UserDevicesUpdateResponses, UserDocumentsCreateData, UserDocumentsCreateResponses, UserDocumentsDestroyData, UserDocumentsDestroyResponses, UserDocumentsListData, UserDocumentsListResponses, UserDocumentsRetrieveData, UserDocumentsRetrieveResponses, UserEmailsCreateData, UserEmailsCreateResponses, UserEmailsDestroyData, UserEmailsDestroyResponses, UserEmailsListData, UserEmailsListResponses, UserEmailsPartialUpdateData, UserEmailsPartialUpdateResponses, UserEmailsRetrieveData, UserEmailsRetrieveResponses, UserEmailsUpdateData, UserEmailsUpdateResponses, UserLegalTermsListData, UserLegalTermsListResponses, UserLegalTermsRetrieveData, UserLegalTermsRetrieveResponses, UserLegalTermsVersionsListData, UserLegalTermsVersionsListResponses, UserLegalTermsVersionsPartialUpdateData, UserLegalTermsVersionsPartialUpdateResponses, UserLegalTermsVersionsRetrieveData, UserLegalTermsVersionsRetrieveResponses, UserLegalTermsVersionsUpdateData, UserLegalTermsVersionsUpdateResponses, UserMessagesListData, UserMessagesListResponses, UserMessagesRetrieveData, UserMessagesRetrieveResponses, UserMobilesCreateData, UserMobilesCreateResponses, UserMobilesDestroyData, UserMobilesDestroyResponses, UserMobilesListData, UserMobilesListResponses, UserMobilesPartialUpdateData, UserMobilesPartialUpdateResponses, UserMobilesRetrieveData, UserMobilesRetrieveResponses, UserMobilesUpdateData, UserMobilesUpdateResponses, UserPartialUpdateData, UserPartialUpdateResponses, UserRetrieveData, UserRetrieveResponses, UserUpdateData, UserUpdateResponses, UserWalletAccountsAccountCurrenciesCreateData, UserWalletAccountsAccountCurrenciesCreateResponses, UserWalletAccountsAccountCurrenciesDestroyData, UserWalletAccountsAccountCurrenciesDestroyResponses, UserWalletAccountsAccountCurrenciesListData, UserWalletAccountsAccountCurrenciesListResponses, UserWalletAccountsAccountCurrenciesRetrieveData, UserWalletAccountsAccountCurrenciesRetrieveResponses, UserWalletAccountsCreateData, UserWalletAccountsCreateResponses, UserWalletAccountsCurrenciesCreateData, UserWalletAccountsCurrenciesCreateResponses, UserWalletAccountsCurrenciesDestroyData, UserWalletAccountsCurrenciesDestroyResponses, UserWalletAccountsCurrenciesListData, UserWalletAccountsCurrenciesListResponses, UserWalletAccountsCurrenciesRetrieveData, UserWalletAccountsCurrenciesRetrieveResponses, UserWalletAccountsDestroyData, UserWalletAccountsDestroyResponses, UserWalletAccountsListData, UserWalletAccountsListResponses, UserWalletAccountsPartialUpdateData, UserWalletAccountsPartialUpdateResponses, UserWalletAccountsRetrieveData, UserWalletAccountsRetrieveResponses, UserWalletAccountsUpdateData, UserWalletAccountsUpdateResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -21,6 +21,9 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
 
 /**
  * List account currencies
+ *
+ * List all currencies enabled across the authenticated user's accounts, including each currency's balance. Results are paginated and can be filtered.
+ *
  */
 export const accountCurrenciesList = <ThrowOnError extends boolean = false>(options?: Options<AccountCurrenciesListData, ThrowOnError>): RequestResult<AccountCurrenciesListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AccountCurrenciesListResponses, unknown, ThrowOnError>({
     security: [{
@@ -34,6 +37,9 @@ export const accountCurrenciesList = <ThrowOnError extends boolean = false>(opti
 
 /**
  * List account definitions
+ *
+ * List the account definitions available to the authenticated user's group. Account definitions describe the types of account a user can open. Results are paginated and can be filtered.
+ *
  */
 export const accountDefinitionsList = <ThrowOnError extends boolean = false>(options?: Options<AccountDefinitionsListData, ThrowOnError>): RequestResult<AccountDefinitionsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AccountDefinitionsListResponses, unknown, ThrowOnError>({
     querySerializer: { parameters: { orderby: { array: { explode: false } } } },
@@ -48,6 +54,9 @@ export const accountDefinitionsList = <ThrowOnError extends boolean = false>(opt
 
 /**
  * Retrieve account definition
+ *
+ * Retrieve a single account definition available to the authenticated user's group by its name.
+ *
  */
 export const accountDefinitionsRetrieve = <ThrowOnError extends boolean = false>(options: Options<AccountDefinitionsRetrieveData, ThrowOnError>): RequestResult<AccountDefinitionsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AccountDefinitionsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -61,6 +70,9 @@ export const accountDefinitionsRetrieve = <ThrowOnError extends boolean = false>
 
 /**
  * List accounts
+ *
+ * List the accounts belonging to the authenticated user. Results are paginated and can be filtered.
+ *
  */
 export const accountsList = <ThrowOnError extends boolean = false>(options?: Options<AccountsListData, ThrowOnError>): RequestResult<AccountsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AccountsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -74,6 +86,9 @@ export const accountsList = <ThrowOnError extends boolean = false>(options?: Opt
 
 /**
  * Create account
+ *
+ * Create a new account for the authenticated user. The account name must match an account definition available to the user's group, which determines the account's label and settings. An optional metadata object can be supplied.
+ *
  */
 export const accountsCreate = <ThrowOnError extends boolean = false>(options?: Options<AccountsCreateData, ThrowOnError>): RequestResult<AccountsCreateResponses, unknown, ThrowOnError> => (options?.client ?? client).post<AccountsCreateResponses, unknown, ThrowOnError>({
     security: [{
@@ -91,6 +106,9 @@ export const accountsCreate = <ThrowOnError extends boolean = false>(options?: O
 
 /**
  * Retrieve account
+ *
+ * Retrieve a single account belonging to the authenticated user by its reference, including the currencies enabled on it.
+ *
  */
 export const accountsRetrieve = <ThrowOnError extends boolean = false>(options: Options<AccountsRetrieveData, ThrowOnError>): RequestResult<AccountsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AccountsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -104,6 +122,9 @@ export const accountsRetrieve = <ThrowOnError extends boolean = false>(options: 
 
 /**
  * List account currencies
+ *
+ * List the currencies enabled on an account, including each currency's balance, limits and fees. Results are paginated and can be filtered.
+ *
  */
 export const accountsCurrenciesList = <ThrowOnError extends boolean = false>(options: Options<AccountsCurrenciesListData, ThrowOnError>): RequestResult<AccountsCurrenciesListResponses, unknown, ThrowOnError> => (options.client ?? client).get<AccountsCurrenciesListResponses, unknown, ThrowOnError>({
     security: [{
@@ -117,6 +138,9 @@ export const accountsCurrenciesList = <ThrowOnError extends boolean = false>(opt
 
 /**
  * Create account currency
+ *
+ * Enable a currency on an account. Supply the currency code, which must be an active currency on the company and not already enabled on the account. An optional metadata object can be supplied.
+ *
  */
 export const accountsCurrenciesCreate = <ThrowOnError extends boolean = false>(options: Options<AccountsCurrenciesCreateData, ThrowOnError>): RequestResult<AccountsCurrenciesCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AccountsCurrenciesCreateResponses, unknown, ThrowOnError>({
     security: [{
@@ -134,6 +158,9 @@ export const accountsCurrenciesCreate = <ThrowOnError extends boolean = false>(o
 
 /**
  * Retrieve account currency
+ *
+ * Retrieve a single currency enabled on an account by its currency code, including balance, limits and fees.
+ *
  */
 export const accountsCurrenciesRetrieve = <ThrowOnError extends boolean = false>(options: Options<AccountsCurrenciesRetrieveData, ThrowOnError>): RequestResult<AccountsCurrenciesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AccountsCurrenciesRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -147,6 +174,9 @@ export const accountsCurrenciesRetrieve = <ThrowOnError extends boolean = false>
 
 /**
  * Partially update account currency
+ *
+ * Partially update a currency enabled on an account, identified by its currency code.
+ *
  */
 export const accountsCurrenciesPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<AccountsCurrenciesPartialUpdateData, ThrowOnError>): RequestResult<AccountsCurrenciesPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<AccountsCurrenciesPartialUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -164,6 +194,9 @@ export const accountsCurrenciesPartialUpdate = <ThrowOnError extends boolean = f
 
 /**
  * Update account currency
+ *
+ * Update a currency enabled on an account, identified by its currency code.
+ *
  */
 export const accountsCurrenciesUpdate = <ThrowOnError extends boolean = false>(options: Options<AccountsCurrenciesUpdateData, ThrowOnError>): RequestResult<AccountsCurrenciesUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<AccountsCurrenciesUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -180,7 +213,42 @@ export const accountsCurrenciesUpdate = <ThrowOnError extends boolean = false>(o
 });
 
 /**
+ * List effective account currency fees
+ *
+ * List the effective (resolved) transaction fees for a currency enabled on an account, combining account, tier, and group fees with the same resolution used during transaction processing. A named fee is returned once, for the highest-priority layer that defines it, while nameless fees all apply. Optionally filter by transaction type (`tx_type`) or subtype (`subtype`).
+ *
+ */
+export const accountsCurrenciesEffectiveFeesList = <ThrowOnError extends boolean = false>(options: Options<AccountsCurrenciesEffectiveFeesListData, ThrowOnError>): RequestResult<AccountsCurrenciesEffectiveFeesListResponses, unknown, ThrowOnError> => (options.client ?? client).get<AccountsCurrenciesEffectiveFeesListResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/3/accounts/{reference}/currencies/{code}/effective-fees/',
+    ...options
+});
+
+/**
+ * List effective account currency limits
+ *
+ * List the effective (resolved) transaction limits for a currency enabled on an account, combining account, tier, and group limits with the same priority resolution used during transaction validation. Each limit type is returned at most once, with the highest-priority limit winning. Optionally filter by transaction type (`tx_type`) or subtype (`subtype`).
+ *
+ */
+export const accountsCurrenciesEffectiveLimitsList = <ThrowOnError extends boolean = false>(options: Options<AccountsCurrenciesEffectiveLimitsListData, ThrowOnError>): RequestResult<AccountsCurrenciesEffectiveLimitsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<AccountsCurrenciesEffectiveLimitsListResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/3/accounts/{reference}/currencies/{code}/effective-limits/',
+    ...options
+});
+
+/**
  * List account currency fees
+ *
+ * List the transaction fees for a currency enabled on an account. Each fee applies to a transaction type and optional subtype.
+ *
  */
 export const accountsCurrenciesFeesList = <ThrowOnError extends boolean = false>(options: Options<AccountsCurrenciesFeesListData, ThrowOnError>): RequestResult<AccountsCurrenciesFeesListResponses, unknown, ThrowOnError> => (options.client ?? client).get<AccountsCurrenciesFeesListResponses, unknown, ThrowOnError>({
     security: [{
@@ -194,6 +262,9 @@ export const accountsCurrenciesFeesList = <ThrowOnError extends boolean = false>
 
 /**
  * Retrieve account currency fees
+ *
+ * Retrieve a single transaction fee for a currency enabled on an account, identified by its fee id.
+ *
  */
 export const accountsCurrenciesFeesRetrieve = <ThrowOnError extends boolean = false>(options: Options<AccountsCurrenciesFeesRetrieveData, ThrowOnError>): RequestResult<AccountsCurrenciesFeesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AccountsCurrenciesFeesRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -207,6 +278,9 @@ export const accountsCurrenciesFeesRetrieve = <ThrowOnError extends boolean = fa
 
 /**
  * List account currency limits
+ *
+ * List the currently active transaction limits for a currency enabled on an account. Only limits within their effective date range are returned.
+ *
  */
 export const accountsCurrenciesLimitsList = <ThrowOnError extends boolean = false>(options: Options<AccountsCurrenciesLimitsListData, ThrowOnError>): RequestResult<AccountsCurrenciesLimitsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<AccountsCurrenciesLimitsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -220,6 +294,9 @@ export const accountsCurrenciesLimitsList = <ThrowOnError extends boolean = fals
 
 /**
  * Retrieve account currency limit
+ *
+ * Retrieve a single currently active transaction limit for a currency enabled on an account, identified by its limit id.
+ *
  */
 export const accountsCurrenciesLimitsRetrieve = <ThrowOnError extends boolean = false>(options: Options<AccountsCurrenciesLimitsRetrieveData, ThrowOnError>): RequestResult<AccountsCurrenciesLimitsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AccountsCurrenciesLimitsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -232,7 +309,10 @@ export const accountsCurrenciesLimitsRetrieve = <ThrowOnError extends boolean = 
 });
 
 /**
- * Retrieve auth
+ * Retrieve the authenticated user
+ *
+ * Return the profile of the user associated with the supplied API token, including their permissions and account settings. Use this to confirm a token is valid and to load the current user's details.
+ *
  */
 export const authRetrieve = <ThrowOnError extends boolean = false>(options?: Options<AuthRetrieveData, ThrowOnError>): RequestResult<AuthRetrieveResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AuthRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -245,7 +325,10 @@ export const authRetrieve = <ThrowOnError extends boolean = false>(options?: Opt
 });
 
 /**
- * Register company
+ * Register a company
+ *
+ * Create a new company together with its first administrator user, and return an API token for that user. Use this to onboard a new company onto the platform.
+ *
  */
 export const authRegisterCompany = <ThrowOnError extends boolean = false>(options: Options<AuthRegisterCompanyData, ThrowOnError>): RequestResult<AuthRegisterCompanyResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthRegisterCompanyResponses, unknown, ThrowOnError>({
     url: '/3/auth/company/register/',
@@ -258,6 +341,9 @@ export const authRegisterCompany = <ThrowOnError extends boolean = false>(option
 
 /**
  * Deactivate
+ *
+ * Request deactivation of a user account, identified by user and company. Sends a confirmation message to the account owner; deactivation only takes effect once confirmed. No authentication is required, and the response does not reveal whether the user exists.
+ *
  */
 export const authDeactivate = <ThrowOnError extends boolean = false>(options: Options<AuthDeactivateData, ThrowOnError>): RequestResult<AuthDeactivateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthDeactivateResponses, unknown, ThrowOnError>({
     url: '/3/auth/deactivate/',
@@ -270,6 +356,9 @@ export const authDeactivate = <ThrowOnError extends boolean = false>(options: Op
 
 /**
  * Verify deactivation
+ *
+ * Confirm a pending account deactivation using the key from the deactivation message, completing deactivation of the account. No authentication is required.
+ *
  */
 export const authDeactivateVerify = <ThrowOnError extends boolean = false>(options: Options<AuthDeactivateVerifyData, ThrowOnError>): RequestResult<AuthDeactivateVerifyResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthDeactivateVerifyResponses, unknown, ThrowOnError>({
     url: '/3/auth/deactivate/verify/',
@@ -282,6 +371,9 @@ export const authDeactivateVerify = <ThrowOnError extends boolean = false>(optio
 
 /**
  * Verify email
+ *
+ * Verify an email address using the key from the verification message, marking the email as confirmed. No authentication is required.
+ *
  */
 export const authEmailVerify = <ThrowOnError extends boolean = false>(options: Options<AuthEmailVerifyData, ThrowOnError>): RequestResult<AuthEmailVerifyResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthEmailVerifyResponses, unknown, ThrowOnError>({
     url: '/3/auth/email/verify/',
@@ -293,7 +385,10 @@ export const authEmailVerify = <ThrowOnError extends boolean = false>(options: O
 });
 
 /**
- * Resend email verify
+ * Resend email verification
+ *
+ * Resend the email verification message for an unverified email address in the given company. No authentication is required, and the response does not reveal whether the email address exists.
+ *
  */
 export const authEmailVerifyResend = <ThrowOnError extends boolean = false>(options: Options<AuthEmailVerifyResendData, ThrowOnError>): RequestResult<AuthEmailVerifyResendResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthEmailVerifyResendResponses, unknown, ThrowOnError>({
     url: '/3/auth/email/verify/resend/',
@@ -304,6 +399,12 @@ export const authEmailVerifyResend = <ThrowOnError extends boolean = false>(opti
     }
 });
 
+/**
+ * Create JWT
+ *
+ * Create a signed JWT for the authenticated user, optionally bound to a supplied nonce, for use with external services that accept the company's OpenID Connect tokens.
+ *
+ */
 export const authJwtCreate = <ThrowOnError extends boolean = false>(options?: Options<AuthJwtCreateData, ThrowOnError>): RequestResult<AuthJwtCreateResponses, unknown, ThrowOnError> => (options?.client ?? client).post<AuthJwtCreateResponses, unknown, ThrowOnError>({
     security: [{
             key: 'apiAuth',
@@ -320,6 +421,9 @@ export const authJwtCreate = <ThrowOnError extends boolean = false>(options?: Op
 
 /**
  * Login
+ *
+ * Authenticate a user with their user identifier, company, and password. On success returns an API token, a refresh token, and any outstanding authentication challenges. No prior authentication is required.
+ *
  */
 export const authLogin = <ThrowOnError extends boolean = false>(options: Options<AuthLoginData, ThrowOnError>): RequestResult<AuthLoginResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthLoginResponses, unknown, ThrowOnError>({
     url: '/3/auth/login/',
@@ -332,6 +436,9 @@ export const authLogin = <ThrowOnError extends boolean = false>(options: Options
 
 /**
  * Logout
+ *
+ * Log out the authenticated user by revoking the current token or session. Optionally clears additional sessions depending on the selected option.
+ *
  */
 export const authLogout = <ThrowOnError extends boolean = false>(options?: Options<AuthLogoutData, ThrowOnError>): RequestResult<AuthLogoutResponses, unknown, ThrowOnError> => (options?.client ?? client).post<AuthLogoutResponses, unknown, ThrowOnError>({
     security: [{
@@ -349,6 +456,9 @@ export const authLogout = <ThrowOnError extends boolean = false>(options?: Optio
 
 /**
  * List MFA authenticators
+ *
+ * List the multi-factor authenticators registered by the authenticated user. Results can be filtered by type and verified status.
+ *
  */
 export const authMfaAuthenticatorsList = <ThrowOnError extends boolean = false>(options?: Options<AuthMfaAuthenticatorsListData, ThrowOnError>): RequestResult<AuthMfaAuthenticatorsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AuthMfaAuthenticatorsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -362,6 +472,9 @@ export const authMfaAuthenticatorsList = <ThrowOnError extends boolean = false>(
 
 /**
  * Create MFA authenticator
+ *
+ * Register a new multi-factor authenticator for the authenticated user, such as a TOTP, SMS, or static authenticator. Only one authenticator of each type is allowed, and the company may restrict which types are supported.
+ *
  */
 export const authMfaAuthenticatorsCreate = <ThrowOnError extends boolean = false>(options: Options<AuthMfaAuthenticatorsCreateData, ThrowOnError>): RequestResult<AuthMfaAuthenticatorsCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthMfaAuthenticatorsCreateResponses, unknown, ThrowOnError>({
     security: [{
@@ -379,6 +492,9 @@ export const authMfaAuthenticatorsCreate = <ThrowOnError extends boolean = false
 
 /**
  * Delete MFA authenticator
+ *
+ * Delete a specific multi-factor authenticator belonging to the authenticated user, removing it as an available second factor.
+ *
  */
 export const authMfaAuthenticatorsDestroy = <ThrowOnError extends boolean = false>(options: Options<AuthMfaAuthenticatorsDestroyData, ThrowOnError>): RequestResult<AuthMfaAuthenticatorsDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<AuthMfaAuthenticatorsDestroyResponses, unknown, ThrowOnError>({
     security: [{
@@ -392,6 +508,9 @@ export const authMfaAuthenticatorsDestroy = <ThrowOnError extends boolean = fals
 
 /**
  * Retreieve MFA authenticator
+ *
+ * Return a specific multi-factor authenticator belonging to the authenticated user.
+ *
  */
 export const authMfaAuthenticatorsRetrieve = <ThrowOnError extends boolean = false>(options: Options<AuthMfaAuthenticatorsRetrieveData, ThrowOnError>): RequestResult<AuthMfaAuthenticatorsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AuthMfaAuthenticatorsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -405,6 +524,9 @@ export const authMfaAuthenticatorsRetrieve = <ThrowOnError extends boolean = fal
 
 /**
  * Deliver MFA
+ *
+ * Deliver a multi-factor code for a pending challenge or an unverified authenticator, sending the code through the authenticator's channel (for example SMS). Requires authentication and either a challenge or an authenticator, but not both.
+ *
  */
 export const authMfaDeliver = <ThrowOnError extends boolean = false>(options?: Options<AuthMfaDeliverData, ThrowOnError>): RequestResult<AuthMfaDeliverResponses, unknown, ThrowOnError> => (options?.client ?? client).post<AuthMfaDeliverResponses, unknown, ThrowOnError>({
     security: [{
@@ -422,6 +544,9 @@ export const authMfaDeliver = <ThrowOnError extends boolean = false>(options?: O
 
 /**
  * Verify MFA
+ *
+ * Verify a multi-factor code against a pending challenge or an unverified authenticator, completing the associated authentication step. Requires authentication and either a challenge or an authenticator, but not both.
+ *
  */
 export const authMfaVerify = <ThrowOnError extends boolean = false>(options: Options<AuthMfaVerifyData, ThrowOnError>): RequestResult<AuthMfaVerifyResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthMfaVerifyResponses, unknown, ThrowOnError>({
     security: [{
@@ -439,6 +564,9 @@ export const authMfaVerify = <ThrowOnError extends boolean = false>(options: Opt
 
 /**
  * Verify mobile
+ *
+ * Verify the authenticated user's mobile number using the one-time code sent to it, marking the number as confirmed. The code expires 10 minutes after it was sent.
+ *
  */
 export const authMobileVerify = <ThrowOnError extends boolean = false>(options: Options<AuthMobileVerifyData, ThrowOnError>): RequestResult<AuthMobileVerifyResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthMobileVerifyResponses, unknown, ThrowOnError>({
     security: [{
@@ -455,7 +583,10 @@ export const authMobileVerify = <ThrowOnError extends boolean = false>(options: 
 });
 
 /**
- * Resend mobile verify
+ * Resend mobile verification
+ *
+ * Resend the mobile verification code for an unverified mobile number in the given company. No authentication is required, and the response does not reveal whether the mobile number exists. Resending issues a new code and restarts its 10 minute expiry.
+ *
  */
 export const authMobileVerifyResend = <ThrowOnError extends boolean = false>(options: Options<AuthMobileVerifyResendData, ThrowOnError>): RequestResult<AuthMobileVerifyResendResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthMobileVerifyResendResponses, unknown, ThrowOnError>({
     url: '/3/auth/mobile/verify/resend/',
@@ -466,7 +597,13 @@ export const authMobileVerifyResend = <ThrowOnError extends boolean = false>(opt
     }
 });
 
-export const authOauthAuthorizeCreate = <ThrowOnError extends boolean = false>(options: Options<AuthOauthAuthorizeCreateData, ThrowOnError>): RequestResult<AuthOauthAuthorizeCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthOauthAuthorizeCreateResponses, unknown, ThrowOnError>({
+/**
+ * Authorize OAuth
+ *
+ * Return the provider authorization URL for an OAuth session, redirecting the user to the external identity provider to grant access. Requires a valid, unexpired session. No authentication is required.
+ *
+ */
+export const authOauthAuthorize = <ThrowOnError extends boolean = false>(options: Options<AuthOauthAuthorizeData, ThrowOnError>): RequestResult<AuthOauthAuthorizeResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthOauthAuthorizeResponses, unknown, ThrowOnError>({
     url: '/3/auth/oauth/authorize/',
     ...options,
     headers: {
@@ -475,7 +612,13 @@ export const authOauthAuthorizeCreate = <ThrowOnError extends boolean = false>(o
     }
 });
 
-export const authOauthLoginCreate = <ThrowOnError extends boolean = false>(options: Options<AuthOauthLoginCreateData, ThrowOnError>): RequestResult<AuthOauthLoginCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthOauthLoginCreateResponses, unknown, ThrowOnError>({
+/**
+ * OAuth login
+ *
+ * Log in a user via a verified OAuth session linked to an existing account. On success returns an API token, a refresh token, and any outstanding authentication challenges. No prior authentication is required.
+ *
+ */
+export const authOauthLogin = <ThrowOnError extends boolean = false>(options: Options<AuthOauthLoginData, ThrowOnError>): RequestResult<AuthOauthLoginResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthOauthLoginResponses, unknown, ThrowOnError>({
     url: '/3/auth/oauth/login/',
     ...options,
     headers: {
@@ -484,7 +627,13 @@ export const authOauthLoginCreate = <ThrowOnError extends boolean = false>(optio
     }
 });
 
-export const authOauthRegisterCreate = <ThrowOnError extends boolean = false>(options: Options<AuthOauthRegisterCreateData, ThrowOnError>): RequestResult<AuthOauthRegisterCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthOauthRegisterCreateResponses, unknown, ThrowOnError>({
+/**
+ * OAuth register
+ *
+ * Register a new user from a verified OAuth session, using the identity details provided by the external provider. On success returns an API token and a refresh token. No prior authentication is required.
+ *
+ */
+export const authOauthRegister = <ThrowOnError extends boolean = false>(options: Options<AuthOauthRegisterData, ThrowOnError>): RequestResult<AuthOauthRegisterResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthOauthRegisterResponses, unknown, ThrowOnError>({
     url: '/3/auth/oauth/register/',
     ...options,
     headers: {
@@ -493,7 +642,13 @@ export const authOauthRegisterCreate = <ThrowOnError extends boolean = false>(op
     }
 });
 
-export const authOauthSessionCreate = <ThrowOnError extends boolean = false>(options: Options<AuthOauthSessionCreateData, ThrowOnError>): RequestResult<AuthOauthSessionCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthOauthSessionCreateResponses, unknown, ThrowOnError>({
+/**
+ * Create OAuth session
+ *
+ * Create an OAuth session for a given OAuth client to begin an external sign-in flow. Returns the session identifier used in the subsequent authorize and verify steps. No authentication is required.
+ *
+ */
+export const authOauthSession = <ThrowOnError extends boolean = false>(options: Options<AuthOauthSessionData, ThrowOnError>): RequestResult<AuthOauthSessionResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthOauthSessionResponses, unknown, ThrowOnError>({
     url: '/3/auth/oauth/session/',
     ...options,
     headers: {
@@ -502,7 +657,13 @@ export const authOauthSessionCreate = <ThrowOnError extends boolean = false>(opt
     }
 });
 
-export const authOauthVerifyCreate = <ThrowOnError extends boolean = false>(options?: Options<AuthOauthVerifyCreateData, ThrowOnError>): RequestResult<AuthOauthVerifyCreateResponses, unknown, ThrowOnError> => (options?.client ?? client).post<AuthOauthVerifyCreateResponses, unknown, ThrowOnError>({
+/**
+ * Verify OAuth
+ *
+ * Verify a completed OAuth authorization using either the provider redirect URI or a session and code. Indicates whether a matching user already exists, so the caller can proceed to OAuth login or registration. No authentication is required.
+ *
+ */
+export const authOauthVerify = <ThrowOnError extends boolean = false>(options?: Options<AuthOauthVerifyData, ThrowOnError>): RequestResult<AuthOauthVerifyResponses, unknown, ThrowOnError> => (options?.client ?? client).post<AuthOauthVerifyResponses, unknown, ThrowOnError>({
     url: '/3/auth/oauth/verify/',
     ...options,
     headers: {
@@ -513,6 +674,9 @@ export const authOauthVerifyCreate = <ThrowOnError extends boolean = false>(opti
 
 /**
  * Change password
+ *
+ * Change the authenticated user's password. Requires the current password and a new password that meets the company's password rules.
+ *
  */
 export const authPasswordChange = <ThrowOnError extends boolean = false>(options: Options<AuthPasswordChangeData, ThrowOnError>): RequestResult<AuthPasswordChangeResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthPasswordChangeResponses, unknown, ThrowOnError>({
     security: [{
@@ -530,6 +694,9 @@ export const authPasswordChange = <ThrowOnError extends boolean = false>(options
 
 /**
  * Reset password
+ *
+ * Request a password reset for a user, identified by user and company. Sends a reset message to the account owner. No authentication is required, and the response does not reveal whether the user exists.
+ *
  */
 export const authPasswordReset = <ThrowOnError extends boolean = false>(options: Options<AuthPasswordResetData, ThrowOnError>): RequestResult<AuthPasswordResetResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthPasswordResetResponses, unknown, ThrowOnError>({
     url: '/3/auth/password/reset/',
@@ -542,6 +709,9 @@ export const authPasswordReset = <ThrowOnError extends boolean = false>(options:
 
 /**
  * Confirm password reset
+ *
+ * Complete a password reset using the identifier and token from a reset message, setting a new password on the account. Can also be used to clear existing sessions. No authentication is required.
+ *
  */
 export const authPasswordResetConfirm = <ThrowOnError extends boolean = false>(options: Options<AuthPasswordResetConfirmData, ThrowOnError>): RequestResult<AuthPasswordResetConfirmResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthPasswordResetConfirmResponses, unknown, ThrowOnError>({
     url: '/3/auth/password/reset/confirm/',
@@ -552,7 +722,13 @@ export const authPasswordResetConfirm = <ThrowOnError extends boolean = false>(o
     }
 });
 
-export const authRefreshCreate = <ThrowOnError extends boolean = false>(options?: Options<AuthRefreshCreateData, ThrowOnError>): RequestResult<AuthRefreshCreateResponses, unknown, ThrowOnError> => (options?.client ?? client).post<AuthRefreshCreateResponses, unknown, ThrowOnError>({
+/**
+ * Refresh authentication
+ *
+ * Exchange a valid refresh token for a new authentication token, extending the session. Returns a fresh refresh token for future refreshes. Authentication is provided by the refresh token itself.
+ *
+ */
+export const authRefresh = <ThrowOnError extends boolean = false>(options?: Options<AuthRefreshData, ThrowOnError>): RequestResult<AuthRefreshResponses, unknown, ThrowOnError> => (options?.client ?? client).post<AuthRefreshResponses, unknown, ThrowOnError>({
     security: [{
             key: 'apiRefreshAuth',
             name: 'Authorization',
@@ -567,7 +743,10 @@ export const authRefreshCreate = <ThrowOnError extends boolean = false>(options?
 });
 
 /**
- * Register
+ * Register a user
+ *
+ * Create a new user under a company and return an API token for the newly created account. The user must accept the company's terms and conditions and privacy policy as part of registration.
+ *
  */
 export const authRegister = <ThrowOnError extends boolean = false>(options: Options<AuthRegisterData, ThrowOnError>): RequestResult<AuthRegisterResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthRegisterResponses, unknown, ThrowOnError>({
     url: '/3/auth/register/',
@@ -580,6 +759,9 @@ export const authRegister = <ThrowOnError extends boolean = false>(options: Opti
 
 /**
  * Request delete
+ *
+ * Request deletion of a user account, identified by user and company. Sends a confirmation message to the account owner; deletion only proceeds once confirmed. No authentication is required, and the response does not reveal whether the user exists.
+ *
  */
 export const authRequestDelete = <ThrowOnError extends boolean = false>(options: Options<AuthRequestDeleteData, ThrowOnError>): RequestResult<AuthRequestDeleteResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthRequestDeleteResponses, unknown, ThrowOnError>({
     url: '/3/auth/request-delete/',
@@ -592,6 +774,9 @@ export const authRequestDelete = <ThrowOnError extends boolean = false>(options:
 
 /**
  * Verify request delete
+ *
+ * Confirm a pending account deletion request using the key from the confirmation message, allowing deletion of the account to proceed. No authentication is required.
+ *
  */
 export const authRequestDeleteVerify = <ThrowOnError extends boolean = false>(options: Options<AuthRequestDeleteVerifyData, ThrowOnError>): RequestResult<AuthRequestDeleteVerifyResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthRequestDeleteVerifyResponses, unknown, ThrowOnError>({
     url: '/3/auth/request-delete/verify/',
@@ -604,6 +789,9 @@ export const authRequestDeleteVerify = <ThrowOnError extends boolean = false>(op
 
 /**
  * Delete auth tokens
+ *
+ * Delete the authenticated user's API tokens, revoking their access. This is not paginated.
+ *
  */
 export const authTokensListDestroy = <ThrowOnError extends boolean = false>(options?: Options<AuthTokensListDestroyData, ThrowOnError>): RequestResult<AuthTokensListDestroyResponses, unknown, ThrowOnError> => (options?.client ?? client).delete<AuthTokensListDestroyResponses, unknown, ThrowOnError>({
     security: [{
@@ -617,6 +805,9 @@ export const authTokensListDestroy = <ThrowOnError extends boolean = false>(opti
 
 /**
  * List auth tokens
+ *
+ * List the authenticated user's API tokens. Results can be filtered.
+ *
  */
 export const authTokensList = <ThrowOnError extends boolean = false>(options?: Options<AuthTokensListData, ThrowOnError>): RequestResult<AuthTokensListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AuthTokensListResponses, unknown, ThrowOnError>({
     security: [{
@@ -630,6 +821,9 @@ export const authTokensList = <ThrowOnError extends boolean = false>(options?: O
 
 /**
  * Create auth token
+ *
+ * Create a new API token for the authenticated user. Requires the user's password and returns the new token, with an optional label and expiry duration.
+ *
  */
 export const authTokensCreate = <ThrowOnError extends boolean = false>(options: Options<AuthTokensCreateData, ThrowOnError>): RequestResult<AuthTokensCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthTokensCreateResponses, unknown, ThrowOnError>({
     security: [{
@@ -647,6 +841,9 @@ export const authTokensCreate = <ThrowOnError extends boolean = false>(options: 
 
 /**
  * Delete auth token
+ *
+ * Delete a specific API token belonging to the authenticated user, revoking its access.
+ *
  */
 export const authTokensDestroy = <ThrowOnError extends boolean = false>(options: Options<AuthTokensDestroyData, ThrowOnError>): RequestResult<AuthTokensDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<AuthTokensDestroyResponses, unknown, ThrowOnError>({
     security: [{
@@ -660,6 +857,9 @@ export const authTokensDestroy = <ThrowOnError extends boolean = false>(options:
 
 /**
  * Retrieve auth token
+ *
+ * Return a specific API token belonging to the authenticated user.
+ *
  */
 export const authTokensRetrieve = <ThrowOnError extends boolean = false>(options: Options<AuthTokensRetrieveData, ThrowOnError>): RequestResult<AuthTokensRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AuthTokensRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -673,6 +873,9 @@ export const authTokensRetrieve = <ThrowOnError extends boolean = false>(options
 
 /**
  * Partially update auth token
+ *
+ * Partially update a specific API token belonging to the authenticated user. Currently the token's label can be changed.
+ *
  */
 export const authTokensPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<AuthTokensPartialUpdateData, ThrowOnError>): RequestResult<AuthTokensPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<AuthTokensPartialUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -690,6 +893,9 @@ export const authTokensPartialUpdate = <ThrowOnError extends boolean = false>(op
 
 /**
  * Update auth token
+ *
+ * Update a specific API token belonging to the authenticated user. Currently the token's label can be changed.
+ *
  */
 export const authTokensUpdate = <ThrowOnError extends boolean = false>(options: Options<AuthTokensUpdateData, ThrowOnError>): RequestResult<AuthTokensUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<AuthTokensUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -707,6 +913,9 @@ export const authTokensUpdate = <ThrowOnError extends boolean = false>(options: 
 
 /**
  * Retrieve company
+ *
+ * Return the company profile that the authenticated user belongs to, including its core details and settings.
+ *
  */
 export const companyRetrieve = <ThrowOnError extends boolean = false>(options?: Options<CompanyRetrieveData, ThrowOnError>): RequestResult<CompanyRetrieveResponses, unknown, ThrowOnError> => (options?.client ?? client).get<CompanyRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -720,6 +929,9 @@ export const companyRetrieve = <ThrowOnError extends boolean = false>(options?: 
 
 /**
  * List bank accounts
+ *
+ * List the bank accounts configured for the authenticated user's company. Results are paginated and can be filtered.
+ *
  */
 export const companyBankAccountsList = <ThrowOnError extends boolean = false>(options?: Options<CompanyBankAccountsListData, ThrowOnError>): RequestResult<CompanyBankAccountsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<CompanyBankAccountsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -733,6 +945,9 @@ export const companyBankAccountsList = <ThrowOnError extends boolean = false>(op
 
 /**
  * List currencies
+ *
+ * List the currencies configured for the authenticated user's company. Results are paginated and can be filtered.
+ *
  */
 export const companyCurrenciesList = <ThrowOnError extends boolean = false>(options?: Options<CompanyCurrenciesListData, ThrowOnError>): RequestResult<CompanyCurrenciesListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<CompanyCurrenciesListResponses, unknown, ThrowOnError>({
     querySerializer: { parameters: { orderby: { array: { explode: false } } } },
@@ -747,6 +962,9 @@ export const companyCurrenciesList = <ThrowOnError extends boolean = false>(opti
 
 /**
  * Retrieve currency
+ *
+ * Return a single currency belonging to the authenticated user's company, identified by its currency code.
+ *
  */
 export const companyCurrenciesRetrieve = <ThrowOnError extends boolean = false>(options: Options<CompanyCurrenciesRetrieveData, ThrowOnError>): RequestResult<CompanyCurrenciesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<CompanyCurrenciesRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -760,6 +978,9 @@ export const companyCurrenciesRetrieve = <ThrowOnError extends boolean = false>(
 
 /**
  * List wallet accounts
+ *
+ * List the wallet accounts configured for the authenticated user's company. Results are paginated and can be filtered.
+ *
  */
 export const companyWalletAccountsList = <ThrowOnError extends boolean = false>(options?: Options<CompanyWalletAccountsListData, ThrowOnError>): RequestResult<CompanyWalletAccountsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<CompanyWalletAccountsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -773,6 +994,9 @@ export const companyWalletAccountsList = <ThrowOnError extends boolean = false>(
 
 /**
  * List document types
+ *
+ * List the document types defined by the authenticated user's company, which describe the kinds of documents that users can upload.
+ *
  */
 export const documentTypesList = <ThrowOnError extends boolean = false>(options?: Options<DocumentTypesListData, ThrowOnError>): RequestResult<DocumentTypesListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<DocumentTypesListResponses, unknown, ThrowOnError>({
     security: [{
@@ -786,6 +1010,9 @@ export const documentTypesList = <ThrowOnError extends boolean = false>(options?
 
 /**
  * Retrieve document type
+ *
+ * Return a single document type defined by the authenticated user's company, identified by its ID.
+ *
  */
 export const documentTypesRetrieve = <ThrowOnError extends boolean = false>(options: Options<DocumentTypesRetrieveData, ThrowOnError>): RequestResult<DocumentTypesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<DocumentTypesRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -799,6 +1026,9 @@ export const documentTypesRetrieve = <ThrowOnError extends boolean = false>(opti
 
 /**
  * List exports
+ *
+ * List the data exports created by the authenticated user, most recent first. Results are paginated and can be filtered.
+ *
  */
 export const exportsList = <ThrowOnError extends boolean = false>(options?: Options<ExportsListData, ThrowOnError>): RequestResult<ExportsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<ExportsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -812,6 +1042,9 @@ export const exportsList = <ThrowOnError extends boolean = false>(options?: Opti
 
 /**
  * Create export
+ *
+ * Create a data export for a supported resource, optionally scoped by a query and returned in the requested file format. Generation runs asynchronously, so the export is accepted and processed in the background; poll the export to track its status and progress and to retrieve the resulting files.
+ *
  */
 export const exportsCreate = <ThrowOnError extends boolean = false>(options: Options<ExportsCreateData, ThrowOnError>): RequestResult<ExportsCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<ExportsCreateResponses, unknown, ThrowOnError>({
     security: [{
@@ -829,6 +1062,9 @@ export const exportsCreate = <ThrowOnError extends boolean = false>(options: Opt
 
 /**
  * Retrieve export
+ *
+ * Return a single data export belonging to the authenticated user, including its current status, progress, and the downloadable pages produced once generation completes.
+ *
  */
 export const exportsRetrieve = <ThrowOnError extends boolean = false>(options: Options<ExportsRetrieveData, ThrowOnError>): RequestResult<ExportsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<ExportsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -842,6 +1078,9 @@ export const exportsRetrieve = <ThrowOnError extends boolean = false>(options: O
 
 /**
  * List groups
+ *
+ * List the groups the authenticated user belongs to. A group is a set of users who share a common permission set and configuration, such as their fees, limits, and tiers. Only active groups are returned.
+ *
  */
 export const groupsList = <ThrowOnError extends boolean = false>(options?: Options<GroupsListData, ThrowOnError>): RequestResult<GroupsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GroupsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -855,6 +1094,9 @@ export const groupsList = <ThrowOnError extends boolean = false>(options?: Optio
 
 /**
  * Retrieve group
+ *
+ * Return one of the groups the authenticated user belongs to, identified by its name. A group is a set of users who share a common permission set and configuration, such as their fees, limits, and tiers.
+ *
  */
 export const groupsRetrieve = <ThrowOnError extends boolean = false>(options: Options<GroupsRetrieveData, ThrowOnError>): RequestResult<GroupsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<GroupsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -868,6 +1110,9 @@ export const groupsRetrieve = <ThrowOnError extends boolean = false>(options: Op
 
 /**
  * List fees
+ *
+ * List the fees that apply to a group the authenticated user belongs to. Each fee defines a fixed amount or percentage charged on a type of transaction for members of the group.
+ *
  */
 export const groupsFeesList = <ThrowOnError extends boolean = false>(options: Options<GroupsFeesListData, ThrowOnError>): RequestResult<GroupsFeesListResponses, unknown, ThrowOnError> => (options.client ?? client).get<GroupsFeesListResponses, unknown, ThrowOnError>({
     security: [{
@@ -880,7 +1125,10 @@ export const groupsFeesList = <ThrowOnError extends boolean = false>(options: Op
 });
 
 /**
- * Retrieve fee
+ * Retrieve group fee
+ *
+ * Return a single fee that applies to a group the authenticated user belongs to, identified by its fee ID.
+ *
  */
 export const groupsFeesRetrieve = <ThrowOnError extends boolean = false>(options: Options<GroupsFeesRetrieveData, ThrowOnError>): RequestResult<GroupsFeesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<GroupsFeesRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -892,6 +1140,12 @@ export const groupsFeesRetrieve = <ThrowOnError extends boolean = false>(options
     ...options
 });
 
+/**
+ * List group limits
+ *
+ * List the transaction limits that apply to a group the authenticated user belongs to. Each limit caps a type of activity, such as a transaction amount, for members of the group. Only limits that are currently in effect are returned.
+ *
+ */
 export const groupsLimitsList = <ThrowOnError extends boolean = false>(options: Options<GroupsLimitsListData, ThrowOnError>): RequestResult<GroupsLimitsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<GroupsLimitsListResponses, unknown, ThrowOnError>({
     security: [{
             key: 'apiAuth',
@@ -902,6 +1156,12 @@ export const groupsLimitsList = <ThrowOnError extends boolean = false>(options: 
     ...options
 });
 
+/**
+ * Retrieve group limit
+ *
+ * Return a single transaction limit that applies to a group the authenticated user belongs to, identified by its limit ID. Applies only if the limit is currently in effect.
+ *
+ */
 export const groupsLimitsRetrieve = <ThrowOnError extends boolean = false>(options: Options<GroupsLimitsRetrieveData, ThrowOnError>): RequestResult<GroupsLimitsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<GroupsLimitsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
             key: 'apiAuth',
@@ -914,6 +1174,9 @@ export const groupsLimitsRetrieve = <ThrowOnError extends boolean = false>(optio
 
 /**
  * List permissions
+ *
+ * List the permissions granted to a group the authenticated user belongs to. These permissions determine what members of the group are allowed to do. Only enabled permissions are returned.
+ *
  */
 export const groupsPermissionsList = <ThrowOnError extends boolean = false>(options: Options<GroupsPermissionsListData, ThrowOnError>): RequestResult<GroupsPermissionsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<GroupsPermissionsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -926,7 +1189,10 @@ export const groupsPermissionsList = <ThrowOnError extends boolean = false>(opti
 });
 
 /**
- * Retrieve permission
+ * Retrieve group permission
+ *
+ * Return a single permission granted to a group the authenticated user belongs to, identified by its permission ID.
+ *
  */
 export const groupsPermissionsRetrieve = <ThrowOnError extends boolean = false>(options: Options<GroupsPermissionsRetrieveData, ThrowOnError>): RequestResult<GroupsPermissionsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<GroupsPermissionsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -940,6 +1206,9 @@ export const groupsPermissionsRetrieve = <ThrowOnError extends boolean = false>(
 
 /**
  * List tiers
+ *
+ * List the tiers defined for a group the authenticated user belongs to. A tier is a level within a group, ordered by rank, that applies its own fees, limits, and requirements to the users that match it. Results can be filtered by level, by whether a tier is the user's currently active tier, and by requirement.
+ *
  */
 export const groupsTiersList = <ThrowOnError extends boolean = false>(options: Options<GroupsTiersListData, ThrowOnError>): RequestResult<GroupsTiersListResponses, unknown, ThrowOnError> => (options.client ?? client).get<GroupsTiersListResponses, unknown, ThrowOnError>({
     security: [{
@@ -953,6 +1222,9 @@ export const groupsTiersList = <ThrowOnError extends boolean = false>(options: O
 
 /**
  * Retrieve tier
+ *
+ * Return a single tier of a group the authenticated user belongs to, identified by its tier ID. A tier is a level within a group, ordered by rank, that applies its own fees, limits, and requirements to the users that match it.
+ *
  */
 export const groupsTiersRetrieve = <ThrowOnError extends boolean = false>(options: Options<GroupsTiersRetrieveData, ThrowOnError>): RequestResult<GroupsTiersRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<GroupsTiersRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -966,6 +1238,9 @@ export const groupsTiersRetrieve = <ThrowOnError extends boolean = false>(option
 
 /**
  * List tier fees
+ *
+ * List the fees that apply to a tier of a group the authenticated user belongs to. Each fee defines a fixed amount or percentage charged on a type of transaction for users on that tier.
+ *
  */
 export const groupsTiersFeesList = <ThrowOnError extends boolean = false>(options: Options<GroupsTiersFeesListData, ThrowOnError>): RequestResult<GroupsTiersFeesListResponses, unknown, ThrowOnError> => (options.client ?? client).get<GroupsTiersFeesListResponses, unknown, ThrowOnError>({
     security: [{
@@ -978,7 +1253,10 @@ export const groupsTiersFeesList = <ThrowOnError extends boolean = false>(option
 });
 
 /**
- * Retrieve tier fee
+ * Retrieve group tier fee
+ *
+ * Return a single fee that applies to a tier of a group the authenticated user belongs to, identified by its fee ID.
+ *
  */
 export const groupsTiersFeesRetrieve = <ThrowOnError extends boolean = false>(options: Options<GroupsTiersFeesRetrieveData, ThrowOnError>): RequestResult<GroupsTiersFeesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<GroupsTiersFeesRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -992,6 +1270,9 @@ export const groupsTiersFeesRetrieve = <ThrowOnError extends boolean = false>(op
 
 /**
  * List tier limits
+ *
+ * List the transaction limits that apply to a tier of a group the authenticated user belongs to. These limits apply in addition to the group's limits and take effect for users on that tier. Only limits that are currently in effect are returned.
+ *
  */
 export const groupsTiersLimitsList = <ThrowOnError extends boolean = false>(options: Options<GroupsTiersLimitsListData, ThrowOnError>): RequestResult<GroupsTiersLimitsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<GroupsTiersLimitsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -1005,6 +1286,9 @@ export const groupsTiersLimitsList = <ThrowOnError extends boolean = false>(opti
 
 /**
  * Retrieve tier limit
+ *
+ * Return a single transaction limit that applies to a tier of a group the authenticated user belongs to, identified by its limit ID. Applies only if the limit is currently in effect.
+ *
  */
 export const groupsTiersLimitsRetrieve = <ThrowOnError extends boolean = false>(options: Options<GroupsTiersLimitsRetrieveData, ThrowOnError>): RequestResult<GroupsTiersLimitsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<GroupsTiersLimitsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -1018,6 +1302,9 @@ export const groupsTiersLimitsRetrieve = <ThrowOnError extends boolean = false>(
 
 /**
  * List tier requirement sets
+ *
+ * List the requirement sets defined for a tier of a group the authenticated user belongs to. A requirement set groups the conditions a user must meet to qualify for the tier, evaluated together under an 'any' or 'all' rule.
+ *
  */
 export const groupsTiersRequirementSetsList = <ThrowOnError extends boolean = false>(options: Options<GroupsTiersRequirementSetsListData, ThrowOnError>): RequestResult<GroupsTiersRequirementSetsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<GroupsTiersRequirementSetsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -1031,6 +1318,9 @@ export const groupsTiersRequirementSetsList = <ThrowOnError extends boolean = fa
 
 /**
  * Retrieve tier requirement set
+ *
+ * Return a single requirement set defined for a tier of a group the authenticated user belongs to, identified by its requirement set ID. A requirement set groups the conditions a user must meet to qualify for the tier.
+ *
  */
 export const groupsTiersRequirementSetsRetrieve = <ThrowOnError extends boolean = false>(options: Options<GroupsTiersRequirementSetsRetrieveData, ThrowOnError>): RequestResult<GroupsTiersRequirementSetsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<GroupsTiersRequirementSetsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -1044,6 +1334,9 @@ export const groupsTiersRequirementSetsRetrieve = <ThrowOnError extends boolean 
 
 /**
  * List tier requirement set items
+ *
+ * List the items within a requirement set for a tier of a group the authenticated user belongs to. Each item is an individual condition a user must meet to qualify for the tier.
+ *
  */
 export const groupsTiersRequirementSetsItemsList = <ThrowOnError extends boolean = false>(options: Options<GroupsTiersRequirementSetsItemsListData, ThrowOnError>): RequestResult<GroupsTiersRequirementSetsItemsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<GroupsTiersRequirementSetsItemsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -1057,6 +1350,9 @@ export const groupsTiersRequirementSetsItemsList = <ThrowOnError extends boolean
 
 /**
  * Retrieve tier requirement set item
+ *
+ * Return a single item within a requirement set for a tier of a group the authenticated user belongs to, identified by its item ID. An item is an individual condition a user must meet to qualify for the tier.
+ *
  */
 export const groupsTiersRequirementSetsItemsRetrieve = <ThrowOnError extends boolean = false>(options: Options<GroupsTiersRequirementSetsItemsRetrieveData, ThrowOnError>): RequestResult<GroupsTiersRequirementSetsItemsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<GroupsTiersRequirementSetsItemsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -1070,6 +1366,9 @@ export const groupsTiersRequirementSetsItemsRetrieve = <ThrowOnError extends boo
 
 /**
  * List metric
+ *
+ * List the metrics belonging to the authenticated user, most recent first. Each metric describes a configured time-series measurement. Results are paginated and can be filtered.
+ *
  */
 export const metricsList = <ThrowOnError extends boolean = false>(options?: Options<MetricsListData, ThrowOnError>): RequestResult<MetricsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<MetricsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -1083,6 +1382,9 @@ export const metricsList = <ThrowOnError extends boolean = false>(options?: Opti
 
 /**
  * Create metric
+ *
+ * Create a metric that measures a configured time-series over a currency, defined by its type, aggregation method, timezone, and optional query. The metric's data points are computed asynchronously and retrieved separately from its points endpoint.
+ *
  */
 export const metricsCreate = <ThrowOnError extends boolean = false>(options: Options<MetricsCreateData, ThrowOnError>): RequestResult<MetricsCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<MetricsCreateResponses, unknown, ThrowOnError>({
     security: [{
@@ -1100,6 +1402,9 @@ export const metricsCreate = <ThrowOnError extends boolean = false>(options: Opt
 
 /**
  * Delete metric
+ *
+ * Delete one of the authenticated user's metrics.
+ *
  */
 export const metricsDestroy = <ThrowOnError extends boolean = false>(options: Options<MetricsDestroyData, ThrowOnError>): RequestResult<MetricsDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<MetricsDestroyResponses, unknown, ThrowOnError>({
     security: [{
@@ -1113,6 +1418,9 @@ export const metricsDestroy = <ThrowOnError extends boolean = false>(options: Op
 
 /**
  * Retrieve metric
+ *
+ * Return a single metric belonging to the authenticated user, including its type, currency, aggregation method, timezone, and query.
+ *
  */
 export const metricsRetrieve = <ThrowOnError extends boolean = false>(options: Options<MetricsRetrieveData, ThrowOnError>): RequestResult<MetricsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<MetricsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -1126,6 +1434,9 @@ export const metricsRetrieve = <ThrowOnError extends boolean = false>(options: O
 
 /**
  * List metric points
+ *
+ * List the data points of a metric as a time-series, most recent first, with each point carrying a value and a date. Results are paginated using either page-number or cursor pagination and can be filtered.
+ *
  */
 export const metricsPointsList = <ThrowOnError extends boolean = false>(options: Options<MetricsPointsListData, ThrowOnError>): RequestResult<MetricsPointsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<MetricsPointsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -1139,6 +1450,9 @@ export const metricsPointsList = <ThrowOnError extends boolean = false>(options:
 
 /**
  * List permissions
+ *
+ * List the permissions granted to the authenticated user.
+ *
  */
 export const permissionsList = <ThrowOnError extends boolean = false>(options?: Options<PermissionsListData, ThrowOnError>): RequestResult<PermissionsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<PermissionsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -1152,6 +1466,9 @@ export const permissionsList = <ThrowOnError extends boolean = false>(options?: 
 
 /**
  * Retrieve permission
+ *
+ * Return a single permission granted to the authenticated user, identified by its permission ID.
+ *
  */
 export const permissionsRetrieve = <ThrowOnError extends boolean = false>(options: Options<PermissionsRetrieveData, ThrowOnError>): RequestResult<PermissionsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<PermissionsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -1165,68 +1482,122 @@ export const permissionsRetrieve = <ThrowOnError extends boolean = false>(option
 
 /**
  * List public companies
+ *
+ * List the companies that have chosen to be publicly listed, returning each company's public profile such as name, description, branding, and contact details. This endpoint is public and requires no authentication, so it can be called before a user logs in. Results are paginated and can be filtered.
+ *
  */
 export const publicCompaniesList = <ThrowOnError extends boolean = false>(options?: Options<PublicCompaniesListData, ThrowOnError>): RequestResult<PublicCompaniesListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<PublicCompaniesListResponses, unknown, ThrowOnError>({ url: '/3/public/companies/', ...options });
 
 /**
  * Retrieve public company
+ *
+ * Return the public profile of a single company identified by its public identifier, including its name, description, branding, contact details, and available services. This endpoint is public and requires no authentication, so it can be called before a user logs in.
+ *
  */
 export const publicCompaniesRetrieve = <ThrowOnError extends boolean = false>(options: Options<PublicCompaniesRetrieveData, ThrowOnError>): RequestResult<PublicCompaniesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<PublicCompaniesRetrieveResponses, unknown, ThrowOnError>({ url: '/3/public/companies/{id}/', ...options });
 
 /**
  * List public company groups
+ *
+ * List the publicly listed user groups for a company, returning each group's name, label, description, and branding. Use this to show the account or membership options available when signing up with a company. This endpoint is public and requires no authentication, so it can be called before a user logs in. Results are paginated.
+ *
  */
 export const publicCompaniesGroupsList = <ThrowOnError extends boolean = false>(options: Options<PublicCompaniesGroupsListData, ThrowOnError>): RequestResult<PublicCompaniesGroupsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<PublicCompaniesGroupsListResponses, unknown, ThrowOnError>({ url: '/3/public/companies/{id}/groups/', ...options });
 
 /**
  * Retrieve public company group
+ *
+ * Return a single publicly listed group for a company, identified by its group name, including its label, description, and branding. This endpoint is public and requires no authentication, so it can be called before a user logs in.
+ *
  */
 export const publicCompaniesGroupsRetrieve = <ThrowOnError extends boolean = false>(options: Options<PublicCompaniesGroupsRetrieveData, ThrowOnError>): RequestResult<PublicCompaniesGroupsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<PublicCompaniesGroupsRetrieveResponses, unknown, ThrowOnError>({ url: '/3/public/companies/{id}/groups/{group_name}/', ...options });
 
 /**
  * List public company legal terms
+ *
+ * List a company's legal terms, such as terms of service and privacy policies, returning each term's type, name, description, and available versions. This endpoint is public and requires no authentication, so a user can review a company's terms before signing up. Results are paginated and can be filtered.
+ *
  */
 export const publicCompaniesLegalTermsList = <ThrowOnError extends boolean = false>(options: Options<PublicCompaniesLegalTermsListData, ThrowOnError>): RequestResult<PublicCompaniesLegalTermsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<PublicCompaniesLegalTermsListResponses, unknown, ThrowOnError>({ url: '/3/public/companies/{id}/legal-terms/', ...options });
 
 /**
  * Retrieve public company legal terms
+ *
+ * Return a single legal term for a company, identified by its term ID, including its type, name, description, and available versions. This endpoint is public and requires no authentication, so a user can review the term before signing up.
+ *
  */
 export const publicCompaniesLegalTermsRetrieve = <ThrowOnError extends boolean = false>(options: Options<PublicCompaniesLegalTermsRetrieveData, ThrowOnError>): RequestResult<PublicCompaniesLegalTermsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<PublicCompaniesLegalTermsRetrieveResponses, unknown, ThrowOnError>({ url: '/3/public/companies/{id}/legal-terms/{term_id}/', ...options });
 
 /**
  * List public company legal term versions
+ *
+ * List the versions of a company's legal term, returning each version's number, content, and any associated URLs. Use this to review the full history of a company's terms. This endpoint is public and requires no authentication, so it can be called before a user logs in. Results are paginated.
+ *
  */
 export const publicCompaniesLegalTermsVersionsList = <ThrowOnError extends boolean = false>(options: Options<PublicCompaniesLegalTermsVersionsListData, ThrowOnError>): RequestResult<PublicCompaniesLegalTermsVersionsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<PublicCompaniesLegalTermsVersionsListResponses, unknown, ThrowOnError>({ url: '/3/public/companies/{id}/legal-terms/{term_id}/versions/', ...options });
 
 /**
  * Retrieve public company legal term version
+ *
+ * Return a single version of a company's legal term, identified by its version ID, including the version number, note, full content, and any associated URLs. This endpoint is public and requires no authentication, so it can be called before a user logs in.
+ *
  */
 export const publicCompaniesLegalTermsVersionsRetrieve = <ThrowOnError extends boolean = false>(options: Options<PublicCompaniesLegalTermsVersionsRetrieveData, ThrowOnError>): RequestResult<PublicCompaniesLegalTermsVersionsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<PublicCompaniesLegalTermsVersionsRetrieveResponses, unknown, ThrowOnError>({ url: '/3/public/companies/{id}/legal-terms/{term_id}/versions/{version_id}/', ...options });
 
+/**
+ * List public OAuth clients
+ *
+ * List the OAuth clients configured for a company that are available for public sign-in, returning each client's provider, application, and client ID. Use this to discover the third-party login options a company supports. This endpoint is public and requires no authentication, so it can be called before a user logs in. Results are paginated and can be filtered.
+ *
+ */
 export const publicCompaniesOauthClientsList = <ThrowOnError extends boolean = false>(options: Options<PublicCompaniesOauthClientsListData, ThrowOnError>): RequestResult<PublicCompaniesOauthClientsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<PublicCompaniesOauthClientsListResponses, unknown, ThrowOnError>({ url: '/3/public/companies/{id}/oauth-clients/', ...options });
 
+/**
+ * Retrieve public OAuth client
+ *
+ * Return a single public OAuth client for a company, identified by its client identifier, including its provider, application, and client ID. This endpoint is public and requires no authentication, so it can be called before a user logs in.
+ *
+ */
 export const publicCompaniesOauthClientsRetrieve = <ThrowOnError extends boolean = false>(options: Options<PublicCompaniesOauthClientsRetrieveData, ThrowOnError>): RequestResult<PublicCompaniesOauthClientsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<PublicCompaniesOauthClientsRetrieveResponses, unknown, ThrowOnError>({ url: '/3/public/companies/{id}/oauth-clients/{identifier}/', ...options });
 
 /**
  * List public legal terms
+ *
+ * List the platform-wide legal terms that apply globally across companies, returning each term's type, name, description, and available versions. This endpoint is public and requires no authentication, so it can be called before a user logs in. Results are paginated and can be filtered.
+ *
  */
 export const publicLegalTermsList = <ThrowOnError extends boolean = false>(options?: Options<PublicLegalTermsListData, ThrowOnError>): RequestResult<PublicLegalTermsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<PublicLegalTermsListResponses, unknown, ThrowOnError>({ url: '/3/public/legal-terms/', ...options });
 
 /**
  * Retrieve public legal terms
+ *
+ * Return a single platform-wide legal term, identified by its term ID, including its type, name, description, and available versions. This endpoint is public and requires no authentication, so it can be called before a user logs in.
+ *
  */
 export const publicLegalTermsRetrieve = <ThrowOnError extends boolean = false>(options: Options<PublicLegalTermsRetrieveData, ThrowOnError>): RequestResult<PublicLegalTermsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<PublicLegalTermsRetrieveResponses, unknown, ThrowOnError>({ url: '/3/public/legal-terms/{term_id}/', ...options });
 
 /**
  * List public legal term versions
+ *
+ * List the versions of a platform-wide legal term, returning each version's number, content, and any associated URLs. This endpoint is public and requires no authentication, so it can be called before a user logs in. Results are paginated.
+ *
  */
 export const publicLegalTermsVersionsList = <ThrowOnError extends boolean = false>(options: Options<PublicLegalTermsVersionsListData, ThrowOnError>): RequestResult<PublicLegalTermsVersionsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<PublicLegalTermsVersionsListResponses, unknown, ThrowOnError>({ url: '/3/public/legal-terms/{term_id}/versions/', ...options });
 
 /**
  * Retrieve public legal term version
+ *
+ * Return a single version of a platform-wide legal term, identified by its version ID, including the version number, note, full content, and any associated URLs. This endpoint is public and requires no authentication, so it can be called before a user logs in.
+ *
  */
 export const publicLegalTermsVersionsRetrieve = <ThrowOnError extends boolean = false>(options: Options<PublicLegalTermsVersionsRetrieveData, ThrowOnError>): RequestResult<PublicLegalTermsVersionsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<PublicLegalTermsVersionsRetrieveResponses, unknown, ThrowOnError>({ url: '/3/public/legal-terms/{term_id}/versions/{version_id}/', ...options });
 
+/**
+ * List statements
+ *
+ * List the account statements belonging to the authenticated user, most recent first. Results are paginated and can be filtered.
+ *
+ */
 export const statementsList = <ThrowOnError extends boolean = false>(options?: Options<StatementsListData, ThrowOnError>): RequestResult<StatementsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<StatementsListResponses, unknown, ThrowOnError>({
     security: [{
             key: 'apiAuth',
@@ -1237,6 +1608,12 @@ export const statementsList = <ThrowOnError extends boolean = false>(options?: O
     ...options
 });
 
+/**
+ * Create statement
+ *
+ * Create a statement of account activity for one of the authenticated user's accounts, over an optional start and end date in the given timezone. Generation runs asynchronously, so the statement is accepted and produced in the background; poll it to track its status and retrieve the resulting file once ready.
+ *
+ */
 export const statementsCreate = <ThrowOnError extends boolean = false>(options: Options<StatementsCreateData, ThrowOnError>): RequestResult<StatementsCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<StatementsCreateResponses, unknown, ThrowOnError>({
     security: [{
             key: 'apiAuth',
@@ -1251,6 +1628,12 @@ export const statementsCreate = <ThrowOnError extends boolean = false>(options: 
     }
 });
 
+/**
+ * Delete statement
+ *
+ * Delete one of the authenticated user's account statements.
+ *
+ */
 export const statementsDestroy = <ThrowOnError extends boolean = false>(options: Options<StatementsDestroyData, ThrowOnError>): RequestResult<StatementsDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<StatementsDestroyResponses, unknown, ThrowOnError>({
     security: [{
             key: 'apiAuth',
@@ -1261,6 +1644,12 @@ export const statementsDestroy = <ThrowOnError extends boolean = false>(options:
     ...options
 });
 
+/**
+ * Retrieve statement
+ *
+ * Return a single account statement belonging to the authenticated user, including its date range, status, and the downloadable file once generation completes.
+ *
+ */
 export const statementsRetrieve = <ThrowOnError extends boolean = false>(options: Options<StatementsRetrieveData, ThrowOnError>): RequestResult<StatementsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<StatementsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
             key: 'apiAuth',
@@ -1273,6 +1662,9 @@ export const statementsRetrieve = <ThrowOnError extends boolean = false>(options
 
 /**
  * List subtypes
+ *
+ * List the transaction subtypes defined by the authenticated user's company. Results can be filtered.
+ *
  */
 export const subtypesList = <ThrowOnError extends boolean = false>(options?: Options<SubtypesListData, ThrowOnError>): RequestResult<SubtypesListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<SubtypesListResponses, unknown, ThrowOnError>({
     security: [{
@@ -1286,6 +1678,9 @@ export const subtypesList = <ThrowOnError extends boolean = false>(options?: Opt
 
 /**
  * Retrieve subtype
+ *
+ * Return a single transaction subtype defined by the authenticated user's company, identified by its ID.
+ *
  */
 export const subtypesRetrieve = <ThrowOnError extends boolean = false>(options: Options<SubtypesRetrieveData, ThrowOnError>): RequestResult<SubtypesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<SubtypesRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -1299,6 +1694,9 @@ export const subtypesRetrieve = <ThrowOnError extends boolean = false>(options: 
 
 /**
  * List transaction collections
+ *
+ * List the transaction collections for the authenticated user, each grouping one or more related transactions. Results are paginated and can be filtered by identifier, status, type, currency, subtype, amount, and account.
+ *
  */
 export const transactionCollectionsList = <ThrowOnError extends boolean = false>(options?: Options<TransactionCollectionsListData, ThrowOnError>): RequestResult<TransactionCollectionsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<TransactionCollectionsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -1312,6 +1710,9 @@ export const transactionCollectionsList = <ThrowOnError extends boolean = false>
 
 /**
  * Create transaction collection
+ *
+ * Create a transaction collection that processes a group of transactions together as a single unit (up to 24). Each entry specifies its amount, currency, type, and account details.
+ *
  */
 export const transactionCollectionsCreate = <ThrowOnError extends boolean = false>(options: Options<TransactionCollectionsCreateData, ThrowOnError>): RequestResult<TransactionCollectionsCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<TransactionCollectionsCreateResponses, unknown, ThrowOnError>({
     security: [{
@@ -1329,6 +1730,9 @@ export const transactionCollectionsCreate = <ThrowOnError extends boolean = fals
 
 /**
  * Retrieve transaction collection
+ *
+ * Return a single transaction collection for the authenticated user by its identifier, including the transactions it groups and their shared status.
+ *
  */
 export const transactionCollectionsRetrieve = <ThrowOnError extends boolean = false>(options: Options<TransactionCollectionsRetrieveData, ThrowOnError>): RequestResult<TransactionCollectionsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<TransactionCollectionsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -1342,6 +1746,9 @@ export const transactionCollectionsRetrieve = <ThrowOnError extends boolean = fa
 
 /**
  * List transactions
+ *
+ * List the transactions across the authenticated user's accounts, most recent first. Results are paginated and can be filtered by attributes such as type, currency, status, amount, and account.
+ *
  */
 export const transactionsList = <ThrowOnError extends boolean = false>(options?: Options<TransactionsListData, ThrowOnError>): RequestResult<TransactionsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<TransactionsListResponses, unknown, ThrowOnError>({
     querySerializer: { parameters: { status__in: { array: { explode: false } } } },
@@ -1356,6 +1763,9 @@ export const transactionsList = <ThrowOnError extends boolean = false>(options?:
 
 /**
  * Create transaction
+ *
+ * Create one or more transactions in a single request (up to 24), each specifying its amount, currency, type, and account. Transactions are grouped into collections and processed together.
+ *
  *
  * @deprecated
  */
@@ -1375,6 +1785,9 @@ export const transactionsCreate = <ThrowOnError extends boolean = false>(options
 
 /**
  * Retrieve transaction
+ *
+ * Return a single transaction belonging to the authenticated user by its transaction code, including amount, fees, balance, status, and related account details.
+ *
  */
 export const transactionsRetrieve = <ThrowOnError extends boolean = false>(options: Options<TransactionsRetrieveData, ThrowOnError>): RequestResult<TransactionsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<TransactionsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -1388,6 +1801,9 @@ export const transactionsRetrieve = <ThrowOnError extends boolean = false>(optio
 
 /**
  * Partially update transaction
+ *
+ * Partially update a transaction identified by its transaction code, typically to advance its status. Completed and failed transactions are immutable and cannot be changed.
+ *
  */
 export const transactionsPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<TransactionsPartialUpdateData, ThrowOnError>): RequestResult<TransactionsPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<TransactionsPartialUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -1405,6 +1821,9 @@ export const transactionsPartialUpdate = <ThrowOnError extends boolean = false>(
 
 /**
  * Update transaction
+ *
+ * Update a transaction identified by its transaction code, typically to advance its status. Completed and failed transactions are immutable and cannot be changed.
+ *
  */
 export const transactionsUpdate = <ThrowOnError extends boolean = false>(options: Options<TransactionsUpdateData, ThrowOnError>): RequestResult<TransactionsUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<TransactionsUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -1422,6 +1841,9 @@ export const transactionsUpdate = <ThrowOnError extends boolean = false>(options
 
 /**
  * List transaction messages
+ *
+ * List the messages attached to a transaction, most recent first. Messages carry notices and additional context recorded against the transaction.
+ *
  */
 export const transactionsMessagesList = <ThrowOnError extends boolean = false>(options: Options<TransactionsMessagesListData, ThrowOnError>): RequestResult<TransactionsMessagesListResponses, unknown, ThrowOnError> => (options.client ?? client).get<TransactionsMessagesListResponses, unknown, ThrowOnError>({
     security: [{
@@ -1435,6 +1857,9 @@ export const transactionsMessagesList = <ThrowOnError extends boolean = false>(o
 
 /**
  * Retrieve transaction message
+ *
+ * Return a single message attached to a transaction by its identifier.
+ *
  */
 export const transactionsMessagesRetrieve = <ThrowOnError extends boolean = false>(options: Options<TransactionsMessagesRetrieveData, ThrowOnError>): RequestResult<TransactionsMessagesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<TransactionsMessagesRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -1448,6 +1873,9 @@ export const transactionsMessagesRetrieve = <ThrowOnError extends boolean = fals
 
 /**
  * Create credit transaction
+ *
+ * Create a credit transaction that adds value to one of the authenticated user's accounts. Provide the amount, currency, and optionally the target account, subtype, reference, note, and metadata.
+ *
  *
  * @deprecated
  */
@@ -1468,6 +1896,9 @@ export const transactionsCreditCreate = <ThrowOnError extends boolean = false>(o
 /**
  * Create debit transaction
  *
+ * Create a debit transaction that removes value from one of the authenticated user's accounts. Provide the amount, currency, and optionally the source account, subtype, reference, note, and metadata.
+ *
+ *
  * @deprecated
  */
 export const transactionsDebitCreate = <ThrowOnError extends boolean = false>(options: Options<TransactionsDebitCreateData, ThrowOnError>): RequestResult<TransactionsDebitCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<TransactionsDebitCreateResponses, unknown, ThrowOnError>({
@@ -1486,6 +1917,9 @@ export const transactionsDebitCreate = <ThrowOnError extends boolean = false>(op
 
 /**
  * Retrieve transaction totals
+ *
+ * Return aggregate totals for the authenticated user's transactions, including the summed amount, total amount, fees, and transaction count. Totals cover the account's active currency by default, or the currency given as a query parameter, and honour the same filters as the transaction list.
+ *
  */
 export const transactionTotalsRetrieve = <ThrowOnError extends boolean = false>(options?: Options<TransactionTotalsRetrieveData, ThrowOnError>): RequestResult<TransactionTotalsRetrieveResponses, unknown, ThrowOnError> => (options?.client ?? client).get<TransactionTotalsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -1499,6 +1933,9 @@ export const transactionTotalsRetrieve = <ThrowOnError extends boolean = false>(
 
 /**
  * Create transfer transaction
+ *
+ * Create a transfer that moves value from the authenticated user's account to a recipient, generating a linked debit and credit for the given amount and currency. Optionally specify the recipient, the debit and credit accounts, and per-leg subtypes, references, notes, and metadata.
+ *
  *
  * @deprecated
  */
@@ -1518,6 +1955,9 @@ export const transactionsTransferCreate = <ThrowOnError extends boolean = false>
 
 /**
  * Retrieve user
+ *
+ * Return the profile of the authenticated user.
+ *
  */
 export const userRetrieve = <ThrowOnError extends boolean = false>(options?: Options<UserRetrieveData, ThrowOnError>): RequestResult<UserRetrieveResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UserRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -1531,6 +1971,9 @@ export const userRetrieve = <ThrowOnError extends boolean = false>(options?: Opt
 
 /**
  * Partially update user
+ *
+ * Partially update the authenticated user's profile, changing only the fields supplied.
+ *
  */
 export const userPartialUpdate = <ThrowOnError extends boolean = false>(options?: Options<UserPartialUpdateData, ThrowOnError>): RequestResult<UserPartialUpdateResponses, unknown, ThrowOnError> => (options?.client ?? client).patch<UserPartialUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -1549,6 +1992,9 @@ export const userPartialUpdate = <ThrowOnError extends boolean = false>(options?
 
 /**
  * Update user
+ *
+ * Update the authenticated user's profile.
+ *
  */
 export const userUpdate = <ThrowOnError extends boolean = false>(options: Options<UserUpdateData, ThrowOnError>): RequestResult<UserUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<UserUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -1567,6 +2013,9 @@ export const userUpdate = <ThrowOnError extends boolean = false>(options: Option
 
 /**
  * List addresses
+ *
+ * List the physical addresses on file for the authenticated user, most recent first.
+ *
  */
 export const userAddressesList = <ThrowOnError extends boolean = false>(options?: Options<UserAddressesListData, ThrowOnError>): RequestResult<UserAddressesListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UserAddressesListResponses, unknown, ThrowOnError>({
     security: [{
@@ -1580,6 +2029,9 @@ export const userAddressesList = <ThrowOnError extends boolean = false>(options?
 
 /**
  * Create address
+ *
+ * Add a physical address for the authenticated user. A new address starts in a pending verification state.
+ *
  */
 export const userAddressesCreate = <ThrowOnError extends boolean = false>(options?: Options<UserAddressesCreateData, ThrowOnError>): RequestResult<UserAddressesCreateResponses, unknown, ThrowOnError> => (options?.client ?? client).post<UserAddressesCreateResponses, unknown, ThrowOnError>({
     security: [{
@@ -1597,6 +2049,9 @@ export const userAddressesCreate = <ThrowOnError extends boolean = false>(option
 
 /**
  * Delete address
+ *
+ * Delete an address belonging to the authenticated user.
+ *
  */
 export const userAddressesDestroy = <ThrowOnError extends boolean = false>(options: Options<UserAddressesDestroyData, ThrowOnError>): RequestResult<UserAddressesDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<UserAddressesDestroyResponses, unknown, ThrowOnError>({
     security: [{
@@ -1610,6 +2065,9 @@ export const userAddressesDestroy = <ThrowOnError extends boolean = false>(optio
 
 /**
  * Retrieve address
+ *
+ * Return a single address belonging to the authenticated user.
+ *
  */
 export const userAddressesRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserAddressesRetrieveData, ThrowOnError>): RequestResult<UserAddressesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserAddressesRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -1623,6 +2081,9 @@ export const userAddressesRetrieve = <ThrowOnError extends boolean = false>(opti
 
 /**
  * Partially update address
+ *
+ * Partially update an address belonging to the authenticated user. Changing address details resets the address to a pending verification state.
+ *
  */
 export const userAddressesPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<UserAddressesPartialUpdateData, ThrowOnError>): RequestResult<UserAddressesPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<UserAddressesPartialUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -1640,6 +2101,9 @@ export const userAddressesPartialUpdate = <ThrowOnError extends boolean = false>
 
 /**
  * Update address
+ *
+ * Update an address belonging to the authenticated user. Changing address details resets the address to a pending verification state.
+ *
  */
 export const userAddressesUpdate = <ThrowOnError extends boolean = false>(options: Options<UserAddressesUpdateData, ThrowOnError>): RequestResult<UserAddressesUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<UserAddressesUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -1657,6 +2121,9 @@ export const userAddressesUpdate = <ThrowOnError extends boolean = false>(option
 
 /**
  * List bank accounts
+ *
+ * List the external bank accounts the authenticated user has linked. Results can be filtered by currency, account currency, verification status, action, name, number, and creation date.
+ *
  */
 export const userBankAccountsList = <ThrowOnError extends boolean = false>(options?: Options<UserBankAccountsListData, ThrowOnError>): RequestResult<UserBankAccountsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UserBankAccountsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -1670,6 +2137,9 @@ export const userBankAccountsList = <ThrowOnError extends boolean = false>(optio
 
 /**
  * Create bank account
+ *
+ * Link a new external bank account for the authenticated user. Supply the bank and account details (such as name, number, and bank identifiers); the account starts in a pending verification status.
+ *
  */
 export const userBankAccountsCreate = <ThrowOnError extends boolean = false>(options?: Options<UserBankAccountsCreateData, ThrowOnError>): RequestResult<UserBankAccountsCreateResponses, unknown, ThrowOnError> => (options?.client ?? client).post<UserBankAccountsCreateResponses, unknown, ThrowOnError>({
     security: [{
@@ -1687,6 +2157,9 @@ export const userBankAccountsCreate = <ThrowOnError extends boolean = false>(opt
 
 /**
  * Delete bank account
+ *
+ * Remove a linked bank account belonging to the authenticated user. Deposit accounts cannot be deleted.
+ *
  */
 export const userBankAccountsDestroy = <ThrowOnError extends boolean = false>(options: Options<UserBankAccountsDestroyData, ThrowOnError>): RequestResult<UserBankAccountsDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<UserBankAccountsDestroyResponses, unknown, ThrowOnError>({
     security: [{
@@ -1700,6 +2173,9 @@ export const userBankAccountsDestroy = <ThrowOnError extends boolean = false>(op
 
 /**
  * Retrieve bank account
+ *
+ * Return a single linked bank account belonging to the authenticated user, including the currencies and account currencies enabled on it.
+ *
  */
 export const userBankAccountsRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserBankAccountsRetrieveData, ThrowOnError>): RequestResult<UserBankAccountsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserBankAccountsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -1713,6 +2189,9 @@ export const userBankAccountsRetrieve = <ThrowOnError extends boolean = false>(o
 
 /**
  * Partially update bank account
+ *
+ * Partially update a linked bank account belonging to the authenticated user. Changing its details resets the account to a pending verification status. Deposit accounts cannot be modified.
+ *
  */
 export const userBankAccountsPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<UserBankAccountsPartialUpdateData, ThrowOnError>): RequestResult<UserBankAccountsPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<UserBankAccountsPartialUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -1730,6 +2209,9 @@ export const userBankAccountsPartialUpdate = <ThrowOnError extends boolean = fal
 
 /**
  * Update bank account
+ *
+ * Update a linked bank account belonging to the authenticated user. Changing its details resets the account to a pending verification status. Deposit accounts cannot be modified.
+ *
  */
 export const userBankAccountsUpdate = <ThrowOnError extends boolean = false>(options: Options<UserBankAccountsUpdateData, ThrowOnError>): RequestResult<UserBankAccountsUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<UserBankAccountsUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -1747,6 +2229,9 @@ export const userBankAccountsUpdate = <ThrowOnError extends boolean = false>(opt
 
 /**
  * List bank-accounts account currencies
+ *
+ * List the account currencies linked to one of the authenticated user's linked bank accounts.
+ *
  */
 export const userBankAccountsAccountCurrenciesList = <ThrowOnError extends boolean = false>(options: Options<UserBankAccountsAccountCurrenciesListData, ThrowOnError>): RequestResult<UserBankAccountsAccountCurrenciesListResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserBankAccountsAccountCurrenciesListResponses, unknown, ThrowOnError>({
     security: [{
@@ -1760,6 +2245,9 @@ export const userBankAccountsAccountCurrenciesList = <ThrowOnError extends boole
 
 /**
  * Create bank-accounts account currency
+ *
+ * Link an account currency to one of the authenticated user's linked bank accounts, identified by its account currency. Deposit accounts cannot be modified.
+ *
  */
 export const userBankAccountsAccountCurrenciesCreate = <ThrowOnError extends boolean = false>(options: Options<UserBankAccountsAccountCurrenciesCreateData, ThrowOnError>): RequestResult<UserBankAccountsAccountCurrenciesCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<UserBankAccountsAccountCurrenciesCreateResponses, unknown, ThrowOnError>({
     security: [{
@@ -1777,6 +2265,9 @@ export const userBankAccountsAccountCurrenciesCreate = <ThrowOnError extends boo
 
 /**
  * Delete bank-account account currency
+ *
+ * Remove an account currency from one of the authenticated user's linked bank accounts. Deposit accounts cannot be modified.
+ *
  */
 export const userBankAccountsAccountCurrenciesDestroy = <ThrowOnError extends boolean = false>(options: Options<UserBankAccountsAccountCurrenciesDestroyData, ThrowOnError>): RequestResult<UserBankAccountsAccountCurrenciesDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<UserBankAccountsAccountCurrenciesDestroyResponses, unknown, ThrowOnError>({
     security: [{
@@ -1790,6 +2281,9 @@ export const userBankAccountsAccountCurrenciesDestroy = <ThrowOnError extends bo
 
 /**
  * Retrieve bank-account account currency
+ *
+ * Return a single account currency linked to one of the authenticated user's linked bank accounts.
+ *
  */
 export const userBankAccountsAccountCurrenciesRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserBankAccountsAccountCurrenciesRetrieveData, ThrowOnError>): RequestResult<UserBankAccountsAccountCurrenciesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserBankAccountsAccountCurrenciesRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -1803,6 +2297,9 @@ export const userBankAccountsAccountCurrenciesRetrieve = <ThrowOnError extends b
 
 /**
  * List bank account currencies
+ *
+ * List the currencies enabled on one of the authenticated user's linked bank accounts.
+ *
  *
  * @deprecated
  */
@@ -1818,6 +2315,9 @@ export const userBankAccountsCurrenciesList = <ThrowOnError extends boolean = fa
 
 /**
  * Create bank account currency
+ *
+ * Enable a currency on one of the authenticated user's linked bank accounts, identified by its currency code. Deposit accounts cannot be modified.
+ *
  *
  * @deprecated
  */
@@ -1838,6 +2338,9 @@ export const userBankAccountsCurrenciesCreate = <ThrowOnError extends boolean = 
 /**
  * Delete bank account currency
  *
+ * Remove a currency from one of the authenticated user's linked bank accounts, identified by its currency code. Deposit accounts cannot be modified.
+ *
+ *
  * @deprecated
  */
 export const userBankAccountsCurrenciesDestroy = <ThrowOnError extends boolean = false>(options: Options<UserBankAccountsCurrenciesDestroyData, ThrowOnError>): RequestResult<UserBankAccountsCurrenciesDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<UserBankAccountsCurrenciesDestroyResponses, unknown, ThrowOnError>({
@@ -1853,6 +2356,9 @@ export const userBankAccountsCurrenciesDestroy = <ThrowOnError extends boolean =
 /**
  * Retrieve bank account currency
  *
+ * Return a single currency enabled on one of the authenticated user's linked bank accounts, identified by its currency code.
+ *
+ *
  * @deprecated
  */
 export const userBankAccountsCurrenciesRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserBankAccountsCurrenciesRetrieveData, ThrowOnError>): RequestResult<UserBankAccountsCurrenciesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserBankAccountsCurrenciesRetrieveResponses, unknown, ThrowOnError>({
@@ -1865,7 +2371,13 @@ export const userBankAccountsCurrenciesRetrieve = <ThrowOnError extends boolean 
     ...options
 });
 
-export const userBankAccountsDocumentsRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserBankAccountsDocumentsRetrieveData, ThrowOnError>): RequestResult<UserBankAccountsDocumentsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserBankAccountsDocumentsRetrieveResponses, unknown, ThrowOnError>({
+/**
+ * List bank account documents
+ *
+ * List the document types available for one of the authenticated user's linked bank accounts. Documents are only available for deposit accounts.
+ *
+ */
+export const userBankAccountsDocumentsList = <ThrowOnError extends boolean = false>(options: Options<UserBankAccountsDocumentsListData, ThrowOnError>): RequestResult<UserBankAccountsDocumentsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserBankAccountsDocumentsListResponses, unknown, ThrowOnError>({
     security: [{
             key: 'apiAuth',
             name: 'Authorization',
@@ -1875,7 +2387,13 @@ export const userBankAccountsDocumentsRetrieve = <ThrowOnError extends boolean =
     ...options
 });
 
-export const userBankAccountsDocumentsRetrieve2 = <ThrowOnError extends boolean = false>(options: Options<UserBankAccountsDocumentsRetrieve2Data, ThrowOnError>): RequestResult<UserBankAccountsDocumentsRetrieve2Responses, unknown, ThrowOnError> => (options.client ?? client).get<UserBankAccountsDocumentsRetrieve2Responses, unknown, ThrowOnError>({
+/**
+ * Retrieve bank account document
+ *
+ * Download a specific document for one of the authenticated user's linked bank accounts, identified by its document type. The document is returned as a file. Documents are only available for deposit accounts.
+ *
+ */
+export const userBankAccountsDocumentsRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserBankAccountsDocumentsRetrieveData, ThrowOnError>): RequestResult<UserBankAccountsDocumentsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserBankAccountsDocumentsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
             key: 'apiAuth',
             name: 'Authorization',
@@ -1887,6 +2405,9 @@ export const userBankAccountsDocumentsRetrieve2 = <ThrowOnError extends boolean 
 
 /**
  * List crypto accounts
+ *
+ * List the crypto accounts belonging to the authenticated user. Each account includes its blockchain address along with its enabled currencies, account currencies, and attestations. Results can be filtered by status, crypto type, action, currency, account currency, name, and creation date.
+ *
  */
 export const userCryptoAccountsList = <ThrowOnError extends boolean = false>(options?: Options<UserCryptoAccountsListData, ThrowOnError>): RequestResult<UserCryptoAccountsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UserCryptoAccountsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -1900,6 +2421,9 @@ export const userCryptoAccountsList = <ThrowOnError extends boolean = false>(opt
 
 /**
  * Create crypto account
+ *
+ * Create a crypto account for the authenticated user from a blockchain address. Accepts an optional name, network, owner, and metadata; the account starts in a pending verification status.
+ *
  */
 export const userCryptoAccountsCreate = <ThrowOnError extends boolean = false>(options: Options<UserCryptoAccountsCreateData, ThrowOnError>): RequestResult<UserCryptoAccountsCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<UserCryptoAccountsCreateResponses, unknown, ThrowOnError>({
     security: [{
@@ -1917,6 +2441,9 @@ export const userCryptoAccountsCreate = <ThrowOnError extends boolean = false>(o
 
 /**
  * Delete crypto account
+ *
+ * Delete a crypto account belonging to the authenticated user. Deposit accounts cannot be deleted.
+ *
  */
 export const userCryptoAccountsDestroy = <ThrowOnError extends boolean = false>(options: Options<UserCryptoAccountsDestroyData, ThrowOnError>): RequestResult<UserCryptoAccountsDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<UserCryptoAccountsDestroyResponses, unknown, ThrowOnError>({
     security: [{
@@ -1930,6 +2457,9 @@ export const userCryptoAccountsDestroy = <ThrowOnError extends boolean = false>(
 
 /**
  * Retrieve crypto account
+ *
+ * Return a single crypto account belonging to the authenticated user, including its address, enabled currencies, account currencies, and attestations.
+ *
  */
 export const userCryptoAccountsRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserCryptoAccountsRetrieveData, ThrowOnError>): RequestResult<UserCryptoAccountsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserCryptoAccountsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -1943,6 +2473,9 @@ export const userCryptoAccountsRetrieve = <ThrowOnError extends boolean = false>
 
 /**
  * Partially update crypto account
+ *
+ * Partially update a crypto account belonging to the authenticated user. Changing account details resets its verification status to pending. Deposit accounts cannot be modified.
+ *
  */
 export const userCryptoAccountsPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<UserCryptoAccountsPartialUpdateData, ThrowOnError>): RequestResult<UserCryptoAccountsPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<UserCryptoAccountsPartialUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -1960,6 +2493,9 @@ export const userCryptoAccountsPartialUpdate = <ThrowOnError extends boolean = f
 
 /**
  * Update crypto account
+ *
+ * Update a crypto account belonging to the authenticated user. Changing account details resets its verification status to pending. Deposit accounts cannot be modified.
+ *
  */
 export const userCryptoAccountsUpdate = <ThrowOnError extends boolean = false>(options: Options<UserCryptoAccountsUpdateData, ThrowOnError>): RequestResult<UserCryptoAccountsUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<UserCryptoAccountsUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -1977,6 +2513,9 @@ export const userCryptoAccountsUpdate = <ThrowOnError extends boolean = false>(o
 
 /**
  * List crypto-accounts account currencies
+ *
+ * List the account currencies enabled on a crypto account belonging to the authenticated user.
+ *
  */
 export const userCryptoAccountsAccountCurrenciesList = <ThrowOnError extends boolean = false>(options: Options<UserCryptoAccountsAccountCurrenciesListData, ThrowOnError>): RequestResult<UserCryptoAccountsAccountCurrenciesListResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserCryptoAccountsAccountCurrenciesListResponses, unknown, ThrowOnError>({
     security: [{
@@ -1990,6 +2529,9 @@ export const userCryptoAccountsAccountCurrenciesList = <ThrowOnError extends boo
 
 /**
  * Create crypto-accounts account currency
+ *
+ * Enable an account currency on a crypto account belonging to the authenticated user, identified by the account currency's identifier. Deposit accounts cannot be modified.
+ *
  */
 export const userCryptoAccountsAccountCurrenciesCreate = <ThrowOnError extends boolean = false>(options: Options<UserCryptoAccountsAccountCurrenciesCreateData, ThrowOnError>): RequestResult<UserCryptoAccountsAccountCurrenciesCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<UserCryptoAccountsAccountCurrenciesCreateResponses, unknown, ThrowOnError>({
     security: [{
@@ -2007,6 +2549,9 @@ export const userCryptoAccountsAccountCurrenciesCreate = <ThrowOnError extends b
 
 /**
  * Delete crypto-account account currency
+ *
+ * Remove an account currency from a crypto account belonging to the authenticated user. Deposit accounts cannot be modified.
+ *
  */
 export const userCryptoAccountsAccountCurrenciesDestroy = <ThrowOnError extends boolean = false>(options: Options<UserCryptoAccountsAccountCurrenciesDestroyData, ThrowOnError>): RequestResult<UserCryptoAccountsAccountCurrenciesDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<UserCryptoAccountsAccountCurrenciesDestroyResponses, unknown, ThrowOnError>({
     security: [{
@@ -2020,6 +2565,9 @@ export const userCryptoAccountsAccountCurrenciesDestroy = <ThrowOnError extends 
 
 /**
  * Retrieve crypto-account account currency
+ *
+ * Return a single account currency enabled on a crypto account belonging to the authenticated user.
+ *
  */
 export const userCryptoAccountsAccountCurrenciesRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserCryptoAccountsAccountCurrenciesRetrieveData, ThrowOnError>): RequestResult<UserCryptoAccountsAccountCurrenciesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserCryptoAccountsAccountCurrenciesRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -2031,6 +2579,12 @@ export const userCryptoAccountsAccountCurrenciesRetrieve = <ThrowOnError extends
     ...options
 });
 
+/**
+ * List crypto account attestations
+ *
+ * List the attestations recorded for a crypto account belonging to the authenticated user. An attestation proves ownership or verification of the account's address. Results are paginated.
+ *
+ */
 export const userCryptoAccountsAttestationsList = <ThrowOnError extends boolean = false>(options: Options<UserCryptoAccountsAttestationsListData, ThrowOnError>): RequestResult<UserCryptoAccountsAttestationsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserCryptoAccountsAttestationsListResponses, unknown, ThrowOnError>({
     security: [{
             key: 'apiAuth',
@@ -2041,6 +2595,12 @@ export const userCryptoAccountsAttestationsList = <ThrowOnError extends boolean 
     ...options
 });
 
+/**
+ * Create crypto account attestation
+ *
+ * Create an attestation for a crypto account belonging to the authenticated user, proving ownership or verification of the account's address. Requires the attestation type; an account can be attested only once per type, and deposit accounts cannot be attested.
+ *
+ */
 export const userCryptoAccountsAttestationsCreate = <ThrowOnError extends boolean = false>(options: Options<UserCryptoAccountsAttestationsCreateData, ThrowOnError>): RequestResult<UserCryptoAccountsAttestationsCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<UserCryptoAccountsAttestationsCreateResponses, unknown, ThrowOnError>({
     security: [{
             key: 'apiAuth',
@@ -2055,6 +2615,12 @@ export const userCryptoAccountsAttestationsCreate = <ThrowOnError extends boolea
     }
 });
 
+/**
+ * Retrieve crypto account attestation
+ *
+ * Return a single attestation recorded for a crypto account belonging to the authenticated user, identified by its identifier.
+ *
+ */
 export const userCryptoAccountsAttestationsRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserCryptoAccountsAttestationsRetrieveData, ThrowOnError>): RequestResult<UserCryptoAccountsAttestationsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserCryptoAccountsAttestationsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
             key: 'apiAuth',
@@ -2067,6 +2633,9 @@ export const userCryptoAccountsAttestationsRetrieve = <ThrowOnError extends bool
 
 /**
  * List crypto account currencies
+ *
+ * List the currencies enabled on a crypto account belonging to the authenticated user.
+ *
  *
  * @deprecated
  */
@@ -2082,6 +2651,9 @@ export const userCryptoAccountsCurrenciesList = <ThrowOnError extends boolean = 
 
 /**
  * Create crypto account currency
+ *
+ * Enable a currency on a crypto account belonging to the authenticated user, identified by its currency code. Deposit accounts cannot be modified.
+ *
  *
  * @deprecated
  */
@@ -2102,6 +2674,9 @@ export const userCryptoAccountsCurrenciesCreate = <ThrowOnError extends boolean 
 /**
  * Delete crypto account currency
  *
+ * Remove a currency from a crypto account belonging to the authenticated user, identified by its currency code. Deposit accounts cannot be modified.
+ *
+ *
  * @deprecated
  */
 export const userCryptoAccountsCurrenciesDestroy = <ThrowOnError extends boolean = false>(options: Options<UserCryptoAccountsCurrenciesDestroyData, ThrowOnError>): RequestResult<UserCryptoAccountsCurrenciesDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<UserCryptoAccountsCurrenciesDestroyResponses, unknown, ThrowOnError>({
@@ -2117,6 +2692,9 @@ export const userCryptoAccountsCurrenciesDestroy = <ThrowOnError extends boolean
 /**
  * Retrieve crypto account currency
  *
+ * Return a single currency enabled on a crypto account belonging to the authenticated user, identified by its currency code.
+ *
+ *
  * @deprecated
  */
 export const userCryptoAccountsCurrenciesRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserCryptoAccountsCurrenciesRetrieveData, ThrowOnError>): RequestResult<UserCryptoAccountsCurrenciesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserCryptoAccountsCurrenciesRetrieveResponses, unknown, ThrowOnError>({
@@ -2131,6 +2709,9 @@ export const userCryptoAccountsCurrenciesRetrieve = <ThrowOnError extends boolea
 
 /**
  * List devices
+ *
+ * List the devices registered by the authenticated user, each including its registered push-notification apps. Results can be filtered by device IMEI.
+ *
  */
 export const userDevicesList = <ThrowOnError extends boolean = false>(options?: Options<UserDevicesListData, ThrowOnError>): RequestResult<UserDevicesListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UserDevicesListResponses, unknown, ThrowOnError>({
     security: [{
@@ -2144,6 +2725,9 @@ export const userDevicesList = <ThrowOnError extends boolean = false>(options?: 
 
 /**
  * Create device
+ *
+ * Register a device for the authenticated user. Requires the device IMEI and accepts an optional name and metadata.
+ *
  */
 export const userDevicesCreate = <ThrowOnError extends boolean = false>(options: Options<UserDevicesCreateData, ThrowOnError>): RequestResult<UserDevicesCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<UserDevicesCreateResponses, unknown, ThrowOnError>({
     security: [{
@@ -2161,6 +2745,9 @@ export const userDevicesCreate = <ThrowOnError extends boolean = false>(options:
 
 /**
  * Delete device app
+ *
+ * Remove a push-notification app registered on a device belonging to the authenticated user.
+ *
  */
 export const userDevicesAppsDestroy = <ThrowOnError extends boolean = false>(options: Options<UserDevicesAppsDestroyData, ThrowOnError>): RequestResult<UserDevicesAppsDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<UserDevicesAppsDestroyResponses, unknown, ThrowOnError>({
     security: [{
@@ -2174,6 +2761,9 @@ export const userDevicesAppsDestroy = <ThrowOnError extends boolean = false>(opt
 
 /**
  * Retrieve device app
+ *
+ * Return a single push-notification app registered on a device belonging to the authenticated user.
+ *
  */
 export const userDevicesAppsRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserDevicesAppsRetrieveData, ThrowOnError>): RequestResult<UserDevicesAppsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserDevicesAppsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -2187,6 +2777,9 @@ export const userDevicesAppsRetrieve = <ThrowOnError extends boolean = false>(op
 
 /**
  * Partially update device app
+ *
+ * Partially update a push-notification app registered on a device belonging to the authenticated user, such as its name.
+ *
  */
 export const userDevicesAppsPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<UserDevicesAppsPartialUpdateData, ThrowOnError>): RequestResult<UserDevicesAppsPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<UserDevicesAppsPartialUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -2204,6 +2797,9 @@ export const userDevicesAppsPartialUpdate = <ThrowOnError extends boolean = fals
 
 /**
  * Update device app
+ *
+ * Update a push-notification app registered on a device belonging to the authenticated user, such as its name.
+ *
  */
 export const userDevicesAppsUpdate = <ThrowOnError extends boolean = false>(options: Options<UserDevicesAppsUpdateData, ThrowOnError>): RequestResult<UserDevicesAppsUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<UserDevicesAppsUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -2221,6 +2817,9 @@ export const userDevicesAppsUpdate = <ThrowOnError extends boolean = false>(opti
 
 /**
  * Delete device
+ *
+ * Delete a device registered by the authenticated user.
+ *
  */
 export const userDevicesDestroy = <ThrowOnError extends boolean = false>(options: Options<UserDevicesDestroyData, ThrowOnError>): RequestResult<UserDevicesDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<UserDevicesDestroyResponses, unknown, ThrowOnError>({
     security: [{
@@ -2234,6 +2833,9 @@ export const userDevicesDestroy = <ThrowOnError extends boolean = false>(options
 
 /**
  * Retrieve device
+ *
+ * Return a single device registered by the authenticated user, including its registered push-notification apps.
+ *
  */
 export const userDevicesRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserDevicesRetrieveData, ThrowOnError>): RequestResult<UserDevicesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserDevicesRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -2247,6 +2849,9 @@ export const userDevicesRetrieve = <ThrowOnError extends boolean = false>(option
 
 /**
  * Partially update device
+ *
+ * Partially update a device registered by the authenticated user, such as its name and metadata.
+ *
  */
 export const userDevicesPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<UserDevicesPartialUpdateData, ThrowOnError>): RequestResult<UserDevicesPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<UserDevicesPartialUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -2264,6 +2869,9 @@ export const userDevicesPartialUpdate = <ThrowOnError extends boolean = false>(o
 
 /**
  * Update device
+ *
+ * Update a device registered by the authenticated user, such as its name and metadata.
+ *
  */
 export const userDevicesUpdate = <ThrowOnError extends boolean = false>(options: Options<UserDevicesUpdateData, ThrowOnError>): RequestResult<UserDevicesUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<UserDevicesUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -2281,6 +2889,9 @@ export const userDevicesUpdate = <ThrowOnError extends boolean = false>(options:
 
 /**
  * List device apps
+ *
+ * List the push-notification app registrations for a device belonging to the authenticated user. Results are paginated.
+ *
  */
 export const userDevicesAppsList = <ThrowOnError extends boolean = false>(options: Options<UserDevicesAppsListData, ThrowOnError>): RequestResult<UserDevicesAppsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserDevicesAppsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -2294,6 +2905,9 @@ export const userDevicesAppsList = <ThrowOnError extends boolean = false>(option
 
 /**
  * Create device app
+ *
+ * Register a push-notification app on a device belonging to the authenticated user. Requires the app type and accepts a name and push token; a device cannot have two apps with the same type and token.
+ *
  */
 export const userDevicesAppsCreate = <ThrowOnError extends boolean = false>(options: Options<UserDevicesAppsCreateData, ThrowOnError>): RequestResult<UserDevicesAppsCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<UserDevicesAppsCreateResponses, unknown, ThrowOnError>({
     security: [{
@@ -2311,6 +2925,9 @@ export const userDevicesAppsCreate = <ThrowOnError extends boolean = false>(opti
 
 /**
  * List documents
+ *
+ * List the KYC and identity documents uploaded by the authenticated user. Results are paginated.
+ *
  */
 export const userDocumentsList = <ThrowOnError extends boolean = false>(options?: Options<UserDocumentsListData, ThrowOnError>): RequestResult<UserDocumentsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UserDocumentsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -2324,6 +2941,9 @@ export const userDocumentsList = <ThrowOnError extends boolean = false>(options?
 
 /**
  * Create document
+ *
+ * Upload a KYC or identity document for the authenticated user against a document type. Accepts either a single file or, when the document type defines file rules, multiple files. The document starts in a pending verification status.
+ *
  */
 export const userDocumentsCreate = <ThrowOnError extends boolean = false>(options: Options<UserDocumentsCreateData, ThrowOnError>): RequestResult<UserDocumentsCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<UserDocumentsCreateResponses, unknown, ThrowOnError>({
     security: [{
@@ -2340,6 +2960,12 @@ export const userDocumentsCreate = <ThrowOnError extends boolean = false>(option
     }
 });
 
+/**
+ * Delete document
+ *
+ * Delete a KYC or identity document uploaded by the authenticated user. Only documents still pending verification can be deleted.
+ *
+ */
 export const userDocumentsDestroy = <ThrowOnError extends boolean = false>(options: Options<UserDocumentsDestroyData, ThrowOnError>): RequestResult<UserDocumentsDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<UserDocumentsDestroyResponses, unknown, ThrowOnError>({
     security: [{
             key: 'apiAuth',
@@ -2352,6 +2978,9 @@ export const userDocumentsDestroy = <ThrowOnError extends boolean = false>(optio
 
 /**
  * Retrieve document
+ *
+ * Return a single KYC or identity document uploaded by the authenticated user.
+ *
  */
 export const userDocumentsRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserDocumentsRetrieveData, ThrowOnError>): RequestResult<UserDocumentsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserDocumentsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -2365,6 +2994,9 @@ export const userDocumentsRetrieve = <ThrowOnError extends boolean = false>(opti
 
 /**
  * List emails
+ *
+ * List the email addresses registered to the authenticated user, most recent first.
+ *
  */
 export const userEmailsList = <ThrowOnError extends boolean = false>(options?: Options<UserEmailsListData, ThrowOnError>): RequestResult<UserEmailsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UserEmailsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -2378,6 +3010,9 @@ export const userEmailsList = <ThrowOnError extends boolean = false>(options?: O
 
 /**
  * Create email
+ *
+ * Add an email address for the authenticated user. The address must be unique within the company and is created unverified.
+ *
  */
 export const userEmailsCreate = <ThrowOnError extends boolean = false>(options: Options<UserEmailsCreateData, ThrowOnError>): RequestResult<UserEmailsCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<UserEmailsCreateResponses, unknown, ThrowOnError>({
     security: [{
@@ -2395,6 +3030,9 @@ export const userEmailsCreate = <ThrowOnError extends boolean = false>(options: 
 
 /**
  * Delete email
+ *
+ * Delete an email address belonging to the authenticated user. The user's primary email address cannot be deleted.
+ *
  */
 export const userEmailsDestroy = <ThrowOnError extends boolean = false>(options: Options<UserEmailsDestroyData, ThrowOnError>): RequestResult<UserEmailsDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<UserEmailsDestroyResponses, unknown, ThrowOnError>({
     security: [{
@@ -2408,6 +3046,9 @@ export const userEmailsDestroy = <ThrowOnError extends boolean = false>(options:
 
 /**
  * Retrieve email
+ *
+ * Return a single email address belonging to the authenticated user.
+ *
  */
 export const userEmailsRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserEmailsRetrieveData, ThrowOnError>): RequestResult<UserEmailsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserEmailsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -2421,6 +3062,9 @@ export const userEmailsRetrieve = <ThrowOnError extends boolean = false>(options
 
 /**
  * Partially update email
+ *
+ * Partially update an email address belonging to the authenticated user.
+ *
  */
 export const userEmailsPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<UserEmailsPartialUpdateData, ThrowOnError>): RequestResult<UserEmailsPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<UserEmailsPartialUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -2438,6 +3082,9 @@ export const userEmailsPartialUpdate = <ThrowOnError extends boolean = false>(op
 
 /**
  * Update email
+ *
+ * Update an email address belonging to the authenticated user.
+ *
  */
 export const userEmailsUpdate = <ThrowOnError extends boolean = false>(options: Options<UserEmailsUpdateData, ThrowOnError>): RequestResult<UserEmailsUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<UserEmailsUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -2455,6 +3102,9 @@ export const userEmailsUpdate = <ThrowOnError extends boolean = false>(options: 
 
 /**
  * List legal terms
+ *
+ * List the legal terms that apply to the authenticated user, based on their company and group memberships. Results are paginated and can be filtered.
+ *
  */
 export const userLegalTermsList = <ThrowOnError extends boolean = false>(options?: Options<UserLegalTermsListData, ThrowOnError>): RequestResult<UserLegalTermsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UserLegalTermsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -2468,6 +3118,9 @@ export const userLegalTermsList = <ThrowOnError extends boolean = false>(options
 
 /**
  * Retrieve legal term
+ *
+ * Return a single legal term that applies to the authenticated user.
+ *
  */
 export const userLegalTermsRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserLegalTermsRetrieveData, ThrowOnError>): RequestResult<UserLegalTermsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserLegalTermsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -2481,6 +3134,9 @@ export const userLegalTermsRetrieve = <ThrowOnError extends boolean = false>(opt
 
 /**
  * List legal term version
+ *
+ * List the versions of a legal term that applies to the authenticated user, most recent first.
+ *
  */
 export const userLegalTermsVersionsList = <ThrowOnError extends boolean = false>(options: Options<UserLegalTermsVersionsListData, ThrowOnError>): RequestResult<UserLegalTermsVersionsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserLegalTermsVersionsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -2494,6 +3150,9 @@ export const userLegalTermsVersionsList = <ThrowOnError extends boolean = false>
 
 /**
  * Retrieve legal term version
+ *
+ * Return a single version of a legal term that applies to the authenticated user.
+ *
  */
 export const userLegalTermsVersionsRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserLegalTermsVersionsRetrieveData, ThrowOnError>): RequestResult<UserLegalTermsVersionsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserLegalTermsVersionsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -2507,6 +3166,9 @@ export const userLegalTermsVersionsRetrieve = <ThrowOnError extends boolean = fa
 
 /**
  * Partially update legal term version
+ *
+ * Record the authenticated user's acceptance of a legal term version. Only acceptance can be set, and a version that the user has already accepted cannot be accepted again.
+ *
  */
 export const userLegalTermsVersionsPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<UserLegalTermsVersionsPartialUpdateData, ThrowOnError>): RequestResult<UserLegalTermsVersionsPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<UserLegalTermsVersionsPartialUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -2524,6 +3186,9 @@ export const userLegalTermsVersionsPartialUpdate = <ThrowOnError extends boolean
 
 /**
  * Update legal term version
+ *
+ * Record the authenticated user's acceptance of a legal term version. Only acceptance can be set, and a version that the user has already accepted cannot be accepted again.
+ *
  */
 export const userLegalTermsVersionsUpdate = <ThrowOnError extends boolean = false>(options: Options<UserLegalTermsVersionsUpdateData, ThrowOnError>): RequestResult<UserLegalTermsVersionsUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<UserLegalTermsVersionsUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -2541,6 +3206,9 @@ export const userLegalTermsVersionsUpdate = <ThrowOnError extends boolean = fals
 
 /**
  * List messages
+ *
+ * List the messages addressed to the authenticated user. Returns the user's own non-archived messages, most recent first.
+ *
  */
 export const userMessagesList = <ThrowOnError extends boolean = false>(options?: Options<UserMessagesListData, ThrowOnError>): RequestResult<UserMessagesListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UserMessagesListResponses, unknown, ThrowOnError>({
     security: [{
@@ -2554,6 +3222,9 @@ export const userMessagesList = <ThrowOnError extends boolean = false>(options?:
 
 /**
  * Retrieve message
+ *
+ * Return a single message belonging to the authenticated user.
+ *
  */
 export const userMessagesRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserMessagesRetrieveData, ThrowOnError>): RequestResult<UserMessagesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserMessagesRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -2567,6 +3238,9 @@ export const userMessagesRetrieve = <ThrowOnError extends boolean = false>(optio
 
 /**
  * List mobiles
+ *
+ * List the mobile numbers registered to the authenticated user, most recent first.
+ *
  */
 export const userMobilesList = <ThrowOnError extends boolean = false>(options?: Options<UserMobilesListData, ThrowOnError>): RequestResult<UserMobilesListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UserMobilesListResponses, unknown, ThrowOnError>({
     security: [{
@@ -2580,6 +3254,9 @@ export const userMobilesList = <ThrowOnError extends boolean = false>(options?: 
 
 /**
  * Create mobile
+ *
+ * Add a mobile number for the authenticated user. The number must be unique within the company and is created unverified.
+ *
  */
 export const userMobilesCreate = <ThrowOnError extends boolean = false>(options: Options<UserMobilesCreateData, ThrowOnError>): RequestResult<UserMobilesCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<UserMobilesCreateResponses, unknown, ThrowOnError>({
     security: [{
@@ -2597,6 +3274,9 @@ export const userMobilesCreate = <ThrowOnError extends boolean = false>(options:
 
 /**
  * Delete mobile
+ *
+ * Delete a mobile number belonging to the authenticated user. The user's primary mobile number cannot be deleted.
+ *
  */
 export const userMobilesDestroy = <ThrowOnError extends boolean = false>(options: Options<UserMobilesDestroyData, ThrowOnError>): RequestResult<UserMobilesDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<UserMobilesDestroyResponses, unknown, ThrowOnError>({
     security: [{
@@ -2610,6 +3290,9 @@ export const userMobilesDestroy = <ThrowOnError extends boolean = false>(options
 
 /**
  * Retrieve mobile
+ *
+ * Return a single mobile number belonging to the authenticated user.
+ *
  */
 export const userMobilesRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserMobilesRetrieveData, ThrowOnError>): RequestResult<UserMobilesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserMobilesRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -2623,6 +3306,9 @@ export const userMobilesRetrieve = <ThrowOnError extends boolean = false>(option
 
 /**
  * Partially update mobile
+ *
+ * Partially update a mobile number belonging to the authenticated user.
+ *
  */
 export const userMobilesPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<UserMobilesPartialUpdateData, ThrowOnError>): RequestResult<UserMobilesPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<UserMobilesPartialUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -2640,6 +3326,9 @@ export const userMobilesPartialUpdate = <ThrowOnError extends boolean = false>(o
 
 /**
  * Update mobile
+ *
+ * Update a mobile number belonging to the authenticated user.
+ *
  */
 export const userMobilesUpdate = <ThrowOnError extends boolean = false>(options: Options<UserMobilesUpdateData, ThrowOnError>): RequestResult<UserMobilesUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<UserMobilesUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -2657,6 +3346,9 @@ export const userMobilesUpdate = <ThrowOnError extends boolean = false>(options:
 
 /**
  * List wallet accounts
+ *
+ * List the Rehive-hosted wallet accounts belonging to the authenticated user. Results can be filtered by currency, account currency, verification status, action, name, and creation date.
+ *
  */
 export const userWalletAccountsList = <ThrowOnError extends boolean = false>(options?: Options<UserWalletAccountsListData, ThrowOnError>): RequestResult<UserWalletAccountsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UserWalletAccountsListResponses, unknown, ThrowOnError>({
     security: [{
@@ -2670,6 +3362,9 @@ export const userWalletAccountsList = <ThrowOnError extends boolean = false>(opt
 
 /**
  * Create wallet account
+ *
+ * Create a new Rehive-hosted wallet account for the authenticated user. The account starts in a pending verification status.
+ *
  */
 export const userWalletAccountsCreate = <ThrowOnError extends boolean = false>(options?: Options<UserWalletAccountsCreateData, ThrowOnError>): RequestResult<UserWalletAccountsCreateResponses, unknown, ThrowOnError> => (options?.client ?? client).post<UserWalletAccountsCreateResponses, unknown, ThrowOnError>({
     security: [{
@@ -2687,6 +3382,9 @@ export const userWalletAccountsCreate = <ThrowOnError extends boolean = false>(o
 
 /**
  * Delete wallet account
+ *
+ * Delete a wallet account belonging to the authenticated user. Deposit accounts cannot be deleted.
+ *
  */
 export const userWalletAccountsDestroy = <ThrowOnError extends boolean = false>(options: Options<UserWalletAccountsDestroyData, ThrowOnError>): RequestResult<UserWalletAccountsDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<UserWalletAccountsDestroyResponses, unknown, ThrowOnError>({
     security: [{
@@ -2700,6 +3398,9 @@ export const userWalletAccountsDestroy = <ThrowOnError extends boolean = false>(
 
 /**
  * Retrieve wallet account
+ *
+ * Return a single wallet account belonging to the authenticated user, including the currencies and account currencies enabled on it.
+ *
  */
 export const userWalletAccountsRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserWalletAccountsRetrieveData, ThrowOnError>): RequestResult<UserWalletAccountsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserWalletAccountsRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -2713,6 +3414,9 @@ export const userWalletAccountsRetrieve = <ThrowOnError extends boolean = false>
 
 /**
  * Partially update wallet account
+ *
+ * Partially update a wallet account belonging to the authenticated user. Changing its details resets the account to a pending verification status. Deposit accounts cannot be modified.
+ *
  */
 export const userWalletAccountsPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<UserWalletAccountsPartialUpdateData, ThrowOnError>): RequestResult<UserWalletAccountsPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<UserWalletAccountsPartialUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -2730,6 +3434,9 @@ export const userWalletAccountsPartialUpdate = <ThrowOnError extends boolean = f
 
 /**
  * Update wallet account
+ *
+ * Update a wallet account belonging to the authenticated user. Changing its details resets the account to a pending verification status. Deposit accounts cannot be modified.
+ *
  */
 export const userWalletAccountsUpdate = <ThrowOnError extends boolean = false>(options: Options<UserWalletAccountsUpdateData, ThrowOnError>): RequestResult<UserWalletAccountsUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<UserWalletAccountsUpdateResponses, unknown, ThrowOnError>({
     security: [{
@@ -2747,6 +3454,9 @@ export const userWalletAccountsUpdate = <ThrowOnError extends boolean = false>(o
 
 /**
  * List wallet-accounts account currencies
+ *
+ * List the account currencies linked to one of the authenticated user's wallet accounts.
+ *
  */
 export const userWalletAccountsAccountCurrenciesList = <ThrowOnError extends boolean = false>(options: Options<UserWalletAccountsAccountCurrenciesListData, ThrowOnError>): RequestResult<UserWalletAccountsAccountCurrenciesListResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserWalletAccountsAccountCurrenciesListResponses, unknown, ThrowOnError>({
     security: [{
@@ -2760,6 +3470,9 @@ export const userWalletAccountsAccountCurrenciesList = <ThrowOnError extends boo
 
 /**
  * Create wallet-accounts account currency
+ *
+ * Link an account currency to one of the authenticated user's wallet accounts, identified by its account currency. Deposit accounts cannot be modified.
+ *
  */
 export const userWalletAccountsAccountCurrenciesCreate = <ThrowOnError extends boolean = false>(options: Options<UserWalletAccountsAccountCurrenciesCreateData, ThrowOnError>): RequestResult<UserWalletAccountsAccountCurrenciesCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<UserWalletAccountsAccountCurrenciesCreateResponses, unknown, ThrowOnError>({
     security: [{
@@ -2777,6 +3490,9 @@ export const userWalletAccountsAccountCurrenciesCreate = <ThrowOnError extends b
 
 /**
  * Delete wallet-account account currency
+ *
+ * Remove an account currency from one of the authenticated user's wallet accounts. Deposit accounts cannot be modified.
+ *
  */
 export const userWalletAccountsAccountCurrenciesDestroy = <ThrowOnError extends boolean = false>(options: Options<UserWalletAccountsAccountCurrenciesDestroyData, ThrowOnError>): RequestResult<UserWalletAccountsAccountCurrenciesDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<UserWalletAccountsAccountCurrenciesDestroyResponses, unknown, ThrowOnError>({
     security: [{
@@ -2790,6 +3506,9 @@ export const userWalletAccountsAccountCurrenciesDestroy = <ThrowOnError extends 
 
 /**
  * Retrieve wallet-account account currency
+ *
+ * Return a single account currency linked to one of the authenticated user's wallet accounts.
+ *
  */
 export const userWalletAccountsAccountCurrenciesRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserWalletAccountsAccountCurrenciesRetrieveData, ThrowOnError>): RequestResult<UserWalletAccountsAccountCurrenciesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserWalletAccountsAccountCurrenciesRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -2803,6 +3522,9 @@ export const userWalletAccountsAccountCurrenciesRetrieve = <ThrowOnError extends
 
 /**
  * List wallet account currencies
+ *
+ * List the currencies enabled on one of the authenticated user's wallet accounts.
+ *
  *
  * @deprecated
  */
@@ -2818,6 +3540,9 @@ export const userWalletAccountsCurrenciesList = <ThrowOnError extends boolean = 
 
 /**
  * Create wallet account currency
+ *
+ * Enable a currency on one of the authenticated user's wallet accounts, identified by its currency code. Deposit accounts cannot be modified.
+ *
  *
  * @deprecated
  */
@@ -2838,6 +3563,9 @@ export const userWalletAccountsCurrenciesCreate = <ThrowOnError extends boolean 
 /**
  * Delete wallet account currency
  *
+ * Remove a currency from one of the authenticated user's wallet accounts, identified by its currency code. Deposit accounts cannot be modified.
+ *
+ *
  * @deprecated
  */
 export const userWalletAccountsCurrenciesDestroy = <ThrowOnError extends boolean = false>(options: Options<UserWalletAccountsCurrenciesDestroyData, ThrowOnError>): RequestResult<UserWalletAccountsCurrenciesDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<UserWalletAccountsCurrenciesDestroyResponses, unknown, ThrowOnError>({
@@ -2852,6 +3580,9 @@ export const userWalletAccountsCurrenciesDestroy = <ThrowOnError extends boolean
 
 /**
  * Retrieve wallet account currency
+ *
+ * Return a single currency enabled on one of the authenticated user's wallet accounts, identified by its currency code.
+ *
  *
  * @deprecated
  */

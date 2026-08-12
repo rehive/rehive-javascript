@@ -8,7 +8,7 @@ jest.mock('../../platform/user/openapi-ts/sdk.gen.js', () => ({
   authRegister: jest.fn(),
   authRegisterCompany: jest.fn(),
   authLogout: jest.fn(),
-  authRefreshCreate: jest.fn(),
+  authRefresh: jest.fn(),
 }));
 
 jest.mock('../../platform/user/openapi-ts/client/index.js', () => ({

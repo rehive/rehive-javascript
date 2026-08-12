@@ -72,6 +72,11 @@ export type AdminCreateUpdateNotification = {
     text_message?: string | null;
     sms_message?: string | null;
     push_message?: string | null;
+    whatsapp_content_sid?: string | null;
+    whatsapp_content_variables?: {
+        [key: string]: unknown;
+    } | null;
+    use_twilio_verify?: boolean;
     enabled?: boolean;
     preference_enabled?: boolean;
     event?: string | null;
@@ -124,7 +129,11 @@ export type AdminLog = {
     readonly html_message: string | null;
     readonly sms_message: string | null;
     readonly push_message: string | null;
+    whatsapp_content_sid?: string | null;
+    readonly whatsapp_variables: string | null;
+    use_twilio_verify?: boolean;
     sent?: boolean;
+    sent_via_whatsapp?: boolean;
     received?: boolean | null;
     error_message?: string | null;
     readonly created: number;
@@ -163,6 +172,11 @@ export type AdminNotification = {
     text_message?: string | null;
     sms_message?: string | null;
     push_message?: string | null;
+    whatsapp_content_sid?: string | null;
+    whatsapp_content_variables?: {
+        [key: string]: unknown;
+    } | null;
+    use_twilio_verify?: boolean;
     enabled?: boolean;
     preference_enabled?: boolean;
     readonly event: string;
@@ -211,6 +225,7 @@ export type AdminTemplate = {
     text_message?: string | null;
     sms_message?: string | null;
     push_message?: string | null;
+    use_twilio_verify?: boolean;
     enabled?: boolean;
     preference_enabled?: boolean;
     readonly event: string;
@@ -457,6 +472,11 @@ export type PatchedAdminCreateUpdateNotification = {
     text_message?: string | null;
     sms_message?: string | null;
     push_message?: string | null;
+    whatsapp_content_sid?: string | null;
+    whatsapp_content_variables?: {
+        [key: string]: unknown;
+    } | null;
+    use_twilio_verify?: boolean;
     enabled?: boolean;
     preference_enabled?: boolean;
     event?: string | null;
@@ -528,6 +548,8 @@ export type PatchedUserLog = {
     readonly html_message?: string | null;
     readonly sms_message?: string | null;
     readonly push_message?: string | null;
+    readonly whatsapp_content_sid?: string | null;
+    readonly whatsapp_variables?: string | null;
     readonly created?: number;
     readonly updated?: string;
     received?: boolean;
@@ -592,6 +614,8 @@ export type UserLog = {
     readonly html_message: string | null;
     readonly sms_message: string | null;
     readonly push_message: string | null;
+    readonly whatsapp_content_sid: string | null;
+    readonly whatsapp_variables: string | null;
     readonly created: number;
     readonly updated: string;
     received: boolean;
@@ -679,6 +703,11 @@ export type AdminCreateUpdateNotificationWritable = {
     text_message?: string | null;
     sms_message?: string | null;
     push_message?: string | null;
+    whatsapp_content_sid?: string | null;
+    whatsapp_content_variables?: {
+        [key: string]: unknown;
+    } | null;
+    use_twilio_verify?: boolean;
     enabled?: boolean;
     preference_enabled?: boolean;
     event?: string | null;
@@ -715,7 +744,10 @@ export type AdminCredentialResponseWritable = {
  */
 export type AdminLogWritable = {
     recipient: string;
+    whatsapp_content_sid?: string | null;
+    use_twilio_verify?: boolean;
     sent?: boolean;
+    sent_via_whatsapp?: boolean;
     received?: boolean | null;
     error_message?: string | null;
 };
@@ -737,6 +769,11 @@ export type AdminNotificationWritable = {
     text_message?: string | null;
     sms_message?: string | null;
     push_message?: string | null;
+    whatsapp_content_sid?: string | null;
+    whatsapp_content_variables?: {
+        [key: string]: unknown;
+    } | null;
+    use_twilio_verify?: boolean;
     enabled?: boolean;
     preference_enabled?: boolean;
     to_email?: string | null;
@@ -772,6 +809,7 @@ export type AdminTemplateWritable = {
     text_message?: string | null;
     sms_message?: string | null;
     push_message?: string | null;
+    use_twilio_verify?: boolean;
     enabled?: boolean;
     preference_enabled?: boolean;
     to_email?: string | null;
@@ -948,6 +986,11 @@ export type PatchedAdminCreateUpdateNotificationWritable = {
     text_message?: string | null;
     sms_message?: string | null;
     push_message?: string | null;
+    whatsapp_content_sid?: string | null;
+    whatsapp_content_variables?: {
+        [key: string]: unknown;
+    } | null;
+    use_twilio_verify?: boolean;
     enabled?: boolean;
     preference_enabled?: boolean;
     event?: string | null;

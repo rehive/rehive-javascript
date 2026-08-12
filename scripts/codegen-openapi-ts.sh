@@ -5,21 +5,42 @@ set -euo pipefail
 # Generates OpenAPI clients with @hey-api/openapi-ts directly into src/*/openapi-ts.
 # Runtime API files in src/*/rehive-*-api.ts are compat adapters over these outputs.
 
-GENERATOR="npx --yes @hey-api/openapi-ts@latest"
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# Use the repo-local generator, not `npx @latest`. openapi-ts resolves `typescript`
+# from the surrounding tree; npx installs its own and picks the newest allowed by
+# the peer range (>=6.0.0), which is TS 7 and breaks the generator. The devDependency
+# keeps it on the pinned typescript ^5.x.
+GENERATOR="${REPO_ROOT}/node_modules/.bin/openapi-ts"
+
+if [[ ! -x "${GENERATOR}" ]]; then
+  echo "Missing ${GENERATOR}. Run 'npm install' first." >&2
+  exit 1
+fi
+
+cleanup_tmp() {
+  find "${REPO_ROOT}/src" -type d -name '*.openapi-ts-tmp' -exec rm -rf {} + 2>/dev/null || true
+}
+trap cleanup_tmp EXIT
 
 generate() {
   local name="$1"
   local input="$2"
   local output_dir="$3"
+  local tmp_dir="${output_dir}.openapi-ts-tmp"
 
   echo "Generating ${name} -> ${output_dir}"
-  rm -rf "${output_dir}"
-  ${GENERATOR} \
+  # Generate into a temp dir and swap on success, so a failed run leaves the
+  # existing committed output intact instead of deleting it.
+  rm -rf "${tmp_dir}"
+  "${GENERATOR}" \
     --input "${input}" \
-    --output "${output_dir}" \
+    --output "${tmp_dir}" \
     --client @hey-api/client-fetch \
     --plugins @hey-api/typescript \
     --plugins @hey-api/sdk
+  rm -rf "${output_dir}"
+  mv "${tmp_dir}" "${output_dir}"
 }
 
 generate "platform-user" "https://api.rehive.com/schema.json" "src/platform/user/openapi-ts"

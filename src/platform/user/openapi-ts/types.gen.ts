@@ -4,12 +4,6 @@ export type ClientOptions = {
     baseUrl: 'https://api.rehive.com' | (string & {});
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Account = {
     readonly reference: string;
     name?: string;
@@ -25,22 +19,28 @@ export type Account = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AccountAccountAsset = {
     readonly id: string;
+    /**
+     * The total balance held in this currency, as an integer in the currency's smallest unit.
+     */
     readonly balance: number;
+    /**
+     * Portion of the balance available to spend, excluding amounts held by pending transactions.
+     */
     readonly available_balance: number;
+    /**
+     * The currency this balance is denominated in.
+     */
     currency: ReducedAsset;
     readonly limits: Array<AccountAssetLimit>;
     readonly fees: Array<AdminAccountAssetFee>;
     readonly metadata: {
         [key: string]: unknown;
     } | null;
+    /**
+     * Whether this is the account's currently active currency.
+     */
     active: boolean;
     settings: AccountAssetSettings;
     readonly subtypes: Array<TransactionSubtype>;
@@ -48,13 +48,10 @@ export type AccountAccountAsset = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AccountAccountAssetRequest = {
+    /**
+     * Whether this is the account's currently active currency.
+     */
     active: boolean;
 };
 
@@ -63,21 +60,27 @@ export type AccountAccountAssetResponse = {
     data: AccountAccountAsset;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AccountAsset = {
     readonly id: string;
+    /**
+     * The total balance held in this currency, as an integer in the currency's smallest unit.
+     */
     readonly balance: number;
+    /**
+     * Portion of the balance available to spend, excluding amounts held by pending transactions.
+     */
     readonly available_balance: number;
     account: ReducedAccount;
+    /**
+     * The currency this balance is denominated in.
+     */
     currency: ReducedAsset;
     readonly metadata: {
         [key: string]: unknown;
     } | null;
+    /**
+     * Whether this is the account's currently active currency.
+     */
     active: boolean;
     readonly created: number;
     readonly updated: number;
@@ -104,12 +107,6 @@ export type AccountAssetFee = {
     readonly currency: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AccountAssetLimit = {
     readonly id: number;
     /**
@@ -139,12 +136,6 @@ export type AccountAssetLimit = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AccountAssetLimitRequest = {
     /**
      * * `max` - Maximum
@@ -172,12 +163,6 @@ export type AccountAssetResponse = {
     data: AccountAsset;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AccountAssetSettings = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
@@ -185,12 +170,6 @@ export type AccountAssetSettings = {
     disallowed_transaction_subtypes: Array<ReducedTransactionSubtype>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AccountAssetSettingsRequest = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
@@ -198,12 +177,6 @@ export type AccountAssetSettingsRequest = {
     disallowed_transaction_subtypes: Array<ReducedTransactionSubtypeRequest>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AccountDefinition = {
     name: string;
     label?: string | null;
@@ -213,12 +186,6 @@ export type AccountDefinition = {
     readonly created: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AccountDefinitionGroup = {
     group: ReducedGroup;
     readonly default: boolean;
@@ -228,12 +195,6 @@ export type AccountDefinitionGroup = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AccountDefinitionGroupAsset = {
     currency: ReducedAsset;
     readonly created: number;
@@ -245,12 +206,6 @@ export type AccountDefinitionResponse = {
     data: AccountDefinition;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AccountRequest = {
     name?: string;
     label?: string | null;
@@ -264,9 +219,6 @@ export type AccountResponse = {
     data: Account;
 };
 
-/**
- * This serializer can be used if only a `status` is required in the response.
- */
 export type ActionResponse = {
     status: string;
 };
@@ -318,12 +270,6 @@ export type AdminAccountAssetFeeResponse = {
     data: AdminAccountAssetFee;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCompanyAddress = {
     line_1?: string | null;
     line_2?: string | null;
@@ -333,12 +279,6 @@ export type AdminCompanyAddress = {
     postal_code?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Asset = {
     code?: string | null;
     display_code?: string | null;
@@ -359,11 +299,10 @@ export type AssetResponse = {
     data: Asset;
 };
 
-/**
- * Extended user information shown based on the default user info serializer.
- * Contain additional information about user permissions and settings.
- */
 export type Auth = {
+    /**
+     * Unique identifier used to reference this user in the API.
+     */
     readonly id: string;
     username: string | null;
     readonly email: string | null;
@@ -376,9 +315,21 @@ export type Auth = {
     readonly temporary: boolean | null;
     id_number?: string | null;
     birth_date?: string | null;
+    /**
+     * The currency of the user's currently active account balance.
+     */
     currency: ReducedAsset;
+    /**
+     * Reference of the user's currently active account.
+     */
     readonly account: string;
+    /**
+     * Total balance of the user's active account currency, as an integer in the currency's smallest unit.
+     */
     readonly balance: number;
+    /**
+     * Portion of the active balance available to spend, excluding amounts held by pending transactions.
+     */
     readonly available_balance: number;
     readonly company: string;
     readonly owner: boolean;
@@ -635,6 +586,7 @@ export type Auth = {
      * * `ZW` - Zimbabwe
      */
     nationality?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    nationalities?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'> | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -1428,21 +1380,649 @@ export type Auth = {
      */
     tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
     /**
+     * * `132011` - Accountant And Auditor
+     * * `272011` - Actor
+     * * `152011` - Actuary
+     * * `291291` - Acupuncturist
+     * * `519191` - Adhesive Bonding Machine Operator And Tender
+     * * `113012` - Administrative Services Manager
+     * * `112011` - Advertising And Promotions Manager
+     * * `413011` - Advertising Sales Agent
+     * * `172011` - Aerospace Engineer
+     * * `131011` - Agent And Business Manager Of Artists Performers And Athletes
+     * * `194010` - Agricultural And Food Science Technician
+     * * `191010` - Agricultural And Food Scientist
+     * * `172021` - Agricultural Engineer
+     * * `452011` - Agricultural Inspector
+     * * `532020` - Air Traffic Controller And Airfield Operations Specialist
+     * * `493011` - Aircraft Mechanic And Service Technician
+     * * `532010` - Aircraft Pilots And Flight Engineer
+     * * `512011` - Aircraft Structure Surfaces Rigging And Systems Assembler
+     * * `533011` - Ambulance Driver And Attendant Except Emergency Medical Technician
+     * * `452021` - Animal Breeder
+     * * `392021` - Animal Caretaker
+     * * `339011` - Animal Control Worker
+     * * `392011` - Animal Trainer
+     * * `171011` - Architect Except Landscape And Naval
+     * * `173011` - Architectural And Civil Drafter
+     * * `119041` - Architectural And Engineering Manager
+     * * `254010` - Archivist Curator And Museum Technician
+     * * `271010` - Artist And Related Worker
+     * * `192010` - Astronomer And Physicist
+     * * `272021` - Athletes And Sports Competitor
+     * * `192021` - Atmospheric And Space Scientist
+     * * `291181` - Audiologist
+     * * `492097` - Audiovisual Equipment Installer And Repairer
+     * * `493021` - Automotive Body And Related Repairer
+     * * `493022` - Automotive Glass Installer And Repairer
+     * * `493023` - Automotive Service Technician And Mechanic
+     * * `492091` - Avionics Technician
+     * * `396010` - Baggage Porter Bellhop And Concierge
+     * * `333011` - Bailiff
+     * * `513011` - Baker
+     * * `395011` - Barber
+     * * `353011` - Bartender
+     * * `433011` - Bill And Account Collector
+     * * `433021` - Billing And Posting Clerk
+     * * `172031` - Bioengineer And Biomedical Engineer
+     * * `191020` - Biological Scientist
+     * * `194021` - Biological Technician
+     * * `472011` - Boilermaker
+     * * `433031` - Bookkeeping Accounting And Auditing Clerk
+     * * `472020` - Brickmason Blockmason And Stonemason
+     * * `273011` - Broadcast Announcer And Radio Disc Jockey
+     * * `274010` - Broadcast Sound And Lighting Technician
+     * * `434011` - Brokerage Clerk
+     * * `132031` - Budget Analyst
+     * * `493031` - Bus And Truck Mechanic And Diesel Engine Specialist
+     * * `131199` - Business Operations Specialist Other
+     * * `513020` - Butcher And Other Meat Poultry And Fish Processing Worker
+     * * `131021` - Buyer And Purchasing Agent Farm Products
+     * * `517011` - Cabinetmaker And Bench Carpenter
+     * * `292031` - Cardiovascular Technologist And Technician
+     * * `435011` - Cargo And Freight Agent
+     * * `472031` - Carpenter
+     * * `472040` - Carpet Floor And Tile Installer And Finisher
+     * * `412010` - Cashier
+     * * `472050` - Cement Mason Concrete Finisher And Terrazzo Worker
+     * * `351011` - Chef And Head Cook
+     * * `172041` - Chemical Engineer
+     * * `519010` - Chemical Processing Machine Setter Operator And Tender
+     * * `194031` - Chemical Technician
+     * * `192030` - Chemist And Materials Scientist
+     * * `111011` - Chief Executive
+     * * `211021` - Child Family And School Social Worker
+     * * `399011` - Childcare Worker
+     * * `291011` - Chiropractor
+     * * `172051` - Civil Engineer
+     * * `131030` - Claims Adjuster Appraiser Examiner And Investigator
+     * * `537061` - Cleaner Of Vehicles And Equipment
+     * * `212011` - Clergy
+     * * `193033` - Clinical And Counseling Psychologist
+     * * `292010` - Clinical Laboratory Technologist And Technician
+     * * `272022` - Coaches And Scout
+     * * `499091` - Coin Vending And Amusement Machine Servicer And Repairer
+     * * `271021` - Commercial And Industrial Designer
+     * * `499092` - Commercial Diver
+     * * `432099` - Communications Equipment Operator Other
+     * * `113111` - Compensation And Benefits Manager
+     * * `131141` - Compensation Benefits And Job Analysis Specialist
+     * * `131041` - Compliance Officer
+     * * `151221` - Computer And Information Research Scientist
+     * * `113021` - Computer And Information Systems Manager
+     * * `172061` - Computer Hardware Engineer
+     * * `151241` - Computer Network Architect
+     * * `519160` - Computer Numerically Controlled Tool Operator And Programmer
+     * * `151299` - Computer Occupation Other
+     * * `151251` - Computer Programmer
+     * * `151230` - Computer Support Specialist
+     * * `151211` - Computer Systems Analyst
+     * * `492011` - Computer Automated Teller And Office Machine Repairer
+     * * `191030` - Conservation Scientist And Forester
+     * * `474011` - Construction And Building Inspector
+     * * `472070` - Construction Equipment Operator
+     * * `472061` - Construction Laborer
+     * * `119021` - Construction Manager
+     * * `499010` - Control And Valve Installer And Repairer
+     * * `5370XX` - Conveyor Dredge And Hoist And Winch Operator
+     * * `352010` - Cook
+     * * `333012` - Correctional Officer And Jailer
+     * * `434021` - Correspondence Clerk
+     * * `131051` - Cost Estimator
+     * * `211019` - Counselor Other
+     * * `412021` - Counter And Rental Clerk
+     * * `435021` - Courier And Messenger
+     * * `273092` - Court Reporter And Simultaneous Captioner
+     * * `434031` - Court Municipal And License Clerk
+     * * `537021` - Crane And Tower Operator
+     * * `132041` - Credit Analyst
+     * * `434041` - Credit Authorizer Checker And Clerk
+     * * `132070` - Credit Counselor And Loan Officer
+     * * `339091` - Crossing Guard And Flagger
+     * * `519020` - Crushing Grinding Polishing Mixing And Blending Worker
+     * * `434051` - Customer Service Representative
+     * * `519030` - Cutting Worker
+     * * `514031` - Cutting Punching And Press Machine Setter Operator And Tender Metal And Plastic
+     * * `272030` - Dancer And Choreographer
+     * * `439021` - Data Labeler And Data Entry Keyer
+     * * `15124X` - Database Administrator And Architect
+     * * `519080` - Dental And Ophthalmic Laboratory Technician And Medical Appliance Technician
+     * * `319091` - Dental Assistant
+     * * `291292` - Dental Hygienist
+     * * `291020` - Dentist
+     * * `475010` - Derrick Rotary Drill And Service Unit Operator Oil And Gas
+     * * `439031` - Desktop Publisher
+     * * `333021` - Detective And Criminal Investigator
+     * * `292032` - Diagnostic Medical Sonographer
+     * * `29205X` - Dietetic Technician And Ophthalmic Medical Technician
+     * * `291031` - Dietitian And Nutritionist
+     * * `359011` - Dining Room And Cafeteria Attendant And Bartender Helper
+     * * `212021` - Director Religious Activities And Educatio
+     * * `272091` - Disc Jockey Except Radio
+     * * `359021` - Dishwasher
+     * * `435032` - Dispatcher Except Police Fire And Ambulance
+     * * `419091` - Door To Door Sales Worker News And Street Vendor And Related Worker
+     * * `533030` - Driver Sales Worker And Truck Driver
+     * * `472080` - Drywall Installer Ceiling Tile Installer And Taper
+     * * `475023` - Earth Driller Except Oil And Gas
+     * * `193011` - Economist
+     * * `273041` - Editor
+     * * `119030` - Education And Childcare Administrator
+     * * `211012` - Educational Guidance And Career Counselor And Advisor
+     * * `492092` - Electric Motor Power Tool And Related Repairer
+     * * `173023` - Electrical And Electronic Engineering Technologist And Technician
+     * * `172070` - Electrical And Electronics Engineer
+     * * `492093` - Electrical And Electronics Installer And Repairer Transportation Equipment
+     * * `49209X` - Electrical And Electronics Repairer Industrial And Utility
+     * * `499051` - Electrical Power Line Installer And Repairer
+     * * `512020` - Electrical Electronics And Electromechanical Assembler
+     * * `472111` - Electrician
+     * * `492096` - Electronic Equipment Installer And Repairer Motor Vehicles
+     * * `252020` - Elementary And Middle School Teacher
+     * * `474021` - Elevator And Escalator Installer And Repairer
+     * * `434061` - Eligibility Interviewer Government Programs
+     * * `3940XX` - Embalmer Crematory Operator And Funeral Attendant
+     * * `119161` - Emergency Management Director
+     * * `292042` - Emergency Medical Technician
+     * * `291214` - Emergency Medicine Physician
+     * * `512031` - Engine And Other Machine Assembler
+     * * `172199` - Engineer Other
+     * * `272099` - Entertainer And Performer Sports And Related Worker Other
+     * * `119070` - Entertainment And Recreation Manager
+     * * `172081` - Environmental Engineer
+     * * `194040` - Environmental Science And Geoscience Technician
+     * * `192041` - Environmental Scientist And Specialist Including Health
+     * * `519194` - Etcher And Engraver
+     * * `475022` - Excavating And Loading Machine And Dragline Operator Surface Mining
+     * * `436011` - Executive Secretary And Executive Administrative Assistant
+     * * `291128` - Exercise Physiologist
+     * * `399031` - Exercise Trainer And Group Fitness Instructor
+     * * `475032` - Explosives Worker Ordnance Handling Expert And Blaster
+     * * `519041` - Extruding Forming Pressing And Compacting Machine Setter Operator And Tender
+     * * `113013` - Facilities Manager
+     * * `119013` - Farmer Rancher And Other Agricultural Manager
+     * * `271022` - Fashion Designer
+     * * `353023` - Fast Food And Counter Worker
+     * * `474031` - Fence Erector
+     * * `434071` - File Clerk
+     * * `132051` - Financial And Investment Analyst
+     * * `433099` - Financial Clerk Other
+     * * `132061` - Financial Examiner
+     * * `113031` - Financial Manager
+     * * `332020` - Fire Inspector
+     * * `332011` - Firefighter
+     * * `552010` - First Line Enlisted Military Supervisor
+     * * `471011` - First Line Supervisor Of Construction Trades And Extraction Worker
+     * * `331011` - First Line Supervisor Of Correctional Officer
+     * * `451011` - First Line Supervisor Of Farming Fishing And Forestry Worker
+     * * `331021` - First Line Supervisor Of Firefighting And Prevention Worker
+     * * `351012` - First Line Supervisor Of Food Preparation And Serving Workers
+     * * `371011` - First Line Supervisor Of Housekeeping And Janitorial Workers
+     * * `371012` - First Line Supervisor Of Landscaping Lawn Service And Groundskeeping Workers
+     * * `491011` - First Line Supervisor Of Mechanics Installers And Repairers
+     * * `411012` - First Line Supervisor Of Non Retail Sales Workers
+     * * `431011` - First Line Supervisor Of Office And Administrative Support Workers
+     * * `331012` - First Line Supervisor Of Police And Detective
+     * * `511011` - First Line Supervisor Of Production And Operating Worker
+     * * `331099` - First Line Supervisor Of Protective Service Worker Other
+     * * `411011` - First Line Supervisor Of Retail Sales Workers
+     * * `331091` - First Line Supervisor Of Security Worker
+     * * `333031` - Fish And Game Warden
+     * * `453031` - Fishing And Hunting Worker
+     * * `532031` - Flight Attendant
+     * * `271023` - Floral Designer
+     * * `513091` - Food And Tobacco Roasting Baking And Drying Machine Operator And Tender
+     * * `513092` - Food Batchmaker
+     * * `513093` - Food Cooking Machine Operator And Tender
+     * * `359099` - Food Preparation And Serving Related Worker Other
+     * * `352021` - Food Preparation Worker
+     * * `513099` - Food Processing Worker Other
+     * * `353041` - Food Server Nonrestaurant
+     * * `119051` - Food Service Manager
+     * * `454011` - Forest And Conservation Worker
+     * * `514020` - Forming Machine Setter Operator And Tender Metal And Plastic
+     * * `131131` - Fundraiser
+     * * `119171` - Funeral Home Manager
+     * * `519051` - Furnace Kiln Oven Drier And Kettle Operator And Tender
+     * * `517021` - Furniture Finisher
+     * * `433041` - Gambling Cage Worker
+     * * `393010` - Gambling Services Worker
+     * * `111021` - General And Operations Manager
+     * * `19204X` - Geoscientist And Hydrologist Except Geographer
+     * * `472121` - Glazier
+     * * `452041` - Grader And Sorter Agricultural Product
+     * * `271024` - Graphic Designer
+     * * `514033` - Grinding Lapping Polishing And Buffing Machine Tool Setter Operator And Tender Metal And Plastic
+     * * `395012` - Hairdresser Hairstylist And Cosmetologist
+     * * `474041` - Hazardous Materials Removal Worker
+     * * `291299` - Healthcare Diagnosing Or Treating Practitioner Other
+     * * `211022` - Healthcare Social Worker
+     * * `499021` - Heating Air Conditioning And Refrigeration Mechanic And Installer
+     * * `493040` - Heavy Vehicle And Mobile Equipment Service Technician And Mechanic
+     * * `499098` - Helper Installation Maintenance And Repair Worker
+     * * `519198` - Helper Production Worker
+     * * `473010` - Helper Construction Trade
+     * * `474051` - Highway Maintenance Worker
+     * * `499031` - Home Appliance Repairer
+     * * `311121` - Home Health Aide
+     * * `359031` - Host And Hostess Restaurant Lounge And Coffee Shop
+     * * `434081` - Hotel Motel And Resort Desk Clerk
+     * * `434161` - Human Resources Assistant Except Payroll And Timekeeping
+     * * `113121` - Human Resources Manager
+     * * `131070` - Human Resources Worker
+     * * `49904X` - Industrial And Refractory Machinery Mechanic
+     * * `172110` - Industrial Engineer Including Health And Safety
+     * * `113051` - Industrial Production Manager
+     * * `537051` - Industrial Truck And Tractor Operator
+     * * `434199` - Information And Record Clerk Other
+     * * `151212` - Information Security Analyst
+     * * `519061` - Inspector Tester Sorter Sampler And Weigher
+     * * `472130` - Insulation Worker
+     * * `439041` - Insurance Claims And Policy Processing Clerk
+     * * `413021` - Insurance Sales Agent
+     * * `132053` - Insurance Underwriter
+     * * `271025` - Interior Designer
+     * * `273091` - Interpreter And Translator
+     * * `434111` - Interviewer Except Eligibility And Loan
+     * * `37201X` - Janitor And Building Cleaner
+     * * `519071` - Jeweler And Precious Stone And Metal Worker
+     * * `231020` - Judge Magistrate And Other Judicial Worker
+     * * `231012` - Judicial Law Clerk
+     * * `537062` - Laborer And Freight Stock And Material Mover Hand
+     * * `171012` - Landscape Architect
+     * * `373011` - Landscaping And Groundskeeping Worker
+     * * `516011` - Laundry And Dry Cleaning Worker
+     * * `231011` - Lawyer
+     * * `436012` - Legal Secretary And Administrative Assistant
+     * * `232099` - Legal Support Worker Other
+     * * `111031` - Legislator
+     * * `254022` - Librarian And Media Collections Specialist
+     * * `434121` - Library Assistant Clerical
+     * * `254031` - Library Technician
+     * * `292061` - Licensed Practical And Licensed Vocational Nurse
+     * * `191099` - Life Scientist Other
+     * * `434131` - Loan Interviewer And Clerk
+     * * `499094` - Locksmith And Safe Repairer
+     * * `534010` - Locomotive Engineer And Operator
+     * * `119081` - Lodging Manager
+     * * `454020` - Logging Worker
+     * * `131081` - Logistician
+     * * `537063` - Machine Feeder And Offbearer
+     * * `514041` - Machinist
+     * * `292035` - Magnetic Resonance Imaging Technologist
+     * * `372012` - Maids And Housekeeping Cleaner
+     * * `439051` - Mail Clerk And Mail Machine Operator Except Postal Service
+     * * `499071` - Maintenance And Repair Worker General
+     * * `499043` - Maintenance Worker Machinery
+     * * `131111` - Management Analyst
+     * * `119199` - Manager Other
+     * * `395092` - Manicurist And Pedicurist
+     * * `499095` - Manufactured Building And Mobile Home Installer
+     * * `172121` - Marine Engineer And Naval Architect
+     * * `131161` - Market Research Analyst And Marketing Specialist
+     * * `112021` - Marketing Manager
+     * * `211013` - Marriage And Family Therapist
+     * * `319011` - Massage Therapist
+     * * `172131` - Materials Engineer
+     * * `152021` - Mathematician
+     * * `172141` - Mechanical Engineer
+     * * `274099` - Media And Communication Equipment Worker Other
+     * * `273099` - Media And Communication Worker Other
+     * * `119111` - Medical And Health Services Manager
+     * * `319092` - Medical Assistant
+     * * `292072` - Medical Records Specialist
+     * * `191040` - Medical Scientist
+     * * `436013` - Medical Secretary And Administrative Assistant
+     * * `319094` - Medical Transcriptionist
+     * * `131121` - Meeting Convention And Event Planner
+     * * `211023` - Mental Health And Substance Abuse Social Worker
+     * * `211014` - Mental Health Counselor
+     * * `271026` - Merchandise Displayer And Window Trimmer
+     * * `514050` - Metal Furnace Operator Tender Pourer And Caster
+     * * `435041` - Meter Reader Utilities
+     * * `553010` - Military Enlisted Tactical Operations And Air Weapons Specialist And Crew Member
+     * * `551010` - Military Officer Special And Tactical Operations Leader
+     * * `554010` - Military Rank Not Specified
+     * * `499044` - Millwright
+     * * `172151` - Mining And Geological Engineer Including Mining Safety Engineer
+     * * `452090` - Miscellaneous Agricultural Worker
+     * * `474090` - Miscellaneous Construction And Related Worker
+     * * `292090` - Miscellaneous Health Technologist And Technician
+     * * `518090` - Miscellaneous Plant And System Operator
+     * * `193090` - Miscellaneous Social Scientist And Related Worker
+     * * `493090` - Miscellaneous Vehicle And Mobile Equipment Mechanic Installer And Repairer
+     * * `514060` - Model Maker And Patternmaker Metal And Plastic
+     * * `419010` - Model Demonstrator And Product Promoter
+     * * `514070` - Molder And Molding Machine Setter Operator And Tender Metal And Plastic
+     * * `519195` - Molder Shaper And Caster Except Metal And Plastic
+     * * `394031` - Mortician Undertaker And Funeral Arranger
+     * * `533099` - Motor Vehicle Operator Other
+     * * `272041` - Music Director And Composer
+     * * `272042` - Musician And Singer
+     * * `119121` - Natural Sciences Manager
+     * * `151244` - Network And Computer Systems Administrator
+     * * `434141` - New Accounts Clerk
+     * * `273023` - News Analyst Reporter And Journalist
+     * * `172161` - Nuclear Engineer
+     * * `29203X` - Nuclear Medicine Technologist And Medical Dosimetrist
+     * * `194051` - Nuclear Technician
+     * * `291151` - Nurse Anesthetist
+     * * `291161` - Nurse Midwife
+     * * `291171` - Nurse Practitioner
+     * * `311131` - Nursing Assistant
+     * * `195010` - Occupational Health And Safety Specialist And Technician
+     * * `291122` - Occupational Therapist
+     * * `312010` - Occupational Therapy Assistant And Aide
+     * * `439199` - Office And Administrative Support Worker Other
+     * * `439061` - Office Clerk General
+     * * `439071` - Office Machine Operator Except Computer
+     * * `152031` - Operations Research Analyst
+     * * `292081` - Optician Dispensing
+     * * `291041` - Optometrist
+     * * `434151` - Order Clerk
+     * * `31113X` - Orderly And Psychiatric Aide
+     * * `5120XX` - Other Assembler And Fabricator
+     * * `21109X` - Other Community And Social Service Specialist
+     * * `27102X` - Other Designer
+     * * `17301X` - Other Drafter
+     * * `2590XX` - Other Educational Instruction And Library Worker
+     * * `17302X` - Other Engineering Technologist And Technician
+     * * `3930XX` - Other Entertainment Attendant And Related Worker
+     * * `4750XX` - Other Extraction Worker
+     * * `1320XX` - Other Financial Specialist
+     * * `37301X` - Other Grounds Maintenance Worker
+     * * `299000` - Other Healthcare Practitioner And Technical Occupation
+     * * `31909X` - Other Healthcare Support Worker
+     * * `49909X` - Other Installation Maintenance And Repair Worker
+     * * `1940XX` - Other Life Physical And Social Science Technician
+     * * `51403X` - Other Machine Tool Setter Operator And Tender Metal And Plastic
+     * * `5371XX` - Other Material Moving Worker
+     * * `1520XX` - Other Mathematical Science Occupation
+     * * `514XXX` - Other Metal Worker And Plastic Worker
+     * * `39509X` - Other Personal Appearance Worker
+     * * `2912XX` - Other Physician
+     * * `51919X` - Other Production Equipment Operator And Tender
+     * * `5191XX` - Other Production Worker
+     * * `33909X` - Other Protective Service Worker
+     * * `19303X` - Other Psychologist
+     * * `5340XX` - Other Rail Transportation Worker
+     * * `2530XX` - Other Teacher And Instructor
+     * * `51609X` - Other Textile Apparel And Furnishings Worker
+     * * `5360XX` - Other Transportation Worker
+     * * `5170XX` - Other Woodworker
+     * * `519111` - Packaging And Filling Machine Operator And Tender
+     * * `537064` - Packer And Packager Hand
+     * * `472140` - Painter And Paperhanger
+     * * `519120` - Painting Worker
+     * * `519196` - Paper Goods Machine Setter Operator And Tender
+     * * `232011` - Paralegal And Legal Assistant
+     * * `292043` - Paramedic
+     * * `536021` - Parking Attendant
+     * * `333041` - Parking Enforcement Worker
+     * * `412022` - Parts Salesperson
+     * * `536061` - Passenger Attendant
+     * * `433051` - Payroll And Timekeeping Clerk
+     * * `399099` - Personal Care And Service Worker Other
+     * * `132052` - Personal Financial Advisor
+     * * `119179` - Personal Service Manager Other
+     * * `372021` - Pest Control Worker
+     * * `172171` - Petroleum Engineer
+     * * `291051` - Pharmacist
+     * * `319095` - Pharmacy Aide
+     * * `292052` - Pharmacy Technician
+     * * `319097` - Phlebotomist
+     * * `274021` - Photographer
+     * * `519151` - Photographic Process Worker And Processing Machine Operator
+     * * `192099` - Physical Scientist Other
+     * * `291123` - Physical Therapist
+     * * `312020` - Physical Therapist Assistant And Aide
+     * * `291071` - Physician Assistant
+     * * `472151` - Pipelayer
+     * * `472161` - Plasterer And Stucco Mason
+     * * `472152` - Plumber Pipefitter And Steamfitter
+     * * `291081` - Podiatrist
+     * * `333050` - Police Officer
+     * * `435051` - Postal Service Clerk
+     * * `435052` - Postal Service Mail Carrier
+     * * `435053` - Postal Service Mail Sorter Processor And Processing Machine Operator
+     * * `119131` - Postmaster And Mail Superintendent
+     * * `251000` - Postsecondary Teacher
+     * * `518010` - Power Plant Operator Distributor And Dispatcher
+     * * `499060` - Precision Instrument And Equipment Repairer
+     * * `515111` - Prepress Technician And Worker
+     * * `252010` - Preschool And Kindergarten Teacher
+     * * `516021` - Presser Textile Garment And Related Material
+     * * `515113` - Print Binding And Finishing Worker
+     * * `515112` - Printing Press Operator
+     * * `339021` - Private Detective And Investigator
+     * * `211092` - Probation Officer And Correctional Treatment Specialist
+     * * `433061` - Procurement Clerk
+     * * `272012` - Producer And Director
+     * * `435061` - Production Planning And Expediting Clerk
+     * * `131082` - Project Management Specialist
+     * * `439081` - Proofreader And Copy Marker
+     * * `132020` - Property Appraiser And Assessor
+     * * `119141` - Property Real Estate And Community Association Manager
+     * * `292053` - Psychiatric Technician
+     * * `112030` - Public Relations And Fundraising Manager
+     * * `273031` - Public Relations Specialist
+     * * `435031` - Public Safety Telecommunicator
+     * * `537070` - Pumping Station Operator
+     * * `131023` - Purchasing Agent Except Wholesale Retail And Farm Products
+     * * `113061` - Purchasing Manager
+     * * `291124` - Radiation Therapist
+     * * `492020` - Radio And Telecommunications Equipment Installer And Repairer
+     * * `292034` - Radiologic Technologist And Technician
+     * * `291224` - Radiologist
+     * * `474061` - Rail Track Laying And Maintenance Equipment Operator
+     * * `534031` - Railroad Conductor And Yardmaster
+     * * `419020` - Real Estate Broker And Sales Agent
+     * * `434171` - Receptionist And Information Clerk
+     * * `399032` - Recreation Worker
+     * * `291125` - Recreational Therapist
+     * * `537081` - Refuse And Recyclable Material Collector
+     * * `291141` - Registered Nurse
+     * * `211015` - Rehabilitation Counselor
+     * * `472171` - Reinforcing Iron And Rebar Worker
+     * * `212099` - Religious Worker Other
+     * * `434181` - Reservation And Transportation Ticket Agent And Travel Clerk
+     * * `399041` - Residential Advisor
+     * * `291126` - Respiratory Therapist
+     * * `412031` - Retail Salesperson
+     * * `499096` - Rigger
+     * * `472181` - Roofer
+     * * `475071` - Roustabout Oil And Gas
+     * * `535011` - Sailor And Marine Oiler
+     * * `419099` - Sales And Related Worker Other
+     * * `419031` - Sales Engineer
+     * * `112022` - Sales Manager
+     * * `413091` - Sales Representative Of Services Except Advertising Insurance Financial Services And Travel
+     * * `414010` - Sales Representatives Wholesale And Manufacturing
+     * * `517041` - Sawing Machine Setter Operator And Tender Wood
+     * * `533051` - School Bus Driver
+     * * `339094` - School Bus Monitor
+     * * `193034` - School Psychologist
+     * * `252030` - Secondary School Teacher
+     * * `436014` - Secretary And Administrative Assistant Except Legal Medical And Executive
+     * * `413031` - Securities Commodities And Financial Services Sales Agent
+     * * `492098` - Security And Fire Alarm Systems Installer
+     * * `339030` - Security Guard And Gambling Surveillance Officer
+     * * `474071` - Septic Tank Servicer And Sewer Pipe Cleaner
+     * * `516031` - Sewing Machine Operator
+     * * `472211` - Sheet Metal Worker
+     * * `535020` - Ship And Boat Captain And Operator
+     * * `535031` - Ship Engineer
+     * * `435071` - Shipping Receiving And Inventory Clerk
+     * * `516040` - Shoe And Leather Worker
+     * * `533053` - Shuttle Driver And Chauffeur
+     * * `395094` - Skincare Specialist
+     * * `493050` - Small Engine Mechanic
+     * * `119151` - Social And Community Service Manager
+     * * `211093` - Social And Human Service Assistant
+     * * `194061` - Social Science Research Assistant
+     * * `211029` - Social Worker Other
+     * * `193041` - Sociologist
+     * * `151252` - Software Developer
+     * * `151253` - Software Quality Assurance Analyst And Tester
+     * * `472231` - Solar Photovoltaic Installer
+     * * `252050` - Special Education Teacher
+     * * `291127` - Speech Language Pathologist
+     * * `518021` - Stationary Engineer And Boiler Operator
+     * * `439111` - Statistical Assistant
+     * * `152041` - Statistician
+     * * `537065` - Stocker And Order Filler
+     * * `472221` - Structural Iron And Steel Worker
+     * * `512041` - Structural Metal Fabricator And Fitter
+     * * `211011` - Substance Abuse And Behavioral Disorder Counselor
+     * * `391000` - Supervisor Of Personal Care And Service Worker
+     * * `531000` - Supervisor Of Transportation And Material Moving Worker
+     * * `291240` - Surgeon
+     * * `292055` - Surgical Technologist
+     * * `193022` - Survey Researcher
+     * * `173031` - Surveying And Mapping Technician
+     * * `171020` - Surveyor Cartographer And Photogrammetrist
+     * * `432011` - Switchboard Operator Including Answering Service
+     * * `516050` - Tailor Dressmaker And Sewer
+     * * `132081` - Tax Examiner And Collector And Revenue Agent
+     * * `132082` - Tax Preparer
+     * * `533054` - Taxi Driver
+     * * `259040` - Teaching Assistant
+     * * `273042` - Technical Writer
+     * * `499052` - Telecommunications Line Installer And Repairer
+     * * `419041` - Telemarketer
+     * * `432021` - Telephone Operator
+     * * `274030` - Television Video And Film Camera Operator And Editor
+     * * `433071` - Teller
+     * * `516060` - Textile Machine Setter Operator And Tender
+     * * `291129` - Therapist Other
+     * * `519197` - Tire Builder
+     * * `232093` - Title Examiner Abstractor And Searcher
+     * * `514111` - Tool And Die Maker
+     * * `397010` - Tour And Travel Guide
+     * * `113131` - Training And Development Manager
+     * * `131151` - Training And Development Specialist
+     * * `533052` - Transit And Intercity Bus Driver
+     * * `536051` - Transportation Inspector
+     * * `339093` - Transportation Security Screener
+     * * `536030` - Transportation Service Attendant
+     * * `113071` - Transportation Storage And Distribution Manager
+     * * `413041` - Travel Agent
+     * * `373013` - Tree Trimmer And Pruner
+     * * `253041` - Tutor
+     * * `272023` - Umpire Referee And Other Sports Official
+     * * `475040` - Underground Mining Machine Operator
+     * * `999999` - Unemployed With No Work Experience In The Last 5 Years Or Earlier Or Never Worked
+     * * `516093` - Upholsterer
+     * * `193051` - Urban And Regional Planner
+     * * `393031` - Usher Lobby Attendant And Ticket Taker
+     * * `291131` - Veterinarian
+     * * `319096` - Veterinary Assistant And Laboratory Animal Caretaker
+     * * `292056` - Veterinary Technologist And Technician
+     * * `353031` - Waiter Or Waitress
+     * * `518031` - Water And Wastewater Treatment Plant And System Operator
+     * * `151255` - Web And Digital Interface Designer
+     * * `151254` - Web Developer
+     * * `435111` - Weigher Measurer Checker And Sampler Recordkeeping
+     * * `514120` - Welding Soldering And Brazing Worker
+     * * `131022` - Wholesale And Retail Buyer Except Farm Products
+     * * `499081` - Wind Turbine Service Technician
+     * * `517042` - Woodworking Machine Setter Operator And Tender Except Sawing
+     * * `439022` - Word Processor And Typist
+     * * `273043` - Writer And Author
+     */
+    occupation?: '132011' | '272011' | '152011' | '291291' | '519191' | '113012' | '112011' | '413011' | '172011' | '131011' | '194010' | '191010' | '172021' | '452011' | '532020' | '493011' | '532010' | '512011' | '533011' | '452021' | '392021' | '339011' | '392011' | '171011' | '173011' | '119041' | '254010' | '271010' | '192010' | '272021' | '192021' | '291181' | '492097' | '493021' | '493022' | '493023' | '492091' | '396010' | '333011' | '513011' | '395011' | '353011' | '433011' | '433021' | '172031' | '191020' | '194021' | '472011' | '433031' | '472020' | '273011' | '274010' | '434011' | '132031' | '493031' | '131199' | '513020' | '131021' | '517011' | '292031' | '435011' | '472031' | '472040' | '412010' | '472050' | '351011' | '172041' | '519010' | '194031' | '192030' | '111011' | '211021' | '399011' | '291011' | '172051' | '131030' | '537061' | '212011' | '193033' | '292010' | '272022' | '499091' | '271021' | '499092' | '432099' | '113111' | '131141' | '131041' | '151221' | '113021' | '172061' | '151241' | '519160' | '151299' | '151251' | '151230' | '151211' | '492011' | '191030' | '474011' | '472070' | '472061' | '119021' | '499010' | '5370XX' | '352010' | '333012' | '434021' | '131051' | '211019' | '412021' | '435021' | '273092' | '434031' | '537021' | '132041' | '434041' | '132070' | '339091' | '519020' | '434051' | '519030' | '514031' | '272030' | '439021' | '15124X' | '519080' | '319091' | '291292' | '291020' | '475010' | '439031' | '333021' | '292032' | '29205X' | '291031' | '359011' | '212021' | '272091' | '359021' | '435032' | '419091' | '533030' | '472080' | '475023' | '193011' | '273041' | '119030' | '211012' | '492092' | '173023' | '172070' | '492093' | '49209X' | '499051' | '512020' | '472111' | '492096' | '252020' | '474021' | '434061' | '3940XX' | '119161' | '292042' | '291214' | '512031' | '172199' | '272099' | '119070' | '172081' | '194040' | '192041' | '519194' | '475022' | '436011' | '291128' | '399031' | '475032' | '519041' | '113013' | '119013' | '271022' | '353023' | '474031' | '434071' | '132051' | '433099' | '132061' | '113031' | '332020' | '332011' | '552010' | '471011' | '331011' | '451011' | '331021' | '351012' | '371011' | '371012' | '491011' | '411012' | '431011' | '331012' | '511011' | '331099' | '411011' | '331091' | '333031' | '453031' | '532031' | '271023' | '513091' | '513092' | '513093' | '359099' | '352021' | '513099' | '353041' | '119051' | '454011' | '514020' | '131131' | '119171' | '519051' | '517021' | '433041' | '393010' | '111021' | '19204X' | '472121' | '452041' | '271024' | '514033' | '395012' | '474041' | '291299' | '211022' | '499021' | '493040' | '499098' | '519198' | '473010' | '474051' | '499031' | '311121' | '359031' | '434081' | '434161' | '113121' | '131070' | '49904X' | '172110' | '113051' | '537051' | '434199' | '151212' | '519061' | '472130' | '439041' | '413021' | '132053' | '271025' | '273091' | '434111' | '37201X' | '519071' | '231020' | '231012' | '537062' | '171012' | '373011' | '516011' | '231011' | '436012' | '232099' | '111031' | '254022' | '434121' | '254031' | '292061' | '191099' | '434131' | '499094' | '534010' | '119081' | '454020' | '131081' | '537063' | '514041' | '292035' | '372012' | '439051' | '499071' | '499043' | '131111' | '119199' | '395092' | '499095' | '172121' | '131161' | '112021' | '211013' | '319011' | '172131' | '152021' | '172141' | '274099' | '273099' | '119111' | '319092' | '292072' | '191040' | '436013' | '319094' | '131121' | '211023' | '211014' | '271026' | '514050' | '435041' | '553010' | '551010' | '554010' | '499044' | '172151' | '452090' | '474090' | '292090' | '518090' | '193090' | '493090' | '514060' | '419010' | '514070' | '519195' | '394031' | '533099' | '272041' | '272042' | '119121' | '151244' | '434141' | '273023' | '172161' | '29203X' | '194051' | '291151' | '291161' | '291171' | '311131' | '195010' | '291122' | '312010' | '439199' | '439061' | '439071' | '152031' | '292081' | '291041' | '434151' | '31113X' | '5120XX' | '21109X' | '27102X' | '17301X' | '2590XX' | '17302X' | '3930XX' | '4750XX' | '1320XX' | '37301X' | '299000' | '31909X' | '49909X' | '1940XX' | '51403X' | '5371XX' | '1520XX' | '514XXX' | '39509X' | '2912XX' | '51919X' | '5191XX' | '33909X' | '19303X' | '5340XX' | '2530XX' | '51609X' | '5360XX' | '5170XX' | '519111' | '537064' | '472140' | '519120' | '519196' | '232011' | '292043' | '536021' | '333041' | '412022' | '536061' | '433051' | '399099' | '132052' | '119179' | '372021' | '172171' | '291051' | '319095' | '292052' | '319097' | '274021' | '519151' | '192099' | '291123' | '312020' | '291071' | '472151' | '472161' | '472152' | '291081' | '333050' | '435051' | '435052' | '435053' | '119131' | '251000' | '518010' | '499060' | '515111' | '252010' | '516021' | '515113' | '515112' | '339021' | '211092' | '433061' | '272012' | '435061' | '131082' | '439081' | '132020' | '119141' | '292053' | '112030' | '273031' | '435031' | '537070' | '131023' | '113061' | '291124' | '492020' | '292034' | '291224' | '474061' | '534031' | '419020' | '434171' | '399032' | '291125' | '537081' | '291141' | '211015' | '472171' | '212099' | '434181' | '399041' | '291126' | '412031' | '499096' | '472181' | '475071' | '535011' | '419099' | '419031' | '112022' | '413091' | '414010' | '517041' | '533051' | '339094' | '193034' | '252030' | '436014' | '413031' | '492098' | '339030' | '474071' | '516031' | '472211' | '535020' | '535031' | '435071' | '516040' | '533053' | '395094' | '493050' | '119151' | '211093' | '194061' | '211029' | '193041' | '151252' | '151253' | '472231' | '252050' | '291127' | '518021' | '439111' | '152041' | '537065' | '472221' | '512041' | '211011' | '391000' | '531000' | '291240' | '292055' | '193022' | '173031' | '171020' | '432011' | '516050' | '132081' | '132082' | '533054' | '259040' | '273042' | '499052' | '419041' | '432021' | '274030' | '433071' | '516060' | '291129' | '519197' | '232093' | '514111' | '397010' | '113131' | '131151' | '533052' | '536051' | '339093' | '536030' | '113071' | '413041' | '373013' | '253041' | '272023' | '475040' | '999999' | '516093' | '193051' | '393031' | '291131' | '319096' | '292056' | '353031' | '518031' | '151255' | '151254' | '435111' | '514120' | '131022' | '499081' | '517042' | '439022' | '273043' | null;
+    /**
+     * * `employed` - Employed
+     * * `homemaker` - Homemaker
+     * * `retired` - Retired
+     * * `self_employed` - Self Employed
+     * * `student` - Student
+     * * `unemployed` - Unemployed
+     */
+    employment_status?: 'employed' | 'homemaker' | 'retired' | 'self_employed' | 'student' | 'unemployed' | null;
+    /**
+     * * `company_funds` - Company Funds
+     * * `ecommerce_reseller` - Ecommerce Reseller
+     * * `gambling_proceeds` - Gambling Proceeds
+     * * `gifts` - Gifts
+     * * `government_benefits` - Government Benefits
+     * * `inheritance` - Inheritance
+     * * `investments_loans` - Investments Loans
+     * * `pension_retirement` - Pension Retirement
+     * * `salary` - Salary
+     * * `sale_of_assets_real_estate` - Sale Of Assets Real Estate
+     * * `savings` - Savings
+     * * `someone_elses_funds` - Someone Elses Funds
+     */
+    source_of_funds?: 'company_funds' | 'ecommerce_reseller' | 'gambling_proceeds' | 'gifts' | 'government_benefits' | 'inheritance' | 'investments_loans' | 'pension_retirement' | 'salary' | 'sale_of_assets_real_estate' | 'savings' | 'someone_elses_funds' | null;
+    /**
+     * * `charitable_donations` - Charitable Donations
+     * * `ecommerce_retail_payments` - Ecommerce Retail Payments
+     * * `investment_purposes` - Investment Purposes
+     * * `operating_a_company` - Operating A Company
+     * * `other` - Other
+     * * `payments_to_friends_or_family_abroad` - Payments To Friends Or Family Abroad
+     * * `personal_or_living_expenses` - Personal Or Living Expenses
+     * * `protect_wealth` - Protect Wealth
+     * * `purchase_goods_and_services` - Purchase Goods And Services
+     * * `receive_payment_for_freelancing` - Receive Payment For Freelancing
+     * * `receive_salary` - Receive Salary
+     */
+    account_purpose?: 'charitable_donations' | 'ecommerce_retail_payments' | 'investment_purposes' | 'operating_a_company' | 'other' | 'payments_to_friends_or_family_abroad' | 'personal_or_living_expenses' | 'protect_wealth' | 'purchase_goods_and_services' | 'receive_payment_for_freelancing' | 'receive_salary' | null;
+    account_purpose_other?: string | null;
+    intermediary?: boolean | null;
+    /**
+     * * `0_4999` - Range 0 4999
+     * * `5000_9999` - Range 5000 9999
+     * * `10000_49999` - Range 10000 49999
+     * * `50000_plus` - Range 50000 Plus
+     */
+    expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
+    /**
      * @deprecated
      */
     readonly verified: boolean;
     verification: UserVerification;
     /**
+     * The user's current identity verification (KYC) status.
+     *
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
      * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
+     * * `not_started` - Not Started
+     * * `under_review` - Under Review
+     * * `resubmission_requested` - Resubmission Requested
+     * * `offboarded` - Offboarded
      */
-    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started' | 'under_review' | 'resubmission_requested' | 'offboarded';
     readonly created: number;
     readonly updated: number;
+    readonly frozen: {
+        [key: string]: unknown;
+    };
     settings: UserSettings;
 };
 
@@ -1451,12 +2031,6 @@ export type AuthResponse = {
     data: Auth;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AuthToken = {
     token_key: string;
     readonly label: string;
@@ -1498,20 +2072,15 @@ export type AuthenticatedResponse = {
     data: Authenticated;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AuthenticatorChallenge = {
     readonly id: string;
     /**
      * * `authentication` - Authentication
      * * `authorization` - Authorization
      * * `setup` - Setup
+     * * `external_authorization` - External Authorization
      */
-    readonly type: 'authentication' | 'authorization' | 'setup';
+    readonly type: 'authentication' | 'authorization' | 'setup' | 'external_authorization';
     /**
      * * `ephemeral` - Ephemeral
      * * `durable` - Durable
@@ -1522,12 +2091,6 @@ export type AuthenticatorChallenge = {
     readonly created: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type BankOwner = {
     first_name?: string | null;
     middle_name?: string | null;
@@ -1542,12 +2105,6 @@ export type BankOwner = {
     cpf_cpnj?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type BankOwnerAddress = {
     line_1?: string | null;
     line_2?: string | null;
@@ -1809,12 +2366,6 @@ export type BankOwnerAddress = {
     state_code?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type BankOwnerAddressRequest = {
     line_1?: string | null;
     line_2?: string | null;
@@ -2076,12 +2627,6 @@ export type BankOwnerAddressRequest = {
     state_code?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type BankOwnerRequest = {
     first_name?: string | null;
     middle_name?: string | null;
@@ -2096,12 +2641,6 @@ export type BankOwnerRequest = {
     cpf_cpnj?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Company = {
     readonly id: string;
     name?: string | null;
@@ -2389,12 +2928,6 @@ export type Company = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CompanyBankAccount = {
     readonly id: number;
     name?: string | null;
@@ -2428,12 +2961,6 @@ export type CompanyBankAccount = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CompanyBankBranchAddress = {
     line_1?: string | null;
     line_2?: string | null;
@@ -2709,12 +3236,6 @@ export type CompanyResponse = {
     data: Company;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CompanySettings = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
@@ -2743,12 +3264,6 @@ export type CompanySettings = {
     supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CompanySettingsRequest = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
@@ -2777,12 +3292,6 @@ export type CompanySettingsRequest = {
     supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CompanyWalletAccount = {
     readonly id: number;
     username?: string | null;
@@ -2818,12 +3327,6 @@ export type CreateAuthTokenRequest = {
     label?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateCompanyRequest = {
     id: string;
     name?: string | null;
@@ -3100,46 +3603,18 @@ export type CreateCompanyRequest = {
     system_email?: string;
 };
 
-/**
- * A mixin that handles the application of permissions to properties on a
- * serializer using the built-in permissions system.
- *
- * NOTE : This only works if the following conditions are met:
- * - The request context must contain a user.
- * - The class this mixin is attached must be a serializer.
- * - The class this mixin is attached to must have a Meta.model defined.
- * - The Meta.model class must have a PERMISSION_TYPE defined.
- */
 export type CreateCreditTransactionRequest = {
     id?: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateCryptoAccountAccountAssetRequest = {
     account_currency: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateCryptoAccountAssetRequest = {
     currency: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateCryptoAccountAttestationRequest = {
     /**
      * * `declaration_of_ownership` - Declaration Of Ownership
@@ -3147,12 +3622,6 @@ export type CreateCryptoAccountAttestationRequest = {
     type: 'declaration_of_ownership';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateCryptoAccountRequest = {
     address: string;
     name?: string | null;
@@ -3174,26 +3643,10 @@ export type CreateCryptoAccountRequest = {
     action?: 'withdraw' | 'origin';
 };
 
-/**
- * A mixin that handles the application of permissions to properties on a
- * serializer using the built-in permissions system.
- *
- * NOTE : This only works if the following conditions are met:
- * - The request context must contain a user.
- * - The class this mixin is attached must be a serializer.
- * - The class this mixin is attached to must have a Meta.model defined.
- * - The Meta.model class must have a PERMISSION_TYPE defined.
- */
 export type CreateDebitTransactionRequest = {
     id?: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateDeviceAppRequest = {
     name?: string | null;
     /**
@@ -3203,12 +3656,6 @@ export type CreateDeviceAppRequest = {
     token?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateDeviceRequest = {
     imei: string;
     name?: string | null;
@@ -3217,23 +3664,11 @@ export type CreateDeviceRequest = {
     } | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateEmailRequest = {
     email: string;
     primary?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateExportRequest = {
     /**
      * * `account` - Account
@@ -3257,12 +3692,6 @@ export type CreateJwtRequest = {
     nonce?: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateMfaAuthenticatorRequest = {
     /**
      * * `totp` - Totp
@@ -3272,12 +3701,6 @@ export type CreateMfaAuthenticatorRequest = {
     type: 'totp' | 'sms' | 'static';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateMetricRequest = {
     name?: string | null;
     slug?: string | null;
@@ -3294,12 +3717,6 @@ export type CreateMetricRequest = {
     } | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateMobileRequest = {
     number: string;
     primary?: boolean;
@@ -3309,51 +3726,23 @@ export type CreateMultiTransactionRequest = {
     transactions: Array<ExplicitCreateTransactionRequest>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateStatementRequest = {
     metadata?: {
         [key: string]: unknown;
     } | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateTransactionCollectionRequest = {
     id?: string;
     transactions: Array<CreateTransactionCollectionTransactionRequest>;
 };
 
-/**
- * A mixin that handles the application of permissions to properties on a
- * serializer using the built-in permissions system.
- *
- * NOTE : This only works if the following conditions are met:
- * - The request context must contain a user.
- * - The class this mixin is attached must be a serializer.
- * - The class this mixin is attached to must have a Meta.model defined.
- * - The Meta.model class must have a PERMISSION_TYPE defined.
- */
 export type CreateTransactionCollectionTransactionRequest = {
     id?: string;
     parent?: string;
     partner?: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateTransferTransactionRequest = {
     debit_account?: string | null;
     debit_subtype?: string | null;
@@ -3375,52 +3764,22 @@ export type CreateTransferTransactionRequest = {
     inclusive?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateUserBankAccountAccountAssetRequest = {
     account_currency: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateUserBankAccountAssetRequest = {
     currency: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateUserWalletAccountAccountAssetRequest = {
     account_currency: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateUserWalletAccountAssetRequest = {
     currency: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CryptoAccount = {
     readonly id: number;
     address: string;
@@ -3447,8 +3806,9 @@ export type CryptoAccount = {
      * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
+     * * `not_started` - Not Started
      */
-    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
     /**
      * * `withdraw` - Withdraw
      * * `deposit` - Deposit
@@ -3459,12 +3819,6 @@ export type CryptoAccount = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CryptoAccountAsset = {
     code?: string | null;
     display_code?: string | null;
@@ -3488,12 +3842,6 @@ export type CryptoAccountAssetResponse = {
     data: CryptoAccountAsset;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CryptoAccountAttestation = {
     readonly id: string;
     /**
@@ -3506,12 +3854,6 @@ export type CryptoAccountAttestation = {
     readonly created: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CryptoAccountAttestationRequest = {
     data?: {
         [key: string]: unknown;
@@ -3530,12 +3872,6 @@ export type CryptoAccountListResponse = {
     data: CryptoAccountList;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CryptoAccountRequest = {
     address: string;
     name?: string | null;
@@ -3557,12 +3893,6 @@ export type CryptoAccountResponse = {
     data: CryptoAccount;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CryptoOwner = {
     first_name?: string | null;
     middle_name?: string | null;
@@ -4096,12 +4426,6 @@ export type CryptoOwner = {
     cpf_cpnj?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CryptoOwnerAddress = {
     line_1?: string | null;
     line_2?: string | null;
@@ -4363,12 +4687,6 @@ export type CryptoOwnerAddress = {
     state_code?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CryptoOwnerAddressRequest = {
     line_1?: string | null;
     line_2?: string | null;
@@ -4630,12 +4948,6 @@ export type CryptoOwnerAddressRequest = {
     state_code?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CryptoOwnerRequest = {
     first_name?: string | null;
     middle_name?: string | null;
@@ -5174,12 +5486,6 @@ export type DeactivateRequest = {
     company: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Device = {
     readonly id: number;
     readonly imei: string;
@@ -5192,12 +5498,6 @@ export type Device = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type DeviceApp = {
     readonly id: number;
     name?: string | null;
@@ -5210,12 +5510,6 @@ export type DeviceApp = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type DeviceAppRequest = {
     name?: string | null;
     /**
@@ -5236,12 +5530,6 @@ export type DeviceListResponse = {
     data: DeviceList;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type DeviceRequest = {
     name?: string | null;
     metadata?: {
@@ -5254,12 +5542,6 @@ export type DeviceResponse = {
     data: Device;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type DocumentFile = {
     readonly file: string;
     readonly label: string | null;
@@ -5272,12 +5554,6 @@ export type DocumentFileWriteRequest = {
     description?: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type DocumentType = {
     readonly id: number;
     name?: string | null;
@@ -5296,12 +5572,64 @@ export type DocumentTypeResponse = {
     data: DocumentType;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type EffectiveFee = {
+    readonly id: number;
+    readonly resource: string;
+    readonly name: string | null;
+    readonly description: string | null;
+    /**
+     * Convert the fee value from Decimal to int based on asset divisibility
+     */
+    readonly value: number;
+    readonly percentage: number | null;
+    /**
+     * * `credit` - Credit
+     * * `debit` - Debit
+     */
+    readonly tx_type: 'credit' | 'debit';
+    readonly subtype: string | null;
+};
+
+export type EffectiveFeeList = Array<EffectiveFee>;
+
+export type EffectiveFeeListResponse = {
+    status: string;
+    data: EffectiveFeeList;
+};
+
+export type EffectiveLimit = {
+    readonly id: number;
+    readonly resource: string;
+    /**
+     * * `max` - Maximum
+     * * `day_max` - Maximum per day
+     * * `week_max` - Maximum per week
+     * * `month_max` - Maximum per month
+     * * `min` - Minimum
+     * * `overdraft` - Overdraft
+     */
+    readonly type: 'max' | 'day_max' | 'week_max' | 'month_max' | 'min' | 'overdraft';
+    /**
+     * * `credit` - Credit
+     * * `debit` - Debit
+     */
+    readonly tx_type: 'credit' | 'debit';
+    readonly subtype: string | null;
+    /**
+     * Convert the limit value from Decimal to int based on asset divisibility
+     */
+    readonly value: number;
+    readonly begin: number | null;
+    readonly end: number | null;
+};
+
+export type EffectiveLimitList = Array<EffectiveLimit>;
+
+export type EffectiveLimitListResponse = {
+    status: string;
+    data: EffectiveLimitList;
+};
+
 export type Email = {
     readonly id: number;
     readonly email: string;
@@ -5318,12 +5646,6 @@ export type EmailListResponse = {
     data: EmailList;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type EmailRequest = {
     primary?: boolean;
 };
@@ -5333,26 +5655,10 @@ export type EmailResponse = {
     data: Email;
 };
 
-/**
- * A mixin that handles the application of permissions to properties on a
- * serializer using the built-in permissions system.
- *
- * NOTE : This only works if the following conditions are met:
- * - The request context must contain a user.
- * - The class this mixin is attached must be a serializer.
- * - The class this mixin is attached to must have a Meta.model defined.
- * - The Meta.model class must have a PERMISSION_TYPE defined.
- */
 export type ExplicitCreateTransactionRequest = {
     id?: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Export = {
     readonly id: string;
     /**
@@ -5390,12 +5696,6 @@ export type Export = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ExportPage = {
     count?: number;
     /**
@@ -5411,12 +5711,6 @@ export type ExportResponse = {
     data: Export;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ExtendedAccount = {
     readonly reference: string;
     name?: string;
@@ -5459,12 +5753,6 @@ export type ExtendedAuthenticatedResponse = {
     data: ExtendedAuthenticated;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ExtendedExport = {
     readonly id: string;
     /**
@@ -5508,12 +5796,6 @@ export type ExtendedExportResponse = {
     data: ExtendedExport;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ExtendedGroupTier = {
     readonly id: number;
     readonly level: number;
@@ -5530,16 +5812,6 @@ export type ExtendedGroupTierResponse = {
     data: ExtendedGroupTier;
 };
 
-/**
- * A mixin that handles the application of permissions to properties on a
- * serializer using the built-in permissions system.
- *
- * NOTE : This only works if the following conditions are met:
- * - The request context must contain a user.
- * - The class this mixin is attached must be a serializer.
- * - The class this mixin is attached to must have a Meta.model defined.
- * - The Meta.model class must have a PERMISSION_TYPE defined.
- */
 export type ExtendedTransaction = {
     readonly id: string;
     readonly collection: string;
@@ -5547,6 +5819,8 @@ export type ExtendedTransaction = {
     partner: PartnerTransaction | null;
     readonly index: number;
     /**
+     * The kind of transaction, such as a credit or a debit.
+     *
      * * `credit` - Credit
      * * `debit` - Debit
      */
@@ -5564,13 +5838,28 @@ export type ExtendedTransaction = {
      * * `Failed` - Failed
      */
     readonly status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
+    /**
+     * Optional external reference used to identify the transaction.
+     */
     readonly reference: string | null;
+    /**
+     * The transaction amount, as an integer in the currency's smallest unit.
+     */
     readonly amount: number;
+    /**
+     * The total fee charged on the transaction, in the smallest unit.
+     */
     readonly fee: number;
     readonly total_amount: number;
+    /**
+     * The account currency balance immediately after this transaction was applied.
+     */
     readonly balance: number;
     readonly label: string;
     readonly account: string;
+    /**
+     * The currency in which the transaction was denominated.
+     */
     currency: ReducedAsset;
     account_currency: TransactionAccountAsset;
     /**
@@ -5589,11 +5878,10 @@ export type ExtendedTransactionResponse = {
     data: ExtendedTransaction;
 };
 
-/**
- * Extended user information shown based on the default user info serializer.
- * Contain additional information about user permissions and settings.
- */
 export type ExtendedUserInfo = {
+    /**
+     * Unique identifier used to reference this user in the API.
+     */
     readonly id: string;
     username: string | null;
     readonly email: string | null;
@@ -5606,9 +5894,21 @@ export type ExtendedUserInfo = {
     readonly temporary: boolean | null;
     id_number?: string | null;
     birth_date?: string | null;
+    /**
+     * The currency of the user's currently active account balance.
+     */
     currency: ReducedAsset;
+    /**
+     * Reference of the user's currently active account.
+     */
     readonly account: string;
+    /**
+     * Total balance of the user's active account currency, as an integer in the currency's smallest unit.
+     */
     readonly balance: number;
+    /**
+     * Portion of the active balance available to spend, excluding amounts held by pending transactions.
+     */
     readonly available_balance: number;
     readonly company: string;
     readonly owner: boolean;
@@ -5865,6 +6165,7 @@ export type ExtendedUserInfo = {
      * * `ZW` - Zimbabwe
      */
     nationality?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    nationalities?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'> | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -6658,28 +6959,652 @@ export type ExtendedUserInfo = {
      */
     tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
     /**
+     * * `132011` - Accountant And Auditor
+     * * `272011` - Actor
+     * * `152011` - Actuary
+     * * `291291` - Acupuncturist
+     * * `519191` - Adhesive Bonding Machine Operator And Tender
+     * * `113012` - Administrative Services Manager
+     * * `112011` - Advertising And Promotions Manager
+     * * `413011` - Advertising Sales Agent
+     * * `172011` - Aerospace Engineer
+     * * `131011` - Agent And Business Manager Of Artists Performers And Athletes
+     * * `194010` - Agricultural And Food Science Technician
+     * * `191010` - Agricultural And Food Scientist
+     * * `172021` - Agricultural Engineer
+     * * `452011` - Agricultural Inspector
+     * * `532020` - Air Traffic Controller And Airfield Operations Specialist
+     * * `493011` - Aircraft Mechanic And Service Technician
+     * * `532010` - Aircraft Pilots And Flight Engineer
+     * * `512011` - Aircraft Structure Surfaces Rigging And Systems Assembler
+     * * `533011` - Ambulance Driver And Attendant Except Emergency Medical Technician
+     * * `452021` - Animal Breeder
+     * * `392021` - Animal Caretaker
+     * * `339011` - Animal Control Worker
+     * * `392011` - Animal Trainer
+     * * `171011` - Architect Except Landscape And Naval
+     * * `173011` - Architectural And Civil Drafter
+     * * `119041` - Architectural And Engineering Manager
+     * * `254010` - Archivist Curator And Museum Technician
+     * * `271010` - Artist And Related Worker
+     * * `192010` - Astronomer And Physicist
+     * * `272021` - Athletes And Sports Competitor
+     * * `192021` - Atmospheric And Space Scientist
+     * * `291181` - Audiologist
+     * * `492097` - Audiovisual Equipment Installer And Repairer
+     * * `493021` - Automotive Body And Related Repairer
+     * * `493022` - Automotive Glass Installer And Repairer
+     * * `493023` - Automotive Service Technician And Mechanic
+     * * `492091` - Avionics Technician
+     * * `396010` - Baggage Porter Bellhop And Concierge
+     * * `333011` - Bailiff
+     * * `513011` - Baker
+     * * `395011` - Barber
+     * * `353011` - Bartender
+     * * `433011` - Bill And Account Collector
+     * * `433021` - Billing And Posting Clerk
+     * * `172031` - Bioengineer And Biomedical Engineer
+     * * `191020` - Biological Scientist
+     * * `194021` - Biological Technician
+     * * `472011` - Boilermaker
+     * * `433031` - Bookkeeping Accounting And Auditing Clerk
+     * * `472020` - Brickmason Blockmason And Stonemason
+     * * `273011` - Broadcast Announcer And Radio Disc Jockey
+     * * `274010` - Broadcast Sound And Lighting Technician
+     * * `434011` - Brokerage Clerk
+     * * `132031` - Budget Analyst
+     * * `493031` - Bus And Truck Mechanic And Diesel Engine Specialist
+     * * `131199` - Business Operations Specialist Other
+     * * `513020` - Butcher And Other Meat Poultry And Fish Processing Worker
+     * * `131021` - Buyer And Purchasing Agent Farm Products
+     * * `517011` - Cabinetmaker And Bench Carpenter
+     * * `292031` - Cardiovascular Technologist And Technician
+     * * `435011` - Cargo And Freight Agent
+     * * `472031` - Carpenter
+     * * `472040` - Carpet Floor And Tile Installer And Finisher
+     * * `412010` - Cashier
+     * * `472050` - Cement Mason Concrete Finisher And Terrazzo Worker
+     * * `351011` - Chef And Head Cook
+     * * `172041` - Chemical Engineer
+     * * `519010` - Chemical Processing Machine Setter Operator And Tender
+     * * `194031` - Chemical Technician
+     * * `192030` - Chemist And Materials Scientist
+     * * `111011` - Chief Executive
+     * * `211021` - Child Family And School Social Worker
+     * * `399011` - Childcare Worker
+     * * `291011` - Chiropractor
+     * * `172051` - Civil Engineer
+     * * `131030` - Claims Adjuster Appraiser Examiner And Investigator
+     * * `537061` - Cleaner Of Vehicles And Equipment
+     * * `212011` - Clergy
+     * * `193033` - Clinical And Counseling Psychologist
+     * * `292010` - Clinical Laboratory Technologist And Technician
+     * * `272022` - Coaches And Scout
+     * * `499091` - Coin Vending And Amusement Machine Servicer And Repairer
+     * * `271021` - Commercial And Industrial Designer
+     * * `499092` - Commercial Diver
+     * * `432099` - Communications Equipment Operator Other
+     * * `113111` - Compensation And Benefits Manager
+     * * `131141` - Compensation Benefits And Job Analysis Specialist
+     * * `131041` - Compliance Officer
+     * * `151221` - Computer And Information Research Scientist
+     * * `113021` - Computer And Information Systems Manager
+     * * `172061` - Computer Hardware Engineer
+     * * `151241` - Computer Network Architect
+     * * `519160` - Computer Numerically Controlled Tool Operator And Programmer
+     * * `151299` - Computer Occupation Other
+     * * `151251` - Computer Programmer
+     * * `151230` - Computer Support Specialist
+     * * `151211` - Computer Systems Analyst
+     * * `492011` - Computer Automated Teller And Office Machine Repairer
+     * * `191030` - Conservation Scientist And Forester
+     * * `474011` - Construction And Building Inspector
+     * * `472070` - Construction Equipment Operator
+     * * `472061` - Construction Laborer
+     * * `119021` - Construction Manager
+     * * `499010` - Control And Valve Installer And Repairer
+     * * `5370XX` - Conveyor Dredge And Hoist And Winch Operator
+     * * `352010` - Cook
+     * * `333012` - Correctional Officer And Jailer
+     * * `434021` - Correspondence Clerk
+     * * `131051` - Cost Estimator
+     * * `211019` - Counselor Other
+     * * `412021` - Counter And Rental Clerk
+     * * `435021` - Courier And Messenger
+     * * `273092` - Court Reporter And Simultaneous Captioner
+     * * `434031` - Court Municipal And License Clerk
+     * * `537021` - Crane And Tower Operator
+     * * `132041` - Credit Analyst
+     * * `434041` - Credit Authorizer Checker And Clerk
+     * * `132070` - Credit Counselor And Loan Officer
+     * * `339091` - Crossing Guard And Flagger
+     * * `519020` - Crushing Grinding Polishing Mixing And Blending Worker
+     * * `434051` - Customer Service Representative
+     * * `519030` - Cutting Worker
+     * * `514031` - Cutting Punching And Press Machine Setter Operator And Tender Metal And Plastic
+     * * `272030` - Dancer And Choreographer
+     * * `439021` - Data Labeler And Data Entry Keyer
+     * * `15124X` - Database Administrator And Architect
+     * * `519080` - Dental And Ophthalmic Laboratory Technician And Medical Appliance Technician
+     * * `319091` - Dental Assistant
+     * * `291292` - Dental Hygienist
+     * * `291020` - Dentist
+     * * `475010` - Derrick Rotary Drill And Service Unit Operator Oil And Gas
+     * * `439031` - Desktop Publisher
+     * * `333021` - Detective And Criminal Investigator
+     * * `292032` - Diagnostic Medical Sonographer
+     * * `29205X` - Dietetic Technician And Ophthalmic Medical Technician
+     * * `291031` - Dietitian And Nutritionist
+     * * `359011` - Dining Room And Cafeteria Attendant And Bartender Helper
+     * * `212021` - Director Religious Activities And Educatio
+     * * `272091` - Disc Jockey Except Radio
+     * * `359021` - Dishwasher
+     * * `435032` - Dispatcher Except Police Fire And Ambulance
+     * * `419091` - Door To Door Sales Worker News And Street Vendor And Related Worker
+     * * `533030` - Driver Sales Worker And Truck Driver
+     * * `472080` - Drywall Installer Ceiling Tile Installer And Taper
+     * * `475023` - Earth Driller Except Oil And Gas
+     * * `193011` - Economist
+     * * `273041` - Editor
+     * * `119030` - Education And Childcare Administrator
+     * * `211012` - Educational Guidance And Career Counselor And Advisor
+     * * `492092` - Electric Motor Power Tool And Related Repairer
+     * * `173023` - Electrical And Electronic Engineering Technologist And Technician
+     * * `172070` - Electrical And Electronics Engineer
+     * * `492093` - Electrical And Electronics Installer And Repairer Transportation Equipment
+     * * `49209X` - Electrical And Electronics Repairer Industrial And Utility
+     * * `499051` - Electrical Power Line Installer And Repairer
+     * * `512020` - Electrical Electronics And Electromechanical Assembler
+     * * `472111` - Electrician
+     * * `492096` - Electronic Equipment Installer And Repairer Motor Vehicles
+     * * `252020` - Elementary And Middle School Teacher
+     * * `474021` - Elevator And Escalator Installer And Repairer
+     * * `434061` - Eligibility Interviewer Government Programs
+     * * `3940XX` - Embalmer Crematory Operator And Funeral Attendant
+     * * `119161` - Emergency Management Director
+     * * `292042` - Emergency Medical Technician
+     * * `291214` - Emergency Medicine Physician
+     * * `512031` - Engine And Other Machine Assembler
+     * * `172199` - Engineer Other
+     * * `272099` - Entertainer And Performer Sports And Related Worker Other
+     * * `119070` - Entertainment And Recreation Manager
+     * * `172081` - Environmental Engineer
+     * * `194040` - Environmental Science And Geoscience Technician
+     * * `192041` - Environmental Scientist And Specialist Including Health
+     * * `519194` - Etcher And Engraver
+     * * `475022` - Excavating And Loading Machine And Dragline Operator Surface Mining
+     * * `436011` - Executive Secretary And Executive Administrative Assistant
+     * * `291128` - Exercise Physiologist
+     * * `399031` - Exercise Trainer And Group Fitness Instructor
+     * * `475032` - Explosives Worker Ordnance Handling Expert And Blaster
+     * * `519041` - Extruding Forming Pressing And Compacting Machine Setter Operator And Tender
+     * * `113013` - Facilities Manager
+     * * `119013` - Farmer Rancher And Other Agricultural Manager
+     * * `271022` - Fashion Designer
+     * * `353023` - Fast Food And Counter Worker
+     * * `474031` - Fence Erector
+     * * `434071` - File Clerk
+     * * `132051` - Financial And Investment Analyst
+     * * `433099` - Financial Clerk Other
+     * * `132061` - Financial Examiner
+     * * `113031` - Financial Manager
+     * * `332020` - Fire Inspector
+     * * `332011` - Firefighter
+     * * `552010` - First Line Enlisted Military Supervisor
+     * * `471011` - First Line Supervisor Of Construction Trades And Extraction Worker
+     * * `331011` - First Line Supervisor Of Correctional Officer
+     * * `451011` - First Line Supervisor Of Farming Fishing And Forestry Worker
+     * * `331021` - First Line Supervisor Of Firefighting And Prevention Worker
+     * * `351012` - First Line Supervisor Of Food Preparation And Serving Workers
+     * * `371011` - First Line Supervisor Of Housekeeping And Janitorial Workers
+     * * `371012` - First Line Supervisor Of Landscaping Lawn Service And Groundskeeping Workers
+     * * `491011` - First Line Supervisor Of Mechanics Installers And Repairers
+     * * `411012` - First Line Supervisor Of Non Retail Sales Workers
+     * * `431011` - First Line Supervisor Of Office And Administrative Support Workers
+     * * `331012` - First Line Supervisor Of Police And Detective
+     * * `511011` - First Line Supervisor Of Production And Operating Worker
+     * * `331099` - First Line Supervisor Of Protective Service Worker Other
+     * * `411011` - First Line Supervisor Of Retail Sales Workers
+     * * `331091` - First Line Supervisor Of Security Worker
+     * * `333031` - Fish And Game Warden
+     * * `453031` - Fishing And Hunting Worker
+     * * `532031` - Flight Attendant
+     * * `271023` - Floral Designer
+     * * `513091` - Food And Tobacco Roasting Baking And Drying Machine Operator And Tender
+     * * `513092` - Food Batchmaker
+     * * `513093` - Food Cooking Machine Operator And Tender
+     * * `359099` - Food Preparation And Serving Related Worker Other
+     * * `352021` - Food Preparation Worker
+     * * `513099` - Food Processing Worker Other
+     * * `353041` - Food Server Nonrestaurant
+     * * `119051` - Food Service Manager
+     * * `454011` - Forest And Conservation Worker
+     * * `514020` - Forming Machine Setter Operator And Tender Metal And Plastic
+     * * `131131` - Fundraiser
+     * * `119171` - Funeral Home Manager
+     * * `519051` - Furnace Kiln Oven Drier And Kettle Operator And Tender
+     * * `517021` - Furniture Finisher
+     * * `433041` - Gambling Cage Worker
+     * * `393010` - Gambling Services Worker
+     * * `111021` - General And Operations Manager
+     * * `19204X` - Geoscientist And Hydrologist Except Geographer
+     * * `472121` - Glazier
+     * * `452041` - Grader And Sorter Agricultural Product
+     * * `271024` - Graphic Designer
+     * * `514033` - Grinding Lapping Polishing And Buffing Machine Tool Setter Operator And Tender Metal And Plastic
+     * * `395012` - Hairdresser Hairstylist And Cosmetologist
+     * * `474041` - Hazardous Materials Removal Worker
+     * * `291299` - Healthcare Diagnosing Or Treating Practitioner Other
+     * * `211022` - Healthcare Social Worker
+     * * `499021` - Heating Air Conditioning And Refrigeration Mechanic And Installer
+     * * `493040` - Heavy Vehicle And Mobile Equipment Service Technician And Mechanic
+     * * `499098` - Helper Installation Maintenance And Repair Worker
+     * * `519198` - Helper Production Worker
+     * * `473010` - Helper Construction Trade
+     * * `474051` - Highway Maintenance Worker
+     * * `499031` - Home Appliance Repairer
+     * * `311121` - Home Health Aide
+     * * `359031` - Host And Hostess Restaurant Lounge And Coffee Shop
+     * * `434081` - Hotel Motel And Resort Desk Clerk
+     * * `434161` - Human Resources Assistant Except Payroll And Timekeeping
+     * * `113121` - Human Resources Manager
+     * * `131070` - Human Resources Worker
+     * * `49904X` - Industrial And Refractory Machinery Mechanic
+     * * `172110` - Industrial Engineer Including Health And Safety
+     * * `113051` - Industrial Production Manager
+     * * `537051` - Industrial Truck And Tractor Operator
+     * * `434199` - Information And Record Clerk Other
+     * * `151212` - Information Security Analyst
+     * * `519061` - Inspector Tester Sorter Sampler And Weigher
+     * * `472130` - Insulation Worker
+     * * `439041` - Insurance Claims And Policy Processing Clerk
+     * * `413021` - Insurance Sales Agent
+     * * `132053` - Insurance Underwriter
+     * * `271025` - Interior Designer
+     * * `273091` - Interpreter And Translator
+     * * `434111` - Interviewer Except Eligibility And Loan
+     * * `37201X` - Janitor And Building Cleaner
+     * * `519071` - Jeweler And Precious Stone And Metal Worker
+     * * `231020` - Judge Magistrate And Other Judicial Worker
+     * * `231012` - Judicial Law Clerk
+     * * `537062` - Laborer And Freight Stock And Material Mover Hand
+     * * `171012` - Landscape Architect
+     * * `373011` - Landscaping And Groundskeeping Worker
+     * * `516011` - Laundry And Dry Cleaning Worker
+     * * `231011` - Lawyer
+     * * `436012` - Legal Secretary And Administrative Assistant
+     * * `232099` - Legal Support Worker Other
+     * * `111031` - Legislator
+     * * `254022` - Librarian And Media Collections Specialist
+     * * `434121` - Library Assistant Clerical
+     * * `254031` - Library Technician
+     * * `292061` - Licensed Practical And Licensed Vocational Nurse
+     * * `191099` - Life Scientist Other
+     * * `434131` - Loan Interviewer And Clerk
+     * * `499094` - Locksmith And Safe Repairer
+     * * `534010` - Locomotive Engineer And Operator
+     * * `119081` - Lodging Manager
+     * * `454020` - Logging Worker
+     * * `131081` - Logistician
+     * * `537063` - Machine Feeder And Offbearer
+     * * `514041` - Machinist
+     * * `292035` - Magnetic Resonance Imaging Technologist
+     * * `372012` - Maids And Housekeeping Cleaner
+     * * `439051` - Mail Clerk And Mail Machine Operator Except Postal Service
+     * * `499071` - Maintenance And Repair Worker General
+     * * `499043` - Maintenance Worker Machinery
+     * * `131111` - Management Analyst
+     * * `119199` - Manager Other
+     * * `395092` - Manicurist And Pedicurist
+     * * `499095` - Manufactured Building And Mobile Home Installer
+     * * `172121` - Marine Engineer And Naval Architect
+     * * `131161` - Market Research Analyst And Marketing Specialist
+     * * `112021` - Marketing Manager
+     * * `211013` - Marriage And Family Therapist
+     * * `319011` - Massage Therapist
+     * * `172131` - Materials Engineer
+     * * `152021` - Mathematician
+     * * `172141` - Mechanical Engineer
+     * * `274099` - Media And Communication Equipment Worker Other
+     * * `273099` - Media And Communication Worker Other
+     * * `119111` - Medical And Health Services Manager
+     * * `319092` - Medical Assistant
+     * * `292072` - Medical Records Specialist
+     * * `191040` - Medical Scientist
+     * * `436013` - Medical Secretary And Administrative Assistant
+     * * `319094` - Medical Transcriptionist
+     * * `131121` - Meeting Convention And Event Planner
+     * * `211023` - Mental Health And Substance Abuse Social Worker
+     * * `211014` - Mental Health Counselor
+     * * `271026` - Merchandise Displayer And Window Trimmer
+     * * `514050` - Metal Furnace Operator Tender Pourer And Caster
+     * * `435041` - Meter Reader Utilities
+     * * `553010` - Military Enlisted Tactical Operations And Air Weapons Specialist And Crew Member
+     * * `551010` - Military Officer Special And Tactical Operations Leader
+     * * `554010` - Military Rank Not Specified
+     * * `499044` - Millwright
+     * * `172151` - Mining And Geological Engineer Including Mining Safety Engineer
+     * * `452090` - Miscellaneous Agricultural Worker
+     * * `474090` - Miscellaneous Construction And Related Worker
+     * * `292090` - Miscellaneous Health Technologist And Technician
+     * * `518090` - Miscellaneous Plant And System Operator
+     * * `193090` - Miscellaneous Social Scientist And Related Worker
+     * * `493090` - Miscellaneous Vehicle And Mobile Equipment Mechanic Installer And Repairer
+     * * `514060` - Model Maker And Patternmaker Metal And Plastic
+     * * `419010` - Model Demonstrator And Product Promoter
+     * * `514070` - Molder And Molding Machine Setter Operator And Tender Metal And Plastic
+     * * `519195` - Molder Shaper And Caster Except Metal And Plastic
+     * * `394031` - Mortician Undertaker And Funeral Arranger
+     * * `533099` - Motor Vehicle Operator Other
+     * * `272041` - Music Director And Composer
+     * * `272042` - Musician And Singer
+     * * `119121` - Natural Sciences Manager
+     * * `151244` - Network And Computer Systems Administrator
+     * * `434141` - New Accounts Clerk
+     * * `273023` - News Analyst Reporter And Journalist
+     * * `172161` - Nuclear Engineer
+     * * `29203X` - Nuclear Medicine Technologist And Medical Dosimetrist
+     * * `194051` - Nuclear Technician
+     * * `291151` - Nurse Anesthetist
+     * * `291161` - Nurse Midwife
+     * * `291171` - Nurse Practitioner
+     * * `311131` - Nursing Assistant
+     * * `195010` - Occupational Health And Safety Specialist And Technician
+     * * `291122` - Occupational Therapist
+     * * `312010` - Occupational Therapy Assistant And Aide
+     * * `439199` - Office And Administrative Support Worker Other
+     * * `439061` - Office Clerk General
+     * * `439071` - Office Machine Operator Except Computer
+     * * `152031` - Operations Research Analyst
+     * * `292081` - Optician Dispensing
+     * * `291041` - Optometrist
+     * * `434151` - Order Clerk
+     * * `31113X` - Orderly And Psychiatric Aide
+     * * `5120XX` - Other Assembler And Fabricator
+     * * `21109X` - Other Community And Social Service Specialist
+     * * `27102X` - Other Designer
+     * * `17301X` - Other Drafter
+     * * `2590XX` - Other Educational Instruction And Library Worker
+     * * `17302X` - Other Engineering Technologist And Technician
+     * * `3930XX` - Other Entertainment Attendant And Related Worker
+     * * `4750XX` - Other Extraction Worker
+     * * `1320XX` - Other Financial Specialist
+     * * `37301X` - Other Grounds Maintenance Worker
+     * * `299000` - Other Healthcare Practitioner And Technical Occupation
+     * * `31909X` - Other Healthcare Support Worker
+     * * `49909X` - Other Installation Maintenance And Repair Worker
+     * * `1940XX` - Other Life Physical And Social Science Technician
+     * * `51403X` - Other Machine Tool Setter Operator And Tender Metal And Plastic
+     * * `5371XX` - Other Material Moving Worker
+     * * `1520XX` - Other Mathematical Science Occupation
+     * * `514XXX` - Other Metal Worker And Plastic Worker
+     * * `39509X` - Other Personal Appearance Worker
+     * * `2912XX` - Other Physician
+     * * `51919X` - Other Production Equipment Operator And Tender
+     * * `5191XX` - Other Production Worker
+     * * `33909X` - Other Protective Service Worker
+     * * `19303X` - Other Psychologist
+     * * `5340XX` - Other Rail Transportation Worker
+     * * `2530XX` - Other Teacher And Instructor
+     * * `51609X` - Other Textile Apparel And Furnishings Worker
+     * * `5360XX` - Other Transportation Worker
+     * * `5170XX` - Other Woodworker
+     * * `519111` - Packaging And Filling Machine Operator And Tender
+     * * `537064` - Packer And Packager Hand
+     * * `472140` - Painter And Paperhanger
+     * * `519120` - Painting Worker
+     * * `519196` - Paper Goods Machine Setter Operator And Tender
+     * * `232011` - Paralegal And Legal Assistant
+     * * `292043` - Paramedic
+     * * `536021` - Parking Attendant
+     * * `333041` - Parking Enforcement Worker
+     * * `412022` - Parts Salesperson
+     * * `536061` - Passenger Attendant
+     * * `433051` - Payroll And Timekeeping Clerk
+     * * `399099` - Personal Care And Service Worker Other
+     * * `132052` - Personal Financial Advisor
+     * * `119179` - Personal Service Manager Other
+     * * `372021` - Pest Control Worker
+     * * `172171` - Petroleum Engineer
+     * * `291051` - Pharmacist
+     * * `319095` - Pharmacy Aide
+     * * `292052` - Pharmacy Technician
+     * * `319097` - Phlebotomist
+     * * `274021` - Photographer
+     * * `519151` - Photographic Process Worker And Processing Machine Operator
+     * * `192099` - Physical Scientist Other
+     * * `291123` - Physical Therapist
+     * * `312020` - Physical Therapist Assistant And Aide
+     * * `291071` - Physician Assistant
+     * * `472151` - Pipelayer
+     * * `472161` - Plasterer And Stucco Mason
+     * * `472152` - Plumber Pipefitter And Steamfitter
+     * * `291081` - Podiatrist
+     * * `333050` - Police Officer
+     * * `435051` - Postal Service Clerk
+     * * `435052` - Postal Service Mail Carrier
+     * * `435053` - Postal Service Mail Sorter Processor And Processing Machine Operator
+     * * `119131` - Postmaster And Mail Superintendent
+     * * `251000` - Postsecondary Teacher
+     * * `518010` - Power Plant Operator Distributor And Dispatcher
+     * * `499060` - Precision Instrument And Equipment Repairer
+     * * `515111` - Prepress Technician And Worker
+     * * `252010` - Preschool And Kindergarten Teacher
+     * * `516021` - Presser Textile Garment And Related Material
+     * * `515113` - Print Binding And Finishing Worker
+     * * `515112` - Printing Press Operator
+     * * `339021` - Private Detective And Investigator
+     * * `211092` - Probation Officer And Correctional Treatment Specialist
+     * * `433061` - Procurement Clerk
+     * * `272012` - Producer And Director
+     * * `435061` - Production Planning And Expediting Clerk
+     * * `131082` - Project Management Specialist
+     * * `439081` - Proofreader And Copy Marker
+     * * `132020` - Property Appraiser And Assessor
+     * * `119141` - Property Real Estate And Community Association Manager
+     * * `292053` - Psychiatric Technician
+     * * `112030` - Public Relations And Fundraising Manager
+     * * `273031` - Public Relations Specialist
+     * * `435031` - Public Safety Telecommunicator
+     * * `537070` - Pumping Station Operator
+     * * `131023` - Purchasing Agent Except Wholesale Retail And Farm Products
+     * * `113061` - Purchasing Manager
+     * * `291124` - Radiation Therapist
+     * * `492020` - Radio And Telecommunications Equipment Installer And Repairer
+     * * `292034` - Radiologic Technologist And Technician
+     * * `291224` - Radiologist
+     * * `474061` - Rail Track Laying And Maintenance Equipment Operator
+     * * `534031` - Railroad Conductor And Yardmaster
+     * * `419020` - Real Estate Broker And Sales Agent
+     * * `434171` - Receptionist And Information Clerk
+     * * `399032` - Recreation Worker
+     * * `291125` - Recreational Therapist
+     * * `537081` - Refuse And Recyclable Material Collector
+     * * `291141` - Registered Nurse
+     * * `211015` - Rehabilitation Counselor
+     * * `472171` - Reinforcing Iron And Rebar Worker
+     * * `212099` - Religious Worker Other
+     * * `434181` - Reservation And Transportation Ticket Agent And Travel Clerk
+     * * `399041` - Residential Advisor
+     * * `291126` - Respiratory Therapist
+     * * `412031` - Retail Salesperson
+     * * `499096` - Rigger
+     * * `472181` - Roofer
+     * * `475071` - Roustabout Oil And Gas
+     * * `535011` - Sailor And Marine Oiler
+     * * `419099` - Sales And Related Worker Other
+     * * `419031` - Sales Engineer
+     * * `112022` - Sales Manager
+     * * `413091` - Sales Representative Of Services Except Advertising Insurance Financial Services And Travel
+     * * `414010` - Sales Representatives Wholesale And Manufacturing
+     * * `517041` - Sawing Machine Setter Operator And Tender Wood
+     * * `533051` - School Bus Driver
+     * * `339094` - School Bus Monitor
+     * * `193034` - School Psychologist
+     * * `252030` - Secondary School Teacher
+     * * `436014` - Secretary And Administrative Assistant Except Legal Medical And Executive
+     * * `413031` - Securities Commodities And Financial Services Sales Agent
+     * * `492098` - Security And Fire Alarm Systems Installer
+     * * `339030` - Security Guard And Gambling Surveillance Officer
+     * * `474071` - Septic Tank Servicer And Sewer Pipe Cleaner
+     * * `516031` - Sewing Machine Operator
+     * * `472211` - Sheet Metal Worker
+     * * `535020` - Ship And Boat Captain And Operator
+     * * `535031` - Ship Engineer
+     * * `435071` - Shipping Receiving And Inventory Clerk
+     * * `516040` - Shoe And Leather Worker
+     * * `533053` - Shuttle Driver And Chauffeur
+     * * `395094` - Skincare Specialist
+     * * `493050` - Small Engine Mechanic
+     * * `119151` - Social And Community Service Manager
+     * * `211093` - Social And Human Service Assistant
+     * * `194061` - Social Science Research Assistant
+     * * `211029` - Social Worker Other
+     * * `193041` - Sociologist
+     * * `151252` - Software Developer
+     * * `151253` - Software Quality Assurance Analyst And Tester
+     * * `472231` - Solar Photovoltaic Installer
+     * * `252050` - Special Education Teacher
+     * * `291127` - Speech Language Pathologist
+     * * `518021` - Stationary Engineer And Boiler Operator
+     * * `439111` - Statistical Assistant
+     * * `152041` - Statistician
+     * * `537065` - Stocker And Order Filler
+     * * `472221` - Structural Iron And Steel Worker
+     * * `512041` - Structural Metal Fabricator And Fitter
+     * * `211011` - Substance Abuse And Behavioral Disorder Counselor
+     * * `391000` - Supervisor Of Personal Care And Service Worker
+     * * `531000` - Supervisor Of Transportation And Material Moving Worker
+     * * `291240` - Surgeon
+     * * `292055` - Surgical Technologist
+     * * `193022` - Survey Researcher
+     * * `173031` - Surveying And Mapping Technician
+     * * `171020` - Surveyor Cartographer And Photogrammetrist
+     * * `432011` - Switchboard Operator Including Answering Service
+     * * `516050` - Tailor Dressmaker And Sewer
+     * * `132081` - Tax Examiner And Collector And Revenue Agent
+     * * `132082` - Tax Preparer
+     * * `533054` - Taxi Driver
+     * * `259040` - Teaching Assistant
+     * * `273042` - Technical Writer
+     * * `499052` - Telecommunications Line Installer And Repairer
+     * * `419041` - Telemarketer
+     * * `432021` - Telephone Operator
+     * * `274030` - Television Video And Film Camera Operator And Editor
+     * * `433071` - Teller
+     * * `516060` - Textile Machine Setter Operator And Tender
+     * * `291129` - Therapist Other
+     * * `519197` - Tire Builder
+     * * `232093` - Title Examiner Abstractor And Searcher
+     * * `514111` - Tool And Die Maker
+     * * `397010` - Tour And Travel Guide
+     * * `113131` - Training And Development Manager
+     * * `131151` - Training And Development Specialist
+     * * `533052` - Transit And Intercity Bus Driver
+     * * `536051` - Transportation Inspector
+     * * `339093` - Transportation Security Screener
+     * * `536030` - Transportation Service Attendant
+     * * `113071` - Transportation Storage And Distribution Manager
+     * * `413041` - Travel Agent
+     * * `373013` - Tree Trimmer And Pruner
+     * * `253041` - Tutor
+     * * `272023` - Umpire Referee And Other Sports Official
+     * * `475040` - Underground Mining Machine Operator
+     * * `999999` - Unemployed With No Work Experience In The Last 5 Years Or Earlier Or Never Worked
+     * * `516093` - Upholsterer
+     * * `193051` - Urban And Regional Planner
+     * * `393031` - Usher Lobby Attendant And Ticket Taker
+     * * `291131` - Veterinarian
+     * * `319096` - Veterinary Assistant And Laboratory Animal Caretaker
+     * * `292056` - Veterinary Technologist And Technician
+     * * `353031` - Waiter Or Waitress
+     * * `518031` - Water And Wastewater Treatment Plant And System Operator
+     * * `151255` - Web And Digital Interface Designer
+     * * `151254` - Web Developer
+     * * `435111` - Weigher Measurer Checker And Sampler Recordkeeping
+     * * `514120` - Welding Soldering And Brazing Worker
+     * * `131022` - Wholesale And Retail Buyer Except Farm Products
+     * * `499081` - Wind Turbine Service Technician
+     * * `517042` - Woodworking Machine Setter Operator And Tender Except Sawing
+     * * `439022` - Word Processor And Typist
+     * * `273043` - Writer And Author
+     */
+    occupation?: '132011' | '272011' | '152011' | '291291' | '519191' | '113012' | '112011' | '413011' | '172011' | '131011' | '194010' | '191010' | '172021' | '452011' | '532020' | '493011' | '532010' | '512011' | '533011' | '452021' | '392021' | '339011' | '392011' | '171011' | '173011' | '119041' | '254010' | '271010' | '192010' | '272021' | '192021' | '291181' | '492097' | '493021' | '493022' | '493023' | '492091' | '396010' | '333011' | '513011' | '395011' | '353011' | '433011' | '433021' | '172031' | '191020' | '194021' | '472011' | '433031' | '472020' | '273011' | '274010' | '434011' | '132031' | '493031' | '131199' | '513020' | '131021' | '517011' | '292031' | '435011' | '472031' | '472040' | '412010' | '472050' | '351011' | '172041' | '519010' | '194031' | '192030' | '111011' | '211021' | '399011' | '291011' | '172051' | '131030' | '537061' | '212011' | '193033' | '292010' | '272022' | '499091' | '271021' | '499092' | '432099' | '113111' | '131141' | '131041' | '151221' | '113021' | '172061' | '151241' | '519160' | '151299' | '151251' | '151230' | '151211' | '492011' | '191030' | '474011' | '472070' | '472061' | '119021' | '499010' | '5370XX' | '352010' | '333012' | '434021' | '131051' | '211019' | '412021' | '435021' | '273092' | '434031' | '537021' | '132041' | '434041' | '132070' | '339091' | '519020' | '434051' | '519030' | '514031' | '272030' | '439021' | '15124X' | '519080' | '319091' | '291292' | '291020' | '475010' | '439031' | '333021' | '292032' | '29205X' | '291031' | '359011' | '212021' | '272091' | '359021' | '435032' | '419091' | '533030' | '472080' | '475023' | '193011' | '273041' | '119030' | '211012' | '492092' | '173023' | '172070' | '492093' | '49209X' | '499051' | '512020' | '472111' | '492096' | '252020' | '474021' | '434061' | '3940XX' | '119161' | '292042' | '291214' | '512031' | '172199' | '272099' | '119070' | '172081' | '194040' | '192041' | '519194' | '475022' | '436011' | '291128' | '399031' | '475032' | '519041' | '113013' | '119013' | '271022' | '353023' | '474031' | '434071' | '132051' | '433099' | '132061' | '113031' | '332020' | '332011' | '552010' | '471011' | '331011' | '451011' | '331021' | '351012' | '371011' | '371012' | '491011' | '411012' | '431011' | '331012' | '511011' | '331099' | '411011' | '331091' | '333031' | '453031' | '532031' | '271023' | '513091' | '513092' | '513093' | '359099' | '352021' | '513099' | '353041' | '119051' | '454011' | '514020' | '131131' | '119171' | '519051' | '517021' | '433041' | '393010' | '111021' | '19204X' | '472121' | '452041' | '271024' | '514033' | '395012' | '474041' | '291299' | '211022' | '499021' | '493040' | '499098' | '519198' | '473010' | '474051' | '499031' | '311121' | '359031' | '434081' | '434161' | '113121' | '131070' | '49904X' | '172110' | '113051' | '537051' | '434199' | '151212' | '519061' | '472130' | '439041' | '413021' | '132053' | '271025' | '273091' | '434111' | '37201X' | '519071' | '231020' | '231012' | '537062' | '171012' | '373011' | '516011' | '231011' | '436012' | '232099' | '111031' | '254022' | '434121' | '254031' | '292061' | '191099' | '434131' | '499094' | '534010' | '119081' | '454020' | '131081' | '537063' | '514041' | '292035' | '372012' | '439051' | '499071' | '499043' | '131111' | '119199' | '395092' | '499095' | '172121' | '131161' | '112021' | '211013' | '319011' | '172131' | '152021' | '172141' | '274099' | '273099' | '119111' | '319092' | '292072' | '191040' | '436013' | '319094' | '131121' | '211023' | '211014' | '271026' | '514050' | '435041' | '553010' | '551010' | '554010' | '499044' | '172151' | '452090' | '474090' | '292090' | '518090' | '193090' | '493090' | '514060' | '419010' | '514070' | '519195' | '394031' | '533099' | '272041' | '272042' | '119121' | '151244' | '434141' | '273023' | '172161' | '29203X' | '194051' | '291151' | '291161' | '291171' | '311131' | '195010' | '291122' | '312010' | '439199' | '439061' | '439071' | '152031' | '292081' | '291041' | '434151' | '31113X' | '5120XX' | '21109X' | '27102X' | '17301X' | '2590XX' | '17302X' | '3930XX' | '4750XX' | '1320XX' | '37301X' | '299000' | '31909X' | '49909X' | '1940XX' | '51403X' | '5371XX' | '1520XX' | '514XXX' | '39509X' | '2912XX' | '51919X' | '5191XX' | '33909X' | '19303X' | '5340XX' | '2530XX' | '51609X' | '5360XX' | '5170XX' | '519111' | '537064' | '472140' | '519120' | '519196' | '232011' | '292043' | '536021' | '333041' | '412022' | '536061' | '433051' | '399099' | '132052' | '119179' | '372021' | '172171' | '291051' | '319095' | '292052' | '319097' | '274021' | '519151' | '192099' | '291123' | '312020' | '291071' | '472151' | '472161' | '472152' | '291081' | '333050' | '435051' | '435052' | '435053' | '119131' | '251000' | '518010' | '499060' | '515111' | '252010' | '516021' | '515113' | '515112' | '339021' | '211092' | '433061' | '272012' | '435061' | '131082' | '439081' | '132020' | '119141' | '292053' | '112030' | '273031' | '435031' | '537070' | '131023' | '113061' | '291124' | '492020' | '292034' | '291224' | '474061' | '534031' | '419020' | '434171' | '399032' | '291125' | '537081' | '291141' | '211015' | '472171' | '212099' | '434181' | '399041' | '291126' | '412031' | '499096' | '472181' | '475071' | '535011' | '419099' | '419031' | '112022' | '413091' | '414010' | '517041' | '533051' | '339094' | '193034' | '252030' | '436014' | '413031' | '492098' | '339030' | '474071' | '516031' | '472211' | '535020' | '535031' | '435071' | '516040' | '533053' | '395094' | '493050' | '119151' | '211093' | '194061' | '211029' | '193041' | '151252' | '151253' | '472231' | '252050' | '291127' | '518021' | '439111' | '152041' | '537065' | '472221' | '512041' | '211011' | '391000' | '531000' | '291240' | '292055' | '193022' | '173031' | '171020' | '432011' | '516050' | '132081' | '132082' | '533054' | '259040' | '273042' | '499052' | '419041' | '432021' | '274030' | '433071' | '516060' | '291129' | '519197' | '232093' | '514111' | '397010' | '113131' | '131151' | '533052' | '536051' | '339093' | '536030' | '113071' | '413041' | '373013' | '253041' | '272023' | '475040' | '999999' | '516093' | '193051' | '393031' | '291131' | '319096' | '292056' | '353031' | '518031' | '151255' | '151254' | '435111' | '514120' | '131022' | '499081' | '517042' | '439022' | '273043' | null;
+    /**
+     * * `employed` - Employed
+     * * `homemaker` - Homemaker
+     * * `retired` - Retired
+     * * `self_employed` - Self Employed
+     * * `student` - Student
+     * * `unemployed` - Unemployed
+     */
+    employment_status?: 'employed' | 'homemaker' | 'retired' | 'self_employed' | 'student' | 'unemployed' | null;
+    /**
+     * * `company_funds` - Company Funds
+     * * `ecommerce_reseller` - Ecommerce Reseller
+     * * `gambling_proceeds` - Gambling Proceeds
+     * * `gifts` - Gifts
+     * * `government_benefits` - Government Benefits
+     * * `inheritance` - Inheritance
+     * * `investments_loans` - Investments Loans
+     * * `pension_retirement` - Pension Retirement
+     * * `salary` - Salary
+     * * `sale_of_assets_real_estate` - Sale Of Assets Real Estate
+     * * `savings` - Savings
+     * * `someone_elses_funds` - Someone Elses Funds
+     */
+    source_of_funds?: 'company_funds' | 'ecommerce_reseller' | 'gambling_proceeds' | 'gifts' | 'government_benefits' | 'inheritance' | 'investments_loans' | 'pension_retirement' | 'salary' | 'sale_of_assets_real_estate' | 'savings' | 'someone_elses_funds' | null;
+    /**
+     * * `charitable_donations` - Charitable Donations
+     * * `ecommerce_retail_payments` - Ecommerce Retail Payments
+     * * `investment_purposes` - Investment Purposes
+     * * `operating_a_company` - Operating A Company
+     * * `other` - Other
+     * * `payments_to_friends_or_family_abroad` - Payments To Friends Or Family Abroad
+     * * `personal_or_living_expenses` - Personal Or Living Expenses
+     * * `protect_wealth` - Protect Wealth
+     * * `purchase_goods_and_services` - Purchase Goods And Services
+     * * `receive_payment_for_freelancing` - Receive Payment For Freelancing
+     * * `receive_salary` - Receive Salary
+     */
+    account_purpose?: 'charitable_donations' | 'ecommerce_retail_payments' | 'investment_purposes' | 'operating_a_company' | 'other' | 'payments_to_friends_or_family_abroad' | 'personal_or_living_expenses' | 'protect_wealth' | 'purchase_goods_and_services' | 'receive_payment_for_freelancing' | 'receive_salary' | null;
+    account_purpose_other?: string | null;
+    intermediary?: boolean | null;
+    /**
+     * * `0_4999` - Range 0 4999
+     * * `5000_9999` - Range 5000 9999
+     * * `10000_49999` - Range 10000 49999
+     * * `50000_plus` - Range 50000 Plus
+     */
+    expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
+    /**
      * @deprecated
      */
     readonly verified: boolean;
     verification: UserVerification;
     /**
+     * The user's current identity verification (KYC) status.
+     *
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
      * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
+     * * `not_started` - Not Started
+     * * `under_review` - Under Review
+     * * `resubmission_requested` - Resubmission Requested
+     * * `offboarded` - Offboarded
      */
-    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started' | 'under_review' | 'resubmission_requested' | 'offboarded';
     readonly created: number;
     readonly updated: number;
+    readonly frozen: {
+        [key: string]: unknown;
+    };
     settings: UserSettings;
 };
 
-/**
- * Extended user information shown based on the default user info serializer.
- * Contain additional information about user permissions and settings.
- */
 export type ExtendedUserInfoRequest = {
     username: string | null;
     first_name?: string | null;
@@ -6941,6 +7866,7 @@ export type ExtendedUserInfoRequest = {
      * * `ZW` - Zimbabwe
      */
     nationality?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    nationalities?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'> | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -7730,6 +8656,625 @@ export type ExtendedUserInfoRequest = {
      * * `ZW` - Zimbabwe
      */
     tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    /**
+     * * `132011` - Accountant And Auditor
+     * * `272011` - Actor
+     * * `152011` - Actuary
+     * * `291291` - Acupuncturist
+     * * `519191` - Adhesive Bonding Machine Operator And Tender
+     * * `113012` - Administrative Services Manager
+     * * `112011` - Advertising And Promotions Manager
+     * * `413011` - Advertising Sales Agent
+     * * `172011` - Aerospace Engineer
+     * * `131011` - Agent And Business Manager Of Artists Performers And Athletes
+     * * `194010` - Agricultural And Food Science Technician
+     * * `191010` - Agricultural And Food Scientist
+     * * `172021` - Agricultural Engineer
+     * * `452011` - Agricultural Inspector
+     * * `532020` - Air Traffic Controller And Airfield Operations Specialist
+     * * `493011` - Aircraft Mechanic And Service Technician
+     * * `532010` - Aircraft Pilots And Flight Engineer
+     * * `512011` - Aircraft Structure Surfaces Rigging And Systems Assembler
+     * * `533011` - Ambulance Driver And Attendant Except Emergency Medical Technician
+     * * `452021` - Animal Breeder
+     * * `392021` - Animal Caretaker
+     * * `339011` - Animal Control Worker
+     * * `392011` - Animal Trainer
+     * * `171011` - Architect Except Landscape And Naval
+     * * `173011` - Architectural And Civil Drafter
+     * * `119041` - Architectural And Engineering Manager
+     * * `254010` - Archivist Curator And Museum Technician
+     * * `271010` - Artist And Related Worker
+     * * `192010` - Astronomer And Physicist
+     * * `272021` - Athletes And Sports Competitor
+     * * `192021` - Atmospheric And Space Scientist
+     * * `291181` - Audiologist
+     * * `492097` - Audiovisual Equipment Installer And Repairer
+     * * `493021` - Automotive Body And Related Repairer
+     * * `493022` - Automotive Glass Installer And Repairer
+     * * `493023` - Automotive Service Technician And Mechanic
+     * * `492091` - Avionics Technician
+     * * `396010` - Baggage Porter Bellhop And Concierge
+     * * `333011` - Bailiff
+     * * `513011` - Baker
+     * * `395011` - Barber
+     * * `353011` - Bartender
+     * * `433011` - Bill And Account Collector
+     * * `433021` - Billing And Posting Clerk
+     * * `172031` - Bioengineer And Biomedical Engineer
+     * * `191020` - Biological Scientist
+     * * `194021` - Biological Technician
+     * * `472011` - Boilermaker
+     * * `433031` - Bookkeeping Accounting And Auditing Clerk
+     * * `472020` - Brickmason Blockmason And Stonemason
+     * * `273011` - Broadcast Announcer And Radio Disc Jockey
+     * * `274010` - Broadcast Sound And Lighting Technician
+     * * `434011` - Brokerage Clerk
+     * * `132031` - Budget Analyst
+     * * `493031` - Bus And Truck Mechanic And Diesel Engine Specialist
+     * * `131199` - Business Operations Specialist Other
+     * * `513020` - Butcher And Other Meat Poultry And Fish Processing Worker
+     * * `131021` - Buyer And Purchasing Agent Farm Products
+     * * `517011` - Cabinetmaker And Bench Carpenter
+     * * `292031` - Cardiovascular Technologist And Technician
+     * * `435011` - Cargo And Freight Agent
+     * * `472031` - Carpenter
+     * * `472040` - Carpet Floor And Tile Installer And Finisher
+     * * `412010` - Cashier
+     * * `472050` - Cement Mason Concrete Finisher And Terrazzo Worker
+     * * `351011` - Chef And Head Cook
+     * * `172041` - Chemical Engineer
+     * * `519010` - Chemical Processing Machine Setter Operator And Tender
+     * * `194031` - Chemical Technician
+     * * `192030` - Chemist And Materials Scientist
+     * * `111011` - Chief Executive
+     * * `211021` - Child Family And School Social Worker
+     * * `399011` - Childcare Worker
+     * * `291011` - Chiropractor
+     * * `172051` - Civil Engineer
+     * * `131030` - Claims Adjuster Appraiser Examiner And Investigator
+     * * `537061` - Cleaner Of Vehicles And Equipment
+     * * `212011` - Clergy
+     * * `193033` - Clinical And Counseling Psychologist
+     * * `292010` - Clinical Laboratory Technologist And Technician
+     * * `272022` - Coaches And Scout
+     * * `499091` - Coin Vending And Amusement Machine Servicer And Repairer
+     * * `271021` - Commercial And Industrial Designer
+     * * `499092` - Commercial Diver
+     * * `432099` - Communications Equipment Operator Other
+     * * `113111` - Compensation And Benefits Manager
+     * * `131141` - Compensation Benefits And Job Analysis Specialist
+     * * `131041` - Compliance Officer
+     * * `151221` - Computer And Information Research Scientist
+     * * `113021` - Computer And Information Systems Manager
+     * * `172061` - Computer Hardware Engineer
+     * * `151241` - Computer Network Architect
+     * * `519160` - Computer Numerically Controlled Tool Operator And Programmer
+     * * `151299` - Computer Occupation Other
+     * * `151251` - Computer Programmer
+     * * `151230` - Computer Support Specialist
+     * * `151211` - Computer Systems Analyst
+     * * `492011` - Computer Automated Teller And Office Machine Repairer
+     * * `191030` - Conservation Scientist And Forester
+     * * `474011` - Construction And Building Inspector
+     * * `472070` - Construction Equipment Operator
+     * * `472061` - Construction Laborer
+     * * `119021` - Construction Manager
+     * * `499010` - Control And Valve Installer And Repairer
+     * * `5370XX` - Conveyor Dredge And Hoist And Winch Operator
+     * * `352010` - Cook
+     * * `333012` - Correctional Officer And Jailer
+     * * `434021` - Correspondence Clerk
+     * * `131051` - Cost Estimator
+     * * `211019` - Counselor Other
+     * * `412021` - Counter And Rental Clerk
+     * * `435021` - Courier And Messenger
+     * * `273092` - Court Reporter And Simultaneous Captioner
+     * * `434031` - Court Municipal And License Clerk
+     * * `537021` - Crane And Tower Operator
+     * * `132041` - Credit Analyst
+     * * `434041` - Credit Authorizer Checker And Clerk
+     * * `132070` - Credit Counselor And Loan Officer
+     * * `339091` - Crossing Guard And Flagger
+     * * `519020` - Crushing Grinding Polishing Mixing And Blending Worker
+     * * `434051` - Customer Service Representative
+     * * `519030` - Cutting Worker
+     * * `514031` - Cutting Punching And Press Machine Setter Operator And Tender Metal And Plastic
+     * * `272030` - Dancer And Choreographer
+     * * `439021` - Data Labeler And Data Entry Keyer
+     * * `15124X` - Database Administrator And Architect
+     * * `519080` - Dental And Ophthalmic Laboratory Technician And Medical Appliance Technician
+     * * `319091` - Dental Assistant
+     * * `291292` - Dental Hygienist
+     * * `291020` - Dentist
+     * * `475010` - Derrick Rotary Drill And Service Unit Operator Oil And Gas
+     * * `439031` - Desktop Publisher
+     * * `333021` - Detective And Criminal Investigator
+     * * `292032` - Diagnostic Medical Sonographer
+     * * `29205X` - Dietetic Technician And Ophthalmic Medical Technician
+     * * `291031` - Dietitian And Nutritionist
+     * * `359011` - Dining Room And Cafeteria Attendant And Bartender Helper
+     * * `212021` - Director Religious Activities And Educatio
+     * * `272091` - Disc Jockey Except Radio
+     * * `359021` - Dishwasher
+     * * `435032` - Dispatcher Except Police Fire And Ambulance
+     * * `419091` - Door To Door Sales Worker News And Street Vendor And Related Worker
+     * * `533030` - Driver Sales Worker And Truck Driver
+     * * `472080` - Drywall Installer Ceiling Tile Installer And Taper
+     * * `475023` - Earth Driller Except Oil And Gas
+     * * `193011` - Economist
+     * * `273041` - Editor
+     * * `119030` - Education And Childcare Administrator
+     * * `211012` - Educational Guidance And Career Counselor And Advisor
+     * * `492092` - Electric Motor Power Tool And Related Repairer
+     * * `173023` - Electrical And Electronic Engineering Technologist And Technician
+     * * `172070` - Electrical And Electronics Engineer
+     * * `492093` - Electrical And Electronics Installer And Repairer Transportation Equipment
+     * * `49209X` - Electrical And Electronics Repairer Industrial And Utility
+     * * `499051` - Electrical Power Line Installer And Repairer
+     * * `512020` - Electrical Electronics And Electromechanical Assembler
+     * * `472111` - Electrician
+     * * `492096` - Electronic Equipment Installer And Repairer Motor Vehicles
+     * * `252020` - Elementary And Middle School Teacher
+     * * `474021` - Elevator And Escalator Installer And Repairer
+     * * `434061` - Eligibility Interviewer Government Programs
+     * * `3940XX` - Embalmer Crematory Operator And Funeral Attendant
+     * * `119161` - Emergency Management Director
+     * * `292042` - Emergency Medical Technician
+     * * `291214` - Emergency Medicine Physician
+     * * `512031` - Engine And Other Machine Assembler
+     * * `172199` - Engineer Other
+     * * `272099` - Entertainer And Performer Sports And Related Worker Other
+     * * `119070` - Entertainment And Recreation Manager
+     * * `172081` - Environmental Engineer
+     * * `194040` - Environmental Science And Geoscience Technician
+     * * `192041` - Environmental Scientist And Specialist Including Health
+     * * `519194` - Etcher And Engraver
+     * * `475022` - Excavating And Loading Machine And Dragline Operator Surface Mining
+     * * `436011` - Executive Secretary And Executive Administrative Assistant
+     * * `291128` - Exercise Physiologist
+     * * `399031` - Exercise Trainer And Group Fitness Instructor
+     * * `475032` - Explosives Worker Ordnance Handling Expert And Blaster
+     * * `519041` - Extruding Forming Pressing And Compacting Machine Setter Operator And Tender
+     * * `113013` - Facilities Manager
+     * * `119013` - Farmer Rancher And Other Agricultural Manager
+     * * `271022` - Fashion Designer
+     * * `353023` - Fast Food And Counter Worker
+     * * `474031` - Fence Erector
+     * * `434071` - File Clerk
+     * * `132051` - Financial And Investment Analyst
+     * * `433099` - Financial Clerk Other
+     * * `132061` - Financial Examiner
+     * * `113031` - Financial Manager
+     * * `332020` - Fire Inspector
+     * * `332011` - Firefighter
+     * * `552010` - First Line Enlisted Military Supervisor
+     * * `471011` - First Line Supervisor Of Construction Trades And Extraction Worker
+     * * `331011` - First Line Supervisor Of Correctional Officer
+     * * `451011` - First Line Supervisor Of Farming Fishing And Forestry Worker
+     * * `331021` - First Line Supervisor Of Firefighting And Prevention Worker
+     * * `351012` - First Line Supervisor Of Food Preparation And Serving Workers
+     * * `371011` - First Line Supervisor Of Housekeeping And Janitorial Workers
+     * * `371012` - First Line Supervisor Of Landscaping Lawn Service And Groundskeeping Workers
+     * * `491011` - First Line Supervisor Of Mechanics Installers And Repairers
+     * * `411012` - First Line Supervisor Of Non Retail Sales Workers
+     * * `431011` - First Line Supervisor Of Office And Administrative Support Workers
+     * * `331012` - First Line Supervisor Of Police And Detective
+     * * `511011` - First Line Supervisor Of Production And Operating Worker
+     * * `331099` - First Line Supervisor Of Protective Service Worker Other
+     * * `411011` - First Line Supervisor Of Retail Sales Workers
+     * * `331091` - First Line Supervisor Of Security Worker
+     * * `333031` - Fish And Game Warden
+     * * `453031` - Fishing And Hunting Worker
+     * * `532031` - Flight Attendant
+     * * `271023` - Floral Designer
+     * * `513091` - Food And Tobacco Roasting Baking And Drying Machine Operator And Tender
+     * * `513092` - Food Batchmaker
+     * * `513093` - Food Cooking Machine Operator And Tender
+     * * `359099` - Food Preparation And Serving Related Worker Other
+     * * `352021` - Food Preparation Worker
+     * * `513099` - Food Processing Worker Other
+     * * `353041` - Food Server Nonrestaurant
+     * * `119051` - Food Service Manager
+     * * `454011` - Forest And Conservation Worker
+     * * `514020` - Forming Machine Setter Operator And Tender Metal And Plastic
+     * * `131131` - Fundraiser
+     * * `119171` - Funeral Home Manager
+     * * `519051` - Furnace Kiln Oven Drier And Kettle Operator And Tender
+     * * `517021` - Furniture Finisher
+     * * `433041` - Gambling Cage Worker
+     * * `393010` - Gambling Services Worker
+     * * `111021` - General And Operations Manager
+     * * `19204X` - Geoscientist And Hydrologist Except Geographer
+     * * `472121` - Glazier
+     * * `452041` - Grader And Sorter Agricultural Product
+     * * `271024` - Graphic Designer
+     * * `514033` - Grinding Lapping Polishing And Buffing Machine Tool Setter Operator And Tender Metal And Plastic
+     * * `395012` - Hairdresser Hairstylist And Cosmetologist
+     * * `474041` - Hazardous Materials Removal Worker
+     * * `291299` - Healthcare Diagnosing Or Treating Practitioner Other
+     * * `211022` - Healthcare Social Worker
+     * * `499021` - Heating Air Conditioning And Refrigeration Mechanic And Installer
+     * * `493040` - Heavy Vehicle And Mobile Equipment Service Technician And Mechanic
+     * * `499098` - Helper Installation Maintenance And Repair Worker
+     * * `519198` - Helper Production Worker
+     * * `473010` - Helper Construction Trade
+     * * `474051` - Highway Maintenance Worker
+     * * `499031` - Home Appliance Repairer
+     * * `311121` - Home Health Aide
+     * * `359031` - Host And Hostess Restaurant Lounge And Coffee Shop
+     * * `434081` - Hotel Motel And Resort Desk Clerk
+     * * `434161` - Human Resources Assistant Except Payroll And Timekeeping
+     * * `113121` - Human Resources Manager
+     * * `131070` - Human Resources Worker
+     * * `49904X` - Industrial And Refractory Machinery Mechanic
+     * * `172110` - Industrial Engineer Including Health And Safety
+     * * `113051` - Industrial Production Manager
+     * * `537051` - Industrial Truck And Tractor Operator
+     * * `434199` - Information And Record Clerk Other
+     * * `151212` - Information Security Analyst
+     * * `519061` - Inspector Tester Sorter Sampler And Weigher
+     * * `472130` - Insulation Worker
+     * * `439041` - Insurance Claims And Policy Processing Clerk
+     * * `413021` - Insurance Sales Agent
+     * * `132053` - Insurance Underwriter
+     * * `271025` - Interior Designer
+     * * `273091` - Interpreter And Translator
+     * * `434111` - Interviewer Except Eligibility And Loan
+     * * `37201X` - Janitor And Building Cleaner
+     * * `519071` - Jeweler And Precious Stone And Metal Worker
+     * * `231020` - Judge Magistrate And Other Judicial Worker
+     * * `231012` - Judicial Law Clerk
+     * * `537062` - Laborer And Freight Stock And Material Mover Hand
+     * * `171012` - Landscape Architect
+     * * `373011` - Landscaping And Groundskeeping Worker
+     * * `516011` - Laundry And Dry Cleaning Worker
+     * * `231011` - Lawyer
+     * * `436012` - Legal Secretary And Administrative Assistant
+     * * `232099` - Legal Support Worker Other
+     * * `111031` - Legislator
+     * * `254022` - Librarian And Media Collections Specialist
+     * * `434121` - Library Assistant Clerical
+     * * `254031` - Library Technician
+     * * `292061` - Licensed Practical And Licensed Vocational Nurse
+     * * `191099` - Life Scientist Other
+     * * `434131` - Loan Interviewer And Clerk
+     * * `499094` - Locksmith And Safe Repairer
+     * * `534010` - Locomotive Engineer And Operator
+     * * `119081` - Lodging Manager
+     * * `454020` - Logging Worker
+     * * `131081` - Logistician
+     * * `537063` - Machine Feeder And Offbearer
+     * * `514041` - Machinist
+     * * `292035` - Magnetic Resonance Imaging Technologist
+     * * `372012` - Maids And Housekeeping Cleaner
+     * * `439051` - Mail Clerk And Mail Machine Operator Except Postal Service
+     * * `499071` - Maintenance And Repair Worker General
+     * * `499043` - Maintenance Worker Machinery
+     * * `131111` - Management Analyst
+     * * `119199` - Manager Other
+     * * `395092` - Manicurist And Pedicurist
+     * * `499095` - Manufactured Building And Mobile Home Installer
+     * * `172121` - Marine Engineer And Naval Architect
+     * * `131161` - Market Research Analyst And Marketing Specialist
+     * * `112021` - Marketing Manager
+     * * `211013` - Marriage And Family Therapist
+     * * `319011` - Massage Therapist
+     * * `172131` - Materials Engineer
+     * * `152021` - Mathematician
+     * * `172141` - Mechanical Engineer
+     * * `274099` - Media And Communication Equipment Worker Other
+     * * `273099` - Media And Communication Worker Other
+     * * `119111` - Medical And Health Services Manager
+     * * `319092` - Medical Assistant
+     * * `292072` - Medical Records Specialist
+     * * `191040` - Medical Scientist
+     * * `436013` - Medical Secretary And Administrative Assistant
+     * * `319094` - Medical Transcriptionist
+     * * `131121` - Meeting Convention And Event Planner
+     * * `211023` - Mental Health And Substance Abuse Social Worker
+     * * `211014` - Mental Health Counselor
+     * * `271026` - Merchandise Displayer And Window Trimmer
+     * * `514050` - Metal Furnace Operator Tender Pourer And Caster
+     * * `435041` - Meter Reader Utilities
+     * * `553010` - Military Enlisted Tactical Operations And Air Weapons Specialist And Crew Member
+     * * `551010` - Military Officer Special And Tactical Operations Leader
+     * * `554010` - Military Rank Not Specified
+     * * `499044` - Millwright
+     * * `172151` - Mining And Geological Engineer Including Mining Safety Engineer
+     * * `452090` - Miscellaneous Agricultural Worker
+     * * `474090` - Miscellaneous Construction And Related Worker
+     * * `292090` - Miscellaneous Health Technologist And Technician
+     * * `518090` - Miscellaneous Plant And System Operator
+     * * `193090` - Miscellaneous Social Scientist And Related Worker
+     * * `493090` - Miscellaneous Vehicle And Mobile Equipment Mechanic Installer And Repairer
+     * * `514060` - Model Maker And Patternmaker Metal And Plastic
+     * * `419010` - Model Demonstrator And Product Promoter
+     * * `514070` - Molder And Molding Machine Setter Operator And Tender Metal And Plastic
+     * * `519195` - Molder Shaper And Caster Except Metal And Plastic
+     * * `394031` - Mortician Undertaker And Funeral Arranger
+     * * `533099` - Motor Vehicle Operator Other
+     * * `272041` - Music Director And Composer
+     * * `272042` - Musician And Singer
+     * * `119121` - Natural Sciences Manager
+     * * `151244` - Network And Computer Systems Administrator
+     * * `434141` - New Accounts Clerk
+     * * `273023` - News Analyst Reporter And Journalist
+     * * `172161` - Nuclear Engineer
+     * * `29203X` - Nuclear Medicine Technologist And Medical Dosimetrist
+     * * `194051` - Nuclear Technician
+     * * `291151` - Nurse Anesthetist
+     * * `291161` - Nurse Midwife
+     * * `291171` - Nurse Practitioner
+     * * `311131` - Nursing Assistant
+     * * `195010` - Occupational Health And Safety Specialist And Technician
+     * * `291122` - Occupational Therapist
+     * * `312010` - Occupational Therapy Assistant And Aide
+     * * `439199` - Office And Administrative Support Worker Other
+     * * `439061` - Office Clerk General
+     * * `439071` - Office Machine Operator Except Computer
+     * * `152031` - Operations Research Analyst
+     * * `292081` - Optician Dispensing
+     * * `291041` - Optometrist
+     * * `434151` - Order Clerk
+     * * `31113X` - Orderly And Psychiatric Aide
+     * * `5120XX` - Other Assembler And Fabricator
+     * * `21109X` - Other Community And Social Service Specialist
+     * * `27102X` - Other Designer
+     * * `17301X` - Other Drafter
+     * * `2590XX` - Other Educational Instruction And Library Worker
+     * * `17302X` - Other Engineering Technologist And Technician
+     * * `3930XX` - Other Entertainment Attendant And Related Worker
+     * * `4750XX` - Other Extraction Worker
+     * * `1320XX` - Other Financial Specialist
+     * * `37301X` - Other Grounds Maintenance Worker
+     * * `299000` - Other Healthcare Practitioner And Technical Occupation
+     * * `31909X` - Other Healthcare Support Worker
+     * * `49909X` - Other Installation Maintenance And Repair Worker
+     * * `1940XX` - Other Life Physical And Social Science Technician
+     * * `51403X` - Other Machine Tool Setter Operator And Tender Metal And Plastic
+     * * `5371XX` - Other Material Moving Worker
+     * * `1520XX` - Other Mathematical Science Occupation
+     * * `514XXX` - Other Metal Worker And Plastic Worker
+     * * `39509X` - Other Personal Appearance Worker
+     * * `2912XX` - Other Physician
+     * * `51919X` - Other Production Equipment Operator And Tender
+     * * `5191XX` - Other Production Worker
+     * * `33909X` - Other Protective Service Worker
+     * * `19303X` - Other Psychologist
+     * * `5340XX` - Other Rail Transportation Worker
+     * * `2530XX` - Other Teacher And Instructor
+     * * `51609X` - Other Textile Apparel And Furnishings Worker
+     * * `5360XX` - Other Transportation Worker
+     * * `5170XX` - Other Woodworker
+     * * `519111` - Packaging And Filling Machine Operator And Tender
+     * * `537064` - Packer And Packager Hand
+     * * `472140` - Painter And Paperhanger
+     * * `519120` - Painting Worker
+     * * `519196` - Paper Goods Machine Setter Operator And Tender
+     * * `232011` - Paralegal And Legal Assistant
+     * * `292043` - Paramedic
+     * * `536021` - Parking Attendant
+     * * `333041` - Parking Enforcement Worker
+     * * `412022` - Parts Salesperson
+     * * `536061` - Passenger Attendant
+     * * `433051` - Payroll And Timekeeping Clerk
+     * * `399099` - Personal Care And Service Worker Other
+     * * `132052` - Personal Financial Advisor
+     * * `119179` - Personal Service Manager Other
+     * * `372021` - Pest Control Worker
+     * * `172171` - Petroleum Engineer
+     * * `291051` - Pharmacist
+     * * `319095` - Pharmacy Aide
+     * * `292052` - Pharmacy Technician
+     * * `319097` - Phlebotomist
+     * * `274021` - Photographer
+     * * `519151` - Photographic Process Worker And Processing Machine Operator
+     * * `192099` - Physical Scientist Other
+     * * `291123` - Physical Therapist
+     * * `312020` - Physical Therapist Assistant And Aide
+     * * `291071` - Physician Assistant
+     * * `472151` - Pipelayer
+     * * `472161` - Plasterer And Stucco Mason
+     * * `472152` - Plumber Pipefitter And Steamfitter
+     * * `291081` - Podiatrist
+     * * `333050` - Police Officer
+     * * `435051` - Postal Service Clerk
+     * * `435052` - Postal Service Mail Carrier
+     * * `435053` - Postal Service Mail Sorter Processor And Processing Machine Operator
+     * * `119131` - Postmaster And Mail Superintendent
+     * * `251000` - Postsecondary Teacher
+     * * `518010` - Power Plant Operator Distributor And Dispatcher
+     * * `499060` - Precision Instrument And Equipment Repairer
+     * * `515111` - Prepress Technician And Worker
+     * * `252010` - Preschool And Kindergarten Teacher
+     * * `516021` - Presser Textile Garment And Related Material
+     * * `515113` - Print Binding And Finishing Worker
+     * * `515112` - Printing Press Operator
+     * * `339021` - Private Detective And Investigator
+     * * `211092` - Probation Officer And Correctional Treatment Specialist
+     * * `433061` - Procurement Clerk
+     * * `272012` - Producer And Director
+     * * `435061` - Production Planning And Expediting Clerk
+     * * `131082` - Project Management Specialist
+     * * `439081` - Proofreader And Copy Marker
+     * * `132020` - Property Appraiser And Assessor
+     * * `119141` - Property Real Estate And Community Association Manager
+     * * `292053` - Psychiatric Technician
+     * * `112030` - Public Relations And Fundraising Manager
+     * * `273031` - Public Relations Specialist
+     * * `435031` - Public Safety Telecommunicator
+     * * `537070` - Pumping Station Operator
+     * * `131023` - Purchasing Agent Except Wholesale Retail And Farm Products
+     * * `113061` - Purchasing Manager
+     * * `291124` - Radiation Therapist
+     * * `492020` - Radio And Telecommunications Equipment Installer And Repairer
+     * * `292034` - Radiologic Technologist And Technician
+     * * `291224` - Radiologist
+     * * `474061` - Rail Track Laying And Maintenance Equipment Operator
+     * * `534031` - Railroad Conductor And Yardmaster
+     * * `419020` - Real Estate Broker And Sales Agent
+     * * `434171` - Receptionist And Information Clerk
+     * * `399032` - Recreation Worker
+     * * `291125` - Recreational Therapist
+     * * `537081` - Refuse And Recyclable Material Collector
+     * * `291141` - Registered Nurse
+     * * `211015` - Rehabilitation Counselor
+     * * `472171` - Reinforcing Iron And Rebar Worker
+     * * `212099` - Religious Worker Other
+     * * `434181` - Reservation And Transportation Ticket Agent And Travel Clerk
+     * * `399041` - Residential Advisor
+     * * `291126` - Respiratory Therapist
+     * * `412031` - Retail Salesperson
+     * * `499096` - Rigger
+     * * `472181` - Roofer
+     * * `475071` - Roustabout Oil And Gas
+     * * `535011` - Sailor And Marine Oiler
+     * * `419099` - Sales And Related Worker Other
+     * * `419031` - Sales Engineer
+     * * `112022` - Sales Manager
+     * * `413091` - Sales Representative Of Services Except Advertising Insurance Financial Services And Travel
+     * * `414010` - Sales Representatives Wholesale And Manufacturing
+     * * `517041` - Sawing Machine Setter Operator And Tender Wood
+     * * `533051` - School Bus Driver
+     * * `339094` - School Bus Monitor
+     * * `193034` - School Psychologist
+     * * `252030` - Secondary School Teacher
+     * * `436014` - Secretary And Administrative Assistant Except Legal Medical And Executive
+     * * `413031` - Securities Commodities And Financial Services Sales Agent
+     * * `492098` - Security And Fire Alarm Systems Installer
+     * * `339030` - Security Guard And Gambling Surveillance Officer
+     * * `474071` - Septic Tank Servicer And Sewer Pipe Cleaner
+     * * `516031` - Sewing Machine Operator
+     * * `472211` - Sheet Metal Worker
+     * * `535020` - Ship And Boat Captain And Operator
+     * * `535031` - Ship Engineer
+     * * `435071` - Shipping Receiving And Inventory Clerk
+     * * `516040` - Shoe And Leather Worker
+     * * `533053` - Shuttle Driver And Chauffeur
+     * * `395094` - Skincare Specialist
+     * * `493050` - Small Engine Mechanic
+     * * `119151` - Social And Community Service Manager
+     * * `211093` - Social And Human Service Assistant
+     * * `194061` - Social Science Research Assistant
+     * * `211029` - Social Worker Other
+     * * `193041` - Sociologist
+     * * `151252` - Software Developer
+     * * `151253` - Software Quality Assurance Analyst And Tester
+     * * `472231` - Solar Photovoltaic Installer
+     * * `252050` - Special Education Teacher
+     * * `291127` - Speech Language Pathologist
+     * * `518021` - Stationary Engineer And Boiler Operator
+     * * `439111` - Statistical Assistant
+     * * `152041` - Statistician
+     * * `537065` - Stocker And Order Filler
+     * * `472221` - Structural Iron And Steel Worker
+     * * `512041` - Structural Metal Fabricator And Fitter
+     * * `211011` - Substance Abuse And Behavioral Disorder Counselor
+     * * `391000` - Supervisor Of Personal Care And Service Worker
+     * * `531000` - Supervisor Of Transportation And Material Moving Worker
+     * * `291240` - Surgeon
+     * * `292055` - Surgical Technologist
+     * * `193022` - Survey Researcher
+     * * `173031` - Surveying And Mapping Technician
+     * * `171020` - Surveyor Cartographer And Photogrammetrist
+     * * `432011` - Switchboard Operator Including Answering Service
+     * * `516050` - Tailor Dressmaker And Sewer
+     * * `132081` - Tax Examiner And Collector And Revenue Agent
+     * * `132082` - Tax Preparer
+     * * `533054` - Taxi Driver
+     * * `259040` - Teaching Assistant
+     * * `273042` - Technical Writer
+     * * `499052` - Telecommunications Line Installer And Repairer
+     * * `419041` - Telemarketer
+     * * `432021` - Telephone Operator
+     * * `274030` - Television Video And Film Camera Operator And Editor
+     * * `433071` - Teller
+     * * `516060` - Textile Machine Setter Operator And Tender
+     * * `291129` - Therapist Other
+     * * `519197` - Tire Builder
+     * * `232093` - Title Examiner Abstractor And Searcher
+     * * `514111` - Tool And Die Maker
+     * * `397010` - Tour And Travel Guide
+     * * `113131` - Training And Development Manager
+     * * `131151` - Training And Development Specialist
+     * * `533052` - Transit And Intercity Bus Driver
+     * * `536051` - Transportation Inspector
+     * * `339093` - Transportation Security Screener
+     * * `536030` - Transportation Service Attendant
+     * * `113071` - Transportation Storage And Distribution Manager
+     * * `413041` - Travel Agent
+     * * `373013` - Tree Trimmer And Pruner
+     * * `253041` - Tutor
+     * * `272023` - Umpire Referee And Other Sports Official
+     * * `475040` - Underground Mining Machine Operator
+     * * `999999` - Unemployed With No Work Experience In The Last 5 Years Or Earlier Or Never Worked
+     * * `516093` - Upholsterer
+     * * `193051` - Urban And Regional Planner
+     * * `393031` - Usher Lobby Attendant And Ticket Taker
+     * * `291131` - Veterinarian
+     * * `319096` - Veterinary Assistant And Laboratory Animal Caretaker
+     * * `292056` - Veterinary Technologist And Technician
+     * * `353031` - Waiter Or Waitress
+     * * `518031` - Water And Wastewater Treatment Plant And System Operator
+     * * `151255` - Web And Digital Interface Designer
+     * * `151254` - Web Developer
+     * * `435111` - Weigher Measurer Checker And Sampler Recordkeeping
+     * * `514120` - Welding Soldering And Brazing Worker
+     * * `131022` - Wholesale And Retail Buyer Except Farm Products
+     * * `499081` - Wind Turbine Service Technician
+     * * `517042` - Woodworking Machine Setter Operator And Tender Except Sawing
+     * * `439022` - Word Processor And Typist
+     * * `273043` - Writer And Author
+     */
+    occupation?: '132011' | '272011' | '152011' | '291291' | '519191' | '113012' | '112011' | '413011' | '172011' | '131011' | '194010' | '191010' | '172021' | '452011' | '532020' | '493011' | '532010' | '512011' | '533011' | '452021' | '392021' | '339011' | '392011' | '171011' | '173011' | '119041' | '254010' | '271010' | '192010' | '272021' | '192021' | '291181' | '492097' | '493021' | '493022' | '493023' | '492091' | '396010' | '333011' | '513011' | '395011' | '353011' | '433011' | '433021' | '172031' | '191020' | '194021' | '472011' | '433031' | '472020' | '273011' | '274010' | '434011' | '132031' | '493031' | '131199' | '513020' | '131021' | '517011' | '292031' | '435011' | '472031' | '472040' | '412010' | '472050' | '351011' | '172041' | '519010' | '194031' | '192030' | '111011' | '211021' | '399011' | '291011' | '172051' | '131030' | '537061' | '212011' | '193033' | '292010' | '272022' | '499091' | '271021' | '499092' | '432099' | '113111' | '131141' | '131041' | '151221' | '113021' | '172061' | '151241' | '519160' | '151299' | '151251' | '151230' | '151211' | '492011' | '191030' | '474011' | '472070' | '472061' | '119021' | '499010' | '5370XX' | '352010' | '333012' | '434021' | '131051' | '211019' | '412021' | '435021' | '273092' | '434031' | '537021' | '132041' | '434041' | '132070' | '339091' | '519020' | '434051' | '519030' | '514031' | '272030' | '439021' | '15124X' | '519080' | '319091' | '291292' | '291020' | '475010' | '439031' | '333021' | '292032' | '29205X' | '291031' | '359011' | '212021' | '272091' | '359021' | '435032' | '419091' | '533030' | '472080' | '475023' | '193011' | '273041' | '119030' | '211012' | '492092' | '173023' | '172070' | '492093' | '49209X' | '499051' | '512020' | '472111' | '492096' | '252020' | '474021' | '434061' | '3940XX' | '119161' | '292042' | '291214' | '512031' | '172199' | '272099' | '119070' | '172081' | '194040' | '192041' | '519194' | '475022' | '436011' | '291128' | '399031' | '475032' | '519041' | '113013' | '119013' | '271022' | '353023' | '474031' | '434071' | '132051' | '433099' | '132061' | '113031' | '332020' | '332011' | '552010' | '471011' | '331011' | '451011' | '331021' | '351012' | '371011' | '371012' | '491011' | '411012' | '431011' | '331012' | '511011' | '331099' | '411011' | '331091' | '333031' | '453031' | '532031' | '271023' | '513091' | '513092' | '513093' | '359099' | '352021' | '513099' | '353041' | '119051' | '454011' | '514020' | '131131' | '119171' | '519051' | '517021' | '433041' | '393010' | '111021' | '19204X' | '472121' | '452041' | '271024' | '514033' | '395012' | '474041' | '291299' | '211022' | '499021' | '493040' | '499098' | '519198' | '473010' | '474051' | '499031' | '311121' | '359031' | '434081' | '434161' | '113121' | '131070' | '49904X' | '172110' | '113051' | '537051' | '434199' | '151212' | '519061' | '472130' | '439041' | '413021' | '132053' | '271025' | '273091' | '434111' | '37201X' | '519071' | '231020' | '231012' | '537062' | '171012' | '373011' | '516011' | '231011' | '436012' | '232099' | '111031' | '254022' | '434121' | '254031' | '292061' | '191099' | '434131' | '499094' | '534010' | '119081' | '454020' | '131081' | '537063' | '514041' | '292035' | '372012' | '439051' | '499071' | '499043' | '131111' | '119199' | '395092' | '499095' | '172121' | '131161' | '112021' | '211013' | '319011' | '172131' | '152021' | '172141' | '274099' | '273099' | '119111' | '319092' | '292072' | '191040' | '436013' | '319094' | '131121' | '211023' | '211014' | '271026' | '514050' | '435041' | '553010' | '551010' | '554010' | '499044' | '172151' | '452090' | '474090' | '292090' | '518090' | '193090' | '493090' | '514060' | '419010' | '514070' | '519195' | '394031' | '533099' | '272041' | '272042' | '119121' | '151244' | '434141' | '273023' | '172161' | '29203X' | '194051' | '291151' | '291161' | '291171' | '311131' | '195010' | '291122' | '312010' | '439199' | '439061' | '439071' | '152031' | '292081' | '291041' | '434151' | '31113X' | '5120XX' | '21109X' | '27102X' | '17301X' | '2590XX' | '17302X' | '3930XX' | '4750XX' | '1320XX' | '37301X' | '299000' | '31909X' | '49909X' | '1940XX' | '51403X' | '5371XX' | '1520XX' | '514XXX' | '39509X' | '2912XX' | '51919X' | '5191XX' | '33909X' | '19303X' | '5340XX' | '2530XX' | '51609X' | '5360XX' | '5170XX' | '519111' | '537064' | '472140' | '519120' | '519196' | '232011' | '292043' | '536021' | '333041' | '412022' | '536061' | '433051' | '399099' | '132052' | '119179' | '372021' | '172171' | '291051' | '319095' | '292052' | '319097' | '274021' | '519151' | '192099' | '291123' | '312020' | '291071' | '472151' | '472161' | '472152' | '291081' | '333050' | '435051' | '435052' | '435053' | '119131' | '251000' | '518010' | '499060' | '515111' | '252010' | '516021' | '515113' | '515112' | '339021' | '211092' | '433061' | '272012' | '435061' | '131082' | '439081' | '132020' | '119141' | '292053' | '112030' | '273031' | '435031' | '537070' | '131023' | '113061' | '291124' | '492020' | '292034' | '291224' | '474061' | '534031' | '419020' | '434171' | '399032' | '291125' | '537081' | '291141' | '211015' | '472171' | '212099' | '434181' | '399041' | '291126' | '412031' | '499096' | '472181' | '475071' | '535011' | '419099' | '419031' | '112022' | '413091' | '414010' | '517041' | '533051' | '339094' | '193034' | '252030' | '436014' | '413031' | '492098' | '339030' | '474071' | '516031' | '472211' | '535020' | '535031' | '435071' | '516040' | '533053' | '395094' | '493050' | '119151' | '211093' | '194061' | '211029' | '193041' | '151252' | '151253' | '472231' | '252050' | '291127' | '518021' | '439111' | '152041' | '537065' | '472221' | '512041' | '211011' | '391000' | '531000' | '291240' | '292055' | '193022' | '173031' | '171020' | '432011' | '516050' | '132081' | '132082' | '533054' | '259040' | '273042' | '499052' | '419041' | '432021' | '274030' | '433071' | '516060' | '291129' | '519197' | '232093' | '514111' | '397010' | '113131' | '131151' | '533052' | '536051' | '339093' | '536030' | '113071' | '413041' | '373013' | '253041' | '272023' | '475040' | '999999' | '516093' | '193051' | '393031' | '291131' | '319096' | '292056' | '353031' | '518031' | '151255' | '151254' | '435111' | '514120' | '131022' | '499081' | '517042' | '439022' | '273043' | null;
+    /**
+     * * `employed` - Employed
+     * * `homemaker` - Homemaker
+     * * `retired` - Retired
+     * * `self_employed` - Self Employed
+     * * `student` - Student
+     * * `unemployed` - Unemployed
+     */
+    employment_status?: 'employed' | 'homemaker' | 'retired' | 'self_employed' | 'student' | 'unemployed' | null;
+    /**
+     * * `company_funds` - Company Funds
+     * * `ecommerce_reseller` - Ecommerce Reseller
+     * * `gambling_proceeds` - Gambling Proceeds
+     * * `gifts` - Gifts
+     * * `government_benefits` - Government Benefits
+     * * `inheritance` - Inheritance
+     * * `investments_loans` - Investments Loans
+     * * `pension_retirement` - Pension Retirement
+     * * `salary` - Salary
+     * * `sale_of_assets_real_estate` - Sale Of Assets Real Estate
+     * * `savings` - Savings
+     * * `someone_elses_funds` - Someone Elses Funds
+     */
+    source_of_funds?: 'company_funds' | 'ecommerce_reseller' | 'gambling_proceeds' | 'gifts' | 'government_benefits' | 'inheritance' | 'investments_loans' | 'pension_retirement' | 'salary' | 'sale_of_assets_real_estate' | 'savings' | 'someone_elses_funds' | null;
+    /**
+     * * `charitable_donations` - Charitable Donations
+     * * `ecommerce_retail_payments` - Ecommerce Retail Payments
+     * * `investment_purposes` - Investment Purposes
+     * * `operating_a_company` - Operating A Company
+     * * `other` - Other
+     * * `payments_to_friends_or_family_abroad` - Payments To Friends Or Family Abroad
+     * * `personal_or_living_expenses` - Personal Or Living Expenses
+     * * `protect_wealth` - Protect Wealth
+     * * `purchase_goods_and_services` - Purchase Goods And Services
+     * * `receive_payment_for_freelancing` - Receive Payment For Freelancing
+     * * `receive_salary` - Receive Salary
+     */
+    account_purpose?: 'charitable_donations' | 'ecommerce_retail_payments' | 'investment_purposes' | 'operating_a_company' | 'other' | 'payments_to_friends_or_family_abroad' | 'personal_or_living_expenses' | 'protect_wealth' | 'purchase_goods_and_services' | 'receive_payment_for_freelancing' | 'receive_salary' | null;
+    account_purpose_other?: string | null;
+    intermediary?: boolean | null;
+    /**
+     * * `0_4999` - Range 0 4999
+     * * `5000_9999` - Range 5000 9999
+     * * `10000_49999` - Range 10000 49999
+     * * `50000_plus` - Range 50000 Plus
+     */
+    expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
 };
 
 export type ExtendedUserInfoResponse = {
@@ -7743,12 +9288,6 @@ export type GroupDisallowedTransactionSubtype = {
     account_definition: ReducedAccountDefinition;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type GroupFee = {
     readonly id: number;
     name: string | null;
@@ -7773,12 +9312,6 @@ export type GroupFeeResponse = {
     data: GroupFee;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type GroupLimit = {
     readonly id: number;
     /**
@@ -7813,12 +9346,6 @@ export type GroupLimitResponse = {
     data: GroupLimit;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type GroupPermission = {
     readonly id: number;
     /**
@@ -7877,12 +9404,6 @@ export type GroupPermissionResponse = {
     data: GroupPermission;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type GroupSettings = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
@@ -7890,12 +9411,6 @@ export type GroupSettings = {
     disallowed_transaction_subtypes: Array<GroupDisallowedTransactionSubtype>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type GroupTier = {
     readonly id: number;
     readonly level: number;
@@ -7921,12 +9436,6 @@ export type GroupTierDisallowedTransactionSubtype = {
     account_definition: ReducedAccountDefinition;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type GroupTierFee = {
     readonly id: number;
     name: string | null;
@@ -7951,12 +9460,6 @@ export type GroupTierFeeResponse = {
     data: GroupTierFee;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type GroupTierLimit = {
     readonly id: number;
     /**
@@ -7991,12 +9494,6 @@ export type GroupTierLimitResponse = {
     data: GroupTierLimit;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type GroupTierRequirementSet = {
     readonly id: number;
     parent?: number | null;
@@ -8014,12 +9511,6 @@ export type GroupTierRequirementSet = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type GroupTierRequirementSetItem = {
     readonly id: number;
     /**
@@ -8046,12 +9537,6 @@ export type GroupTierRequirementSetResponse = {
     data: GroupTierRequirementSet;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type GroupTierSettings = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
@@ -8068,12 +9553,6 @@ export type JwtResponse = {
     data: Jwt;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type LegalTerm = {
     readonly id: number;
     /**
@@ -8093,12 +9572,6 @@ export type LegalTermResponse = {
     data: LegalTerm;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type LegalTermVersion = {
     readonly id: number;
     readonly version: number;
@@ -8139,12 +9612,6 @@ export type LogoutRequest = {
     clear_session_option?: 'all' | 'temporary' | 'none';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type MfaAuthenticator = {
     readonly id: string;
     /**
@@ -8206,12 +9673,6 @@ export type MfaVerifyRequest = {
     authenticator?: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type MaskedMfaAuthenticator = {
     readonly id: string;
     /**
@@ -8262,12 +9723,6 @@ export type MaskedMfaTwilioDeviceDetail = {
     mobile: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Metric = {
     readonly id: string;
     readonly name: string | null;
@@ -8305,12 +9760,6 @@ export type Metric = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type MetricPoint = {
     readonly id: number;
     readonly value: number;
@@ -8322,12 +9771,6 @@ export type MetricResponse = {
     data: Metric;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Mobile = {
     readonly id: number;
     readonly number: string;
@@ -8344,12 +9787,6 @@ export type MobileListResponse = {
     data: MobileList;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type MobileRequest = {
     primary?: boolean;
 };
@@ -8382,12 +9819,6 @@ export type OauthAuthorizeResponse = {
     data: OauthAuthorize;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type OauthClient = {
     readonly id: string;
     /**
@@ -8957,23 +10388,11 @@ export type PaginatedUserWalletAccountAssetListResponse = {
     data: PaginatedUserWalletAccountAssetList;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PartnerTransaction = {
     readonly id: string;
     user: PartnerUserInfo;
 };
 
-/**
- * A condensed user serializer showing only the necessary user information to
- * identify a partner user (without exposing any extra).
- *
- * This only works when a transaction instance is sent to it.
- */
 export type PartnerUserInfo = {
     readonly id: string;
     readonly identifier: string;
@@ -8995,9 +10414,6 @@ export type PasswordChangeRequest = {
     clear_session_option?: 'all' | 'temporary' | 'none';
 };
 
-/**
- * Serializer for confirming a password reset attempt.
- */
 export type PasswordResetConfirmRequest = {
     uid: string;
     token: string;
@@ -9009,31 +10425,19 @@ export type PasswordResetConfirmRequest = {
     clear_session_option?: 'all' | 'temporary' | 'none';
 };
 
-/**
- * Serializer for requesting a password reset e-mail.
- */
 export type PasswordResetRequest = {
     force?: boolean;
     user: string;
     company: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAccountAccountAssetRequest = {
+    /**
+     * Whether this is the account's currently active currency.
+     */
     active?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedCryptoAccountRequest = {
     address?: string;
     name?: string | null;
@@ -9050,12 +10454,6 @@ export type PatchedCryptoAccountRequest = {
     } | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedDeviceAppRequest = {
     name?: string | null;
     /**
@@ -9064,12 +10462,6 @@ export type PatchedDeviceAppRequest = {
     type?: 'expo';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedDeviceRequest = {
     name?: string | null;
     metadata?: {
@@ -9077,20 +10469,10 @@ export type PatchedDeviceRequest = {
     } | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedEmailRequest = {
     primary?: boolean;
 };
 
-/**
- * Extended user information shown based on the default user info serializer.
- * Contain additional information about user permissions and settings.
- */
 export type PatchedExtendedUserInfoRequest = {
     username?: string | null;
     first_name?: string | null;
@@ -9352,6 +10734,7 @@ export type PatchedExtendedUserInfoRequest = {
      * * `ZW` - Zimbabwe
      */
     nationality?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    nationalities?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'> | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -10141,14 +11524,627 @@ export type PatchedExtendedUserInfoRequest = {
      * * `ZW` - Zimbabwe
      */
     tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    /**
+     * * `132011` - Accountant And Auditor
+     * * `272011` - Actor
+     * * `152011` - Actuary
+     * * `291291` - Acupuncturist
+     * * `519191` - Adhesive Bonding Machine Operator And Tender
+     * * `113012` - Administrative Services Manager
+     * * `112011` - Advertising And Promotions Manager
+     * * `413011` - Advertising Sales Agent
+     * * `172011` - Aerospace Engineer
+     * * `131011` - Agent And Business Manager Of Artists Performers And Athletes
+     * * `194010` - Agricultural And Food Science Technician
+     * * `191010` - Agricultural And Food Scientist
+     * * `172021` - Agricultural Engineer
+     * * `452011` - Agricultural Inspector
+     * * `532020` - Air Traffic Controller And Airfield Operations Specialist
+     * * `493011` - Aircraft Mechanic And Service Technician
+     * * `532010` - Aircraft Pilots And Flight Engineer
+     * * `512011` - Aircraft Structure Surfaces Rigging And Systems Assembler
+     * * `533011` - Ambulance Driver And Attendant Except Emergency Medical Technician
+     * * `452021` - Animal Breeder
+     * * `392021` - Animal Caretaker
+     * * `339011` - Animal Control Worker
+     * * `392011` - Animal Trainer
+     * * `171011` - Architect Except Landscape And Naval
+     * * `173011` - Architectural And Civil Drafter
+     * * `119041` - Architectural And Engineering Manager
+     * * `254010` - Archivist Curator And Museum Technician
+     * * `271010` - Artist And Related Worker
+     * * `192010` - Astronomer And Physicist
+     * * `272021` - Athletes And Sports Competitor
+     * * `192021` - Atmospheric And Space Scientist
+     * * `291181` - Audiologist
+     * * `492097` - Audiovisual Equipment Installer And Repairer
+     * * `493021` - Automotive Body And Related Repairer
+     * * `493022` - Automotive Glass Installer And Repairer
+     * * `493023` - Automotive Service Technician And Mechanic
+     * * `492091` - Avionics Technician
+     * * `396010` - Baggage Porter Bellhop And Concierge
+     * * `333011` - Bailiff
+     * * `513011` - Baker
+     * * `395011` - Barber
+     * * `353011` - Bartender
+     * * `433011` - Bill And Account Collector
+     * * `433021` - Billing And Posting Clerk
+     * * `172031` - Bioengineer And Biomedical Engineer
+     * * `191020` - Biological Scientist
+     * * `194021` - Biological Technician
+     * * `472011` - Boilermaker
+     * * `433031` - Bookkeeping Accounting And Auditing Clerk
+     * * `472020` - Brickmason Blockmason And Stonemason
+     * * `273011` - Broadcast Announcer And Radio Disc Jockey
+     * * `274010` - Broadcast Sound And Lighting Technician
+     * * `434011` - Brokerage Clerk
+     * * `132031` - Budget Analyst
+     * * `493031` - Bus And Truck Mechanic And Diesel Engine Specialist
+     * * `131199` - Business Operations Specialist Other
+     * * `513020` - Butcher And Other Meat Poultry And Fish Processing Worker
+     * * `131021` - Buyer And Purchasing Agent Farm Products
+     * * `517011` - Cabinetmaker And Bench Carpenter
+     * * `292031` - Cardiovascular Technologist And Technician
+     * * `435011` - Cargo And Freight Agent
+     * * `472031` - Carpenter
+     * * `472040` - Carpet Floor And Tile Installer And Finisher
+     * * `412010` - Cashier
+     * * `472050` - Cement Mason Concrete Finisher And Terrazzo Worker
+     * * `351011` - Chef And Head Cook
+     * * `172041` - Chemical Engineer
+     * * `519010` - Chemical Processing Machine Setter Operator And Tender
+     * * `194031` - Chemical Technician
+     * * `192030` - Chemist And Materials Scientist
+     * * `111011` - Chief Executive
+     * * `211021` - Child Family And School Social Worker
+     * * `399011` - Childcare Worker
+     * * `291011` - Chiropractor
+     * * `172051` - Civil Engineer
+     * * `131030` - Claims Adjuster Appraiser Examiner And Investigator
+     * * `537061` - Cleaner Of Vehicles And Equipment
+     * * `212011` - Clergy
+     * * `193033` - Clinical And Counseling Psychologist
+     * * `292010` - Clinical Laboratory Technologist And Technician
+     * * `272022` - Coaches And Scout
+     * * `499091` - Coin Vending And Amusement Machine Servicer And Repairer
+     * * `271021` - Commercial And Industrial Designer
+     * * `499092` - Commercial Diver
+     * * `432099` - Communications Equipment Operator Other
+     * * `113111` - Compensation And Benefits Manager
+     * * `131141` - Compensation Benefits And Job Analysis Specialist
+     * * `131041` - Compliance Officer
+     * * `151221` - Computer And Information Research Scientist
+     * * `113021` - Computer And Information Systems Manager
+     * * `172061` - Computer Hardware Engineer
+     * * `151241` - Computer Network Architect
+     * * `519160` - Computer Numerically Controlled Tool Operator And Programmer
+     * * `151299` - Computer Occupation Other
+     * * `151251` - Computer Programmer
+     * * `151230` - Computer Support Specialist
+     * * `151211` - Computer Systems Analyst
+     * * `492011` - Computer Automated Teller And Office Machine Repairer
+     * * `191030` - Conservation Scientist And Forester
+     * * `474011` - Construction And Building Inspector
+     * * `472070` - Construction Equipment Operator
+     * * `472061` - Construction Laborer
+     * * `119021` - Construction Manager
+     * * `499010` - Control And Valve Installer And Repairer
+     * * `5370XX` - Conveyor Dredge And Hoist And Winch Operator
+     * * `352010` - Cook
+     * * `333012` - Correctional Officer And Jailer
+     * * `434021` - Correspondence Clerk
+     * * `131051` - Cost Estimator
+     * * `211019` - Counselor Other
+     * * `412021` - Counter And Rental Clerk
+     * * `435021` - Courier And Messenger
+     * * `273092` - Court Reporter And Simultaneous Captioner
+     * * `434031` - Court Municipal And License Clerk
+     * * `537021` - Crane And Tower Operator
+     * * `132041` - Credit Analyst
+     * * `434041` - Credit Authorizer Checker And Clerk
+     * * `132070` - Credit Counselor And Loan Officer
+     * * `339091` - Crossing Guard And Flagger
+     * * `519020` - Crushing Grinding Polishing Mixing And Blending Worker
+     * * `434051` - Customer Service Representative
+     * * `519030` - Cutting Worker
+     * * `514031` - Cutting Punching And Press Machine Setter Operator And Tender Metal And Plastic
+     * * `272030` - Dancer And Choreographer
+     * * `439021` - Data Labeler And Data Entry Keyer
+     * * `15124X` - Database Administrator And Architect
+     * * `519080` - Dental And Ophthalmic Laboratory Technician And Medical Appliance Technician
+     * * `319091` - Dental Assistant
+     * * `291292` - Dental Hygienist
+     * * `291020` - Dentist
+     * * `475010` - Derrick Rotary Drill And Service Unit Operator Oil And Gas
+     * * `439031` - Desktop Publisher
+     * * `333021` - Detective And Criminal Investigator
+     * * `292032` - Diagnostic Medical Sonographer
+     * * `29205X` - Dietetic Technician And Ophthalmic Medical Technician
+     * * `291031` - Dietitian And Nutritionist
+     * * `359011` - Dining Room And Cafeteria Attendant And Bartender Helper
+     * * `212021` - Director Religious Activities And Educatio
+     * * `272091` - Disc Jockey Except Radio
+     * * `359021` - Dishwasher
+     * * `435032` - Dispatcher Except Police Fire And Ambulance
+     * * `419091` - Door To Door Sales Worker News And Street Vendor And Related Worker
+     * * `533030` - Driver Sales Worker And Truck Driver
+     * * `472080` - Drywall Installer Ceiling Tile Installer And Taper
+     * * `475023` - Earth Driller Except Oil And Gas
+     * * `193011` - Economist
+     * * `273041` - Editor
+     * * `119030` - Education And Childcare Administrator
+     * * `211012` - Educational Guidance And Career Counselor And Advisor
+     * * `492092` - Electric Motor Power Tool And Related Repairer
+     * * `173023` - Electrical And Electronic Engineering Technologist And Technician
+     * * `172070` - Electrical And Electronics Engineer
+     * * `492093` - Electrical And Electronics Installer And Repairer Transportation Equipment
+     * * `49209X` - Electrical And Electronics Repairer Industrial And Utility
+     * * `499051` - Electrical Power Line Installer And Repairer
+     * * `512020` - Electrical Electronics And Electromechanical Assembler
+     * * `472111` - Electrician
+     * * `492096` - Electronic Equipment Installer And Repairer Motor Vehicles
+     * * `252020` - Elementary And Middle School Teacher
+     * * `474021` - Elevator And Escalator Installer And Repairer
+     * * `434061` - Eligibility Interviewer Government Programs
+     * * `3940XX` - Embalmer Crematory Operator And Funeral Attendant
+     * * `119161` - Emergency Management Director
+     * * `292042` - Emergency Medical Technician
+     * * `291214` - Emergency Medicine Physician
+     * * `512031` - Engine And Other Machine Assembler
+     * * `172199` - Engineer Other
+     * * `272099` - Entertainer And Performer Sports And Related Worker Other
+     * * `119070` - Entertainment And Recreation Manager
+     * * `172081` - Environmental Engineer
+     * * `194040` - Environmental Science And Geoscience Technician
+     * * `192041` - Environmental Scientist And Specialist Including Health
+     * * `519194` - Etcher And Engraver
+     * * `475022` - Excavating And Loading Machine And Dragline Operator Surface Mining
+     * * `436011` - Executive Secretary And Executive Administrative Assistant
+     * * `291128` - Exercise Physiologist
+     * * `399031` - Exercise Trainer And Group Fitness Instructor
+     * * `475032` - Explosives Worker Ordnance Handling Expert And Blaster
+     * * `519041` - Extruding Forming Pressing And Compacting Machine Setter Operator And Tender
+     * * `113013` - Facilities Manager
+     * * `119013` - Farmer Rancher And Other Agricultural Manager
+     * * `271022` - Fashion Designer
+     * * `353023` - Fast Food And Counter Worker
+     * * `474031` - Fence Erector
+     * * `434071` - File Clerk
+     * * `132051` - Financial And Investment Analyst
+     * * `433099` - Financial Clerk Other
+     * * `132061` - Financial Examiner
+     * * `113031` - Financial Manager
+     * * `332020` - Fire Inspector
+     * * `332011` - Firefighter
+     * * `552010` - First Line Enlisted Military Supervisor
+     * * `471011` - First Line Supervisor Of Construction Trades And Extraction Worker
+     * * `331011` - First Line Supervisor Of Correctional Officer
+     * * `451011` - First Line Supervisor Of Farming Fishing And Forestry Worker
+     * * `331021` - First Line Supervisor Of Firefighting And Prevention Worker
+     * * `351012` - First Line Supervisor Of Food Preparation And Serving Workers
+     * * `371011` - First Line Supervisor Of Housekeeping And Janitorial Workers
+     * * `371012` - First Line Supervisor Of Landscaping Lawn Service And Groundskeeping Workers
+     * * `491011` - First Line Supervisor Of Mechanics Installers And Repairers
+     * * `411012` - First Line Supervisor Of Non Retail Sales Workers
+     * * `431011` - First Line Supervisor Of Office And Administrative Support Workers
+     * * `331012` - First Line Supervisor Of Police And Detective
+     * * `511011` - First Line Supervisor Of Production And Operating Worker
+     * * `331099` - First Line Supervisor Of Protective Service Worker Other
+     * * `411011` - First Line Supervisor Of Retail Sales Workers
+     * * `331091` - First Line Supervisor Of Security Worker
+     * * `333031` - Fish And Game Warden
+     * * `453031` - Fishing And Hunting Worker
+     * * `532031` - Flight Attendant
+     * * `271023` - Floral Designer
+     * * `513091` - Food And Tobacco Roasting Baking And Drying Machine Operator And Tender
+     * * `513092` - Food Batchmaker
+     * * `513093` - Food Cooking Machine Operator And Tender
+     * * `359099` - Food Preparation And Serving Related Worker Other
+     * * `352021` - Food Preparation Worker
+     * * `513099` - Food Processing Worker Other
+     * * `353041` - Food Server Nonrestaurant
+     * * `119051` - Food Service Manager
+     * * `454011` - Forest And Conservation Worker
+     * * `514020` - Forming Machine Setter Operator And Tender Metal And Plastic
+     * * `131131` - Fundraiser
+     * * `119171` - Funeral Home Manager
+     * * `519051` - Furnace Kiln Oven Drier And Kettle Operator And Tender
+     * * `517021` - Furniture Finisher
+     * * `433041` - Gambling Cage Worker
+     * * `393010` - Gambling Services Worker
+     * * `111021` - General And Operations Manager
+     * * `19204X` - Geoscientist And Hydrologist Except Geographer
+     * * `472121` - Glazier
+     * * `452041` - Grader And Sorter Agricultural Product
+     * * `271024` - Graphic Designer
+     * * `514033` - Grinding Lapping Polishing And Buffing Machine Tool Setter Operator And Tender Metal And Plastic
+     * * `395012` - Hairdresser Hairstylist And Cosmetologist
+     * * `474041` - Hazardous Materials Removal Worker
+     * * `291299` - Healthcare Diagnosing Or Treating Practitioner Other
+     * * `211022` - Healthcare Social Worker
+     * * `499021` - Heating Air Conditioning And Refrigeration Mechanic And Installer
+     * * `493040` - Heavy Vehicle And Mobile Equipment Service Technician And Mechanic
+     * * `499098` - Helper Installation Maintenance And Repair Worker
+     * * `519198` - Helper Production Worker
+     * * `473010` - Helper Construction Trade
+     * * `474051` - Highway Maintenance Worker
+     * * `499031` - Home Appliance Repairer
+     * * `311121` - Home Health Aide
+     * * `359031` - Host And Hostess Restaurant Lounge And Coffee Shop
+     * * `434081` - Hotel Motel And Resort Desk Clerk
+     * * `434161` - Human Resources Assistant Except Payroll And Timekeeping
+     * * `113121` - Human Resources Manager
+     * * `131070` - Human Resources Worker
+     * * `49904X` - Industrial And Refractory Machinery Mechanic
+     * * `172110` - Industrial Engineer Including Health And Safety
+     * * `113051` - Industrial Production Manager
+     * * `537051` - Industrial Truck And Tractor Operator
+     * * `434199` - Information And Record Clerk Other
+     * * `151212` - Information Security Analyst
+     * * `519061` - Inspector Tester Sorter Sampler And Weigher
+     * * `472130` - Insulation Worker
+     * * `439041` - Insurance Claims And Policy Processing Clerk
+     * * `413021` - Insurance Sales Agent
+     * * `132053` - Insurance Underwriter
+     * * `271025` - Interior Designer
+     * * `273091` - Interpreter And Translator
+     * * `434111` - Interviewer Except Eligibility And Loan
+     * * `37201X` - Janitor And Building Cleaner
+     * * `519071` - Jeweler And Precious Stone And Metal Worker
+     * * `231020` - Judge Magistrate And Other Judicial Worker
+     * * `231012` - Judicial Law Clerk
+     * * `537062` - Laborer And Freight Stock And Material Mover Hand
+     * * `171012` - Landscape Architect
+     * * `373011` - Landscaping And Groundskeeping Worker
+     * * `516011` - Laundry And Dry Cleaning Worker
+     * * `231011` - Lawyer
+     * * `436012` - Legal Secretary And Administrative Assistant
+     * * `232099` - Legal Support Worker Other
+     * * `111031` - Legislator
+     * * `254022` - Librarian And Media Collections Specialist
+     * * `434121` - Library Assistant Clerical
+     * * `254031` - Library Technician
+     * * `292061` - Licensed Practical And Licensed Vocational Nurse
+     * * `191099` - Life Scientist Other
+     * * `434131` - Loan Interviewer And Clerk
+     * * `499094` - Locksmith And Safe Repairer
+     * * `534010` - Locomotive Engineer And Operator
+     * * `119081` - Lodging Manager
+     * * `454020` - Logging Worker
+     * * `131081` - Logistician
+     * * `537063` - Machine Feeder And Offbearer
+     * * `514041` - Machinist
+     * * `292035` - Magnetic Resonance Imaging Technologist
+     * * `372012` - Maids And Housekeeping Cleaner
+     * * `439051` - Mail Clerk And Mail Machine Operator Except Postal Service
+     * * `499071` - Maintenance And Repair Worker General
+     * * `499043` - Maintenance Worker Machinery
+     * * `131111` - Management Analyst
+     * * `119199` - Manager Other
+     * * `395092` - Manicurist And Pedicurist
+     * * `499095` - Manufactured Building And Mobile Home Installer
+     * * `172121` - Marine Engineer And Naval Architect
+     * * `131161` - Market Research Analyst And Marketing Specialist
+     * * `112021` - Marketing Manager
+     * * `211013` - Marriage And Family Therapist
+     * * `319011` - Massage Therapist
+     * * `172131` - Materials Engineer
+     * * `152021` - Mathematician
+     * * `172141` - Mechanical Engineer
+     * * `274099` - Media And Communication Equipment Worker Other
+     * * `273099` - Media And Communication Worker Other
+     * * `119111` - Medical And Health Services Manager
+     * * `319092` - Medical Assistant
+     * * `292072` - Medical Records Specialist
+     * * `191040` - Medical Scientist
+     * * `436013` - Medical Secretary And Administrative Assistant
+     * * `319094` - Medical Transcriptionist
+     * * `131121` - Meeting Convention And Event Planner
+     * * `211023` - Mental Health And Substance Abuse Social Worker
+     * * `211014` - Mental Health Counselor
+     * * `271026` - Merchandise Displayer And Window Trimmer
+     * * `514050` - Metal Furnace Operator Tender Pourer And Caster
+     * * `435041` - Meter Reader Utilities
+     * * `553010` - Military Enlisted Tactical Operations And Air Weapons Specialist And Crew Member
+     * * `551010` - Military Officer Special And Tactical Operations Leader
+     * * `554010` - Military Rank Not Specified
+     * * `499044` - Millwright
+     * * `172151` - Mining And Geological Engineer Including Mining Safety Engineer
+     * * `452090` - Miscellaneous Agricultural Worker
+     * * `474090` - Miscellaneous Construction And Related Worker
+     * * `292090` - Miscellaneous Health Technologist And Technician
+     * * `518090` - Miscellaneous Plant And System Operator
+     * * `193090` - Miscellaneous Social Scientist And Related Worker
+     * * `493090` - Miscellaneous Vehicle And Mobile Equipment Mechanic Installer And Repairer
+     * * `514060` - Model Maker And Patternmaker Metal And Plastic
+     * * `419010` - Model Demonstrator And Product Promoter
+     * * `514070` - Molder And Molding Machine Setter Operator And Tender Metal And Plastic
+     * * `519195` - Molder Shaper And Caster Except Metal And Plastic
+     * * `394031` - Mortician Undertaker And Funeral Arranger
+     * * `533099` - Motor Vehicle Operator Other
+     * * `272041` - Music Director And Composer
+     * * `272042` - Musician And Singer
+     * * `119121` - Natural Sciences Manager
+     * * `151244` - Network And Computer Systems Administrator
+     * * `434141` - New Accounts Clerk
+     * * `273023` - News Analyst Reporter And Journalist
+     * * `172161` - Nuclear Engineer
+     * * `29203X` - Nuclear Medicine Technologist And Medical Dosimetrist
+     * * `194051` - Nuclear Technician
+     * * `291151` - Nurse Anesthetist
+     * * `291161` - Nurse Midwife
+     * * `291171` - Nurse Practitioner
+     * * `311131` - Nursing Assistant
+     * * `195010` - Occupational Health And Safety Specialist And Technician
+     * * `291122` - Occupational Therapist
+     * * `312010` - Occupational Therapy Assistant And Aide
+     * * `439199` - Office And Administrative Support Worker Other
+     * * `439061` - Office Clerk General
+     * * `439071` - Office Machine Operator Except Computer
+     * * `152031` - Operations Research Analyst
+     * * `292081` - Optician Dispensing
+     * * `291041` - Optometrist
+     * * `434151` - Order Clerk
+     * * `31113X` - Orderly And Psychiatric Aide
+     * * `5120XX` - Other Assembler And Fabricator
+     * * `21109X` - Other Community And Social Service Specialist
+     * * `27102X` - Other Designer
+     * * `17301X` - Other Drafter
+     * * `2590XX` - Other Educational Instruction And Library Worker
+     * * `17302X` - Other Engineering Technologist And Technician
+     * * `3930XX` - Other Entertainment Attendant And Related Worker
+     * * `4750XX` - Other Extraction Worker
+     * * `1320XX` - Other Financial Specialist
+     * * `37301X` - Other Grounds Maintenance Worker
+     * * `299000` - Other Healthcare Practitioner And Technical Occupation
+     * * `31909X` - Other Healthcare Support Worker
+     * * `49909X` - Other Installation Maintenance And Repair Worker
+     * * `1940XX` - Other Life Physical And Social Science Technician
+     * * `51403X` - Other Machine Tool Setter Operator And Tender Metal And Plastic
+     * * `5371XX` - Other Material Moving Worker
+     * * `1520XX` - Other Mathematical Science Occupation
+     * * `514XXX` - Other Metal Worker And Plastic Worker
+     * * `39509X` - Other Personal Appearance Worker
+     * * `2912XX` - Other Physician
+     * * `51919X` - Other Production Equipment Operator And Tender
+     * * `5191XX` - Other Production Worker
+     * * `33909X` - Other Protective Service Worker
+     * * `19303X` - Other Psychologist
+     * * `5340XX` - Other Rail Transportation Worker
+     * * `2530XX` - Other Teacher And Instructor
+     * * `51609X` - Other Textile Apparel And Furnishings Worker
+     * * `5360XX` - Other Transportation Worker
+     * * `5170XX` - Other Woodworker
+     * * `519111` - Packaging And Filling Machine Operator And Tender
+     * * `537064` - Packer And Packager Hand
+     * * `472140` - Painter And Paperhanger
+     * * `519120` - Painting Worker
+     * * `519196` - Paper Goods Machine Setter Operator And Tender
+     * * `232011` - Paralegal And Legal Assistant
+     * * `292043` - Paramedic
+     * * `536021` - Parking Attendant
+     * * `333041` - Parking Enforcement Worker
+     * * `412022` - Parts Salesperson
+     * * `536061` - Passenger Attendant
+     * * `433051` - Payroll And Timekeeping Clerk
+     * * `399099` - Personal Care And Service Worker Other
+     * * `132052` - Personal Financial Advisor
+     * * `119179` - Personal Service Manager Other
+     * * `372021` - Pest Control Worker
+     * * `172171` - Petroleum Engineer
+     * * `291051` - Pharmacist
+     * * `319095` - Pharmacy Aide
+     * * `292052` - Pharmacy Technician
+     * * `319097` - Phlebotomist
+     * * `274021` - Photographer
+     * * `519151` - Photographic Process Worker And Processing Machine Operator
+     * * `192099` - Physical Scientist Other
+     * * `291123` - Physical Therapist
+     * * `312020` - Physical Therapist Assistant And Aide
+     * * `291071` - Physician Assistant
+     * * `472151` - Pipelayer
+     * * `472161` - Plasterer And Stucco Mason
+     * * `472152` - Plumber Pipefitter And Steamfitter
+     * * `291081` - Podiatrist
+     * * `333050` - Police Officer
+     * * `435051` - Postal Service Clerk
+     * * `435052` - Postal Service Mail Carrier
+     * * `435053` - Postal Service Mail Sorter Processor And Processing Machine Operator
+     * * `119131` - Postmaster And Mail Superintendent
+     * * `251000` - Postsecondary Teacher
+     * * `518010` - Power Plant Operator Distributor And Dispatcher
+     * * `499060` - Precision Instrument And Equipment Repairer
+     * * `515111` - Prepress Technician And Worker
+     * * `252010` - Preschool And Kindergarten Teacher
+     * * `516021` - Presser Textile Garment And Related Material
+     * * `515113` - Print Binding And Finishing Worker
+     * * `515112` - Printing Press Operator
+     * * `339021` - Private Detective And Investigator
+     * * `211092` - Probation Officer And Correctional Treatment Specialist
+     * * `433061` - Procurement Clerk
+     * * `272012` - Producer And Director
+     * * `435061` - Production Planning And Expediting Clerk
+     * * `131082` - Project Management Specialist
+     * * `439081` - Proofreader And Copy Marker
+     * * `132020` - Property Appraiser And Assessor
+     * * `119141` - Property Real Estate And Community Association Manager
+     * * `292053` - Psychiatric Technician
+     * * `112030` - Public Relations And Fundraising Manager
+     * * `273031` - Public Relations Specialist
+     * * `435031` - Public Safety Telecommunicator
+     * * `537070` - Pumping Station Operator
+     * * `131023` - Purchasing Agent Except Wholesale Retail And Farm Products
+     * * `113061` - Purchasing Manager
+     * * `291124` - Radiation Therapist
+     * * `492020` - Radio And Telecommunications Equipment Installer And Repairer
+     * * `292034` - Radiologic Technologist And Technician
+     * * `291224` - Radiologist
+     * * `474061` - Rail Track Laying And Maintenance Equipment Operator
+     * * `534031` - Railroad Conductor And Yardmaster
+     * * `419020` - Real Estate Broker And Sales Agent
+     * * `434171` - Receptionist And Information Clerk
+     * * `399032` - Recreation Worker
+     * * `291125` - Recreational Therapist
+     * * `537081` - Refuse And Recyclable Material Collector
+     * * `291141` - Registered Nurse
+     * * `211015` - Rehabilitation Counselor
+     * * `472171` - Reinforcing Iron And Rebar Worker
+     * * `212099` - Religious Worker Other
+     * * `434181` - Reservation And Transportation Ticket Agent And Travel Clerk
+     * * `399041` - Residential Advisor
+     * * `291126` - Respiratory Therapist
+     * * `412031` - Retail Salesperson
+     * * `499096` - Rigger
+     * * `472181` - Roofer
+     * * `475071` - Roustabout Oil And Gas
+     * * `535011` - Sailor And Marine Oiler
+     * * `419099` - Sales And Related Worker Other
+     * * `419031` - Sales Engineer
+     * * `112022` - Sales Manager
+     * * `413091` - Sales Representative Of Services Except Advertising Insurance Financial Services And Travel
+     * * `414010` - Sales Representatives Wholesale And Manufacturing
+     * * `517041` - Sawing Machine Setter Operator And Tender Wood
+     * * `533051` - School Bus Driver
+     * * `339094` - School Bus Monitor
+     * * `193034` - School Psychologist
+     * * `252030` - Secondary School Teacher
+     * * `436014` - Secretary And Administrative Assistant Except Legal Medical And Executive
+     * * `413031` - Securities Commodities And Financial Services Sales Agent
+     * * `492098` - Security And Fire Alarm Systems Installer
+     * * `339030` - Security Guard And Gambling Surveillance Officer
+     * * `474071` - Septic Tank Servicer And Sewer Pipe Cleaner
+     * * `516031` - Sewing Machine Operator
+     * * `472211` - Sheet Metal Worker
+     * * `535020` - Ship And Boat Captain And Operator
+     * * `535031` - Ship Engineer
+     * * `435071` - Shipping Receiving And Inventory Clerk
+     * * `516040` - Shoe And Leather Worker
+     * * `533053` - Shuttle Driver And Chauffeur
+     * * `395094` - Skincare Specialist
+     * * `493050` - Small Engine Mechanic
+     * * `119151` - Social And Community Service Manager
+     * * `211093` - Social And Human Service Assistant
+     * * `194061` - Social Science Research Assistant
+     * * `211029` - Social Worker Other
+     * * `193041` - Sociologist
+     * * `151252` - Software Developer
+     * * `151253` - Software Quality Assurance Analyst And Tester
+     * * `472231` - Solar Photovoltaic Installer
+     * * `252050` - Special Education Teacher
+     * * `291127` - Speech Language Pathologist
+     * * `518021` - Stationary Engineer And Boiler Operator
+     * * `439111` - Statistical Assistant
+     * * `152041` - Statistician
+     * * `537065` - Stocker And Order Filler
+     * * `472221` - Structural Iron And Steel Worker
+     * * `512041` - Structural Metal Fabricator And Fitter
+     * * `211011` - Substance Abuse And Behavioral Disorder Counselor
+     * * `391000` - Supervisor Of Personal Care And Service Worker
+     * * `531000` - Supervisor Of Transportation And Material Moving Worker
+     * * `291240` - Surgeon
+     * * `292055` - Surgical Technologist
+     * * `193022` - Survey Researcher
+     * * `173031` - Surveying And Mapping Technician
+     * * `171020` - Surveyor Cartographer And Photogrammetrist
+     * * `432011` - Switchboard Operator Including Answering Service
+     * * `516050` - Tailor Dressmaker And Sewer
+     * * `132081` - Tax Examiner And Collector And Revenue Agent
+     * * `132082` - Tax Preparer
+     * * `533054` - Taxi Driver
+     * * `259040` - Teaching Assistant
+     * * `273042` - Technical Writer
+     * * `499052` - Telecommunications Line Installer And Repairer
+     * * `419041` - Telemarketer
+     * * `432021` - Telephone Operator
+     * * `274030` - Television Video And Film Camera Operator And Editor
+     * * `433071` - Teller
+     * * `516060` - Textile Machine Setter Operator And Tender
+     * * `291129` - Therapist Other
+     * * `519197` - Tire Builder
+     * * `232093` - Title Examiner Abstractor And Searcher
+     * * `514111` - Tool And Die Maker
+     * * `397010` - Tour And Travel Guide
+     * * `113131` - Training And Development Manager
+     * * `131151` - Training And Development Specialist
+     * * `533052` - Transit And Intercity Bus Driver
+     * * `536051` - Transportation Inspector
+     * * `339093` - Transportation Security Screener
+     * * `536030` - Transportation Service Attendant
+     * * `113071` - Transportation Storage And Distribution Manager
+     * * `413041` - Travel Agent
+     * * `373013` - Tree Trimmer And Pruner
+     * * `253041` - Tutor
+     * * `272023` - Umpire Referee And Other Sports Official
+     * * `475040` - Underground Mining Machine Operator
+     * * `999999` - Unemployed With No Work Experience In The Last 5 Years Or Earlier Or Never Worked
+     * * `516093` - Upholsterer
+     * * `193051` - Urban And Regional Planner
+     * * `393031` - Usher Lobby Attendant And Ticket Taker
+     * * `291131` - Veterinarian
+     * * `319096` - Veterinary Assistant And Laboratory Animal Caretaker
+     * * `292056` - Veterinary Technologist And Technician
+     * * `353031` - Waiter Or Waitress
+     * * `518031` - Water And Wastewater Treatment Plant And System Operator
+     * * `151255` - Web And Digital Interface Designer
+     * * `151254` - Web Developer
+     * * `435111` - Weigher Measurer Checker And Sampler Recordkeeping
+     * * `514120` - Welding Soldering And Brazing Worker
+     * * `131022` - Wholesale And Retail Buyer Except Farm Products
+     * * `499081` - Wind Turbine Service Technician
+     * * `517042` - Woodworking Machine Setter Operator And Tender Except Sawing
+     * * `439022` - Word Processor And Typist
+     * * `273043` - Writer And Author
+     */
+    occupation?: '132011' | '272011' | '152011' | '291291' | '519191' | '113012' | '112011' | '413011' | '172011' | '131011' | '194010' | '191010' | '172021' | '452011' | '532020' | '493011' | '532010' | '512011' | '533011' | '452021' | '392021' | '339011' | '392011' | '171011' | '173011' | '119041' | '254010' | '271010' | '192010' | '272021' | '192021' | '291181' | '492097' | '493021' | '493022' | '493023' | '492091' | '396010' | '333011' | '513011' | '395011' | '353011' | '433011' | '433021' | '172031' | '191020' | '194021' | '472011' | '433031' | '472020' | '273011' | '274010' | '434011' | '132031' | '493031' | '131199' | '513020' | '131021' | '517011' | '292031' | '435011' | '472031' | '472040' | '412010' | '472050' | '351011' | '172041' | '519010' | '194031' | '192030' | '111011' | '211021' | '399011' | '291011' | '172051' | '131030' | '537061' | '212011' | '193033' | '292010' | '272022' | '499091' | '271021' | '499092' | '432099' | '113111' | '131141' | '131041' | '151221' | '113021' | '172061' | '151241' | '519160' | '151299' | '151251' | '151230' | '151211' | '492011' | '191030' | '474011' | '472070' | '472061' | '119021' | '499010' | '5370XX' | '352010' | '333012' | '434021' | '131051' | '211019' | '412021' | '435021' | '273092' | '434031' | '537021' | '132041' | '434041' | '132070' | '339091' | '519020' | '434051' | '519030' | '514031' | '272030' | '439021' | '15124X' | '519080' | '319091' | '291292' | '291020' | '475010' | '439031' | '333021' | '292032' | '29205X' | '291031' | '359011' | '212021' | '272091' | '359021' | '435032' | '419091' | '533030' | '472080' | '475023' | '193011' | '273041' | '119030' | '211012' | '492092' | '173023' | '172070' | '492093' | '49209X' | '499051' | '512020' | '472111' | '492096' | '252020' | '474021' | '434061' | '3940XX' | '119161' | '292042' | '291214' | '512031' | '172199' | '272099' | '119070' | '172081' | '194040' | '192041' | '519194' | '475022' | '436011' | '291128' | '399031' | '475032' | '519041' | '113013' | '119013' | '271022' | '353023' | '474031' | '434071' | '132051' | '433099' | '132061' | '113031' | '332020' | '332011' | '552010' | '471011' | '331011' | '451011' | '331021' | '351012' | '371011' | '371012' | '491011' | '411012' | '431011' | '331012' | '511011' | '331099' | '411011' | '331091' | '333031' | '453031' | '532031' | '271023' | '513091' | '513092' | '513093' | '359099' | '352021' | '513099' | '353041' | '119051' | '454011' | '514020' | '131131' | '119171' | '519051' | '517021' | '433041' | '393010' | '111021' | '19204X' | '472121' | '452041' | '271024' | '514033' | '395012' | '474041' | '291299' | '211022' | '499021' | '493040' | '499098' | '519198' | '473010' | '474051' | '499031' | '311121' | '359031' | '434081' | '434161' | '113121' | '131070' | '49904X' | '172110' | '113051' | '537051' | '434199' | '151212' | '519061' | '472130' | '439041' | '413021' | '132053' | '271025' | '273091' | '434111' | '37201X' | '519071' | '231020' | '231012' | '537062' | '171012' | '373011' | '516011' | '231011' | '436012' | '232099' | '111031' | '254022' | '434121' | '254031' | '292061' | '191099' | '434131' | '499094' | '534010' | '119081' | '454020' | '131081' | '537063' | '514041' | '292035' | '372012' | '439051' | '499071' | '499043' | '131111' | '119199' | '395092' | '499095' | '172121' | '131161' | '112021' | '211013' | '319011' | '172131' | '152021' | '172141' | '274099' | '273099' | '119111' | '319092' | '292072' | '191040' | '436013' | '319094' | '131121' | '211023' | '211014' | '271026' | '514050' | '435041' | '553010' | '551010' | '554010' | '499044' | '172151' | '452090' | '474090' | '292090' | '518090' | '193090' | '493090' | '514060' | '419010' | '514070' | '519195' | '394031' | '533099' | '272041' | '272042' | '119121' | '151244' | '434141' | '273023' | '172161' | '29203X' | '194051' | '291151' | '291161' | '291171' | '311131' | '195010' | '291122' | '312010' | '439199' | '439061' | '439071' | '152031' | '292081' | '291041' | '434151' | '31113X' | '5120XX' | '21109X' | '27102X' | '17301X' | '2590XX' | '17302X' | '3930XX' | '4750XX' | '1320XX' | '37301X' | '299000' | '31909X' | '49909X' | '1940XX' | '51403X' | '5371XX' | '1520XX' | '514XXX' | '39509X' | '2912XX' | '51919X' | '5191XX' | '33909X' | '19303X' | '5340XX' | '2530XX' | '51609X' | '5360XX' | '5170XX' | '519111' | '537064' | '472140' | '519120' | '519196' | '232011' | '292043' | '536021' | '333041' | '412022' | '536061' | '433051' | '399099' | '132052' | '119179' | '372021' | '172171' | '291051' | '319095' | '292052' | '319097' | '274021' | '519151' | '192099' | '291123' | '312020' | '291071' | '472151' | '472161' | '472152' | '291081' | '333050' | '435051' | '435052' | '435053' | '119131' | '251000' | '518010' | '499060' | '515111' | '252010' | '516021' | '515113' | '515112' | '339021' | '211092' | '433061' | '272012' | '435061' | '131082' | '439081' | '132020' | '119141' | '292053' | '112030' | '273031' | '435031' | '537070' | '131023' | '113061' | '291124' | '492020' | '292034' | '291224' | '474061' | '534031' | '419020' | '434171' | '399032' | '291125' | '537081' | '291141' | '211015' | '472171' | '212099' | '434181' | '399041' | '291126' | '412031' | '499096' | '472181' | '475071' | '535011' | '419099' | '419031' | '112022' | '413091' | '414010' | '517041' | '533051' | '339094' | '193034' | '252030' | '436014' | '413031' | '492098' | '339030' | '474071' | '516031' | '472211' | '535020' | '535031' | '435071' | '516040' | '533053' | '395094' | '493050' | '119151' | '211093' | '194061' | '211029' | '193041' | '151252' | '151253' | '472231' | '252050' | '291127' | '518021' | '439111' | '152041' | '537065' | '472221' | '512041' | '211011' | '391000' | '531000' | '291240' | '292055' | '193022' | '173031' | '171020' | '432011' | '516050' | '132081' | '132082' | '533054' | '259040' | '273042' | '499052' | '419041' | '432021' | '274030' | '433071' | '516060' | '291129' | '519197' | '232093' | '514111' | '397010' | '113131' | '131151' | '533052' | '536051' | '339093' | '536030' | '113071' | '413041' | '373013' | '253041' | '272023' | '475040' | '999999' | '516093' | '193051' | '393031' | '291131' | '319096' | '292056' | '353031' | '518031' | '151255' | '151254' | '435111' | '514120' | '131022' | '499081' | '517042' | '439022' | '273043' | null;
+    /**
+     * * `employed` - Employed
+     * * `homemaker` - Homemaker
+     * * `retired` - Retired
+     * * `self_employed` - Self Employed
+     * * `student` - Student
+     * * `unemployed` - Unemployed
+     */
+    employment_status?: 'employed' | 'homemaker' | 'retired' | 'self_employed' | 'student' | 'unemployed' | null;
+    /**
+     * * `company_funds` - Company Funds
+     * * `ecommerce_reseller` - Ecommerce Reseller
+     * * `gambling_proceeds` - Gambling Proceeds
+     * * `gifts` - Gifts
+     * * `government_benefits` - Government Benefits
+     * * `inheritance` - Inheritance
+     * * `investments_loans` - Investments Loans
+     * * `pension_retirement` - Pension Retirement
+     * * `salary` - Salary
+     * * `sale_of_assets_real_estate` - Sale Of Assets Real Estate
+     * * `savings` - Savings
+     * * `someone_elses_funds` - Someone Elses Funds
+     */
+    source_of_funds?: 'company_funds' | 'ecommerce_reseller' | 'gambling_proceeds' | 'gifts' | 'government_benefits' | 'inheritance' | 'investments_loans' | 'pension_retirement' | 'salary' | 'sale_of_assets_real_estate' | 'savings' | 'someone_elses_funds' | null;
+    /**
+     * * `charitable_donations` - Charitable Donations
+     * * `ecommerce_retail_payments` - Ecommerce Retail Payments
+     * * `investment_purposes` - Investment Purposes
+     * * `operating_a_company` - Operating A Company
+     * * `other` - Other
+     * * `payments_to_friends_or_family_abroad` - Payments To Friends Or Family Abroad
+     * * `personal_or_living_expenses` - Personal Or Living Expenses
+     * * `protect_wealth` - Protect Wealth
+     * * `purchase_goods_and_services` - Purchase Goods And Services
+     * * `receive_payment_for_freelancing` - Receive Payment For Freelancing
+     * * `receive_salary` - Receive Salary
+     */
+    account_purpose?: 'charitable_donations' | 'ecommerce_retail_payments' | 'investment_purposes' | 'operating_a_company' | 'other' | 'payments_to_friends_or_family_abroad' | 'personal_or_living_expenses' | 'protect_wealth' | 'purchase_goods_and_services' | 'receive_payment_for_freelancing' | 'receive_salary' | null;
+    account_purpose_other?: string | null;
+    intermediary?: boolean | null;
+    /**
+     * * `0_4999` - Range 0 4999
+     * * `5000_9999` - Range 5000 9999
+     * * `10000_49999` - Range 10000 49999
+     * * `50000_plus` - Range 50000 Plus
+     */
+    expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedMobileRequest = {
     primary?: boolean;
 };
@@ -10157,16 +12153,6 @@ export type PatchedUpdateAuthTokenRequest = {
     label?: string | null;
 };
 
-/**
- * A mixin that handles the application of permissions to properties on a
- * serializer using the built-in permissions system.
- *
- * NOTE : This only works if the following conditions are met:
- * - The request context must contain a user.
- * - The class this mixin is attached must be a serializer.
- * - The class this mixin is attached to must have a Meta.model defined.
- * - The Meta.model class must have a PERMISSION_TYPE defined.
- */
 export type PatchedUpdateExtendedTransactionRequest = {
     /**
      * * `Quoted` - Quoted
@@ -10175,22 +12161,10 @@ export type PatchedUpdateExtendedTransactionRequest = {
     status?: 'Quoted' | 'Pending';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedUpdateLegalTermVersionRequest = {
     accepted?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedUserAddressRequest = {
     /**
      * * `permanent` - Permanent
@@ -10459,12 +12433,6 @@ export type PatchedUserAddressRequest = {
     postal_code?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedUserBankAccountRequest = {
     name?: string | null;
     number?: string | null;
@@ -10496,12 +12464,6 @@ export type PatchedUserBankAccountRequest = {
     } | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedUserWalletAccountRequest = {
     username?: string | null;
     email?: string | null;
@@ -10516,20 +12478,10 @@ export type PatchedUserWalletAccountRequest = {
     } | null;
 };
 
-/**
- * A reduced user serializer showing only the necessary information for post
- * login serialization.
- */
 export type ProtectedUserInfo = {
     readonly id: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PublicCompany = {
     readonly id: string;
     name?: string | null;
@@ -10815,12 +12767,6 @@ export type PublicCompany = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PublicCompanyLegalTerm = {
     readonly id: number;
     /**
@@ -10841,12 +12787,6 @@ export type PublicCompanyLegalTermResponse = {
     data: PublicCompanyLegalTerm;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PublicCompanyLegalTermVersion = {
     readonly id: number;
     readonly version: number;
@@ -10870,12 +12810,6 @@ export type PublicCompanyResponse = {
     data: PublicCompany;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PublicCompanySettings = {
     allow_session_durations?: boolean;
     readonly terms_and_conditions_url: string;
@@ -10884,12 +12818,6 @@ export type PublicCompanySettings = {
     residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PublicGroup = {
     name: string;
     label?: string | null;
@@ -10909,12 +12837,6 @@ export type PublicGroupResponse = {
     data: PublicGroup;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PublicLegalTerm = {
     readonly id: number;
     /**
@@ -10935,12 +12857,6 @@ export type PublicLegalTermResponse = {
     data: PublicLegalTerm;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PublicLegalTermVersion = {
     readonly id: number;
     readonly version: number;
@@ -10959,34 +12875,16 @@ export type PublicLegalTermVersionResponse = {
     data: PublicLegalTermVersion;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PublicReducedCompanyLegalTermVersion = {
     readonly id: number;
     readonly version: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PublicReducedLegalTermVersion = {
     readonly id: number;
     readonly version: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedAccount = {
     readonly reference: string;
     name?: string;
@@ -10995,42 +12893,51 @@ export type ReducedAccount = {
     readonly primary: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedAccountAccountAsset = {
     readonly id: string;
+    /**
+     * The total balance held in this currency, as an integer in the currency's smallest unit.
+     */
     readonly balance: number;
+    /**
+     * Portion of the balance available to spend, excluding amounts held by pending transactions.
+     */
     readonly available_balance: number;
+    /**
+     * The currency this balance is denominated in.
+     */
     currency: ReducedAsset;
+    /**
+     * Whether this is the account's currently active currency.
+     */
     active: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedAccountAccountAssetRequest = {
+    /**
+     * Whether this is the account's currently active currency.
+     */
     active: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedAccountAsset = {
     readonly id: string;
+    /**
+     * The total balance held in this currency, as an integer in the currency's smallest unit.
+     */
     readonly balance: number;
+    /**
+     * Portion of the balance available to spend, excluding amounts held by pending transactions.
+     */
     readonly available_balance: number;
     account: ReducedAccount;
+    /**
+     * The currency this balance is denominated in.
+     */
     currency: ReducedAsset;
+    /**
+     * Whether this is the account's currently active currency.
+     */
     active: boolean;
 };
 
@@ -11041,13 +12948,10 @@ export type ReducedAccountAssetListResponse = {
     data: ReducedAccountAssetList;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedAccountAssetRequest = {
+    /**
+     * Whether this is the account's currently active currency.
+     */
     active: boolean;
 };
 
@@ -11056,34 +12960,16 @@ export type ReducedAccountAssetResponse = {
     data: ReducedAccountAsset;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedAccountDefinition = {
     name: string;
     label?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedAccountRequest = {
     name?: string;
     label?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedAsset = {
     code?: string | null;
     display_code?: string | null;
@@ -11094,12 +12980,6 @@ export type ReducedAsset = {
     icon: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedAssetRequest = {
     code?: string | null;
     display_code?: string | null;
@@ -11110,12 +12990,6 @@ export type ReducedAssetRequest = {
     icon: Blob | File | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedDeviceApp = {
     readonly id: number;
     name?: string | null;
@@ -11126,12 +13000,6 @@ export type ReducedDeviceApp = {
     readonly token: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedDeviceAppRequest = {
     name?: string | null;
     /**
@@ -11140,12 +13008,6 @@ export type ReducedDeviceAppRequest = {
     type: 'expo';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedDocumentType = {
     readonly id: number;
     readonly name: string | null;
@@ -11153,12 +13015,6 @@ export type ReducedDocumentType = {
     readonly file_rules: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedGroup = {
     name: string;
     label?: string | null;
@@ -11170,12 +13026,6 @@ export type ReducedGroup = {
     section: 'system' | 'admin' | 'user';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedGroupRequest = {
     name: string;
     label?: string | null;
@@ -11187,12 +13037,6 @@ export type ReducedGroupRequest = {
     section: 'system' | 'admin' | 'user';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedGroupTier = {
     readonly id: number;
     readonly level: number;
@@ -11200,12 +13044,6 @@ export type ReducedGroupTier = {
     readonly description: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedLegalTermVersion = {
     readonly id: number;
     readonly version: number;
@@ -11216,12 +13054,6 @@ export type ReducedLegalTermVersion = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedService = {
     readonly id: number;
     readonly slug: string | null;
@@ -11256,10 +13088,6 @@ export type ReducedTransactionSubtypeRequest = {
     tx_type: 'credit' | 'debit';
 };
 
-/**
- * A condensed user serializer showing only the necessary user information
- * in order to identifiy the user.
- */
 export type ReducedUserInfoRequest = {
     profile?: Blob | File | null;
 };
@@ -11282,9 +13110,6 @@ export type RefreshedResponse = {
     data: Refreshed;
 };
 
-/**
- * Override company validation on the register serializer.
- */
 export type RegisterCompanyRequest = {
     username?: string;
     email?: string;
@@ -11566,6 +13391,7 @@ export type RegisterCompanyRequest = {
      * * `ZW` - Zimbabwe
      */
     nationality?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    nationalities?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'> | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -12617,6 +14443,7 @@ export type RegisterRequest = {
      * * `ZW` - Zimbabwe
      */
     nationality?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    nationalities?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'> | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -13402,12 +15229,6 @@ export type ResendVerifyMobileRequest = {
     company: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ResourceRequirementRule = {
     /**
      * * `address` - Address
@@ -13423,12 +15244,6 @@ export type ResourceRequirementRule = {
     };
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Statement = {
     readonly id: string;
     account: ReducedAccount;
@@ -13465,22 +15280,14 @@ export type TotalTransactionResponse = {
     data: TotalTransaction;
 };
 
-/**
- * A mixin that handles the application of permissions to properties on a
- * serializer using the built-in permissions system.
- *
- * NOTE : This only works if the following conditions are met:
- * - The request context must contain a user.
- * - The class this mixin is attached must be a serializer.
- * - The class this mixin is attached to must have a Meta.model defined.
- * - The Meta.model class must have a PERMISSION_TYPE defined.
- */
 export type Transaction = {
     readonly id: string;
     readonly collection: string;
     readonly parent: string | null;
     partner: PartnerTransaction | null;
     /**
+     * The kind of transaction, such as a credit or a debit.
+     *
      * * `credit` - Credit
      * * `debit` - Debit
      */
@@ -13491,6 +15298,8 @@ export type Transaction = {
         [key: string]: unknown;
     } | null;
     /**
+     * The current stage of the transaction's lifecycle.
+     *
      * * `Initiating` - Initiating
      * * `Quoted` - Quoted
      * * `Pending` - Pending
@@ -13498,13 +15307,28 @@ export type Transaction = {
      * * `Failed` - Failed
      */
     readonly status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
+    /**
+     * Optional external reference used to identify the transaction.
+     */
     readonly reference: string | null;
+    /**
+     * The transaction amount, as an integer in the currency's smallest unit.
+     */
     readonly amount: number;
+    /**
+     * The total fee charged on the transaction, in the smallest unit.
+     */
     readonly fee: number;
     readonly total_amount: number;
+    /**
+     * The account currency balance immediately after this transaction was applied.
+     */
     readonly balance: number;
     readonly label: string;
     readonly account: string;
+    /**
+     * The currency in which the transaction was denominated.
+     */
     currency: ReducedAsset;
     account_currency: TransactionAccountAsset;
     readonly inclusive: boolean;
@@ -13514,24 +15338,12 @@ export type Transaction = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type TransactionAccountAsset = {
     readonly id: string;
     account: ReducedAccount;
     currency: ReducedAsset;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type TransactionCollection = {
     readonly id: string;
     readonly transactions: Array<TransactionCollectionTransaction>;
@@ -13552,16 +15364,6 @@ export type TransactionCollectionResponse = {
     data: TransactionCollection;
 };
 
-/**
- * A mixin that handles the application of permissions to properties on a
- * serializer using the built-in permissions system.
- *
- * NOTE : This only works if the following conditions are met:
- * - The request context must contain a user.
- * - The class this mixin is attached must be a serializer.
- * - The class this mixin is attached to must have a Meta.model defined.
- * - The Meta.model class must have a PERMISSION_TYPE defined.
- */
 export type TransactionCollectionTransaction = {
     readonly id: string;
     readonly parent: string | null;
@@ -13602,23 +15404,11 @@ export type TransactionCollectionTransaction = {
     readonly expires: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type TransactionFee = {
     readonly description: string;
     readonly amount: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type TransactionMessage = {
     readonly id: number;
     /**
@@ -13640,12 +15430,6 @@ export type TransactionMessageResponse = {
     data: TransactionMessage;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type TransactionSubtype = {
     readonly id: number;
     readonly name: string;
@@ -13684,16 +15468,6 @@ export type UpdateAuthTokenRequest = {
     label?: string | null;
 };
 
-/**
- * A mixin that handles the application of permissions to properties on a
- * serializer using the built-in permissions system.
- *
- * NOTE : This only works if the following conditions are met:
- * - The request context must contain a user.
- * - The class this mixin is attached must be a serializer.
- * - The class this mixin is attached to must have a Meta.model defined.
- * - The Meta.model class must have a PERMISSION_TYPE defined.
- */
 export type UpdateExtendedTransactionRequest = {
     /**
      * * `Quoted` - Quoted
@@ -13702,22 +15476,10 @@ export type UpdateExtendedTransactionRequest = {
     status?: 'Quoted' | 'Pending';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UpdateLegalTermVersionRequest = {
     accepted: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserAddress = {
     readonly id: number;
     /**
@@ -13992,10 +15754,14 @@ export type UserAddress = {
      * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
+     * * `not_started` - Not Started
      */
-    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
     readonly created: number;
     readonly updated: number;
+    readonly frozen: {
+        [key: string]: unknown;
+    };
 };
 
 export type UserAddressList = Array<UserAddress>;
@@ -14005,12 +15771,6 @@ export type UserAddressListResponse = {
     data: UserAddressList;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserAddressRequest = {
     /**
      * * `permanent` - Permanent
@@ -14284,12 +16044,6 @@ export type UserAddressResponse = {
     data: UserAddress;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserBankAccount = {
     readonly id: number;
     name?: string | null;
@@ -14328,8 +16082,9 @@ export type UserBankAccount = {
      * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
+     * * `not_started` - Not Started
      */
-    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
     readonly currencies: Array<ReducedAsset>;
     readonly account_currencies: Array<ReducedAccountAsset>;
     /**
@@ -14342,12 +16097,6 @@ export type UserBankAccount = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserBankAccountAsset = {
     code?: string | null;
     display_code?: string | null;
@@ -14378,12 +16127,6 @@ export type UserBankAccountListResponse = {
     data: UserBankAccountList;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserBankAccountRequest = {
     name?: string | null;
     number?: string | null;
@@ -14420,12 +16163,6 @@ export type UserBankAccountResponse = {
     data: UserBankAccount;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserBankBranchAddress = {
     line_1?: string | null;
     line_2?: string | null;
@@ -14687,12 +16424,6 @@ export type UserBankBranchAddress = {
     state_code?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserBankBranchAddressRequest = {
     line_1?: string | null;
     line_2?: string | null;
@@ -14954,12 +16685,6 @@ export type UserBankBranchAddressRequest = {
     state_code?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCreateBankAccountRequest = {
     name?: string | null;
     number?: string | null;
@@ -14996,12 +16721,6 @@ export type UserCreateBankAccountRequest = {
     action?: 'withdraw' | 'origin';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCreateDocumentRequest = {
     file?: Blob | File;
     metadata?: {
@@ -15010,12 +16729,6 @@ export type UserCreateDocumentRequest = {
     expires?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCreateWalletAccountRequest = {
     username?: string | null;
     email?: string | null;
@@ -15044,12 +16757,6 @@ export type UserDisallowedTransactionSubtypeRequest = {
     subtype: ReducedTransactionSubtypeRequest;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserDocument = {
     readonly id: number;
     file?: string;
@@ -15062,8 +16769,9 @@ export type UserDocument = {
      * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
+     * * `not_started` - Not Started
      */
-    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -15071,6 +16779,9 @@ export type UserDocument = {
     expires?: number | null;
     readonly created: number;
     readonly updated: number;
+    readonly frozen: {
+        [key: string]: unknown;
+    };
 };
 
 export type UserDocumentResponse = {
@@ -15078,12 +16789,6 @@ export type UserDocumentResponse = {
     data: UserDocument;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserGroup = {
     name: string;
     label?: string | null;
@@ -15105,12 +16810,6 @@ export type UserGroupResponse = {
     data: UserGroup;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserMessage = {
     readonly id: number;
     /**
@@ -15132,12 +16831,6 @@ export type UserMessageResponse = {
     data: UserMessage;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserPermission = {
     readonly id: number;
     /**
@@ -15196,12 +16889,6 @@ export type UserPermissionResponse = {
     data: UserPermission;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserSettings = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
@@ -15209,12 +16896,6 @@ export type UserSettings = {
     disallowed_transaction_subtypes: Array<UserDisallowedTransactionSubtype>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserSettingsRequest = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
@@ -15222,23 +16903,11 @@ export type UserSettingsRequest = {
     disallowed_transaction_subtypes: Array<UserDisallowedTransactionSubtypeRequest>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserVerification = {
     readonly email: boolean;
     readonly mobile: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserWalletAccount = {
     readonly id: number;
     username?: string | null;
@@ -15260,8 +16929,9 @@ export type UserWalletAccount = {
      * * `paused` - Paused
      * * `incomplete` - Incomplete
      * * `verified` - Verified
+     * * `not_started` - Not Started
      */
-    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
     readonly currencies: Array<ReducedAsset>;
     readonly account_currencies: Array<ReducedAccountAsset>;
     /**
@@ -15274,12 +16944,6 @@ export type UserWalletAccount = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserWalletAccountAsset = {
     code?: string | null;
     display_code?: string | null;
@@ -15303,12 +16967,6 @@ export type UserWalletAccountListResponse = {
     data: UserWalletAccountList;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserWalletAccountRequest = {
     username?: string | null;
     email?: string | null;
@@ -15344,12 +17002,6 @@ export type VerifyRequestDeleteRequest = {
     key: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type WalletOwner = {
     first_name?: string | null;
     middle_name?: string | null;
@@ -15364,12 +17016,6 @@ export type WalletOwner = {
     cpf_cpnj?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type WalletOwnerAddress = {
     line_1?: string | null;
     line_2?: string | null;
@@ -15631,12 +17277,6 @@ export type WalletOwnerAddress = {
     state_code?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type WalletOwnerAddressRequest = {
     line_1?: string | null;
     line_2?: string | null;
@@ -15898,12 +17538,6 @@ export type WalletOwnerAddressRequest = {
     state_code?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type WalletOwnerRequest = {
     first_name?: string | null;
     middle_name?: string | null;
@@ -15918,12 +17552,6 @@ export type WalletOwnerRequest = {
     cpf_cpnj?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AccountWritable = {
     name?: string;
     label?: string | null;
@@ -15932,13 +17560,10 @@ export type AccountWritable = {
     } | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AccountAccountAssetWritable = {
+    /**
+     * Whether this is the account's currently active currency.
+     */
     active: boolean;
 };
 
@@ -15947,13 +17572,10 @@ export type AccountAccountAssetResponseWritable = {
     data: AccountAccountAssetWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AccountAssetWritable = {
+    /**
+     * Whether this is the account's currently active currency.
+     */
     active: boolean;
 };
 
@@ -15968,12 +17590,6 @@ export type AccountAssetFeeWritable = {
     tx_type: 'credit' | 'debit';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AccountAssetLimitWritable = {
     /**
      * * `max` - Maximum
@@ -16001,12 +17617,6 @@ export type AccountAssetResponseWritable = {
     data: AccountAssetWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AccountAssetSettingsWritable = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
@@ -16014,34 +17624,16 @@ export type AccountAssetSettingsWritable = {
     disallowed_transaction_subtypes: Array<ReducedTransactionSubtypeWritable>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AccountDefinitionWritable = {
     name: string;
     label?: string | null;
     recon?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AccountDefinitionGroupWritable = {
     [key: string]: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AccountDefinitionGroupAssetWritable = {
     [key: string]: unknown;
 };
@@ -16076,12 +17668,6 @@ export type AdminAccountAssetFeeResponseWritable = {
     data: AdminAccountAssetFeeWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AssetWritable = {
     code?: string | null;
     display_code?: string | null;
@@ -16097,10 +17683,6 @@ export type AssetResponseWritable = {
     data: AssetWritable;
 };
 
-/**
- * Extended user information shown based on the default user info serializer.
- * Contain additional information about user permissions and settings.
- */
 export type AuthWritable = {
     username: string | null;
     first_name?: string | null;
@@ -16362,6 +17944,7 @@ export type AuthWritable = {
      * * `ZW` - Zimbabwe
      */
     nationality?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    nationalities?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'> | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -17151,6 +18734,625 @@ export type AuthWritable = {
      * * `ZW` - Zimbabwe
      */
     tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    /**
+     * * `132011` - Accountant And Auditor
+     * * `272011` - Actor
+     * * `152011` - Actuary
+     * * `291291` - Acupuncturist
+     * * `519191` - Adhesive Bonding Machine Operator And Tender
+     * * `113012` - Administrative Services Manager
+     * * `112011` - Advertising And Promotions Manager
+     * * `413011` - Advertising Sales Agent
+     * * `172011` - Aerospace Engineer
+     * * `131011` - Agent And Business Manager Of Artists Performers And Athletes
+     * * `194010` - Agricultural And Food Science Technician
+     * * `191010` - Agricultural And Food Scientist
+     * * `172021` - Agricultural Engineer
+     * * `452011` - Agricultural Inspector
+     * * `532020` - Air Traffic Controller And Airfield Operations Specialist
+     * * `493011` - Aircraft Mechanic And Service Technician
+     * * `532010` - Aircraft Pilots And Flight Engineer
+     * * `512011` - Aircraft Structure Surfaces Rigging And Systems Assembler
+     * * `533011` - Ambulance Driver And Attendant Except Emergency Medical Technician
+     * * `452021` - Animal Breeder
+     * * `392021` - Animal Caretaker
+     * * `339011` - Animal Control Worker
+     * * `392011` - Animal Trainer
+     * * `171011` - Architect Except Landscape And Naval
+     * * `173011` - Architectural And Civil Drafter
+     * * `119041` - Architectural And Engineering Manager
+     * * `254010` - Archivist Curator And Museum Technician
+     * * `271010` - Artist And Related Worker
+     * * `192010` - Astronomer And Physicist
+     * * `272021` - Athletes And Sports Competitor
+     * * `192021` - Atmospheric And Space Scientist
+     * * `291181` - Audiologist
+     * * `492097` - Audiovisual Equipment Installer And Repairer
+     * * `493021` - Automotive Body And Related Repairer
+     * * `493022` - Automotive Glass Installer And Repairer
+     * * `493023` - Automotive Service Technician And Mechanic
+     * * `492091` - Avionics Technician
+     * * `396010` - Baggage Porter Bellhop And Concierge
+     * * `333011` - Bailiff
+     * * `513011` - Baker
+     * * `395011` - Barber
+     * * `353011` - Bartender
+     * * `433011` - Bill And Account Collector
+     * * `433021` - Billing And Posting Clerk
+     * * `172031` - Bioengineer And Biomedical Engineer
+     * * `191020` - Biological Scientist
+     * * `194021` - Biological Technician
+     * * `472011` - Boilermaker
+     * * `433031` - Bookkeeping Accounting And Auditing Clerk
+     * * `472020` - Brickmason Blockmason And Stonemason
+     * * `273011` - Broadcast Announcer And Radio Disc Jockey
+     * * `274010` - Broadcast Sound And Lighting Technician
+     * * `434011` - Brokerage Clerk
+     * * `132031` - Budget Analyst
+     * * `493031` - Bus And Truck Mechanic And Diesel Engine Specialist
+     * * `131199` - Business Operations Specialist Other
+     * * `513020` - Butcher And Other Meat Poultry And Fish Processing Worker
+     * * `131021` - Buyer And Purchasing Agent Farm Products
+     * * `517011` - Cabinetmaker And Bench Carpenter
+     * * `292031` - Cardiovascular Technologist And Technician
+     * * `435011` - Cargo And Freight Agent
+     * * `472031` - Carpenter
+     * * `472040` - Carpet Floor And Tile Installer And Finisher
+     * * `412010` - Cashier
+     * * `472050` - Cement Mason Concrete Finisher And Terrazzo Worker
+     * * `351011` - Chef And Head Cook
+     * * `172041` - Chemical Engineer
+     * * `519010` - Chemical Processing Machine Setter Operator And Tender
+     * * `194031` - Chemical Technician
+     * * `192030` - Chemist And Materials Scientist
+     * * `111011` - Chief Executive
+     * * `211021` - Child Family And School Social Worker
+     * * `399011` - Childcare Worker
+     * * `291011` - Chiropractor
+     * * `172051` - Civil Engineer
+     * * `131030` - Claims Adjuster Appraiser Examiner And Investigator
+     * * `537061` - Cleaner Of Vehicles And Equipment
+     * * `212011` - Clergy
+     * * `193033` - Clinical And Counseling Psychologist
+     * * `292010` - Clinical Laboratory Technologist And Technician
+     * * `272022` - Coaches And Scout
+     * * `499091` - Coin Vending And Amusement Machine Servicer And Repairer
+     * * `271021` - Commercial And Industrial Designer
+     * * `499092` - Commercial Diver
+     * * `432099` - Communications Equipment Operator Other
+     * * `113111` - Compensation And Benefits Manager
+     * * `131141` - Compensation Benefits And Job Analysis Specialist
+     * * `131041` - Compliance Officer
+     * * `151221` - Computer And Information Research Scientist
+     * * `113021` - Computer And Information Systems Manager
+     * * `172061` - Computer Hardware Engineer
+     * * `151241` - Computer Network Architect
+     * * `519160` - Computer Numerically Controlled Tool Operator And Programmer
+     * * `151299` - Computer Occupation Other
+     * * `151251` - Computer Programmer
+     * * `151230` - Computer Support Specialist
+     * * `151211` - Computer Systems Analyst
+     * * `492011` - Computer Automated Teller And Office Machine Repairer
+     * * `191030` - Conservation Scientist And Forester
+     * * `474011` - Construction And Building Inspector
+     * * `472070` - Construction Equipment Operator
+     * * `472061` - Construction Laborer
+     * * `119021` - Construction Manager
+     * * `499010` - Control And Valve Installer And Repairer
+     * * `5370XX` - Conveyor Dredge And Hoist And Winch Operator
+     * * `352010` - Cook
+     * * `333012` - Correctional Officer And Jailer
+     * * `434021` - Correspondence Clerk
+     * * `131051` - Cost Estimator
+     * * `211019` - Counselor Other
+     * * `412021` - Counter And Rental Clerk
+     * * `435021` - Courier And Messenger
+     * * `273092` - Court Reporter And Simultaneous Captioner
+     * * `434031` - Court Municipal And License Clerk
+     * * `537021` - Crane And Tower Operator
+     * * `132041` - Credit Analyst
+     * * `434041` - Credit Authorizer Checker And Clerk
+     * * `132070` - Credit Counselor And Loan Officer
+     * * `339091` - Crossing Guard And Flagger
+     * * `519020` - Crushing Grinding Polishing Mixing And Blending Worker
+     * * `434051` - Customer Service Representative
+     * * `519030` - Cutting Worker
+     * * `514031` - Cutting Punching And Press Machine Setter Operator And Tender Metal And Plastic
+     * * `272030` - Dancer And Choreographer
+     * * `439021` - Data Labeler And Data Entry Keyer
+     * * `15124X` - Database Administrator And Architect
+     * * `519080` - Dental And Ophthalmic Laboratory Technician And Medical Appliance Technician
+     * * `319091` - Dental Assistant
+     * * `291292` - Dental Hygienist
+     * * `291020` - Dentist
+     * * `475010` - Derrick Rotary Drill And Service Unit Operator Oil And Gas
+     * * `439031` - Desktop Publisher
+     * * `333021` - Detective And Criminal Investigator
+     * * `292032` - Diagnostic Medical Sonographer
+     * * `29205X` - Dietetic Technician And Ophthalmic Medical Technician
+     * * `291031` - Dietitian And Nutritionist
+     * * `359011` - Dining Room And Cafeteria Attendant And Bartender Helper
+     * * `212021` - Director Religious Activities And Educatio
+     * * `272091` - Disc Jockey Except Radio
+     * * `359021` - Dishwasher
+     * * `435032` - Dispatcher Except Police Fire And Ambulance
+     * * `419091` - Door To Door Sales Worker News And Street Vendor And Related Worker
+     * * `533030` - Driver Sales Worker And Truck Driver
+     * * `472080` - Drywall Installer Ceiling Tile Installer And Taper
+     * * `475023` - Earth Driller Except Oil And Gas
+     * * `193011` - Economist
+     * * `273041` - Editor
+     * * `119030` - Education And Childcare Administrator
+     * * `211012` - Educational Guidance And Career Counselor And Advisor
+     * * `492092` - Electric Motor Power Tool And Related Repairer
+     * * `173023` - Electrical And Electronic Engineering Technologist And Technician
+     * * `172070` - Electrical And Electronics Engineer
+     * * `492093` - Electrical And Electronics Installer And Repairer Transportation Equipment
+     * * `49209X` - Electrical And Electronics Repairer Industrial And Utility
+     * * `499051` - Electrical Power Line Installer And Repairer
+     * * `512020` - Electrical Electronics And Electromechanical Assembler
+     * * `472111` - Electrician
+     * * `492096` - Electronic Equipment Installer And Repairer Motor Vehicles
+     * * `252020` - Elementary And Middle School Teacher
+     * * `474021` - Elevator And Escalator Installer And Repairer
+     * * `434061` - Eligibility Interviewer Government Programs
+     * * `3940XX` - Embalmer Crematory Operator And Funeral Attendant
+     * * `119161` - Emergency Management Director
+     * * `292042` - Emergency Medical Technician
+     * * `291214` - Emergency Medicine Physician
+     * * `512031` - Engine And Other Machine Assembler
+     * * `172199` - Engineer Other
+     * * `272099` - Entertainer And Performer Sports And Related Worker Other
+     * * `119070` - Entertainment And Recreation Manager
+     * * `172081` - Environmental Engineer
+     * * `194040` - Environmental Science And Geoscience Technician
+     * * `192041` - Environmental Scientist And Specialist Including Health
+     * * `519194` - Etcher And Engraver
+     * * `475022` - Excavating And Loading Machine And Dragline Operator Surface Mining
+     * * `436011` - Executive Secretary And Executive Administrative Assistant
+     * * `291128` - Exercise Physiologist
+     * * `399031` - Exercise Trainer And Group Fitness Instructor
+     * * `475032` - Explosives Worker Ordnance Handling Expert And Blaster
+     * * `519041` - Extruding Forming Pressing And Compacting Machine Setter Operator And Tender
+     * * `113013` - Facilities Manager
+     * * `119013` - Farmer Rancher And Other Agricultural Manager
+     * * `271022` - Fashion Designer
+     * * `353023` - Fast Food And Counter Worker
+     * * `474031` - Fence Erector
+     * * `434071` - File Clerk
+     * * `132051` - Financial And Investment Analyst
+     * * `433099` - Financial Clerk Other
+     * * `132061` - Financial Examiner
+     * * `113031` - Financial Manager
+     * * `332020` - Fire Inspector
+     * * `332011` - Firefighter
+     * * `552010` - First Line Enlisted Military Supervisor
+     * * `471011` - First Line Supervisor Of Construction Trades And Extraction Worker
+     * * `331011` - First Line Supervisor Of Correctional Officer
+     * * `451011` - First Line Supervisor Of Farming Fishing And Forestry Worker
+     * * `331021` - First Line Supervisor Of Firefighting And Prevention Worker
+     * * `351012` - First Line Supervisor Of Food Preparation And Serving Workers
+     * * `371011` - First Line Supervisor Of Housekeeping And Janitorial Workers
+     * * `371012` - First Line Supervisor Of Landscaping Lawn Service And Groundskeeping Workers
+     * * `491011` - First Line Supervisor Of Mechanics Installers And Repairers
+     * * `411012` - First Line Supervisor Of Non Retail Sales Workers
+     * * `431011` - First Line Supervisor Of Office And Administrative Support Workers
+     * * `331012` - First Line Supervisor Of Police And Detective
+     * * `511011` - First Line Supervisor Of Production And Operating Worker
+     * * `331099` - First Line Supervisor Of Protective Service Worker Other
+     * * `411011` - First Line Supervisor Of Retail Sales Workers
+     * * `331091` - First Line Supervisor Of Security Worker
+     * * `333031` - Fish And Game Warden
+     * * `453031` - Fishing And Hunting Worker
+     * * `532031` - Flight Attendant
+     * * `271023` - Floral Designer
+     * * `513091` - Food And Tobacco Roasting Baking And Drying Machine Operator And Tender
+     * * `513092` - Food Batchmaker
+     * * `513093` - Food Cooking Machine Operator And Tender
+     * * `359099` - Food Preparation And Serving Related Worker Other
+     * * `352021` - Food Preparation Worker
+     * * `513099` - Food Processing Worker Other
+     * * `353041` - Food Server Nonrestaurant
+     * * `119051` - Food Service Manager
+     * * `454011` - Forest And Conservation Worker
+     * * `514020` - Forming Machine Setter Operator And Tender Metal And Plastic
+     * * `131131` - Fundraiser
+     * * `119171` - Funeral Home Manager
+     * * `519051` - Furnace Kiln Oven Drier And Kettle Operator And Tender
+     * * `517021` - Furniture Finisher
+     * * `433041` - Gambling Cage Worker
+     * * `393010` - Gambling Services Worker
+     * * `111021` - General And Operations Manager
+     * * `19204X` - Geoscientist And Hydrologist Except Geographer
+     * * `472121` - Glazier
+     * * `452041` - Grader And Sorter Agricultural Product
+     * * `271024` - Graphic Designer
+     * * `514033` - Grinding Lapping Polishing And Buffing Machine Tool Setter Operator And Tender Metal And Plastic
+     * * `395012` - Hairdresser Hairstylist And Cosmetologist
+     * * `474041` - Hazardous Materials Removal Worker
+     * * `291299` - Healthcare Diagnosing Or Treating Practitioner Other
+     * * `211022` - Healthcare Social Worker
+     * * `499021` - Heating Air Conditioning And Refrigeration Mechanic And Installer
+     * * `493040` - Heavy Vehicle And Mobile Equipment Service Technician And Mechanic
+     * * `499098` - Helper Installation Maintenance And Repair Worker
+     * * `519198` - Helper Production Worker
+     * * `473010` - Helper Construction Trade
+     * * `474051` - Highway Maintenance Worker
+     * * `499031` - Home Appliance Repairer
+     * * `311121` - Home Health Aide
+     * * `359031` - Host And Hostess Restaurant Lounge And Coffee Shop
+     * * `434081` - Hotel Motel And Resort Desk Clerk
+     * * `434161` - Human Resources Assistant Except Payroll And Timekeeping
+     * * `113121` - Human Resources Manager
+     * * `131070` - Human Resources Worker
+     * * `49904X` - Industrial And Refractory Machinery Mechanic
+     * * `172110` - Industrial Engineer Including Health And Safety
+     * * `113051` - Industrial Production Manager
+     * * `537051` - Industrial Truck And Tractor Operator
+     * * `434199` - Information And Record Clerk Other
+     * * `151212` - Information Security Analyst
+     * * `519061` - Inspector Tester Sorter Sampler And Weigher
+     * * `472130` - Insulation Worker
+     * * `439041` - Insurance Claims And Policy Processing Clerk
+     * * `413021` - Insurance Sales Agent
+     * * `132053` - Insurance Underwriter
+     * * `271025` - Interior Designer
+     * * `273091` - Interpreter And Translator
+     * * `434111` - Interviewer Except Eligibility And Loan
+     * * `37201X` - Janitor And Building Cleaner
+     * * `519071` - Jeweler And Precious Stone And Metal Worker
+     * * `231020` - Judge Magistrate And Other Judicial Worker
+     * * `231012` - Judicial Law Clerk
+     * * `537062` - Laborer And Freight Stock And Material Mover Hand
+     * * `171012` - Landscape Architect
+     * * `373011` - Landscaping And Groundskeeping Worker
+     * * `516011` - Laundry And Dry Cleaning Worker
+     * * `231011` - Lawyer
+     * * `436012` - Legal Secretary And Administrative Assistant
+     * * `232099` - Legal Support Worker Other
+     * * `111031` - Legislator
+     * * `254022` - Librarian And Media Collections Specialist
+     * * `434121` - Library Assistant Clerical
+     * * `254031` - Library Technician
+     * * `292061` - Licensed Practical And Licensed Vocational Nurse
+     * * `191099` - Life Scientist Other
+     * * `434131` - Loan Interviewer And Clerk
+     * * `499094` - Locksmith And Safe Repairer
+     * * `534010` - Locomotive Engineer And Operator
+     * * `119081` - Lodging Manager
+     * * `454020` - Logging Worker
+     * * `131081` - Logistician
+     * * `537063` - Machine Feeder And Offbearer
+     * * `514041` - Machinist
+     * * `292035` - Magnetic Resonance Imaging Technologist
+     * * `372012` - Maids And Housekeeping Cleaner
+     * * `439051` - Mail Clerk And Mail Machine Operator Except Postal Service
+     * * `499071` - Maintenance And Repair Worker General
+     * * `499043` - Maintenance Worker Machinery
+     * * `131111` - Management Analyst
+     * * `119199` - Manager Other
+     * * `395092` - Manicurist And Pedicurist
+     * * `499095` - Manufactured Building And Mobile Home Installer
+     * * `172121` - Marine Engineer And Naval Architect
+     * * `131161` - Market Research Analyst And Marketing Specialist
+     * * `112021` - Marketing Manager
+     * * `211013` - Marriage And Family Therapist
+     * * `319011` - Massage Therapist
+     * * `172131` - Materials Engineer
+     * * `152021` - Mathematician
+     * * `172141` - Mechanical Engineer
+     * * `274099` - Media And Communication Equipment Worker Other
+     * * `273099` - Media And Communication Worker Other
+     * * `119111` - Medical And Health Services Manager
+     * * `319092` - Medical Assistant
+     * * `292072` - Medical Records Specialist
+     * * `191040` - Medical Scientist
+     * * `436013` - Medical Secretary And Administrative Assistant
+     * * `319094` - Medical Transcriptionist
+     * * `131121` - Meeting Convention And Event Planner
+     * * `211023` - Mental Health And Substance Abuse Social Worker
+     * * `211014` - Mental Health Counselor
+     * * `271026` - Merchandise Displayer And Window Trimmer
+     * * `514050` - Metal Furnace Operator Tender Pourer And Caster
+     * * `435041` - Meter Reader Utilities
+     * * `553010` - Military Enlisted Tactical Operations And Air Weapons Specialist And Crew Member
+     * * `551010` - Military Officer Special And Tactical Operations Leader
+     * * `554010` - Military Rank Not Specified
+     * * `499044` - Millwright
+     * * `172151` - Mining And Geological Engineer Including Mining Safety Engineer
+     * * `452090` - Miscellaneous Agricultural Worker
+     * * `474090` - Miscellaneous Construction And Related Worker
+     * * `292090` - Miscellaneous Health Technologist And Technician
+     * * `518090` - Miscellaneous Plant And System Operator
+     * * `193090` - Miscellaneous Social Scientist And Related Worker
+     * * `493090` - Miscellaneous Vehicle And Mobile Equipment Mechanic Installer And Repairer
+     * * `514060` - Model Maker And Patternmaker Metal And Plastic
+     * * `419010` - Model Demonstrator And Product Promoter
+     * * `514070` - Molder And Molding Machine Setter Operator And Tender Metal And Plastic
+     * * `519195` - Molder Shaper And Caster Except Metal And Plastic
+     * * `394031` - Mortician Undertaker And Funeral Arranger
+     * * `533099` - Motor Vehicle Operator Other
+     * * `272041` - Music Director And Composer
+     * * `272042` - Musician And Singer
+     * * `119121` - Natural Sciences Manager
+     * * `151244` - Network And Computer Systems Administrator
+     * * `434141` - New Accounts Clerk
+     * * `273023` - News Analyst Reporter And Journalist
+     * * `172161` - Nuclear Engineer
+     * * `29203X` - Nuclear Medicine Technologist And Medical Dosimetrist
+     * * `194051` - Nuclear Technician
+     * * `291151` - Nurse Anesthetist
+     * * `291161` - Nurse Midwife
+     * * `291171` - Nurse Practitioner
+     * * `311131` - Nursing Assistant
+     * * `195010` - Occupational Health And Safety Specialist And Technician
+     * * `291122` - Occupational Therapist
+     * * `312010` - Occupational Therapy Assistant And Aide
+     * * `439199` - Office And Administrative Support Worker Other
+     * * `439061` - Office Clerk General
+     * * `439071` - Office Machine Operator Except Computer
+     * * `152031` - Operations Research Analyst
+     * * `292081` - Optician Dispensing
+     * * `291041` - Optometrist
+     * * `434151` - Order Clerk
+     * * `31113X` - Orderly And Psychiatric Aide
+     * * `5120XX` - Other Assembler And Fabricator
+     * * `21109X` - Other Community And Social Service Specialist
+     * * `27102X` - Other Designer
+     * * `17301X` - Other Drafter
+     * * `2590XX` - Other Educational Instruction And Library Worker
+     * * `17302X` - Other Engineering Technologist And Technician
+     * * `3930XX` - Other Entertainment Attendant And Related Worker
+     * * `4750XX` - Other Extraction Worker
+     * * `1320XX` - Other Financial Specialist
+     * * `37301X` - Other Grounds Maintenance Worker
+     * * `299000` - Other Healthcare Practitioner And Technical Occupation
+     * * `31909X` - Other Healthcare Support Worker
+     * * `49909X` - Other Installation Maintenance And Repair Worker
+     * * `1940XX` - Other Life Physical And Social Science Technician
+     * * `51403X` - Other Machine Tool Setter Operator And Tender Metal And Plastic
+     * * `5371XX` - Other Material Moving Worker
+     * * `1520XX` - Other Mathematical Science Occupation
+     * * `514XXX` - Other Metal Worker And Plastic Worker
+     * * `39509X` - Other Personal Appearance Worker
+     * * `2912XX` - Other Physician
+     * * `51919X` - Other Production Equipment Operator And Tender
+     * * `5191XX` - Other Production Worker
+     * * `33909X` - Other Protective Service Worker
+     * * `19303X` - Other Psychologist
+     * * `5340XX` - Other Rail Transportation Worker
+     * * `2530XX` - Other Teacher And Instructor
+     * * `51609X` - Other Textile Apparel And Furnishings Worker
+     * * `5360XX` - Other Transportation Worker
+     * * `5170XX` - Other Woodworker
+     * * `519111` - Packaging And Filling Machine Operator And Tender
+     * * `537064` - Packer And Packager Hand
+     * * `472140` - Painter And Paperhanger
+     * * `519120` - Painting Worker
+     * * `519196` - Paper Goods Machine Setter Operator And Tender
+     * * `232011` - Paralegal And Legal Assistant
+     * * `292043` - Paramedic
+     * * `536021` - Parking Attendant
+     * * `333041` - Parking Enforcement Worker
+     * * `412022` - Parts Salesperson
+     * * `536061` - Passenger Attendant
+     * * `433051` - Payroll And Timekeeping Clerk
+     * * `399099` - Personal Care And Service Worker Other
+     * * `132052` - Personal Financial Advisor
+     * * `119179` - Personal Service Manager Other
+     * * `372021` - Pest Control Worker
+     * * `172171` - Petroleum Engineer
+     * * `291051` - Pharmacist
+     * * `319095` - Pharmacy Aide
+     * * `292052` - Pharmacy Technician
+     * * `319097` - Phlebotomist
+     * * `274021` - Photographer
+     * * `519151` - Photographic Process Worker And Processing Machine Operator
+     * * `192099` - Physical Scientist Other
+     * * `291123` - Physical Therapist
+     * * `312020` - Physical Therapist Assistant And Aide
+     * * `291071` - Physician Assistant
+     * * `472151` - Pipelayer
+     * * `472161` - Plasterer And Stucco Mason
+     * * `472152` - Plumber Pipefitter And Steamfitter
+     * * `291081` - Podiatrist
+     * * `333050` - Police Officer
+     * * `435051` - Postal Service Clerk
+     * * `435052` - Postal Service Mail Carrier
+     * * `435053` - Postal Service Mail Sorter Processor And Processing Machine Operator
+     * * `119131` - Postmaster And Mail Superintendent
+     * * `251000` - Postsecondary Teacher
+     * * `518010` - Power Plant Operator Distributor And Dispatcher
+     * * `499060` - Precision Instrument And Equipment Repairer
+     * * `515111` - Prepress Technician And Worker
+     * * `252010` - Preschool And Kindergarten Teacher
+     * * `516021` - Presser Textile Garment And Related Material
+     * * `515113` - Print Binding And Finishing Worker
+     * * `515112` - Printing Press Operator
+     * * `339021` - Private Detective And Investigator
+     * * `211092` - Probation Officer And Correctional Treatment Specialist
+     * * `433061` - Procurement Clerk
+     * * `272012` - Producer And Director
+     * * `435061` - Production Planning And Expediting Clerk
+     * * `131082` - Project Management Specialist
+     * * `439081` - Proofreader And Copy Marker
+     * * `132020` - Property Appraiser And Assessor
+     * * `119141` - Property Real Estate And Community Association Manager
+     * * `292053` - Psychiatric Technician
+     * * `112030` - Public Relations And Fundraising Manager
+     * * `273031` - Public Relations Specialist
+     * * `435031` - Public Safety Telecommunicator
+     * * `537070` - Pumping Station Operator
+     * * `131023` - Purchasing Agent Except Wholesale Retail And Farm Products
+     * * `113061` - Purchasing Manager
+     * * `291124` - Radiation Therapist
+     * * `492020` - Radio And Telecommunications Equipment Installer And Repairer
+     * * `292034` - Radiologic Technologist And Technician
+     * * `291224` - Radiologist
+     * * `474061` - Rail Track Laying And Maintenance Equipment Operator
+     * * `534031` - Railroad Conductor And Yardmaster
+     * * `419020` - Real Estate Broker And Sales Agent
+     * * `434171` - Receptionist And Information Clerk
+     * * `399032` - Recreation Worker
+     * * `291125` - Recreational Therapist
+     * * `537081` - Refuse And Recyclable Material Collector
+     * * `291141` - Registered Nurse
+     * * `211015` - Rehabilitation Counselor
+     * * `472171` - Reinforcing Iron And Rebar Worker
+     * * `212099` - Religious Worker Other
+     * * `434181` - Reservation And Transportation Ticket Agent And Travel Clerk
+     * * `399041` - Residential Advisor
+     * * `291126` - Respiratory Therapist
+     * * `412031` - Retail Salesperson
+     * * `499096` - Rigger
+     * * `472181` - Roofer
+     * * `475071` - Roustabout Oil And Gas
+     * * `535011` - Sailor And Marine Oiler
+     * * `419099` - Sales And Related Worker Other
+     * * `419031` - Sales Engineer
+     * * `112022` - Sales Manager
+     * * `413091` - Sales Representative Of Services Except Advertising Insurance Financial Services And Travel
+     * * `414010` - Sales Representatives Wholesale And Manufacturing
+     * * `517041` - Sawing Machine Setter Operator And Tender Wood
+     * * `533051` - School Bus Driver
+     * * `339094` - School Bus Monitor
+     * * `193034` - School Psychologist
+     * * `252030` - Secondary School Teacher
+     * * `436014` - Secretary And Administrative Assistant Except Legal Medical And Executive
+     * * `413031` - Securities Commodities And Financial Services Sales Agent
+     * * `492098` - Security And Fire Alarm Systems Installer
+     * * `339030` - Security Guard And Gambling Surveillance Officer
+     * * `474071` - Septic Tank Servicer And Sewer Pipe Cleaner
+     * * `516031` - Sewing Machine Operator
+     * * `472211` - Sheet Metal Worker
+     * * `535020` - Ship And Boat Captain And Operator
+     * * `535031` - Ship Engineer
+     * * `435071` - Shipping Receiving And Inventory Clerk
+     * * `516040` - Shoe And Leather Worker
+     * * `533053` - Shuttle Driver And Chauffeur
+     * * `395094` - Skincare Specialist
+     * * `493050` - Small Engine Mechanic
+     * * `119151` - Social And Community Service Manager
+     * * `211093` - Social And Human Service Assistant
+     * * `194061` - Social Science Research Assistant
+     * * `211029` - Social Worker Other
+     * * `193041` - Sociologist
+     * * `151252` - Software Developer
+     * * `151253` - Software Quality Assurance Analyst And Tester
+     * * `472231` - Solar Photovoltaic Installer
+     * * `252050` - Special Education Teacher
+     * * `291127` - Speech Language Pathologist
+     * * `518021` - Stationary Engineer And Boiler Operator
+     * * `439111` - Statistical Assistant
+     * * `152041` - Statistician
+     * * `537065` - Stocker And Order Filler
+     * * `472221` - Structural Iron And Steel Worker
+     * * `512041` - Structural Metal Fabricator And Fitter
+     * * `211011` - Substance Abuse And Behavioral Disorder Counselor
+     * * `391000` - Supervisor Of Personal Care And Service Worker
+     * * `531000` - Supervisor Of Transportation And Material Moving Worker
+     * * `291240` - Surgeon
+     * * `292055` - Surgical Technologist
+     * * `193022` - Survey Researcher
+     * * `173031` - Surveying And Mapping Technician
+     * * `171020` - Surveyor Cartographer And Photogrammetrist
+     * * `432011` - Switchboard Operator Including Answering Service
+     * * `516050` - Tailor Dressmaker And Sewer
+     * * `132081` - Tax Examiner And Collector And Revenue Agent
+     * * `132082` - Tax Preparer
+     * * `533054` - Taxi Driver
+     * * `259040` - Teaching Assistant
+     * * `273042` - Technical Writer
+     * * `499052` - Telecommunications Line Installer And Repairer
+     * * `419041` - Telemarketer
+     * * `432021` - Telephone Operator
+     * * `274030` - Television Video And Film Camera Operator And Editor
+     * * `433071` - Teller
+     * * `516060` - Textile Machine Setter Operator And Tender
+     * * `291129` - Therapist Other
+     * * `519197` - Tire Builder
+     * * `232093` - Title Examiner Abstractor And Searcher
+     * * `514111` - Tool And Die Maker
+     * * `397010` - Tour And Travel Guide
+     * * `113131` - Training And Development Manager
+     * * `131151` - Training And Development Specialist
+     * * `533052` - Transit And Intercity Bus Driver
+     * * `536051` - Transportation Inspector
+     * * `339093` - Transportation Security Screener
+     * * `536030` - Transportation Service Attendant
+     * * `113071` - Transportation Storage And Distribution Manager
+     * * `413041` - Travel Agent
+     * * `373013` - Tree Trimmer And Pruner
+     * * `253041` - Tutor
+     * * `272023` - Umpire Referee And Other Sports Official
+     * * `475040` - Underground Mining Machine Operator
+     * * `999999` - Unemployed With No Work Experience In The Last 5 Years Or Earlier Or Never Worked
+     * * `516093` - Upholsterer
+     * * `193051` - Urban And Regional Planner
+     * * `393031` - Usher Lobby Attendant And Ticket Taker
+     * * `291131` - Veterinarian
+     * * `319096` - Veterinary Assistant And Laboratory Animal Caretaker
+     * * `292056` - Veterinary Technologist And Technician
+     * * `353031` - Waiter Or Waitress
+     * * `518031` - Water And Wastewater Treatment Plant And System Operator
+     * * `151255` - Web And Digital Interface Designer
+     * * `151254` - Web Developer
+     * * `435111` - Weigher Measurer Checker And Sampler Recordkeeping
+     * * `514120` - Welding Soldering And Brazing Worker
+     * * `131022` - Wholesale And Retail Buyer Except Farm Products
+     * * `499081` - Wind Turbine Service Technician
+     * * `517042` - Woodworking Machine Setter Operator And Tender Except Sawing
+     * * `439022` - Word Processor And Typist
+     * * `273043` - Writer And Author
+     */
+    occupation?: '132011' | '272011' | '152011' | '291291' | '519191' | '113012' | '112011' | '413011' | '172011' | '131011' | '194010' | '191010' | '172021' | '452011' | '532020' | '493011' | '532010' | '512011' | '533011' | '452021' | '392021' | '339011' | '392011' | '171011' | '173011' | '119041' | '254010' | '271010' | '192010' | '272021' | '192021' | '291181' | '492097' | '493021' | '493022' | '493023' | '492091' | '396010' | '333011' | '513011' | '395011' | '353011' | '433011' | '433021' | '172031' | '191020' | '194021' | '472011' | '433031' | '472020' | '273011' | '274010' | '434011' | '132031' | '493031' | '131199' | '513020' | '131021' | '517011' | '292031' | '435011' | '472031' | '472040' | '412010' | '472050' | '351011' | '172041' | '519010' | '194031' | '192030' | '111011' | '211021' | '399011' | '291011' | '172051' | '131030' | '537061' | '212011' | '193033' | '292010' | '272022' | '499091' | '271021' | '499092' | '432099' | '113111' | '131141' | '131041' | '151221' | '113021' | '172061' | '151241' | '519160' | '151299' | '151251' | '151230' | '151211' | '492011' | '191030' | '474011' | '472070' | '472061' | '119021' | '499010' | '5370XX' | '352010' | '333012' | '434021' | '131051' | '211019' | '412021' | '435021' | '273092' | '434031' | '537021' | '132041' | '434041' | '132070' | '339091' | '519020' | '434051' | '519030' | '514031' | '272030' | '439021' | '15124X' | '519080' | '319091' | '291292' | '291020' | '475010' | '439031' | '333021' | '292032' | '29205X' | '291031' | '359011' | '212021' | '272091' | '359021' | '435032' | '419091' | '533030' | '472080' | '475023' | '193011' | '273041' | '119030' | '211012' | '492092' | '173023' | '172070' | '492093' | '49209X' | '499051' | '512020' | '472111' | '492096' | '252020' | '474021' | '434061' | '3940XX' | '119161' | '292042' | '291214' | '512031' | '172199' | '272099' | '119070' | '172081' | '194040' | '192041' | '519194' | '475022' | '436011' | '291128' | '399031' | '475032' | '519041' | '113013' | '119013' | '271022' | '353023' | '474031' | '434071' | '132051' | '433099' | '132061' | '113031' | '332020' | '332011' | '552010' | '471011' | '331011' | '451011' | '331021' | '351012' | '371011' | '371012' | '491011' | '411012' | '431011' | '331012' | '511011' | '331099' | '411011' | '331091' | '333031' | '453031' | '532031' | '271023' | '513091' | '513092' | '513093' | '359099' | '352021' | '513099' | '353041' | '119051' | '454011' | '514020' | '131131' | '119171' | '519051' | '517021' | '433041' | '393010' | '111021' | '19204X' | '472121' | '452041' | '271024' | '514033' | '395012' | '474041' | '291299' | '211022' | '499021' | '493040' | '499098' | '519198' | '473010' | '474051' | '499031' | '311121' | '359031' | '434081' | '434161' | '113121' | '131070' | '49904X' | '172110' | '113051' | '537051' | '434199' | '151212' | '519061' | '472130' | '439041' | '413021' | '132053' | '271025' | '273091' | '434111' | '37201X' | '519071' | '231020' | '231012' | '537062' | '171012' | '373011' | '516011' | '231011' | '436012' | '232099' | '111031' | '254022' | '434121' | '254031' | '292061' | '191099' | '434131' | '499094' | '534010' | '119081' | '454020' | '131081' | '537063' | '514041' | '292035' | '372012' | '439051' | '499071' | '499043' | '131111' | '119199' | '395092' | '499095' | '172121' | '131161' | '112021' | '211013' | '319011' | '172131' | '152021' | '172141' | '274099' | '273099' | '119111' | '319092' | '292072' | '191040' | '436013' | '319094' | '131121' | '211023' | '211014' | '271026' | '514050' | '435041' | '553010' | '551010' | '554010' | '499044' | '172151' | '452090' | '474090' | '292090' | '518090' | '193090' | '493090' | '514060' | '419010' | '514070' | '519195' | '394031' | '533099' | '272041' | '272042' | '119121' | '151244' | '434141' | '273023' | '172161' | '29203X' | '194051' | '291151' | '291161' | '291171' | '311131' | '195010' | '291122' | '312010' | '439199' | '439061' | '439071' | '152031' | '292081' | '291041' | '434151' | '31113X' | '5120XX' | '21109X' | '27102X' | '17301X' | '2590XX' | '17302X' | '3930XX' | '4750XX' | '1320XX' | '37301X' | '299000' | '31909X' | '49909X' | '1940XX' | '51403X' | '5371XX' | '1520XX' | '514XXX' | '39509X' | '2912XX' | '51919X' | '5191XX' | '33909X' | '19303X' | '5340XX' | '2530XX' | '51609X' | '5360XX' | '5170XX' | '519111' | '537064' | '472140' | '519120' | '519196' | '232011' | '292043' | '536021' | '333041' | '412022' | '536061' | '433051' | '399099' | '132052' | '119179' | '372021' | '172171' | '291051' | '319095' | '292052' | '319097' | '274021' | '519151' | '192099' | '291123' | '312020' | '291071' | '472151' | '472161' | '472152' | '291081' | '333050' | '435051' | '435052' | '435053' | '119131' | '251000' | '518010' | '499060' | '515111' | '252010' | '516021' | '515113' | '515112' | '339021' | '211092' | '433061' | '272012' | '435061' | '131082' | '439081' | '132020' | '119141' | '292053' | '112030' | '273031' | '435031' | '537070' | '131023' | '113061' | '291124' | '492020' | '292034' | '291224' | '474061' | '534031' | '419020' | '434171' | '399032' | '291125' | '537081' | '291141' | '211015' | '472171' | '212099' | '434181' | '399041' | '291126' | '412031' | '499096' | '472181' | '475071' | '535011' | '419099' | '419031' | '112022' | '413091' | '414010' | '517041' | '533051' | '339094' | '193034' | '252030' | '436014' | '413031' | '492098' | '339030' | '474071' | '516031' | '472211' | '535020' | '535031' | '435071' | '516040' | '533053' | '395094' | '493050' | '119151' | '211093' | '194061' | '211029' | '193041' | '151252' | '151253' | '472231' | '252050' | '291127' | '518021' | '439111' | '152041' | '537065' | '472221' | '512041' | '211011' | '391000' | '531000' | '291240' | '292055' | '193022' | '173031' | '171020' | '432011' | '516050' | '132081' | '132082' | '533054' | '259040' | '273042' | '499052' | '419041' | '432021' | '274030' | '433071' | '516060' | '291129' | '519197' | '232093' | '514111' | '397010' | '113131' | '131151' | '533052' | '536051' | '339093' | '536030' | '113071' | '413041' | '373013' | '253041' | '272023' | '475040' | '999999' | '516093' | '193051' | '393031' | '291131' | '319096' | '292056' | '353031' | '518031' | '151255' | '151254' | '435111' | '514120' | '131022' | '499081' | '517042' | '439022' | '273043' | null;
+    /**
+     * * `employed` - Employed
+     * * `homemaker` - Homemaker
+     * * `retired` - Retired
+     * * `self_employed` - Self Employed
+     * * `student` - Student
+     * * `unemployed` - Unemployed
+     */
+    employment_status?: 'employed' | 'homemaker' | 'retired' | 'self_employed' | 'student' | 'unemployed' | null;
+    /**
+     * * `company_funds` - Company Funds
+     * * `ecommerce_reseller` - Ecommerce Reseller
+     * * `gambling_proceeds` - Gambling Proceeds
+     * * `gifts` - Gifts
+     * * `government_benefits` - Government Benefits
+     * * `inheritance` - Inheritance
+     * * `investments_loans` - Investments Loans
+     * * `pension_retirement` - Pension Retirement
+     * * `salary` - Salary
+     * * `sale_of_assets_real_estate` - Sale Of Assets Real Estate
+     * * `savings` - Savings
+     * * `someone_elses_funds` - Someone Elses Funds
+     */
+    source_of_funds?: 'company_funds' | 'ecommerce_reseller' | 'gambling_proceeds' | 'gifts' | 'government_benefits' | 'inheritance' | 'investments_loans' | 'pension_retirement' | 'salary' | 'sale_of_assets_real_estate' | 'savings' | 'someone_elses_funds' | null;
+    /**
+     * * `charitable_donations` - Charitable Donations
+     * * `ecommerce_retail_payments` - Ecommerce Retail Payments
+     * * `investment_purposes` - Investment Purposes
+     * * `operating_a_company` - Operating A Company
+     * * `other` - Other
+     * * `payments_to_friends_or_family_abroad` - Payments To Friends Or Family Abroad
+     * * `personal_or_living_expenses` - Personal Or Living Expenses
+     * * `protect_wealth` - Protect Wealth
+     * * `purchase_goods_and_services` - Purchase Goods And Services
+     * * `receive_payment_for_freelancing` - Receive Payment For Freelancing
+     * * `receive_salary` - Receive Salary
+     */
+    account_purpose?: 'charitable_donations' | 'ecommerce_retail_payments' | 'investment_purposes' | 'operating_a_company' | 'other' | 'payments_to_friends_or_family_abroad' | 'personal_or_living_expenses' | 'protect_wealth' | 'purchase_goods_and_services' | 'receive_payment_for_freelancing' | 'receive_salary' | null;
+    account_purpose_other?: string | null;
+    intermediary?: boolean | null;
+    /**
+     * * `0_4999` - Range 0 4999
+     * * `5000_9999` - Range 5000 9999
+     * * `10000_49999` - Range 10000 49999
+     * * `50000_plus` - Range 50000 Plus
+     */
+    expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
 };
 
 export type AuthResponseWritable = {
@@ -17158,12 +19360,6 @@ export type AuthResponseWritable = {
     data: AuthWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AuthTokenWritable = {
     token_key: string;
 };
@@ -17189,12 +19385,6 @@ export type AuthenticatedResponseWritable = {
     data: AuthenticatedWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CompanyWritable = {
     name?: string | null;
     legal_name?: string | null;
@@ -17464,12 +19654,6 @@ export type CompanyWritable = {
     } | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CompanyBankAccountWritable = {
     name?: string | null;
     number?: string | null;
@@ -17503,12 +19687,6 @@ export type CompanyResponseWritable = {
     data: CompanyWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CompanySettingsWritable = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
@@ -17537,12 +19715,6 @@ export type CompanySettingsWritable = {
     supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CompanyWalletAccountWritable = {
     username?: string | null;
     email?: string | null;
@@ -17565,12 +19737,6 @@ export type CreateAccountAccountAssetRequestWritable = {
     } | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateCompanyRequestWritable = {
     id: string;
     name?: string | null;
@@ -17848,16 +20014,6 @@ export type CreateCompanyRequestWritable = {
     links?: Array<string>;
 };
 
-/**
- * A mixin that handles the application of permissions to properties on a
- * serializer using the built-in permissions system.
- *
- * NOTE : This only works if the following conditions are met:
- * - The request context must contain a user.
- * - The class this mixin is attached must be a serializer.
- * - The class this mixin is attached to must have a Meta.model defined.
- * - The Meta.model class must have a PERMISSION_TYPE defined.
- */
 export type CreateCreditTransactionRequestWritable = {
     id?: string;
     amount: number;
@@ -17878,16 +20034,6 @@ export type CreateCreditTransactionRequestWritable = {
     status?: 'Initiating' | 'Quoted' | 'Pending';
 };
 
-/**
- * A mixin that handles the application of permissions to properties on a
- * serializer using the built-in permissions system.
- *
- * NOTE : This only works if the following conditions are met:
- * - The request context must contain a user.
- * - The class this mixin is attached must be a serializer.
- * - The class this mixin is attached to must have a Meta.model defined.
- * - The Meta.model class must have a PERMISSION_TYPE defined.
- */
 export type CreateDebitTransactionRequestWritable = {
     id?: string;
     amount: number;
@@ -17908,12 +20054,6 @@ export type CreateDebitTransactionRequestWritable = {
     status?: 'Initiating' | 'Quoted' | 'Pending';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateMetricRequestWritable = {
     name?: string | null;
     slug?: string | null;
@@ -17952,12 +20092,6 @@ export type CreateMultiTransactionRequestWritable = {
     transactions: Array<ExplicitCreateTransactionRequestWritable>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateStatementRequestWritable = {
     account: string;
     timezone: string;
@@ -17968,12 +20102,6 @@ export type CreateStatementRequestWritable = {
     } | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateTransactionCollectionRequestWritable = {
     id?: string;
     transactions: Array<CreateTransactionCollectionTransactionRequestWritable>;
@@ -17985,16 +20113,6 @@ export type CreateTransactionCollectionRequestWritable = {
     status?: 'Initiating' | 'Quoted' | 'Pending';
 };
 
-/**
- * A mixin that handles the application of permissions to properties on a
- * serializer using the built-in permissions system.
- *
- * NOTE : This only works if the following conditions are met:
- * - The request context must contain a user.
- * - The class this mixin is attached must be a serializer.
- * - The class this mixin is attached to must have a Meta.model defined.
- * - The Meta.model class must have a PERMISSION_TYPE defined.
- */
 export type CreateTransactionCollectionTransactionRequestWritable = {
     id?: string;
     parent?: string;
@@ -18025,12 +20143,6 @@ export type CreateTransactionCollectionTransactionRequestWritable = {
     status?: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CryptoAccountWritable = {
     address: string;
     name?: string | null;
@@ -18047,12 +20159,6 @@ export type CryptoAccountWritable = {
     } | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CryptoAccountAssetWritable = {
     code?: string | null;
     display_code?: string | null;
@@ -18074,12 +20180,6 @@ export type CryptoAccountAssetResponseWritable = {
     data: CryptoAccountAssetWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CryptoAccountAttestationWritable = {
     data?: {
         [key: string]: unknown;
@@ -18103,12 +20203,6 @@ export type CryptoAccountResponseWritable = {
     data: CryptoAccountWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type DeviceWritable = {
     name?: string | null;
     metadata?: {
@@ -18116,12 +20210,6 @@ export type DeviceWritable = {
     } | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type DeviceAppWritable = {
     name?: string | null;
     /**
@@ -18147,12 +20235,6 @@ export type DeviceResponseWritable = {
     data: DeviceWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type DocumentTypeWritable = {
     name?: string | null;
     description?: string | null;
@@ -18163,12 +20245,14 @@ export type DocumentTypeResponseWritable = {
     data: DocumentTypeWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type EffectiveFeeListResponseWritable = {
+    status: string;
+};
+
+export type EffectiveLimitListResponseWritable = {
+    status: string;
+};
+
 export type EmailWritable = {
     primary?: boolean;
 };
@@ -18185,16 +20269,6 @@ export type EmailResponseWritable = {
     data: EmailWritable;
 };
 
-/**
- * A mixin that handles the application of permissions to properties on a
- * serializer using the built-in permissions system.
- *
- * NOTE : This only works if the following conditions are met:
- * - The request context must contain a user.
- * - The class this mixin is attached must be a serializer.
- * - The class this mixin is attached to must have a Meta.model defined.
- * - The Meta.model class must have a PERMISSION_TYPE defined.
- */
 export type ExplicitCreateTransactionRequestWritable = {
     id?: string;
     /**
@@ -18219,12 +20293,6 @@ export type ExplicitCreateTransactionRequestWritable = {
     status?: 'Initiating' | 'Quoted' | 'Pending';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ExportWritable = {
     /**
      * * `system` - System
@@ -18240,12 +20308,6 @@ export type ExportWritable = {
     page_size?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ExportPageWritable = {
     count?: number;
     file?: string | null;
@@ -18256,12 +20318,6 @@ export type ExportResponseWritable = {
     data: ExportWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ExtendedAccountWritable = {
     name?: string;
     label?: string | null;
@@ -18281,12 +20337,6 @@ export type ExtendedAuthenticatedResponseWritable = {
     data: ExtendedAuthenticatedWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ExtendedExportWritable = {
     /**
      * * `system` - System
@@ -18302,12 +20352,6 @@ export type ExtendedExportResponseWritable = {
     data: ExtendedExportWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ExtendedGroupTierWritable = {
     [key: string]: unknown;
 };
@@ -18317,16 +20361,6 @@ export type ExtendedGroupTierResponseWritable = {
     data: ExtendedGroupTierWritable;
 };
 
-/**
- * A mixin that handles the application of permissions to properties on a
- * serializer using the built-in permissions system.
- *
- * NOTE : This only works if the following conditions are met:
- * - The request context must contain a user.
- * - The class this mixin is attached must be a serializer.
- * - The class this mixin is attached to must have a Meta.model defined.
- * - The Meta.model class must have a PERMISSION_TYPE defined.
- */
 export type ExtendedTransactionWritable = {
     [key: string]: unknown;
 };
@@ -18336,10 +20370,6 @@ export type ExtendedTransactionResponseWritable = {
     data: ExtendedTransactionWritable;
 };
 
-/**
- * Extended user information shown based on the default user info serializer.
- * Contain additional information about user permissions and settings.
- */
 export type ExtendedUserInfoWritable = {
     username: string | null;
     first_name?: string | null;
@@ -18601,6 +20631,7 @@ export type ExtendedUserInfoWritable = {
      * * `ZW` - Zimbabwe
      */
     nationality?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    nationalities?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'> | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -19390,6 +21421,625 @@ export type ExtendedUserInfoWritable = {
      * * `ZW` - Zimbabwe
      */
     tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    /**
+     * * `132011` - Accountant And Auditor
+     * * `272011` - Actor
+     * * `152011` - Actuary
+     * * `291291` - Acupuncturist
+     * * `519191` - Adhesive Bonding Machine Operator And Tender
+     * * `113012` - Administrative Services Manager
+     * * `112011` - Advertising And Promotions Manager
+     * * `413011` - Advertising Sales Agent
+     * * `172011` - Aerospace Engineer
+     * * `131011` - Agent And Business Manager Of Artists Performers And Athletes
+     * * `194010` - Agricultural And Food Science Technician
+     * * `191010` - Agricultural And Food Scientist
+     * * `172021` - Agricultural Engineer
+     * * `452011` - Agricultural Inspector
+     * * `532020` - Air Traffic Controller And Airfield Operations Specialist
+     * * `493011` - Aircraft Mechanic And Service Technician
+     * * `532010` - Aircraft Pilots And Flight Engineer
+     * * `512011` - Aircraft Structure Surfaces Rigging And Systems Assembler
+     * * `533011` - Ambulance Driver And Attendant Except Emergency Medical Technician
+     * * `452021` - Animal Breeder
+     * * `392021` - Animal Caretaker
+     * * `339011` - Animal Control Worker
+     * * `392011` - Animal Trainer
+     * * `171011` - Architect Except Landscape And Naval
+     * * `173011` - Architectural And Civil Drafter
+     * * `119041` - Architectural And Engineering Manager
+     * * `254010` - Archivist Curator And Museum Technician
+     * * `271010` - Artist And Related Worker
+     * * `192010` - Astronomer And Physicist
+     * * `272021` - Athletes And Sports Competitor
+     * * `192021` - Atmospheric And Space Scientist
+     * * `291181` - Audiologist
+     * * `492097` - Audiovisual Equipment Installer And Repairer
+     * * `493021` - Automotive Body And Related Repairer
+     * * `493022` - Automotive Glass Installer And Repairer
+     * * `493023` - Automotive Service Technician And Mechanic
+     * * `492091` - Avionics Technician
+     * * `396010` - Baggage Porter Bellhop And Concierge
+     * * `333011` - Bailiff
+     * * `513011` - Baker
+     * * `395011` - Barber
+     * * `353011` - Bartender
+     * * `433011` - Bill And Account Collector
+     * * `433021` - Billing And Posting Clerk
+     * * `172031` - Bioengineer And Biomedical Engineer
+     * * `191020` - Biological Scientist
+     * * `194021` - Biological Technician
+     * * `472011` - Boilermaker
+     * * `433031` - Bookkeeping Accounting And Auditing Clerk
+     * * `472020` - Brickmason Blockmason And Stonemason
+     * * `273011` - Broadcast Announcer And Radio Disc Jockey
+     * * `274010` - Broadcast Sound And Lighting Technician
+     * * `434011` - Brokerage Clerk
+     * * `132031` - Budget Analyst
+     * * `493031` - Bus And Truck Mechanic And Diesel Engine Specialist
+     * * `131199` - Business Operations Specialist Other
+     * * `513020` - Butcher And Other Meat Poultry And Fish Processing Worker
+     * * `131021` - Buyer And Purchasing Agent Farm Products
+     * * `517011` - Cabinetmaker And Bench Carpenter
+     * * `292031` - Cardiovascular Technologist And Technician
+     * * `435011` - Cargo And Freight Agent
+     * * `472031` - Carpenter
+     * * `472040` - Carpet Floor And Tile Installer And Finisher
+     * * `412010` - Cashier
+     * * `472050` - Cement Mason Concrete Finisher And Terrazzo Worker
+     * * `351011` - Chef And Head Cook
+     * * `172041` - Chemical Engineer
+     * * `519010` - Chemical Processing Machine Setter Operator And Tender
+     * * `194031` - Chemical Technician
+     * * `192030` - Chemist And Materials Scientist
+     * * `111011` - Chief Executive
+     * * `211021` - Child Family And School Social Worker
+     * * `399011` - Childcare Worker
+     * * `291011` - Chiropractor
+     * * `172051` - Civil Engineer
+     * * `131030` - Claims Adjuster Appraiser Examiner And Investigator
+     * * `537061` - Cleaner Of Vehicles And Equipment
+     * * `212011` - Clergy
+     * * `193033` - Clinical And Counseling Psychologist
+     * * `292010` - Clinical Laboratory Technologist And Technician
+     * * `272022` - Coaches And Scout
+     * * `499091` - Coin Vending And Amusement Machine Servicer And Repairer
+     * * `271021` - Commercial And Industrial Designer
+     * * `499092` - Commercial Diver
+     * * `432099` - Communications Equipment Operator Other
+     * * `113111` - Compensation And Benefits Manager
+     * * `131141` - Compensation Benefits And Job Analysis Specialist
+     * * `131041` - Compliance Officer
+     * * `151221` - Computer And Information Research Scientist
+     * * `113021` - Computer And Information Systems Manager
+     * * `172061` - Computer Hardware Engineer
+     * * `151241` - Computer Network Architect
+     * * `519160` - Computer Numerically Controlled Tool Operator And Programmer
+     * * `151299` - Computer Occupation Other
+     * * `151251` - Computer Programmer
+     * * `151230` - Computer Support Specialist
+     * * `151211` - Computer Systems Analyst
+     * * `492011` - Computer Automated Teller And Office Machine Repairer
+     * * `191030` - Conservation Scientist And Forester
+     * * `474011` - Construction And Building Inspector
+     * * `472070` - Construction Equipment Operator
+     * * `472061` - Construction Laborer
+     * * `119021` - Construction Manager
+     * * `499010` - Control And Valve Installer And Repairer
+     * * `5370XX` - Conveyor Dredge And Hoist And Winch Operator
+     * * `352010` - Cook
+     * * `333012` - Correctional Officer And Jailer
+     * * `434021` - Correspondence Clerk
+     * * `131051` - Cost Estimator
+     * * `211019` - Counselor Other
+     * * `412021` - Counter And Rental Clerk
+     * * `435021` - Courier And Messenger
+     * * `273092` - Court Reporter And Simultaneous Captioner
+     * * `434031` - Court Municipal And License Clerk
+     * * `537021` - Crane And Tower Operator
+     * * `132041` - Credit Analyst
+     * * `434041` - Credit Authorizer Checker And Clerk
+     * * `132070` - Credit Counselor And Loan Officer
+     * * `339091` - Crossing Guard And Flagger
+     * * `519020` - Crushing Grinding Polishing Mixing And Blending Worker
+     * * `434051` - Customer Service Representative
+     * * `519030` - Cutting Worker
+     * * `514031` - Cutting Punching And Press Machine Setter Operator And Tender Metal And Plastic
+     * * `272030` - Dancer And Choreographer
+     * * `439021` - Data Labeler And Data Entry Keyer
+     * * `15124X` - Database Administrator And Architect
+     * * `519080` - Dental And Ophthalmic Laboratory Technician And Medical Appliance Technician
+     * * `319091` - Dental Assistant
+     * * `291292` - Dental Hygienist
+     * * `291020` - Dentist
+     * * `475010` - Derrick Rotary Drill And Service Unit Operator Oil And Gas
+     * * `439031` - Desktop Publisher
+     * * `333021` - Detective And Criminal Investigator
+     * * `292032` - Diagnostic Medical Sonographer
+     * * `29205X` - Dietetic Technician And Ophthalmic Medical Technician
+     * * `291031` - Dietitian And Nutritionist
+     * * `359011` - Dining Room And Cafeteria Attendant And Bartender Helper
+     * * `212021` - Director Religious Activities And Educatio
+     * * `272091` - Disc Jockey Except Radio
+     * * `359021` - Dishwasher
+     * * `435032` - Dispatcher Except Police Fire And Ambulance
+     * * `419091` - Door To Door Sales Worker News And Street Vendor And Related Worker
+     * * `533030` - Driver Sales Worker And Truck Driver
+     * * `472080` - Drywall Installer Ceiling Tile Installer And Taper
+     * * `475023` - Earth Driller Except Oil And Gas
+     * * `193011` - Economist
+     * * `273041` - Editor
+     * * `119030` - Education And Childcare Administrator
+     * * `211012` - Educational Guidance And Career Counselor And Advisor
+     * * `492092` - Electric Motor Power Tool And Related Repairer
+     * * `173023` - Electrical And Electronic Engineering Technologist And Technician
+     * * `172070` - Electrical And Electronics Engineer
+     * * `492093` - Electrical And Electronics Installer And Repairer Transportation Equipment
+     * * `49209X` - Electrical And Electronics Repairer Industrial And Utility
+     * * `499051` - Electrical Power Line Installer And Repairer
+     * * `512020` - Electrical Electronics And Electromechanical Assembler
+     * * `472111` - Electrician
+     * * `492096` - Electronic Equipment Installer And Repairer Motor Vehicles
+     * * `252020` - Elementary And Middle School Teacher
+     * * `474021` - Elevator And Escalator Installer And Repairer
+     * * `434061` - Eligibility Interviewer Government Programs
+     * * `3940XX` - Embalmer Crematory Operator And Funeral Attendant
+     * * `119161` - Emergency Management Director
+     * * `292042` - Emergency Medical Technician
+     * * `291214` - Emergency Medicine Physician
+     * * `512031` - Engine And Other Machine Assembler
+     * * `172199` - Engineer Other
+     * * `272099` - Entertainer And Performer Sports And Related Worker Other
+     * * `119070` - Entertainment And Recreation Manager
+     * * `172081` - Environmental Engineer
+     * * `194040` - Environmental Science And Geoscience Technician
+     * * `192041` - Environmental Scientist And Specialist Including Health
+     * * `519194` - Etcher And Engraver
+     * * `475022` - Excavating And Loading Machine And Dragline Operator Surface Mining
+     * * `436011` - Executive Secretary And Executive Administrative Assistant
+     * * `291128` - Exercise Physiologist
+     * * `399031` - Exercise Trainer And Group Fitness Instructor
+     * * `475032` - Explosives Worker Ordnance Handling Expert And Blaster
+     * * `519041` - Extruding Forming Pressing And Compacting Machine Setter Operator And Tender
+     * * `113013` - Facilities Manager
+     * * `119013` - Farmer Rancher And Other Agricultural Manager
+     * * `271022` - Fashion Designer
+     * * `353023` - Fast Food And Counter Worker
+     * * `474031` - Fence Erector
+     * * `434071` - File Clerk
+     * * `132051` - Financial And Investment Analyst
+     * * `433099` - Financial Clerk Other
+     * * `132061` - Financial Examiner
+     * * `113031` - Financial Manager
+     * * `332020` - Fire Inspector
+     * * `332011` - Firefighter
+     * * `552010` - First Line Enlisted Military Supervisor
+     * * `471011` - First Line Supervisor Of Construction Trades And Extraction Worker
+     * * `331011` - First Line Supervisor Of Correctional Officer
+     * * `451011` - First Line Supervisor Of Farming Fishing And Forestry Worker
+     * * `331021` - First Line Supervisor Of Firefighting And Prevention Worker
+     * * `351012` - First Line Supervisor Of Food Preparation And Serving Workers
+     * * `371011` - First Line Supervisor Of Housekeeping And Janitorial Workers
+     * * `371012` - First Line Supervisor Of Landscaping Lawn Service And Groundskeeping Workers
+     * * `491011` - First Line Supervisor Of Mechanics Installers And Repairers
+     * * `411012` - First Line Supervisor Of Non Retail Sales Workers
+     * * `431011` - First Line Supervisor Of Office And Administrative Support Workers
+     * * `331012` - First Line Supervisor Of Police And Detective
+     * * `511011` - First Line Supervisor Of Production And Operating Worker
+     * * `331099` - First Line Supervisor Of Protective Service Worker Other
+     * * `411011` - First Line Supervisor Of Retail Sales Workers
+     * * `331091` - First Line Supervisor Of Security Worker
+     * * `333031` - Fish And Game Warden
+     * * `453031` - Fishing And Hunting Worker
+     * * `532031` - Flight Attendant
+     * * `271023` - Floral Designer
+     * * `513091` - Food And Tobacco Roasting Baking And Drying Machine Operator And Tender
+     * * `513092` - Food Batchmaker
+     * * `513093` - Food Cooking Machine Operator And Tender
+     * * `359099` - Food Preparation And Serving Related Worker Other
+     * * `352021` - Food Preparation Worker
+     * * `513099` - Food Processing Worker Other
+     * * `353041` - Food Server Nonrestaurant
+     * * `119051` - Food Service Manager
+     * * `454011` - Forest And Conservation Worker
+     * * `514020` - Forming Machine Setter Operator And Tender Metal And Plastic
+     * * `131131` - Fundraiser
+     * * `119171` - Funeral Home Manager
+     * * `519051` - Furnace Kiln Oven Drier And Kettle Operator And Tender
+     * * `517021` - Furniture Finisher
+     * * `433041` - Gambling Cage Worker
+     * * `393010` - Gambling Services Worker
+     * * `111021` - General And Operations Manager
+     * * `19204X` - Geoscientist And Hydrologist Except Geographer
+     * * `472121` - Glazier
+     * * `452041` - Grader And Sorter Agricultural Product
+     * * `271024` - Graphic Designer
+     * * `514033` - Grinding Lapping Polishing And Buffing Machine Tool Setter Operator And Tender Metal And Plastic
+     * * `395012` - Hairdresser Hairstylist And Cosmetologist
+     * * `474041` - Hazardous Materials Removal Worker
+     * * `291299` - Healthcare Diagnosing Or Treating Practitioner Other
+     * * `211022` - Healthcare Social Worker
+     * * `499021` - Heating Air Conditioning And Refrigeration Mechanic And Installer
+     * * `493040` - Heavy Vehicle And Mobile Equipment Service Technician And Mechanic
+     * * `499098` - Helper Installation Maintenance And Repair Worker
+     * * `519198` - Helper Production Worker
+     * * `473010` - Helper Construction Trade
+     * * `474051` - Highway Maintenance Worker
+     * * `499031` - Home Appliance Repairer
+     * * `311121` - Home Health Aide
+     * * `359031` - Host And Hostess Restaurant Lounge And Coffee Shop
+     * * `434081` - Hotel Motel And Resort Desk Clerk
+     * * `434161` - Human Resources Assistant Except Payroll And Timekeeping
+     * * `113121` - Human Resources Manager
+     * * `131070` - Human Resources Worker
+     * * `49904X` - Industrial And Refractory Machinery Mechanic
+     * * `172110` - Industrial Engineer Including Health And Safety
+     * * `113051` - Industrial Production Manager
+     * * `537051` - Industrial Truck And Tractor Operator
+     * * `434199` - Information And Record Clerk Other
+     * * `151212` - Information Security Analyst
+     * * `519061` - Inspector Tester Sorter Sampler And Weigher
+     * * `472130` - Insulation Worker
+     * * `439041` - Insurance Claims And Policy Processing Clerk
+     * * `413021` - Insurance Sales Agent
+     * * `132053` - Insurance Underwriter
+     * * `271025` - Interior Designer
+     * * `273091` - Interpreter And Translator
+     * * `434111` - Interviewer Except Eligibility And Loan
+     * * `37201X` - Janitor And Building Cleaner
+     * * `519071` - Jeweler And Precious Stone And Metal Worker
+     * * `231020` - Judge Magistrate And Other Judicial Worker
+     * * `231012` - Judicial Law Clerk
+     * * `537062` - Laborer And Freight Stock And Material Mover Hand
+     * * `171012` - Landscape Architect
+     * * `373011` - Landscaping And Groundskeeping Worker
+     * * `516011` - Laundry And Dry Cleaning Worker
+     * * `231011` - Lawyer
+     * * `436012` - Legal Secretary And Administrative Assistant
+     * * `232099` - Legal Support Worker Other
+     * * `111031` - Legislator
+     * * `254022` - Librarian And Media Collections Specialist
+     * * `434121` - Library Assistant Clerical
+     * * `254031` - Library Technician
+     * * `292061` - Licensed Practical And Licensed Vocational Nurse
+     * * `191099` - Life Scientist Other
+     * * `434131` - Loan Interviewer And Clerk
+     * * `499094` - Locksmith And Safe Repairer
+     * * `534010` - Locomotive Engineer And Operator
+     * * `119081` - Lodging Manager
+     * * `454020` - Logging Worker
+     * * `131081` - Logistician
+     * * `537063` - Machine Feeder And Offbearer
+     * * `514041` - Machinist
+     * * `292035` - Magnetic Resonance Imaging Technologist
+     * * `372012` - Maids And Housekeeping Cleaner
+     * * `439051` - Mail Clerk And Mail Machine Operator Except Postal Service
+     * * `499071` - Maintenance And Repair Worker General
+     * * `499043` - Maintenance Worker Machinery
+     * * `131111` - Management Analyst
+     * * `119199` - Manager Other
+     * * `395092` - Manicurist And Pedicurist
+     * * `499095` - Manufactured Building And Mobile Home Installer
+     * * `172121` - Marine Engineer And Naval Architect
+     * * `131161` - Market Research Analyst And Marketing Specialist
+     * * `112021` - Marketing Manager
+     * * `211013` - Marriage And Family Therapist
+     * * `319011` - Massage Therapist
+     * * `172131` - Materials Engineer
+     * * `152021` - Mathematician
+     * * `172141` - Mechanical Engineer
+     * * `274099` - Media And Communication Equipment Worker Other
+     * * `273099` - Media And Communication Worker Other
+     * * `119111` - Medical And Health Services Manager
+     * * `319092` - Medical Assistant
+     * * `292072` - Medical Records Specialist
+     * * `191040` - Medical Scientist
+     * * `436013` - Medical Secretary And Administrative Assistant
+     * * `319094` - Medical Transcriptionist
+     * * `131121` - Meeting Convention And Event Planner
+     * * `211023` - Mental Health And Substance Abuse Social Worker
+     * * `211014` - Mental Health Counselor
+     * * `271026` - Merchandise Displayer And Window Trimmer
+     * * `514050` - Metal Furnace Operator Tender Pourer And Caster
+     * * `435041` - Meter Reader Utilities
+     * * `553010` - Military Enlisted Tactical Operations And Air Weapons Specialist And Crew Member
+     * * `551010` - Military Officer Special And Tactical Operations Leader
+     * * `554010` - Military Rank Not Specified
+     * * `499044` - Millwright
+     * * `172151` - Mining And Geological Engineer Including Mining Safety Engineer
+     * * `452090` - Miscellaneous Agricultural Worker
+     * * `474090` - Miscellaneous Construction And Related Worker
+     * * `292090` - Miscellaneous Health Technologist And Technician
+     * * `518090` - Miscellaneous Plant And System Operator
+     * * `193090` - Miscellaneous Social Scientist And Related Worker
+     * * `493090` - Miscellaneous Vehicle And Mobile Equipment Mechanic Installer And Repairer
+     * * `514060` - Model Maker And Patternmaker Metal And Plastic
+     * * `419010` - Model Demonstrator And Product Promoter
+     * * `514070` - Molder And Molding Machine Setter Operator And Tender Metal And Plastic
+     * * `519195` - Molder Shaper And Caster Except Metal And Plastic
+     * * `394031` - Mortician Undertaker And Funeral Arranger
+     * * `533099` - Motor Vehicle Operator Other
+     * * `272041` - Music Director And Composer
+     * * `272042` - Musician And Singer
+     * * `119121` - Natural Sciences Manager
+     * * `151244` - Network And Computer Systems Administrator
+     * * `434141` - New Accounts Clerk
+     * * `273023` - News Analyst Reporter And Journalist
+     * * `172161` - Nuclear Engineer
+     * * `29203X` - Nuclear Medicine Technologist And Medical Dosimetrist
+     * * `194051` - Nuclear Technician
+     * * `291151` - Nurse Anesthetist
+     * * `291161` - Nurse Midwife
+     * * `291171` - Nurse Practitioner
+     * * `311131` - Nursing Assistant
+     * * `195010` - Occupational Health And Safety Specialist And Technician
+     * * `291122` - Occupational Therapist
+     * * `312010` - Occupational Therapy Assistant And Aide
+     * * `439199` - Office And Administrative Support Worker Other
+     * * `439061` - Office Clerk General
+     * * `439071` - Office Machine Operator Except Computer
+     * * `152031` - Operations Research Analyst
+     * * `292081` - Optician Dispensing
+     * * `291041` - Optometrist
+     * * `434151` - Order Clerk
+     * * `31113X` - Orderly And Psychiatric Aide
+     * * `5120XX` - Other Assembler And Fabricator
+     * * `21109X` - Other Community And Social Service Specialist
+     * * `27102X` - Other Designer
+     * * `17301X` - Other Drafter
+     * * `2590XX` - Other Educational Instruction And Library Worker
+     * * `17302X` - Other Engineering Technologist And Technician
+     * * `3930XX` - Other Entertainment Attendant And Related Worker
+     * * `4750XX` - Other Extraction Worker
+     * * `1320XX` - Other Financial Specialist
+     * * `37301X` - Other Grounds Maintenance Worker
+     * * `299000` - Other Healthcare Practitioner And Technical Occupation
+     * * `31909X` - Other Healthcare Support Worker
+     * * `49909X` - Other Installation Maintenance And Repair Worker
+     * * `1940XX` - Other Life Physical And Social Science Technician
+     * * `51403X` - Other Machine Tool Setter Operator And Tender Metal And Plastic
+     * * `5371XX` - Other Material Moving Worker
+     * * `1520XX` - Other Mathematical Science Occupation
+     * * `514XXX` - Other Metal Worker And Plastic Worker
+     * * `39509X` - Other Personal Appearance Worker
+     * * `2912XX` - Other Physician
+     * * `51919X` - Other Production Equipment Operator And Tender
+     * * `5191XX` - Other Production Worker
+     * * `33909X` - Other Protective Service Worker
+     * * `19303X` - Other Psychologist
+     * * `5340XX` - Other Rail Transportation Worker
+     * * `2530XX` - Other Teacher And Instructor
+     * * `51609X` - Other Textile Apparel And Furnishings Worker
+     * * `5360XX` - Other Transportation Worker
+     * * `5170XX` - Other Woodworker
+     * * `519111` - Packaging And Filling Machine Operator And Tender
+     * * `537064` - Packer And Packager Hand
+     * * `472140` - Painter And Paperhanger
+     * * `519120` - Painting Worker
+     * * `519196` - Paper Goods Machine Setter Operator And Tender
+     * * `232011` - Paralegal And Legal Assistant
+     * * `292043` - Paramedic
+     * * `536021` - Parking Attendant
+     * * `333041` - Parking Enforcement Worker
+     * * `412022` - Parts Salesperson
+     * * `536061` - Passenger Attendant
+     * * `433051` - Payroll And Timekeeping Clerk
+     * * `399099` - Personal Care And Service Worker Other
+     * * `132052` - Personal Financial Advisor
+     * * `119179` - Personal Service Manager Other
+     * * `372021` - Pest Control Worker
+     * * `172171` - Petroleum Engineer
+     * * `291051` - Pharmacist
+     * * `319095` - Pharmacy Aide
+     * * `292052` - Pharmacy Technician
+     * * `319097` - Phlebotomist
+     * * `274021` - Photographer
+     * * `519151` - Photographic Process Worker And Processing Machine Operator
+     * * `192099` - Physical Scientist Other
+     * * `291123` - Physical Therapist
+     * * `312020` - Physical Therapist Assistant And Aide
+     * * `291071` - Physician Assistant
+     * * `472151` - Pipelayer
+     * * `472161` - Plasterer And Stucco Mason
+     * * `472152` - Plumber Pipefitter And Steamfitter
+     * * `291081` - Podiatrist
+     * * `333050` - Police Officer
+     * * `435051` - Postal Service Clerk
+     * * `435052` - Postal Service Mail Carrier
+     * * `435053` - Postal Service Mail Sorter Processor And Processing Machine Operator
+     * * `119131` - Postmaster And Mail Superintendent
+     * * `251000` - Postsecondary Teacher
+     * * `518010` - Power Plant Operator Distributor And Dispatcher
+     * * `499060` - Precision Instrument And Equipment Repairer
+     * * `515111` - Prepress Technician And Worker
+     * * `252010` - Preschool And Kindergarten Teacher
+     * * `516021` - Presser Textile Garment And Related Material
+     * * `515113` - Print Binding And Finishing Worker
+     * * `515112` - Printing Press Operator
+     * * `339021` - Private Detective And Investigator
+     * * `211092` - Probation Officer And Correctional Treatment Specialist
+     * * `433061` - Procurement Clerk
+     * * `272012` - Producer And Director
+     * * `435061` - Production Planning And Expediting Clerk
+     * * `131082` - Project Management Specialist
+     * * `439081` - Proofreader And Copy Marker
+     * * `132020` - Property Appraiser And Assessor
+     * * `119141` - Property Real Estate And Community Association Manager
+     * * `292053` - Psychiatric Technician
+     * * `112030` - Public Relations And Fundraising Manager
+     * * `273031` - Public Relations Specialist
+     * * `435031` - Public Safety Telecommunicator
+     * * `537070` - Pumping Station Operator
+     * * `131023` - Purchasing Agent Except Wholesale Retail And Farm Products
+     * * `113061` - Purchasing Manager
+     * * `291124` - Radiation Therapist
+     * * `492020` - Radio And Telecommunications Equipment Installer And Repairer
+     * * `292034` - Radiologic Technologist And Technician
+     * * `291224` - Radiologist
+     * * `474061` - Rail Track Laying And Maintenance Equipment Operator
+     * * `534031` - Railroad Conductor And Yardmaster
+     * * `419020` - Real Estate Broker And Sales Agent
+     * * `434171` - Receptionist And Information Clerk
+     * * `399032` - Recreation Worker
+     * * `291125` - Recreational Therapist
+     * * `537081` - Refuse And Recyclable Material Collector
+     * * `291141` - Registered Nurse
+     * * `211015` - Rehabilitation Counselor
+     * * `472171` - Reinforcing Iron And Rebar Worker
+     * * `212099` - Religious Worker Other
+     * * `434181` - Reservation And Transportation Ticket Agent And Travel Clerk
+     * * `399041` - Residential Advisor
+     * * `291126` - Respiratory Therapist
+     * * `412031` - Retail Salesperson
+     * * `499096` - Rigger
+     * * `472181` - Roofer
+     * * `475071` - Roustabout Oil And Gas
+     * * `535011` - Sailor And Marine Oiler
+     * * `419099` - Sales And Related Worker Other
+     * * `419031` - Sales Engineer
+     * * `112022` - Sales Manager
+     * * `413091` - Sales Representative Of Services Except Advertising Insurance Financial Services And Travel
+     * * `414010` - Sales Representatives Wholesale And Manufacturing
+     * * `517041` - Sawing Machine Setter Operator And Tender Wood
+     * * `533051` - School Bus Driver
+     * * `339094` - School Bus Monitor
+     * * `193034` - School Psychologist
+     * * `252030` - Secondary School Teacher
+     * * `436014` - Secretary And Administrative Assistant Except Legal Medical And Executive
+     * * `413031` - Securities Commodities And Financial Services Sales Agent
+     * * `492098` - Security And Fire Alarm Systems Installer
+     * * `339030` - Security Guard And Gambling Surveillance Officer
+     * * `474071` - Septic Tank Servicer And Sewer Pipe Cleaner
+     * * `516031` - Sewing Machine Operator
+     * * `472211` - Sheet Metal Worker
+     * * `535020` - Ship And Boat Captain And Operator
+     * * `535031` - Ship Engineer
+     * * `435071` - Shipping Receiving And Inventory Clerk
+     * * `516040` - Shoe And Leather Worker
+     * * `533053` - Shuttle Driver And Chauffeur
+     * * `395094` - Skincare Specialist
+     * * `493050` - Small Engine Mechanic
+     * * `119151` - Social And Community Service Manager
+     * * `211093` - Social And Human Service Assistant
+     * * `194061` - Social Science Research Assistant
+     * * `211029` - Social Worker Other
+     * * `193041` - Sociologist
+     * * `151252` - Software Developer
+     * * `151253` - Software Quality Assurance Analyst And Tester
+     * * `472231` - Solar Photovoltaic Installer
+     * * `252050` - Special Education Teacher
+     * * `291127` - Speech Language Pathologist
+     * * `518021` - Stationary Engineer And Boiler Operator
+     * * `439111` - Statistical Assistant
+     * * `152041` - Statistician
+     * * `537065` - Stocker And Order Filler
+     * * `472221` - Structural Iron And Steel Worker
+     * * `512041` - Structural Metal Fabricator And Fitter
+     * * `211011` - Substance Abuse And Behavioral Disorder Counselor
+     * * `391000` - Supervisor Of Personal Care And Service Worker
+     * * `531000` - Supervisor Of Transportation And Material Moving Worker
+     * * `291240` - Surgeon
+     * * `292055` - Surgical Technologist
+     * * `193022` - Survey Researcher
+     * * `173031` - Surveying And Mapping Technician
+     * * `171020` - Surveyor Cartographer And Photogrammetrist
+     * * `432011` - Switchboard Operator Including Answering Service
+     * * `516050` - Tailor Dressmaker And Sewer
+     * * `132081` - Tax Examiner And Collector And Revenue Agent
+     * * `132082` - Tax Preparer
+     * * `533054` - Taxi Driver
+     * * `259040` - Teaching Assistant
+     * * `273042` - Technical Writer
+     * * `499052` - Telecommunications Line Installer And Repairer
+     * * `419041` - Telemarketer
+     * * `432021` - Telephone Operator
+     * * `274030` - Television Video And Film Camera Operator And Editor
+     * * `433071` - Teller
+     * * `516060` - Textile Machine Setter Operator And Tender
+     * * `291129` - Therapist Other
+     * * `519197` - Tire Builder
+     * * `232093` - Title Examiner Abstractor And Searcher
+     * * `514111` - Tool And Die Maker
+     * * `397010` - Tour And Travel Guide
+     * * `113131` - Training And Development Manager
+     * * `131151` - Training And Development Specialist
+     * * `533052` - Transit And Intercity Bus Driver
+     * * `536051` - Transportation Inspector
+     * * `339093` - Transportation Security Screener
+     * * `536030` - Transportation Service Attendant
+     * * `113071` - Transportation Storage And Distribution Manager
+     * * `413041` - Travel Agent
+     * * `373013` - Tree Trimmer And Pruner
+     * * `253041` - Tutor
+     * * `272023` - Umpire Referee And Other Sports Official
+     * * `475040` - Underground Mining Machine Operator
+     * * `999999` - Unemployed With No Work Experience In The Last 5 Years Or Earlier Or Never Worked
+     * * `516093` - Upholsterer
+     * * `193051` - Urban And Regional Planner
+     * * `393031` - Usher Lobby Attendant And Ticket Taker
+     * * `291131` - Veterinarian
+     * * `319096` - Veterinary Assistant And Laboratory Animal Caretaker
+     * * `292056` - Veterinary Technologist And Technician
+     * * `353031` - Waiter Or Waitress
+     * * `518031` - Water And Wastewater Treatment Plant And System Operator
+     * * `151255` - Web And Digital Interface Designer
+     * * `151254` - Web Developer
+     * * `435111` - Weigher Measurer Checker And Sampler Recordkeeping
+     * * `514120` - Welding Soldering And Brazing Worker
+     * * `131022` - Wholesale And Retail Buyer Except Farm Products
+     * * `499081` - Wind Turbine Service Technician
+     * * `517042` - Woodworking Machine Setter Operator And Tender Except Sawing
+     * * `439022` - Word Processor And Typist
+     * * `273043` - Writer And Author
+     */
+    occupation?: '132011' | '272011' | '152011' | '291291' | '519191' | '113012' | '112011' | '413011' | '172011' | '131011' | '194010' | '191010' | '172021' | '452011' | '532020' | '493011' | '532010' | '512011' | '533011' | '452021' | '392021' | '339011' | '392011' | '171011' | '173011' | '119041' | '254010' | '271010' | '192010' | '272021' | '192021' | '291181' | '492097' | '493021' | '493022' | '493023' | '492091' | '396010' | '333011' | '513011' | '395011' | '353011' | '433011' | '433021' | '172031' | '191020' | '194021' | '472011' | '433031' | '472020' | '273011' | '274010' | '434011' | '132031' | '493031' | '131199' | '513020' | '131021' | '517011' | '292031' | '435011' | '472031' | '472040' | '412010' | '472050' | '351011' | '172041' | '519010' | '194031' | '192030' | '111011' | '211021' | '399011' | '291011' | '172051' | '131030' | '537061' | '212011' | '193033' | '292010' | '272022' | '499091' | '271021' | '499092' | '432099' | '113111' | '131141' | '131041' | '151221' | '113021' | '172061' | '151241' | '519160' | '151299' | '151251' | '151230' | '151211' | '492011' | '191030' | '474011' | '472070' | '472061' | '119021' | '499010' | '5370XX' | '352010' | '333012' | '434021' | '131051' | '211019' | '412021' | '435021' | '273092' | '434031' | '537021' | '132041' | '434041' | '132070' | '339091' | '519020' | '434051' | '519030' | '514031' | '272030' | '439021' | '15124X' | '519080' | '319091' | '291292' | '291020' | '475010' | '439031' | '333021' | '292032' | '29205X' | '291031' | '359011' | '212021' | '272091' | '359021' | '435032' | '419091' | '533030' | '472080' | '475023' | '193011' | '273041' | '119030' | '211012' | '492092' | '173023' | '172070' | '492093' | '49209X' | '499051' | '512020' | '472111' | '492096' | '252020' | '474021' | '434061' | '3940XX' | '119161' | '292042' | '291214' | '512031' | '172199' | '272099' | '119070' | '172081' | '194040' | '192041' | '519194' | '475022' | '436011' | '291128' | '399031' | '475032' | '519041' | '113013' | '119013' | '271022' | '353023' | '474031' | '434071' | '132051' | '433099' | '132061' | '113031' | '332020' | '332011' | '552010' | '471011' | '331011' | '451011' | '331021' | '351012' | '371011' | '371012' | '491011' | '411012' | '431011' | '331012' | '511011' | '331099' | '411011' | '331091' | '333031' | '453031' | '532031' | '271023' | '513091' | '513092' | '513093' | '359099' | '352021' | '513099' | '353041' | '119051' | '454011' | '514020' | '131131' | '119171' | '519051' | '517021' | '433041' | '393010' | '111021' | '19204X' | '472121' | '452041' | '271024' | '514033' | '395012' | '474041' | '291299' | '211022' | '499021' | '493040' | '499098' | '519198' | '473010' | '474051' | '499031' | '311121' | '359031' | '434081' | '434161' | '113121' | '131070' | '49904X' | '172110' | '113051' | '537051' | '434199' | '151212' | '519061' | '472130' | '439041' | '413021' | '132053' | '271025' | '273091' | '434111' | '37201X' | '519071' | '231020' | '231012' | '537062' | '171012' | '373011' | '516011' | '231011' | '436012' | '232099' | '111031' | '254022' | '434121' | '254031' | '292061' | '191099' | '434131' | '499094' | '534010' | '119081' | '454020' | '131081' | '537063' | '514041' | '292035' | '372012' | '439051' | '499071' | '499043' | '131111' | '119199' | '395092' | '499095' | '172121' | '131161' | '112021' | '211013' | '319011' | '172131' | '152021' | '172141' | '274099' | '273099' | '119111' | '319092' | '292072' | '191040' | '436013' | '319094' | '131121' | '211023' | '211014' | '271026' | '514050' | '435041' | '553010' | '551010' | '554010' | '499044' | '172151' | '452090' | '474090' | '292090' | '518090' | '193090' | '493090' | '514060' | '419010' | '514070' | '519195' | '394031' | '533099' | '272041' | '272042' | '119121' | '151244' | '434141' | '273023' | '172161' | '29203X' | '194051' | '291151' | '291161' | '291171' | '311131' | '195010' | '291122' | '312010' | '439199' | '439061' | '439071' | '152031' | '292081' | '291041' | '434151' | '31113X' | '5120XX' | '21109X' | '27102X' | '17301X' | '2590XX' | '17302X' | '3930XX' | '4750XX' | '1320XX' | '37301X' | '299000' | '31909X' | '49909X' | '1940XX' | '51403X' | '5371XX' | '1520XX' | '514XXX' | '39509X' | '2912XX' | '51919X' | '5191XX' | '33909X' | '19303X' | '5340XX' | '2530XX' | '51609X' | '5360XX' | '5170XX' | '519111' | '537064' | '472140' | '519120' | '519196' | '232011' | '292043' | '536021' | '333041' | '412022' | '536061' | '433051' | '399099' | '132052' | '119179' | '372021' | '172171' | '291051' | '319095' | '292052' | '319097' | '274021' | '519151' | '192099' | '291123' | '312020' | '291071' | '472151' | '472161' | '472152' | '291081' | '333050' | '435051' | '435052' | '435053' | '119131' | '251000' | '518010' | '499060' | '515111' | '252010' | '516021' | '515113' | '515112' | '339021' | '211092' | '433061' | '272012' | '435061' | '131082' | '439081' | '132020' | '119141' | '292053' | '112030' | '273031' | '435031' | '537070' | '131023' | '113061' | '291124' | '492020' | '292034' | '291224' | '474061' | '534031' | '419020' | '434171' | '399032' | '291125' | '537081' | '291141' | '211015' | '472171' | '212099' | '434181' | '399041' | '291126' | '412031' | '499096' | '472181' | '475071' | '535011' | '419099' | '419031' | '112022' | '413091' | '414010' | '517041' | '533051' | '339094' | '193034' | '252030' | '436014' | '413031' | '492098' | '339030' | '474071' | '516031' | '472211' | '535020' | '535031' | '435071' | '516040' | '533053' | '395094' | '493050' | '119151' | '211093' | '194061' | '211029' | '193041' | '151252' | '151253' | '472231' | '252050' | '291127' | '518021' | '439111' | '152041' | '537065' | '472221' | '512041' | '211011' | '391000' | '531000' | '291240' | '292055' | '193022' | '173031' | '171020' | '432011' | '516050' | '132081' | '132082' | '533054' | '259040' | '273042' | '499052' | '419041' | '432021' | '274030' | '433071' | '516060' | '291129' | '519197' | '232093' | '514111' | '397010' | '113131' | '131151' | '533052' | '536051' | '339093' | '536030' | '113071' | '413041' | '373013' | '253041' | '272023' | '475040' | '999999' | '516093' | '193051' | '393031' | '291131' | '319096' | '292056' | '353031' | '518031' | '151255' | '151254' | '435111' | '514120' | '131022' | '499081' | '517042' | '439022' | '273043' | null;
+    /**
+     * * `employed` - Employed
+     * * `homemaker` - Homemaker
+     * * `retired` - Retired
+     * * `self_employed` - Self Employed
+     * * `student` - Student
+     * * `unemployed` - Unemployed
+     */
+    employment_status?: 'employed' | 'homemaker' | 'retired' | 'self_employed' | 'student' | 'unemployed' | null;
+    /**
+     * * `company_funds` - Company Funds
+     * * `ecommerce_reseller` - Ecommerce Reseller
+     * * `gambling_proceeds` - Gambling Proceeds
+     * * `gifts` - Gifts
+     * * `government_benefits` - Government Benefits
+     * * `inheritance` - Inheritance
+     * * `investments_loans` - Investments Loans
+     * * `pension_retirement` - Pension Retirement
+     * * `salary` - Salary
+     * * `sale_of_assets_real_estate` - Sale Of Assets Real Estate
+     * * `savings` - Savings
+     * * `someone_elses_funds` - Someone Elses Funds
+     */
+    source_of_funds?: 'company_funds' | 'ecommerce_reseller' | 'gambling_proceeds' | 'gifts' | 'government_benefits' | 'inheritance' | 'investments_loans' | 'pension_retirement' | 'salary' | 'sale_of_assets_real_estate' | 'savings' | 'someone_elses_funds' | null;
+    /**
+     * * `charitable_donations` - Charitable Donations
+     * * `ecommerce_retail_payments` - Ecommerce Retail Payments
+     * * `investment_purposes` - Investment Purposes
+     * * `operating_a_company` - Operating A Company
+     * * `other` - Other
+     * * `payments_to_friends_or_family_abroad` - Payments To Friends Or Family Abroad
+     * * `personal_or_living_expenses` - Personal Or Living Expenses
+     * * `protect_wealth` - Protect Wealth
+     * * `purchase_goods_and_services` - Purchase Goods And Services
+     * * `receive_payment_for_freelancing` - Receive Payment For Freelancing
+     * * `receive_salary` - Receive Salary
+     */
+    account_purpose?: 'charitable_donations' | 'ecommerce_retail_payments' | 'investment_purposes' | 'operating_a_company' | 'other' | 'payments_to_friends_or_family_abroad' | 'personal_or_living_expenses' | 'protect_wealth' | 'purchase_goods_and_services' | 'receive_payment_for_freelancing' | 'receive_salary' | null;
+    account_purpose_other?: string | null;
+    intermediary?: boolean | null;
+    /**
+     * * `0_4999` - Range 0 4999
+     * * `5000_9999` - Range 5000 9999
+     * * `10000_49999` - Range 10000 49999
+     * * `50000_plus` - Range 50000 Plus
+     */
+    expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
 };
 
 export type ExtendedUserInfoResponseWritable = {
@@ -19401,12 +22051,6 @@ export type GroupDisallowedTransactionSubtypeWritable = {
     subtype: ReducedTransactionSubtypeWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type GroupFeeWritable = {
     name: string | null;
     /**
@@ -19423,12 +22067,6 @@ export type GroupFeeResponseWritable = {
     data: GroupFeeWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type GroupLimitWritable = {
     /**
      * * `max` - Maximum
@@ -19451,12 +22089,6 @@ export type GroupLimitResponseWritable = {
     data: GroupLimitWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type GroupPermissionWritable = {
     [key: string]: unknown;
 };
@@ -19466,12 +22098,6 @@ export type GroupPermissionResponseWritable = {
     data: GroupPermissionWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type GroupSettingsWritable = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
@@ -19479,12 +22105,6 @@ export type GroupSettingsWritable = {
     disallowed_transaction_subtypes: Array<GroupDisallowedTransactionSubtypeWritable>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type GroupTierWritable = {
     [key: string]: unknown;
 };
@@ -19493,12 +22113,6 @@ export type GroupTierDisallowedTransactionSubtypeWritable = {
     subtype: ReducedTransactionSubtypeWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type GroupTierFeeWritable = {
     name: string | null;
     /**
@@ -19515,12 +22129,6 @@ export type GroupTierFeeResponseWritable = {
     data: GroupTierFeeWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type GroupTierLimitWritable = {
     /**
      * * `max` - Maximum
@@ -19544,12 +22152,6 @@ export type GroupTierLimitResponseWritable = {
     data: GroupTierLimitWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type GroupTierRequirementSetWritable = {
     parent?: number | null;
     name?: string | null;
@@ -19563,12 +22165,6 @@ export type GroupTierRequirementSetWritable = {
     weight?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type GroupTierRequirementSetItemWritable = {
     name?: string | null;
     description?: string | null;
@@ -19585,12 +22181,6 @@ export type GroupTierRequirementSetResponseWritable = {
     data: GroupTierRequirementSetWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type GroupTierSettingsWritable = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
@@ -19622,12 +22212,6 @@ export type LoginRequestWritable = {
     auth_method?: 'cookie' | 'token';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type MfaAuthenticatorWritable = {
     /**
      * * `totp` - Totp
@@ -19652,12 +22236,6 @@ export type MfatotpDeviceDetailWritable = {
     name?: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type MaskedMfaAuthenticatorWritable = {
     /**
      * * `totp` - Totp
@@ -19682,12 +22260,6 @@ export type MaskedMfatotpDeviceDetailWritable = {
     name?: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type MetricWritable = {
     metadata?: {
         [key: string]: unknown;
@@ -19700,12 +22272,6 @@ export type MetricResponseWritable = {
     data: MetricWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type MobileWritable = {
     primary?: boolean;
 };
@@ -20298,9 +22864,6 @@ export type PasswordChangeRequestWritable = {
     clear_session_option?: 'all' | 'temporary' | 'none';
 };
 
-/**
- * Serializer for confirming a password reset attempt.
- */
 export type PasswordResetConfirmRequestWritable = {
     new_password?: string;
     /**
@@ -20321,12 +22884,6 @@ export type PasswordResetConfirmRequestWritable = {
     clear_session_option?: 'all' | 'temporary' | 'none';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PublicCompanyWritable = {
     name?: string | null;
     legal_name?: string | null;
@@ -20595,12 +23152,6 @@ export type PublicCompanyWritable = {
     } | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PublicCompanyLegalTermWritable = {
     name: string;
     description?: string | null;
@@ -20620,24 +23171,12 @@ export type PublicCompanyResponseWritable = {
     data: PublicCompanyWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PublicCompanySettingsWritable = {
     allow_session_durations?: boolean;
     nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PublicLegalTermWritable = {
     name: string;
     description?: string | null;
@@ -20652,34 +23191,22 @@ export type PublicLegalTermVersionResponseWritable = {
     status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedAccountWritable = {
     name?: string;
     label?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedAccountAccountAssetWritable = {
+    /**
+     * Whether this is the account's currently active currency.
+     */
     active: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedAccountAssetWritable = {
+    /**
+     * Whether this is the account's currently active currency.
+     */
     active: boolean;
 };
 
@@ -20695,12 +23222,6 @@ export type ReducedAccountAssetResponseWritable = {
     data: ReducedAccountAssetWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedDeviceAppWritable = {
     name?: string | null;
     /**
@@ -20723,9 +23244,6 @@ export type RefreshedResponseWritable = {
     status: string;
 };
 
-/**
- * Override company validation on the register serializer.
- */
 export type RegisterCompanyRequestWritable = {
     first_name?: string;
     middle_name?: string;
@@ -21010,6 +23528,7 @@ export type RegisterCompanyRequestWritable = {
      * * `ZW` - Zimbabwe
      */
     nationality?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    nationalities?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'> | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -22074,6 +24593,7 @@ export type RegisterRequestWritable = {
      * * `ZW` - Zimbabwe
      */
     nationality?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    nationalities?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'> | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -22856,12 +25376,6 @@ export type RegisterRequestWritable = {
     auth_method?: 'cookie' | 'token';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type StatementWritable = {
     [key: string]: unknown;
 };
@@ -22875,36 +25389,14 @@ export type TotalTransactionResponseWritable = {
     status: string;
 };
 
-/**
- * A mixin that handles the application of permissions to properties on a
- * serializer using the built-in permissions system.
- *
- * NOTE : This only works if the following conditions are met:
- * - The request context must contain a user.
- * - The class this mixin is attached must be a serializer.
- * - The class this mixin is attached to must have a Meta.model defined.
- * - The Meta.model class must have a PERMISSION_TYPE defined.
- */
 export type TransactionWritable = {
     [key: string]: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type TransactionAccountAssetWritable = {
     [key: string]: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type TransactionCollectionWritable = {
     [key: string]: unknown;
 };
@@ -22914,26 +25406,10 @@ export type TransactionCollectionResponseWritable = {
     data: TransactionCollectionWritable;
 };
 
-/**
- * A mixin that handles the application of permissions to properties on a
- * serializer using the built-in permissions system.
- *
- * NOTE : This only works if the following conditions are met:
- * - The request context must contain a user.
- * - The class this mixin is attached must be a serializer.
- * - The class this mixin is attached to must have a Meta.model defined.
- * - The Meta.model class must have a PERMISSION_TYPE defined.
- */
 export type TransactionCollectionTransactionWritable = {
     [key: string]: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type TransactionMessageWritable = {
     message: string;
 };
@@ -22943,12 +25419,6 @@ export type TransactionMessageResponseWritable = {
     data: TransactionMessageWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type TransactionSubtypeWritable = {
     [key: string]: unknown;
 };
@@ -22965,12 +25435,6 @@ export type TransactionSubtypeResponseWritable = {
     data: TransactionSubtypeWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserAddressWritable = {
     /**
      * * `permanent` - Permanent
@@ -23251,12 +25715,6 @@ export type UserAddressResponseWritable = {
     data: UserAddressWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserBankAccountWritable = {
     name?: string | null;
     number?: string | null;
@@ -23288,12 +25746,6 @@ export type UserBankAccountWritable = {
     } | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserBankAccountAssetWritable = {
     code?: string | null;
     display_code?: string | null;
@@ -23327,12 +25779,6 @@ export type UserBankAccountResponseWritable = {
     data: UserBankAccountWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCreateDocumentRequestWritable = {
     file?: Blob | File;
     /**
@@ -23350,12 +25796,6 @@ export type UserDisallowedTransactionSubtypeWritable = {
     subtype: ReducedTransactionSubtypeWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserDocumentWritable = {
     file?: string;
     metadata?: {
@@ -23369,12 +25809,6 @@ export type UserDocumentResponseWritable = {
     data: UserDocumentWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserGroupWritable = {
     name: string;
     label?: string | null;
@@ -23393,12 +25827,6 @@ export type UserGroupResponseWritable = {
     data: UserGroupWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserMessageWritable = {
     message: string;
 };
@@ -23408,12 +25836,6 @@ export type UserMessageResponseWritable = {
     data: UserMessageWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserPermissionWritable = {
     [key: string]: unknown;
 };
@@ -23423,12 +25845,6 @@ export type UserPermissionResponseWritable = {
     data: UserPermissionWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserSettingsWritable = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
@@ -23436,12 +25852,6 @@ export type UserSettingsWritable = {
     disallowed_transaction_subtypes: Array<UserDisallowedTransactionSubtypeWritable>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserWalletAccountWritable = {
     username?: string | null;
     email?: string | null;
@@ -23456,12 +25866,6 @@ export type UserWalletAccountWritable = {
     } | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserWalletAccountAssetWritable = {
     code?: string | null;
     display_code?: string | null;
@@ -23780,6 +26184,52 @@ export type AccountsCurrenciesUpdateResponses = {
 
 export type AccountsCurrenciesUpdateResponse = AccountsCurrenciesUpdateResponses[keyof AccountsCurrenciesUpdateResponses];
 
+export type AccountsCurrenciesEffectiveFeesListData = {
+    body?: never;
+    path: {
+        code: string;
+        reference: string;
+    };
+    query?: {
+        subtype?: string;
+        /**
+         * * `credit` - Credit
+         * * `debit` - Debit
+         */
+        tx_type?: 'credit' | 'debit';
+    };
+    url: '/3/accounts/{reference}/currencies/{code}/effective-fees/';
+};
+
+export type AccountsCurrenciesEffectiveFeesListResponses = {
+    200: EffectiveFeeListResponse;
+};
+
+export type AccountsCurrenciesEffectiveFeesListResponse = AccountsCurrenciesEffectiveFeesListResponses[keyof AccountsCurrenciesEffectiveFeesListResponses];
+
+export type AccountsCurrenciesEffectiveLimitsListData = {
+    body?: never;
+    path: {
+        code: string;
+        reference: string;
+    };
+    query?: {
+        subtype?: string;
+        /**
+         * * `credit` - Credit
+         * * `debit` - Debit
+         */
+        tx_type?: 'credit' | 'debit';
+    };
+    url: '/3/accounts/{reference}/currencies/{code}/effective-limits/';
+};
+
+export type AccountsCurrenciesEffectiveLimitsListResponses = {
+    200: EffectiveLimitListResponse;
+};
+
+export type AccountsCurrenciesEffectiveLimitsListResponse = AccountsCurrenciesEffectiveLimitsListResponses[keyof AccountsCurrenciesEffectiveLimitsListResponses];
+
 export type AccountsCurrenciesFeesListData = {
     body?: never;
     path: {
@@ -23994,7 +26444,7 @@ export type AuthMfaAuthenticatorsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        type?: string;
+        type?: 'sms' | 'static' | 'totp';
         verified?: boolean;
     };
     url: '/3/auth/mfa/authenticators/';
@@ -24101,70 +26551,70 @@ export type AuthMobileVerifyResendResponses = {
 
 export type AuthMobileVerifyResendResponse = AuthMobileVerifyResendResponses[keyof AuthMobileVerifyResendResponses];
 
-export type AuthOauthAuthorizeCreateData = {
+export type AuthOauthAuthorizeData = {
     body: OauthAuthorizeRequest;
     path?: never;
     query?: never;
     url: '/3/auth/oauth/authorize/';
 };
 
-export type AuthOauthAuthorizeCreateResponses = {
+export type AuthOauthAuthorizeResponses = {
     201: OauthAuthorizeResponse;
 };
 
-export type AuthOauthAuthorizeCreateResponse = AuthOauthAuthorizeCreateResponses[keyof AuthOauthAuthorizeCreateResponses];
+export type AuthOauthAuthorizeResponse = AuthOauthAuthorizeResponses[keyof AuthOauthAuthorizeResponses];
 
-export type AuthOauthLoginCreateData = {
+export type AuthOauthLoginData = {
     body: OauthLoginRequestWritable;
     path?: never;
     query?: never;
     url: '/3/auth/oauth/login/';
 };
 
-export type AuthOauthLoginCreateResponses = {
+export type AuthOauthLoginResponses = {
     201: AuthenticatedResponse;
 };
 
-export type AuthOauthLoginCreateResponse = AuthOauthLoginCreateResponses[keyof AuthOauthLoginCreateResponses];
+export type AuthOauthLoginResponse = AuthOauthLoginResponses[keyof AuthOauthLoginResponses];
 
-export type AuthOauthRegisterCreateData = {
+export type AuthOauthRegisterData = {
     body: OauthRegisterRequestWritable;
     path?: never;
     query?: never;
     url: '/3/auth/oauth/register/';
 };
 
-export type AuthOauthRegisterCreateResponses = {
+export type AuthOauthRegisterResponses = {
     201: ExtendedAuthenticatedResponse;
 };
 
-export type AuthOauthRegisterCreateResponse = AuthOauthRegisterCreateResponses[keyof AuthOauthRegisterCreateResponses];
+export type AuthOauthRegisterResponse = AuthOauthRegisterResponses[keyof AuthOauthRegisterResponses];
 
-export type AuthOauthSessionCreateData = {
+export type AuthOauthSessionData = {
     body: OauthSessionRequest;
     path?: never;
     query?: never;
     url: '/3/auth/oauth/session/';
 };
 
-export type AuthOauthSessionCreateResponses = {
+export type AuthOauthSessionResponses = {
     201: OauthSessionResponse;
 };
 
-export type AuthOauthSessionCreateResponse = AuthOauthSessionCreateResponses[keyof AuthOauthSessionCreateResponses];
+export type AuthOauthSessionResponse = AuthOauthSessionResponses[keyof AuthOauthSessionResponses];
 
-export type AuthOauthVerifyCreateData = {
+export type AuthOauthVerifyData = {
     body?: OauthVerifyRequestWritable;
     path?: never;
     query?: never;
     url: '/3/auth/oauth/verify/';
 };
 
-export type AuthOauthVerifyCreateResponses = {
+export type AuthOauthVerifyResponses = {
     201: OauthVerifyResponse;
 };
 
-export type AuthOauthVerifyCreateResponse = AuthOauthVerifyCreateResponses[keyof AuthOauthVerifyCreateResponses];
+export type AuthOauthVerifyResponse = AuthOauthVerifyResponses[keyof AuthOauthVerifyResponses];
 
 export type AuthPasswordChangeData = {
     body: PasswordChangeRequestWritable;
@@ -24205,18 +26655,18 @@ export type AuthPasswordResetConfirmResponses = {
 
 export type AuthPasswordResetConfirmResponse = AuthPasswordResetConfirmResponses[keyof AuthPasswordResetConfirmResponses];
 
-export type AuthRefreshCreateData = {
+export type AuthRefreshData = {
     body?: RefreshRequest;
     path?: never;
     query?: never;
     url: '/3/auth/refresh/';
 };
 
-export type AuthRefreshCreateResponses = {
+export type AuthRefreshResponses = {
     200: RefreshedResponse;
 };
 
-export type AuthRefreshCreateResponse = AuthRefreshCreateResponses[keyof AuthRefreshCreateResponses];
+export type AuthRefreshResponse = AuthRefreshResponses[keyof AuthRefreshResponses];
 
 export type AuthRegisterData = {
     body: RegisterRequestWritable;
@@ -24543,7 +26993,7 @@ export type ExportsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        resource?: string;
+        resource?: 'account' | 'account_currency' | 'transaction' | 'user';
         status?: string;
     };
     url: '/3/exports/';
@@ -24973,7 +27423,7 @@ export type MetricsListData = {
         page_size?: number;
         slug?: string;
         slug__in?: string;
-        type?: string;
+        type?: 'account_count' | 'transaction_available_balance_sum' | 'transaction_balance_sum' | 'transaction_complete_count' | 'transaction_complete_sum' | 'transaction_count' | 'transaction_failed_count' | 'transaction_failed_sum' | 'transaction_pending_count' | 'transaction_pending_sum' | 'user_active_count' | 'user_count' | 'user_transacted_in_30days_count';
     };
     url: '/3/metrics/';
 };
@@ -25191,7 +27641,7 @@ export type PublicCompaniesLegalTermsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        type?: string;
+        type?: 'company' | 'system';
     };
     url: '/3/public/companies/{id}/legal-terms/';
 };
@@ -25276,7 +27726,7 @@ export type PublicCompaniesOauthClientsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        provider?: string;
+        provider?: 'apple' | 'google';
     };
     url: '/3/public/companies/{id}/oauth-clients/';
 };
@@ -25317,7 +27767,7 @@ export type PublicLegalTermsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        type?: string;
+        type?: 'company' | 'system';
     };
     url: '/3/public/legal-terms/';
 };
@@ -25466,8 +27916,8 @@ export type SubtypesListData = {
         created__lte?: string;
         name?: string;
         partner__isnull?: boolean;
-        tx_type?: string;
-        usage_type?: string;
+        tx_type?: 'credit' | 'debit';
+        usage_type?: 'partner' | 'single';
     };
     url: '/3/subtypes/';
 };
@@ -25523,9 +27973,9 @@ export type TransactionCollectionsListData = {
         transactions__amount__lt?: string;
         transactions__amount__lte?: string;
         transactions__currency?: string;
-        transactions__status?: string;
+        transactions__status?: 'Complete' | 'Failed' | 'Initiating' | 'Pending' | 'Quoted';
         transactions__subtype?: string;
-        transactions__tx_type?: string;
+        transactions__tx_type?: 'credit' | 'debit';
         updated?: string;
         updated__gt?: string;
         updated__gte?: string;
@@ -25618,15 +28068,12 @@ export type TransactionsListData = {
         reference__gte?: string;
         reference__lt?: string;
         reference__lte?: string;
-        status?: string;
-        /**
-         * Multiple values may be separated by commas.
-         */
-        status__in?: Array<string>;
+        status?: 'Complete' | 'Failed' | 'Initiating' | 'Pending' | 'Quoted';
+        status__in?: Array<'Complete' | 'Failed' | 'Initiating' | 'Pending' | 'Quoted'>;
         subtype?: string;
         subtype__exclude?: string;
         subtype__in?: string;
-        tx_type?: string;
+        tx_type?: 'credit' | 'debit';
         updated?: string;
         updated__gt?: string;
         updated__gte?: string;
@@ -25922,7 +28369,7 @@ export type UserBankAccountsListData = {
     path?: never;
     query?: {
         account_currency?: string;
-        action?: string;
+        action?: 'deposit' | 'origin' | 'withdraw';
         created?: string;
         created__gt?: string;
         created__gte?: string;
@@ -25932,7 +28379,7 @@ export type UserBankAccountsListData = {
         name?: string;
         name__contains?: string;
         number?: string;
-        status?: string;
+        status?: 'declined' | 'incomplete' | 'not_started' | 'obsolete' | 'paused' | 'pending' | 'verified';
     };
     url: '/3/user/bank-accounts/';
 };
@@ -26140,7 +28587,7 @@ export type UserBankAccountsCurrenciesRetrieveResponses = {
 
 export type UserBankAccountsCurrenciesRetrieveResponse = UserBankAccountsCurrenciesRetrieveResponses[keyof UserBankAccountsCurrenciesRetrieveResponses];
 
-export type UserBankAccountsDocumentsRetrieveData = {
+export type UserBankAccountsDocumentsListData = {
     body?: never;
     path: {
         id: string;
@@ -26149,14 +28596,20 @@ export type UserBankAccountsDocumentsRetrieveData = {
     url: '/3/user/bank-accounts/{id}/documents/';
 };
 
-export type UserBankAccountsDocumentsRetrieveResponses = {
-    /**
-     * No response body
-     */
-    200: unknown;
+export type UserBankAccountsDocumentsListResponses = {
+    200: {
+        status?: string;
+        data?: Array<{
+            type?: string;
+            name?: string;
+            description?: string;
+        }>;
+    };
 };
 
-export type UserBankAccountsDocumentsRetrieve2Data = {
+export type UserBankAccountsDocumentsListResponse = UserBankAccountsDocumentsListResponses[keyof UserBankAccountsDocumentsListResponses];
+
+export type UserBankAccountsDocumentsRetrieveData = {
     body?: never;
     path: {
         document_type: string;
@@ -26166,29 +28619,31 @@ export type UserBankAccountsDocumentsRetrieve2Data = {
     url: '/3/user/bank-accounts/{id}/documents/{document_type}/';
 };
 
-export type UserBankAccountsDocumentsRetrieve2Responses = {
+export type UserBankAccountsDocumentsRetrieveResponses = {
     /**
-     * No response body
+     * The requested document as a file download.
      */
-    200: unknown;
+    200: Blob | File;
 };
+
+export type UserBankAccountsDocumentsRetrieveResponse = UserBankAccountsDocumentsRetrieveResponses[keyof UserBankAccountsDocumentsRetrieveResponses];
 
 export type UserCryptoAccountsListData = {
     body?: never;
     path?: never;
     query?: {
         account_currency?: string;
-        action?: string;
+        action?: 'deposit' | 'origin' | 'withdraw';
         created?: string;
         created__gt?: string;
         created__gte?: string;
         created__lt?: string;
         created__lte?: string;
-        crypto_type?: string;
+        crypto_type?: 'bitcoin' | 'ethereum' | 'other' | 'stellar';
         currency?: string;
         name?: string;
         name__contains?: string;
-        status?: string;
+        status?: 'declined' | 'incomplete' | 'not_started' | 'obsolete' | 'paused' | 'pending' | 'verified';
     };
     url: '/3/user/crypto-accounts/';
 };
@@ -26807,7 +29262,7 @@ export type UserLegalTermsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        type?: string;
+        type?: 'company' | 'system';
     };
     url: '/3/user/legal-terms/';
 };
@@ -27033,7 +29488,7 @@ export type UserWalletAccountsListData = {
     path?: never;
     query?: {
         account_currency?: string;
-        action?: string;
+        action?: 'deposit' | 'origin' | 'withdraw';
         created?: string;
         created__gt?: string;
         created__gte?: string;
@@ -27042,7 +29497,7 @@ export type UserWalletAccountsListData = {
         currency?: string;
         name?: string;
         name__contains?: string;
-        status?: string;
+        status?: 'declined' | 'incomplete' | 'not_started' | 'obsolete' | 'paused' | 'pending' | 'verified';
     };
     url: '/3/user/wallet-accounts/';
 };
