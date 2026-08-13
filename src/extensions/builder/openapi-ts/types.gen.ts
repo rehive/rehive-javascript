@@ -23,6 +23,8 @@ export type AdminBuildTask = {
     config: {
         [key: string]: unknown;
     };
+    template?: string | null;
+    template_version?: string | null;
     readonly created: number;
     readonly updated: number;
 };
@@ -30,6 +32,139 @@ export type AdminBuildTask = {
 export type AdminBuildTaskResponse = {
     status?: string;
     data?: AdminBuildTask;
+};
+
+/**
+ * Template management. The config is managed exclusively through
+ * template versions and is therefore read-only here.
+ */
+export type AdminCreateTemplate = {
+    id: string;
+    name: string;
+    description: string;
+    short_description?: string | null;
+    /**
+     * * `solution` - Solution
+     * * `subtype` - Subtype
+     * * `group` - Group
+     * * `account_cofiguration` - Account Configuration
+     */
+    type: 'solution' | 'subtype' | 'group' | 'account_cofiguration';
+    link?: string | null;
+    active?: boolean;
+    readonly version: string;
+    readonly config: {
+        [key: string]: unknown;
+    };
+    readonly created: number;
+    readonly updated: number;
+};
+
+/**
+ * Template management. The config is managed exclusively through
+ * template versions and is therefore read-only here.
+ */
+export type AdminTemplate = {
+    readonly id: string;
+    name: string;
+    description: string;
+    short_description?: string | null;
+    /**
+     * * `solution` - Solution
+     * * `subtype` - Subtype
+     * * `group` - Group
+     * * `account_cofiguration` - Account Configuration
+     */
+    type: 'solution' | 'subtype' | 'group' | 'account_cofiguration';
+    link?: string | null;
+    active?: boolean;
+    readonly version: string;
+    readonly config: {
+        [key: string]: unknown;
+    };
+    readonly created: number;
+    readonly updated: number;
+};
+
+/**
+ * Result of comparing a company's live configuration against a template
+ * version.
+ *
+ * Read-only: the comparison view builds this payload itself, so the
+ * serializer exists to describe the response, not to validate input.
+ */
+export type AdminTemplateComparison = {
+    readonly template: string;
+    readonly version: string;
+    /**
+     * Null when the comparison was incomplete.
+     */
+    readonly in_sync: boolean | null;
+    /**
+     * * `in_sync` - in_sync
+     * * `out_of_sync` - out_of_sync
+     * * `incomplete` - incomplete
+     */
+    readonly sync_status: 'in_sync' | 'out_of_sync' | 'incomplete';
+    readonly complete: boolean;
+    /**
+     * Per-section results, keyed by config section name.
+     */
+    readonly sections: {
+        [key: string]: unknown;
+    };
+};
+
+export type AdminTemplateComparisonResponse = {
+    status?: string;
+    data?: AdminTemplateComparison;
+};
+
+export type AdminTemplateResponse = {
+    status?: string;
+    data?: AdminTemplate;
+};
+
+/**
+ * Template version management. Versions are immutable once created;
+ * the only mutation allowed is publishing (which promotes the version's
+ * config to the template's active config).
+ */
+export type AdminTemplateVersion = {
+    version: string;
+    config?: {
+        [key: string]: unknown;
+    };
+    published?: boolean;
+    readonly published_at: number;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type AdminTemplateVersionResponse = {
+    status?: string;
+    data?: AdminTemplateVersion;
+};
+
+/**
+ * Template version management. Versions are immutable once created;
+ * the only mutation allowed is publishing (which promotes the version's
+ * config to the template's active config).
+ */
+export type AdminUpdateTemplateVersion = {
+    readonly version: string;
+    readonly config: {
+        [key: string]: unknown;
+    };
+    published?: boolean;
+    readonly published_at: number;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type AdminUpdateTemplateVersionResponse = {
+    status?: string;
+    data?: AdminUpdateTemplateVersion;
 };
 
 export type PaginatedAdminBuildTaskList = {
@@ -42,6 +177,30 @@ export type PaginatedAdminBuildTaskList = {
 export type PaginatedAdminBuildTaskListResponse = {
     status?: string;
     data?: PaginatedAdminBuildTaskList;
+};
+
+export type PaginatedAdminTemplateList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminTemplate>;
+};
+
+export type PaginatedAdminTemplateListResponse = {
+    status?: string;
+    data?: PaginatedAdminTemplateList;
+};
+
+export type PaginatedAdminTemplateVersionList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminTemplateVersion>;
+};
+
+export type PaginatedAdminTemplateVersionListResponse = {
+    status?: string;
+    data?: PaginatedAdminTemplateVersionList;
 };
 
 export type PaginatedTemplateList = {
@@ -57,6 +216,48 @@ export type PaginatedTemplateListResponse = {
 };
 
 /**
+ * Template management. The config is managed exclusively through
+ * template versions and is therefore read-only here.
+ */
+export type PatchedAdminTemplate = {
+    readonly id?: string;
+    name?: string;
+    description?: string;
+    short_description?: string | null;
+    /**
+     * * `solution` - Solution
+     * * `subtype` - Subtype
+     * * `group` - Group
+     * * `account_cofiguration` - Account Configuration
+     */
+    type?: 'solution' | 'subtype' | 'group' | 'account_cofiguration';
+    link?: string | null;
+    active?: boolean;
+    readonly version?: string;
+    readonly config?: {
+        [key: string]: unknown;
+    };
+    readonly created?: number;
+    readonly updated?: number;
+};
+
+/**
+ * Template version management. Versions are immutable once created;
+ * the only mutation allowed is publishing (which promotes the version's
+ * config to the template's active config).
+ */
+export type PatchedAdminUpdateTemplateVersion = {
+    readonly version?: string;
+    readonly config?: {
+        [key: string]: unknown;
+    };
+    published?: boolean;
+    readonly published_at?: number;
+    readonly created?: number;
+    readonly updated?: number;
+};
+
+/**
  * A ModelSerializer that takes additional arguments for
  * "fields", "omit" and "expand" in order to
  * control which fields are displayed, and whether to replace simple
@@ -69,6 +270,8 @@ export type Template = {
     readonly short_description: string | null;
     readonly type: string;
     readonly link: string | null;
+    readonly active: boolean;
+    readonly version: string;
     readonly config: {
         [key: string]: unknown;
     };
@@ -91,11 +294,93 @@ export type AdminBuildTaskWritable = {
     config: {
         [key: string]: unknown;
     };
+    template?: string | null;
+    template_version?: string | null;
 };
 
 export type AdminBuildTaskResponseWritable = {
     status?: string;
     data?: AdminBuildTaskWritable;
+};
+
+/**
+ * Template management. The config is managed exclusively through
+ * template versions and is therefore read-only here.
+ */
+export type AdminCreateTemplateWritable = {
+    id: string;
+    name: string;
+    description: string;
+    short_description?: string | null;
+    /**
+     * * `solution` - Solution
+     * * `subtype` - Subtype
+     * * `group` - Group
+     * * `account_cofiguration` - Account Configuration
+     */
+    type: 'solution' | 'subtype' | 'group' | 'account_cofiguration';
+    link?: string | null;
+    active?: boolean;
+};
+
+/**
+ * Template management. The config is managed exclusively through
+ * template versions and is therefore read-only here.
+ */
+export type AdminTemplateWritable = {
+    name: string;
+    description: string;
+    short_description?: string | null;
+    /**
+     * * `solution` - Solution
+     * * `subtype` - Subtype
+     * * `group` - Group
+     * * `account_cofiguration` - Account Configuration
+     */
+    type: 'solution' | 'subtype' | 'group' | 'account_cofiguration';
+    link?: string | null;
+    active?: boolean;
+};
+
+export type AdminTemplateComparisonResponseWritable = {
+    status?: string;
+};
+
+export type AdminTemplateResponseWritable = {
+    status?: string;
+    data?: AdminTemplateWritable;
+};
+
+/**
+ * Template version management. Versions are immutable once created;
+ * the only mutation allowed is publishing (which promotes the version's
+ * config to the template's active config).
+ */
+export type AdminTemplateVersionWritable = {
+    version: string;
+    config?: {
+        [key: string]: unknown;
+    };
+    published?: boolean;
+};
+
+export type AdminTemplateVersionResponseWritable = {
+    status?: string;
+    data?: AdminTemplateVersionWritable;
+};
+
+/**
+ * Template version management. Versions are immutable once created;
+ * the only mutation allowed is publishing (which promotes the version's
+ * config to the template's active config).
+ */
+export type AdminUpdateTemplateVersionWritable = {
+    published?: boolean;
+};
+
+export type AdminUpdateTemplateVersionResponseWritable = {
+    status?: string;
+    data?: AdminUpdateTemplateVersionWritable;
 };
 
 export type PaginatedAdminBuildTaskListWritable = {
@@ -110,6 +395,30 @@ export type PaginatedAdminBuildTaskListResponseWritable = {
     data?: PaginatedAdminBuildTaskListWritable;
 };
 
+export type PaginatedAdminTemplateListWritable = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminTemplateWritable>;
+};
+
+export type PaginatedAdminTemplateListResponseWritable = {
+    status?: string;
+    data?: PaginatedAdminTemplateListWritable;
+};
+
+export type PaginatedAdminTemplateVersionListWritable = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminTemplateVersionWritable>;
+};
+
+export type PaginatedAdminTemplateVersionListResponseWritable = {
+    status?: string;
+    data?: PaginatedAdminTemplateVersionListWritable;
+};
+
 export type PaginatedTemplateListWritable = {
     count?: number;
     next?: string | null;
@@ -120,6 +429,34 @@ export type PaginatedTemplateListWritable = {
 export type PaginatedTemplateListResponseWritable = {
     status?: string;
     data?: PaginatedTemplateListWritable;
+};
+
+/**
+ * Template management. The config is managed exclusively through
+ * template versions and is therefore read-only here.
+ */
+export type PatchedAdminTemplateWritable = {
+    name?: string;
+    description?: string;
+    short_description?: string | null;
+    /**
+     * * `solution` - Solution
+     * * `subtype` - Subtype
+     * * `group` - Group
+     * * `account_cofiguration` - Account Configuration
+     */
+    type?: 'solution' | 'subtype' | 'group' | 'account_cofiguration';
+    link?: string | null;
+    active?: boolean;
+};
+
+/**
+ * Template version management. Versions are immutable once created;
+ * the only mutation allowed is publishing (which promotes the version's
+ * config to the template's active config).
+ */
+export type PatchedAdminUpdateTemplateVersionWritable = {
+    published?: boolean;
 };
 
 export type TemplateResponseWritable = {
@@ -176,10 +513,227 @@ export type AdminBuildTasksRetrieveResponses = {
 
 export type AdminBuildTasksRetrieveResponse = AdminBuildTasksRetrieveResponses[keyof AdminBuildTasksRetrieveResponses];
 
+export type AdminTemplatesListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        active?: boolean;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        type?: string;
+    };
+    url: '/admin/templates/';
+};
+
+export type AdminTemplatesListResponses = {
+    200: PaginatedAdminTemplateListResponse;
+};
+
+export type AdminTemplatesListResponse = AdminTemplatesListResponses[keyof AdminTemplatesListResponses];
+
+export type AdminTemplatesCreateData = {
+    body: AdminCreateTemplateWritable;
+    path?: never;
+    query?: never;
+    url: '/admin/templates/';
+};
+
+export type AdminTemplatesCreateResponses = {
+    201: AdminTemplateResponse;
+};
+
+export type AdminTemplatesCreateResponse = AdminTemplatesCreateResponses[keyof AdminTemplatesCreateResponses];
+
+export type AdminTemplatesRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/admin/templates/{identifier}/';
+};
+
+export type AdminTemplatesRetrieveResponses = {
+    200: AdminTemplateResponse;
+};
+
+export type AdminTemplatesRetrieveResponse = AdminTemplatesRetrieveResponses[keyof AdminTemplatesRetrieveResponses];
+
+export type AdminTemplatesPartialUpdateData = {
+    body?: PatchedAdminTemplateWritable;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/admin/templates/{identifier}/';
+};
+
+export type AdminTemplatesPartialUpdateResponses = {
+    200: AdminTemplateResponse;
+};
+
+export type AdminTemplatesPartialUpdateResponse = AdminTemplatesPartialUpdateResponses[keyof AdminTemplatesPartialUpdateResponses];
+
+export type AdminTemplatesUpdateData = {
+    body: AdminTemplateWritable;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/admin/templates/{identifier}/';
+};
+
+export type AdminTemplatesUpdateResponses = {
+    200: AdminTemplateResponse;
+};
+
+export type AdminTemplatesUpdateResponse = AdminTemplatesUpdateResponses[keyof AdminTemplatesUpdateResponses];
+
+export type AdminTemplatesComparisonRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/admin/templates/{identifier}/comparison/';
+};
+
+export type AdminTemplatesComparisonRetrieveResponses = {
+    200: AdminTemplateComparisonResponse;
+};
+
+export type AdminTemplatesComparisonRetrieveResponse = AdminTemplatesComparisonRetrieveResponses[keyof AdminTemplatesComparisonRetrieveResponses];
+
+export type AdminTemplatesVersionsListData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/admin/templates/{identifier}/versions/';
+};
+
+export type AdminTemplatesVersionsListResponses = {
+    200: PaginatedAdminTemplateVersionListResponse;
+};
+
+export type AdminTemplatesVersionsListResponse = AdminTemplatesVersionsListResponses[keyof AdminTemplatesVersionsListResponses];
+
+export type AdminTemplatesVersionsCreateData = {
+    body: AdminTemplateVersionWritable;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/admin/templates/{identifier}/versions/';
+};
+
+export type AdminTemplatesVersionsCreateResponses = {
+    201: AdminTemplateVersionResponse;
+};
+
+export type AdminTemplatesVersionsCreateResponse = AdminTemplatesVersionsCreateResponses[keyof AdminTemplatesVersionsCreateResponses];
+
+export type AdminTemplatesVersionsDestroyData = {
+    body?: never;
+    path: {
+        identifier: string;
+        version: string;
+    };
+    query?: never;
+    url: '/admin/templates/{identifier}/versions/{version}/';
+};
+
+export type AdminTemplatesVersionsDestroyResponses = {
+    200: AdminTemplateVersionResponse;
+};
+
+export type AdminTemplatesVersionsDestroyResponse = AdminTemplatesVersionsDestroyResponses[keyof AdminTemplatesVersionsDestroyResponses];
+
+export type AdminTemplatesVersionsRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+        version: string;
+    };
+    query?: never;
+    url: '/admin/templates/{identifier}/versions/{version}/';
+};
+
+export type AdminTemplatesVersionsRetrieveResponses = {
+    200: AdminTemplateVersionResponse;
+};
+
+export type AdminTemplatesVersionsRetrieveResponse = AdminTemplatesVersionsRetrieveResponses[keyof AdminTemplatesVersionsRetrieveResponses];
+
+export type AdminTemplatesVersionsPartialUpdateData = {
+    body?: PatchedAdminUpdateTemplateVersionWritable;
+    path: {
+        identifier: string;
+        version: string;
+    };
+    query?: never;
+    url: '/admin/templates/{identifier}/versions/{version}/';
+};
+
+export type AdminTemplatesVersionsPartialUpdateResponses = {
+    200: AdminUpdateTemplateVersionResponse;
+};
+
+export type AdminTemplatesVersionsPartialUpdateResponse = AdminTemplatesVersionsPartialUpdateResponses[keyof AdminTemplatesVersionsPartialUpdateResponses];
+
+export type AdminTemplatesVersionsUpdateData = {
+    body?: AdminUpdateTemplateVersionWritable;
+    path: {
+        identifier: string;
+        version: string;
+    };
+    query?: never;
+    url: '/admin/templates/{identifier}/versions/{version}/';
+};
+
+export type AdminTemplatesVersionsUpdateResponses = {
+    200: AdminUpdateTemplateVersionResponse;
+};
+
+export type AdminTemplatesVersionsUpdateResponse = AdminTemplatesVersionsUpdateResponses[keyof AdminTemplatesVersionsUpdateResponses];
+
+export type AdminTemplatesVersionsComparisonRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+        version: string;
+    };
+    query?: never;
+    url: '/admin/templates/{identifier}/versions/{version}/comparison/';
+};
+
+export type AdminTemplatesVersionsComparisonRetrieveResponses = {
+    200: AdminTemplateComparisonResponse;
+};
+
+export type AdminTemplatesVersionsComparisonRetrieveResponse = AdminTemplatesVersionsComparisonRetrieveResponses[keyof AdminTemplatesVersionsComparisonRetrieveResponses];
+
 export type PublicTemplatesListData = {
     body?: never;
     path?: never;
     query?: {
+        active?: boolean;
         /**
          * A page number within the paginated result set.
          */

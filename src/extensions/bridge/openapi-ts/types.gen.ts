@@ -39,9 +39,12 @@ export type AdminCompany = {
     bridge_api_key: string;
     readonly bridge_webhook_id: string | null;
     readonly admin_user_bridge_id: string | null;
-    readonly bridge_default_endorsements: Array<'base' | 'sepa' | 'spei' | 'pix' | 'cards' | 'faster_payments'>;
+    readonly bridge_default_endorsements: Array<'base' | 'sepa' | 'spei' | 'pix' | 'pix_offramp' | 'pix_onramp' | 'cards' | 'faster_payments'>;
     readonly bridge_tos_platform_legal_term: string | null;
     readonly exchange_rate_override_bps: number;
+    readonly supported_groups: {
+        [key: string]: unknown;
+    };
 };
 
 export type AdminCompanyResponse = {
@@ -381,9 +384,12 @@ export type AdminUpdateCompany = {
     bridge_api_key?: string;
     readonly bridge_webhook_id: string | null;
     admin_user_bridge_id?: string | null;
-    bridge_default_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'cards' | 'faster_payments'> | null;
+    bridge_default_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'pix_offramp' | 'pix_onramp' | 'cards' | 'faster_payments'> | null;
     bridge_tos_platform_legal_term?: string | null;
     exchange_rate_override_bps?: number | null;
+    supported_groups?: {
+        [key: string]: unknown;
+    };
 };
 
 /**
@@ -410,9 +416,16 @@ export type AdminUser = {
      * * `paused` - Paused
      * * `rejected` - Rejected
      * * `under_review` - Under Review
+     * * `deleted` - Deleted
      */
-    readonly bridge_status: 'active' | 'awaiting_questionnaire' | 'awaiting_ubo' | 'incomplete' | 'not_started' | 'offboarded' | 'paused' | 'rejected' | 'under_review';
+    readonly bridge_status: 'active' | 'awaiting_questionnaire' | 'awaiting_ubo' | 'incomplete' | 'not_started' | 'offboarded' | 'paused' | 'rejected' | 'under_review' | 'deleted';
     readonly bridge_rejection_reasons: {
+        [key: string]: unknown;
+    } | null;
+    readonly endorsements: {
+        [key: string]: unknown;
+    } | null;
+    readonly bridge_endorsements: {
         [key: string]: unknown;
     } | null;
     readonly created: number;
@@ -772,9 +785,12 @@ export type PatchedAdminUpdateCompany = {
     bridge_api_key?: string;
     readonly bridge_webhook_id?: string | null;
     admin_user_bridge_id?: string | null;
-    bridge_default_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'cards' | 'faster_payments'> | null;
+    bridge_default_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'pix_offramp' | 'pix_onramp' | 'cards' | 'faster_payments'> | null;
     bridge_tos_platform_legal_term?: string | null;
     exchange_rate_override_bps?: number | null;
+    supported_groups?: {
+        [key: string]: unknown;
+    };
 };
 
 /**
@@ -798,7 +814,28 @@ export type PatchedUpdateTransaction = {
 export type PatchedUser = {
     readonly id?: string;
     readonly bridge_id?: string;
+    /**
+     * * `individual` - Individual
+     * * `business` - Business
+     */
+    readonly bridge_type?: 'individual' | 'business';
+    /**
+     * * `active` - Active
+     * * `awaiting_questionnaire` - Awaiting Questionnaire
+     * * `awaiting_ubo` - Awaiting Ubo
+     * * `incomplete` - Incomplete
+     * * `not_started` - Not Started
+     * * `offboarded` - Offboarded
+     * * `paused` - Paused
+     * * `rejected` - Rejected
+     * * `under_review` - Under Review
+     * * `deleted` - Deleted
+     */
+    readonly bridge_status?: 'active' | 'awaiting_questionnaire' | 'awaiting_ubo' | 'incomplete' | 'not_started' | 'offboarded' | 'paused' | 'rejected' | 'under_review' | 'deleted';
     bridge_signed_agreement_id?: string;
+    readonly endorsements?: {
+        [key: string]: unknown;
+    };
 };
 
 /**
@@ -839,16 +876,32 @@ export type UpdateTransaction = {
 export type User = {
     readonly id: string;
     readonly bridge_id: string;
-    bridge_signed_agreement_id: string;
-};
-
-export type UserCreateCustomerKycLink = {
     /**
      * * `individual` - Individual
      * * `business` - Business
      */
-    customer_type?: 'individual' | 'business';
-    endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'cards' | 'faster_payments'> | null;
+    readonly bridge_type: 'individual' | 'business';
+    /**
+     * * `active` - Active
+     * * `awaiting_questionnaire` - Awaiting Questionnaire
+     * * `awaiting_ubo` - Awaiting Ubo
+     * * `incomplete` - Incomplete
+     * * `not_started` - Not Started
+     * * `offboarded` - Offboarded
+     * * `paused` - Paused
+     * * `rejected` - Rejected
+     * * `under_review` - Under Review
+     * * `deleted` - Deleted
+     */
+    readonly bridge_status: 'active' | 'awaiting_questionnaire' | 'awaiting_ubo' | 'incomplete' | 'not_started' | 'offboarded' | 'paused' | 'rejected' | 'under_review' | 'deleted';
+    bridge_signed_agreement_id?: string;
+    readonly endorsements: {
+        [key: string]: unknown;
+    };
+};
+
+export type UserCreateCustomerLink = {
+    endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'pix_offramp' | 'pix_onramp' | 'cards' | 'faster_payments'> | null;
     redirect_uri?: string | null;
 };
 
@@ -939,7 +992,7 @@ export type UserCryptoDepositResponseResponse = {
     data: UserCryptoDepositResponse;
 };
 
-export type UserCustomerKycLink = {
+export type UserCustomerLink = {
     readonly kyc: {
         [key: string]: unknown;
     };
@@ -951,9 +1004,9 @@ export type UserCustomerKycLink = {
     };
 };
 
-export type UserCustomerKycLinkResponse = {
+export type UserCustomerLinkResponse = {
     status: string;
-    data: UserCustomerKycLink;
+    data: UserCustomerLink;
 };
 
 export type UserExchangeRateResponse = {
@@ -1097,8 +1150,12 @@ export type Webhook = {
      * * `transaction.update` - Transaction Update
      * * `transaction.transition.update` - Transaction Transition Update
      * * `user.update` - User Update
+     * * `document.create` - Document Create
+     * * `document.update` - Document Update
+     * * `address.create` - Address Create
+     * * `address.update` - Address Update
      */
-    event: 'account.currency.create' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'currency.create' | 'currency.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.update' | 'transaction.transition.update' | 'user.update';
+    event: 'account.currency.create' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'currency.create' | 'currency.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.update' | 'transaction.transition.update' | 'user.update' | 'document.create' | 'document.update' | 'address.create' | 'address.update';
     company: string;
     data: {
         [key: string]: unknown;
@@ -1242,9 +1299,12 @@ export type AdminTransactionTransitionResponseWritable = {
 export type AdminUpdateCompanyWritable = {
     bridge_api_key?: string;
     admin_user_bridge_id?: string | null;
-    bridge_default_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'cards' | 'faster_payments'> | null;
+    bridge_default_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'pix_offramp' | 'pix_onramp' | 'cards' | 'faster_payments'> | null;
     bridge_tos_platform_legal_term?: string | null;
     exchange_rate_override_bps?: number | null;
+    supported_groups?: {
+        [key: string]: unknown;
+    };
 };
 
 export type AdminUserResponseWritable = {
@@ -1481,9 +1541,12 @@ export type PatchedAdminPayoutConfigurationWritable = {
 export type PatchedAdminUpdateCompanyWritable = {
     bridge_api_key?: string;
     admin_user_bridge_id?: string | null;
-    bridge_default_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'cards' | 'faster_payments'> | null;
+    bridge_default_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'pix_offramp' | 'pix_onramp' | 'cards' | 'faster_payments'> | null;
     bridge_tos_platform_legal_term?: string | null;
     exchange_rate_override_bps?: number | null;
+    supported_groups?: {
+        [key: string]: unknown;
+    };
 };
 
 /**
@@ -1542,14 +1605,14 @@ export type UpdateTransactionWritable = {
  * values with complex, nested serializations
  */
 export type UserWritable = {
-    bridge_signed_agreement_id: string;
+    bridge_signed_agreement_id?: string;
 };
 
 export type UserCryptoDepositResponseResponseWritable = {
     status: string;
 };
 
-export type UserCustomerKycLinkResponseWritable = {
+export type UserCustomerLinkResponseWritable = {
     status: string;
 };
 
@@ -2131,6 +2194,21 @@ export type AdminUsersRetrieveResponses = {
 
 export type AdminUsersRetrieveResponse = AdminUsersRetrieveResponses[keyof AdminUsersRetrieveResponses];
 
+export type AdminUsersBridgeResourceDestroyData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/admin/users/{identifier}/bridge-resource/';
+};
+
+export type AdminUsersBridgeResourceDestroyResponses = {
+    200: AdminUserResponse;
+};
+
+export type AdminUsersBridgeResourceDestroyResponse = AdminUsersBridgeResourceDestroyResponses[keyof AdminUsersBridgeResourceDestroyResponses];
+
 export type AdminVirtualAccountsListData = {
     body?: never;
     path?: never;
@@ -2284,7 +2362,7 @@ export type UserPartialUpdateResponses = {
 export type UserPartialUpdateResponse = UserPartialUpdateResponses[keyof UserPartialUpdateResponses];
 
 export type UserUpdateData = {
-    body: UserWritable;
+    body?: UserWritable;
     path?: never;
     query?: never;
     url: '/user/';
@@ -2411,17 +2489,30 @@ export type UserExternalWalletsRetrieveResponses = {
 export type UserExternalWalletsRetrieveResponse = UserExternalWalletsRetrieveResponses[keyof UserExternalWalletsRetrieveResponses];
 
 export type UserKycLinksCreateData = {
-    body?: UserCreateCustomerKycLink;
+    body?: UserCreateCustomerLink;
     path?: never;
     query?: never;
     url: '/user/kyc-links/';
 };
 
 export type UserKycLinksCreateResponses = {
-    201: UserCustomerKycLinkResponse;
+    201: UserCustomerLinkResponse;
 };
 
 export type UserKycLinksCreateResponse = UserKycLinksCreateResponses[keyof UserKycLinksCreateResponses];
+
+export type UserLinksCreateData = {
+    body?: UserCreateCustomerLink;
+    path?: never;
+    query?: never;
+    url: '/user/links/';
+};
+
+export type UserLinksCreateResponses = {
+    201: UserCustomerLinkResponse;
+};
+
+export type UserLinksCreateResponse = UserLinksCreateResponses[keyof UserLinksCreateResponses];
 
 export type UserStaticTemplatesListData = {
     body?: never;

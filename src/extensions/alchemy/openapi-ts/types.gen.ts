@@ -276,9 +276,10 @@ export type Currency = {
     readonly code: string;
     /**
      * * `USDC` - Usdc
+     * * `EURC` - Eurc
      * * `ETH` - Eth
      */
-    readonly onchain_code: 'USDC' | 'ETH';
+    readonly onchain_code: 'USDC' | 'EURC' | 'ETH';
     /**
      * * `ETH_SEPOLIA` - Eth Sepolia
      * * `ETH_MAINNET` - Eth Mainnet

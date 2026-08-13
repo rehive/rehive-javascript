@@ -36,9 +36,6 @@ export type AdminCompany = {
      * * `production` - Production
      */
     readonly mode: 'test' | 'production';
-    sumsub_app_token: string;
-    sumsub_secret_key: string;
-    sumsub_webhook_secret_key: string;
     readonly supported_groups: {
         [key: string]: {
             sumsub_verification_level: string;
@@ -137,9 +134,6 @@ export type AdminUpdateCompany = {
      * * `production` - Production
      */
     readonly mode: 'test' | 'production';
-    sumsub_app_token?: string;
-    sumsub_secret_key?: string;
-    sumsub_webhook_secret_key?: string;
     supported_groups?: {
         [key: string]: {
             sumsub_verification_level: string;
@@ -329,9 +323,6 @@ export type PatchedAdminUpdateCompany = {
      * * `production` - Production
      */
     readonly mode?: 'test' | 'production';
-    sumsub_app_token?: string;
-    sumsub_secret_key?: string;
-    sumsub_webhook_secret_key?: string;
     supported_groups?: {
         [key: string]: {
             sumsub_verification_level: string;
@@ -375,9 +366,29 @@ export type PatchedUser = {
 };
 
 /**
- * Accept all Sumsub webhook events, but only log + process events listed in
- * `SumsubWebhookEvent`. Signature is verified using HMAC-SHA512 over the raw
- * request body, keyed by the company's webhook secret.
+ * Company-agnostic Sumsub webhook intake for a single shared Sumsub
+ * account: the signature is verified with the global
+ * `SUMSUB_WEBHOOK_SECRET_KEY` setting, and the company is resolved from
+ * the payload's `sourceKey` (`company:<identifier>`), which Sumsub echoes
+ * on every applicant-level event. Applicants must therefore carry the
+ * company source key — this service tags them on creation, and older
+ * applicants are backfilled on the Sumsub side.
+ */
+export type SumsubGlobalWebhook = {
+    type: string;
+    applicantId?: string | null;
+    createdAtMs?: string | null;
+    externalUserId?: string | null;
+    reviewStatus?: string | null;
+    reviewResult?: {
+        [key: string]: unknown;
+    } | null;
+    sourceKey?: string | null;
+};
+
+/**
+ * Per-company Sumsub webhook intake: the company is taken from the URL
+ * kwarg and provides the webhook secret.
  */
 export type SumsubWebhook = {
     type: string;
@@ -388,6 +399,7 @@ export type SumsubWebhook = {
     reviewResult?: {
         [key: string]: unknown;
     } | null;
+    sourceKey?: string | null;
 };
 
 /**
@@ -470,8 +482,9 @@ export type Webhook = {
     /**
      * * `currency.create` - Currency Create
      * * `currency.update` - Currency Update
+     * * `user.update` - User Update
      */
-    event: 'currency.create' | 'currency.update';
+    event: 'currency.create' | 'currency.update' | 'user.update';
     company: string;
     data: {
         [key: string]: unknown;
@@ -485,9 +498,7 @@ export type Webhook = {
  * values with complex, nested serializations
  */
 export type AdminCompanyWritable = {
-    sumsub_app_token: string;
-    sumsub_secret_key: string;
-    sumsub_webhook_secret_key: string;
+    [key: string]: unknown;
 };
 
 export type AdminCompanyResponseWritable = {
@@ -550,9 +561,6 @@ export type AdminDocumentTypeResponseWritable = {
  * values with complex, nested serializations
  */
 export type AdminUpdateCompanyWritable = {
-    sumsub_app_token?: string;
-    sumsub_secret_key?: string;
-    sumsub_webhook_secret_key?: string;
     supported_groups?: {
         [key: string]: {
             sumsub_verification_level: string;
@@ -647,9 +655,6 @@ export type PatchedAdminDocumentTypeWritable = {
  * values with complex, nested serializations
  */
 export type PatchedAdminUpdateCompanyWritable = {
-    sumsub_app_token?: string;
-    sumsub_secret_key?: string;
-    sumsub_webhook_secret_key?: string;
     supported_groups?: {
         [key: string]: {
             sumsub_verification_level: string;
@@ -968,6 +973,19 @@ export type DeactivateCreateResponses = {
 export type DeactivateCreateResponse = DeactivateCreateResponses[keyof DeactivateCreateResponses];
 
 export type SumsubWebhookCreateData = {
+    body: SumsubGlobalWebhook;
+    path?: never;
+    query?: never;
+    url: '/sumsub/webhook/';
+};
+
+export type SumsubWebhookCreateResponses = {
+    200: ActionResponse;
+};
+
+export type SumsubWebhookCreateResponse = SumsubWebhookCreateResponses[keyof SumsubWebhookCreateResponses];
+
+export type SumsubWebhookCreate2Data = {
     body: SumsubWebhook;
     path: {
         company_id: string;
@@ -976,11 +994,11 @@ export type SumsubWebhookCreateData = {
     url: '/sumsub/webhook/{company_id}/';
 };
 
-export type SumsubWebhookCreateResponses = {
+export type SumsubWebhookCreate2Responses = {
     200: ActionResponse;
 };
 
-export type SumsubWebhookCreateResponse = SumsubWebhookCreateResponses[keyof SumsubWebhookCreateResponses];
+export type SumsubWebhookCreate2Response = SumsubWebhookCreate2Responses[keyof SumsubWebhookCreate2Responses];
 
 export type UserRetrieveData = {
     body?: never;

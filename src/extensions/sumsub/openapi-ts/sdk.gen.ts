@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { ActivateCreateData, ActivateCreateResponses, AdminCompanyPartialUpdateData, AdminCompanyPartialUpdateResponses, AdminCompanyRetrieveData, AdminCompanyRetrieveResponses, AdminCompanyUpdateData, AdminCompanyUpdateResponses, AdminCurrenciesListData, AdminCurrenciesListResponses, AdminCurrenciesPartialUpdateData, AdminCurrenciesPartialUpdateResponses, AdminCurrenciesRetrieveData, AdminCurrenciesRetrieveResponses, AdminCurrenciesUpdateData, AdminCurrenciesUpdateResponses, AdminDocumentTypesCreateData, AdminDocumentTypesCreateResponses, AdminDocumentTypesDestroyData, AdminDocumentTypesDestroyResponses, AdminDocumentTypesListData, AdminDocumentTypesListResponses, AdminDocumentTypesPartialUpdateData, AdminDocumentTypesPartialUpdateResponses, AdminDocumentTypesRetrieveData, AdminDocumentTypesRetrieveResponses, AdminDocumentTypesUpdateData, AdminDocumentTypesUpdateResponses, AdminUserShareCreateData, AdminUserShareCreateResponses, AdminUsersListData, AdminUsersListResponses, AdminUsersRetrieveData, AdminUsersRetrieveResponses, DeactivateCreateData, DeactivateCreateResponses, SumsubWebhookCreateData, SumsubWebhookCreateResponses, UserAccessTokenCreateData, UserAccessTokenCreateResponses, UserCompanyRetrieveData, UserCompanyRetrieveResponses, UserPartialUpdateData, UserPartialUpdateResponses, UserRetrieveData, UserRetrieveResponses, UserUpdateData, UserUpdateResponses, WebhookCreateData, WebhookCreateResponses } from './types.gen';
+import type { ActivateCreateData, ActivateCreateResponses, AdminCompanyPartialUpdateData, AdminCompanyPartialUpdateResponses, AdminCompanyRetrieveData, AdminCompanyRetrieveResponses, AdminCompanyUpdateData, AdminCompanyUpdateResponses, AdminCurrenciesListData, AdminCurrenciesListResponses, AdminCurrenciesPartialUpdateData, AdminCurrenciesPartialUpdateResponses, AdminCurrenciesRetrieveData, AdminCurrenciesRetrieveResponses, AdminCurrenciesUpdateData, AdminCurrenciesUpdateResponses, AdminDocumentTypesCreateData, AdminDocumentTypesCreateResponses, AdminDocumentTypesDestroyData, AdminDocumentTypesDestroyResponses, AdminDocumentTypesListData, AdminDocumentTypesListResponses, AdminDocumentTypesPartialUpdateData, AdminDocumentTypesPartialUpdateResponses, AdminDocumentTypesRetrieveData, AdminDocumentTypesRetrieveResponses, AdminDocumentTypesUpdateData, AdminDocumentTypesUpdateResponses, AdminUserShareCreateData, AdminUserShareCreateResponses, AdminUsersListData, AdminUsersListResponses, AdminUsersRetrieveData, AdminUsersRetrieveResponses, DeactivateCreateData, DeactivateCreateResponses, SumsubWebhookCreate2Data, SumsubWebhookCreate2Responses, SumsubWebhookCreateData, SumsubWebhookCreateResponses, UserAccessTokenCreateData, UserAccessTokenCreateResponses, UserCompanyRetrieveData, UserCompanyRetrieveResponses, UserPartialUpdateData, UserPartialUpdateResponses, UserRetrieveData, UserRetrieveResponses, UserUpdateData, UserUpdateResponses, WebhookCreateData, WebhookCreateResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -165,6 +165,15 @@ export const deactivateCreate = <ThrowOnError extends boolean = false>(options: 
 });
 
 export const sumsubWebhookCreate = <ThrowOnError extends boolean = false>(options: Options<SumsubWebhookCreateData, ThrowOnError>): RequestResult<SumsubWebhookCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<SumsubWebhookCreateResponses, unknown, ThrowOnError>({
+    url: '/sumsub/webhook/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const sumsubWebhookCreate2 = <ThrowOnError extends boolean = false>(options: Options<SumsubWebhookCreate2Data, ThrowOnError>): RequestResult<SumsubWebhookCreate2Responses, unknown, ThrowOnError> => (options.client ?? client).post<SumsubWebhookCreate2Responses, unknown, ThrowOnError>({
     url: '/sumsub/webhook/{company_id}/',
     ...options,
     headers: {

@@ -13,14 +13,14 @@ const mockAuthLogin = jest.fn();
 const mockAuthRegister = jest.fn();
 const mockAuthRegisterCompany = jest.fn();
 const mockAuthLogout = jest.fn();
-const mockAuthRefreshCreate = jest.fn();
+const mockAuthRefresh = jest.fn();
 
 jest.mock('../../platform/user/openapi-ts/sdk.gen.js', () => ({
   authLogin: (...args: any[]) => mockAuthLogin(...args),
   authRegister: (...args: any[]) => mockAuthRegister(...args),
   authRegisterCompany: (...args: any[]) => mockAuthRegisterCompany(...args),
   authLogout: (...args: any[]) => mockAuthLogout(...args),
-  authRefreshCreate: (...args: any[]) => mockAuthRefreshCreate(...args),
+  authRefresh: (...args: any[]) => mockAuthRefresh(...args),
 }));
 
 jest.mock('../../platform/user/openapi-ts/client/index.js', () => ({
@@ -74,7 +74,7 @@ describe('AuthProvider', () => {
     mockAuthRegister.mockResolvedValue(mockRegisterResponse);
     mockAuthRegisterCompany.mockResolvedValue(mockRegisterCompanyResponse);
     mockAuthLogout.mockResolvedValue(mockLogoutResponse);
-    mockAuthRefreshCreate.mockResolvedValue(mockRefreshResponse);
+    mockAuthRefresh.mockResolvedValue(mockRefreshResponse);
   });
 
   it('should provide auth context to children', () => {

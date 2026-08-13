@@ -305,8 +305,12 @@ export type AdminBusiness = {
      * * `paused` - paused
      * * `incomplete` - incomplete
      * * `verified` - verified
+     * * `not_started` - not_started
+     * * `under_review` - under_review
+     * * `resubmission_requested` - resubmission_requested
+     * * `offboarded` - offboarded
      */
-    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started' | 'under_review' | 'resubmission_requested' | 'offboarded';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -390,8 +394,9 @@ export type AdminBusinessDocument = {
      * * `paused` - paused
      * * `incomplete` - incomplete
      * * `verified` - verified
+     * * `not_started` - not_started
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -583,8 +588,9 @@ export type AdminCreateBusinessDocument = {
      * * `paused` - paused
      * * `incomplete` - incomplete
      * * `verified` - verified
+     * * `not_started` - not_started
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -944,8 +950,12 @@ export type AdminUpdateBusiness = {
      * * `paused` - paused
      * * `incomplete` - incomplete
      * * `verified` - verified
+     * * `not_started` - not_started
+     * * `under_review` - under_review
+     * * `resubmission_requested` - resubmission_requested
+     * * `offboarded` - offboarded
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started' | 'under_review' | 'resubmission_requested' | 'offboarded';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -1708,8 +1718,12 @@ export type ManagerBusiness = {
      * * `paused` - paused
      * * `incomplete` - incomplete
      * * `verified` - verified
+     * * `not_started` - not_started
+     * * `under_review` - under_review
+     * * `resubmission_requested` - resubmission_requested
+     * * `offboarded` - offboarded
      */
-    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started' | 'under_review' | 'resubmission_requested' | 'offboarded';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -1772,8 +1786,9 @@ export type ManagerBusinessDocument = {
      * * `paused` - paused
      * * `incomplete` - incomplete
      * * `verified` - verified
+     * * `not_started` - not_started
      */
-    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -2329,8 +2344,12 @@ export type ManagerCreateBusiness = {
      * * `paused` - paused
      * * `incomplete` - incomplete
      * * `verified` - verified
+     * * `not_started` - not_started
+     * * `under_review` - under_review
+     * * `resubmission_requested` - resubmission_requested
+     * * `offboarded` - offboarded
      */
-    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started' | 'under_review' | 'resubmission_requested' | 'offboarded';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -2371,8 +2390,9 @@ export type ManagerCreateBusinessDocument = {
      * * `paused` - paused
      * * `incomplete` - incomplete
      * * `verified` - verified
+     * * `not_started` - not_started
      */
-    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -2809,8 +2829,12 @@ export type ManagerUpdateBusiness = {
      * * `paused` - paused
      * * `incomplete` - incomplete
      * * `verified` - verified
+     * * `not_started` - not_started
+     * * `under_review` - under_review
+     * * `resubmission_requested` - resubmission_requested
+     * * `offboarded` - offboarded
      */
-    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started' | 'under_review' | 'resubmission_requested' | 'offboarded';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -3181,8 +3205,9 @@ export type PatchedAdminBusinessDocument = {
      * * `paused` - paused
      * * `incomplete` - incomplete
      * * `verified` - verified
+     * * `not_started` - not_started
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -3480,8 +3505,12 @@ export type PatchedAdminUpdateBusiness = {
      * * `paused` - paused
      * * `incomplete` - incomplete
      * * `verified` - verified
+     * * `not_started` - not_started
+     * * `under_review` - under_review
+     * * `resubmission_requested` - resubmission_requested
+     * * `offboarded` - offboarded
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started' | 'under_review' | 'resubmission_requested' | 'offboarded';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -3803,8 +3832,12 @@ export type PatchedManagerUpdateBusiness = {
      * * `paused` - paused
      * * `incomplete` - incomplete
      * * `verified` - verified
+     * * `not_started` - not_started
+     * * `under_review` - under_review
+     * * `resubmission_requested` - resubmission_requested
+     * * `offboarded` - offboarded
      */
-    readonly status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    readonly status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started' | 'under_review' | 'resubmission_requested' | 'offboarded';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -4528,8 +4561,9 @@ export type AdminBusinessDocumentWritable = {
      * * `paused` - paused
      * * `incomplete` - incomplete
      * * `verified` - verified
+     * * `not_started` - not_started
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -4652,8 +4686,9 @@ export type AdminCreateBusinessDocumentWritable = {
      * * `paused` - paused
      * * `incomplete` - incomplete
      * * `verified` - verified
+     * * `not_started` - not_started
      */
-    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -4973,8 +5008,12 @@ export type AdminUpdateBusinessWritable = {
      * * `paused` - paused
      * * `incomplete` - incomplete
      * * `verified` - verified
+     * * `not_started` - not_started
+     * * `under_review` - under_review
+     * * `resubmission_requested` - resubmission_requested
+     * * `offboarded` - offboarded
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started' | 'under_review' | 'resubmission_requested' | 'offboarded';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -6710,8 +6749,9 @@ export type PatchedAdminBusinessDocumentWritable = {
      * * `paused` - paused
      * * `incomplete` - incomplete
      * * `verified` - verified
+     * * `not_started` - not_started
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -7000,8 +7040,12 @@ export type PatchedAdminUpdateBusinessWritable = {
      * * `paused` - paused
      * * `incomplete` - incomplete
      * * `verified` - verified
+     * * `not_started` - not_started
+     * * `under_review` - under_review
+     * * `resubmission_requested` - resubmission_requested
+     * * `offboarded` - offboarded
      */
-    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified';
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started' | 'under_review' | 'resubmission_requested' | 'offboarded';
     metadata?: {
         [key: string]: unknown;
     } | null;

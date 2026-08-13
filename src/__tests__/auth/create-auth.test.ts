@@ -10,7 +10,7 @@ const mockAuthLogin = jest.fn();
 const mockAuthRegister = jest.fn();
 const mockAuthRegisterCompany = jest.fn();
 const mockAuthLogout = jest.fn();
-const mockAuthRefreshCreate = jest.fn();
+const mockAuthRefresh = jest.fn();
 const mockFetch = jest.fn();
 
 jest.mock('../../platform/user/openapi-ts/sdk.gen.js', () => ({
@@ -18,7 +18,7 @@ jest.mock('../../platform/user/openapi-ts/sdk.gen.js', () => ({
   authRegister: (...args: any[]) => mockAuthRegister(...args),
   authRegisterCompany: (...args: any[]) => mockAuthRegisterCompany(...args),
   authLogout: (...args: any[]) => mockAuthLogout(...args),
-  authRefreshCreate: (...args: any[]) => mockAuthRefreshCreate(...args),
+  authRefresh: (...args: any[]) => mockAuthRefresh(...args),
 }));
 
 jest.mock('../../platform/user/openapi-ts/client/index.js', () => ({
@@ -41,7 +41,7 @@ describe('createAuth', () => {
     mockAuthRegister.mockResolvedValue(mockRegisterResponse);
     mockAuthRegisterCompany.mockResolvedValue(mockRegisterCompanyResponse);
     mockAuthLogout.mockResolvedValue(mockLogoutResponse);
-    mockAuthRefreshCreate.mockResolvedValue(mockRefreshResponse);
+    mockAuthRefresh.mockResolvedValue(mockRefreshResponse);
     mockFetch.mockResolvedValue({
       ok: true,
       status: 200,
@@ -387,7 +387,7 @@ describe('createAuth', () => {
       });
 
       expect(isValid).toBe(true);
-      expect(mockAuthRefreshCreate).toHaveBeenCalledTimes(1);
+      expect(mockAuthRefresh).toHaveBeenCalledTimes(1);
       expect(auth.getStatus()).toBe('authenticated');
       expect(auth.getActiveSession()?.token).toBe(mockLoginResponse.data.token);
     });
