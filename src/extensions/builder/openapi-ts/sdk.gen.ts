@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AdminBuildTasksCreateData, AdminBuildTasksCreateResponses, AdminBuildTasksListData, AdminBuildTasksListResponses, AdminBuildTasksRetrieveData, AdminBuildTasksRetrieveResponses, PublicTemplatesListData, PublicTemplatesListResponses, PublicTemplatesRetrieveData, PublicTemplatesRetrieveResponses } from './types.gen';
+import type { AdminBuildTasksCreateData, AdminBuildTasksCreateResponses, AdminBuildTasksListData, AdminBuildTasksListResponses, AdminBuildTasksRetrieveData, AdminBuildTasksRetrieveResponses, AdminTemplatesComparisonRetrieveData, AdminTemplatesComparisonRetrieveResponses, AdminTemplatesCreateData, AdminTemplatesCreateResponses, AdminTemplatesListData, AdminTemplatesListResponses, AdminTemplatesPartialUpdateData, AdminTemplatesPartialUpdateResponses, AdminTemplatesRetrieveData, AdminTemplatesRetrieveResponses, AdminTemplatesUpdateData, AdminTemplatesUpdateResponses, AdminTemplatesVersionsComparisonRetrieveData, AdminTemplatesVersionsComparisonRetrieveResponses, AdminTemplatesVersionsCreateData, AdminTemplatesVersionsCreateResponses, AdminTemplatesVersionsDestroyData, AdminTemplatesVersionsDestroyResponses, AdminTemplatesVersionsListData, AdminTemplatesVersionsListResponses, AdminTemplatesVersionsPartialUpdateData, AdminTemplatesVersionsPartialUpdateResponses, AdminTemplatesVersionsRetrieveData, AdminTemplatesVersionsRetrieveResponses, AdminTemplatesVersionsUpdateData, AdminTemplatesVersionsUpdateResponses, PublicTemplatesListData, PublicTemplatesListResponses, PublicTemplatesRetrieveData, PublicTemplatesRetrieveResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -46,6 +46,82 @@ export const adminBuildTasksCreate = <ThrowOnError extends boolean = false>(opti
 export const adminBuildTasksRetrieve = <ThrowOnError extends boolean = false>(options: Options<AdminBuildTasksRetrieveData, ThrowOnError>): RequestResult<AdminBuildTasksRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AdminBuildTasksRetrieveResponses, unknown, ThrowOnError>({
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/admin/build-tasks/{identifier}/',
+    ...options
+});
+
+export const adminTemplatesList = <ThrowOnError extends boolean = false>(options?: Options<AdminTemplatesListData, ThrowOnError>): RequestResult<AdminTemplatesListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AdminTemplatesListResponses, unknown, ThrowOnError>({ url: '/admin/templates/', ...options });
+
+export const adminTemplatesCreate = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesCreateData, ThrowOnError>): RequestResult<AdminTemplatesCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AdminTemplatesCreateResponses, unknown, ThrowOnError>({
+    url: '/admin/templates/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const adminTemplatesRetrieve = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesRetrieveData, ThrowOnError>): RequestResult<AdminTemplatesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AdminTemplatesRetrieveResponses, unknown, ThrowOnError>({ url: '/admin/templates/{identifier}/', ...options });
+
+export const adminTemplatesPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesPartialUpdateData, ThrowOnError>): RequestResult<AdminTemplatesPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<AdminTemplatesPartialUpdateResponses, unknown, ThrowOnError>({
+    url: '/admin/templates/{identifier}/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const adminTemplatesUpdate = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesUpdateData, ThrowOnError>): RequestResult<AdminTemplatesUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<AdminTemplatesUpdateResponses, unknown, ThrowOnError>({
+    url: '/admin/templates/{identifier}/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const adminTemplatesComparisonRetrieve = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesComparisonRetrieveData, ThrowOnError>): RequestResult<AdminTemplatesComparisonRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AdminTemplatesComparisonRetrieveResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/admin/templates/{identifier}/comparison/',
+    ...options
+});
+
+export const adminTemplatesVersionsList = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesVersionsListData, ThrowOnError>): RequestResult<AdminTemplatesVersionsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<AdminTemplatesVersionsListResponses, unknown, ThrowOnError>({ url: '/admin/templates/{identifier}/versions/', ...options });
+
+export const adminTemplatesVersionsCreate = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesVersionsCreateData, ThrowOnError>): RequestResult<AdminTemplatesVersionsCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AdminTemplatesVersionsCreateResponses, unknown, ThrowOnError>({
+    url: '/admin/templates/{identifier}/versions/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const adminTemplatesVersionsDestroy = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesVersionsDestroyData, ThrowOnError>): RequestResult<AdminTemplatesVersionsDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<AdminTemplatesVersionsDestroyResponses, unknown, ThrowOnError>({ url: '/admin/templates/{identifier}/versions/{version}/', ...options });
+
+export const adminTemplatesVersionsRetrieve = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesVersionsRetrieveData, ThrowOnError>): RequestResult<AdminTemplatesVersionsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AdminTemplatesVersionsRetrieveResponses, unknown, ThrowOnError>({ url: '/admin/templates/{identifier}/versions/{version}/', ...options });
+
+export const adminTemplatesVersionsPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesVersionsPartialUpdateData, ThrowOnError>): RequestResult<AdminTemplatesVersionsPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<AdminTemplatesVersionsPartialUpdateResponses, unknown, ThrowOnError>({
+    url: '/admin/templates/{identifier}/versions/{version}/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const adminTemplatesVersionsUpdate = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesVersionsUpdateData, ThrowOnError>): RequestResult<AdminTemplatesVersionsUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<AdminTemplatesVersionsUpdateResponses, unknown, ThrowOnError>({
+    url: '/admin/templates/{identifier}/versions/{version}/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const adminTemplatesVersionsComparisonRetrieve = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesVersionsComparisonRetrieveData, ThrowOnError>): RequestResult<AdminTemplatesVersionsComparisonRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AdminTemplatesVersionsComparisonRetrieveResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/admin/templates/{identifier}/versions/{version}/comparison/',
     ...options
 });
 

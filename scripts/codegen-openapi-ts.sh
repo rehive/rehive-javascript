@@ -23,6 +23,14 @@ cleanup_tmp() {
 }
 trap cleanup_tmp EXIT
 
+FAILED=()
+
+# Generates one service. A failure here is isolated: the service keeps its
+# existing committed output, the name is recorded in FAILED, and the remaining
+# services still generate. A single unhealthy schema endpoint (builder has
+# returned HTTP 500 for a while) must not skip every service after it in the
+# list, nor skip the fix-codegen-types.sh pass that the already-generated
+# output depends on.
 generate() {
   local name="$1"
   local input="$2"
@@ -30,17 +38,34 @@ generate() {
   local tmp_dir="${output_dir}.openapi-ts-tmp"
 
   echo "Generating ${name} -> ${output_dir}"
-  # Generate into a temp dir and swap on success, so a failed run leaves the
-  # existing committed output intact instead of deleting it.
+
+  # Retry on failure: fetching a spec over the network blips often enough that a
+  # single miss would skip an otherwise healthy service and leave its client stale.
+  local attempt
+  for attempt in 1 2 3; do
+    # Generate into a temp dir and swap on success, so a failed run leaves the
+    # existing committed output intact instead of deleting it.
+    rm -rf "${tmp_dir}"
+    if "${GENERATOR}" \
+      --input "${input}" \
+      --output "${tmp_dir}" \
+      --client @hey-api/client-fetch \
+      --plugins @hey-api/typescript \
+      --plugins @hey-api/sdk; then
+      rm -rf "${output_dir}"
+      mv "${tmp_dir}" "${output_dir}"
+      return 0
+    fi
+    if [[ ${attempt} -lt 3 ]]; then
+      echo "  ${name}: attempt ${attempt} failed, retrying in $((attempt * 5))s" >&2
+      sleep $((attempt * 5))
+    fi
+  done
+
+  echo "  SKIPPED ${name}: generation failed after 3 attempts, keeping existing ${output_dir}" >&2
   rm -rf "${tmp_dir}"
-  "${GENERATOR}" \
-    --input "${input}" \
-    --output "${tmp_dir}" \
-    --client @hey-api/client-fetch \
-    --plugins @hey-api/typescript \
-    --plugins @hey-api/sdk
-  rm -rf "${output_dir}"
-  mv "${tmp_dir}" "${output_dir}"
+  FAILED+=("${name}")
+  return 0
 }
 
 generate "platform-user" "https://api.rehive.com/schema.json" "src/platform/user/openapi-ts"
@@ -68,3 +93,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 "${SCRIPT_DIR}/fix-codegen-types.sh"
 
 echo "Done. OpenAPI output updated in src/platform/*/openapi-ts and src/extensions/*/openapi-ts."
+
+if [[ ${#FAILED[@]} -gt 0 ]]; then
+  echo >&2
+  echo "WARNING: ${#FAILED[@]} service(s) could not be generated and kept their existing output:" >&2
+  for name in ${FAILED[@]+"${FAILED[@]}"}; do
+    echo "  - ${name}" >&2
+  done
+  echo "Re-run codegen for these once their schema endpoints are healthy." >&2
+  exit 1
+fi

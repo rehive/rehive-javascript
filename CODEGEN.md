@@ -67,6 +67,25 @@ The generation script (`scripts/codegen-openapi-ts.sh`) uses:
 - `https://payment-requests.services.rehive.com/schema.json`
 - `https://bridge.services.rehive.com/schema.json`
 - `https://app.services.rehive.com/schema.json`
+- `https://billing.services.rehive.com/schema.json`
+- `https://builder.services.rehive.com/schema.json`
+- `https://rain.services.rehive.com/schema.json`
+- `https://alchemy.services.rehive.com/schema.json`
+- `https://sumsub.services.rehive.com/schema.json`
+- `https://mukuru.services.rehive.com/schema.json`
+
+## Unhealthy Schema Endpoints
+
+Each spec is fetched with up to 3 attempts, since transient network failures are
+common enough to otherwise skip a healthy service. A service that still fails does
+not abort the run: the script keeps that service's existing committed output,
+carries on with the rest, still applies the `fix-codegen-types.sh` pass, then lists
+the skipped services and exits `1`. Check that summary before committing — an
+unnoticed skip means the affected client is silently stale.
+
+A skipped service is a server-side problem, not a repo one: the schema endpoint
+is failing and only that service can fix it. Re-run codegen for the affected
+client once the endpoint is healthy again.
 
 ## Notes
 
