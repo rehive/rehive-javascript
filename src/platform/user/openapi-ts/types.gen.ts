@@ -1999,6 +1999,10 @@ export type Auth = {
      */
     expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
     /**
+     * The user's gross annual salary, in USD.
+     */
+    annual_salary_usd?: number | null;
+    /**
      * @deprecated
      */
     readonly verified: boolean;
@@ -7578,6 +7582,10 @@ export type ExtendedUserInfo = {
      */
     expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
     /**
+     * The user's gross annual salary, in USD.
+     */
+    annual_salary_usd?: number | null;
+    /**
      * @deprecated
      */
     readonly verified: boolean;
@@ -9275,6 +9283,10 @@ export type ExtendedUserInfoRequest = {
      * * `50000_plus` - Range 50000 Plus
      */
     expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
+    /**
+     * The user's gross annual salary, in USD.
+     */
+    annual_salary_usd?: number | null;
 };
 
 export type ExtendedUserInfoResponse = {
@@ -12143,6 +12155,10 @@ export type PatchedExtendedUserInfoRequest = {
      * * `50000_plus` - Range 50000 Plus
      */
     expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
+    /**
+     * The user's gross annual salary, in USD.
+     */
+    annual_salary_usd?: number | null;
 };
 
 export type PatchedMobileRequest = {
@@ -19353,6 +19369,10 @@ export type AuthWritable = {
      * * `50000_plus` - Range 50000 Plus
      */
     expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
+    /**
+     * The user's gross annual salary, in USD.
+     */
+    annual_salary_usd?: number | null;
 };
 
 export type AuthResponseWritable = {
@@ -22040,6 +22060,10 @@ export type ExtendedUserInfoWritable = {
      * * `50000_plus` - Range 50000 Plus
      */
     expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
+    /**
+     * The user's gross annual salary, in USD.
+     */
+    annual_salary_usd?: number | null;
 };
 
 export type ExtendedUserInfoResponseWritable = {

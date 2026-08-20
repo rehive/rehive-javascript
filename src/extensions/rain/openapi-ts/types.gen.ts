@@ -60,9 +60,16 @@ export type AdminCompany = {
     readonly operational_account: string | null;
     rain_api_key: string;
     rain_webhook_api_key: string;
+    /**
+     * Maps a platform group name to its config. A `*` key applies to any group, as defaults underneath an exact group match.
+     */
     readonly supported_groups: {
         [key: string]: {
             disallowed_nationalities?: Array<string>;
+            /**
+             * How KYC is collected for the group. Defaults to `rain`.
+             */
+            kyc_collector?: 'rain' | 'sumsub';
         };
     };
 };
@@ -154,9 +161,16 @@ export type AdminUpdateCompany = {
     operational_account?: string | null;
     rain_api_key?: string;
     rain_webhook_api_key?: string | null;
+    /**
+     * Maps a platform group name to its config. A `*` key applies to any group, as defaults underneath an exact group match.
+     */
     supported_groups?: {
         [key: string]: {
             disallowed_nationalities?: Array<string>;
+            /**
+             * How KYC is collected for the group. Defaults to `rain`.
+             */
+            kyc_collector?: 'rain' | 'sumsub';
         };
     };
 };
@@ -287,9 +301,16 @@ export type PatchedAdminUpdateCompany = {
     operational_account?: string | null;
     rain_api_key?: string;
     rain_webhook_api_key?: string | null;
+    /**
+     * Maps a platform group name to its config. A `*` key applies to any group, as defaults underneath an exact group match.
+     */
     supported_groups?: {
         [key: string]: {
             disallowed_nationalities?: Array<string>;
+            /**
+             * How KYC is collected for the group. Defaults to `rain`.
+             */
+            kyc_collector?: 'rain' | 'sumsub';
         };
     };
 };
@@ -341,9 +362,9 @@ export type UserApplication = {
     readonly id: string;
     readonly account: string | null;
     currency: Currency;
-    readonly occupation: string;
-    readonly annual_salary: string;
-    readonly account_purpose: string;
+    readonly occupation: string | null;
+    readonly annual_salary: string | null;
+    readonly account_purpose: string | null;
     readonly expected_monthly_volume: string;
     readonly terms_and_conditions: boolean;
     readonly first_name: string | null;
@@ -677,9 +698,16 @@ export type UserCardPinResponse = {
  */
 export type UserCompany = {
     readonly id: string;
+    /**
+     * Maps a platform group name to its config. A `*` key applies to any group, as defaults underneath an exact group match.
+     */
     readonly supported_groups: {
         [key: string]: {
             disallowed_nationalities?: Array<string>;
+            /**
+             * How KYC is collected for the group. Defaults to `rain`.
+             */
+            kyc_collector?: 'rain' | 'sumsub';
         };
     };
 };
@@ -699,9 +727,9 @@ export type UserCreateApplication = {
     readonly id: string;
     account?: string | null;
     currency?: string | null;
-    occupation: string;
-    annual_salary: number;
-    account_purpose: string;
+    occupation?: string | null;
+    annual_salary?: number | null;
+    account_purpose?: string | null;
     expected_monthly_volume: number;
     terms_and_conditions?: boolean;
     readonly first_name: string | null;
@@ -1134,9 +1162,16 @@ export type AdminUpdateCompanyWritable = {
     operational_account?: string | null;
     rain_api_key?: string;
     rain_webhook_api_key?: string | null;
+    /**
+     * Maps a platform group name to its config. A `*` key applies to any group, as defaults underneath an exact group match.
+     */
     supported_groups?: {
         [key: string]: {
             disallowed_nationalities?: Array<string>;
+            /**
+             * How KYC is collected for the group. Defaults to `rain`.
+             */
+            kyc_collector?: 'rain' | 'sumsub';
         };
     };
 };
@@ -1216,9 +1251,16 @@ export type PatchedAdminUpdateCompanyWritable = {
     operational_account?: string | null;
     rain_api_key?: string;
     rain_webhook_api_key?: string | null;
+    /**
+     * Maps a platform group name to its config. A `*` key applies to any group, as defaults underneath an exact group match.
+     */
     supported_groups?: {
         [key: string]: {
             disallowed_nationalities?: Array<string>;
+            /**
+             * How KYC is collected for the group. Defaults to `rain`.
+             */
+            kyc_collector?: 'rain' | 'sumsub';
         };
     };
 };

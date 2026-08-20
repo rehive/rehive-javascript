@@ -3943,6 +3943,10 @@ export type AdminCreateUserInfoRequest = {
      * * `50000_plus` - Range 50000 Plus
      */
     expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
+    /**
+     * The user's gross annual salary, in USD.
+     */
+    annual_salary_usd?: number | null;
     deactivated?: boolean;
     /**
      * * `retaining` - Retaining
@@ -6467,6 +6471,10 @@ export type AdminExtendedUserInfo = {
      * * `50000_plus` - Range 50000 Plus
      */
     expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
+    /**
+     * The user's gross annual salary, in USD.
+     */
+    annual_salary_usd?: number | null;
     /**
      * @deprecated
      */
@@ -10898,6 +10906,10 @@ export type AdminUpdateUserInfoRequest = {
      */
     expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
     /**
+     * The user's gross annual salary, in USD.
+     */
+    annual_salary_usd?: number | null;
+    /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
@@ -13921,6 +13933,10 @@ export type AdminUserInfo = {
      * * `50000_plus` - Range 50000 Plus
      */
     expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
+    /**
+     * The user's gross annual salary, in USD.
+     */
+    annual_salary_usd?: number | null;
     /**
      * @deprecated
      */
@@ -18936,6 +18952,10 @@ export type ExtendedUserInfo = {
      */
     expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
     /**
+     * The user's gross annual salary, in USD.
+     */
+    annual_salary_usd?: number | null;
+    /**
      * @deprecated
      */
     readonly verified: boolean;
@@ -22482,6 +22502,10 @@ export type PatchedAdminUpdateUserInfoRequest = {
      * * `50000_plus` - Range 50000 Plus
      */
     expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
+    /**
+     * The user's gross annual salary, in USD.
+     */
+    annual_salary_usd?: number | null;
     /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
@@ -27418,6 +27442,10 @@ export type AdminCreateUserInfoRequestWritable = {
      * * `50000_plus` - Range 50000 Plus
      */
     expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
+    /**
+     * The user's gross annual salary, in USD.
+     */
+    annual_salary_usd?: number | null;
     deactivated?: boolean;
     /**
      * * `retaining` - Retaining
@@ -29594,6 +29622,10 @@ export type AdminExtendedUserInfoWritable = {
      * * `50000_plus` - Range 50000 Plus
      */
     expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
+    /**
+     * The user's gross annual salary, in USD.
+     */
+    annual_salary_usd?: number | null;
     deactivated?: boolean;
     /**
      * * `retaining` - Retaining
@@ -33218,6 +33250,10 @@ export type AdminUpdateUserInfoRequestWritable = {
      */
     expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
     /**
+     * The user's gross annual salary, in USD.
+     */
+    annual_salary_usd?: number | null;
+    /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
      * * `pending` - Pending
@@ -35629,6 +35665,10 @@ export type AdminUserInfoWritable = {
      * * `50000_plus` - Range 50000 Plus
      */
     expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
+    /**
+     * The user's gross annual salary, in USD.
+     */
+    annual_salary_usd?: number | null;
     deactivated?: boolean;
     /**
      * * `retaining` - Retaining
@@ -37570,6 +37610,10 @@ export type ExtendedUserInfoWritable = {
      * * `50000_plus` - Range 50000 Plus
      */
     expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
+    /**
+     * The user's gross annual salary, in USD.
+     */
+    annual_salary_usd?: number | null;
 };
 
 export type GroupDisallowedTransactionSubtypeWritable = {
@@ -40426,6 +40470,10 @@ export type PatchedAdminUpdateUserInfoRequestWritable = {
      * * `50000_plus` - Range 50000 Plus
      */
     expected_monthly_volume_usd?: '0_4999' | '5000_9999' | '10000_49999' | '50000_plus' | null;
+    /**
+     * The user's gross annual salary, in USD.
+     */
+    annual_salary_usd?: number | null;
     /**
      * * `obsolete` - Obsolete
      * * `declined` - Declined
