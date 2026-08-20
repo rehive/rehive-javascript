@@ -89,12 +89,43 @@ function containsFileUnion(node: ts.Node): boolean {
   return found;
 }
 
+/** Every alias name referenced anywhere inside `node`. */
+function referencedTypeNames(node: ts.Node, known: Set<string>): string[] {
+  const names: string[] = [];
+
+  const visit = (current: ts.Node): void => {
+    if (ts.isTypeReferenceNode(current)) {
+      const name = current.typeName.getText();
+      if (known.has(name)) names.push(name);
+    }
+    ts.forEachChild(current, visit);
+  };
+
+  visit(node);
+  return names;
+}
+
+/** True for `Foo[]` / `Array<Foo>` — items callers send as bracketed keys. */
+function isCollection(node: ts.TypeNode): boolean {
+  if (ts.isArrayTypeNode(node)) return true;
+  if (ts.isTypeReferenceNode(node) && node.typeName.getText() === 'Array') return true;
+  if (ts.isUnionTypeNode(node)) return node.types.some(isCollection);
+  return false;
+}
+
 /**
- * Names of the `*Data` types whose request body can hold a file, and therefore
- * must be sent as multipart/form-data.
+ * `flat` — file lands as a top-level key, so `formDataBodySerializer` handles it.
+ * `nested` — file sits behind a plain nested object; the serializer would
+ * stringify it and drop the file, so it needs a call site change instead.
  */
-function fileCarryingDataTypes(typesFile: string): Set<string> {
-  const source = parseFile(typesFile);
+type Reachability = 'flat' | 'nested';
+
+/**
+ * Classify every `*Data` type whose body can hold a file, resolving references
+ * transitively — the admin document upload is only detectable from its own text
+ * because of a deprecated `file` field, and loses detection when that goes.
+ */
+function classifyDataTypes(source: ts.SourceFile): Map<string, Reachability> {
   const aliases = new Map<string, ts.TypeAliasDeclaration>();
 
   source.forEachChild((node) => {
@@ -103,11 +134,34 @@ function fileCarryingDataTypes(typesFile: string): Set<string> {
     }
   });
 
-  const fileCarrying = new Set(
-    [...aliases].filter(([, alias]) => containsFileUnion(alias.type)).map(([name]) => name),
-  );
+  const known = new Set(aliases.keys());
+  const memo = new Map<string, boolean>();
 
-  const dataTypes = new Set<string>();
+  const carriesFile = (name: string, visiting: Set<string>): boolean => {
+    const cached = memo.get(name);
+    if (cached !== undefined) return cached;
+
+    const alias = aliases.get(name);
+    if (!alias || visiting.has(name)) return false;
+
+    if (containsFileUnion(alias.type)) {
+      memo.set(name, true);
+      return true;
+    }
+
+    const next = new Set(visiting).add(name);
+    const result = referencedTypeNames(alias.type, known).some((ref) => carriesFile(ref, next));
+    memo.set(name, result);
+    return result;
+  };
+
+  const propertiesOf = (name: string): ts.PropertySignature[] => {
+    const alias = aliases.get(name);
+    if (!alias || !ts.isTypeLiteralNode(alias.type)) return [];
+    return alias.type.members.filter(ts.isPropertySignature);
+  };
+
+  const classified = new Map<string, Reachability>();
 
   for (const [name, alias] of aliases) {
     if (!name.endsWith('Data') || !ts.isTypeLiteralNode(alias.type)) continue;
@@ -118,16 +172,61 @@ function fileCarryingDataTypes(typesFile: string): Set<string> {
     );
     if (!body?.type) continue;
 
-    const referencesFileType =
-      ts.isTypeReferenceNode(body.type) && fileCarrying.has(body.type.typeName.getText());
+    if (containsFileUnion(body.type)) {
+      classified.set(name, 'flat');
+      continue;
+    }
 
-    if (referencesFileType || containsFileUnion(body.type)) {
-      dataTypes.add(name);
+    const kinds = new Set<Reachability>();
+
+    for (const bodyType of referencedTypeNames(body.type, known)) {
+      if (containsFileUnion(aliases.get(bodyType)!.type)) {
+        kinds.add('flat');
+        continue;
+      }
+
+      for (const property of propertiesOf(bodyType)) {
+        if (!property.type) continue;
+        const reaches = referencedTypeNames(property.type, known).some((ref) =>
+          carriesFile(ref, new Set()),
+        );
+        if (reaches) {
+          kinds.add(isCollection(property.type) ? 'flat' : 'nested');
+        }
+      }
+    }
+
+    // Both ways is still patchable: the array path keys are top-level.
+    if (kinds.has('flat')) {
+      classified.set(name, 'flat');
+    } else if (kinds.has('nested')) {
+      classified.set(name, 'nested');
     }
   }
 
-  return dataTypes;
+  return classified;
 }
+
+/** `*Data` types that must carry `formDataBodySerializer`. */
+function fileCarryingDataTypes(typesFile: string): Set<string> {
+  const classified = classifyDataTypes(parseFile(typesFile));
+  return new Set(
+    [...classified].filter(([, kind]) => kind === 'flat').map(([name]) => name),
+  );
+}
+
+/** `*Data` types that carry a file the flat serializer cannot express. */
+function unpatchableDataTypes(typesFile: string): Set<string> {
+  const classified = classifyDataTypes(parseFile(typesFile));
+  return new Set(
+    [...classified].filter(([, kind]) => kind === 'nested').map(([name]) => name),
+  );
+}
+
+/** Shared with the codegen script as data only; detection stays independent. */
+const EXCEPTIONS: Record<string, string> = JSON.parse(
+  fs.readFileSync(path.join(REPO_ROOT, 'scripts', 'multipart-exceptions.json'), 'utf8'),
+).exceptions;
 
 /** The single object literal passed to `client.post({ ... })` and friends. */
 function findRequestOptions(node: ts.Node): ts.ObjectLiteralExpression | undefined {
@@ -272,6 +371,107 @@ describe('admin file-upload operations', () => {
     expect(operation).toBeDefined();
     expect(operation!.spreadsFormDataSerializer).toBe(true);
     expect(operation!.contentType).toBe('null');
+  });
+});
+
+describe('unpatchable file-carrying operations', () => {
+  // Unpatchable is allowed, but only as a reviewed entry. An unlisted one means
+  // a new upload endpoint nobody decided about — how 4.5.0 shipped.
+  it.each(clients.map((client) => [client.name, client] as const))(
+    '%s records every unpatchable body in multipart-exceptions.json',
+    (_name, client) => {
+      const unlisted = [...unpatchableDataTypes(client.typesFile)].filter(
+        (dataType) => !(dataType in EXCEPTIONS),
+      );
+
+      expect(unlisted).toEqual([]);
+    },
+  );
+
+  it('keeps the exception list honest — every entry still exists and is still nested', () => {
+    const nested = new Set(clients.flatMap((client) => [...unpatchableDataTypes(client.typesFile)]));
+
+    // A stale entry would excuse an operation that is now patchable.
+    expect(Object.keys(EXCEPTIONS).sort()).toEqual([...nested].sort());
+  });
+});
+
+describe('reference-following detection', () => {
+  // AdminCreateUserDocumentRequest is detected today only via its deprecated
+  // top-level `file`; its real multi-file path is one reference away.
+  const classify = (source: string): Map<string, Reachability> =>
+    classifyDataTypes(
+      ts.createSourceFile('synthetic.ts', source, ts.ScriptTarget.Latest, true),
+    );
+
+  it('detects a file reached only through an Array of referenced types', () => {
+    const classified = classify(`
+      export type DocumentFileWriteRequest = {
+          file: Blob | File;
+          label?: string;
+      };
+      export type CreateDocumentRequest = {
+          user: string;
+          files?: Array<DocumentFileWriteRequest>;
+      };
+      export type DocumentsCreateData = {
+          body: CreateDocumentRequest;
+          url: '/documents/';
+      };
+    `);
+
+    expect(classified.get('DocumentsCreateData')).toBe('flat');
+  });
+
+  it('treats a file behind a plain nested object as unpatchable, not absent', () => {
+    const classified = classify(`
+      export type CreateCompanyRequest = {
+          name: string;
+          logo?: Blob | File;
+      };
+      export type RegisterCompanyRequest = {
+          email: string;
+          company: CreateCompanyRequest;
+      };
+      export type RegisterCompanyData = {
+          body: RegisterCompanyRequest;
+          url: '/register/';
+      };
+    `);
+
+    expect(classified.get('RegisterCompanyData')).toBe('nested');
+  });
+
+  it('ignores bodies that reach no file at all', () => {
+    const classified = classify(`
+      export type Nested = {
+          note?: string;
+      };
+      export type PlainRequest = {
+          nested?: Nested;
+      };
+      export type PlainData = {
+          body: PlainRequest;
+          url: '/plain/';
+      };
+    `);
+
+    expect(classified.has('PlainData')).toBe(false);
+  });
+
+  it('terminates on a reference cycle', () => {
+    const classified = classify(`
+      export type Node = {
+          child?: Node;
+          file?: Blob | File;
+      };
+      export type CycleData = {
+          body: Node;
+          url: '/cycle/';
+      };
+    `);
+
+    expect(classified.get('CycleData')).toBe('flat');
   });
 });
 

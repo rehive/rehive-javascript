@@ -117,3 +117,17 @@ re-checks the committed output independently, via the TypeScript compiler.
 - Compat adapters in `src/platform/*/rehive-*-api.ts` and `src/extensions/*/rehive-*-api.ts`
   keep public SDK access patterns stable (`.v3`, `.admin`, `.user`, etc.).
 - Shared compatibility behavior is implemented in `src/shared/openapi-compat.ts`.
+
+### File uploads the serializer cannot express
+
+`formDataBodySerializer` only flattens top-level keys. A body that reaches a
+binary only through a plain nested object is left unpatched and recorded in
+`scripts/multipart-exceptions.json` with a reason — patching it would stringify
+the object and drop the file anyway.
+
+Anything reached through an `Array<...>` is patched normally: callers send
+bracketed keys (`files[0][file]`), which are flat at runtime.
+
+A file-carrying operation that is neither patchable nor listed fails codegen.
+An unpatched upload compiles, runs and returns 200 while sending no file, so a
+silent skip stays invisible until someone reports a lost document.
