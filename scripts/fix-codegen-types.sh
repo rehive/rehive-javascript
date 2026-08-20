@@ -20,12 +20,32 @@ set -euo pipefail
 
 echo "Fixing generated client type defaults..."
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # Find all generated types.gen.ts files in client/ directories
 for types_file in src/*/openapi-ts/client/types.gen.ts src/*/*/openapi-ts/client/types.gen.ts; do
   [ -f "$types_file" ] || continue
 
-  # 1. Change default TResponseStyle from 'fields' to 'data' in all generic signatures
-  sed -i '' "s/TResponseStyle extends ResponseStyle = 'fields'/TResponseStyle extends ResponseStyle = 'data'/g" "$types_file"
+  # 1. Change default TResponseStyle from 'fields' to 'data' in all generic signatures.
+  #    Done in python, not `sed -i`: the in-place flag needs an empty suffix argument
+  #    on BSD sed and must not have one on GNU sed, so no single invocation runs on
+  #    both macOS and Linux. This loop used the BSD form, which meant the whole
+  #    script died on the first file under `set -e` on Linux.
+  python3 - "$types_file" <<'PY'
+import sys
+
+path = sys.argv[1]
+with open(path) as f:
+    content = f.read()
+
+patched = content.replace(
+    "TResponseStyle extends ResponseStyle = 'fields'",
+    "TResponseStyle extends ResponseStyle = 'data'",
+)
+if patched != content:
+    with open(path, 'w') as f:
+        f.write(patched)
+PY
 
   echo "  Fixed: $types_file"
 done
@@ -44,15 +64,19 @@ echo "Done. Generated type defaults updated."
 #
 # Approach:
 #   1. Scan types.gen.ts to find *Data types whose body references a type
-#      that contains "Blob | File".
+#      that contains "Blob | File" (find-multipart-types.py).
 #   2. In sdk.gen.ts, add the formDataBodySerializer import, replace the
 #      Content-Type header with null (to delete it from merged headers),
-#      and spread formDataBodySerializer into the request options.
+#      and spread formDataBodySerializer into the request options
+#      (apply-multipart-serializer.py).
+#
+# Both steps fail loudly. A file-upload operation that goes unpatched compiles
+# and runs fine, it just uploads nothing — so a silent miss here is invisible
+# until a user reports a lost document. That is exactly how 4.5.0 shipped
+# usersDocumentsCreate / usersUpdate / usersPartialUpdate as JSON.
 # ---------------------------------------------------------------------------
 
 echo "Fixing file upload endpoints to use formDataBodySerializer..."
-
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 for types_file in src/*/openapi-ts/types.gen.ts src/*/*/openapi-ts/types.gen.ts; do
   [ -f "$types_file" ] || continue
@@ -68,61 +92,8 @@ for types_file in src/*/openapi-ts/types.gen.ts src/*/*/openapi-ts/types.gen.ts;
     continue
   fi
 
-  python3 -c "
-import re, sys
-
-with open('$sdk_file') as f:
-    content = f.read()
-
-# Idempotency guard: this transform is only safe on fresh codegen output.
-# The usage-injection regex below has no 'already-applied' check, so running it
-# twice without regenerating double-injects formDataBodySerializer. If the file
-# was already processed, skip it. (Normal flow regenerates fresh, so this is a
-# no-op there; it only protects against a standalone re-run of this script.)
-if 'formDataBodySerializer' in content:
-    sys.exit(0)
-
-# Add formDataBodySerializer import. Anchor on the stable './client.gen' import
-# (the type-only './client' import varies with the spec's generated type list and
-# codegen version, e.g. 0.98.1 added RequestResult).
-content = content.replace(
-    \"import { client } from './client.gen';\",
-    \"import { client } from './client.gen';\nimport { formDataBodySerializer } from './core/bodySerializer.gen';\",
-)
-
-data_types = '''$multipart_data_types'''.strip().split('\n')
-count = 0
-
-for data_type in data_types:
-    data_type = data_type.strip()
-    if not data_type:
-        continue
-    # Replace the headers block with formDataBodySerializer + Content-Type: null
-    pattern = (
-        r'(Options<' + re.escape(data_type) + r',.*?\.\.\.options,\n)'
-        r'    headers: \{\n'
-        r\"        'Content-Type': 'application/json',\n\"
-        r'        \.\.\.options((?:\?)?)\.headers\n'
-        r'    \}\n'
-    )
-    replacement = (
-        r'\1'
-        r'    ...formDataBodySerializer,\n'
-        r'    headers: {\n'
-        r\"        'Content-Type': null,\n\"
-        r'        ...options\2.headers\n'
-        r'    }\n'
-    )
-    new_content, n = re.subn(pattern, replacement, content, flags=re.DOTALL)
-    if n > 0:
-        content = new_content
-        count += n
-
-if count > 0:
-    with open('$sdk_file', 'w') as f:
-        f.write(content)
-    print(f'  Fixed {count} file upload endpoint(s) in: $sdk_file')
-"
+  # shellcheck disable=SC2086 # word splitting is intentional: one arg per type
+  python3 "${SCRIPT_DIR}/apply-multipart-serializer.py" "$sdk_file" $multipart_data_types
 done
 
 echo "Done. File upload endpoints updated."

@@ -1,0 +1,6 @@
+{
+  "$comment": "Operations whose body can carry a file but which are deliberately not patched: the binary sits behind a plain nested object, and formDataBodySerializer only flattens top-level keys, so patching would stringify the object and lose the file anyway. Fixing one needs the call site to send flattened bracketed keys. Anything reachable through an Array<...> is not an exception and is patched normally. A file-carrying operation that is neither patchable nor listed here fails codegen.",
+  "exceptions": {
+    "AuthRegisterCompanyData": "platform/user — RegisterCompanyRequestWritable.company nests CreateCompanyRequestWritable, whose logo/icon are binary. Logo upload at registration has never worked; fixing it needs the caller to flatten to company[logo] keys."
+  }
+}

@@ -2994,8 +2994,9 @@ export const usersPartialUpdate = <ThrowOnError extends boolean = false>(options
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/3/admin/users/{identifier}/',
     ...options,
+    ...formDataBodySerializer,
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': null,
         ...options.headers
     }
 });
@@ -3007,8 +3008,9 @@ export const usersUpdate = <ThrowOnError extends boolean = false>(options: Optio
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/3/admin/users/{identifier}/',
     ...options,
+    ...formDataBodySerializer,
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': null,
         ...options.headers
     }
 });
@@ -3784,8 +3786,9 @@ export const usersDocumentsCreate = <ThrowOnError extends boolean = false>(optio
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/3/admin/users/documents/',
     ...options,
+    ...formDataBodySerializer,
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': null,
         ...options.headers
     }
 });

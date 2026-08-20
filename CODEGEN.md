@@ -87,8 +87,47 @@ A skipped service is a server-side problem, not a repo one: the schema endpoint
 is failing and only that service can fix it. Re-run codegen for the affected
 client once the endpoint is healthy again.
 
+## File uploads (multipart/form-data)
+
+`openapi-ts` emits every operation with `'Content-Type': 'application/json'` and no
+body serializer, including the ones that upload files. `scripts/fix-codegen-types.sh`
+runs at the end of codegen and patches those:
+
+1. `find-multipart-types.py` reads `types.gen.ts` and lists the `*Data` types whose
+   `body` type declares a `Blob | File` field.
+2. `apply-multipart-serializer.py` spreads `formDataBodySerializer` into each of those
+   operations in `sdk.gen.ts` and sets `'Content-Type': null`, so the runtime picks
+   `multipart/form-data` and its own boundary.
+
+**A miss here is invisible at runtime.** With no body serializer the client falls back
+to JSON, `JSON.stringify` turns a `File` into `{}`, and the request succeeds while
+uploading nothing. That is how 4.5.0 shipped `usersDocumentsCreate`, `usersUpdate` and
+`usersPartialUpdate` as JSON: a three-level-deep `annotations` object arrived in the
+platform spec and defeated the detector's regex, which only tolerated one level of
+nesting.
+
+So both steps are built to fail loudly. Detection parses with brace counting rather
+than a regex, and the patch step exits non-zero, naming the operations, if a body type
+it was told to patch doesn't match the expected generated shape — better a red codegen
+run than a silently JSON-only upload. `src/__tests__/codegen/multipart-serializer.test.ts`
+re-checks the committed output independently, via the TypeScript compiler.
+
 ## Notes
 
 - Compat adapters in `src/platform/*/rehive-*-api.ts` and `src/extensions/*/rehive-*-api.ts`
   keep public SDK access patterns stable (`.v3`, `.admin`, `.user`, etc.).
 - Shared compatibility behavior is implemented in `src/shared/openapi-compat.ts`.
+
+### File uploads the serializer cannot express
+
+`formDataBodySerializer` only flattens top-level keys. A body that reaches a
+binary only through a plain nested object is left unpatched and recorded in
+`scripts/multipart-exceptions.json` with a reason — patching it would stringify
+the object and drop the file anyway.
+
+Anything reached through an `Array<...>` is patched normally: callers send
+bracketed keys (`files[0][file]`), which are flat at runtime.
+
+A file-carrying operation that is neither patchable nor listed fails codegen.
+An unpatched upload compiles, runs and returns 200 while sending no file, so a
+silent skip stays invisible until someone reports a lost document.
