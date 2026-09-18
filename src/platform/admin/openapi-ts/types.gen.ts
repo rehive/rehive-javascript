@@ -370,7 +370,7 @@ export type AdminAlert = {
     readonly transaction: string | null;
     user: ReducedUserInfo;
     author: ReducedUserInfo;
-    policy: ReducedPolicy | null;
+    rule: ReducedRule | null;
     name: string;
     description?: string | null;
     /**
@@ -482,6 +482,8 @@ export type AdminAuditLog = {
      * * `grouptierrequirementset` - Group Tier Requirement Set
      * * `legalterm` - Legal Term
      * * `legaltermversion` - Legal Term Version
+     * * `commonlist` - Common List
+     * * `commonlistitem` - Common List Item
      * * `metric` - Metric
      * * `metric_schema` - Metric Schema
      * * `metric_point` - Metric Point
@@ -498,13 +500,13 @@ export type AdminAuditLog = {
      * * `oauthsession` - Oauth Session
      * * `oidckey` - Oidc Key
      * * `permission` - Permission
-     * * `policy` - Policy
-     * * `policyeffect` - Policy Effect
-     * * `policylog` - Policy Log
      * * `recoverycode` - Recovery Code
      * * `refresh_token` - Refresh Token
      * * `request` - Request
      * * `resourcerequirementrule` - Resource Requirement Rule
+     * * `rule` - Rule
+     * * `ruleeffect` - Rule Effect
+     * * `rulelog` - Rule Log
      * * `service` - Service
      * * `statement` - Statement
      * * `token` - Token
@@ -522,19 +524,26 @@ export type AdminAuditLog = {
      * * `userlegaltermversion` - User Legal Term Version
      * * `usermessage` - User Message
      * * `userpermission` - User Permission
+     * * `usertag` - User Tag
      * * `walletowneraddress` - Wallet Owner Address
      * * `webhook` - Webhook
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    readonly resource_type: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest';
+    readonly resource_type: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'commonlist' | 'commonlistitem' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest';
     readonly resource_id: string;
+    readonly context: {
+        [key: string]: unknown;
+    } | null;
     subject_user: ReducedUserInfo;
     /**
      * * `create` - Create
      * * `update` - Update
+     * * `delete` - Delete
+     * * `login` - Login
+     * * `password_change` - Password Change
      */
-    readonly action: 'create' | 'update';
+    readonly action: 'create' | 'update' | 'delete' | 'login' | 'password_change';
     /**
      * * `applied` - Applied
      * * `rejected` - Rejected
@@ -595,6 +604,49 @@ export type AdminAuthenticatorRuleResponse = {
     data: AdminAuthenticatorRule;
 };
 
+export type AdminCommonList = {
+    readonly id: string;
+    /**
+     * * `system` - System
+     * * `company` - Company
+     */
+    readonly type: 'system' | 'company';
+    name: string;
+    label?: string | null;
+    description?: string | null;
+    readonly created: string;
+    readonly updated: string;
+};
+
+export type AdminCommonListItem = {
+    readonly id: string;
+    value: string;
+    label?: string | null;
+    readonly created: string;
+    readonly updated: string;
+};
+
+export type AdminCommonListItemRequest = {
+    value: string;
+    label?: string | null;
+};
+
+export type AdminCommonListItemResponse = {
+    status: string;
+    data: AdminCommonListItem;
+};
+
+export type AdminCommonListRequest = {
+    name: string;
+    label?: string | null;
+    description?: string | null;
+};
+
+export type AdminCommonListResponse = {
+    status: string;
+    data: AdminCommonList;
+};
+
 export type AdminCompany = {
     readonly id: string;
     name?: string | null;
@@ -604,6 +656,7 @@ export type AdminCompany = {
     support_website?: string | null;
     documentation_website?: string | null;
     support_email?: string | null;
+    support_phone?: string | null;
     contact_email?: string | null;
     /**
      * * `AF` - Afghanistan
@@ -885,6 +938,17 @@ export type AdminCompany = {
 };
 
 export type AdminCompanyAddress = {
+    readonly id: number;
+    /**
+     * * `permanent` - Permanent
+     * * `contact` - Contact
+     * * `shipping` - Shipping
+     * * `billing` - Billing
+     * * `business` - Business
+     * * `registered` - Registered
+     * * `operating` - Operating
+     */
+    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business' | 'registered' | 'operating';
     line_1?: string | null;
     line_2?: string | null;
     city?: string | null;
@@ -894,6 +958,16 @@ export type AdminCompanyAddress = {
 };
 
 export type AdminCompanyAddressRequest = {
+    /**
+     * * `permanent` - Permanent
+     * * `contact` - Contact
+     * * `shipping` - Shipping
+     * * `billing` - Billing
+     * * `business` - Business
+     * * `registered` - Registered
+     * * `operating` - Operating
+     */
+    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business' | 'registered' | 'operating';
     line_1?: string | null;
     line_2?: string | null;
     city?: string | null;
@@ -993,6 +1067,689 @@ export type AdminCompanyBankAccountResponse = {
     data: AdminCompanyBankAccount;
 };
 
+export type AdminCompanyLegalEntity = {
+    /**
+     * * `sole_proprietor` - Sole Proprietor
+     * * `partnership` - Partnership
+     * * `private_company` - Private Company
+     * * `public_company` - Public Company
+     * * `trust` - Trust
+     * * `non_profit` - Non Profit
+     * * `other` - Other
+     */
+    entity_type?: 'sole_proprietor' | 'partnership' | 'private_company' | 'public_company' | 'trust' | 'non_profit' | 'other' | null;
+    registration_number?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    incorporation_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    incorporation_date?: string | null;
+    tax_number?: string | null;
+    /**
+     * * `provider` - Provider
+     * * `own` - Own
+     * * `unsure` - Unsure
+     */
+    licensing_model?: 'provider' | 'own' | 'unsure' | null;
+    licenses?: string | null;
+    /**
+     * * `consumer_wallet` - Consumer Wallet
+     * * `business_accounts` - Business Accounts
+     * * `cross_border_remittance` - Cross Border Remittance
+     * * `payroll_payouts` - Payroll Payouts
+     * * `marketplace_payments` - Marketplace Payments
+     * * `stablecoin_ramp` - Stablecoin Ramp
+     * * `treasury_fx` - Treasury Fx
+     * * `lending_credit` - Lending Credit
+     * * `rewards_loyalty` - Rewards Loyalty
+     * * `other` - Other
+     */
+    program_type?: 'consumer_wallet' | 'business_accounts' | 'cross_border_remittance' | 'payroll_payouts' | 'marketplace_payments' | 'stablecoin_ramp' | 'treasury_fx' | 'lending_credit' | 'rewards_loyalty' | 'other' | null;
+    program_type_other?: string | null;
+    /**
+     * * `individuals` - Individuals
+     * * `businesses` - Businesses
+     * * `both` - Both
+     */
+    end_user_type?: 'individuals' | 'businesses' | 'both' | null;
+    /**
+     * * `under_10k` - Under 10K
+     * * `from_10k_to_100k` - From 10K To 100K
+     * * `from_100k_to_1m` - From 100K To 1M
+     * * `from_1m_to_10m` - From 1M To 10M
+     * * `over_10m` - Over 10M
+     * * `not_sure` - Not Sure
+     */
+    expected_monthly_volume?: 'under_10k' | 'from_10k_to_100k' | 'from_100k_to_1m' | 'from_1m_to_10m' | 'over_10m' | 'not_sure' | null;
+    /**
+     * * `under_100` - Under 100
+     * * `from_100_to_1k` - From 100 To 1K
+     * * `from_1k_to_10k` - From 1K To 10K
+     * * `from_10k_to_100k` - From 10K To 100K
+     * * `over_100k` - Over 100K
+     * * `not_sure` - Not Sure
+     */
+    expected_monthly_transactions?: 'under_100' | 'from_100_to_1k' | 'from_1k_to_10k' | 'from_10k_to_100k' | 'over_100k' | 'not_sure' | null;
+    compliance_officer_name?: string | null;
+    compliance_officer_email?: string | null;
+    compliance_officer_phone?: string | null;
+    owners?: {
+        [key: string]: unknown;
+    } | null;
+    certificate_of_incorporation?: string | null;
+    proof_of_address?: string | null;
+    ownership_chart?: string | null;
+    director_identity_documents?: string | null;
+    memorandum_and_articles?: string | null;
+    proof_of_license?: string | null;
+    proof_of_bank_account?: string | null;
+    cards_planned?: boolean | null;
+    /**
+     * * `at_launch` - At Launch
+     * * `later` - Later
+     */
+    cards_timing?: 'at_launch' | 'later' | null;
+    cards_target_date?: string | null;
+    /**
+     * * `yes` - Yes
+     * * `no` - No
+     * * `not_yet` - Not Yet
+     */
+    cards_budget_secured?: 'yes' | 'no' | 'not_yet' | null;
+};
+
+export type AdminCompanyLegalEntityRequest = {
+    /**
+     * * `sole_proprietor` - Sole Proprietor
+     * * `partnership` - Partnership
+     * * `private_company` - Private Company
+     * * `public_company` - Public Company
+     * * `trust` - Trust
+     * * `non_profit` - Non Profit
+     * * `other` - Other
+     */
+    entity_type?: 'sole_proprietor' | 'partnership' | 'private_company' | 'public_company' | 'trust' | 'non_profit' | 'other' | null;
+    registration_number?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    incorporation_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    incorporation_date?: string | null;
+    tax_number?: string | null;
+    /**
+     * * `provider` - Provider
+     * * `own` - Own
+     * * `unsure` - Unsure
+     */
+    licensing_model?: 'provider' | 'own' | 'unsure' | null;
+    licenses?: string | null;
+    /**
+     * * `consumer_wallet` - Consumer Wallet
+     * * `business_accounts` - Business Accounts
+     * * `cross_border_remittance` - Cross Border Remittance
+     * * `payroll_payouts` - Payroll Payouts
+     * * `marketplace_payments` - Marketplace Payments
+     * * `stablecoin_ramp` - Stablecoin Ramp
+     * * `treasury_fx` - Treasury Fx
+     * * `lending_credit` - Lending Credit
+     * * `rewards_loyalty` - Rewards Loyalty
+     * * `other` - Other
+     */
+    program_type?: 'consumer_wallet' | 'business_accounts' | 'cross_border_remittance' | 'payroll_payouts' | 'marketplace_payments' | 'stablecoin_ramp' | 'treasury_fx' | 'lending_credit' | 'rewards_loyalty' | 'other' | null;
+    program_type_other?: string | null;
+    /**
+     * * `individuals` - Individuals
+     * * `businesses` - Businesses
+     * * `both` - Both
+     */
+    end_user_type?: 'individuals' | 'businesses' | 'both' | null;
+    /**
+     * * `under_10k` - Under 10K
+     * * `from_10k_to_100k` - From 10K To 100K
+     * * `from_100k_to_1m` - From 100K To 1M
+     * * `from_1m_to_10m` - From 1M To 10M
+     * * `over_10m` - Over 10M
+     * * `not_sure` - Not Sure
+     */
+    expected_monthly_volume?: 'under_10k' | 'from_10k_to_100k' | 'from_100k_to_1m' | 'from_1m_to_10m' | 'over_10m' | 'not_sure' | null;
+    /**
+     * * `under_100` - Under 100
+     * * `from_100_to_1k` - From 100 To 1K
+     * * `from_1k_to_10k` - From 1K To 10K
+     * * `from_10k_to_100k` - From 10K To 100K
+     * * `over_100k` - Over 100K
+     * * `not_sure` - Not Sure
+     */
+    expected_monthly_transactions?: 'under_100' | 'from_100_to_1k' | 'from_1k_to_10k' | 'from_10k_to_100k' | 'over_100k' | 'not_sure' | null;
+    compliance_officer_name?: string | null;
+    compliance_officer_email?: string | null;
+    compliance_officer_phone?: string | null;
+    owners?: {
+        [key: string]: unknown;
+    } | null;
+    certificate_of_incorporation?: Blob | File | null;
+    proof_of_address?: Blob | File | null;
+    ownership_chart?: Blob | File | null;
+    director_identity_documents?: Blob | File | null;
+    memorandum_and_articles?: Blob | File | null;
+    proof_of_license?: Blob | File | null;
+    proof_of_bank_account?: Blob | File | null;
+    cards_planned?: boolean | null;
+    /**
+     * * `at_launch` - At Launch
+     * * `later` - Later
+     */
+    cards_timing?: 'at_launch' | 'later' | null;
+    cards_target_date?: string | null;
+    /**
+     * * `yes` - Yes
+     * * `no` - No
+     * * `not_yet` - Not Yet
+     */
+    cards_budget_secured?: 'yes' | 'no' | 'not_yet' | null;
+};
+
+export type AdminCompanyLegalEntityResponse = {
+    status: string;
+    data: AdminCompanyLegalEntity;
+};
+
 export type AdminCompanyLink = {
     readonly id: number;
     readonly key: string | null;
@@ -1028,6 +1785,7 @@ export type AdminCompanyRequest = {
     support_website?: string | null;
     documentation_website?: string | null;
     support_email?: string | null;
+    support_phone?: string | null;
     contact_email?: string | null;
     /**
      * * `AF` - Afghanistan
@@ -1539,6 +2297,17 @@ export type AdminCreateChallengeRequest = {
     authenticator_types?: Array<'totp' | 'sms' | 'static'>;
 };
 
+export type AdminCreateCommonListItemRequest = {
+    value: string;
+    label?: string | null;
+};
+
+export type AdminCreateCommonListRequest = {
+    name: string;
+    label?: string | null;
+    description?: string | null;
+};
+
 export type AdminCreateCompanyBankAccountAssetRequest = {
     currency: string;
 };
@@ -1744,7 +2513,7 @@ export type AdminCreateMultiUserPermissionRequest = {
     [key: string]: unknown;
 };
 
-export type AdminCreatePolicyEffectRequest = {
+export type AdminCreateRuleEffectRequest = {
     /**
      * * `create_account_asset_limit` - Create Account Asset Limit
      * * `disable_user_transactions` - Disable User Transactions
@@ -1763,7 +2532,7 @@ export type AdminCreatePolicyEffectRequest = {
     };
 };
 
-export type AdminCreatePolicyRequest = {
+export type AdminCreateRuleRequest = {
     /**
      * * `trigger` - Trigger
      */
@@ -1776,6 +2545,8 @@ export type AdminCreatePolicyRequest = {
      * * `transaction.execute` - Transaction Execute
      * * `transaction.initiate` - Transaction Initiate
      * * `user.create` - User Create
+     * * `user.update` - User Update
+     * * `email.create` - Email Create
      * * `mobile.create` - Mobile Create
      * * `mobile.create.conflict` - Mobile Create Conflict
      * * `device.create` - Device Create
@@ -1784,7 +2555,7 @@ export type AdminCreatePolicyRequest = {
      * * `transaction.tag.create` - Transaction Tag Create
      * * `transaction.tag.delete` - Transaction Tag Delete
      */
-    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
+    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'user.update' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
     condition?: {
         [key: string]: unknown;
     } | null;
@@ -1904,8 +2675,10 @@ export type AdminCreateUserAddressRequest = {
      * * `shipping` - Shipping
      * * `billing` - Billing
      * * `business` - Business
+     * * `registered` - Registered
+     * * `operating` - Operating
      */
-    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business';
+    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business' | 'registered' | 'operating';
     line_1?: string | null;
     line_2?: string | null;
     city?: string | null;
@@ -4369,7 +5142,7 @@ export type AdminExtendedAlert = {
     readonly transaction: string | null;
     user: ReducedUserInfo;
     author: ReducedUserInfo;
-    policy: ReducedPolicy | null;
+    rule: ReducedRule | null;
     name: string;
     description?: string | null;
     /**
@@ -4591,6 +5364,8 @@ export type AdminExtendedRequest = {
      * * `grouptierrequirementset` - Group Tier Requirement Set
      * * `legalterm` - Legal Term
      * * `legaltermversion` - Legal Term Version
+     * * `commonlist` - Common List
+     * * `commonlistitem` - Common List Item
      * * `metric` - Metric
      * * `metric_schema` - Metric Schema
      * * `metric_point` - Metric Point
@@ -4607,13 +5382,13 @@ export type AdminExtendedRequest = {
      * * `oauthsession` - Oauth Session
      * * `oidckey` - Oidc Key
      * * `permission` - Permission
-     * * `policy` - Policy
-     * * `policyeffect` - Policy Effect
-     * * `policylog` - Policy Log
      * * `recoverycode` - Recovery Code
      * * `refresh_token` - Refresh Token
      * * `request` - Request
      * * `resourcerequirementrule` - Resource Requirement Rule
+     * * `rule` - Rule
+     * * `ruleeffect` - Rule Effect
+     * * `rulelog` - Rule Log
      * * `service` - Service
      * * `statement` - Statement
      * * `token` - Token
@@ -4631,12 +5406,13 @@ export type AdminExtendedRequest = {
      * * `userlegaltermversion` - User Legal Term Version
      * * `usermessage` - User Message
      * * `userpermission` - User Permission
+     * * `usertag` - User Tag
      * * `walletowneraddress` - Wallet Owner Address
      * * `webhook` - Webhook
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'commonlist' | 'commonlistitem' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
     readonly resource_id: string | null;
     /**
      * Return a response object. This has to be unpickled from a stored
@@ -6661,6 +7437,7 @@ export type AdminGroupPermission = {
      * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
+     * * `commonlist` - Common List
      * * `company` - Company
      * * `cryptoaccount` - Crypto Account
      * * `device` - Device
@@ -6674,9 +7451,10 @@ export type AdminGroupPermission = {
      * * `mobile` - Mobile
      * * `notification` - Notification
      * * `oauthclient` - Oauth Client
+     * * `password` - Password
      * * `permission` - Permission
-     * * `policy` - Policy
      * * `request` - Request
+     * * `rule` - Rule
      * * `service` - Service
      * * `token` - Token
      * * `transaction` - Transaction
@@ -6685,7 +7463,7 @@ export type AdminGroupPermission = {
      * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'policy' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'commonlist' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -7142,234 +7920,6 @@ export type AdminPartnerUserInfo = {
 export type AdminPasswordResetRequest = {
     force?: boolean;
     user: string;
-};
-
-export type AdminPolicy = {
-    readonly id: string;
-    author: ReducedUserInfo;
-    /**
-     * * `trigger` - Trigger
-     */
-    type?: 'trigger';
-    name: string;
-    label?: string | null;
-    description?: string | null;
-    tags?: Array<string> | null;
-    /**
-     * * `transaction.execute` - Transaction Execute
-     * * `transaction.initiate` - Transaction Initiate
-     * * `user.create` - User Create
-     * * `mobile.create` - Mobile Create
-     * * `mobile.create.conflict` - Mobile Create Conflict
-     * * `device.create` - Device Create
-     * * `user.tag.create` - User Tag Create
-     * * `user.tag.delete` - User Tag Delete
-     * * `transaction.tag.create` - Transaction Tag Create
-     * * `transaction.tag.delete` - Transaction Tag Delete
-     */
-    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
-    condition?: {
-        [key: string]: unknown;
-    } | null;
-    enabled?: boolean;
-    readonly effects: Array<AdminPolicyEffect>;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-    readonly created: string;
-    readonly updated: string;
-};
-
-export type AdminPolicyEffect = {
-    readonly id: string;
-    /**
-     * * `create_account_asset_limit` - Create Account Asset Limit
-     * * `disable_user_transactions` - Disable User Transactions
-     * * `disable_user_transaction_type` - Disable User Transaction Type
-     * * `create_user_message` - Create User Message
-     * * `create_transaction_message` - Create Transaction Message
-     * * `create_user_alert` - Create User Alert
-     * * `create_transaction_alert` - Create Transaction Alert
-     * * `create_user_tag` - Create User Tag
-     * * `create_transaction_tag` - Create Transaction Tag
-     */
-    type: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert' | 'create_user_tag' | 'create_transaction_tag';
-    label?: string | null;
-    params?: {
-        [key: string]: unknown;
-    };
-    readonly created: string;
-    readonly updated: string;
-};
-
-export type AdminPolicyEffectRequest = {
-    /**
-     * * `create_account_asset_limit` - Create Account Asset Limit
-     * * `disable_user_transactions` - Disable User Transactions
-     * * `disable_user_transaction_type` - Disable User Transaction Type
-     * * `create_user_message` - Create User Message
-     * * `create_transaction_message` - Create Transaction Message
-     * * `create_user_alert` - Create User Alert
-     * * `create_transaction_alert` - Create Transaction Alert
-     * * `create_user_tag` - Create User Tag
-     * * `create_transaction_tag` - Create Transaction Tag
-     */
-    type: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert' | 'create_user_tag' | 'create_transaction_tag';
-    label?: string | null;
-    params?: {
-        [key: string]: unknown;
-    };
-};
-
-export type AdminPolicyEffectResponse = {
-    status: string;
-    data: AdminPolicyEffect;
-};
-
-export type AdminPolicyLog = {
-    readonly id: string;
-    policy: ReducedPolicy;
-    /**
-     * * `accesscontrolrule` - Access Control Rule
-     * * `account` - Account
-     * * `accountcurrency` - Account Currency
-     * * `accountcurrencylimit` - Account Currency Limit
-     * * `accountcurrencyfee` - Account Currency Fee
-     * * `accountdefinition` - Account Definition
-     * * `accountdefinitiongroup` - Account Definition Group
-     * * `accountdefinitiongroupcurrency` - Account Definition Group Currency
-     * * `alert` - Alert
-     * * `currency` - Currency
-     * * `auditlog` - Audit Log
-     * * `authenticator` - Authenticator
-     * * `authenticatorchallenge` - Authenticator Challenge
-     * * `authenticatorrule` - Authenticator Rule
-     * * `backgroundtask` - Background Task
-     * * `bankowneraddress` - Bank Owner Address
-     * * `bankbranchaddress` - Bank Branch Address
-     * * `company` - Company
-     * * `companyaddress` - Company Address
-     * * `companybankaccount` - Company Bank Account
-     * * `companywalletaccount` - Company Wallet Account
-     * * `companyservice` - Company Service
-     * * `companynotification` - Company Notification
-     * * `cryptoowneraddress` - Crypto Owner Address
-     * * `device` - Device
-     * * `deviceapp` - Device App
-     * * `document` - Document
-     * * `documenttype` - Document Type
-     * * `export` - Export
-     * * `exportpage` - Export Page
-     * * `email` - Email
-     * * `group` - Group
-     * * `grouplimit` - Group Limit
-     * * `groupfee` - Group Fee
-     * * `grouppermission` - Group Permission
-     * * `grouptier` - Group Tier
-     * * `grouptierrequirement` - Group Tier Requirement
-     * * `grouptierlimit` - Group Tier Limit
-     * * `grouptierfee` - Group Tier Fee
-     * * `grouptierrequirementsetitem` - Group Tier Requirement Set Item
-     * * `grouptierrequirementset` - Group Tier Requirement Set
-     * * `legalterm` - Legal Term
-     * * `legaltermversion` - Legal Term Version
-     * * `metric` - Metric
-     * * `metric_schema` - Metric Schema
-     * * `metric_point` - Metric Point
-     * * `mfa` - Mfa
-     * * `mfasmsdevice` - Mfa Sms Device
-     * * `mfatotpdevice` - Mfa Totp Device
-     * * `mfastaticdevice` - Mfa Static Device
-     * * `mfatokenverification` - Mfa Token Verification
-     * * `mobile` - Mobile
-     * * `mobileconfirmation` - Mobile Confirmation
-     * * `notification` - Notification
-     * * `oauthclient` - Oauth Client
-     * * `oauthlink` - Oauth Link
-     * * `oauthsession` - Oauth Session
-     * * `oidckey` - Oidc Key
-     * * `permission` - Permission
-     * * `policy` - Policy
-     * * `policyeffect` - Policy Effect
-     * * `policylog` - Policy Log
-     * * `recoverycode` - Recovery Code
-     * * `refresh_token` - Refresh Token
-     * * `request` - Request
-     * * `resourcerequirementrule` - Resource Requirement Rule
-     * * `service` - Service
-     * * `statement` - Statement
-     * * `token` - Token
-     * * `transaction` - Transaction
-     * * `transactionfee` - Transaction Fee
-     * * `transactionsubtype` - Transaction Subtype
-     * * `transactionmessage` - Transaction Message
-     * * `transactioncollection` - Transaction Collection
-     * * `user` - User
-     * * `useraddress` - User Address
-     * * `userbankaccount` - User Bank Account
-     * * `userwalletaccount` - User Wallet Account
-     * * `usercryptoaccount` - User Crypto Account
-     * * `usercryptoaccountattestation` - User Crypto Account Attestation
-     * * `userlegaltermversion` - User Legal Term Version
-     * * `usermessage` - User Message
-     * * `userpermission` - User Permission
-     * * `walletowneraddress` - Wallet Owner Address
-     * * `webhook` - Webhook
-     * * `webhooktask` - Webhook Task
-     * * `webhookrequest` - Webhook Request
-     */
-    readonly resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest';
-    readonly resource_id: string | null;
-    readonly event: string;
-    readonly data: {
-        [key: string]: unknown;
-    };
-    readonly errors: Array<string>;
-    readonly effects: {
-        [key: string]: unknown;
-    };
-    readonly created: string;
-};
-
-export type AdminPolicyLogResponse = {
-    status: string;
-    data: AdminPolicyLog;
-};
-
-export type AdminPolicyRequest = {
-    /**
-     * * `trigger` - Trigger
-     */
-    type?: 'trigger';
-    name: string;
-    label?: string | null;
-    description?: string | null;
-    tags?: Array<string> | null;
-    /**
-     * * `transaction.execute` - Transaction Execute
-     * * `transaction.initiate` - Transaction Initiate
-     * * `user.create` - User Create
-     * * `mobile.create` - Mobile Create
-     * * `mobile.create.conflict` - Mobile Create Conflict
-     * * `device.create` - Device Create
-     * * `user.tag.create` - User Tag Create
-     * * `user.tag.delete` - User Tag Delete
-     * * `transaction.tag.create` - Transaction Tag Create
-     * * `transaction.tag.delete` - Transaction Tag Delete
-     */
-    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
-    condition?: {
-        [key: string]: unknown;
-    } | null;
-    enabled?: boolean;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-};
-
-export type AdminPolicyResponse = {
-    status: string;
-    data: AdminPolicy;
 };
 
 export type AdminReducedAccountAccountAsset = {
@@ -8569,6 +9119,8 @@ export type AdminRequest = {
      * * `grouptierrequirementset` - Group Tier Requirement Set
      * * `legalterm` - Legal Term
      * * `legaltermversion` - Legal Term Version
+     * * `commonlist` - Common List
+     * * `commonlistitem` - Common List Item
      * * `metric` - Metric
      * * `metric_schema` - Metric Schema
      * * `metric_point` - Metric Point
@@ -8585,13 +9137,13 @@ export type AdminRequest = {
      * * `oauthsession` - Oauth Session
      * * `oidckey` - Oidc Key
      * * `permission` - Permission
-     * * `policy` - Policy
-     * * `policyeffect` - Policy Effect
-     * * `policylog` - Policy Log
      * * `recoverycode` - Recovery Code
      * * `refresh_token` - Refresh Token
      * * `request` - Request
      * * `resourcerequirementrule` - Resource Requirement Rule
+     * * `rule` - Rule
+     * * `ruleeffect` - Rule Effect
+     * * `rulelog` - Rule Log
      * * `service` - Service
      * * `statement` - Statement
      * * `token` - Token
@@ -8609,12 +9161,13 @@ export type AdminRequest = {
      * * `userlegaltermversion` - User Legal Term Version
      * * `usermessage` - User Message
      * * `userpermission` - User Permission
+     * * `usertag` - User Tag
      * * `walletowneraddress` - Wallet Owner Address
      * * `webhook` - Webhook
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'commonlist' | 'commonlistitem' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
     readonly resource_id: string | null;
     readonly created: number;
     readonly updated: number;
@@ -8622,6 +9175,241 @@ export type AdminRequest = {
 
 export type AdminRequestDeleteRequest = {
     user: string;
+};
+
+export type AdminRule = {
+    readonly id: string;
+    author: ReducedUserInfo;
+    /**
+     * * `trigger` - Trigger
+     */
+    type?: 'trigger';
+    name: string;
+    label?: string | null;
+    description?: string | null;
+    tags?: Array<string> | null;
+    /**
+     * * `transaction.execute` - Transaction Execute
+     * * `transaction.initiate` - Transaction Initiate
+     * * `user.create` - User Create
+     * * `user.update` - User Update
+     * * `email.create` - Email Create
+     * * `mobile.create` - Mobile Create
+     * * `mobile.create.conflict` - Mobile Create Conflict
+     * * `device.create` - Device Create
+     * * `user.tag.create` - User Tag Create
+     * * `user.tag.delete` - User Tag Delete
+     * * `transaction.tag.create` - Transaction Tag Create
+     * * `transaction.tag.delete` - Transaction Tag Delete
+     */
+    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'user.update' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
+    condition?: {
+        [key: string]: unknown;
+    } | null;
+    enabled?: boolean;
+    readonly effects: Array<AdminRuleEffect>;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    readonly created: string;
+    readonly updated: string;
+};
+
+export type AdminRuleEffect = {
+    readonly id: string;
+    /**
+     * * `create_account_asset_limit` - Create Account Asset Limit
+     * * `disable_user_transactions` - Disable User Transactions
+     * * `disable_user_transaction_type` - Disable User Transaction Type
+     * * `create_user_message` - Create User Message
+     * * `create_transaction_message` - Create Transaction Message
+     * * `create_user_alert` - Create User Alert
+     * * `create_transaction_alert` - Create Transaction Alert
+     * * `create_user_tag` - Create User Tag
+     * * `create_transaction_tag` - Create Transaction Tag
+     */
+    type: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert' | 'create_user_tag' | 'create_transaction_tag';
+    label?: string | null;
+    params?: {
+        [key: string]: unknown;
+    };
+    readonly created: string;
+    readonly updated: string;
+};
+
+export type AdminRuleEffectRequest = {
+    /**
+     * * `create_account_asset_limit` - Create Account Asset Limit
+     * * `disable_user_transactions` - Disable User Transactions
+     * * `disable_user_transaction_type` - Disable User Transaction Type
+     * * `create_user_message` - Create User Message
+     * * `create_transaction_message` - Create Transaction Message
+     * * `create_user_alert` - Create User Alert
+     * * `create_transaction_alert` - Create Transaction Alert
+     * * `create_user_tag` - Create User Tag
+     * * `create_transaction_tag` - Create Transaction Tag
+     */
+    type: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert' | 'create_user_tag' | 'create_transaction_tag';
+    label?: string | null;
+    params?: {
+        [key: string]: unknown;
+    };
+};
+
+export type AdminRuleEffectResponse = {
+    status: string;
+    data: AdminRuleEffect;
+};
+
+export type AdminRuleLog = {
+    readonly id: string;
+    rule: ReducedRule;
+    /**
+     * * `accesscontrolrule` - Access Control Rule
+     * * `account` - Account
+     * * `accountcurrency` - Account Currency
+     * * `accountcurrencylimit` - Account Currency Limit
+     * * `accountcurrencyfee` - Account Currency Fee
+     * * `accountdefinition` - Account Definition
+     * * `accountdefinitiongroup` - Account Definition Group
+     * * `accountdefinitiongroupcurrency` - Account Definition Group Currency
+     * * `alert` - Alert
+     * * `currency` - Currency
+     * * `auditlog` - Audit Log
+     * * `authenticator` - Authenticator
+     * * `authenticatorchallenge` - Authenticator Challenge
+     * * `authenticatorrule` - Authenticator Rule
+     * * `backgroundtask` - Background Task
+     * * `bankowneraddress` - Bank Owner Address
+     * * `bankbranchaddress` - Bank Branch Address
+     * * `company` - Company
+     * * `companyaddress` - Company Address
+     * * `companybankaccount` - Company Bank Account
+     * * `companywalletaccount` - Company Wallet Account
+     * * `companyservice` - Company Service
+     * * `companynotification` - Company Notification
+     * * `cryptoowneraddress` - Crypto Owner Address
+     * * `device` - Device
+     * * `deviceapp` - Device App
+     * * `document` - Document
+     * * `documenttype` - Document Type
+     * * `export` - Export
+     * * `exportpage` - Export Page
+     * * `email` - Email
+     * * `group` - Group
+     * * `grouplimit` - Group Limit
+     * * `groupfee` - Group Fee
+     * * `grouppermission` - Group Permission
+     * * `grouptier` - Group Tier
+     * * `grouptierrequirement` - Group Tier Requirement
+     * * `grouptierlimit` - Group Tier Limit
+     * * `grouptierfee` - Group Tier Fee
+     * * `grouptierrequirementsetitem` - Group Tier Requirement Set Item
+     * * `grouptierrequirementset` - Group Tier Requirement Set
+     * * `legalterm` - Legal Term
+     * * `legaltermversion` - Legal Term Version
+     * * `commonlist` - Common List
+     * * `commonlistitem` - Common List Item
+     * * `metric` - Metric
+     * * `metric_schema` - Metric Schema
+     * * `metric_point` - Metric Point
+     * * `mfa` - Mfa
+     * * `mfasmsdevice` - Mfa Sms Device
+     * * `mfatotpdevice` - Mfa Totp Device
+     * * `mfastaticdevice` - Mfa Static Device
+     * * `mfatokenverification` - Mfa Token Verification
+     * * `mobile` - Mobile
+     * * `mobileconfirmation` - Mobile Confirmation
+     * * `notification` - Notification
+     * * `oauthclient` - Oauth Client
+     * * `oauthlink` - Oauth Link
+     * * `oauthsession` - Oauth Session
+     * * `oidckey` - Oidc Key
+     * * `permission` - Permission
+     * * `recoverycode` - Recovery Code
+     * * `refresh_token` - Refresh Token
+     * * `request` - Request
+     * * `resourcerequirementrule` - Resource Requirement Rule
+     * * `rule` - Rule
+     * * `ruleeffect` - Rule Effect
+     * * `rulelog` - Rule Log
+     * * `service` - Service
+     * * `statement` - Statement
+     * * `token` - Token
+     * * `transaction` - Transaction
+     * * `transactionfee` - Transaction Fee
+     * * `transactionsubtype` - Transaction Subtype
+     * * `transactionmessage` - Transaction Message
+     * * `transactioncollection` - Transaction Collection
+     * * `user` - User
+     * * `useraddress` - User Address
+     * * `userbankaccount` - User Bank Account
+     * * `userwalletaccount` - User Wallet Account
+     * * `usercryptoaccount` - User Crypto Account
+     * * `usercryptoaccountattestation` - User Crypto Account Attestation
+     * * `userlegaltermversion` - User Legal Term Version
+     * * `usermessage` - User Message
+     * * `userpermission` - User Permission
+     * * `usertag` - User Tag
+     * * `walletowneraddress` - Wallet Owner Address
+     * * `webhook` - Webhook
+     * * `webhooktask` - Webhook Task
+     * * `webhookrequest` - Webhook Request
+     */
+    readonly resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'commonlist' | 'commonlistitem' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest';
+    readonly resource_id: string | null;
+    readonly event: string;
+    readonly data: {
+        [key: string]: unknown;
+    };
+    readonly errors: Array<string>;
+    readonly effects: {
+        [key: string]: unknown;
+    };
+    readonly created: string;
+};
+
+export type AdminRuleLogResponse = {
+    status: string;
+    data: AdminRuleLog;
+};
+
+export type AdminRuleRequest = {
+    /**
+     * * `trigger` - Trigger
+     */
+    type?: 'trigger';
+    name: string;
+    label?: string | null;
+    description?: string | null;
+    tags?: Array<string> | null;
+    /**
+     * * `transaction.execute` - Transaction Execute
+     * * `transaction.initiate` - Transaction Initiate
+     * * `user.create` - User Create
+     * * `user.update` - User Update
+     * * `email.create` - Email Create
+     * * `mobile.create` - Mobile Create
+     * * `mobile.create.conflict` - Mobile Create Conflict
+     * * `device.create` - Device Create
+     * * `user.tag.create` - User Tag Create
+     * * `user.tag.delete` - User Tag Delete
+     * * `transaction.tag.create` - Transaction Tag Create
+     * * `transaction.tag.delete` - Transaction Tag Delete
+     */
+    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'user.update' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
+    condition?: {
+        [key: string]: unknown;
+    } | null;
+    enabled?: boolean;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+export type AdminRuleResponse = {
+    status: string;
+    data: AdminRule;
 };
 
 export type AdminService = {
@@ -9138,6 +9926,7 @@ export type AdminUpdateServicePermission = {
      * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
+     * * `commonlist` - Common List
      * * `company` - Company
      * * `cryptoaccount` - Crypto Account
      * * `device` - Device
@@ -9151,9 +9940,10 @@ export type AdminUpdateServicePermission = {
      * * `mobile` - Mobile
      * * `notification` - Notification
      * * `oauthclient` - Oauth Client
+     * * `password` - Password
      * * `permission` - Permission
-     * * `policy` - Policy
      * * `request` - Request
+     * * `rule` - Rule
      * * `service` - Service
      * * `token` - Token
      * * `transaction` - Transaction
@@ -9162,7 +9952,7 @@ export type AdminUpdateServicePermission = {
      * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'policy' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'commonlist' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -10953,8 +11743,10 @@ export type AdminUserAddress = {
      * * `shipping` - Shipping
      * * `billing` - Billing
      * * `business` - Business
+     * * `registered` - Registered
+     * * `operating` - Operating
      */
-    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business';
+    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business' | 'registered' | 'operating';
     user: ReducedUserInfo;
     line_1?: string | null;
     line_2?: string | null;
@@ -11241,8 +12033,10 @@ export type AdminUserAddressRequest = {
      * * `shipping` - Shipping
      * * `billing` - Billing
      * * `business` - Business
+     * * `registered` - Registered
+     * * `operating` - Operating
      */
-    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business';
+    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business' | 'registered' | 'operating';
     line_1?: string | null;
     line_2?: string | null;
     city?: string | null;
@@ -14060,6 +14854,7 @@ export type AdminUserPermission = {
      * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
+     * * `commonlist` - Common List
      * * `company` - Company
      * * `cryptoaccount` - Crypto Account
      * * `device` - Device
@@ -14073,9 +14868,10 @@ export type AdminUserPermission = {
      * * `mobile` - Mobile
      * * `notification` - Notification
      * * `oauthclient` - Oauth Client
+     * * `password` - Password
      * * `permission` - Permission
-     * * `policy` - Policy
      * * `request` - Request
+     * * `rule` - Rule
      * * `service` - Service
      * * `token` - Token
      * * `transaction` - Transaction
@@ -14084,7 +14880,7 @@ export type AdminUserPermission = {
      * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'policy' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'commonlist' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -14106,6 +14902,15 @@ export type AdminUserPermissionRequest = {
 export type AdminUserPermissionResponse = {
     status: string;
     data: AdminUserPermission;
+};
+
+export type AdminUserTagRequest = {
+    category: string;
+    key: string;
+    value: string;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
 };
 
 export type AdminUserWalletAccount = {
@@ -15558,6 +16363,7 @@ export type CreatePermissionRequest = {
      * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
+     * * `commonlist` - Common List
      * * `company` - Company
      * * `cryptoaccount` - Crypto Account
      * * `device` - Device
@@ -15571,9 +16377,10 @@ export type CreatePermissionRequest = {
      * * `mobile` - Mobile
      * * `notification` - Notification
      * * `oauthclient` - Oauth Client
+     * * `password` - Password
      * * `permission` - Permission
-     * * `policy` - Policy
      * * `request` - Request
+     * * `rule` - Rule
      * * `service` - Service
      * * `token` - Token
      * * `transaction` - Transaction
@@ -15582,7 +16389,7 @@ export type CreatePermissionRequest = {
      * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'policy' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
+    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'commonlist' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -17228,6 +18035,31 @@ export type DocumentFileWriteRequest = {
     file: Blob | File;
     label?: string;
     description?: string;
+};
+
+export type EffectiveFee = {
+    readonly id: number;
+    readonly resource: string;
+    readonly name: string | null;
+    readonly description: string | null;
+    /**
+     * Convert the fee value from Decimal to int based on asset divisibility
+     */
+    readonly value: number;
+    readonly percentage: number | null;
+    /**
+     * * `credit` - Credit
+     * * `debit` - Debit
+     */
+    readonly tx_type: 'credit' | 'debit';
+    readonly subtype: string | null;
+};
+
+export type EffectiveFeeList = Array<EffectiveFee>;
+
+export type EffectiveFeeListResponse = {
+    status: string;
+    data: EffectiveFeeList;
 };
 
 export type ExtendedAuthenticated = {
@@ -19009,6 +19841,7 @@ export type GroupPermission = {
      * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
+     * * `commonlist` - Common List
      * * `company` - Company
      * * `cryptoaccount` - Crypto Account
      * * `device` - Device
@@ -19022,9 +19855,10 @@ export type GroupPermission = {
      * * `mobile` - Mobile
      * * `notification` - Notification
      * * `oauthclient` - Oauth Client
+     * * `password` - Password
      * * `permission` - Permission
-     * * `policy` - Policy
      * * `request` - Request
+     * * `rule` - Rule
      * * `service` - Service
      * * `token` - Token
      * * `transaction` - Transaction
@@ -19033,7 +19867,7 @@ export type GroupPermission = {
      * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'policy' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'commonlist' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -19398,6 +20232,42 @@ export type PaginatedAdminAuthenticatorRuleListResponse = {
     data: PaginatedAdminAuthenticatorRuleList;
 };
 
+export type PaginatedAdminCommonListItemList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminCommonListItem>;
+};
+
+export type PaginatedAdminCommonListItemListResponse = {
+    status: string;
+    data: PaginatedAdminCommonListItemList;
+};
+
+export type PaginatedAdminCommonListList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminCommonList>;
+};
+
+export type PaginatedAdminCommonListListResponse = {
+    status: string;
+    data: PaginatedAdminCommonListList;
+};
+
+export type PaginatedAdminCompanyAddressList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminCompanyAddress>;
+};
+
+export type PaginatedAdminCompanyAddressListResponse = {
+    status: string;
+    data: PaginatedAdminCompanyAddressList;
+};
+
 export type PaginatedAdminCompanyBankAccountAssetList = {
     count?: number;
     next?: string | null;
@@ -19638,42 +20508,6 @@ export type PaginatedAdminOauthClientListResponse = {
     data: PaginatedAdminOauthClientList;
 };
 
-export type PaginatedAdminPolicyEffectList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<AdminPolicyEffect>;
-};
-
-export type PaginatedAdminPolicyEffectListResponse = {
-    status: string;
-    data: PaginatedAdminPolicyEffectList;
-};
-
-export type PaginatedAdminPolicyList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<AdminPolicy>;
-};
-
-export type PaginatedAdminPolicyListResponse = {
-    status: string;
-    data: PaginatedAdminPolicyList;
-};
-
-export type PaginatedAdminPolicyLogList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<AdminPolicyLog>;
-};
-
-export type PaginatedAdminPolicyLogListResponse = {
-    status: string;
-    data: PaginatedAdminPolicyLogList;
-};
-
 export type PaginatedAdminRequestList = {
     count?: number;
     next?: string | null;
@@ -19684,6 +20518,42 @@ export type PaginatedAdminRequestList = {
 export type PaginatedAdminRequestListResponse = {
     status: string;
     data: PaginatedAdminRequestList;
+};
+
+export type PaginatedAdminRuleEffectList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminRuleEffect>;
+};
+
+export type PaginatedAdminRuleEffectListResponse = {
+    status: string;
+    data: PaginatedAdminRuleEffectList;
+};
+
+export type PaginatedAdminRuleList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminRule>;
+};
+
+export type PaginatedAdminRuleListResponse = {
+    status: string;
+    data: PaginatedAdminRuleList;
+};
+
+export type PaginatedAdminRuleLogList = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminRuleLog>;
+};
+
+export type PaginatedAdminRuleLogListResponse = {
+    status: string;
+    data: PaginatedAdminRuleLogList;
 };
 
 export type PaginatedAdminServiceList = {
@@ -20026,7 +20896,28 @@ export type PatchedAdminAccountAccountAssetSettingsUpdateRequest = {
     allow_credit_transactions?: boolean;
 };
 
+export type PatchedAdminCommonListItemRequest = {
+    value?: string;
+    label?: string | null;
+};
+
+export type PatchedAdminCommonListRequest = {
+    name?: string;
+    label?: string | null;
+    description?: string | null;
+};
+
 export type PatchedAdminCompanyAddressRequest = {
+    /**
+     * * `permanent` - Permanent
+     * * `contact` - Contact
+     * * `shipping` - Shipping
+     * * `billing` - Billing
+     * * `business` - Business
+     * * `registered` - Registered
+     * * `operating` - Operating
+     */
+    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business' | 'registered' | 'operating';
     line_1?: string | null;
     line_2?: string | null;
     city?: string | null;
@@ -20065,6 +20956,345 @@ export type PatchedAdminCompanyBankAccountRequest = {
     action?: 'deposit' | 'origin' | null;
 };
 
+export type PatchedAdminCompanyLegalEntityRequest = {
+    /**
+     * * `sole_proprietor` - Sole Proprietor
+     * * `partnership` - Partnership
+     * * `private_company` - Private Company
+     * * `public_company` - Public Company
+     * * `trust` - Trust
+     * * `non_profit` - Non Profit
+     * * `other` - Other
+     */
+    entity_type?: 'sole_proprietor' | 'partnership' | 'private_company' | 'public_company' | 'trust' | 'non_profit' | 'other' | null;
+    registration_number?: string | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    incorporation_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
+    incorporation_date?: string | null;
+    tax_number?: string | null;
+    /**
+     * * `provider` - Provider
+     * * `own` - Own
+     * * `unsure` - Unsure
+     */
+    licensing_model?: 'provider' | 'own' | 'unsure' | null;
+    licenses?: string | null;
+    /**
+     * * `consumer_wallet` - Consumer Wallet
+     * * `business_accounts` - Business Accounts
+     * * `cross_border_remittance` - Cross Border Remittance
+     * * `payroll_payouts` - Payroll Payouts
+     * * `marketplace_payments` - Marketplace Payments
+     * * `stablecoin_ramp` - Stablecoin Ramp
+     * * `treasury_fx` - Treasury Fx
+     * * `lending_credit` - Lending Credit
+     * * `rewards_loyalty` - Rewards Loyalty
+     * * `other` - Other
+     */
+    program_type?: 'consumer_wallet' | 'business_accounts' | 'cross_border_remittance' | 'payroll_payouts' | 'marketplace_payments' | 'stablecoin_ramp' | 'treasury_fx' | 'lending_credit' | 'rewards_loyalty' | 'other' | null;
+    program_type_other?: string | null;
+    /**
+     * * `individuals` - Individuals
+     * * `businesses` - Businesses
+     * * `both` - Both
+     */
+    end_user_type?: 'individuals' | 'businesses' | 'both' | null;
+    /**
+     * * `under_10k` - Under 10K
+     * * `from_10k_to_100k` - From 10K To 100K
+     * * `from_100k_to_1m` - From 100K To 1M
+     * * `from_1m_to_10m` - From 1M To 10M
+     * * `over_10m` - Over 10M
+     * * `not_sure` - Not Sure
+     */
+    expected_monthly_volume?: 'under_10k' | 'from_10k_to_100k' | 'from_100k_to_1m' | 'from_1m_to_10m' | 'over_10m' | 'not_sure' | null;
+    /**
+     * * `under_100` - Under 100
+     * * `from_100_to_1k` - From 100 To 1K
+     * * `from_1k_to_10k` - From 1K To 10K
+     * * `from_10k_to_100k` - From 10K To 100K
+     * * `over_100k` - Over 100K
+     * * `not_sure` - Not Sure
+     */
+    expected_monthly_transactions?: 'under_100' | 'from_100_to_1k' | 'from_1k_to_10k' | 'from_10k_to_100k' | 'over_100k' | 'not_sure' | null;
+    compliance_officer_name?: string | null;
+    compliance_officer_email?: string | null;
+    compliance_officer_phone?: string | null;
+    owners?: {
+        [key: string]: unknown;
+    } | null;
+    certificate_of_incorporation?: Blob | File | null;
+    proof_of_address?: Blob | File | null;
+    ownership_chart?: Blob | File | null;
+    director_identity_documents?: Blob | File | null;
+    memorandum_and_articles?: Blob | File | null;
+    proof_of_license?: Blob | File | null;
+    proof_of_bank_account?: Blob | File | null;
+    cards_planned?: boolean | null;
+    /**
+     * * `at_launch` - At Launch
+     * * `later` - Later
+     */
+    cards_timing?: 'at_launch' | 'later' | null;
+    cards_target_date?: string | null;
+    /**
+     * * `yes` - Yes
+     * * `no` - No
+     * * `not_yet` - Not Yet
+     */
+    cards_budget_secured?: 'yes' | 'no' | 'not_yet' | null;
+};
+
 export type PatchedAdminCompanyRequest = {
     name?: string | null;
     legal_name?: string | null;
@@ -20073,6 +21303,7 @@ export type PatchedAdminCompanyRequest = {
     support_website?: string | null;
     documentation_website?: string | null;
     support_email?: string | null;
+    support_phone?: string | null;
     contact_email?: string | null;
     /**
      * * `AF` - Afghanistan
@@ -20392,7 +21623,7 @@ export type PatchedAdminCreateAccountAccountAssetLimitRequest = {
     } | null;
 };
 
-export type PatchedAdminCreatePolicyEffectRequest = {
+export type PatchedAdminCreateRuleEffectRequest = {
     /**
      * * `create_account_asset_limit` - Create Account Asset Limit
      * * `disable_user_transactions` - Disable User Transactions
@@ -20560,7 +21791,7 @@ export type PatchedAdminMobileRequest = {
     archived?: boolean;
 };
 
-export type PatchedAdminPolicyRequest = {
+export type PatchedAdminRuleRequest = {
     /**
      * * `trigger` - Trigger
      */
@@ -20573,6 +21804,8 @@ export type PatchedAdminPolicyRequest = {
      * * `transaction.execute` - Transaction Execute
      * * `transaction.initiate` - Transaction Initiate
      * * `user.create` - User Create
+     * * `user.update` - User Update
+     * * `email.create` - Email Create
      * * `mobile.create` - Mobile Create
      * * `mobile.create.conflict` - Mobile Create Conflict
      * * `device.create` - Device Create
@@ -20581,7 +21814,7 @@ export type PatchedAdminPolicyRequest = {
      * * `transaction.tag.create` - Transaction Tag Create
      * * `transaction.tag.delete` - Transaction Tag Delete
      */
-    event?: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
+    event?: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'user.update' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
     condition?: {
         [key: string]: unknown;
     } | null;
@@ -22549,8 +23782,10 @@ export type PatchedAdminUserAddressRequest = {
      * * `shipping` - Shipping
      * * `billing` - Billing
      * * `business` - Business
+     * * `registered` - Registered
+     * * `operating` - Operating
      */
-    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business';
+    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business' | 'registered' | 'operating';
     line_1?: string | null;
     line_2?: string | null;
     city?: string | null;
@@ -23001,6 +24236,7 @@ export type Permission = {
      * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
+     * * `commonlist` - Common List
      * * `company` - Company
      * * `cryptoaccount` - Crypto Account
      * * `device` - Device
@@ -23014,9 +24250,10 @@ export type Permission = {
      * * `mobile` - Mobile
      * * `notification` - Notification
      * * `oauthclient` - Oauth Client
+     * * `password` - Password
      * * `permission` - Permission
-     * * `policy` - Policy
      * * `request` - Request
+     * * `rule` - Rule
      * * `service` - Service
      * * `token` - Token
      * * `transaction` - Transaction
@@ -23025,7 +24262,7 @@ export type Permission = {
      * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'policy' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'commonlist' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -23184,7 +24421,7 @@ export type ReducedGroupTier = {
     readonly description: string | null;
 };
 
-export type ReducedPolicy = {
+export type ReducedRule = {
     readonly id: string;
     readonly name: string;
     /**
@@ -23419,6 +24656,7 @@ export type UserPermission = {
      * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
+     * * `commonlist` - Common List
      * * `company` - Company
      * * `cryptoaccount` - Crypto Account
      * * `device` - Device
@@ -23432,9 +24670,10 @@ export type UserPermission = {
      * * `mobile` - Mobile
      * * `notification` - Notification
      * * `oauthclient` - Oauth Client
+     * * `password` - Password
      * * `permission` - Permission
-     * * `policy` - Policy
      * * `request` - Request
+     * * `rule` - Rule
      * * `service` - Service
      * * `token` - Token
      * * `transaction` - Transaction
@@ -23443,7 +24682,7 @@ export type UserPermission = {
      * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'policy' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'commonlist' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -24159,6 +25398,26 @@ export type AdminAccountAccountAssetSettingsUpdateRequestWritable = {
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
     disallowed_transaction_subtypes: Array<number>;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
 };
 
 export type AdminAccountAssetWritable = {
@@ -24367,6 +25626,27 @@ export type AdminAuthenticatorRuleResponseWritable = {
     data: AdminAuthenticatorRuleWritable;
 };
 
+export type AdminCommonListWritable = {
+    name: string;
+    label?: string | null;
+    description?: string | null;
+};
+
+export type AdminCommonListItemWritable = {
+    value: string;
+    label?: string | null;
+};
+
+export type AdminCommonListItemResponseWritable = {
+    status: string;
+    data: AdminCommonListItemWritable;
+};
+
+export type AdminCommonListResponseWritable = {
+    status: string;
+    data: AdminCommonListWritable;
+};
+
 export type AdminCompanyWritable = {
     name?: string | null;
     legal_name?: string | null;
@@ -24375,6 +25655,7 @@ export type AdminCompanyWritable = {
     support_website?: string | null;
     documentation_website?: string | null;
     support_email?: string | null;
+    support_phone?: string | null;
     contact_email?: string | null;
     /**
      * * `AF` - Afghanistan
@@ -24644,6 +25925,30 @@ export type AdminCompanyWritable = {
     system_email: string;
 };
 
+export type AdminCompanyAddressWritable = {
+    /**
+     * * `permanent` - Permanent
+     * * `contact` - Contact
+     * * `shipping` - Shipping
+     * * `billing` - Billing
+     * * `business` - Business
+     * * `registered` - Registered
+     * * `operating` - Operating
+     */
+    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business' | 'registered' | 'operating';
+    line_1?: string | null;
+    line_2?: string | null;
+    city?: string | null;
+    state_province?: string | null;
+    country?: string | null;
+    postal_code?: string | null;
+};
+
+export type AdminCompanyAddressResponseWritable = {
+    status: string;
+    data: AdminCompanyAddressWritable;
+};
+
 export type AdminCompanyBankAccountWritable = {
     name?: string | null;
     number?: string | null;
@@ -24820,6 +26125,26 @@ export type AdminCreateAccountAccountAssetFeeRequestWritable = {
      * @deprecated
      */
     inferred?: boolean;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
 };
 
 export type AdminCreateAccountAccountAssetLimitRequestWritable = {
@@ -24844,6 +26169,26 @@ export type AdminCreateAccountAccountAssetLimitRequestWritable = {
     metadata?: {
         [key: string]: unknown;
     } | null;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
 };
 
 export type AdminCreateAccountAccountAssetRequestWritable = {
@@ -24951,6 +26296,13 @@ export type AdminCreateChallengeRequestWritable = {
     authenticator_types?: Array<'totp' | 'sms' | 'static'>;
 };
 
+export type AdminCreateCommonListRequestWritable = {
+    name: string;
+    label?: string | null;
+    description?: string | null;
+    items?: Array<AdminCommonListItemRequest>;
+};
+
 export type AdminCreateCreditTransactionRequestWritable = {
     id?: string;
     amount: number;
@@ -25011,6 +26363,26 @@ export type AdminCreateCryptoAccountRequestWritable = {
      * * `origin` - Origin
      */
     action?: 'withdraw' | 'deposit' | 'origin' | null;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
 };
 
 export type AdminCreateDebitTransactionRequestWritable = {
@@ -25121,6 +26493,7 @@ export type AdminCreateGroupPermissionRequestWritable = {
      * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
+     * * `commonlist` - Common List
      * * `company` - Company
      * * `cryptoaccount` - Crypto Account
      * * `device` - Device
@@ -25134,9 +26507,10 @@ export type AdminCreateGroupPermissionRequestWritable = {
      * * `mobile` - Mobile
      * * `notification` - Notification
      * * `oauthclient` - Oauth Client
+     * * `password` - Password
      * * `permission` - Permission
-     * * `policy` - Policy
      * * `request` - Request
+     * * `rule` - Rule
      * * `service` - Service
      * * `token` - Token
      * * `transaction` - Transaction
@@ -25145,7 +26519,7 @@ export type AdminCreateGroupPermissionRequestWritable = {
      * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'policy' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
+    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'commonlist' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -25377,8 +26751,10 @@ export type AdminCreateUserAddressRequestWritable = {
      * * `shipping` - Shipping
      * * `billing` - Billing
      * * `business` - Business
+     * * `registered` - Registered
+     * * `operating` - Operating
      */
-    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business';
+    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business' | 'registered' | 'operating';
     user: string;
     line_1?: string | null;
     line_2?: string | null;
@@ -25655,7 +27031,7 @@ export type AdminCreateUserAddressRequestWritable = {
         [key: string]: unknown;
     };
     /**
-     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change.
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
      */
     annotations?: {
         /**
@@ -25666,6 +27042,12 @@ export type AdminCreateUserAddressRequestWritable = {
                 message?: string;
                 priority?: 'normal' | 'high';
             };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
         };
     };
 };
@@ -25717,6 +27099,26 @@ export type AdminCreateUserBankAccountRequestWritable = {
      * * `origin` - Origin
      */
     action?: 'withdraw' | 'deposit' | 'origin' | null;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
 };
 
 export type AdminCreateUserDocumentRequestWritable = {
@@ -25750,7 +27152,7 @@ export type AdminCreateUserDocumentRequestWritable = {
         [key: string]: unknown;
     };
     /**
-     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change.
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
      */
     annotations?: {
         /**
@@ -25761,6 +27163,12 @@ export type AdminCreateUserDocumentRequestWritable = {
                 message?: string;
                 priority?: 'normal' | 'high';
             };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
         };
     };
 };
@@ -27461,6 +28869,26 @@ export type AdminCreateUserInfoRequestWritable = {
         [key: string]: unknown;
     };
     tags?: Array<TagWriteRequest>;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
 };
 
 export type AdminCreateUserPermissionRequestWritable = {
@@ -27477,6 +28905,7 @@ export type AdminCreateUserPermissionRequestWritable = {
      * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
+     * * `commonlist` - Common List
      * * `company` - Company
      * * `cryptoaccount` - Crypto Account
      * * `device` - Device
@@ -27490,9 +28919,10 @@ export type AdminCreateUserPermissionRequestWritable = {
      * * `mobile` - Mobile
      * * `notification` - Notification
      * * `oauthclient` - Oauth Client
+     * * `password` - Password
      * * `permission` - Permission
-     * * `policy` - Policy
      * * `request` - Request
+     * * `rule` - Rule
      * * `service` - Service
      * * `token` - Token
      * * `transaction` - Transaction
@@ -27501,7 +28931,7 @@ export type AdminCreateUserPermissionRequestWritable = {
      * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'policy' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
+    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'commonlist' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -27544,6 +28974,26 @@ export type AdminCreateUserWalletAccountRequestWritable = {
      * * `origin` - Origin
      */
     action?: 'withdraw' | 'deposit' | 'origin' | null;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
 };
 
 export type AdminCryptoAccountWritable = {
@@ -27602,6 +29052,59 @@ export type AdminCryptoAccountAssetResponseWritable = {
     data: AdminCryptoAccountAssetWritable;
 };
 
+export type AdminCryptoAccountRequestWritable = {
+    address: string;
+    name?: string | null;
+    crypto_type?: string;
+    wallet_type?: string | null;
+    owner?: CryptoOwnerRequest | null;
+    /**
+     * * `testnet` - Testnet
+     * * `mainnet` - Mainnet
+     */
+    network?: 'testnet' | 'mainnet';
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    /**
+     * * `obsolete` - Obsolete
+     * * `declined` - Declined
+     * * `pending` - Pending
+     * * `paused` - Paused
+     * * `incomplete` - Incomplete
+     * * `verified` - Verified
+     * * `not_started` - Not Started
+     */
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
+    archived?: boolean;
+    /**
+     * * `withdraw` - Withdraw
+     * * `deposit` - Deposit
+     * * `origin` - Origin
+     */
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
+};
+
 export type AdminCryptoAccountResponseWritable = {
     status: string;
     data: AdminCryptoAccountWritable;
@@ -27654,6 +29157,32 @@ export type AdminEmailWritable = {
     primary?: boolean;
     verified?: boolean;
     archived?: boolean;
+};
+
+export type AdminEmailRequestWritable = {
+    primary?: boolean;
+    verified?: boolean;
+    archived?: boolean;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
 };
 
 export type AdminEmailResponseWritable = {
@@ -27874,6 +29403,8 @@ export type AdminExtendedRequestWritable = {
      * * `grouptierrequirementset` - Group Tier Requirement Set
      * * `legalterm` - Legal Term
      * * `legaltermversion` - Legal Term Version
+     * * `commonlist` - Common List
+     * * `commonlistitem` - Common List Item
      * * `metric` - Metric
      * * `metric_schema` - Metric Schema
      * * `metric_point` - Metric Point
@@ -27890,13 +29421,13 @@ export type AdminExtendedRequestWritable = {
      * * `oauthsession` - Oauth Session
      * * `oidckey` - Oidc Key
      * * `permission` - Permission
-     * * `policy` - Policy
-     * * `policyeffect` - Policy Effect
-     * * `policylog` - Policy Log
      * * `recoverycode` - Recovery Code
      * * `refresh_token` - Refresh Token
      * * `request` - Request
      * * `resourcerequirementrule` - Resource Requirement Rule
+     * * `rule` - Rule
+     * * `ruleeffect` - Rule Effect
+     * * `rulelog` - Rule Log
      * * `service` - Service
      * * `statement` - Statement
      * * `token` - Token
@@ -27914,12 +29445,13 @@ export type AdminExtendedRequestWritable = {
      * * `userlegaltermversion` - User Legal Term Version
      * * `usermessage` - User Message
      * * `userpermission` - User Permission
+     * * `usertag` - User Tag
      * * `walletowneraddress` - Wallet Owner Address
      * * `webhook` - Webhook
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'commonlist' | 'commonlistitem' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
 };
 
 export type AdminExtendedRequestResponseWritable = {
@@ -29900,6 +31432,32 @@ export type AdminMobileWritable = {
     archived?: boolean;
 };
 
+export type AdminMobileRequestWritable = {
+    primary: boolean;
+    verified?: boolean;
+    archived?: boolean;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
+};
+
 export type AdminMobileResponseWritable = {
     status: string;
     data: AdminMobileWritable;
@@ -29962,70 +31520,6 @@ export type AdminOauthClientResponseWritable = {
 
 export type AdminOverviewAssetResponseWritable = {
     status: string;
-};
-
-export type AdminPolicyWritable = {
-    /**
-     * * `trigger` - Trigger
-     */
-    type?: 'trigger';
-    name: string;
-    label?: string | null;
-    description?: string | null;
-    tags?: Array<string> | null;
-    /**
-     * * `transaction.execute` - Transaction Execute
-     * * `transaction.initiate` - Transaction Initiate
-     * * `user.create` - User Create
-     * * `mobile.create` - Mobile Create
-     * * `mobile.create.conflict` - Mobile Create Conflict
-     * * `device.create` - Device Create
-     * * `user.tag.create` - User Tag Create
-     * * `user.tag.delete` - User Tag Delete
-     * * `transaction.tag.create` - Transaction Tag Create
-     * * `transaction.tag.delete` - Transaction Tag Delete
-     */
-    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
-    condition?: {
-        [key: string]: unknown;
-    } | null;
-    enabled?: boolean;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-};
-
-export type AdminPolicyEffectWritable = {
-    /**
-     * * `create_account_asset_limit` - Create Account Asset Limit
-     * * `disable_user_transactions` - Disable User Transactions
-     * * `disable_user_transaction_type` - Disable User Transaction Type
-     * * `create_user_message` - Create User Message
-     * * `create_transaction_message` - Create Transaction Message
-     * * `create_user_alert` - Create User Alert
-     * * `create_transaction_alert` - Create Transaction Alert
-     * * `create_user_tag` - Create User Tag
-     * * `create_transaction_tag` - Create Transaction Tag
-     */
-    type: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert' | 'create_user_tag' | 'create_transaction_tag';
-    label?: string | null;
-    params?: {
-        [key: string]: unknown;
-    };
-};
-
-export type AdminPolicyEffectResponseWritable = {
-    status: string;
-    data: AdminPolicyEffectWritable;
-};
-
-export type AdminPolicyLogResponseWritable = {
-    status: string;
-};
-
-export type AdminPolicyResponseWritable = {
-    status: string;
-    data: AdminPolicyWritable;
 };
 
 export type AdminReducedAccountAccountAssetWritable = {
@@ -31165,6 +32659,8 @@ export type AdminRequestWritable = {
      * * `grouptierrequirementset` - Group Tier Requirement Set
      * * `legalterm` - Legal Term
      * * `legaltermversion` - Legal Term Version
+     * * `commonlist` - Common List
+     * * `commonlistitem` - Common List Item
      * * `metric` - Metric
      * * `metric_schema` - Metric Schema
      * * `metric_point` - Metric Point
@@ -31181,13 +32677,13 @@ export type AdminRequestWritable = {
      * * `oauthsession` - Oauth Session
      * * `oidckey` - Oidc Key
      * * `permission` - Permission
-     * * `policy` - Policy
-     * * `policyeffect` - Policy Effect
-     * * `policylog` - Policy Log
      * * `recoverycode` - Recovery Code
      * * `refresh_token` - Refresh Token
      * * `request` - Request
      * * `resourcerequirementrule` - Resource Requirement Rule
+     * * `rule` - Rule
+     * * `ruleeffect` - Rule Effect
+     * * `rulelog` - Rule Log
      * * `service` - Service
      * * `statement` - Statement
      * * `token` - Token
@@ -31205,12 +32701,79 @@ export type AdminRequestWritable = {
      * * `userlegaltermversion` - User Legal Term Version
      * * `usermessage` - User Message
      * * `userpermission` - User Permission
+     * * `usertag` - User Tag
      * * `walletowneraddress` - Wallet Owner Address
      * * `webhook` - Webhook
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'commonlist' | 'commonlistitem' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+};
+
+export type AdminRuleWritable = {
+    /**
+     * * `trigger` - Trigger
+     */
+    type?: 'trigger';
+    name: string;
+    label?: string | null;
+    description?: string | null;
+    tags?: Array<string> | null;
+    /**
+     * * `transaction.execute` - Transaction Execute
+     * * `transaction.initiate` - Transaction Initiate
+     * * `user.create` - User Create
+     * * `user.update` - User Update
+     * * `email.create` - Email Create
+     * * `mobile.create` - Mobile Create
+     * * `mobile.create.conflict` - Mobile Create Conflict
+     * * `device.create` - Device Create
+     * * `user.tag.create` - User Tag Create
+     * * `user.tag.delete` - User Tag Delete
+     * * `transaction.tag.create` - Transaction Tag Create
+     * * `transaction.tag.delete` - Transaction Tag Delete
+     */
+    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'user.update' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
+    condition?: {
+        [key: string]: unknown;
+    } | null;
+    enabled?: boolean;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+export type AdminRuleEffectWritable = {
+    /**
+     * * `create_account_asset_limit` - Create Account Asset Limit
+     * * `disable_user_transactions` - Disable User Transactions
+     * * `disable_user_transaction_type` - Disable User Transaction Type
+     * * `create_user_message` - Create User Message
+     * * `create_transaction_message` - Create Transaction Message
+     * * `create_user_alert` - Create User Alert
+     * * `create_transaction_alert` - Create Transaction Alert
+     * * `create_user_tag` - Create User Tag
+     * * `create_transaction_tag` - Create Transaction Tag
+     */
+    type: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert' | 'create_user_tag' | 'create_transaction_tag';
+    label?: string | null;
+    params?: {
+        [key: string]: unknown;
+    };
+};
+
+export type AdminRuleEffectResponseWritable = {
+    status: string;
+    data: AdminRuleEffectWritable;
+};
+
+export type AdminRuleLogResponseWritable = {
+    status: string;
+};
+
+export type AdminRuleResponseWritable = {
+    status: string;
+    data: AdminRuleWritable;
 };
 
 export type AdminServiceWritable = {
@@ -31558,7 +33121,7 @@ export type AdminUpdateUserDocumentRequestWritable = {
         [key: string]: unknown;
     };
     /**
-     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change.
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
      */
     annotations?: {
         /**
@@ -31569,6 +33132,12 @@ export type AdminUpdateUserDocumentRequestWritable = {
                 message?: string;
                 priority?: 'normal' | 'high';
             };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
         };
     };
 };
@@ -33281,7 +34850,7 @@ export type AdminUpdateUserInfoRequestWritable = {
         [key: string]: unknown;
     };
     /**
-     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change.
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
      */
     annotations?: {
         /**
@@ -33293,6 +34862,12 @@ export type AdminUpdateUserInfoRequestWritable = {
                 priority?: 'normal' | 'high';
             };
         };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
     };
 };
 
@@ -33301,6 +34876,26 @@ export type AdminUpdateUserSettingsRequestWritable = {
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
     disallowed_transaction_subtypes: Array<UpdateUserDisallowedTransactionSubtypeRequest>;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
 };
 
 export type AdminUserAddressWritable = {
@@ -33310,8 +34905,10 @@ export type AdminUserAddressWritable = {
      * * `shipping` - Shipping
      * * `billing` - Billing
      * * `business` - Business
+     * * `registered` - Registered
+     * * `operating` - Operating
      */
-    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business';
+    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business' | 'registered' | 'operating';
     line_1?: string | null;
     line_2?: string | null;
     city?: string | null;
@@ -33595,8 +35192,10 @@ export type AdminUserAddressRequestWritable = {
      * * `shipping` - Shipping
      * * `billing` - Billing
      * * `business` - Business
+     * * `registered` - Registered
+     * * `operating` - Operating
      */
-    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business';
+    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business' | 'registered' | 'operating';
     line_1?: string | null;
     line_2?: string | null;
     city?: string | null;
@@ -33872,7 +35471,7 @@ export type AdminUserAddressRequestWritable = {
         [key: string]: unknown;
     };
     /**
-     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change.
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
      */
     annotations?: {
         /**
@@ -33883,6 +35482,12 @@ export type AdminUserAddressRequestWritable = {
                 message?: string;
                 priority?: 'normal' | 'high';
             };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
         };
     };
 };
@@ -33960,6 +35565,74 @@ export type AdminUserBankAccountAssetListResponseWritable = {
 export type AdminUserBankAccountAssetResponseWritable = {
     status: string;
     data: AdminUserBankAccountAssetWritable;
+};
+
+export type AdminUserBankAccountRequestWritable = {
+    name?: string | null;
+    owner?: BankOwnerRequest | null;
+    number?: string | null;
+    type?: string | null;
+    payment_method?: string | null;
+    /**
+     * * `individual` - Individual
+     * * `business` - Business
+     */
+    beneficiary_type?: 'individual' | 'business' | null;
+    bank_name?: string | null;
+    bank_code?: string | null;
+    bank_currency?: string | null;
+    branch_code?: string | null;
+    branch_address?: AdminUserBankBranchAddressRequest;
+    branch_address_text?: string | null;
+    routing_number?: string | null;
+    swift?: string | null;
+    iban?: string | null;
+    bic?: string | null;
+    clabe?: string | null;
+    check_digit?: string | null;
+    pix_key?: string | null;
+    br_code?: string | null;
+    sort_code?: string | null;
+    /**
+     * * `obsolete` - Obsolete
+     * * `declined` - Declined
+     * * `pending` - Pending
+     * * `paused` - Paused
+     * * `incomplete` - Incomplete
+     * * `verified` - Verified
+     * * `not_started` - Not Started
+     */
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+    /**
+     * * `withdraw` - Withdraw
+     * * `deposit` - Deposit
+     * * `origin` - Origin
+     */
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
 };
 
 export type AdminUserBankAccountResponseWritable = {
@@ -35730,6 +37403,35 @@ export type AdminUserPermissionResponseWritable = {
     data: AdminUserPermissionWritable;
 };
 
+export type AdminUserTagRequestWritable = {
+    category: string;
+    key: string;
+    value: string;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
+};
+
 export type AdminUserWalletAccountWritable = {
     username?: string | null;
     email?: string | null;
@@ -35781,6 +37483,57 @@ export type AdminUserWalletAccountAssetListResponseWritable = {
 export type AdminUserWalletAccountAssetResponseWritable = {
     status: string;
     data: AdminUserWalletAccountAssetWritable;
+};
+
+export type AdminUserWalletAccountRequestWritable = {
+    username?: string | null;
+    email?: string | null;
+    mobile?: string | null;
+    name?: string | null;
+    type?: string | null;
+    payment_method?: string | null;
+    owner?: WalletOwnerRequest | null;
+    wallet_currency?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    /**
+     * * `obsolete` - Obsolete
+     * * `declined` - Declined
+     * * `pending` - Pending
+     * * `paused` - Paused
+     * * `incomplete` - Incomplete
+     * * `verified` - Verified
+     * * `not_started` - Not Started
+     */
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
+    archived?: boolean;
+    /**
+     * * `withdraw` - Withdraw
+     * * `deposit` - Deposit
+     * * `origin` - Origin
+     */
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
 };
 
 export type AdminUserWalletAccountResponseWritable = {
@@ -35929,6 +37682,10 @@ export type CryptoAccountAttestationWritable = {
     data?: {
         [key: string]: unknown;
     } | null;
+};
+
+export type EffectiveFeeListResponseWritable = {
+    status: string;
 };
 
 export type ExtendedAuthenticatedWritable = {
@@ -37854,6 +39611,42 @@ export type PaginatedAdminAuthenticatorRuleListResponseWritable = {
     data: PaginatedAdminAuthenticatorRuleListWritable;
 };
 
+export type PaginatedAdminCommonListItemListWritable = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminCommonListItemWritable>;
+};
+
+export type PaginatedAdminCommonListItemListResponseWritable = {
+    status: string;
+    data: PaginatedAdminCommonListItemListWritable;
+};
+
+export type PaginatedAdminCommonListListWritable = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminCommonListWritable>;
+};
+
+export type PaginatedAdminCommonListListResponseWritable = {
+    status: string;
+    data: PaginatedAdminCommonListListWritable;
+};
+
+export type PaginatedAdminCompanyAddressListWritable = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminCompanyAddressWritable>;
+};
+
+export type PaginatedAdminCompanyAddressListResponseWritable = {
+    status: string;
+    data: PaginatedAdminCompanyAddressListWritable;
+};
+
 export type PaginatedAdminCompanyBankAccountAssetListWritable = {
     count?: number;
     next?: string | null;
@@ -38094,42 +39887,6 @@ export type PaginatedAdminOauthClientListResponseWritable = {
     data: PaginatedAdminOauthClientListWritable;
 };
 
-export type PaginatedAdminPolicyEffectListWritable = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<AdminPolicyEffectWritable>;
-};
-
-export type PaginatedAdminPolicyEffectListResponseWritable = {
-    status: string;
-    data: PaginatedAdminPolicyEffectListWritable;
-};
-
-export type PaginatedAdminPolicyListWritable = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<AdminPolicyWritable>;
-};
-
-export type PaginatedAdminPolicyListResponseWritable = {
-    status: string;
-    data: PaginatedAdminPolicyListWritable;
-};
-
-export type PaginatedAdminPolicyLogListWritable = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<unknown>;
-};
-
-export type PaginatedAdminPolicyLogListResponseWritable = {
-    status: string;
-    data: PaginatedAdminPolicyLogListWritable;
-};
-
 export type PaginatedAdminRequestListWritable = {
     count?: number;
     next?: string | null;
@@ -38140,6 +39897,42 @@ export type PaginatedAdminRequestListWritable = {
 export type PaginatedAdminRequestListResponseWritable = {
     status: string;
     data: PaginatedAdminRequestListWritable;
+};
+
+export type PaginatedAdminRuleEffectListWritable = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminRuleEffectWritable>;
+};
+
+export type PaginatedAdminRuleEffectListResponseWritable = {
+    status: string;
+    data: PaginatedAdminRuleEffectListWritable;
+};
+
+export type PaginatedAdminRuleListWritable = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AdminRuleWritable>;
+};
+
+export type PaginatedAdminRuleListResponseWritable = {
+    status: string;
+    data: PaginatedAdminRuleListWritable;
+};
+
+export type PaginatedAdminRuleLogListWritable = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<unknown>;
+};
+
+export type PaginatedAdminRuleLogListResponseWritable = {
+    status: string;
+    data: PaginatedAdminRuleLogListWritable;
 };
 
 export type PaginatedAdminServiceListWritable = {
@@ -38479,6 +40272,26 @@ export type PatchedAdminAccountAccountAssetSettingsUpdateRequestWritable = {
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
     disallowed_transaction_subtypes?: Array<number>;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
 };
 
 export type PatchedAdminCreateAccessControlRuleRequestWritable = {
@@ -38516,6 +40329,26 @@ export type PatchedAdminCreateAccountAccountAssetFeeRequestWritable = {
      * @deprecated
      */
     inferred?: boolean;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
 };
 
 export type PatchedAdminCreateAccountAccountAssetLimitRequestWritable = {
@@ -38540,6 +40373,26 @@ export type PatchedAdminCreateAccountAccountAssetLimitRequestWritable = {
     metadata?: {
         [key: string]: unknown;
     } | null;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
 };
 
 export type PatchedAdminCreateUpdateLegalTermRequestWritable = {
@@ -38547,6 +40400,111 @@ export type PatchedAdminCreateUpdateLegalTermRequestWritable = {
     description?: string | null;
     groups?: Array<string | null>;
     archived?: boolean;
+};
+
+export type PatchedAdminCryptoAccountRequestWritable = {
+    address?: string;
+    name?: string | null;
+    crypto_type?: string;
+    wallet_type?: string | null;
+    owner?: CryptoOwnerRequest | null;
+    /**
+     * * `testnet` - Testnet
+     * * `mainnet` - Mainnet
+     */
+    network?: 'testnet' | 'mainnet';
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    /**
+     * * `obsolete` - Obsolete
+     * * `declined` - Declined
+     * * `pending` - Pending
+     * * `paused` - Paused
+     * * `incomplete` - Incomplete
+     * * `verified` - Verified
+     * * `not_started` - Not Started
+     */
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
+    archived?: boolean;
+    /**
+     * * `withdraw` - Withdraw
+     * * `deposit` - Deposit
+     * * `origin` - Origin
+     */
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
+};
+
+export type PatchedAdminEmailRequestWritable = {
+    primary?: boolean;
+    verified?: boolean;
+    archived?: boolean;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
+};
+
+export type PatchedAdminMobileRequestWritable = {
+    primary?: boolean;
+    verified?: boolean;
+    archived?: boolean;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
 };
 
 export type PatchedAdminUpdateAssetRequestWritable = {
@@ -38779,7 +40737,7 @@ export type PatchedAdminUpdateUserDocumentRequestWritable = {
         [key: string]: unknown;
     };
     /**
-     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change.
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
      */
     annotations?: {
         /**
@@ -38790,6 +40748,12 @@ export type PatchedAdminUpdateUserDocumentRequestWritable = {
                 message?: string;
                 priority?: 'normal' | 'high';
             };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
         };
     };
 };
@@ -40502,7 +42466,7 @@ export type PatchedAdminUpdateUserInfoRequestWritable = {
         [key: string]: unknown;
     };
     /**
-     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change.
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
      */
     annotations?: {
         /**
@@ -40514,6 +42478,12 @@ export type PatchedAdminUpdateUserInfoRequestWritable = {
                 priority?: 'normal' | 'high';
             };
         };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
     };
 };
 
@@ -40522,6 +42492,26 @@ export type PatchedAdminUpdateUserSettingsRequestWritable = {
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
     disallowed_transaction_subtypes?: Array<UpdateUserDisallowedTransactionSubtypeRequest>;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
 };
 
 export type PatchedAdminUserAddressRequestWritable = {
@@ -40531,8 +42521,10 @@ export type PatchedAdminUserAddressRequestWritable = {
      * * `shipping` - Shipping
      * * `billing` - Billing
      * * `business` - Business
+     * * `registered` - Registered
+     * * `operating` - Operating
      */
-    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business';
+    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business' | 'registered' | 'operating';
     line_1?: string | null;
     line_2?: string | null;
     city?: string | null;
@@ -40808,7 +42800,7 @@ export type PatchedAdminUserAddressRequestWritable = {
         [key: string]: unknown;
     };
     /**
-     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change.
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
      */
     annotations?: {
         /**
@@ -40819,6 +42811,131 @@ export type PatchedAdminUserAddressRequestWritable = {
                 message?: string;
                 priority?: 'normal' | 'high';
             };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
+};
+
+export type PatchedAdminUserBankAccountRequestWritable = {
+    name?: string | null;
+    owner?: BankOwnerRequest | null;
+    number?: string | null;
+    type?: string | null;
+    payment_method?: string | null;
+    /**
+     * * `individual` - Individual
+     * * `business` - Business
+     */
+    beneficiary_type?: 'individual' | 'business' | null;
+    bank_name?: string | null;
+    bank_code?: string | null;
+    bank_currency?: string | null;
+    branch_code?: string | null;
+    branch_address?: AdminUserBankBranchAddressRequest;
+    branch_address_text?: string | null;
+    routing_number?: string | null;
+    swift?: string | null;
+    iban?: string | null;
+    bic?: string | null;
+    clabe?: string | null;
+    check_digit?: string | null;
+    pix_key?: string | null;
+    br_code?: string | null;
+    sort_code?: string | null;
+    /**
+     * * `obsolete` - Obsolete
+     * * `declined` - Declined
+     * * `pending` - Pending
+     * * `paused` - Paused
+     * * `incomplete` - Incomplete
+     * * `verified` - Verified
+     * * `not_started` - Not Started
+     */
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+    /**
+     * * `withdraw` - Withdraw
+     * * `deposit` - Deposit
+     * * `origin` - Origin
+     */
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
+};
+
+export type PatchedAdminUserWalletAccountRequestWritable = {
+    username?: string | null;
+    email?: string | null;
+    mobile?: string | null;
+    name?: string | null;
+    type?: string | null;
+    payment_method?: string | null;
+    owner?: WalletOwnerRequest | null;
+    wallet_currency?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    /**
+     * * `obsolete` - Obsolete
+     * * `declined` - Declined
+     * * `pending` - Pending
+     * * `paused` - Paused
+     * * `incomplete` - Incomplete
+     * * `verified` - Verified
+     * * `not_started` - Not Started
+     */
+    status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
+    archived?: boolean;
+    /**
+     * * `withdraw` - Withdraw
+     * * `deposit` - Deposit
+     * * `origin` - Origin
+     */
+    action?: 'withdraw' | 'deposit' | 'origin' | null;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
         };
     };
 };
@@ -41596,6 +43713,29 @@ export type AccountsCurrenciesUpdateResponses = {
 
 export type AccountsCurrenciesUpdateResponse = AccountsCurrenciesUpdateResponses[keyof AccountsCurrenciesUpdateResponses];
 
+export type AccountsCurrenciesEffectiveFeesListData = {
+    body?: never;
+    path: {
+        code: string;
+        reference: string;
+    };
+    query?: {
+        subtype?: string;
+        /**
+         * * `credit` - Credit
+         * * `debit` - Debit
+         */
+        tx_type?: 'credit' | 'debit';
+    };
+    url: '/3/admin/accounts/{reference}/currencies/{code}/effective-fees/';
+};
+
+export type AccountsCurrenciesEffectiveFeesListResponses = {
+    200: EffectiveFeeListResponse;
+};
+
+export type AccountsCurrenciesEffectiveFeesListResponse = AccountsCurrenciesEffectiveFeesListResponses[keyof AccountsCurrenciesEffectiveFeesListResponses];
+
 export type AccountsCurrenciesFeesListData = {
     body?: never;
     path: {
@@ -41873,9 +44013,9 @@ export type AlertsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        policy__name?: string;
-        policy__name__icontains?: string;
         priority?: 'critical' | 'high' | 'info' | 'low' | 'medium';
+        rule__name?: string;
+        rule__name__icontains?: string;
         status?: 'assigned' | 'closed' | 'open' | 'paused' | 'reopened';
         status__in?: Array<'assigned' | 'closed' | 'open' | 'paused' | 'reopened'>;
         transaction?: string;
@@ -41957,7 +44097,7 @@ export type AuditLogsListData = {
     body?: never;
     path?: never;
     query?: {
-        action?: 'create' | 'update';
+        action?: 'create' | 'delete' | 'login' | 'password_change' | 'update';
         actor?: string;
         created?: string;
         created__gt?: string;
@@ -41975,7 +44115,7 @@ export type AuditLogsListData = {
          */
         page_size?: number;
         resource_id?: string;
-        resource_type?: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencyfee' | 'accountcurrencylimit' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankbranchaddress' | 'bankowneraddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companynotification' | 'companyservice' | 'companywalletaccount' | 'cryptoowneraddress' | 'currency' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'email' | 'export' | 'exportpage' | 'group' | 'groupfee' | 'grouplimit' | 'grouppermission' | 'grouptier' | 'grouptierfee' | 'grouptierlimit' | 'grouptierrequirement' | 'grouptierrequirementset' | 'grouptierrequirementsetitem' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_point' | 'metric_schema' | 'mfa' | 'mfasmsdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mfatotpdevice' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactioncollection' | 'transactionfee' | 'transactionmessage' | 'transactionsubtype' | 'user' | 'useraddress' | 'userbankaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'userwalletaccount' | 'walletowneraddress' | 'webhook' | 'webhookrequest' | 'webhooktask';
+        resource_type?: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencyfee' | 'accountcurrencylimit' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankbranchaddress' | 'bankowneraddress' | 'commonlist' | 'commonlistitem' | 'company' | 'companyaddress' | 'companybankaccount' | 'companynotification' | 'companyservice' | 'companywalletaccount' | 'cryptoowneraddress' | 'currency' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'email' | 'export' | 'exportpage' | 'group' | 'groupfee' | 'grouplimit' | 'grouppermission' | 'grouptier' | 'grouptierfee' | 'grouptierlimit' | 'grouptierrequirement' | 'grouptierrequirementset' | 'grouptierrequirementsetitem' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_point' | 'metric_schema' | 'mfa' | 'mfasmsdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mfatotpdevice' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactioncollection' | 'transactionfee' | 'transactionmessage' | 'transactionsubtype' | 'user' | 'useraddress' | 'userbankaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'userwalletaccount' | 'walletowneraddress' | 'webhook' | 'webhookrequest' | 'webhooktask';
         subject_user?: string;
     };
     url: '/3/admin/audit-logs/';
@@ -42393,6 +44533,229 @@ export type ChallengesConsumeCreateResponses = {
 
 export type ChallengesConsumeCreateResponse = ChallengesConsumeCreateResponses[keyof ChallengesConsumeCreateResponses];
 
+export type CommonListsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        created?: string;
+        created__gt?: string;
+        created__gte?: string;
+        created__lt?: string;
+        created__lte?: string;
+        id?: string;
+        name?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        type?: 'company' | 'system';
+        updated?: string;
+        updated__gt?: string;
+        updated__gte?: string;
+        updated__lt?: string;
+        updated__lte?: string;
+    };
+    url: '/3/admin/common-lists/';
+};
+
+export type CommonListsListResponses = {
+    200: PaginatedAdminCommonListListResponse;
+};
+
+export type CommonListsListResponse = CommonListsListResponses[keyof CommonListsListResponses];
+
+export type CommonListsCreateData = {
+    body: AdminCreateCommonListRequestWritable;
+    path?: never;
+    query?: never;
+    url: '/3/admin/common-lists/';
+};
+
+export type CommonListsCreateResponses = {
+    201: AdminCommonListResponse;
+};
+
+export type CommonListsCreateResponse = CommonListsCreateResponses[keyof CommonListsCreateResponses];
+
+export type CommonListsDestroyData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/common-lists/{identifier}/';
+};
+
+export type CommonListsDestroyResponses = {
+    200: ActionResponse;
+};
+
+export type CommonListsDestroyResponse = CommonListsDestroyResponses[keyof CommonListsDestroyResponses];
+
+export type CommonListsRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/common-lists/{identifier}/';
+};
+
+export type CommonListsRetrieveResponses = {
+    200: AdminCommonListResponse;
+};
+
+export type CommonListsRetrieveResponse = CommonListsRetrieveResponses[keyof CommonListsRetrieveResponses];
+
+export type CommonListsPartialUpdateData = {
+    body?: PatchedAdminCommonListRequest;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/common-lists/{identifier}/';
+};
+
+export type CommonListsPartialUpdateResponses = {
+    200: AdminCommonListResponse;
+};
+
+export type CommonListsPartialUpdateResponse = CommonListsPartialUpdateResponses[keyof CommonListsPartialUpdateResponses];
+
+export type CommonListsUpdateData = {
+    body: AdminCommonListRequest;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/common-lists/{identifier}/';
+};
+
+export type CommonListsUpdateResponses = {
+    200: AdminCommonListResponse;
+};
+
+export type CommonListsUpdateResponse = CommonListsUpdateResponses[keyof CommonListsUpdateResponses];
+
+export type CommonListsItemsListData = {
+    body?: never;
+    path: {
+        list_identifier: string;
+    };
+    query?: {
+        created?: string;
+        created__gt?: string;
+        created__gte?: string;
+        created__lt?: string;
+        created__lte?: string;
+        id?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        updated?: string;
+        updated__gt?: string;
+        updated__gte?: string;
+        updated__lt?: string;
+        updated__lte?: string;
+        value?: string;
+    };
+    url: '/3/admin/common-lists/{list_identifier}/items/';
+};
+
+export type CommonListsItemsListResponses = {
+    200: PaginatedAdminCommonListItemListResponse;
+};
+
+export type CommonListsItemsListResponse = CommonListsItemsListResponses[keyof CommonListsItemsListResponses];
+
+export type CommonListsItemsCreateData = {
+    body: AdminCreateCommonListItemRequest;
+    path: {
+        list_identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/common-lists/{list_identifier}/items/';
+};
+
+export type CommonListsItemsCreateResponses = {
+    201: AdminCommonListItemResponse;
+};
+
+export type CommonListsItemsCreateResponse = CommonListsItemsCreateResponses[keyof CommonListsItemsCreateResponses];
+
+export type CommonListsItemsDestroyData = {
+    body?: never;
+    path: {
+        identifier: string;
+        list_identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/common-lists/{list_identifier}/items/{identifier}/';
+};
+
+export type CommonListsItemsDestroyResponses = {
+    200: ActionResponse;
+};
+
+export type CommonListsItemsDestroyResponse = CommonListsItemsDestroyResponses[keyof CommonListsItemsDestroyResponses];
+
+export type CommonListsItemsRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+        list_identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/common-lists/{list_identifier}/items/{identifier}/';
+};
+
+export type CommonListsItemsRetrieveResponses = {
+    200: AdminCommonListItemResponse;
+};
+
+export type CommonListsItemsRetrieveResponse = CommonListsItemsRetrieveResponses[keyof CommonListsItemsRetrieveResponses];
+
+export type CommonListsItemsPartialUpdateData = {
+    body?: PatchedAdminCommonListItemRequest;
+    path: {
+        identifier: string;
+        list_identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/common-lists/{list_identifier}/items/{identifier}/';
+};
+
+export type CommonListsItemsPartialUpdateResponses = {
+    200: AdminCommonListItemResponse;
+};
+
+export type CommonListsItemsPartialUpdateResponse = CommonListsItemsPartialUpdateResponses[keyof CommonListsItemsPartialUpdateResponses];
+
+export type CommonListsItemsUpdateData = {
+    body: AdminCommonListItemRequest;
+    path: {
+        identifier: string;
+        list_identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/common-lists/{list_identifier}/items/{identifier}/';
+};
+
+export type CommonListsItemsUpdateResponses = {
+    200: AdminCommonListItemResponse;
+};
+
+export type CommonListsItemsUpdateResponse = CommonListsItemsUpdateResponses[keyof CommonListsItemsUpdateResponses];
+
 export type CompanyRetrieveData = {
     body?: never;
     path?: never;
@@ -42470,6 +44833,140 @@ export type CompanyAddressUpdateResponses = {
 };
 
 export type CompanyAddressUpdateResponse = CompanyAddressUpdateResponses[keyof CompanyAddressUpdateResponses];
+
+export type CompanyAddressesListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/3/admin/company/addresses/';
+};
+
+export type CompanyAddressesListResponses = {
+    200: PaginatedAdminCompanyAddressListResponse;
+};
+
+export type CompanyAddressesListResponse = CompanyAddressesListResponses[keyof CompanyAddressesListResponses];
+
+export type CompanyAddressesCreateData = {
+    body?: AdminCompanyAddressRequest;
+    path?: never;
+    query?: never;
+    url: '/3/admin/company/addresses/';
+};
+
+export type CompanyAddressesCreateResponses = {
+    201: AdminCompanyAddressResponse;
+};
+
+export type CompanyAddressesCreateResponse = CompanyAddressesCreateResponses[keyof CompanyAddressesCreateResponses];
+
+export type CompanyAddressesDestroyData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/3/admin/company/addresses/{id}/';
+};
+
+export type CompanyAddressesDestroyResponses = {
+    200: ActionResponse;
+};
+
+export type CompanyAddressesDestroyResponse = CompanyAddressesDestroyResponses[keyof CompanyAddressesDestroyResponses];
+
+export type CompanyAddressesRetrieveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/3/admin/company/addresses/{id}/';
+};
+
+export type CompanyAddressesRetrieveResponses = {
+    200: AdminCompanyAddressResponse;
+};
+
+export type CompanyAddressesRetrieveResponse = CompanyAddressesRetrieveResponses[keyof CompanyAddressesRetrieveResponses];
+
+export type CompanyAddressesPartialUpdateData = {
+    body?: PatchedAdminCompanyAddressRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/3/admin/company/addresses/{id}/';
+};
+
+export type CompanyAddressesPartialUpdateResponses = {
+    200: AdminCompanyAddressResponse;
+};
+
+export type CompanyAddressesPartialUpdateResponse = CompanyAddressesPartialUpdateResponses[keyof CompanyAddressesPartialUpdateResponses];
+
+export type CompanyAddressesUpdateData = {
+    body?: AdminCompanyAddressRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/3/admin/company/addresses/{id}/';
+};
+
+export type CompanyAddressesUpdateResponses = {
+    200: AdminCompanyAddressResponse;
+};
+
+export type CompanyAddressesUpdateResponse = CompanyAddressesUpdateResponses[keyof CompanyAddressesUpdateResponses];
+
+export type CompanyLegalEntityRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/3/admin/company/legal-entity/';
+};
+
+export type CompanyLegalEntityRetrieveResponses = {
+    200: AdminCompanyLegalEntityResponse;
+};
+
+export type CompanyLegalEntityRetrieveResponse = CompanyLegalEntityRetrieveResponses[keyof CompanyLegalEntityRetrieveResponses];
+
+export type CompanyLegalEntityPartialUpdateData = {
+    body?: PatchedAdminCompanyLegalEntityRequest;
+    path?: never;
+    query?: never;
+    url: '/3/admin/company/legal-entity/';
+};
+
+export type CompanyLegalEntityPartialUpdateResponses = {
+    200: AdminCompanyLegalEntityResponse;
+};
+
+export type CompanyLegalEntityPartialUpdateResponse = CompanyLegalEntityPartialUpdateResponses[keyof CompanyLegalEntityPartialUpdateResponses];
+
+export type CompanyLegalEntityUpdateData = {
+    body?: AdminCompanyLegalEntityRequest;
+    path?: never;
+    query?: never;
+    url: '/3/admin/company/legal-entity/';
+};
+
+export type CompanyLegalEntityUpdateResponses = {
+    200: AdminCompanyLegalEntityResponse;
+};
+
+export type CompanyLegalEntityUpdateResponse = CompanyLegalEntityUpdateResponses[keyof CompanyLegalEntityUpdateResponses];
 
 export type CompanyLinksListData = {
     body?: never;
@@ -43979,6 +46476,7 @@ export type LegalTermsListData = {
     body?: never;
     path?: never;
     query?: {
+        archived?: boolean;
         group?: string;
         name?: string;
         /**
@@ -44398,7 +46896,7 @@ export type PoliciesListData = {
         created__lt?: string;
         created__lte?: string;
         enabled?: boolean;
-        event?: 'device.create' | 'mobile.create' | 'mobile.create.conflict' | 'transaction.execute' | 'transaction.initiate' | 'transaction.tag.create' | 'transaction.tag.delete' | 'user.create' | 'user.tag.create' | 'user.tag.delete';
+        event?: 'device.create' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'transaction.execute' | 'transaction.initiate' | 'transaction.tag.create' | 'transaction.tag.delete' | 'user.create' | 'user.tag.create' | 'user.tag.delete' | 'user.update';
         id?: string;
         name?: string;
         /**
@@ -44421,20 +46919,20 @@ export type PoliciesListData = {
 };
 
 export type PoliciesListResponses = {
-    200: PaginatedAdminPolicyListResponse;
+    200: PaginatedAdminRuleListResponse;
 };
 
 export type PoliciesListResponse = PoliciesListResponses[keyof PoliciesListResponses];
 
 export type PoliciesCreateData = {
-    body: AdminCreatePolicyRequest;
+    body: AdminCreateRuleRequest;
     path?: never;
     query?: never;
     url: '/3/admin/policies/';
 };
 
 export type PoliciesCreateResponses = {
-    201: AdminPolicyResponse;
+    201: AdminRuleResponse;
 };
 
 export type PoliciesCreateResponse = PoliciesCreateResponses[keyof PoliciesCreateResponses];
@@ -44464,13 +46962,13 @@ export type PoliciesRetrieveData = {
 };
 
 export type PoliciesRetrieveResponses = {
-    200: AdminPolicyResponse;
+    200: AdminRuleResponse;
 };
 
 export type PoliciesRetrieveResponse = PoliciesRetrieveResponses[keyof PoliciesRetrieveResponses];
 
 export type PoliciesPartialUpdateData = {
-    body?: PatchedAdminPolicyRequest;
+    body?: PatchedAdminRuleRequest;
     path: {
         identifier: string;
     };
@@ -44479,13 +46977,13 @@ export type PoliciesPartialUpdateData = {
 };
 
 export type PoliciesPartialUpdateResponses = {
-    200: AdminPolicyResponse;
+    200: AdminRuleResponse;
 };
 
 export type PoliciesPartialUpdateResponse = PoliciesPartialUpdateResponses[keyof PoliciesPartialUpdateResponses];
 
 export type PoliciesUpdateData = {
-    body: AdminPolicyRequest;
+    body: AdminRuleRequest;
     path: {
         identifier: string;
     };
@@ -44494,7 +46992,7 @@ export type PoliciesUpdateData = {
 };
 
 export type PoliciesUpdateResponses = {
-    200: AdminPolicyResponse;
+    200: AdminRuleResponse;
 };
 
 export type PoliciesUpdateResponse = PoliciesUpdateResponses[keyof PoliciesUpdateResponses];
@@ -44502,7 +47000,7 @@ export type PoliciesUpdateResponse = PoliciesUpdateResponses[keyof PoliciesUpdat
 export type PoliciesEffectsListData = {
     body?: never;
     path: {
-        policy_identifier: string;
+        rule_identifier: string;
     };
     query?: {
         created?: string;
@@ -44526,26 +47024,26 @@ export type PoliciesEffectsListData = {
         updated__lt?: string;
         updated__lte?: string;
     };
-    url: '/3/admin/policies/{policy_identifier}/effects/';
+    url: '/3/admin/policies/{rule_identifier}/effects/';
 };
 
 export type PoliciesEffectsListResponses = {
-    200: PaginatedAdminPolicyEffectListResponse;
+    200: PaginatedAdminRuleEffectListResponse;
 };
 
 export type PoliciesEffectsListResponse = PoliciesEffectsListResponses[keyof PoliciesEffectsListResponses];
 
 export type PoliciesEffectsCreateData = {
-    body: AdminCreatePolicyEffectRequest;
+    body: AdminCreateRuleEffectRequest;
     path: {
-        policy_identifier: string;
+        rule_identifier: string;
     };
     query?: never;
-    url: '/3/admin/policies/{policy_identifier}/effects/';
+    url: '/3/admin/policies/{rule_identifier}/effects/';
 };
 
 export type PoliciesEffectsCreateResponses = {
-    201: AdminPolicyEffectResponse;
+    201: AdminRuleEffectResponse;
 };
 
 export type PoliciesEffectsCreateResponse = PoliciesEffectsCreateResponses[keyof PoliciesEffectsCreateResponses];
@@ -44554,10 +47052,10 @@ export type PoliciesEffectsDestroyData = {
     body?: never;
     path: {
         identifier: string;
-        policy_identifier: string;
+        rule_identifier: string;
     };
     query?: never;
-    url: '/3/admin/policies/{policy_identifier}/effects/{identifier}/';
+    url: '/3/admin/policies/{rule_identifier}/effects/{identifier}/';
 };
 
 export type PoliciesEffectsDestroyResponses = {
@@ -44570,46 +47068,46 @@ export type PoliciesEffectsRetrieveData = {
     body?: never;
     path: {
         identifier: string;
-        policy_identifier: string;
+        rule_identifier: string;
     };
     query?: never;
-    url: '/3/admin/policies/{policy_identifier}/effects/{identifier}/';
+    url: '/3/admin/policies/{rule_identifier}/effects/{identifier}/';
 };
 
 export type PoliciesEffectsRetrieveResponses = {
-    200: AdminPolicyEffectResponse;
+    200: AdminRuleEffectResponse;
 };
 
 export type PoliciesEffectsRetrieveResponse = PoliciesEffectsRetrieveResponses[keyof PoliciesEffectsRetrieveResponses];
 
 export type PoliciesEffectsPartialUpdateData = {
-    body?: PatchedAdminCreatePolicyEffectRequest;
+    body?: PatchedAdminCreateRuleEffectRequest;
     path: {
         identifier: string;
-        policy_identifier: string;
+        rule_identifier: string;
     };
     query?: never;
-    url: '/3/admin/policies/{policy_identifier}/effects/{identifier}/';
+    url: '/3/admin/policies/{rule_identifier}/effects/{identifier}/';
 };
 
 export type PoliciesEffectsPartialUpdateResponses = {
-    200: AdminPolicyEffectResponse;
+    200: AdminRuleEffectResponse;
 };
 
 export type PoliciesEffectsPartialUpdateResponse = PoliciesEffectsPartialUpdateResponses[keyof PoliciesEffectsPartialUpdateResponses];
 
 export type PoliciesEffectsUpdateData = {
-    body: AdminCreatePolicyEffectRequest;
+    body: AdminCreateRuleEffectRequest;
     path: {
         identifier: string;
-        policy_identifier: string;
+        rule_identifier: string;
     };
     query?: never;
-    url: '/3/admin/policies/{policy_identifier}/effects/{identifier}/';
+    url: '/3/admin/policies/{rule_identifier}/effects/{identifier}/';
 };
 
 export type PoliciesEffectsUpdateResponses = {
-    200: AdminPolicyEffectResponse;
+    200: AdminRuleEffectResponse;
 };
 
 export type PoliciesEffectsUpdateResponse = PoliciesEffectsUpdateResponses[keyof PoliciesEffectsUpdateResponses];
@@ -44632,15 +47130,15 @@ export type PolicyLogsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        policy?: string;
-        resource?: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencyfee' | 'accountcurrencylimit' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankbranchaddress' | 'bankowneraddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companynotification' | 'companyservice' | 'companywalletaccount' | 'cryptoowneraddress' | 'currency' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'email' | 'export' | 'exportpage' | 'group' | 'groupfee' | 'grouplimit' | 'grouppermission' | 'grouptier' | 'grouptierfee' | 'grouptierlimit' | 'grouptierrequirement' | 'grouptierrequirementset' | 'grouptierrequirementsetitem' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_point' | 'metric_schema' | 'mfa' | 'mfasmsdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mfatotpdevice' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactioncollection' | 'transactionfee' | 'transactionmessage' | 'transactionsubtype' | 'user' | 'useraddress' | 'userbankaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'userwalletaccount' | 'walletowneraddress' | 'webhook' | 'webhookrequest' | 'webhooktask';
+        resource?: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencyfee' | 'accountcurrencylimit' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankbranchaddress' | 'bankowneraddress' | 'commonlist' | 'commonlistitem' | 'company' | 'companyaddress' | 'companybankaccount' | 'companynotification' | 'companyservice' | 'companywalletaccount' | 'cryptoowneraddress' | 'currency' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'email' | 'export' | 'exportpage' | 'group' | 'groupfee' | 'grouplimit' | 'grouppermission' | 'grouptier' | 'grouptierfee' | 'grouptierlimit' | 'grouptierrequirement' | 'grouptierrequirementset' | 'grouptierrequirementsetitem' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_point' | 'metric_schema' | 'mfa' | 'mfasmsdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mfatotpdevice' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactioncollection' | 'transactionfee' | 'transactionmessage' | 'transactionsubtype' | 'user' | 'useraddress' | 'userbankaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'userwalletaccount' | 'walletowneraddress' | 'webhook' | 'webhookrequest' | 'webhooktask';
         resource_id?: string;
+        rule?: string;
     };
     url: '/3/admin/policy-logs/';
 };
 
 export type PolicyLogsListResponses = {
-    200: PaginatedAdminPolicyLogListResponse;
+    200: PaginatedAdminRuleLogListResponse;
 };
 
 export type PolicyLogsListResponse = PolicyLogsListResponses[keyof PolicyLogsListResponses];
@@ -44655,7 +47153,7 @@ export type PolicyLogsRetrieveData = {
 };
 
 export type PolicyLogsRetrieveResponses = {
-    200: AdminPolicyLogResponse;
+    200: AdminRuleLogResponse;
 };
 
 export type PolicyLogsRetrieveResponse = PolicyLogsRetrieveResponses[keyof PolicyLogsRetrieveResponses];
@@ -44685,7 +47183,7 @@ export type RequestsListData = {
         page_size?: number;
         path?: string;
         path__contains?: string;
-        resource?: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencyfee' | 'accountcurrencylimit' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankbranchaddress' | 'bankowneraddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companynotification' | 'companyservice' | 'companywalletaccount' | 'cryptoowneraddress' | 'currency' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'email' | 'export' | 'exportpage' | 'group' | 'groupfee' | 'grouplimit' | 'grouppermission' | 'grouptier' | 'grouptierfee' | 'grouptierlimit' | 'grouptierrequirement' | 'grouptierrequirementset' | 'grouptierrequirementsetitem' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_point' | 'metric_schema' | 'mfa' | 'mfasmsdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mfatotpdevice' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'policyeffect' | 'policylog' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'service' | 'statement' | 'token' | 'transaction' | 'transactioncollection' | 'transactionfee' | 'transactionmessage' | 'transactionsubtype' | 'user' | 'useraddress' | 'userbankaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'userwalletaccount' | 'walletowneraddress' | 'webhook' | 'webhookrequest' | 'webhooktask';
+        resource?: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencyfee' | 'accountcurrencylimit' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankbranchaddress' | 'bankowneraddress' | 'commonlist' | 'commonlistitem' | 'company' | 'companyaddress' | 'companybankaccount' | 'companynotification' | 'companyservice' | 'companywalletaccount' | 'cryptoowneraddress' | 'currency' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'email' | 'export' | 'exportpage' | 'group' | 'groupfee' | 'grouplimit' | 'grouppermission' | 'grouptier' | 'grouptierfee' | 'grouptierlimit' | 'grouptierrequirement' | 'grouptierrequirementset' | 'grouptierrequirementsetitem' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_point' | 'metric_schema' | 'mfa' | 'mfasmsdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mfatotpdevice' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactioncollection' | 'transactionfee' | 'transactionmessage' | 'transactionsubtype' | 'user' | 'useraddress' | 'userbankaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'userwalletaccount' | 'walletowneraddress' | 'webhook' | 'webhookrequest' | 'webhooktask';
         resource_id?: string;
         scheme?: string;
         status_code?: number;
@@ -44715,6 +47213,279 @@ export type RequestsRetrieveResponses = {
 };
 
 export type RequestsRetrieveResponse = RequestsRetrieveResponses[keyof RequestsRetrieveResponses];
+
+export type RuleLogsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        created?: string;
+        created__gt?: string;
+        created__gte?: string;
+        created__lt?: string;
+        created__lte?: string;
+        id?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        resource?: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencyfee' | 'accountcurrencylimit' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankbranchaddress' | 'bankowneraddress' | 'commonlist' | 'commonlistitem' | 'company' | 'companyaddress' | 'companybankaccount' | 'companynotification' | 'companyservice' | 'companywalletaccount' | 'cryptoowneraddress' | 'currency' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'email' | 'export' | 'exportpage' | 'group' | 'groupfee' | 'grouplimit' | 'grouppermission' | 'grouptier' | 'grouptierfee' | 'grouptierlimit' | 'grouptierrequirement' | 'grouptierrequirementset' | 'grouptierrequirementsetitem' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_point' | 'metric_schema' | 'mfa' | 'mfasmsdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mfatotpdevice' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactioncollection' | 'transactionfee' | 'transactionmessage' | 'transactionsubtype' | 'user' | 'useraddress' | 'userbankaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'userwalletaccount' | 'walletowneraddress' | 'webhook' | 'webhookrequest' | 'webhooktask';
+        resource_id?: string;
+        rule?: string;
+    };
+    url: '/3/admin/rule-logs/';
+};
+
+export type RuleLogsListResponses = {
+    200: PaginatedAdminRuleLogListResponse;
+};
+
+export type RuleLogsListResponse = RuleLogsListResponses[keyof RuleLogsListResponses];
+
+export type RuleLogsRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/rule-logs/{identifier}/';
+};
+
+export type RuleLogsRetrieveResponses = {
+    200: AdminRuleLogResponse;
+};
+
+export type RuleLogsRetrieveResponse = RuleLogsRetrieveResponses[keyof RuleLogsRetrieveResponses];
+
+export type RulesListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        author?: string;
+        created?: string;
+        created__gt?: string;
+        created__gte?: string;
+        created__lt?: string;
+        created__lte?: string;
+        enabled?: boolean;
+        event?: 'device.create' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'transaction.execute' | 'transaction.initiate' | 'transaction.tag.create' | 'transaction.tag.delete' | 'user.create' | 'user.tag.create' | 'user.tag.delete' | 'user.update';
+        id?: string;
+        name?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        tag?: string;
+        type?: 'trigger';
+        updated?: string;
+        updated__gt?: string;
+        updated__gte?: string;
+        updated__lt?: string;
+        updated__lte?: string;
+    };
+    url: '/3/admin/rules/';
+};
+
+export type RulesListResponses = {
+    200: PaginatedAdminRuleListResponse;
+};
+
+export type RulesListResponse = RulesListResponses[keyof RulesListResponses];
+
+export type RulesCreateData = {
+    body: AdminCreateRuleRequest;
+    path?: never;
+    query?: never;
+    url: '/3/admin/rules/';
+};
+
+export type RulesCreateResponses = {
+    201: AdminRuleResponse;
+};
+
+export type RulesCreateResponse = RulesCreateResponses[keyof RulesCreateResponses];
+
+export type RulesDestroyData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/rules/{identifier}/';
+};
+
+export type RulesDestroyResponses = {
+    200: ActionResponse;
+};
+
+export type RulesDestroyResponse = RulesDestroyResponses[keyof RulesDestroyResponses];
+
+export type RulesRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/rules/{identifier}/';
+};
+
+export type RulesRetrieveResponses = {
+    200: AdminRuleResponse;
+};
+
+export type RulesRetrieveResponse = RulesRetrieveResponses[keyof RulesRetrieveResponses];
+
+export type RulesPartialUpdateData = {
+    body?: PatchedAdminRuleRequest;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/rules/{identifier}/';
+};
+
+export type RulesPartialUpdateResponses = {
+    200: AdminRuleResponse;
+};
+
+export type RulesPartialUpdateResponse = RulesPartialUpdateResponses[keyof RulesPartialUpdateResponses];
+
+export type RulesUpdateData = {
+    body: AdminRuleRequest;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/rules/{identifier}/';
+};
+
+export type RulesUpdateResponses = {
+    200: AdminRuleResponse;
+};
+
+export type RulesUpdateResponse = RulesUpdateResponses[keyof RulesUpdateResponses];
+
+export type RulesEffectsListData = {
+    body?: never;
+    path: {
+        rule_identifier: string;
+    };
+    query?: {
+        created?: string;
+        created__gt?: string;
+        created__gte?: string;
+        created__lt?: string;
+        created__lte?: string;
+        id?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        type?: 'create_account_asset_limit' | 'create_transaction_alert' | 'create_transaction_message' | 'create_transaction_tag' | 'create_user_alert' | 'create_user_message' | 'create_user_tag' | 'disable_user_transaction_type' | 'disable_user_transactions';
+        updated?: string;
+        updated__gt?: string;
+        updated__gte?: string;
+        updated__lt?: string;
+        updated__lte?: string;
+    };
+    url: '/3/admin/rules/{rule_identifier}/effects/';
+};
+
+export type RulesEffectsListResponses = {
+    200: PaginatedAdminRuleEffectListResponse;
+};
+
+export type RulesEffectsListResponse = RulesEffectsListResponses[keyof RulesEffectsListResponses];
+
+export type RulesEffectsCreateData = {
+    body: AdminCreateRuleEffectRequest;
+    path: {
+        rule_identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/rules/{rule_identifier}/effects/';
+};
+
+export type RulesEffectsCreateResponses = {
+    201: AdminRuleEffectResponse;
+};
+
+export type RulesEffectsCreateResponse = RulesEffectsCreateResponses[keyof RulesEffectsCreateResponses];
+
+export type RulesEffectsDestroyData = {
+    body?: never;
+    path: {
+        identifier: string;
+        rule_identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/rules/{rule_identifier}/effects/{identifier}/';
+};
+
+export type RulesEffectsDestroyResponses = {
+    200: ActionResponse;
+};
+
+export type RulesEffectsDestroyResponse = RulesEffectsDestroyResponses[keyof RulesEffectsDestroyResponses];
+
+export type RulesEffectsRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+        rule_identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/rules/{rule_identifier}/effects/{identifier}/';
+};
+
+export type RulesEffectsRetrieveResponses = {
+    200: AdminRuleEffectResponse;
+};
+
+export type RulesEffectsRetrieveResponse = RulesEffectsRetrieveResponses[keyof RulesEffectsRetrieveResponses];
+
+export type RulesEffectsPartialUpdateData = {
+    body?: PatchedAdminCreateRuleEffectRequest;
+    path: {
+        identifier: string;
+        rule_identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/rules/{rule_identifier}/effects/{identifier}/';
+};
+
+export type RulesEffectsPartialUpdateResponses = {
+    200: AdminRuleEffectResponse;
+};
+
+export type RulesEffectsPartialUpdateResponse = RulesEffectsPartialUpdateResponses[keyof RulesEffectsPartialUpdateResponses];
+
+export type RulesEffectsUpdateData = {
+    body: AdminCreateRuleEffectRequest;
+    path: {
+        identifier: string;
+        rule_identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/rules/{rule_identifier}/effects/{identifier}/';
+};
+
+export type RulesEffectsUpdateResponses = {
+    200: AdminRuleEffectResponse;
+};
+
+export type RulesEffectsUpdateResponse = RulesEffectsUpdateResponses[keyof RulesEffectsUpdateResponses];
 
 export type SearchRetrieveData = {
     body?: never;
@@ -46415,6 +49186,9 @@ export type UsersLegalTermsListData = {
         identifier: string;
     };
     query?: {
+        archived?: boolean;
+        group?: string;
+        name?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -46423,6 +49197,7 @@ export type UsersLegalTermsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
+        type?: 'company' | 'system';
     };
     url: '/3/admin/users/{identifier}/legal-terms/';
 };
@@ -46719,7 +49494,7 @@ export type UsersTagsListResponses = {
 export type UsersTagsListResponse = UsersTagsListResponses[keyof UsersTagsListResponses];
 
 export type UsersTagsCreateData = {
-    body: UserTagRequest;
+    body: AdminUserTagRequestWritable;
     path: {
         identifier: string;
     };
@@ -46941,7 +49716,7 @@ export type UsersBankAccountsRetrieveResponses = {
 export type UsersBankAccountsRetrieveResponse = UsersBankAccountsRetrieveResponses[keyof UsersBankAccountsRetrieveResponses];
 
 export type UsersBankAccountsPartialUpdateData = {
-    body?: PatchedAdminUserBankAccountRequest;
+    body?: PatchedAdminUserBankAccountRequestWritable;
     path: {
         id: string;
     };
@@ -46956,7 +49731,7 @@ export type UsersBankAccountsPartialUpdateResponses = {
 export type UsersBankAccountsPartialUpdateResponse = UsersBankAccountsPartialUpdateResponses[keyof UsersBankAccountsPartialUpdateResponses];
 
 export type UsersBankAccountsUpdateData = {
-    body?: AdminUserBankAccountRequest;
+    body?: AdminUserBankAccountRequestWritable;
     path: {
         id: string;
     };
@@ -47173,7 +49948,7 @@ export type UsersCryptoAccountsRetrieveResponses = {
 export type UsersCryptoAccountsRetrieveResponse = UsersCryptoAccountsRetrieveResponses[keyof UsersCryptoAccountsRetrieveResponses];
 
 export type UsersCryptoAccountsPartialUpdateData = {
-    body?: PatchedAdminCryptoAccountRequest;
+    body?: PatchedAdminCryptoAccountRequestWritable;
     path: {
         id: string;
     };
@@ -47188,7 +49963,7 @@ export type UsersCryptoAccountsPartialUpdateResponses = {
 export type UsersCryptoAccountsPartialUpdateResponse = UsersCryptoAccountsPartialUpdateResponses[keyof UsersCryptoAccountsPartialUpdateResponses];
 
 export type UsersCryptoAccountsUpdateData = {
-    body: AdminCryptoAccountRequest;
+    body: AdminCryptoAccountRequestWritable;
     path: {
         id: string;
     };
@@ -47702,7 +50477,7 @@ export type UsersEmailsRetrieveResponses = {
 export type UsersEmailsRetrieveResponse = UsersEmailsRetrieveResponses[keyof UsersEmailsRetrieveResponses];
 
 export type UsersEmailsPartialUpdateData = {
-    body?: PatchedAdminEmailRequest;
+    body?: PatchedAdminEmailRequestWritable;
     path: {
         id: string;
     };
@@ -47717,7 +50492,7 @@ export type UsersEmailsPartialUpdateResponses = {
 export type UsersEmailsPartialUpdateResponse = UsersEmailsPartialUpdateResponses[keyof UsersEmailsPartialUpdateResponses];
 
 export type UsersEmailsUpdateData = {
-    body?: AdminEmailRequest;
+    body?: AdminEmailRequestWritable;
     path: {
         id: string;
     };
@@ -47855,7 +50630,7 @@ export type UsersMobilesRetrieveResponses = {
 export type UsersMobilesRetrieveResponse = UsersMobilesRetrieveResponses[keyof UsersMobilesRetrieveResponses];
 
 export type UsersMobilesPartialUpdateData = {
-    body?: PatchedAdminMobileRequest;
+    body?: PatchedAdminMobileRequestWritable;
     path: {
         id: string;
     };
@@ -47870,7 +50645,7 @@ export type UsersMobilesPartialUpdateResponses = {
 export type UsersMobilesPartialUpdateResponse = UsersMobilesPartialUpdateResponses[keyof UsersMobilesPartialUpdateResponses];
 
 export type UsersMobilesUpdateData = {
-    body: AdminMobileRequest;
+    body: AdminMobileRequestWritable;
     path: {
         id: string;
     };
@@ -48096,7 +50871,7 @@ export type UsersWalletAccountsRetrieveResponses = {
 export type UsersWalletAccountsRetrieveResponse = UsersWalletAccountsRetrieveResponses[keyof UsersWalletAccountsRetrieveResponses];
 
 export type UsersWalletAccountsPartialUpdateData = {
-    body?: PatchedAdminUserWalletAccountRequest;
+    body?: PatchedAdminUserWalletAccountRequestWritable;
     path: {
         id: string;
     };
@@ -48111,7 +50886,7 @@ export type UsersWalletAccountsPartialUpdateResponses = {
 export type UsersWalletAccountsPartialUpdateResponse = UsersWalletAccountsPartialUpdateResponses[keyof UsersWalletAccountsPartialUpdateResponses];
 
 export type UsersWalletAccountsUpdateData = {
-    body?: AdminUserWalletAccountRequest;
+    body?: AdminUserWalletAccountRequestWritable;
     path: {
         id: string;
     };
