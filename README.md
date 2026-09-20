@@ -10,6 +10,8 @@ A modern, fully typed TypeScript SDK for the Rehive platform and extension APIs.
 npm install rehive
 ```
 
+No build step? Use the [browser bundle](#browser-bundle-script-tag) instead -- a single `<script>` tag, no npm.
+
 ## Quick Start
 
 ### Modular API
@@ -169,6 +171,70 @@ const conversionStaging = createConversionApi({
 | Rain | `https://rain.services.rehive.com/api/` |
 | Alchemy | `https://alchemy.services.rehive.com/api/` |
 
+## Browser bundle (script tag)
+
+For plain HTML pages, CMS templates, prototypes and anywhere without a bundler, the SDK
+ships a standalone build that exposes everything on a single `Rehive` global. No npm, no
+module loader, no transpiler -- just a script tag.
+
+```html
+<script src="https://unpkg.com/rehive@5/dist/browser/rehive.min.js"></script>
+<script>
+  const auth = Rehive.createAuth({
+    baseUrl: "https://api.rehive.com",
+    storage: "local",
+  });
+  const user = Rehive.createUserApi({ auth });
+
+  async function signIn() {
+    await auth.login({ user: "email@example.com", password: "pass", company: "myco" });
+    const me = await user.userRetrieve();
+    console.log(me.data);
+  }
+</script>
+```
+
+Anything exported from the package root is on the global -- `Rehive.createAuth`,
+`Rehive.createUserApi`, `Rehive.createAdminApi`, `Rehive.ApiError`,
+`Rehive.createAuthenticatedFetch`, `Rehive.WebStorageAdapter` and friends. The names match
+the ESM exports exactly, so the examples elsewhere in this README translate by prefixing
+`Rehive.`.
+
+### Which file
+
+| File | Contains | Minified | Gzipped |
+|------|----------|----------|---------|
+| `dist/browser/rehive.min.js` | auth + user + admin | 149 KB | 22 KB |
+| `dist/browser/rehive.full.min.js` | the above + all 17 extension clients | 485 KB | 50 KB |
+
+`rehive.min.js` is what `unpkg.com/rehive` and `cdn.jsdelivr.net/npm/rehive` resolve to by
+default. Reach for `rehive.full.min.js` only if you need extension APIs in the browser:
+
+```html
+<script src="https://unpkg.com/rehive@5/dist/browser/rehive.full.min.js"></script>
+<script>
+  const auth = Rehive.createAuth({ baseUrl: "https://api.rehive.com" });
+  const conversion = Rehive.createConversionApi({ auth });
+  const rewards = Rehive.createRewardsApi({ auth });
+</script>
+```
+
+Both files define the same `Rehive` global, so load one or the other -- not both.
+Unminified builds (`rehive.js`, `rehive.full.js`) sit alongside them for debugging, and the
+minified files ship `.map` sourcemaps.
+
+> **Pin your version.** `rehive@5` tracks the latest v5 release; use an exact version
+> (`rehive@5.0.0`) if you need a byte-stable URL.
+
+A runnable page lives at [`examples/browser.html`](./examples/browser.html) -- build the
+bundles and open it to see a real unauthenticated API call go out.
+
+### Using a bundler instead
+
+If you have webpack/vite/rollup, keep using `import` -- the ESM build is tree-shakeable and
+the browser bundle is not. Note the package deliberately sets no `browser` field, so
+bundlers continue to resolve the modular entries rather than this global build.
+
 ## Error Handling
 
 The SDK throws `ApiError` on non-200 responses:
@@ -320,8 +386,11 @@ Each module is a separate entry point with its own bundle. Import only the facto
 ## Development
 
 ```bash
-# Build
+# Build (module entries + the browser bundles)
 npm run build
+
+# Build only the standalone browser bundles
+npm run build:browser
 
 # Type check
 npm run typecheck

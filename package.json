@@ -5,8 +5,11 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "unpkg": "dist/browser/rehive.min.js",
+  "jsdelivr": "dist/browser/rehive.min.js",
   "scripts": {
-    "build": "NODE_OPTIONS=--max-old-space-size=8192 tsup",
+    "build": "NODE_OPTIONS=--max-old-space-size=8192 tsup && npm run build:browser",
+    "build:browser": "NODE_OPTIONS=--max-old-space-size=8192 tsup --config tsup.browser.config.ts",
     "dev": "NODE_OPTIONS=--max-old-space-size=8192 tsup --watch",
     "codegen:openapi-ts": "bash scripts/codegen-openapi-ts.sh",
     "codegen:openapi-ts:clean": "rm -rf src/platform/user/openapi-ts src/platform/admin/openapi-ts src/extensions/conversion/openapi-ts src/extensions/mass-send/openapi-ts src/extensions/notifications/openapi-ts src/extensions/products/openapi-ts src/extensions/rewards/openapi-ts src/extensions/stellar/openapi-ts src/extensions/stellar-testnet/openapi-ts src/extensions/business/openapi-ts src/extensions/payment-requests/openapi-ts src/extensions/bridge/openapi-ts src/extensions/app/openapi-ts src/extensions/billing/openapi-ts src/extensions/builder/openapi-ts src/extensions/rain/openapi-ts src/extensions/alchemy/openapi-ts src/extensions/sumsub/openapi-ts src/extensions/mukuru/openapi-ts && npm run codegen:openapi-ts",
