@@ -252,6 +252,7 @@ const auth = createAuth({
   storage: "local",                     // Storage adapter or shorthand
   token: "permanent-token",             // Server-side permanent token
   enableCrossTabSync: true,             // Sync auth across browser tabs (default: true)
+  refreshTokenDuration: 86400,          // Refresh token lifespan in seconds (default: company setting)
 });
 ```
 
@@ -271,6 +272,22 @@ await auth.login({ user: "user@example.com", password: "pass", company: "myco" }
 ```
 
 The same `session_duration` option is available on `auth.register()`.
+
+## Refresh Token Duration
+
+A refresh token keeps a session alive: each refresh issues a new one, so a user stays signed in as long as they come back before it expires. Set its lifespan once with `refreshTokenDuration`; without it, the company's `default_refresh_token_duration` applies (31 days unless changed).
+
+```typescript
+const auth = createAuth({ refreshTokenDuration: 86400 }); // 24 hours
+
+// Override per call, or send none (for companies with allow_session_durations disabled)
+await auth.login({ user: "user@example.com", password: "pass", company: "myco", refresh_token_duration: 3600 });
+await auth.login({ user: "user@example.com", password: "pass", company: "myco", session_duration: null, refresh_token_duration: null });
+```
+
+- The SDK never asks for a refresh token shorter than the session duration it sends; the platform rejects that.
+- A refresh sends an empty body, and the platform reuses the durations the session was created with.
+- A session saved before it recorded a lifespan (an older SDK version, `registerCompany`, `importToken`) sends `refreshTokenDuration` on its next refresh, once. If the platform rejects it, the SDK refreshes again without it.
 
 ## Architecture
 

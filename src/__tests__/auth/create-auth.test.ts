@@ -5,6 +5,8 @@ import {
   mockLogoutResponse,
   mockRefreshResponse,
 } from '../mocks/platform-api.js';
+import { ApiError } from '../../shared/api-utils.js';
+import type { StorageAdapter } from '../../auth/types/index.js';
 
 const mockAuthLogin = jest.fn();
 const mockAuthRegister = jest.fn();
@@ -472,6 +474,211 @@ describe('createAuth', () => {
 
       expect(auth.getActiveSession()?.challenges).toHaveLength(1);
       expect(auth.getActiveSession()?.challenges[0].id).toBe('challenge-2');
+    });
+  });
+
+  describe('refresh token duration', () => {
+    const DAY = 86400;
+    const credentials = {
+      user: 'test@example.com',
+      password: 'password123',
+      company: 'test-co',
+    };
+
+    // A session as saved before sessions recorded their refresh token lifespan.
+    function storageWithLegacySession(): StorageAdapter {
+      const items = new Map<string, string>([
+        [
+          'rehive_auth_state',
+          JSON.stringify({
+            sessions: [
+              {
+                user: { id: 'user-123', company: 'test-co' },
+                token: 'legacy-token',
+                refresh_token: 'legacy-refresh-token',
+                challenges: [],
+                expires: Date.now() + 3600000,
+                session_duration: 36000,
+                company: 'test-co',
+              },
+            ],
+            activeSessionIndex: 0,
+          }),
+        ],
+      ]);
+      return {
+        getItem: async (key) => items.get(key) ?? null,
+        setItem: async (key, value) => {
+          items.set(key, value);
+        },
+        removeItem: async (key) => {
+          items.delete(key);
+        },
+      };
+    }
+
+    function rejectedDuration(): ApiError {
+      const body = {
+        status: 'error',
+        message: 'Custom session durations are disabled.',
+        data: { refresh_token_duration: 'Custom session durations are disabled.' },
+      };
+      return new ApiError({
+        status: 400,
+        error: body as unknown as string,
+        message: body.message,
+      });
+    }
+
+    const lastRefreshBody = () => mockAuthRefresh.mock.lastCall?.[0]?.body;
+
+    it('should send the configured duration on login and record it', async () => {
+      const auth = createAuth({
+        storage: 'memory',
+        enableCrossTabSync: false,
+        refreshTokenDuration: DAY,
+      });
+
+      const session = await auth.login(credentials);
+
+      expect(mockAuthLogin.mock.calls[0][0].body.refresh_token_duration).toBe(DAY);
+      expect(session.refresh_token_duration).toBe(DAY);
+    });
+
+    it('should prefer a per-call duration and send none for null', async () => {
+      const auth = createAuth({
+        storage: 'memory',
+        enableCrossTabSync: false,
+        refreshTokenDuration: DAY,
+      });
+
+      await auth.login({ ...credentials, refresh_token_duration: 2 * DAY });
+      expect(mockAuthLogin.mock.calls[0][0].body.refresh_token_duration).toBe(2 * DAY);
+
+      const session = await auth.login({
+        ...credentials,
+        session_duration: null,
+        refresh_token_duration: null,
+      });
+      expect(mockAuthLogin.mock.calls[1][0].body).not.toHaveProperty('refresh_token_duration');
+      expect(session.refresh_token_duration).toBeNull();
+    });
+
+    it('should send no duration without config', async () => {
+      const auth = createAuth({ storage: 'memory', enableCrossTabSync: false });
+
+      const session = await auth.login(credentials);
+
+      expect(mockAuthLogin.mock.calls[0][0].body).not.toHaveProperty('refresh_token_duration');
+      expect(session.refresh_token_duration).toBeUndefined();
+    });
+
+    it('should never ask for a refresh token shorter than the session', async () => {
+      const auth = createAuth({
+        storage: 'memory',
+        enableCrossTabSync: false,
+        refreshTokenDuration: DAY,
+      });
+
+      await auth.login({ ...credentials, session_duration: 30 * DAY });
+      expect(mockAuthLogin.mock.calls[0][0].body.refresh_token_duration).toBe(30 * DAY);
+
+      const session = await auth.login({ ...credentials, session_duration: 0 });
+      expect(mockAuthLogin.mock.calls[1][0].body).not.toHaveProperty('refresh_token_duration');
+      expect(session.refresh_token_duration).toBeNull();
+    });
+
+    it('should send the configured duration on register', async () => {
+      const auth = createAuth({
+        storage: 'memory',
+        enableCrossTabSync: false,
+        refreshTokenDuration: DAY,
+      });
+
+      await auth.register({ email: 'new@example.com', password: 'password123', company: 'test-co' });
+
+      expect(mockAuthRegister.mock.calls[0][0].body.refresh_token_duration).toBe(DAY);
+    });
+
+    it('should refresh with an empty body once the session has a duration', async () => {
+      const auth = createAuth({
+        storage: 'memory',
+        enableCrossTabSync: false,
+        refreshTokenDuration: DAY,
+      });
+      await auth.login(credentials);
+
+      await auth.refresh();
+
+      expect(lastRefreshBody()).toEqual({});
+      expect(auth.getActiveSession()?.refresh_token_duration).toBe(DAY);
+    });
+
+    it('should move a legacy session to the configured duration once', async () => {
+      const auth = createAuth({
+        storage: storageWithLegacySession(),
+        enableCrossTabSync: false,
+        refreshTokenDuration: DAY,
+      });
+
+      await auth.refresh();
+      expect(lastRefreshBody()).toEqual({ refresh_token_duration: DAY });
+      expect(auth.getActiveSession()?.refresh_token_duration).toBe(DAY);
+
+      await auth.refresh();
+      expect(lastRefreshBody()).toEqual({});
+    });
+
+    it('should leave a legacy session alone without config', async () => {
+      const auth = createAuth({
+        storage: storageWithLegacySession(),
+        enableCrossTabSync: false,
+      });
+
+      await auth.refresh();
+
+      expect(lastRefreshBody()).toEqual({});
+      expect(auth.getActiveSession()?.refresh_token_duration).toBeUndefined();
+    });
+
+    it('should retry without the duration when the platform rejects it', async () => {
+      mockAuthRefresh.mockRejectedValueOnce(rejectedDuration());
+      const auth = createAuth({
+        storage: storageWithLegacySession(),
+        enableCrossTabSync: false,
+        refreshTokenDuration: DAY,
+      });
+
+      await auth.refresh();
+
+      expect(mockAuthRefresh).toHaveBeenCalledTimes(2);
+      expect(mockAuthRefresh.mock.calls[0][0].body).toEqual({ refresh_token_duration: DAY });
+      expect(mockAuthRefresh.mock.calls[1][0].body).toEqual({});
+      expect(auth.getActiveSession()?.refresh_token).toBe(mockRefreshResponse.data.refresh_token);
+      expect(auth.getActiveSession()?.refresh_token_duration).toBeNull();
+    });
+
+    it('should not retry other refresh errors', async () => {
+      mockAuthRefresh.mockRejectedValueOnce(
+        new ApiError({ status: 401, error: 'Invalid token.', message: 'Invalid token.' }),
+      );
+      const auth = createAuth({
+        storage: storageWithLegacySession(),
+        enableCrossTabSync: false,
+        refreshTokenDuration: DAY,
+      });
+
+      await expect(auth.refresh()).rejects.toThrow('Invalid token.');
+      expect(mockAuthRefresh).toHaveBeenCalledTimes(1);
+    });
+
+    it('should never send session_duration on refresh', async () => {
+      const auth = createAuth({ storage: 'memory', enableCrossTabSync: false });
+      await auth.login({ ...credentials, session_duration: 36000 });
+
+      await auth.refresh();
+
+      expect(lastRefreshBody()).not.toHaveProperty('session_duration');
     });
   });
 });
