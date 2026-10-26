@@ -8,6 +8,7 @@ import {
 } from '../platform/user/openapi-ts/sdk.gen.js';
 import type {
   LoginRequestWritable,
+  RefreshRequest,
   RegisterRequestWritable,
   RegisterCompanyRequestWritable,
 } from '../platform/user/openapi-ts/types.gen.js';
@@ -32,6 +33,9 @@ export type LoginParams = {
   password: string;
   company: string;
   session_duration?: number | null;
+  // Defaults to `AuthConfig.refreshTokenDuration`; null sends none, so the
+  // company default applies.
+  refresh_token_duration?: number | null;
 };
 
 export type RegisterParams = {
@@ -45,6 +49,9 @@ export type RegisterParams = {
   terms_and_conditions?: boolean;
   privacy_policy?: boolean;
   session_duration?: number | null;
+  // Defaults to `AuthConfig.refreshTokenDuration`; null sends none, so the
+  // company default applies.
+  refresh_token_duration?: number | null;
 };
 
 export type RegisterCompanyParams = RegisterCompanyRequestWritable;
@@ -69,6 +76,9 @@ export interface AuthConfig {
   storage?: 'local' | 'memory' | StorageAdapter;
   token?: string;
   enableCrossTabSync?: boolean;
+  // Refresh token lifespan (seconds) for logins and registrations. A session
+  // saved without one adopts it on its next refresh.
+  refreshTokenDuration?: number;
 }
 
 export interface Auth {
@@ -141,6 +151,17 @@ function errorHandlingFetch(baseFetch: typeof fetch): typeof fetch {
   };
 }
 
+// The generated clients predate the platform's refresh_token_duration field.
+type WithRefreshTokenDuration<T> = T & { refresh_token_duration?: number | null };
+
+function isRefreshTokenDurationError(error: unknown): boolean {
+  if (!(error instanceof ApiError) || error.status !== 400) {
+    return false;
+  }
+  const body = error.error as unknown as { data?: Record<string, unknown> } | null;
+  return typeof body === 'object' && body?.data?.refresh_token_duration !== undefined;
+}
+
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -184,6 +205,27 @@ export function createAuth(config: AuthConfig = {}): Auth {
 
   function isTokenExpired(expires: number): boolean {
     return Date.now() >= expires - 30 * 1000;
+  }
+
+  // null asks for none; undefined leaves it unset, so a later config can
+  // still be adopted on refresh.
+  function resolveRefreshTokenDuration(
+    requested: number | null | undefined,
+    sessionDuration: number | undefined,
+  ): number | null | undefined {
+    if (requested === null) {
+      return null;
+    }
+    const duration = requested ?? config.refreshTokenDuration;
+    if (duration == null) {
+      return undefined;
+    }
+    // Sessions that never expire get no refresh token.
+    if (sessionDuration === 0) {
+      return null;
+    }
+    // The platform rejects a refresh token shorter than its session.
+    return sessionDuration ? Math.max(duration, sessionDuration) : duration;
   }
 
   function getActiveSessionFromState(state: AuthState): AuthSession | null {
@@ -510,11 +552,16 @@ export function createAuth(config: AuthConfig = {}): Auth {
       const sessionDuration = params.session_duration === null
         ? undefined
         : (params.session_duration ?? 900);
-      const body: LoginRequestWritable = {
+      const refreshTokenDuration = resolveRefreshTokenDuration(
+        params.refresh_token_duration,
+        sessionDuration,
+      );
+      const body: WithRefreshTokenDuration<LoginRequestWritable> = {
         user: params.user,
         password: params.password,
         company: params.company,
         ...(sessionDuration != null && { session_duration: sessionDuration }),
+        ...(refreshTokenDuration != null && { refresh_token_duration: refreshTokenDuration }),
         auth_method: 'token',
       };
 
@@ -529,6 +576,7 @@ export function createAuth(config: AuthConfig = {}): Auth {
           challenges: data.challenges,
           expires: data.expires,
           session_duration: sessionDuration ?? 900,
+          refresh_token_duration: refreshTokenDuration,
           company: params.company,
         },
         'login',
@@ -551,7 +599,11 @@ export function createAuth(config: AuthConfig = {}): Auth {
       const sessionDuration = params.session_duration === null
         ? undefined
         : (params.session_duration ?? 900);
-      const body: RegisterRequestWritable = {
+      const refreshTokenDuration = resolveRefreshTokenDuration(
+        params.refresh_token_duration,
+        sessionDuration,
+      );
+      const body: WithRefreshTokenDuration<RegisterRequestWritable> = {
         email: params.email,
         mobile: params.mobile,
         username: params.username,
@@ -563,6 +615,7 @@ export function createAuth(config: AuthConfig = {}): Auth {
         terms_and_conditions: params.terms_and_conditions,
         privacy_policy: params.privacy_policy,
         ...(sessionDuration != null && { session_duration: sessionDuration }),
+        ...(refreshTokenDuration != null && { refresh_token_duration: refreshTokenDuration }),
       };
 
       const result: any = await authRegister({ client, body, throwOnError: true });
@@ -576,6 +629,7 @@ export function createAuth(config: AuthConfig = {}): Auth {
           challenges: data.challenges,
           expires: data.expires,
           session_duration: sessionDuration ?? 900,
+          refresh_token_duration: refreshTokenDuration,
           company: params.company,
         },
         'register',
@@ -720,13 +774,35 @@ export function createAuth(config: AuthConfig = {}): Auth {
           throw new Error('No active session, token, or refresh token found');
         }
 
-        const refreshDuration = session.session_duration ?? 900;
-        const result: any = await authRefresh({
-          client,
-          body: { ...(refreshDuration != null && { session_duration: refreshDuration }) },
-          headers: { Authorization: `Refresh-Token ${session.refresh_token}` },
-          throwOnError: true,
-        });
+        // The platform replays the durations a session was created with, so
+        // only a session saved without a refresh token lifespan sends one.
+        let refreshTokenDuration =
+          session.refresh_token_duration === undefined
+            ? resolveRefreshTokenDuration(undefined, session.session_duration)
+            : undefined;
+        const requestRefresh = (duration: number | null | undefined) => {
+          const body: WithRefreshTokenDuration<RefreshRequest> =
+            duration != null ? { refresh_token_duration: duration } : {};
+          return authRefresh({
+            client,
+            body,
+            headers: { Authorization: `Refresh-Token ${session.refresh_token}` },
+            throwOnError: true,
+          });
+        };
+
+        let result: any;
+        try {
+          result = await requestRefresh(refreshTokenDuration);
+        } catch (e) {
+          if (refreshTokenDuration == null || !isRefreshTokenDurationError(e)) {
+            throw e;
+          }
+          // The platform validates before it uses the refresh token, so the
+          // same token can go again without the rejected lifespan.
+          refreshTokenDuration = null;
+          result = await requestRefresh(null);
+        }
         const data = result?.data ?? result;
 
         const updatedSessions = cloneSessions(currentState.sessions);
@@ -736,6 +812,10 @@ export function createAuth(config: AuthConfig = {}): Auth {
           refresh_token: data.refresh_token ?? session.refresh_token,
           expires: data.expires ?? session.expires,
           session_duration: session.session_duration ?? 900,
+          refresh_token_duration:
+            session.refresh_token_duration === undefined
+              ? refreshTokenDuration
+              : session.refresh_token_duration,
           company: getSessionCompany(session),
         };
 

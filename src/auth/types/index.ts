@@ -14,6 +14,9 @@ export interface AuthSession {
   challenges: any[];
   expires: number;
   session_duration: number;
+  // Refresh token lifespan (seconds) this session asked for: null when it
+  // asked for none, absent when it was saved before this field existed.
+  refresh_token_duration?: number | null;
   company?: string;
 }
 
