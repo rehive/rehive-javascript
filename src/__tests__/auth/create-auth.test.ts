@@ -477,6 +477,77 @@ describe('createAuth', () => {
     });
   });
 
+  describe('refresh failures', () => {
+    const noConnection = () => new TypeError('Failed to fetch');
+    const invalidToken = () =>
+      new ApiError({ status: 401, error: 'Invalid token.', message: 'Invalid token.' });
+
+    async function loginWithExpiredToken() {
+      const auth = createAuth({ storage: 'memory', enableCrossTabSync: false });
+      mockAuthLogin.mockResolvedValueOnce({
+        ...mockLoginResponse,
+        data: { ...mockLoginResponse.data, expires: Date.now() - 1_000 },
+      });
+      await auth.login({ user: 'test@example.com', password: 'password123', company: 'test-co' });
+      return auth;
+    }
+
+    it.each([
+      ['no connection', noConnection],
+      ['a server error', () => new ApiError({ status: 503, error: '', message: 'Unavailable' })],
+      ['throttling', () => new ApiError({ status: 429, error: '', message: 'Throttled' })],
+    ])('should keep the session after %s', async (_case, failure) => {
+      const auth = await loginWithExpiredToken();
+      mockAuthRefresh.mockRejectedValueOnce(failure());
+
+      await expect(auth.refresh()).rejects.toThrow();
+
+      expect(auth.getStatus()).toBe('authenticated');
+      expect(auth.getActiveSession()?.refresh_token).toBe(mockLoginResponse.data.refresh_token);
+    });
+
+    it('should drop the session when the platform turns the token down', async () => {
+      const auth = await loginWithExpiredToken();
+      mockAuthRefresh.mockRejectedValueOnce(invalidToken());
+
+      await expect(auth.refresh()).rejects.toThrow('Invalid token.');
+
+      expect(auth.getActiveSession()).toBeNull();
+    });
+
+    it('should fail the request, not send it without a token, until a refresh goes through', async () => {
+      const auth = await loginWithExpiredToken();
+      mockAuthRefresh.mockRejectedValueOnce(noConnection());
+
+      await expect(auth.getToken()).rejects.toThrow('Failed to fetch');
+      await expect(auth.getToken()).resolves.toBe(mockLoginResponse.data.token);
+      expect(auth.getActiveSession()?.refresh_token).toBe(mockRefreshResponse.data.refresh_token);
+    });
+
+    it('should return no token once the refresh is turned down', async () => {
+      const auth = await loginWithExpiredToken();
+      mockAuthRefresh.mockRejectedValueOnce(invalidToken());
+
+      await expect(auth.getToken()).resolves.toBeUndefined();
+    });
+
+    it('should leave the session unconfirmed, not expired, when validation cannot refresh', async () => {
+      const auth = await loginWithExpiredToken();
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 401,
+        json: async () => ({ message: 'Unauthorized' }),
+        text: async () => JSON.stringify({ message: 'Unauthorized' }),
+      });
+      mockAuthRefresh.mockRejectedValueOnce(noConnection());
+
+      await expect(auth.validateActiveSession({ retryCount: 0 })).resolves.toBe(false);
+
+      expect(auth.getStatus()).toBe('authenticated');
+      expect(auth.getState().recovery.pending).toBe(false);
+    });
+  });
+
   describe('refresh token duration', () => {
     const DAY = 86400;
     const credentials = {
@@ -708,6 +779,435 @@ describe('createAuth', () => {
 
       await auth.refresh();
       expect(lastRefreshBody()).toEqual({ session_duration: 900, refresh_token_duration: DAY });
+    });
+  });
+
+  // Two createAuth instances on one storage stand in for two browser tabs.
+  describe('multiple tabs', () => {
+    const STATE_KEY = 'rehive_auth_state';
+    const LOGIN_EXPIRES = Date.now() + 60_000;
+    let clock = LOGIN_EXPIRES;
+    let lockRequests: { name: string; options?: unknown }[] = [];
+
+    type Tab = ReturnType<typeof createAuth>;
+
+    function sharedStorage(): StorageAdapter {
+      const items = new Map<string, string>();
+      return {
+        getItem: async (key) => items.get(key) ?? null,
+        setItem: async (key, value) => {
+          items.set(key, value);
+        },
+        removeItem: async (key) => {
+          items.delete(key);
+        },
+      };
+    }
+
+    async function savedSessions(storage: StorageAdapter) {
+      const state = JSON.parse((await storage.getItem(STATE_KEY)) ?? '{}');
+      return (state.sessions ?? []) as { company: string; refresh_token: string; expires: number }[];
+    }
+
+    function openTab(storage: StorageAdapter): Tab {
+      return createAuth({ storage, enableCrossTabSync: false });
+    }
+
+    function loginAs(tab: Tab, company: string, refreshToken: string) {
+      mockAuthLogin.mockResolvedValueOnce({
+        ...mockLoginResponse,
+        data: {
+          ...mockLoginResponse.data,
+          token: `token-${company}`,
+          refresh_token: refreshToken,
+          expires: LOGIN_EXPIRES,
+        },
+      });
+      return tab.login({ user: 'test@example.com', password: 'password123', company });
+    }
+
+    const refreshTokenSent = (call: number) =>
+      mockAuthRefresh.mock.calls[call][0].headers.Authorization.replace('Refresh-Token ', '');
+
+    beforeEach(() => {
+      // The platform: each refresh returns a new token that expires later.
+      clock = LOGIN_EXPIRES;
+      mockAuthRefresh.mockImplementation(async (opts: any) => {
+        clock += 1_000;
+        const used = opts.headers.Authorization.replace('Refresh-Token ', '');
+        return { status: 'success', data: { refresh_token: `${used}+`, expires: clock } };
+      });
+
+      // A minimal Web Locks stand-in: requests for one name run one after another.
+      const queues = new Map<string, Promise<unknown>>();
+      lockRequests = [];
+      Object.defineProperty(navigator, 'locks', {
+        configurable: true,
+        value: {
+          request: (name: string, ...rest: unknown[]) => {
+            const task = rest[rest.length - 1] as () => Promise<unknown>;
+            lockRequests.push({ name, options: rest.length > 1 ? rest[0] : undefined });
+            const run = (queues.get(name) ?? Promise.resolve()).then(task);
+            queues.set(name, run.catch(() => undefined));
+            return run;
+          },
+        },
+      });
+    });
+
+    // jsdom has no AbortSignal.timeout; the SDK passes it to the lock.
+    const hadTimeout = 'timeout' in AbortSignal;
+    beforeAll(() => {
+      if (!hadTimeout) {
+        Object.defineProperty(AbortSignal, 'timeout', {
+          configurable: true,
+          value: () => new AbortController().signal,
+        });
+      }
+    });
+
+    afterAll(() => {
+      if (!hadTimeout) {
+        delete (AbortSignal as { timeout?: unknown }).timeout;
+      }
+    });
+
+    afterEach(() => {
+      delete (navigator as { locks?: unknown }).locks;
+    });
+
+    it("should keep each tab's own session when another tab uses a different company", async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      const tabB = openTab(storage);
+      await loginAs(tabA, 'co-a', 'refresh-a');
+      await loginAs(tabB, 'co-b', 'refresh-b');
+
+      await tabA.refresh();
+      await tabB.refresh();
+
+      expect(refreshTokenSent(0)).toBe('refresh-a');
+      expect(refreshTokenSent(1)).toBe('refresh-b');
+      expect(tabA.getActiveSession()?.company).toBe('co-a');
+      expect(tabB.getActiveSession()?.company).toBe('co-b');
+    });
+
+    it("should log out only this tab's session", async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      const tabB = openTab(storage);
+      await loginAs(tabA, 'co-a', 'refresh-a');
+      await loginAs(tabB, 'co-b', 'refresh-b');
+
+      await tabA.logout();
+
+      expect((await savedSessions(storage)).map((s) => s.company)).toEqual(['co-b']);
+    });
+
+    it('should take over a refresh another tab already made', async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      await loginAs(tabA, 'co-a', 'refresh-a');
+      const tabB = openTab(storage);
+      await tabB.getToken();
+
+      await tabB.refresh();
+      await tabA.refresh();
+
+      expect(mockAuthRefresh).toHaveBeenCalledTimes(1);
+      expect(tabA.getActiveSession()?.refresh_token).toBe('refresh-a+');
+    });
+
+    it('should refresh a shared session once when two tabs try at the same time', async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      await loginAs(tabA, 'co-a', 'refresh-a');
+      const tabB = openTab(storage);
+      await tabB.getToken();
+
+      await Promise.all([tabA.refresh(), tabB.refresh()]);
+
+      expect(mockAuthRefresh).toHaveBeenCalledTimes(1);
+      expect(tabA.getActiveSession()?.refresh_token).toBe('refresh-a+');
+      expect(tabB.getActiveSession()?.refresh_token).toBe('refresh-a+');
+    });
+
+    it('should give up waiting for a refresh lock, but not for the state lock', async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      await loginAs(tabA, 'co-a', 'refresh-a');
+
+      await tabA.refresh();
+
+      const refreshLocks = lockRequests.filter((r) => r.name.startsWith('rehive-auth-refresh:'));
+      const stateLocks = lockRequests.filter((r) => r.name.startsWith('rehive-auth-state:'));
+      expect(refreshLocks[0].options).toHaveProperty('signal');
+      expect(stateLocks.length).toBeGreaterThan(0);
+      expect(stateLocks.every((r) => r.options === undefined)).toBe(true);
+    });
+
+    it('should refresh with a newer copy from another tab when that copy has expired too', async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      mockAuthLogin.mockResolvedValueOnce({
+        ...mockLoginResponse,
+        data: {
+          ...mockLoginResponse.data,
+          token: 'token-co-a',
+          refresh_token: 'refresh-a',
+          expires: Date.now() - 120_000,
+        },
+      });
+      await tabA.login({ user: 'test@example.com', password: 'password123', company: 'co-a' });
+      // Tab B refreshed, then both tabs sat idle past that expiry too.
+      const tabB = openTab(storage);
+      mockAuthRefresh.mockResolvedValueOnce({
+        status: 'success',
+        data: { refresh_token: 'refresh-a+', expires: Date.now() - 60_000 },
+      });
+      await tabB.refresh();
+
+      await expect(tabA.getToken()).resolves.toBe('token-co-a');
+
+      expect(mockAuthRefresh).toHaveBeenCalledTimes(2);
+      expect(refreshTokenSent(1)).toBe('refresh-a+');
+      expect(tabA.getActiveSession()?.refresh_token).toBe('refresh-a++');
+    });
+
+    it('should keep both sessions when two tabs refresh different companies at once', async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      const tabB = openTab(storage);
+      await loginAs(tabA, 'co-a', 'refresh-a');
+      await loginAs(tabB, 'co-b', 'refresh-b');
+
+      await Promise.all([tabA.refresh(), tabB.refresh()]);
+
+      const saved = await savedSessions(storage);
+      expect(saved.map((s) => [s.company, s.refresh_token])).toEqual([
+        ['co-a', 'refresh-a+'],
+        ['co-b', 'refresh-b+'],
+      ]);
+    });
+
+    it('should keep a login another tab makes during a refresh', async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      const tabB = openTab(storage);
+      await loginAs(tabA, 'co-a', 'refresh-a');
+      mockAuthRefresh.mockImplementationOnce(async () => {
+        await loginAs(tabB, 'co-b', 'refresh-b');
+        clock += 1_000;
+        return { status: 'success', data: { refresh_token: 'refresh-a+', expires: clock } };
+      });
+
+      await tabA.refresh();
+
+      expect((await savedSessions(storage)).map((s) => s.company)).toEqual(['co-a', 'co-b']);
+    });
+
+    it('should refresh with its own newer token when storage holds an older one', async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      await loginAs(tabA, 'co-a', 'refresh-a');
+      await tabA.refresh();
+      // A stale write from another tab puts the spent login token back.
+      const state = JSON.parse((await storage.getItem(STATE_KEY)) ?? '{}');
+      state.sessions[0] = { ...state.sessions[0], refresh_token: 'refresh-a', expires: LOGIN_EXPIRES };
+      await storage.setItem(STATE_KEY, JSON.stringify(state));
+
+      await tabA.refresh();
+
+      expect(refreshTokenSent(1)).toBe('refresh-a+');
+      expect(tabA.getActiveSession()?.refresh_token).toBe('refresh-a++');
+    });
+
+    it('should finish the refresh it started when the tab switches session meanwhile', async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      await loginAs(tabA, 'co-b', 'refresh-b');
+      await loginAs(tabA, 'co-a', 'refresh-a');
+      mockAuthRefresh.mockImplementationOnce(async () => {
+        await tabA.switchToSession('user-123', 'co-b');
+        clock += 1_000;
+        return { status: 'success', data: { refresh_token: 'refresh-a+', expires: clock } };
+      });
+
+      await tabA.refresh();
+
+      expect(refreshTokenSent(0)).toBe('refresh-a');
+      expect(tabA.getActiveSession()?.company).toBe('co-b');
+      const saved = await savedSessions(storage);
+      expect(saved.map((s) => [s.company, s.refresh_token])).toEqual([
+        ['co-b', 'refresh-b'],
+        ['co-a', 'refresh-a+'],
+      ]);
+    });
+
+    it('should keep the session when another tab replaced the token that failed', async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      await loginAs(tabA, 'co-a', 'refresh-a');
+      // A tab without the lock refreshes first, so ours is turned down.
+      mockAuthRefresh.mockImplementationOnce(async () => {
+        const state = JSON.parse((await storage.getItem(STATE_KEY)) ?? '{}');
+        state.sessions[0] = {
+          ...state.sessions[0],
+          refresh_token: 'refresh-from-other-tab',
+          expires: LOGIN_EXPIRES + 5_000,
+        };
+        await storage.setItem(STATE_KEY, JSON.stringify(state));
+        throw new ApiError({ status: 401, error: 'Invalid token.', message: 'Invalid token.' });
+      });
+
+      await tabA.refresh();
+
+      expect(tabA.getStatus()).toBe('authenticated');
+      expect(tabA.getActiveSession()?.refresh_token).toBe('refresh-from-other-tab');
+    });
+
+    it('should drop the session when storage still holds the token that failed', async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      await loginAs(tabA, 'co-a', 'refresh-a');
+      mockAuthRefresh.mockRejectedValueOnce(
+        new ApiError({ status: 401, error: 'Invalid token.', message: 'Invalid token.' }),
+      );
+
+      await expect(tabA.refresh()).rejects.toThrow('Invalid token.');
+      expect(tabA.getActiveSession()).toBeNull();
+    });
+
+    it('should reopen its own session after a reload, not the one saved last', async () => {
+      localStorage.clear();
+      sessionStorage.clear();
+      const tabA = createAuth({ storage: 'local', enableCrossTabSync: false });
+      await loginAs(tabA, 'co-a', 'refresh-a');
+      const remembered = sessionStorage.getItem('rehive_auth_state:tab-active');
+      // Another tab logs in to co-b, so storage now points there.
+      await loginAs(createAuth({ storage: 'local', enableCrossTabSync: false }), 'co-b', 'refresh-b');
+      sessionStorage.setItem('rehive_auth_state:tab-active', remembered ?? '');
+
+      const reloadedA = createAuth({ storage: 'local', enableCrossTabSync: false });
+      await reloadedA.getToken();
+
+      expect(JSON.parse(localStorage.getItem(STATE_KEY) ?? '{}').activeSessionIndex).toBe(1);
+      expect(reloadedA.getActiveSession()?.company).toBe('co-a');
+      localStorage.clear();
+      sessionStorage.clear();
+    });
+
+    it('should let a signed-out tab pick up a login from another tab', async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      const tabB = openTab(storage);
+      await tabB.getToken();
+      await loginAs(tabA, 'co-a', 'refresh-a');
+
+      // Any action that reads storage, here a no-op challenge removal.
+      await tabB.deleteChallenge('none');
+
+      expect(tabB.getActiveSession()?.company).toBe('co-a');
+    });
+
+    it('should keep a refresh another tab makes during a logout', async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      const tabB = openTab(storage);
+      await loginAs(tabA, 'co-a', 'refresh-a');
+      await loginAs(tabB, 'co-b', 'refresh-b');
+      mockAuthLogout.mockImplementationOnce(async () => {
+        await tabB.refresh();
+        return mockLogoutResponse;
+      });
+
+      await tabA.logout();
+
+      const saved = await savedSessions(storage);
+      expect(saved.map((s) => [s.company, s.refresh_token])).toEqual([['co-b', 'refresh-b+']]);
+    });
+
+    it('should keep tokens another tab refreshed while syncing the user', async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      await loginAs(tabA, 'co-a', 'refresh-a');
+      const tabB = openTab(storage);
+      await tabB.getToken();
+      mockFetch.mockImplementationOnce(async () => {
+        await tabB.refresh();
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({ data: { id: 'user-123', first_name: 'Updated', company: 'co-a' } }),
+          text: async () => '',
+        };
+      });
+
+      const synced = await tabA.syncActiveSessionUser();
+
+      expect(synced?.user.first_name).toBe('Updated');
+      expect(synced?.refresh_token).toBe('refresh-a+');
+      expect((await savedSessions(storage))[0].refresh_token).toBe('refresh-a+');
+    });
+
+    it('should report the session expired when another tab logs it out during the refresh', async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      await loginAs(tabA, 'co-a', 'refresh-a');
+      const tabB = openTab(storage);
+      await tabB.getToken();
+      const events: string[] = [];
+      tabA.subscribeToEvents((event) => events.push(event.type));
+      mockAuthRefresh.mockImplementationOnce(async () => {
+        await tabB.logout();
+        clock += 1_000;
+        return { status: 'success', data: { refresh_token: 'refresh-a+', expires: clock } };
+      });
+
+      await expect(tabA.refresh()).rejects.toThrow('Session no longer exists');
+
+      expect(events).toContain('session-expired');
+      expect(events).not.toContain('refresh');
+      expect(tabA.getActiveSession()).toBeNull();
+      expect(await savedSessions(storage)).toEqual([]);
+    });
+
+    describe('with cross-tab sync on', () => {
+      it('should keep the active session another tab chose when it refreshes', async () => {
+        const storage = sharedStorage();
+        const tabA = createAuth({ storage });
+        const tabB = createAuth({ storage });
+        await loginAs(tabA, 'co-a', 'refresh-a');
+        // Tab B logs in to co-b, so every tab now follows co-b.
+        await loginAs(tabB, 'co-b', 'refresh-b');
+
+        // Tab A has not seen the storage event yet and refreshes co-a.
+        await tabA.refresh();
+
+        const state = JSON.parse((await storage.getItem(STATE_KEY)) ?? '{}');
+        expect(state.sessions[state.activeSessionIndex].company).toBe('co-b');
+        expect(state.sessions[0].refresh_token).toBe('refresh-a+');
+        expect(tabA.getActiveSession()?.company).toBe('co-b');
+      });
+
+      it('should open the shared session even when the tab remembers another one', async () => {
+        localStorage.clear();
+        sessionStorage.clear();
+        await loginAs(createAuth({ storage: 'local' }), 'co-a', 'refresh-a');
+        await loginAs(createAuth({ storage: 'local' }), 'co-b', 'refresh-b');
+        // A tab restored with an old sessionStorage (Memory Saver, a reopened tab).
+        sessionStorage.setItem(
+          'rehive_auth_state:tab-active',
+          JSON.stringify({ userId: 'user-123', company: 'co-a' }),
+        );
+
+        const restored = createAuth({ storage: 'local' });
+        await restored.getToken();
+
+        expect(restored.getActiveSession()?.company).toBe('co-b');
+        localStorage.clear();
+        sessionStorage.clear();
+      });
     });
   });
 });
