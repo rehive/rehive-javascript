@@ -166,6 +166,19 @@ function isDurationError(error: unknown): boolean {
   );
 }
 
+// The platform turned the refresh token down: spent, expired or revoked.
+// Anything else (no connection, a timeout, a server error) says nothing about
+// the token, so the session is kept for the next try.
+function isRejectedRefresh(error: unknown): boolean {
+  return (
+    error instanceof ApiError &&
+    error.status >= 400 &&
+    error.status < 500 &&
+    error.status !== 408 &&
+    error.status !== 429
+  );
+}
+
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -176,6 +189,29 @@ function getSessionCompany(session: AuthSession): string | undefined {
 
 function cloneSessions(sessions: AuthSession[]): AuthSession[] {
   return [...sessions];
+}
+
+// How long a tab waits for another tab's refresh of the same session.
+const REFRESH_LOCK_TIMEOUT_MS = 30_000;
+
+type SessionKey = { userId: string; company: string | undefined };
+
+function sameSession(a: SessionKey | null, b: SessionKey | null): boolean {
+  return !!a && !!b && a.userId === b.userId && a.company === b.company;
+}
+
+function sessionKey(session: AuthSession): SessionKey {
+  return { userId: session.user.id, company: getSessionCompany(session) };
+}
+
+function indexOfSession(sessions: AuthSession[], key: SessionKey | null): number {
+  if (!key) {
+    return -1;
+  }
+  return sessions.findIndex(
+    (session) =>
+      session.user.id === key.userId && getSessionCompany(session) === key.company,
+  );
 }
 
 export function createAuth(config: AuthConfig = {}): Auth {
@@ -194,6 +230,50 @@ export function createAuth(config: AuthConfig = {}): Auth {
 
   let sessions: AuthSession[] = [];
   let activeSessionIndex = -1;
+  // This tab's active session, by user and company. The index alone is not
+  // enough: other tabs add and remove sessions, and the stored index is the
+  // choice of whichever tab saved last.
+  let activeKey: SessionKey | null = null;
+  let hadActiveSession = false;
+  // Refresh tokens are single-use, so tabs sharing storage must not refresh
+  // one session at the same time.
+  const sharesStorage = !(storage instanceof MemoryStorageAdapter);
+  // In a browser each tab also remembers its active session in sessionStorage,
+  // which survives a reload of that tab only: a reload then reopens this tab's
+  // session rather than whichever one another tab saved last.
+  const tabKeyName = `${storageKey}:tab-active`;
+  const usesTabMemory = storage instanceof WebStorageAdapter;
+
+  function readTabKey(): SessionKey | null {
+    if (!usesTabMemory) {
+      return null;
+    }
+    try {
+      const raw = window.sessionStorage.getItem(tabKeyName);
+      return raw ? (JSON.parse(raw) as SessionKey) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function setActiveKey(key: SessionKey | null): void {
+    activeKey = key;
+    if (key) {
+      hadActiveSession = true;
+    }
+    if (!usesTabMemory) {
+      return;
+    }
+    try {
+      if (key) {
+        window.sessionStorage.setItem(tabKeyName, JSON.stringify(key));
+      } else {
+        window.sessionStorage.removeItem(tabKeyName);
+      }
+    } catch {
+      // Private modes can refuse sessionStorage; the tab then follows storage.
+    }
+  }
   let sessionListeners: SessionListener[] = [];
   let errorListeners: ErrorListener[] = [];
   let stateListeners: AuthStateListener[] = [];
@@ -357,6 +437,7 @@ export function createAuth(config: AuthConfig = {}): Auth {
       state.activeSessionIndex >= 0 && state.activeSessionIndex < sessions.length
         ? state.activeSessionIndex
         : -1;
+    setActiveKey(activeSessionIndex >= 0 ? sessionKey(sessions[activeSessionIndex]) : null);
 
     if (options.clearExpiredSession || activeSessionIndex >= 0 || sessions.length === 0) {
       lastExpiredSession = null;
@@ -405,10 +486,24 @@ export function createAuth(config: AuthConfig = {}): Auth {
       }
 
       sessions = state.sessions;
-      activeSessionIndex =
-        state.activeSessionIndex >= 0 && state.activeSessionIndex < state.sessions.length
-          ? state.activeSessionIndex
-          : -1;
+      if (activeKey || hadActiveSession) {
+        // Keep this tab's own session: adopting the stored index would switch
+        // it to whatever another tab chose last.
+        activeSessionIndex = indexOfSession(state.sessions, activeKey);
+      } else {
+        // A tab with no session yet reopens its own after a reload, else takes
+        // the last-used one (a login in another tab included).
+        const remembered = indexOfSession(state.sessions, readTabKey());
+        activeSessionIndex =
+          remembered >= 0
+            ? remembered
+            : state.activeSessionIndex >= 0 && state.activeSessionIndex < state.sessions.length
+              ? state.activeSessionIndex
+              : -1;
+        setActiveKey(
+          activeSessionIndex >= 0 ? sessionKey(state.sessions[activeSessionIndex]) : null,
+        );
+      }
 
       return {
         sessions: cloneSessions(sessions),
@@ -771,110 +866,16 @@ export function createAuth(config: AuthConfig = {}): Auth {
       isRefreshing = true;
       notifyAll();
 
-      let sessionBeforeRefresh: AuthSession | null = null;
-
       try {
-        const currentState = await loadAuthState();
-        const idx = currentState.activeSessionIndex;
-        const session = getActiveSessionFromState(currentState);
-        sessionBeforeRefresh = session;
-
-        if (idx < 0 || !session?.token || !session.refresh_token) {
+        await initialize();
+        // The session to refresh is fixed here: switching while this waits for
+        // the lock or the platform must not move the refresh to another one.
+        const known = getActiveSession();
+        if (!known) {
           throw new Error('No active session, token, or refresh token found');
         }
-
-        // The platform replays the durations a session was created with. A
-        // session saved without a refresh token lifespan may predate that, so
-        // it still sends its session duration, as older versions did, and
-        // adopts the configured lifespan on the way.
-        const legacy = session.refresh_token_duration === undefined;
-        let refreshTokenDuration = legacy
-          ? resolveRefreshTokenDuration(undefined, session.session_duration)
-          : undefined;
-        const requestRefresh = (body: WithRefreshTokenDuration<RefreshRequest>) =>
-          authRefresh({
-            client,
-            body,
-            headers: { Authorization: `Refresh-Token ${session.refresh_token}` },
-            throwOnError: true,
-          });
-
-        let result: any;
-        try {
-          result = await requestRefresh(
-            legacy
-              ? {
-                  session_duration: session.session_duration ?? 900,
-                  ...(refreshTokenDuration != null && {
-                    refresh_token_duration: refreshTokenDuration,
-                  }),
-                }
-              : {},
-          );
-        } catch (e) {
-          if (!legacy || !isDurationError(e)) {
-            throw e;
-          }
-          // The platform validates before it uses the refresh token, so the
-          // same token can go again, letting the platform pick the durations.
-          refreshTokenDuration = null;
-          result = await requestRefresh({});
-        }
-        const data = result?.data ?? result;
-
-        const updatedSessions = cloneSessions(currentState.sessions);
-        updatedSessions[idx] = {
-          ...session,
-          token: data.token ?? session.token,
-          refresh_token: data.refresh_token ?? session.refresh_token,
-          expires: data.expires ?? session.expires,
-          session_duration: session.session_duration ?? 900,
-          refresh_token_duration: legacy
-            ? refreshTokenDuration
-            : session.refresh_token_duration,
-          company: getSessionCompany(session),
-        };
-
-        await applyState(
-          {
-            sessions: updatedSessions,
-            activeSessionIndex: idx,
-          },
-          {
-            clearExpiredSession: true,
-            error: null,
-            event: {
-              type: 'refresh',
-              session: updatedSessions[idx],
-            },
-          },
-        );
-      } catch (e) {
-        const error = e instanceof ApiError ? e : new Error('Refresh failed');
-        const currentState = await loadAuthState();
-        const expiredSession =
-          sessionBeforeRefresh ??
-          getActiveSessionFromState(currentState);
-        const nextSessions = currentState.sessions.filter(
-          (_session, index) => index !== currentState.activeSessionIndex,
-        );
-
-        await applyState(
-          {
-            sessions: nextSessions,
-            activeSessionIndex: -1,
-          },
-          {
-            expiredSession: expiredSession ?? null,
-            error,
-            event: {
-              type: 'session-expired',
-              session: expiredSession,
-              error,
-            },
-          },
-        );
-        throw e;
+        const key = sessionKey(known);
+        await withRefreshLock(key, () => refreshSession(key, known));
       } finally {
         isRefreshing = false;
         refreshPromise = null;
@@ -883,6 +884,188 @@ export function createAuth(config: AuthConfig = {}): Auth {
     })();
 
     return refreshPromise;
+  }
+
+  // Tabs sharing storage queue on a Web Lock (elsewhere, such as React Native,
+  // there is one process and `refreshPromise` already dedupes). The timeout
+  // stops one stalled request from holding every other tab.
+  function withLock(name: string, task: () => Promise<void>): Promise<void> {
+    const locks =
+      sharesStorage && typeof navigator !== 'undefined' ? navigator.locks : undefined;
+    if (!locks?.request) {
+      return task();
+    }
+    const signal =
+      typeof AbortSignal !== 'undefined' && 'timeout' in AbortSignal
+        ? AbortSignal.timeout(REFRESH_LOCK_TIMEOUT_MS)
+        : undefined;
+    return signal ? locks.request(name, { signal }, task) : locks.request(name, task);
+  }
+
+  // One refresh per session at a time, across tabs.
+  function withRefreshLock(key: SessionKey, task: () => Promise<void>): Promise<void> {
+    return withLock(`rehive-auth-refresh:${key.userId}:${key.company ?? ''}`, task);
+  }
+
+  // A read and the write that follows it, with no other tab's write between.
+  function withStateLock(task: () => Promise<void>): Promise<void> {
+    return withLock(`rehive-auth-state:${storageKey}`, task);
+  }
+
+  function isNewer(session: AuthSession, than: AuthSession): boolean {
+    return (session.expires ?? 0) > (than.expires ?? 0);
+  }
+
+  // Writes one session back onto storage as it is now. Other tabs may have
+  // logged in, switched or refreshed other sessions meanwhile, so the whole
+  // state read before the request must not be written over theirs.
+  function saveSession(
+    key: SessionKey,
+    session: AuthSession,
+    event: Omit<AuthEvent, 'snapshot'>,
+  ): Promise<void> {
+    return withStateLock(async () => {
+      const state = await loadAuthState();
+      const idx = indexOfSession(state.sessions, key);
+      const nextSessions = cloneSessions(state.sessions);
+      if (idx >= 0) {
+        nextSessions[idx] = session;
+      }
+      await applyState(
+        { sessions: nextSessions, activeSessionIndex: state.activeSessionIndex },
+        { clearExpiredSession: true, error: null, event },
+      );
+    });
+  }
+
+  function dropSession(
+    key: SessionKey,
+    expiredSession: AuthSession,
+    error: Error,
+  ): Promise<void> {
+    return withStateLock(async () => {
+      const state = await loadAuthState();
+      const idx = indexOfSession(state.sessions, key);
+      const wasActive = sameSession(activeKey, key);
+      const nextSessions = state.sessions.filter((_session, index) => index !== idx);
+      await applyState(
+        {
+          sessions: nextSessions,
+          activeSessionIndex: wasActive ? -1 : indexOfSession(nextSessions, activeKey),
+        },
+        {
+          ...(wasActive && { expiredSession, error }),
+          event: { type: 'session-expired', session: expiredSession, error },
+        },
+      );
+    });
+  }
+
+  async function refreshSession(key: SessionKey, known: AuthSession): Promise<void> {
+    // Start from storage: another tab may have refreshed this session while
+    // this one waited, or earlier, if cross-tab sync is off.
+    const before = await loadAuthState();
+    const stored = before.sessions[indexOfSession(before.sessions, key)] ?? null;
+
+    if (!stored) {
+      // Logged out in another tab.
+      const error = new Error('Session no longer exists');
+      await dropSession(key, known, error);
+      throw error;
+    }
+
+    if (stored.refresh_token !== known.refresh_token && isNewer(stored, known)) {
+      // Already refreshed elsewhere: take its tokens rather than spending
+      // ours, which the platform has already replaced.
+      await saveSession(key, stored, { type: 'refresh', session: stored });
+      return;
+    }
+
+    // A stale write from another tab can put back an older, spent token, so
+    // refresh with whichever copy is newer.
+    const session = isNewer(stored, known) ? stored : known;
+
+    if (!session.token || !session.refresh_token) {
+      const error = new Error('No active session, token, or refresh token found');
+      await dropSession(key, session, error);
+      throw error;
+    }
+
+    try {
+      // The platform replays the durations a session was created with. A
+      // session saved without a refresh token lifespan may predate that, so
+      // it still sends its session duration, as older versions did, and
+      // adopts the configured lifespan on the way.
+      const legacy = session.refresh_token_duration === undefined;
+      let refreshTokenDuration = legacy
+        ? resolveRefreshTokenDuration(undefined, session.session_duration)
+        : undefined;
+      const requestRefresh = (body: WithRefreshTokenDuration<RefreshRequest>) =>
+        authRefresh({
+          client,
+          body,
+          headers: { Authorization: `Refresh-Token ${session.refresh_token}` },
+          throwOnError: true,
+        });
+
+      let result: any;
+      try {
+        result = await requestRefresh(
+          legacy
+            ? {
+                session_duration: session.session_duration ?? 900,
+                ...(refreshTokenDuration != null && {
+                  refresh_token_duration: refreshTokenDuration,
+                }),
+              }
+            : {},
+        );
+      } catch (e) {
+        if (!legacy || !isDurationError(e)) {
+          throw e;
+        }
+        // The platform validates before it uses the refresh token, so the
+        // same token can go again, letting the platform pick the durations.
+        refreshTokenDuration = null;
+        result = await requestRefresh({});
+      }
+      const data = result?.data ?? result;
+
+      const refreshed: AuthSession = {
+        ...session,
+        token: data.token ?? session.token,
+        refresh_token: data.refresh_token ?? session.refresh_token,
+        expires: data.expires ?? session.expires,
+        session_duration: session.session_duration ?? 900,
+        refresh_token_duration: legacy ? refreshTokenDuration : session.refresh_token_duration,
+        company: getSessionCompany(session),
+      };
+      await saveSession(key, refreshed, { type: 'refresh', session: refreshed });
+    } catch (e) {
+      const after = await loadAuthState();
+      const current = after.sessions[indexOfSession(after.sessions, key)] ?? null;
+
+      if (current && current.refresh_token !== session.refresh_token && isNewer(current, session)) {
+        // Storage no longer holds the token that failed: another tab (one
+        // without this lock) refreshed it meanwhile, so the session lives on.
+        await saveSession(key, current, { type: 'refresh', session: current });
+        return;
+      }
+
+      if (!isRejectedRefresh(e)) {
+        throw e;
+      }
+
+      await dropSession(key, session, e as ApiError);
+      throw e;
+    }
+  }
+
+  // After a failed refresh: the session is still the active one when the
+  // platform gave no verdict on its token.
+  function isStillActive(session: AuthSession): boolean {
+    const current = getActiveSession();
+    return !!current && sameSession(sessionKey(current), sessionKey(session));
   }
 
   async function getToken(): Promise<string | undefined> {
@@ -899,7 +1082,12 @@ export function createAuth(config: AuthConfig = {}): Auth {
     if (session.expires && isTokenExpired(session.expires)) {
       try {
         await refresh();
-      } catch {
+      } catch (error) {
+        // Sent without a token, the request would come back 401 and read as
+        // a rejected session, so a session kept for another try fails it.
+        if (isStillActive(session)) {
+          throw error;
+        }
         return undefined;
       }
       return getActiveSession()?.token;
@@ -1055,7 +1243,10 @@ export function createAuth(config: AuthConfig = {}): Auth {
             try {
               await refresh();
             } catch {
-              await expireActiveSession();
+              // A refresh with no verdict leaves the session unconfirmed, not expired.
+              if (!isStillActive(activeSession)) {
+                await expireActiveSession();
+              }
               return false;
             }
 

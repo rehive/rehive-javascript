@@ -216,6 +216,16 @@ await auth.clearAllSessions();  // Local only
 await auth.logoutAll();         // Invalidates tokens on server
 ```
 
+### Multiple tabs
+
+Tabs on the same storage share the saved sessions. With `enableCrossTabSync` (the default) they also share the active session: a switch, logout or refresh in one tab is followed in the others. With it off, each tab keeps its own active session, so one tab can stay on `company-one` while another uses `company-two`, and a reload reopens that tab's session (remembered in `sessionStorage`).
+
+Refresh tokens are single-use, so a refresh runs under a [Web Lock](https://developer.mozilla.org/docs/Web/API/Web_Locks_API) per session: tabs refreshing the same session queue, and a tab that finds a newer copy of the session in storage takes those tokens instead of spending its own. A refresh writes back only its own session, so other tabs' logins and refreshes made meanwhile are kept, and a failed refresh drops the session only if storage still holds the refresh token that failed.
+
+### Failed refreshes
+
+A session is dropped only when the platform turns its refresh token down (a 4xx answer: spent, expired or revoked). With no connection, a timeout, throttling or a server error, the session is kept: `refresh()` throws, `getToken()` throws instead of sending the request without a token, and `validateActiveSession()` returns `false` without expiring the session. The next call tries again.
+
 ## Storage Options
 
 ```typescript
