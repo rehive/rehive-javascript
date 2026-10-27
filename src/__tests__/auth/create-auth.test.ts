@@ -517,11 +517,13 @@ describe('createAuth', () => {
       };
     }
 
-    function rejectedDuration(): ApiError {
+    function rejectedDuration(
+      field: 'session_duration' | 'refresh_token_duration' = 'refresh_token_duration',
+    ): ApiError {
       const body = {
         status: 'error',
         message: 'Custom session durations are disabled.',
-        data: { refresh_token_duration: 'Custom session durations are disabled.' },
+        data: { [field]: 'Custom session durations are disabled.' },
       };
       return new ApiError({
         status: 400,
@@ -622,23 +624,25 @@ describe('createAuth', () => {
       });
 
       await auth.refresh();
-      expect(lastRefreshBody()).toEqual({ refresh_token_duration: DAY });
+      expect(lastRefreshBody()).toEqual({ session_duration: 36000, refresh_token_duration: DAY });
       expect(auth.getActiveSession()?.refresh_token_duration).toBe(DAY);
 
       await auth.refresh();
       expect(lastRefreshBody()).toEqual({});
     });
 
-    it('should leave a legacy session alone without config', async () => {
+    it('should refresh a legacy session as older versions did without config', async () => {
       const auth = createAuth({
         storage: storageWithLegacySession(),
         enableCrossTabSync: false,
       });
 
       await auth.refresh();
-
-      expect(lastRefreshBody()).toEqual({});
+      expect(lastRefreshBody()).toEqual({ session_duration: 36000 });
       expect(auth.getActiveSession()?.refresh_token_duration).toBeUndefined();
+
+      await auth.refresh();
+      expect(lastRefreshBody()).toEqual({ session_duration: 36000 });
     });
 
     it('should retry without the duration when the platform rejects it', async () => {
@@ -652,10 +656,29 @@ describe('createAuth', () => {
       await auth.refresh();
 
       expect(mockAuthRefresh).toHaveBeenCalledTimes(2);
-      expect(mockAuthRefresh.mock.calls[0][0].body).toEqual({ refresh_token_duration: DAY });
+      expect(mockAuthRefresh.mock.calls[0][0].body).toEqual({
+        session_duration: 36000,
+        refresh_token_duration: DAY,
+      });
       expect(mockAuthRefresh.mock.calls[1][0].body).toEqual({});
       expect(auth.getActiveSession()?.refresh_token).toBe(mockRefreshResponse.data.refresh_token);
       expect(auth.getActiveSession()?.refresh_token_duration).toBeNull();
+    });
+
+    it('should retry when the platform rejects the session duration', async () => {
+      mockAuthRefresh.mockRejectedValueOnce(rejectedDuration('session_duration'));
+      const auth = createAuth({
+        storage: storageWithLegacySession(),
+        enableCrossTabSync: false,
+      });
+
+      await auth.refresh();
+      expect(mockAuthRefresh).toHaveBeenCalledTimes(2);
+      expect(mockAuthRefresh.mock.calls[1][0].body).toEqual({});
+      expect(auth.getActiveSession()?.refresh_token_duration).toBeNull();
+
+      await auth.refresh();
+      expect(lastRefreshBody()).toEqual({});
     });
 
     it('should not retry other refresh errors', async () => {
@@ -672,13 +695,19 @@ describe('createAuth', () => {
       expect(mockAuthRefresh).toHaveBeenCalledTimes(1);
     });
 
-    it('should never send session_duration on refresh', async () => {
-      const auth = createAuth({ storage: 'memory', enableCrossTabSync: false });
-      await auth.login({ ...credentials, session_duration: 36000 });
+    it('should leave the duration to the first refresh on the company session length', async () => {
+      const auth = createAuth({
+        storage: 'memory',
+        enableCrossTabSync: false,
+        refreshTokenDuration: DAY,
+      });
+
+      const session = await auth.login({ ...credentials, session_duration: null });
+      expect(mockAuthLogin.mock.calls[0][0].body).not.toHaveProperty('refresh_token_duration');
+      expect(session.refresh_token_duration).toBeUndefined();
 
       await auth.refresh();
-
-      expect(lastRefreshBody()).not.toHaveProperty('session_duration');
+      expect(lastRefreshBody()).toEqual({ session_duration: 900, refresh_token_duration: DAY });
     });
   });
 });

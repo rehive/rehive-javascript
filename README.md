@@ -286,8 +286,9 @@ await auth.login({ user: "user@example.com", password: "pass", company: "myco", 
 ```
 
 - The SDK never asks for a refresh token shorter than the session duration it sends; the platform rejects that.
+- With `session_duration: null` (the company's session length), the configured lifespan is not sent on login; the session adopts it on its first refresh instead.
 - A refresh sends an empty body, and the platform reuses the durations the session was created with.
-- A session saved before it recorded a lifespan (an older SDK version, `registerCompany`, `importToken`) sends `refreshTokenDuration` on its next refresh, once. If the platform rejects it, the SDK refreshes again without it.
+- A session saved without a lifespan (an older SDK version, `registerCompany`, `importToken`, a `session_duration: null` login) refreshes as older versions did, sending its `session_duration`, plus `refreshTokenDuration` if set. Once the lifespan is saved, later refreshes send an empty body. If the platform rejects either duration, the SDK refreshes again with an empty body.
 
 ## Architecture
 

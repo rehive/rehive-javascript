@@ -154,12 +154,16 @@ function errorHandlingFetch(baseFetch: typeof fetch): typeof fetch {
 // The generated clients predate the platform's refresh_token_duration field.
 type WithRefreshTokenDuration<T> = T & { refresh_token_duration?: number | null };
 
-function isRefreshTokenDurationError(error: unknown): boolean {
+function isDurationError(error: unknown): boolean {
   if (!(error instanceof ApiError) || error.status !== 400) {
     return false;
   }
   const body = error.error as unknown as { data?: Record<string, unknown> } | null;
-  return typeof body === 'object' && body?.data?.refresh_token_duration !== undefined;
+  return (
+    typeof body === 'object' &&
+    (body?.data?.session_duration !== undefined ||
+      body?.data?.refresh_token_duration !== undefined)
+  );
 }
 
 function sleep(ms: number): Promise<void> {
@@ -215,6 +219,11 @@ export function createAuth(config: AuthConfig = {}): Auth {
   ): number | null | undefined {
     if (requested === null) {
       return null;
+    }
+    // On the company's session length (unknown here) the configured value
+    // waits for the first refresh, where a rejection can be retried.
+    if (requested === undefined && sessionDuration === undefined) {
+      return undefined;
     }
     const duration = requested ?? config.refreshTokenDuration;
     if (duration == null) {
@@ -774,34 +783,42 @@ export function createAuth(config: AuthConfig = {}): Auth {
           throw new Error('No active session, token, or refresh token found');
         }
 
-        // The platform replays the durations a session was created with, so
-        // only a session saved without a refresh token lifespan sends one.
-        let refreshTokenDuration =
-          session.refresh_token_duration === undefined
-            ? resolveRefreshTokenDuration(undefined, session.session_duration)
-            : undefined;
-        const requestRefresh = (duration: number | null | undefined) => {
-          const body: WithRefreshTokenDuration<RefreshRequest> =
-            duration != null ? { refresh_token_duration: duration } : {};
-          return authRefresh({
+        // The platform replays the durations a session was created with. A
+        // session saved without a refresh token lifespan may predate that, so
+        // it still sends its session duration, as older versions did, and
+        // adopts the configured lifespan on the way.
+        const legacy = session.refresh_token_duration === undefined;
+        let refreshTokenDuration = legacy
+          ? resolveRefreshTokenDuration(undefined, session.session_duration)
+          : undefined;
+        const requestRefresh = (body: WithRefreshTokenDuration<RefreshRequest>) =>
+          authRefresh({
             client,
             body,
             headers: { Authorization: `Refresh-Token ${session.refresh_token}` },
             throwOnError: true,
           });
-        };
 
         let result: any;
         try {
-          result = await requestRefresh(refreshTokenDuration);
+          result = await requestRefresh(
+            legacy
+              ? {
+                  session_duration: session.session_duration ?? 900,
+                  ...(refreshTokenDuration != null && {
+                    refresh_token_duration: refreshTokenDuration,
+                  }),
+                }
+              : {},
+          );
         } catch (e) {
-          if (refreshTokenDuration == null || !isRefreshTokenDurationError(e)) {
+          if (!legacy || !isDurationError(e)) {
             throw e;
           }
           // The platform validates before it uses the refresh token, so the
-          // same token can go again without the rejected lifespan.
+          // same token can go again, letting the platform pick the durations.
           refreshTokenDuration = null;
-          result = await requestRefresh(null);
+          result = await requestRefresh({});
         }
         const data = result?.data ?? result;
 
@@ -812,10 +829,9 @@ export function createAuth(config: AuthConfig = {}): Auth {
           refresh_token: data.refresh_token ?? session.refresh_token,
           expires: data.expires ?? session.expires,
           session_duration: session.session_duration ?? 900,
-          refresh_token_duration:
-            session.refresh_token_duration === undefined
-              ? refreshTokenDuration
-              : session.refresh_token_duration,
+          refresh_token_duration: legacy
+            ? refreshTokenDuration
+            : session.refresh_token_duration,
           company: getSessionCompany(session),
         };
 
