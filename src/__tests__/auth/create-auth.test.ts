@@ -787,7 +787,7 @@ describe('createAuth', () => {
     const STATE_KEY = 'rehive_auth_state';
     const LOGIN_EXPIRES = Date.now() + 60_000;
     let clock = LOGIN_EXPIRES;
-    let lockOptions: unknown[] = [];
+    let lockRequests: { name: string; options?: unknown }[] = [];
 
     type Tab = ReturnType<typeof createAuth>;
 
@@ -840,13 +840,13 @@ describe('createAuth', () => {
 
       // A minimal Web Locks stand-in: requests for one name run one after another.
       const queues = new Map<string, Promise<unknown>>();
-      lockOptions = [];
+      lockRequests = [];
       Object.defineProperty(navigator, 'locks', {
         configurable: true,
         value: {
           request: (name: string, ...rest: unknown[]) => {
             const task = rest[rest.length - 1] as () => Promise<unknown>;
-            if (rest.length > 1) lockOptions.push(rest[0]);
+            lockRequests.push({ name, options: rest.length > 1 ? rest[0] : undefined });
             const run = (queues.get(name) ?? Promise.resolve()).then(task);
             queues.set(name, run.catch(() => undefined));
             return run;
@@ -930,7 +930,48 @@ describe('createAuth', () => {
       expect(mockAuthRefresh).toHaveBeenCalledTimes(1);
       expect(tabA.getActiveSession()?.refresh_token).toBe('refresh-a+');
       expect(tabB.getActiveSession()?.refresh_token).toBe('refresh-a+');
-      expect(lockOptions[0]).toHaveProperty('signal');
+    });
+
+    it('should give up waiting for a refresh lock, but not for the state lock', async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      await loginAs(tabA, 'co-a', 'refresh-a');
+
+      await tabA.refresh();
+
+      const refreshLocks = lockRequests.filter((r) => r.name.startsWith('rehive-auth-refresh:'));
+      const stateLocks = lockRequests.filter((r) => r.name.startsWith('rehive-auth-state:'));
+      expect(refreshLocks[0].options).toHaveProperty('signal');
+      expect(stateLocks.length).toBeGreaterThan(0);
+      expect(stateLocks.every((r) => r.options === undefined)).toBe(true);
+    });
+
+    it('should refresh with a newer copy from another tab when that copy has expired too', async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      mockAuthLogin.mockResolvedValueOnce({
+        ...mockLoginResponse,
+        data: {
+          ...mockLoginResponse.data,
+          token: 'token-co-a',
+          refresh_token: 'refresh-a',
+          expires: Date.now() - 120_000,
+        },
+      });
+      await tabA.login({ user: 'test@example.com', password: 'password123', company: 'co-a' });
+      // Tab B refreshed, then both tabs sat idle past that expiry too.
+      const tabB = openTab(storage);
+      mockAuthRefresh.mockResolvedValueOnce({
+        status: 'success',
+        data: { refresh_token: 'refresh-a+', expires: Date.now() - 60_000 },
+      });
+      await tabB.refresh();
+
+      await expect(tabA.getToken()).resolves.toBe('token-co-a');
+
+      expect(mockAuthRefresh).toHaveBeenCalledTimes(2);
+      expect(refreshTokenSent(1)).toBe('refresh-a+');
+      expect(tabA.getActiveSession()?.refresh_token).toBe('refresh-a++');
     });
 
     it('should keep both sessions when two tabs refresh different companies at once', async () => {
@@ -1067,6 +1108,106 @@ describe('createAuth', () => {
       await tabB.deleteChallenge('none');
 
       expect(tabB.getActiveSession()?.company).toBe('co-a');
+    });
+
+    it('should keep a refresh another tab makes during a logout', async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      const tabB = openTab(storage);
+      await loginAs(tabA, 'co-a', 'refresh-a');
+      await loginAs(tabB, 'co-b', 'refresh-b');
+      mockAuthLogout.mockImplementationOnce(async () => {
+        await tabB.refresh();
+        return mockLogoutResponse;
+      });
+
+      await tabA.logout();
+
+      const saved = await savedSessions(storage);
+      expect(saved.map((s) => [s.company, s.refresh_token])).toEqual([['co-b', 'refresh-b+']]);
+    });
+
+    it('should keep tokens another tab refreshed while syncing the user', async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      await loginAs(tabA, 'co-a', 'refresh-a');
+      const tabB = openTab(storage);
+      await tabB.getToken();
+      mockFetch.mockImplementationOnce(async () => {
+        await tabB.refresh();
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({ data: { id: 'user-123', first_name: 'Updated', company: 'co-a' } }),
+          text: async () => '',
+        };
+      });
+
+      const synced = await tabA.syncActiveSessionUser();
+
+      expect(synced?.user.first_name).toBe('Updated');
+      expect(synced?.refresh_token).toBe('refresh-a+');
+      expect((await savedSessions(storage))[0].refresh_token).toBe('refresh-a+');
+    });
+
+    it('should report the session expired when another tab logs it out during the refresh', async () => {
+      const storage = sharedStorage();
+      const tabA = openTab(storage);
+      await loginAs(tabA, 'co-a', 'refresh-a');
+      const tabB = openTab(storage);
+      await tabB.getToken();
+      const events: string[] = [];
+      tabA.subscribeToEvents((event) => events.push(event.type));
+      mockAuthRefresh.mockImplementationOnce(async () => {
+        await tabB.logout();
+        clock += 1_000;
+        return { status: 'success', data: { refresh_token: 'refresh-a+', expires: clock } };
+      });
+
+      await expect(tabA.refresh()).rejects.toThrow('Session no longer exists');
+
+      expect(events).toContain('session-expired');
+      expect(events).not.toContain('refresh');
+      expect(tabA.getActiveSession()).toBeNull();
+      expect(await savedSessions(storage)).toEqual([]);
+    });
+
+    describe('with cross-tab sync on', () => {
+      it('should keep the active session another tab chose when it refreshes', async () => {
+        const storage = sharedStorage();
+        const tabA = createAuth({ storage });
+        const tabB = createAuth({ storage });
+        await loginAs(tabA, 'co-a', 'refresh-a');
+        // Tab B logs in to co-b, so every tab now follows co-b.
+        await loginAs(tabB, 'co-b', 'refresh-b');
+
+        // Tab A has not seen the storage event yet and refreshes co-a.
+        await tabA.refresh();
+
+        const state = JSON.parse((await storage.getItem(STATE_KEY)) ?? '{}');
+        expect(state.sessions[state.activeSessionIndex].company).toBe('co-b');
+        expect(state.sessions[0].refresh_token).toBe('refresh-a+');
+        expect(tabA.getActiveSession()?.company).toBe('co-b');
+      });
+
+      it('should open the shared session even when the tab remembers another one', async () => {
+        localStorage.clear();
+        sessionStorage.clear();
+        await loginAs(createAuth({ storage: 'local' }), 'co-a', 'refresh-a');
+        await loginAs(createAuth({ storage: 'local' }), 'co-b', 'refresh-b');
+        // A tab restored with an old sessionStorage (Memory Saver, a reopened tab).
+        sessionStorage.setItem(
+          'rehive_auth_state:tab-active',
+          JSON.stringify({ userId: 'user-123', company: 'co-a' }),
+        );
+
+        const restored = createAuth({ storage: 'local' });
+        await restored.getToken();
+
+        expect(restored.getActiveSession()?.company).toBe('co-b');
+        localStorage.clear();
+        sessionStorage.clear();
+      });
     });
   });
 });

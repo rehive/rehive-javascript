@@ -218,9 +218,11 @@ await auth.logoutAll();         // Invalidates tokens on server
 
 ### Multiple tabs
 
-Tabs on the same storage share the saved sessions. With `enableCrossTabSync` (the default) they also share the active session: a switch, logout or refresh in one tab is followed in the others. With it off, each tab keeps its own active session, so one tab can stay on `company-one` while another uses `company-two`, and a reload reopens that tab's session (remembered in `sessionStorage`).
+Tabs on the same storage share the saved sessions. With `enableCrossTabSync` (the default) they also share the active session: a switch, logout or refresh in one tab is followed in the others, and every tab opens the stored one. With it off, each tab keeps its own active session, so one tab can stay on `company-one` while another uses `company-two`, and a reload reopens that tab's session (remembered in `sessionStorage`).
 
-Refresh tokens are single-use, so a refresh runs under a [Web Lock](https://developer.mozilla.org/docs/Web/API/Web_Locks_API) per session: tabs refreshing the same session queue, and a tab that finds a newer copy of the session in storage takes those tokens instead of spending its own. A refresh writes back only its own session, so other tabs' logins and refreshes made meanwhile are kept, and a failed refresh drops the session only if storage still holds the refresh token that failed.
+Refresh tokens are single-use, so a refresh runs under a [Web Lock](https://developer.mozilla.org/docs/Web/API/Web_Locks_API) per session: tabs refreshing the same session queue, and a tab that finds a newer, still valid copy of the session in storage takes those tokens instead of spending its own (an expired one is refreshed with its token). A refresh, a logout and `syncActiveSessionUser()` write back only their own session, under a second lock, so other tabs' logins and refreshes made meanwhile are kept. A failed refresh drops the session only if storage still holds the refresh token that failed, and a session logged out in another tab during a refresh ends with a `session-expired` event.
+
+A tab waits at most 30 seconds for another tab's refresh of the same session. It then gives up and `getToken()` rejects with an `AbortError`, keeping the session; the tab holding the lock keeps it until its request ends.
 
 ### Failed refreshes
 
