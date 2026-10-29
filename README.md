@@ -121,7 +121,7 @@ The `useAuth` hook provides: `authUser`, `authLoading`, `authError`, `login`, `r
 
 ## Extension APIs
 
-All 15 extension APIs follow the same pattern -- import the factory, pass `auth`, call methods:
+All 18 extension APIs follow the same pattern -- import the factory, pass `auth`, call methods:
 
 ```typescript
 import { createConversionApi } from "rehive/extensions/conversion";
@@ -139,6 +139,9 @@ import { createBillingApi } from "rehive/extensions/billing";
 import { createBuilderApi } from "rehive/extensions/builder";
 import { createRainApi } from "rehive/extensions/rain";
 import { createAlchemyApi } from "rehive/extensions/alchemy";
+import { createSumsubApi } from "rehive/extensions/sumsub";
+import { createMukuruApi } from "rehive/extensions/mukuru";
+import { createRiskReviewApi } from "rehive/extensions/risk-review";
 
 const conversion = createConversionApi({ auth });
 const rewards = createRewardsApi({ auth });
@@ -327,25 +330,28 @@ Each module is a separate entry point with its own bundle. Import only the facto
 
 | API | Import | Methods |
 |-----|--------|---------|
-| Platform User | `rehive/user` | 203 |
-| Platform Admin | `rehive/admin` | 360 |
+| Platform User | `rehive/user` | 214 |
+| Platform Admin | `rehive/admin` | 437 |
 | Conversion | `rehive/extensions/conversion` | 60 |
-| Mass Send | `rehive/extensions/mass-send` | 18 |
-| Notifications | `rehive/extensions/notifications` | 37 |
+| Mass Send | `rehive/extensions/mass-send` | 24 |
+| Notifications | `rehive/extensions/notifications` | 41 |
 | Products | `rehive/extensions/products` | 241 |
 | Rewards | `rehive/extensions/rewards` | 30 |
 | Stellar | `rehive/extensions/stellar` | 101 |
 | Stellar Testnet | `rehive/extensions/stellar-testnet` | 101 |
 | Business | `rehive/extensions/business` | 84 |
 | Payment Requests | `rehive/extensions/payment-requests` | 77 |
-| Bridge | `rehive/extensions/bridge` | 27 |
-| App | `rehive/extensions/app` | 46 |
+| Bridge | `rehive/extensions/bridge` | 64 |
+| App | `rehive/extensions/app` | 48 |
 | Billing | `rehive/extensions/billing` | 13 |
-| Builder | `rehive/extensions/builder` | 5 |
-| Rain | `rehive/extensions/rain` | 26 |
-| Alchemy | `rehive/extensions/alchemy` | 20 |
+| Builder | `rehive/extensions/builder` | 18 |
+| Rain | `rehive/extensions/rain` | 27 |
+| Alchemy | `rehive/extensions/alchemy` | 32 |
+| Sumsub | `rehive/extensions/sumsub` | 26 |
+| Mukuru | `rehive/extensions/mukuru` | 24 |
+| Risk Review | `rehive/extensions/risk-review` | 18 |
 
-**Total: 1,449 typed API methods across platform and extensions**
+**Total: 1,680 typed API methods across platform and extensions**
 
 ## Development
 

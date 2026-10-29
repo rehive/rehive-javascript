@@ -23,6 +23,7 @@ export default defineConfig({
     'extensions/alchemy': 'src/extensions/alchemy/index.ts',
     'extensions/sumsub': 'src/extensions/sumsub/index.ts',
     'extensions/mukuru': 'src/extensions/mukuru/index.ts',
+    'extensions/risk-review': 'src/extensions/risk-review/index.ts',
     react: 'src/react.tsx',
   },
   format: ['cjs', 'esm'],
