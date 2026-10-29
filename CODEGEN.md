@@ -49,6 +49,7 @@ Generated files are written directly to:
 - `src/extensions/alchemy/openapi-ts/`
 - `src/extensions/sumsub/openapi-ts/`
 - `src/extensions/mukuru/openapi-ts/`
+- `src/extensions/risk-review/openapi-ts/`
 
 ## Source Specs
 
@@ -73,6 +74,7 @@ The generation script (`scripts/codegen-openapi-ts.sh`) uses:
 - `https://alchemy.services.rehive.com/schema.json`
 - `https://sumsub.services.rehive.com/schema.json`
 - `https://mukuru.services.rehive.com/schema.json`
+- `https://risk.services.rehive.com/schema.json`
 
 ## Unhealthy Schema Endpoints
 

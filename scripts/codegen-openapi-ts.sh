@@ -87,6 +87,7 @@ generate "rain"     "https://rain.services.rehive.com/schema.json"     "src/exte
 generate "alchemy"  "https://alchemy.services.rehive.com/schema.json"  "src/extensions/alchemy/openapi-ts"
 generate "sumsub"   "https://sumsub.services.rehive.com/schema.json"   "src/extensions/sumsub/openapi-ts"
 generate "mukuru"   "https://mukuru.services.rehive.com/schema.json"   "src/extensions/mukuru/openapi-ts"
+generate "risk-review" "https://risk.services.rehive.com/schema.json" "src/extensions/risk-review/openapi-ts"
 
 # Apply post-codegen type fixes (responseStyle defaults, etc.)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
