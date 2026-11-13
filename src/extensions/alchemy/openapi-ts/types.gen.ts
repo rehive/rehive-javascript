@@ -4,11 +4,6 @@ export type ClientOptions = {
     baseUrl: 'https://alchemy.services.rehive.com/api/' | (string & {});
 };
 
-/**
- * Serializer for looking up a crypto address from a Rehive account reference.
- * Accepts an account reference and chain, resolves the account_currency UUID
- * via Rehive, then calls the Bridge extension to get a liquidation address.
- */
 export type AccountAddressLookup = {
     account: string;
     currency_code: string;
@@ -17,21 +12,14 @@ export type AccountAddressLookup = {
 };
 
 export type AccountAddressLookupResponse = {
-    status?: string;
-    data?: AccountAddressLookup;
+    status: string;
+    data: AccountAddressLookup;
 };
 
-/**
- * This serializer can be used if only a `status` is required in the response.
- */
 export type ActionResponse = {
-    status?: string;
+    status: string;
 };
 
-/**
- * Serialize the activation data, should be a token that represents an admin
- * user.
- */
 export type Activate = {
     token: string;
     readonly id: string;
@@ -39,17 +27,12 @@ export type Activate = {
     readonly secret: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Address = {
     readonly identifier: string;
-    address: string;
+    readonly address: string;
     user: User;
-    rehive_account: string;
+    readonly rehive_account: string;
+    readonly currencies: Array<string>;
     readonly parent_address: string;
     readonly subtype: string;
     readonly provider: string;
@@ -58,37 +41,29 @@ export type Address = {
 };
 
 export type AddressResponse = {
-    status?: string;
-    data?: Address;
+    status: string;
+    data: Address;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminAddress = {
     readonly id: string;
     readonly address: string;
     readonly rehive_account: string;
+    readonly currencies: Array<string>;
     user: User;
     readonly parent_address: string;
+    readonly subtype: string;
+    readonly provider: string;
+    readonly deposit_index: number;
     readonly created: number;
     readonly updated: number;
 };
 
 export type AdminAddressResponse = {
-    status?: string;
-    data?: AdminAddress;
+    status: string;
+    data: AdminAddress;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCompany = {
     readonly id: string;
     readonly secret: string;
@@ -101,28 +76,16 @@ export type AdminCompany = {
 };
 
 export type AdminCompanyResponse = {
-    status?: string;
-    data?: AdminCompany;
+    status: string;
+    data: AdminCompany;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateAddress = {
     address: string;
     rehive_account: string;
+    currencies?: Array<string>;
 };
 
-/**
- * Input for minting a new deposit address. Resolves the parent Address (by
- * identifier or on-chain address) and the matching CompanyDepositFactory —
- * keyed by either (company, chain, subtype) or (company, chain, provider),
- * exactly one of which must be supplied — computes the CREATE2 address via
- * RPC, creates the Address row, and subscribes it to Alchemy.
- */
 export type AdminCreateDepositAddress = {
     parent_address: string;
     /**
@@ -134,30 +97,9 @@ export type AdminCreateDepositAddress = {
     chain: 'ETH_SEPOLIA' | 'ETH_MAINNET' | 'BASE_MAINNET' | 'BASE_SEPOLIA';
     subtype?: string;
     provider?: string;
-    readonly id: string;
-    readonly address: string;
-    readonly deposit_index: number;
-    readonly created: number;
+    reuse_existing?: boolean;
 };
 
-export type AdminCreateDepositAddressResponse = {
-    status?: string;
-    data?: AdminCreateDepositAddress;
-};
-
-/**
- * Create a CompanyDepositFactory row and (by default) deploy the on-chain
- * factory. Exactly one of `subtype` or `provider` must be supplied — a
- * factory is either bound to a Rehive payment-method subtype (and emits
- * Rehive credits directly on sweep) or to a third-party provider tag (and
- * records ProviderMonitoredDeposit rows for the provider's pending
- * transactions to join against).
- *
- * The operator keypair is pulled from OPERATOR_ADDRESS / OPERATOR_PRIVATE_KEY
- * env vars at create time, copied onto the row, and the private key is
- * Fernet-encrypted under OPERATOR_KEY_MASTER before being written. The
- * plaintext never touches the DB.
- */
 export type AdminCreateDepositFactory = {
     /**
      * * `ETH_SEPOLIA` - Eth Sepolia
@@ -186,12 +128,26 @@ export type AdminCreateDepositFactory = {
     readonly created: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type AdminDepositAddress = {
+    readonly id: string;
+    readonly address: string;
+    readonly rehive_account: string;
+    readonly currencies: Array<string>;
+    user: User;
+    readonly parent_address: string;
+    readonly subtype: string;
+    readonly provider: string;
+    readonly deposit_index: number;
+    readonly created: number;
+    readonly updated: number;
+    readonly reused: boolean;
+};
+
+export type AdminDepositAddressResponse = {
+    status: string;
+    data: AdminDepositAddress;
+};
+
 export type AdminDepositFactory = {
     readonly id: string;
     /**
@@ -212,16 +168,10 @@ export type AdminDepositFactory = {
 };
 
 export type AdminDepositFactoryResponse = {
-    status?: string;
-    data?: AdminDepositFactory;
+    status: string;
+    data: AdminDepositFactory;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminOnchainTransaction = {
     readonly id: string;
     readonly hash: string;
@@ -254,8 +204,70 @@ export type AdminOnchainTransaction = {
 };
 
 export type AdminOnchainTransactionResponse = {
-    status?: string;
-    data?: AdminOnchainTransaction;
+    status: string;
+    data: AdminOnchainTransaction;
+};
+
+export type AdminPrsDestination = {
+    id: string;
+    request?: string | null;
+    currency: unknown;
+    request_account: string;
+    provider: string;
+};
+
+export type AdminPrsDestinationResponse = {
+    readonly address: string;
+    readonly chain: string;
+    readonly chain_id: number | null;
+    readonly asset: string;
+    readonly token_address: string | null;
+    readonly reference: string;
+};
+
+export type AdminPrsDestinationResponseResponse = {
+    status: string;
+    data: AdminPrsDestinationResponse;
+};
+
+export type AdminPrsQuote = {
+    id: string;
+    currency: unknown;
+    request_currency?: string | null;
+    request_account?: string | null;
+    account?: string | null;
+    amount?: number | null;
+    request_amount?: number | null;
+    subtype?: string | null;
+    user?: unknown;
+};
+
+export type AdminPrsQuoteResponse = {
+    readonly reference: string;
+    readonly account: string;
+    readonly deposit_details: unknown;
+    readonly subtype: string;
+};
+
+export type AdminPrsQuoteResponseResponse = {
+    status: string;
+    data: AdminPrsQuoteResponse;
+};
+
+export type AdminUser = {
+    readonly id: string;
+    readonly privy_user_id: string;
+    readonly private_key_exported: number;
+    readonly unexpected_debit_detected: number;
+    readonly privy_wallets: Array<PrivyWallet>;
+    readonly smart_wallet_addresses: string;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type AdminUserResponse = {
+    status: string;
+    data: AdminUser;
 };
 
 export type AlchemyWebhook = {
@@ -266,12 +278,6 @@ export type AlchemyWebhook = {
     id: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Currency = {
     readonly code: string;
     /**
@@ -295,21 +301,11 @@ export type Currency = {
     readonly divisibility: number;
 };
 
-/**
- * Serialize the deactivation data, should be a token that represents an admin
- * user.
- */
 export type Deactivate = {
     token: string;
     purge?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type OnchainTransaction = {
     readonly identifier: string;
     hash?: string | null;
@@ -342,8 +338,8 @@ export type OnchainTransaction = {
 };
 
 export type OnchainTransactionResponse = {
-    status?: string;
-    data?: OnchainTransaction;
+    status: string;
+    data: OnchainTransaction;
 };
 
 export type PaginatedAddressList = {
@@ -354,8 +350,8 @@ export type PaginatedAddressList = {
 };
 
 export type PaginatedAddressListResponse = {
-    status?: string;
-    data?: PaginatedAddressList;
+    status: string;
+    data: PaginatedAddressList;
 };
 
 export type PaginatedAdminAddressList = {
@@ -366,8 +362,8 @@ export type PaginatedAdminAddressList = {
 };
 
 export type PaginatedAdminAddressListResponse = {
-    status?: string;
-    data?: PaginatedAdminAddressList;
+    status: string;
+    data: PaginatedAdminAddressList;
 };
 
 export type PaginatedAdminDepositFactoryList = {
@@ -378,8 +374,8 @@ export type PaginatedAdminDepositFactoryList = {
 };
 
 export type PaginatedAdminDepositFactoryListResponse = {
-    status?: string;
-    data?: PaginatedAdminDepositFactoryList;
+    status: string;
+    data: PaginatedAdminDepositFactoryList;
 };
 
 export type PaginatedAdminOnchainTransactionList = {
@@ -390,8 +386,20 @@ export type PaginatedAdminOnchainTransactionList = {
 };
 
 export type PaginatedAdminOnchainTransactionListResponse = {
-    status?: string;
-    data?: PaginatedAdminOnchainTransactionList;
+    status: string;
+    data: PaginatedAdminOnchainTransactionList;
+};
+
+export type PaginatedAdminUserList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AdminUser>;
+};
+
+export type PaginatedAdminUserListResponse = {
+    status: string;
+    data: PaginatedAdminUserList;
 };
 
 export type PaginatedOnchainTransactionList = {
@@ -402,16 +410,10 @@ export type PaginatedOnchainTransactionList = {
 };
 
 export type PaginatedOnchainTransactionListResponse = {
-    status?: string;
-    data?: PaginatedOnchainTransactionList;
+    status: string;
+    data: PaginatedOnchainTransactionList;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminCompany = {
     readonly id?: string;
     readonly secret?: string;
@@ -423,12 +425,6 @@ export type PatchedAdminCompany = {
     readonly mode?: 'test' | 'production';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedOnchainTransaction = {
     readonly identifier?: string;
     hash?: string | null;
@@ -460,12 +456,6 @@ export type PatchedOnchainTransaction = {
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedTransactionCollection = {
     readonly identifier?: string;
     hash?: string;
@@ -480,23 +470,25 @@ export type PatchedTransactionCollection = {
     readonly status?: 'pending' | 'signed' | 'broadcast' | 'confirmed' | 'failed' | 'cancelled';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedUser = {
     readonly identifier?: string;
     private_key_exported?: number;
+    readonly privy_user_id?: string;
+    readonly unexpected_debit_detected?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type PrivyWallet = {
+    readonly address: string;
+    readonly wallet_id: string;
+    readonly chain_type: string;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type PrivyWebhook = {
+    type?: string;
+};
+
 export type TransactionCollection = {
     readonly identifier: string;
     hash: string;
@@ -512,45 +504,26 @@ export type TransactionCollection = {
 };
 
 export type TransactionCollectionResponse = {
-    status?: string;
-    data?: TransactionCollection;
+    status: string;
+    data: TransactionCollection;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type User = {
     readonly identifier: string;
     private_key_exported?: number;
+    readonly privy_user_id: string;
+    readonly unexpected_debit_detected: number;
 };
 
-/**
- * Request body for POST /user/addresses/. Two mutually-exclusive modes, both
- * scoped to the calling user:
- *
- * * Direct registration — {address, rehive_account}
- * * Deposit address      — {parent_address, chain, subtype} OR
- * {parent_address, chain, provider}
- * Mirrors the admin deposit-addresses endpoint: resolves the company's
- * factory by (chain, subtype) or (chain, provider) — exactly one must
- * be supplied — computes the next CREATE2 deposit address, creates the
- * Address row, and subscribes it to Alchemy monitoring.
- * `parent_address` accepts the parent's identifier or on-chain address
- * and must resolve to one of the caller's own Address rows.
- *
- * The response is rendered with AddressSerializer.
- */
 export type UserCreateAddress = {
     address?: string;
     rehive_account?: string;
+    currencies?: Array<string>;
 };
 
 export type UserResponse = {
-    status?: string;
-    data?: User;
+    status: string;
+    data: User;
 };
 
 export type Webhook = {
@@ -572,66 +545,62 @@ export type Webhook = {
     data: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AddressWritable = {
-    address: string;
-    rehive_account: string;
+    [key: string]: unknown;
 };
 
 export type AddressResponseWritable = {
-    status?: string;
-    data?: AddressWritable;
+    status: string;
+    data: AddressWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminAddressWritable = {
     [key: string]: unknown;
 };
 
 export type AdminAddressResponseWritable = {
-    status?: string;
-    data?: AdminAddressWritable;
+    status: string;
+    data: AdminAddressWritable;
 };
 
 export type AdminCompanyResponseWritable = {
-    status?: string;
+    status: string;
+};
+
+export type AdminDepositAddressWritable = {
+    [key: string]: unknown;
+};
+
+export type AdminDepositAddressResponseWritable = {
+    status: string;
+    data: AdminDepositAddressWritable;
 };
 
 export type AdminDepositFactoryResponseWritable = {
-    status?: string;
+    status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminOnchainTransactionWritable = {
     [key: string]: unknown;
 };
 
 export type AdminOnchainTransactionResponseWritable = {
-    status?: string;
-    data?: AdminOnchainTransactionWritable;
+    status: string;
+    data: AdminOnchainTransactionWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type AdminPrsDestinationResponseResponseWritable = {
+    status: string;
+};
+
+export type AdminPrsQuoteResponseResponseWritable = {
+    status: string;
+};
+
+export type AdminUserResponseWritable = {
+    status: string;
+};
+
 export type OnchainTransactionWritable = {
     hash?: string | null;
     user_op_hash?: string | null;
@@ -647,8 +616,8 @@ export type OnchainTransactionWritable = {
 };
 
 export type OnchainTransactionResponseWritable = {
-    status?: string;
-    data?: OnchainTransactionWritable;
+    status: string;
+    data: OnchainTransactionWritable;
 };
 
 export type PaginatedAddressListWritable = {
@@ -659,8 +628,8 @@ export type PaginatedAddressListWritable = {
 };
 
 export type PaginatedAddressListResponseWritable = {
-    status?: string;
-    data?: PaginatedAddressListWritable;
+    status: string;
+    data: PaginatedAddressListWritable;
 };
 
 export type PaginatedAdminAddressListWritable = {
@@ -671,8 +640,8 @@ export type PaginatedAdminAddressListWritable = {
 };
 
 export type PaginatedAdminAddressListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminAddressListWritable;
+    status: string;
+    data: PaginatedAdminAddressListWritable;
 };
 
 export type PaginatedAdminDepositFactoryListWritable = {
@@ -683,8 +652,8 @@ export type PaginatedAdminDepositFactoryListWritable = {
 };
 
 export type PaginatedAdminDepositFactoryListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminDepositFactoryListWritable;
+    status: string;
+    data: PaginatedAdminDepositFactoryListWritable;
 };
 
 export type PaginatedAdminOnchainTransactionListWritable = {
@@ -695,8 +664,20 @@ export type PaginatedAdminOnchainTransactionListWritable = {
 };
 
 export type PaginatedAdminOnchainTransactionListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminOnchainTransactionListWritable;
+    status: string;
+    data: PaginatedAdminOnchainTransactionListWritable;
+};
+
+export type PaginatedAdminUserListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
+export type PaginatedAdminUserListResponseWritable = {
+    status: string;
+    data: PaginatedAdminUserListWritable;
 };
 
 export type PaginatedOnchainTransactionListWritable = {
@@ -707,16 +688,10 @@ export type PaginatedOnchainTransactionListWritable = {
 };
 
 export type PaginatedOnchainTransactionListResponseWritable = {
-    status?: string;
-    data?: PaginatedOnchainTransactionListWritable;
+    status: string;
+    data: PaginatedOnchainTransactionListWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedOnchainTransactionWritable = {
     hash?: string | null;
     user_op_hash?: string | null;
@@ -731,70 +706,31 @@ export type PatchedOnchainTransactionWritable = {
     status?: 'pending' | 'signed' | 'broadcast' | 'confirmed' | 'failed' | 'cancelled';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedTransactionCollectionWritable = {
     hash?: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedUserWritable = {
     private_key_exported?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type TransactionCollectionWritable = {
     hash: string;
 };
 
 export type TransactionCollectionResponseWritable = {
-    status?: string;
-    data?: TransactionCollectionWritable;
+    status: string;
+    data: TransactionCollectionWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserWritable = {
     private_key_exported?: number;
 };
 
-/**
- * Request body for POST /user/addresses/. Two mutually-exclusive modes, both
- * scoped to the calling user:
- *
- * * Direct registration — {address, rehive_account}
- * * Deposit address      — {parent_address, chain, subtype} OR
- * {parent_address, chain, provider}
- * Mirrors the admin deposit-addresses endpoint: resolves the company's
- * factory by (chain, subtype) or (chain, provider) — exactly one must
- * be supplied — computes the next CREATE2 deposit address, creates the
- * Address row, and subscribes it to Alchemy monitoring.
- * `parent_address` accepts the parent's identifier or on-chain address
- * and must resolve to one of the caller's own Address rows.
- *
- * The response is rendered with AddressSerializer.
- */
 export type UserCreateAddressWritable = {
     address?: string;
     rehive_account?: string;
+    currencies?: Array<string>;
     parent_address?: string;
     /**
      * * `ETH_SEPOLIA` - Eth Sepolia
@@ -808,8 +744,8 @@ export type UserCreateAddressWritable = {
 };
 
 export type UserResponseWritable = {
-    status?: string;
-    data?: UserWritable;
+    status: string;
+    data: UserWritable;
 };
 
 export type ActivateCreateData = {
@@ -830,8 +766,17 @@ export type AdminAddressesListData = {
     path?: never;
     query?: {
         address?: string;
+        /**
+         * * `ETH_SEPOLIA` - ETH_SEPOLIA
+         * * `ETH_MAINNET` - ETH_MAINNET
+         * * `BASE_MAINNET` - BASE_MAINNET
+         * * `BASE_SEPOLIA` - BASE_SEPOLIA
+         */
+        chain?: 'BASE_MAINNET' | 'BASE_SEPOLIA' | 'ETH_MAINNET' | 'ETH_SEPOLIA';
+        currency?: string;
         has_parent?: boolean;
         has_rehive_account?: boolean;
+        is_default?: boolean;
         /**
          * A page number within the paginated result set.
          */
@@ -944,7 +889,7 @@ export type AdminDepositAddressesCreateData = {
 };
 
 export type AdminDepositAddressesCreateResponses = {
-    201: AdminCreateDepositAddressResponse;
+    201: AdminDepositAddressResponse;
 };
 
 export type AdminDepositAddressesCreateResponse = AdminDepositAddressesCreateResponses[keyof AdminDepositAddressesCreateResponses];
@@ -1058,6 +1003,73 @@ export type AdminOnchainTransactionsRetrieveResponses = {
 
 export type AdminOnchainTransactionsRetrieveResponse = AdminOnchainTransactionsRetrieveResponses[keyof AdminOnchainTransactionsRetrieveResponses];
 
+export type AdminPrsDestinationCreateData = {
+    body: AdminPrsDestination;
+    path?: never;
+    query?: never;
+    url: '/admin/prs/destination/';
+};
+
+export type AdminPrsDestinationCreateResponses = {
+    201: AdminPrsDestinationResponseResponse;
+};
+
+export type AdminPrsDestinationCreateResponse = AdminPrsDestinationCreateResponses[keyof AdminPrsDestinationCreateResponses];
+
+export type AdminPrsQuoteCreateData = {
+    body: AdminPrsQuote;
+    path?: never;
+    query?: never;
+    url: '/admin/prs/quote/';
+};
+
+export type AdminPrsQuoteCreateResponses = {
+    201: AdminPrsQuoteResponseResponse;
+};
+
+export type AdminPrsQuoteCreateResponse = AdminPrsQuoteCreateResponses[keyof AdminPrsQuoteCreateResponses];
+
+export type AdminUsersListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        has_privy_user_id?: boolean;
+        identifier?: string;
+        key_exported?: boolean;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        privy_user_id?: string;
+    };
+    url: '/admin/users/';
+};
+
+export type AdminUsersListResponses = {
+    200: PaginatedAdminUserListResponse;
+};
+
+export type AdminUsersListResponse = AdminUsersListResponses[keyof AdminUsersListResponses];
+
+export type AdminUsersRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/admin/users/{identifier}/';
+};
+
+export type AdminUsersRetrieveResponses = {
+    200: AdminUserResponse;
+};
+
+export type AdminUsersRetrieveResponse = AdminUsersRetrieveResponses[keyof AdminUsersRetrieveResponses];
+
 export type AlchemyWebhookCreateData = {
     body: AlchemyWebhook;
     path?: never;
@@ -1083,6 +1095,19 @@ export type DeactivateCreateResponses = {
 };
 
 export type DeactivateCreateResponse = DeactivateCreateResponses[keyof DeactivateCreateResponses];
+
+export type PrivyWebhookCreateData = {
+    body?: PrivyWebhook;
+    path?: never;
+    query?: never;
+    url: '/privy_webhook/';
+};
+
+export type PrivyWebhookCreateResponses = {
+    200: ActionResponse;
+};
+
+export type PrivyWebhookCreateResponse = PrivyWebhookCreateResponses[keyof PrivyWebhookCreateResponses];
 
 export type UserRetrieveData = {
     body?: never;
@@ -1141,8 +1166,17 @@ export type UserAddressesListData = {
     path?: never;
     query?: {
         address?: string;
+        /**
+         * * `ETH_SEPOLIA` - ETH_SEPOLIA
+         * * `ETH_MAINNET` - ETH_MAINNET
+         * * `BASE_MAINNET` - BASE_MAINNET
+         * * `BASE_SEPOLIA` - BASE_SEPOLIA
+         */
+        chain?: 'BASE_MAINNET' | 'BASE_SEPOLIA' | 'ETH_MAINNET' | 'ETH_SEPOLIA';
+        currency?: string;
         has_parent?: boolean;
         has_rehive_account?: boolean;
+        is_default?: boolean;
         /**
          * A page number within the paginated result set.
          */
@@ -1305,7 +1339,7 @@ export type UserOnchainTransactionsUpdateResponses = {
 export type UserOnchainTransactionsUpdateResponse = UserOnchainTransactionsUpdateResponses[keyof UserOnchainTransactionsUpdateResponses];
 
 export type UserOnchainTransactionsCancelCreateData = {
-    body?: ActionResponse;
+    body: ActionResponse;
     path: {
         identifier: string;
     };

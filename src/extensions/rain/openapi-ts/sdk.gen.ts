@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { ActivateCreateData, ActivateCreateResponses, AdminCardsListData, AdminCardsListResponses, AdminCardsRetrieveData, AdminCardsRetrieveResponses, AdminCompanyPartialUpdateData, AdminCompanyPartialUpdateResponses, AdminCompanyRetrieveData, AdminCompanyRetrieveResponses, AdminCompanyUpdateData, AdminCompanyUpdateResponses, AdminCurrenciesListData, AdminCurrenciesListResponses, AdminCurrenciesPartialUpdateData, AdminCurrenciesPartialUpdateResponses, AdminCurrenciesRetrieveData, AdminCurrenciesRetrieveResponses, AdminCurrenciesUpdateData, AdminCurrenciesUpdateResponses, DeactivateCreateData, DeactivateCreateResponses, RainWebhookCreateData, RainWebhookCreateResponses, UserApplicationsCreateData, UserApplicationsCreateResponses, UserApplicationsListData, UserApplicationsListResponses, UserApplicationsRetrieveData, UserApplicationsRetrieveResponses, UserCardsCreateData, UserCardsCreateResponses, UserCardsDataRetrieveData, UserCardsDataRetrieveResponses, UserCardsListData, UserCardsListResponses, UserCardsPinPartialUpdateData, UserCardsPinPartialUpdateResponses, UserCardsPinRetrieveData, UserCardsPinRetrieveResponses, UserCardsPinUpdateData, UserCardsPinUpdateResponses, UserCardsRetrieveData, UserCardsRetrieveResponses, UserCompanyRetrieveData, UserCompanyRetrieveResponses, UserPartialUpdateData, UserPartialUpdateResponses, UserRetrieveData, UserRetrieveResponses, UserUpdateData, UserUpdateResponses, WebhookCreateData, WebhookCreateResponses } from './types.gen';
+import type { ActivateCreateData, ActivateCreateResponses, Admin3DsChallengesListData, Admin3DsChallengesListResponses, Admin3DsChallengesRetrieveData, Admin3DsChallengesRetrieveResponses, AdminCardsListData, AdminCardsListResponses, AdminCardsRetrieveData, AdminCardsRetrieveResponses, AdminCompanyConfigurationsPartialUpdateData, AdminCompanyConfigurationsPartialUpdateResponses, AdminCompanyConfigurationsRetrieveData, AdminCompanyConfigurationsRetrieveResponses, AdminCompanyConfigurationsUpdateData, AdminCompanyConfigurationsUpdateResponses, AdminCompanyPartialUpdateData, AdminCompanyPartialUpdateResponses, AdminCompanyRetrieveData, AdminCompanyRetrieveResponses, AdminCompanyUpdateData, AdminCompanyUpdateResponses, AdminCurrenciesListData, AdminCurrenciesListResponses, AdminCurrenciesPartialUpdateData, AdminCurrenciesPartialUpdateResponses, AdminCurrenciesRetrieveData, AdminCurrenciesRetrieveResponses, AdminCurrenciesUpdateData, AdminCurrenciesUpdateResponses, DeactivateCreateData, DeactivateCreateResponses, RainWebhookCreateData, RainWebhookCreateResponses, User3DsChallengesDecideCreateData, User3DsChallengesDecideCreateResponses, User3DsChallengesDecidePartialUpdateData, User3DsChallengesDecidePartialUpdateResponses, User3DsChallengesDecideUpdateData, User3DsChallengesDecideUpdateResponses, User3DsChallengesListData, User3DsChallengesListResponses, User3DsChallengesRetrieveData, User3DsChallengesRetrieveResponses, UserApplicationsCreateData, UserApplicationsCreateResponses, UserApplicationsListData, UserApplicationsListResponses, UserApplicationsRetrieveData, UserApplicationsRetrieveResponses, UserBalancesRetrieveData, UserBalancesRetrieveResponses, UserCardsCreateData, UserCardsCreateResponses, UserCardsDataRetrieveData, UserCardsDataRetrieveResponses, UserCardsListData, UserCardsListResponses, UserCardsPinPartialUpdateData, UserCardsPinPartialUpdateResponses, UserCardsPinRetrieveData, UserCardsPinRetrieveResponses, UserCardsPinUpdateData, UserCardsPinUpdateResponses, UserCardsRetrieveData, UserCardsRetrieveResponses, UserCompanyRetrieveData, UserCompanyRetrieveResponses, UserContractsListData, UserContractsListResponses, UserContractsRetrieveData, UserContractsRetrieveResponses, UserPartialUpdateData, UserPartialUpdateResponses, UserRetrieveData, UserRetrieveResponses, UserUpdateData, UserUpdateResponses, WebhookCreateData, WebhookCreateResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -25,6 +25,18 @@ export const activateCreate = <ThrowOnError extends boolean = false>(options: Op
         'Content-Type': 'application/json',
         ...options.headers
     }
+});
+
+export const admin3DsChallengesList = <ThrowOnError extends boolean = false>(options?: Options<Admin3DsChallengesListData, ThrowOnError>): RequestResult<Admin3DsChallengesListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<Admin3DsChallengesListResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/admin/3ds-challenges/',
+    ...options
+});
+
+export const admin3DsChallengesRetrieve = <ThrowOnError extends boolean = false>(options: Options<Admin3DsChallengesRetrieveData, ThrowOnError>): RequestResult<Admin3DsChallengesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<Admin3DsChallengesRetrieveResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/admin/3ds-challenges/{identifier}/',
+    ...options
 });
 
 export const adminCardsList = <ThrowOnError extends boolean = false>(options?: Options<AdminCardsListData, ThrowOnError>): RequestResult<AdminCardsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AdminCardsListResponses, unknown, ThrowOnError>({
@@ -62,6 +74,32 @@ export const adminCompanyUpdate = <ThrowOnError extends boolean = false>(options
     headers: {
         'Content-Type': 'application/json',
         ...options?.headers
+    }
+});
+
+export const adminCompanyConfigurationsRetrieve = <ThrowOnError extends boolean = false>(options: Options<AdminCompanyConfigurationsRetrieveData, ThrowOnError>): RequestResult<AdminCompanyConfigurationsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AdminCompanyConfigurationsRetrieveResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/admin/company/configurations/{program_type}/',
+    ...options
+});
+
+export const adminCompanyConfigurationsPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<AdminCompanyConfigurationsPartialUpdateData, ThrowOnError>): RequestResult<AdminCompanyConfigurationsPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<AdminCompanyConfigurationsPartialUpdateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/admin/company/configurations/{program_type}/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const adminCompanyConfigurationsUpdate = <ThrowOnError extends boolean = false>(options: Options<AdminCompanyConfigurationsUpdateData, ThrowOnError>): RequestResult<AdminCompanyConfigurationsUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<AdminCompanyConfigurationsUpdateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/admin/company/configurations/{program_type}/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
     }
 });
 
@@ -141,6 +179,48 @@ export const userUpdate = <ThrowOnError extends boolean = false>(options?: Optio
     }
 });
 
+export const user3DsChallengesList = <ThrowOnError extends boolean = false>(options?: Options<User3DsChallengesListData, ThrowOnError>): RequestResult<User3DsChallengesListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<User3DsChallengesListResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/user/3ds-challenges/',
+    ...options
+});
+
+export const user3DsChallengesRetrieve = <ThrowOnError extends boolean = false>(options: Options<User3DsChallengesRetrieveData, ThrowOnError>): RequestResult<User3DsChallengesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<User3DsChallengesRetrieveResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/user/3ds-challenges/{identifier}/',
+    ...options
+});
+
+export const user3DsChallengesDecidePartialUpdate = <ThrowOnError extends boolean = false>(options: Options<User3DsChallengesDecidePartialUpdateData, ThrowOnError>): RequestResult<User3DsChallengesDecidePartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<User3DsChallengesDecidePartialUpdateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/user/3ds-challenges/{identifier}/decide/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const user3DsChallengesDecideCreate = <ThrowOnError extends boolean = false>(options: Options<User3DsChallengesDecideCreateData, ThrowOnError>): RequestResult<User3DsChallengesDecideCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<User3DsChallengesDecideCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/user/3ds-challenges/{identifier}/decide/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const user3DsChallengesDecideUpdate = <ThrowOnError extends boolean = false>(options: Options<User3DsChallengesDecideUpdateData, ThrowOnError>): RequestResult<User3DsChallengesDecideUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<User3DsChallengesDecideUpdateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/user/3ds-challenges/{identifier}/decide/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
 export const userApplicationsList = <ThrowOnError extends boolean = false>(options?: Options<UserApplicationsListData, ThrowOnError>): RequestResult<UserApplicationsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UserApplicationsListResponses, unknown, ThrowOnError>({
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/user/applications/',
@@ -160,6 +240,12 @@ export const userApplicationsCreate = <ThrowOnError extends boolean = false>(opt
 export const userApplicationsRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserApplicationsRetrieveData, ThrowOnError>): RequestResult<UserApplicationsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserApplicationsRetrieveResponses, unknown, ThrowOnError>({
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/user/applications/{identifier}/',
+    ...options
+});
+
+export const userBalancesRetrieve = <ThrowOnError extends boolean = false>(options?: Options<UserBalancesRetrieveData, ThrowOnError>): RequestResult<UserBalancesRetrieveResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UserBalancesRetrieveResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/user/balances/',
     ...options
 });
 
@@ -220,6 +306,18 @@ export const userCardsPinUpdate = <ThrowOnError extends boolean = false>(options
 export const userCompanyRetrieve = <ThrowOnError extends boolean = false>(options?: Options<UserCompanyRetrieveData, ThrowOnError>): RequestResult<UserCompanyRetrieveResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UserCompanyRetrieveResponses, unknown, ThrowOnError>({
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/user/company/',
+    ...options
+});
+
+export const userContractsList = <ThrowOnError extends boolean = false>(options?: Options<UserContractsListData, ThrowOnError>): RequestResult<UserContractsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UserContractsListResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/user/contracts/',
+    ...options
+});
+
+export const userContractsRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserContractsRetrieveData, ThrowOnError>): RequestResult<UserContractsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserContractsRetrieveResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/user/contracts/{identifier}/',
     ...options
 });
 

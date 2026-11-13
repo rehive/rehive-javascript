@@ -4,11 +4,8 @@ export type ClientOptions = {
     baseUrl: 'https://product.services.rehive.com/api/' | (string & {});
 };
 
-/**
- * This serializer can be used if only a `status` is required in the response.
- */
 export type ActionResponse = {
-    status?: string;
+    status: string;
 };
 
 export type Activate = {
@@ -18,12 +15,6 @@ export type Activate = {
     readonly secret: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCompany = {
     readonly id: string;
     manager_groups?: Array<string> | null;
@@ -31,59 +22,33 @@ export type AdminCompany = {
 };
 
 export type AdminCompanyResponse = {
-    status?: string;
-    data?: AdminCompany;
+    status: string;
+    data: AdminCompany;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateCategory = {
     readonly id: string;
     name: string;
     parent?: string;
-    image?: string;
+    image?: string | null;
     readonly created: number;
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateOrder = {
     readonly id: string;
     user: string;
     currency: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateOrderItem = {
     product: string;
     quantity: number;
     variant?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreatePayment = {
     readonly id: string;
     /**
@@ -106,23 +71,11 @@ export type AdminCreateProductCategory = {
     categories: Array<string>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateProductOption = {
     readonly id: string;
     name?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateProductPrice = {
     readonly id: string;
     amount?: number | null;
@@ -132,30 +85,16 @@ export type AdminCreateProductPrice = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateProductVariant = {
     readonly id: string;
     voucher_schema?: CreateUpdateVariantVoucherSchema | null;
     code?: string | null;
     label?: string | null;
-    options: {
-        [key: string]: unknown;
-    };
+    options: unknown;
     quantity: number | null;
     tracked?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateProductVariantPrice = {
     readonly id: string;
     currency: string;
@@ -165,23 +104,11 @@ export type AdminCreateProductVariantPrice = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateRedemption = {
     code: string;
     amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateRefund = {
     readonly id: string;
     /**
@@ -203,12 +130,6 @@ export type AdminCreateRefund = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateUpdateProduct = {
     readonly id: string;
     name: string;
@@ -222,9 +143,7 @@ export type AdminCreateUpdateProduct = {
     instant_buy?: boolean;
     supplier?: string | null;
     countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-    metadata?: {
-        [key: string]: unknown;
-    };
+    metadata?: unknown;
     readonly categories: Array<Category>;
     integration?: string | null;
     seller?: string | null;
@@ -236,12 +155,6 @@ export type AdminCreateUpdateProduct = {
     enabled?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateUpdateVoucherSchema = {
     /**
      * * `static` - static
@@ -278,12 +191,6 @@ export type AdminCreateUpdateVoucherSchema = {
     lifespan_unit?: 'seconds' | 'minutes' | 'hours' | 'days' | 'weeks' | 'months' | 'years' | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateVoucher = {
     readonly id: string;
     product?: string;
@@ -296,12 +203,6 @@ export type AdminCreateVoucher = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateVoucherImport = {
     readonly id: string;
     product?: string;
@@ -318,47 +219,32 @@ export type AdminCreateVoucherImport = {
 };
 
 export type AdminCreateVoucherImportResponse = {
-    status?: string;
-    data?: AdminCreateVoucherImport;
+    status: string;
+    data: AdminCreateVoucherImport;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminGetUpdateProductImage = {
     readonly id: string;
-    file?: string;
+    file?: string | null;
     weight?: number;
     readonly created: number;
     readonly updated: number;
 };
 
 export type AdminGetUpdateProductImageResponse = {
-    status?: string;
-    data?: AdminGetUpdateProductImage;
+    status: string;
+    data: AdminGetUpdateProductImage;
 };
 
-/**
- * DEPRECATED : Replaced by the AdminCreateVoucherImportSerializer serializer.
- */
 export type AdminImportVoucher = {
     readonly vouchers: Array<Voucher>;
 };
 
 export type AdminImportVoucherResponse = {
-    status?: string;
-    data?: AdminImportVoucher;
+    status: string;
+    data: AdminImportVoucher;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminIntegration = {
     readonly id: string;
     seller: ShortSeller;
@@ -370,16 +256,10 @@ export type AdminIntegration = {
 };
 
 export type AdminIntegrationResponse = {
-    status?: string;
-    data?: AdminIntegration;
+    status: string;
+    data: AdminIntegration;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminIntegrationWebhook = {
     readonly id: string;
     url: string;
@@ -393,16 +273,10 @@ export type AdminIntegrationWebhook = {
 };
 
 export type AdminIntegrationWebhookResponse = {
-    status?: string;
-    data?: AdminIntegrationWebhook;
+    status: string;
+    data: AdminIntegrationWebhook;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminListCreateProductImage = {
     readonly id: string;
     file: string;
@@ -412,16 +286,10 @@ export type AdminListCreateProductImage = {
 };
 
 export type AdminListCreateProductImageResponse = {
-    status?: string;
-    data?: AdminListCreateProductImage;
+    status: string;
+    data: AdminListCreateProductImage;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminPayment = {
     readonly id: string;
     /**
@@ -441,16 +309,10 @@ export type AdminPayment = {
 };
 
 export type AdminPaymentResponse = {
-    status?: string;
-    data?: AdminPayment;
+    status: string;
+    data: AdminPayment;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminProduct = {
     readonly id: string;
     name: string;
@@ -467,9 +329,7 @@ export type AdminProduct = {
     supplier: string | null;
     countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     enabled?: boolean;
-    readonly metadata: {
-        [key: string]: unknown;
-    };
+    readonly metadata: unknown;
     images: Array<ProductImage>;
     readonly categories: Array<Category>;
     integration: AdminIntegration;
@@ -484,20 +344,14 @@ export type AdminProduct = {
 };
 
 export type AdminProductResponse = {
-    status?: string;
-    data?: AdminProduct;
+    status: string;
+    data: AdminProduct;
 };
 
 export type AdminQueryVoucher = {
     code: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminRefund = {
     readonly id: string;
     /**
@@ -520,16 +374,10 @@ export type AdminRefund = {
 };
 
 export type AdminRefundResponse = {
-    status?: string;
-    data?: AdminRefund;
+    status: string;
+    data: AdminRefund;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminSeller = {
     readonly id: string;
     name?: string | null;
@@ -542,24 +390,16 @@ export type AdminSeller = {
      * * `verified` - Verified
      */
     status: 'declined' | 'pending' | 'verified';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     readonly created: number;
     readonly updated: number;
 };
 
 export type AdminSellerResponse = {
-    status?: string;
-    data?: AdminSeller;
+    status: string;
+    data: AdminSeller;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateOrder = {
     readonly id: string;
     readonly user: string;
@@ -574,25 +414,15 @@ export type AdminUpdateOrder = {
     currency: Currency;
     readonly total_price: number;
     readonly items: Array<OrderItem>;
-    shipping_address?: {
-        [key: string]: unknown;
-    } | null;
-    billing_address?: {
-        [key: string]: unknown;
-    } | null;
+    shipping_address?: unknown;
+    billing_address?: unknown;
     contact_mobile?: string | null;
-    contact_email?: string | null;
+    contact_email?: string | string | null;
     readonly placed: number;
     readonly created: number;
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateOrderItem = {
     quantity: number;
     /**
@@ -604,29 +434,15 @@ export type AdminUpdateOrderItem = {
      */
     status?: 'processing' | 'shipped' | 'fulfilled' | 'complete' | 'failed' | '' | null;
     tracking_url?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateProductOption = {
     readonly id: string;
     name?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateProductPrice = {
     readonly id: string;
     amount?: number | null;
@@ -635,30 +451,16 @@ export type AdminUpdateProductPrice = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateProductVariant = {
     readonly id: string;
     voucher_schema?: CreateUpdateVariantVoucherSchema | null;
     code?: string | null;
     label?: string | null;
-    options: {
-        [key: string]: unknown;
-    };
+    options: unknown;
     quantity: number | null;
     tracked?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateProductVariantPrice = {
     readonly id: string;
     amount?: number | null;
@@ -667,12 +469,6 @@ export type AdminUpdateProductVariantPrice = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateVoucher = {
     readonly id: string;
     product: ShortProduct;
@@ -690,12 +486,6 @@ export type AdminUpdateVoucher = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Category = {
     readonly id: string;
     readonly name: string;
@@ -705,12 +495,6 @@ export type Category = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CategoryParent = {
     readonly id: string;
     readonly name: string;
@@ -720,16 +504,10 @@ export type CategoryParent = {
 };
 
 export type CategoryResponse = {
-    status?: string;
-    data?: Category;
+    status: string;
+    data: Category;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Company = {
     readonly id: string;
     readonly manager_groups: Array<string> | null;
@@ -737,16 +515,10 @@ export type Company = {
 };
 
 export type CompanyResponse = {
-    status?: string;
-    data?: Company;
+    status: string;
+    data: Company;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreatePayment = {
     readonly id: string;
     /**
@@ -765,23 +537,11 @@ export type CreatePayment = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateUpdateVariantVoucherSchema = {
     amount: number;
     currency: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateUpdateVoucherSchema = {
     /**
      * * `static` - static
@@ -818,12 +578,6 @@ export type CreateUpdateVoucherSchema = {
     lifespan_unit?: 'seconds' | 'minutes' | 'hours' | 'days' | 'weeks' | 'months' | 'years' | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Currency = {
     code: string;
     display_code?: string | null;
@@ -835,8 +589,8 @@ export type Currency = {
 };
 
 export type CurrencyResponse = {
-    status?: string;
-    data?: Currency;
+    status: string;
+    data: Currency;
 };
 
 export type Deactivate = {
@@ -844,12 +598,6 @@ export type Deactivate = {
     purge?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ExtendedOrder = {
     readonly id: string;
     readonly user: string;
@@ -866,14 +614,10 @@ export type ExtendedOrder = {
     readonly items: Array<OrderItem>;
     readonly payments: Array<Payment>;
     readonly refunds: Array<Refund>;
-    shipping_address?: {
-        [key: string]: unknown;
-    } | null;
-    billing_address?: {
-        [key: string]: unknown;
-    } | null;
+    shipping_address?: unknown;
+    billing_address?: unknown;
     contact_mobile?: string | null;
-    contact_email?: string | null;
+    contact_email?: string | string | null;
     requires_shipping_address?: boolean;
     requires_billing_address?: boolean;
     requires_contact_mobile?: boolean;
@@ -885,31 +629,19 @@ export type ExtendedOrder = {
 };
 
 export type ExtendedOrderResponse = {
-    status?: string;
-    data?: ExtendedOrder;
+    status: string;
+    data: ExtendedOrder;
 };
 
 export type ManagerCreateProductCategory = {
     categories: Array<string>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateProductOption = {
     readonly id: string;
     name?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateProductPrice = {
     readonly id: string;
     amount?: number | null;
@@ -919,30 +651,16 @@ export type ManagerCreateProductPrice = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateProductVariant = {
     readonly id: string;
     voucher_schema?: CreateUpdateVariantVoucherSchema | null;
     code?: string | null;
     label?: string | null;
-    options: {
-        [key: string]: unknown;
-    };
+    options: unknown;
     quantity: number | null;
     tracked?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateProductVariantPrice = {
     readonly id: string;
     currency: string;
@@ -952,23 +670,11 @@ export type ManagerCreateProductVariantPrice = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateRedemption = {
     code: string;
     amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateRefund = {
     readonly id: string;
     /**
@@ -990,12 +696,6 @@ export type ManagerCreateRefund = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateSeller = {
     id: string;
     name?: string | null;
@@ -1008,24 +708,16 @@ export type ManagerCreateSeller = {
      * * `verified` - Verified
      */
     readonly status: 'declined' | 'pending' | 'verified';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     readonly created: number;
     readonly updated: number;
 };
 
 export type ManagerCreateSellerResponse = {
-    status?: string;
-    data?: ManagerCreateSeller;
+    status: string;
+    data: ManagerCreateSeller;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateUpdateProduct = {
     readonly id: string;
     name: string;
@@ -1039,9 +731,7 @@ export type ManagerCreateUpdateProduct = {
     instant_buy?: boolean;
     supplier?: string | null;
     countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-    metadata?: {
-        [key: string]: unknown;
-    };
+    metadata?: unknown;
     readonly categories: Array<Category>;
     integration?: string | null;
     requires_shipping_address?: boolean;
@@ -1051,12 +741,6 @@ export type ManagerCreateUpdateProduct = {
     enabled?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateVoucher = {
     readonly id: string;
     product?: string;
@@ -1069,12 +753,6 @@ export type ManagerCreateVoucher = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateVoucherImport = {
     readonly id: string;
     product?: string;
@@ -1091,47 +769,32 @@ export type ManagerCreateVoucherImport = {
 };
 
 export type ManagerCreateVoucherImportResponse = {
-    status?: string;
-    data?: ManagerCreateVoucherImport;
+    status: string;
+    data: ManagerCreateVoucherImport;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerGetUpdateProductImage = {
     readonly id: string;
-    file?: string;
+    file?: string | null;
     weight?: number;
     readonly created: number;
     readonly updated: number;
 };
 
 export type ManagerGetUpdateProductImageResponse = {
-    status?: string;
-    data?: ManagerGetUpdateProductImage;
+    status: string;
+    data: ManagerGetUpdateProductImage;
 };
 
-/**
- * DEPRECATED : Replaced by the ManagerCreateVoucherImportSerializer serializer.
- */
 export type ManagerImportVoucher = {
     readonly vouchers: Array<Voucher>;
 };
 
 export type ManagerImportVoucherResponse = {
-    status?: string;
-    data?: ManagerImportVoucher;
+    status: string;
+    data: ManagerImportVoucher;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerIntegration = {
     readonly id: string;
     slug: string;
@@ -1142,16 +805,10 @@ export type ManagerIntegration = {
 };
 
 export type ManagerIntegrationResponse = {
-    status?: string;
-    data?: ManagerIntegration;
+    status: string;
+    data: ManagerIntegration;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerIntegrationWebhook = {
     readonly id: string;
     url: string;
@@ -1165,16 +822,10 @@ export type ManagerIntegrationWebhook = {
 };
 
 export type ManagerIntegrationWebhookResponse = {
-    status?: string;
-    data?: ManagerIntegrationWebhook;
+    status: string;
+    data: ManagerIntegrationWebhook;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerListCreateProductImage = {
     readonly id: string;
     file: string;
@@ -1184,16 +835,10 @@ export type ManagerListCreateProductImage = {
 };
 
 export type ManagerListCreateProductImageResponse = {
-    status?: string;
-    data?: ManagerListCreateProductImage;
+    status: string;
+    data: ManagerListCreateProductImage;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerPayment = {
     readonly id: string;
     /**
@@ -1213,16 +858,10 @@ export type ManagerPayment = {
 };
 
 export type ManagerPaymentResponse = {
-    status?: string;
-    data?: ManagerPayment;
+    status: string;
+    data: ManagerPayment;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerProduct = {
     readonly id: string;
     name: string;
@@ -1239,9 +878,7 @@ export type ManagerProduct = {
     supplier: string | null;
     countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     enabled?: boolean;
-    readonly metadata: {
-        [key: string]: unknown;
-    };
+    readonly metadata: unknown;
     images: Array<ProductImage>;
     readonly categories: Array<Category>;
     integration: ManagerIntegration;
@@ -1255,20 +892,14 @@ export type ManagerProduct = {
 };
 
 export type ManagerProductResponse = {
-    status?: string;
-    data?: ManagerProduct;
+    status: string;
+    data: ManagerProduct;
 };
 
 export type ManagerQueryVoucher = {
     code: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerRefund = {
     readonly id: string;
     /**
@@ -1291,16 +922,10 @@ export type ManagerRefund = {
 };
 
 export type ManagerRefundResponse = {
-    status?: string;
-    data?: ManagerRefund;
+    status: string;
+    data: ManagerRefund;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerSeller = {
     readonly id: string;
     name?: string | null;
@@ -1313,24 +938,16 @@ export type ManagerSeller = {
      * * `verified` - Verified
      */
     readonly status: 'declined' | 'pending' | 'verified';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     readonly created: number;
     readonly updated: number;
 };
 
 export type ManagerSellerResponse = {
-    status?: string;
-    data?: ManagerSeller;
+    status: string;
+    data: ManagerSeller;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerUpdateOrder = {
     readonly id: string;
     readonly user: string;
@@ -1345,25 +962,15 @@ export type ManagerUpdateOrder = {
     currency: Currency;
     readonly total_price: number;
     readonly items: Array<OrderItem>;
-    shipping_address?: {
-        [key: string]: unknown;
-    } | null;
-    billing_address?: {
-        [key: string]: unknown;
-    } | null;
+    shipping_address?: unknown;
+    billing_address?: unknown;
     contact_mobile?: string | null;
-    contact_email?: string | null;
+    contact_email?: string | string | null;
     readonly placed: number;
     readonly created: number;
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerUpdateOrderItem = {
     /**
      * * `processing` - processing
@@ -1374,28 +981,14 @@ export type ManagerUpdateOrderItem = {
      */
     status?: 'processing' | 'shipped' | 'fulfilled' | 'complete' | 'failed' | '' | null;
     tracking_url?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerUpdateProductOption = {
     readonly id: string;
     name?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerUpdateProductPrice = {
     readonly id: string;
     amount?: number | null;
@@ -1404,30 +997,16 @@ export type ManagerUpdateProductPrice = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerUpdateProductVariant = {
     readonly id: string;
     voucher_schema?: CreateUpdateVariantVoucherSchema | null;
     code?: string | null;
     label?: string | null;
-    options: {
-        [key: string]: unknown;
-    };
+    options: unknown;
     quantity: number | null;
     tracked?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerUpdateProductVariantPrice = {
     readonly id: string;
     amount?: number | null;
@@ -1436,12 +1015,6 @@ export type ManagerUpdateProductVariantPrice = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerUpdateVoucher = {
     readonly id: string;
     product: ShortProduct;
@@ -1459,12 +1032,6 @@ export type ManagerUpdateVoucher = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type MaskedShortVoucher = {
     readonly id: string;
     readonly code: string;
@@ -1480,12 +1047,6 @@ export type MaskedShortVoucher = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Order = {
     readonly id: string;
     readonly user: string;
@@ -1499,12 +1060,8 @@ export type Order = {
     readonly status: 'pending' | 'reserved' | 'placed' | 'complete' | 'failed';
     currency: Currency;
     readonly total_price: number;
-    readonly shipping_address: {
-        [key: string]: unknown;
-    } | null;
-    readonly billing_address: {
-        [key: string]: unknown;
-    } | null;
+    readonly shipping_address: unknown;
+    readonly billing_address: unknown;
     readonly contact_mobile: string | null;
     readonly contact_email: string | null;
     readonly requires_shipping_address: boolean;
@@ -1517,18 +1074,10 @@ export type Order = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type OrderItem = {
     readonly id: string;
     product?: string;
-    variant: {
-        [key: string]: unknown;
-    };
+    variant: unknown;
     readonly code: string | null;
     readonly name: string;
     readonly description: string | null;
@@ -1537,9 +1086,7 @@ export type OrderItem = {
     readonly instant_buy: boolean;
     readonly supplier: string | null;
     readonly countries: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-    readonly metadata: {
-        [key: string]: unknown;
-    } | null;
+    readonly metadata: unknown;
     readonly quantity: number | null;
     readonly tracked: boolean;
     readonly price: number;
@@ -1563,432 +1110,414 @@ export type OrderItem = {
 };
 
 export type OrderItemResponse = {
-    status?: string;
-    data?: OrderItem;
+    status: string;
+    data: OrderItem;
 };
 
 export type OrderResponse = {
-    status?: string;
-    data?: Order;
+    status: string;
+    data: Order;
 };
 
 export type PaginatedAdminCreateVoucherImportList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCreateVoucherImport>;
+    results: Array<AdminCreateVoucherImport>;
 };
 
 export type PaginatedAdminCreateVoucherImportListResponse = {
-    status?: string;
-    data?: PaginatedAdminCreateVoucherImportList;
+    status: string;
+    data: PaginatedAdminCreateVoucherImportList;
 };
 
 export type PaginatedAdminIntegrationList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminIntegration>;
+    results: Array<AdminIntegration>;
 };
 
 export type PaginatedAdminIntegrationListResponse = {
-    status?: string;
-    data?: PaginatedAdminIntegrationList;
+    status: string;
+    data: PaginatedAdminIntegrationList;
 };
 
 export type PaginatedAdminIntegrationWebhookList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminIntegrationWebhook>;
+    results: Array<AdminIntegrationWebhook>;
 };
 
 export type PaginatedAdminIntegrationWebhookListResponse = {
-    status?: string;
-    data?: PaginatedAdminIntegrationWebhookList;
+    status: string;
+    data: PaginatedAdminIntegrationWebhookList;
 };
 
 export type PaginatedAdminListCreateProductImageList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminListCreateProductImage>;
+    results: Array<AdminListCreateProductImage>;
 };
 
 export type PaginatedAdminListCreateProductImageListResponse = {
-    status?: string;
-    data?: PaginatedAdminListCreateProductImageList;
+    status: string;
+    data: PaginatedAdminListCreateProductImageList;
 };
 
 export type PaginatedAdminPaymentList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminPayment>;
+    results: Array<AdminPayment>;
 };
 
 export type PaginatedAdminPaymentListResponse = {
-    status?: string;
-    data?: PaginatedAdminPaymentList;
+    status: string;
+    data: PaginatedAdminPaymentList;
 };
 
 export type PaginatedAdminProductList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminProduct>;
+    results: Array<AdminProduct>;
 };
 
 export type PaginatedAdminProductListResponse = {
-    status?: string;
-    data?: PaginatedAdminProductList;
+    status: string;
+    data: PaginatedAdminProductList;
 };
 
 export type PaginatedAdminRefundList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminRefund>;
+    results: Array<AdminRefund>;
 };
 
 export type PaginatedAdminRefundListResponse = {
-    status?: string;
-    data?: PaginatedAdminRefundList;
+    status: string;
+    data: PaginatedAdminRefundList;
 };
 
 export type PaginatedAdminSellerList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminSeller>;
+    results: Array<AdminSeller>;
 };
 
 export type PaginatedAdminSellerListResponse = {
-    status?: string;
-    data?: PaginatedAdminSellerList;
+    status: string;
+    data: PaginatedAdminSellerList;
 };
 
 export type PaginatedCategoryList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Category>;
+    results: Array<Category>;
 };
 
 export type PaginatedCategoryListResponse = {
-    status?: string;
-    data?: PaginatedCategoryList;
+    status: string;
+    data: PaginatedCategoryList;
 };
 
 export type PaginatedCurrencyList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Currency>;
+    results: Array<Currency>;
 };
 
 export type PaginatedCurrencyListResponse = {
-    status?: string;
-    data?: PaginatedCurrencyList;
+    status: string;
+    data: PaginatedCurrencyList;
 };
 
 export type PaginatedManagerCreateVoucherImportList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerCreateVoucherImport>;
+    results: Array<ManagerCreateVoucherImport>;
 };
 
 export type PaginatedManagerCreateVoucherImportListResponse = {
-    status?: string;
-    data?: PaginatedManagerCreateVoucherImportList;
+    status: string;
+    data: PaginatedManagerCreateVoucherImportList;
 };
 
 export type PaginatedManagerIntegrationList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerIntegration>;
+    results: Array<ManagerIntegration>;
 };
 
 export type PaginatedManagerIntegrationListResponse = {
-    status?: string;
-    data?: PaginatedManagerIntegrationList;
+    status: string;
+    data: PaginatedManagerIntegrationList;
 };
 
 export type PaginatedManagerIntegrationWebhookList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerIntegrationWebhook>;
+    results: Array<ManagerIntegrationWebhook>;
 };
 
 export type PaginatedManagerIntegrationWebhookListResponse = {
-    status?: string;
-    data?: PaginatedManagerIntegrationWebhookList;
+    status: string;
+    data: PaginatedManagerIntegrationWebhookList;
 };
 
 export type PaginatedManagerListCreateProductImageList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerListCreateProductImage>;
+    results: Array<ManagerListCreateProductImage>;
 };
 
 export type PaginatedManagerListCreateProductImageListResponse = {
-    status?: string;
-    data?: PaginatedManagerListCreateProductImageList;
+    status: string;
+    data: PaginatedManagerListCreateProductImageList;
 };
 
 export type PaginatedManagerPaymentList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerPayment>;
+    results: Array<ManagerPayment>;
 };
 
 export type PaginatedManagerPaymentListResponse = {
-    status?: string;
-    data?: PaginatedManagerPaymentList;
+    status: string;
+    data: PaginatedManagerPaymentList;
 };
 
 export type PaginatedManagerProductList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerProduct>;
+    results: Array<ManagerProduct>;
 };
 
 export type PaginatedManagerProductListResponse = {
-    status?: string;
-    data?: PaginatedManagerProductList;
+    status: string;
+    data: PaginatedManagerProductList;
 };
 
 export type PaginatedManagerRefundList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerRefund>;
+    results: Array<ManagerRefund>;
 };
 
 export type PaginatedManagerRefundListResponse = {
-    status?: string;
-    data?: PaginatedManagerRefundList;
+    status: string;
+    data: PaginatedManagerRefundList;
 };
 
 export type PaginatedManagerSellerList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerSeller>;
+    results: Array<ManagerSeller>;
 };
 
 export type PaginatedManagerSellerListResponse = {
-    status?: string;
-    data?: PaginatedManagerSellerList;
+    status: string;
+    data: PaginatedManagerSellerList;
 };
 
 export type PaginatedOrderItemList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<OrderItem>;
+    results: Array<OrderItem>;
 };
 
 export type PaginatedOrderItemListResponse = {
-    status?: string;
-    data?: PaginatedOrderItemList;
+    status: string;
+    data: PaginatedOrderItemList;
 };
 
 export type PaginatedOrderList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Order>;
+    results: Array<Order>;
 };
 
 export type PaginatedOrderListResponse = {
-    status?: string;
-    data?: PaginatedOrderList;
+    status: string;
+    data: PaginatedOrderList;
 };
 
 export type PaginatedPaymentList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Payment>;
+    results: Array<Payment>;
 };
 
 export type PaginatedPaymentListResponse = {
-    status?: string;
-    data?: PaginatedPaymentList;
+    status: string;
+    data: PaginatedPaymentList;
 };
 
 export type PaginatedProductImageList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ProductImage>;
+    results: Array<ProductImage>;
 };
 
 export type PaginatedProductImageListResponse = {
-    status?: string;
-    data?: PaginatedProductImageList;
+    status: string;
+    data: PaginatedProductImageList;
 };
 
 export type PaginatedProductList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Product>;
+    results: Array<Product>;
 };
 
 export type PaginatedProductListResponse = {
-    status?: string;
-    data?: PaginatedProductList;
+    status: string;
+    data: PaginatedProductList;
 };
 
 export type PaginatedProductOptionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ProductOption>;
+    results: Array<ProductOption>;
 };
 
 export type PaginatedProductOptionListResponse = {
-    status?: string;
-    data?: PaginatedProductOptionList;
+    status: string;
+    data: PaginatedProductOptionList;
 };
 
 export type PaginatedProductPriceList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ProductPrice>;
+    results: Array<ProductPrice>;
 };
 
 export type PaginatedProductPriceListResponse = {
-    status?: string;
-    data?: PaginatedProductPriceList;
+    status: string;
+    data: PaginatedProductPriceList;
 };
 
 export type PaginatedProductVariantList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ProductVariant>;
+    results: Array<ProductVariant>;
 };
 
 export type PaginatedProductVariantListResponse = {
-    status?: string;
-    data?: PaginatedProductVariantList;
+    status: string;
+    data: PaginatedProductVariantList;
 };
 
 export type PaginatedProductVariantPriceList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ProductVariantPrice>;
+    results: Array<ProductVariantPrice>;
 };
 
 export type PaginatedProductVariantPriceListResponse = {
-    status?: string;
-    data?: PaginatedProductVariantPriceList;
+    status: string;
+    data: PaginatedProductVariantPriceList;
 };
 
 export type PaginatedRedemptionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Redemption>;
+    results: Array<Redemption>;
 };
 
 export type PaginatedRedemptionListResponse = {
-    status?: string;
-    data?: PaginatedRedemptionList;
+    status: string;
+    data: PaginatedRedemptionList;
 };
 
 export type PaginatedRefundList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Refund>;
+    results: Array<Refund>;
 };
 
 export type PaginatedRefundListResponse = {
-    status?: string;
-    data?: PaginatedRefundList;
+    status: string;
+    data: PaginatedRefundList;
 };
 
 export type PaginatedSellerList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Seller>;
+    results: Array<Seller>;
 };
 
 export type PaginatedSellerListResponse = {
-    status?: string;
-    data?: PaginatedSellerList;
+    status: string;
+    data: PaginatedSellerList;
 };
 
 export type PaginatedVoucherActionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<VoucherAction>;
+    results: Array<VoucherAction>;
 };
 
 export type PaginatedVoucherActionListResponse = {
-    status?: string;
-    data?: PaginatedVoucherActionList;
+    status: string;
+    data: PaginatedVoucherActionList;
 };
 
 export type PaginatedVoucherList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Voucher>;
+    results: Array<Voucher>;
 };
 
 export type PaginatedVoucherListResponse = {
-    status?: string;
-    data?: PaginatedVoucherList;
+    status: string;
+    data: PaginatedVoucherList;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminCompany = {
     readonly id?: string;
     manager_groups?: Array<string> | null;
     readonly name?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminCreateCategory = {
     readonly id?: string;
     name?: string;
     parent?: string;
-    image?: string;
+    image?: string | null;
     readonly created?: number;
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminCreateUpdateProduct = {
     readonly id?: string;
     name?: string;
@@ -2002,9 +1531,7 @@ export type PatchedAdminCreateUpdateProduct = {
     instant_buy?: boolean;
     supplier?: string | null;
     countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-    metadata?: {
-        [key: string]: unknown;
-    };
+    metadata?: unknown;
     readonly categories?: Array<Category>;
     integration?: string | null;
     seller?: string | null;
@@ -2016,26 +1543,14 @@ export type PatchedAdminCreateUpdateProduct = {
     enabled?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminGetUpdateProductImage = {
     readonly id?: string;
-    file?: string;
+    file?: string | null;
     weight?: number;
     readonly created?: number;
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminIntegration = {
     readonly id?: string;
     seller?: ShortSeller;
@@ -2046,12 +1561,6 @@ export type PatchedAdminIntegration = {
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminIntegrationWebhook = {
     readonly id?: string;
     url?: string;
@@ -2064,12 +1573,6 @@ export type PatchedAdminIntegrationWebhook = {
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminPayment = {
     readonly id?: string;
     /**
@@ -2088,12 +1591,6 @@ export type PatchedAdminPayment = {
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminRefund = {
     readonly id?: string;
     /**
@@ -2115,12 +1612,6 @@ export type PatchedAdminRefund = {
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminSeller = {
     readonly id?: string;
     name?: string | null;
@@ -2133,19 +1624,11 @@ export type PatchedAdminSeller = {
      * * `verified` - Verified
      */
     status?: 'declined' | 'pending' | 'verified';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     readonly created?: number;
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateOrder = {
     readonly id?: string;
     readonly user?: string;
@@ -2160,25 +1643,15 @@ export type PatchedAdminUpdateOrder = {
     currency?: Currency;
     readonly total_price?: number;
     readonly items?: Array<OrderItem>;
-    shipping_address?: {
-        [key: string]: unknown;
-    } | null;
-    billing_address?: {
-        [key: string]: unknown;
-    } | null;
+    shipping_address?: unknown;
+    billing_address?: unknown;
     contact_mobile?: string | null;
-    contact_email?: string | null;
+    contact_email?: string | string | null;
     readonly placed?: number;
     readonly created?: number;
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateOrderItem = {
     quantity?: number;
     /**
@@ -2190,29 +1663,15 @@ export type PatchedAdminUpdateOrderItem = {
      */
     status?: 'processing' | 'shipped' | 'fulfilled' | 'complete' | 'failed' | '' | null;
     tracking_url?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateProductOption = {
     readonly id?: string;
     name?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateProductPrice = {
     readonly id?: string;
     amount?: number | null;
@@ -2221,30 +1680,16 @@ export type PatchedAdminUpdateProductPrice = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateProductVariant = {
     readonly id?: string;
     voucher_schema?: CreateUpdateVariantVoucherSchema | null;
     code?: string | null;
     label?: string | null;
-    options?: {
-        [key: string]: unknown;
-    };
+    options?: unknown;
     quantity?: number | null;
     tracked?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateProductVariantPrice = {
     readonly id?: string;
     amount?: number | null;
@@ -2253,12 +1698,6 @@ export type PatchedAdminUpdateProductVariantPrice = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateVoucher = {
     readonly id?: string;
     product?: ShortProduct;
@@ -2276,12 +1715,6 @@ export type PatchedAdminUpdateVoucher = {
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerCreateUpdateProduct = {
     readonly id?: string;
     name?: string;
@@ -2295,9 +1728,7 @@ export type PatchedManagerCreateUpdateProduct = {
     instant_buy?: boolean;
     supplier?: string | null;
     countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-    metadata?: {
-        [key: string]: unknown;
-    };
+    metadata?: unknown;
     readonly categories?: Array<Category>;
     integration?: string | null;
     requires_shipping_address?: boolean;
@@ -2307,26 +1738,14 @@ export type PatchedManagerCreateUpdateProduct = {
     enabled?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerGetUpdateProductImage = {
     readonly id?: string;
-    file?: string;
+    file?: string | null;
     weight?: number;
     readonly created?: number;
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerIntegration = {
     readonly id?: string;
     slug?: string;
@@ -2336,12 +1755,6 @@ export type PatchedManagerIntegration = {
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerIntegrationWebhook = {
     readonly id?: string;
     url?: string;
@@ -2354,12 +1767,6 @@ export type PatchedManagerIntegrationWebhook = {
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerPayment = {
     readonly id?: string;
     /**
@@ -2378,12 +1785,6 @@ export type PatchedManagerPayment = {
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerRefund = {
     readonly id?: string;
     /**
@@ -2405,12 +1806,6 @@ export type PatchedManagerRefund = {
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerSeller = {
     readonly id?: string;
     name?: string | null;
@@ -2423,19 +1818,11 @@ export type PatchedManagerSeller = {
      * * `verified` - Verified
      */
     readonly status?: 'declined' | 'pending' | 'verified';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     readonly created?: number;
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerUpdateOrder = {
     readonly id?: string;
     readonly user?: string;
@@ -2450,25 +1837,15 @@ export type PatchedManagerUpdateOrder = {
     currency?: Currency;
     readonly total_price?: number;
     readonly items?: Array<OrderItem>;
-    shipping_address?: {
-        [key: string]: unknown;
-    } | null;
-    billing_address?: {
-        [key: string]: unknown;
-    } | null;
+    shipping_address?: unknown;
+    billing_address?: unknown;
     contact_mobile?: string | null;
-    contact_email?: string | null;
+    contact_email?: string | string | null;
     readonly placed?: number;
     readonly created?: number;
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerUpdateOrderItem = {
     /**
      * * `processing` - processing
@@ -2479,28 +1856,14 @@ export type PatchedManagerUpdateOrderItem = {
      */
     status?: 'processing' | 'shipped' | 'fulfilled' | 'complete' | 'failed' | '' | null;
     tracking_url?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerUpdateProductOption = {
     readonly id?: string;
     name?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerUpdateProductPrice = {
     readonly id?: string;
     amount?: number | null;
@@ -2509,30 +1872,16 @@ export type PatchedManagerUpdateProductPrice = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerUpdateProductVariant = {
     readonly id?: string;
     voucher_schema?: CreateUpdateVariantVoucherSchema | null;
     code?: string | null;
     label?: string | null;
-    options?: {
-        [key: string]: unknown;
-    };
+    options?: unknown;
     quantity?: number | null;
     tracked?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerUpdateProductVariantPrice = {
     readonly id?: string;
     amount?: number | null;
@@ -2541,12 +1890,6 @@ export type PatchedManagerUpdateProductVariantPrice = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerUpdateVoucher = {
     readonly id?: string;
     product?: ShortProduct;
@@ -2564,12 +1907,6 @@ export type PatchedManagerUpdateVoucher = {
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedUserUpdateOrder = {
     readonly id?: string;
     readonly user?: string;
@@ -2584,25 +1921,15 @@ export type PatchedUserUpdateOrder = {
     currency?: Currency;
     readonly total_price?: number;
     readonly items?: Array<OrderItem>;
-    shipping_address?: {
-        [key: string]: unknown;
-    } | null;
-    billing_address?: {
-        [key: string]: unknown;
-    } | null;
+    shipping_address?: unknown;
+    billing_address?: unknown;
     contact_mobile?: string | null;
-    contact_email?: string | null;
+    contact_email?: string | string | null;
     readonly placed?: number;
     readonly created?: number;
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedUserUpdateOrderItem = {
     quantity?: number;
     /**
@@ -2616,12 +1943,6 @@ export type PatchedUserUpdateOrderItem = {
     custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Payment = {
     readonly id: string;
     /**
@@ -2641,16 +1962,10 @@ export type Payment = {
 };
 
 export type PaymentResponse = {
-    status?: string;
-    data?: Payment;
+    status: string;
+    data: Payment;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Product = {
     readonly id: string;
     name: string;
@@ -2667,21 +1982,13 @@ export type Product = {
     instant_buy?: boolean;
     supplier: string | null;
     countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-    readonly metadata: {
-        [key: string]: unknown;
-    };
+    readonly metadata: unknown;
     images: Array<ProductImage>;
     readonly categories: Array<Category>;
     readonly created: number;
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ProductImage = {
     readonly id: string;
     file: string;
@@ -2691,16 +1998,10 @@ export type ProductImage = {
 };
 
 export type ProductImageResponse = {
-    status?: string;
-    data?: ProductImage;
+    status: string;
+    data: ProductImage;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ProductOption = {
     readonly id: string;
     readonly name: string | null;
@@ -2708,16 +2009,10 @@ export type ProductOption = {
 };
 
 export type ProductOptionResponse = {
-    status?: string;
-    data?: ProductOption;
+    status: string;
+    data: ProductOption;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ProductPrice = {
     readonly id: string;
     readonly amount: number;
@@ -2728,21 +2023,15 @@ export type ProductPrice = {
 };
 
 export type ProductPriceResponse = {
-    status?: string;
-    data?: ProductPrice;
+    status: string;
+    data: ProductPrice;
 };
 
 export type ProductResponse = {
-    status?: string;
-    data?: Product;
+    status: string;
+    data: Product;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ProductVariant = {
     readonly id: string;
     voucher_schema: VariantVoucherSchema;
@@ -2756,12 +2045,6 @@ export type ProductVariant = {
     readonly prices: Array<ProductVariantPrice>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ProductVariantPrice = {
     readonly id: string;
     readonly amount: number;
@@ -2772,21 +2055,15 @@ export type ProductVariantPrice = {
 };
 
 export type ProductVariantPriceResponse = {
-    status?: string;
-    data?: ProductVariantPrice;
+    status: string;
+    data: ProductVariantPrice;
 };
 
 export type ProductVariantResponse = {
-    status?: string;
-    data?: ProductVariant;
+    status: string;
+    data: ProductVariant;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Redemption = {
     readonly id: string;
     /**
@@ -2811,16 +2088,10 @@ export type Redemption = {
 };
 
 export type RedemptionResponse = {
-    status?: string;
-    data?: Redemption;
+    status: string;
+    data: Redemption;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Refund = {
     readonly id: string;
     /**
@@ -2843,16 +2114,10 @@ export type Refund = {
 };
 
 export type RefundResponse = {
-    status?: string;
-    data?: Refund;
+    status: string;
+    data: Refund;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Seller = {
     readonly id: string;
     name?: string | null;
@@ -2863,24 +2128,16 @@ export type Seller = {
      * * `verified` - Verified
      */
     readonly status: 'declined' | 'pending' | 'verified';
-    readonly metadata: {
-        [key: string]: unknown;
-    };
+    readonly metadata: unknown;
     readonly created: number;
     readonly updated: number;
 };
 
 export type SellerResponse = {
-    status?: string;
-    data?: Seller;
+    status: string;
+    data: Seller;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ShortOrderItem = {
     readonly id: string;
     readonly name: string;
@@ -2903,12 +2160,6 @@ export type ShortOrderItem = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ShortProduct = {
     readonly id: string;
     readonly name: string;
@@ -2918,24 +2169,12 @@ export type ShortProduct = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ShortSeller = {
     readonly id: string;
     readonly name: string | null;
     readonly description: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ShortVoucher = {
     readonly id: string;
     readonly code: string;
@@ -2951,39 +2190,19 @@ export type ShortVoucher = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCreateOrder = {
     readonly id: string;
     currency: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCreateOrderItem = {
     product: string;
     quantity: number;
     variant?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCreateRedemption = {
     code: string;
     amount?: number | null;
@@ -2993,12 +2212,6 @@ export type UserQueryVoucher = {
     code: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserUpdateOrder = {
     readonly id: string;
     readonly user: string;
@@ -3013,25 +2226,15 @@ export type UserUpdateOrder = {
     currency: Currency;
     readonly total_price: number;
     readonly items: Array<OrderItem>;
-    shipping_address?: {
-        [key: string]: unknown;
-    } | null;
-    billing_address?: {
-        [key: string]: unknown;
-    } | null;
+    shipping_address?: unknown;
+    billing_address?: unknown;
     contact_mobile?: string | null;
-    contact_email?: string | null;
+    contact_email?: string | string | null;
     readonly placed: number;
     readonly created: number;
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserUpdateOrderItem = {
     quantity: number;
     /**
@@ -3045,23 +2248,11 @@ export type UserUpdateOrderItem = {
     custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type VariantVoucherSchema = {
     readonly amount: number;
     currency: Currency;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Voucher = {
     readonly id: string;
     product: ShortProduct;
@@ -3084,12 +2275,6 @@ export type Voucher = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type VoucherAction = {
     readonly id: string;
     /**
@@ -3112,16 +2297,10 @@ export type VoucherAction = {
 };
 
 export type VoucherActionResponse = {
-    status?: string;
-    data?: VoucherAction;
+    status: string;
+    data: VoucherAction;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type VoucherImport = {
     readonly id: string;
     product: ShortProduct;
@@ -3138,21 +2317,15 @@ export type VoucherImport = {
 };
 
 export type VoucherImportResponse = {
-    status?: string;
-    data?: VoucherImport;
+    status: string;
+    data: VoucherImport;
 };
 
 export type VoucherResponse = {
-    status?: string;
-    data?: Voucher;
+    status: string;
+    data: Voucher;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type VoucherSchema = {
     /**
      * * `static` - static
@@ -3198,55 +2371,29 @@ export type Webhook = {
      */
     event: 'currency.create' | 'currency.update' | 'transaction.execute';
     company: string;
-    data: {
-        [key: string]: unknown;
-    };
+    data: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCompanyWritable = {
     manager_groups?: Array<string> | null;
 };
 
 export type AdminCompanyResponseWritable = {
-    status?: string;
-    data?: AdminCompanyWritable;
+    status: string;
+    data: AdminCompanyWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateCategoryWritable = {
     name: string;
     parent?: string;
-    image?: string;
+    image?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateOrderWritable = {
     user: string;
     currency: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreatePaymentWritable = {
     /**
      * * `rehive` - rehive
@@ -3254,23 +2401,11 @@ export type AdminCreatePaymentWritable = {
     type?: 'rehive';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateProductOptionWritable = {
     name?: string | null;
     values: Array<string>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateProductPriceWritable = {
     amount?: number | null;
     currency: string;
@@ -3279,29 +2414,15 @@ export type AdminCreateProductPriceWritable = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateProductVariantWritable = {
     voucher_schema?: CreateUpdateVariantVoucherSchema | null;
     code?: string | null;
     label?: string | null;
-    options: {
-        [key: string]: unknown;
-    };
+    options: unknown;
     quantity: number | null;
     tracked?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateProductVariantPriceWritable = {
     currency: string;
     amount?: number | null;
@@ -3310,12 +2431,6 @@ export type AdminCreateProductVariantPriceWritable = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateRefundWritable = {
     /**
      * * `rehive` - rehive
@@ -3326,12 +2441,6 @@ export type AdminCreateRefundWritable = {
     reason?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateUpdateProductWritable = {
     name: string;
     description?: string | null;
@@ -3343,9 +2452,7 @@ export type AdminCreateUpdateProductWritable = {
     instant_buy?: boolean;
     supplier?: string | null;
     countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-    metadata?: {
-        [key: string]: unknown;
-    };
+    metadata?: unknown;
     integration?: string | null;
     seller?: string | null;
     account?: string | null;
@@ -3356,12 +2463,6 @@ export type AdminCreateUpdateProductWritable = {
     enabled?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateVoucherWritable = {
     product?: string;
     variant?: string;
@@ -3371,12 +2472,6 @@ export type AdminCreateVoucherWritable = {
     expires?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateVoucherImportWritable = {
     product?: string;
     variant?: string;
@@ -3384,29 +2479,20 @@ export type AdminCreateVoucherImportWritable = {
 };
 
 export type AdminCreateVoucherImportResponseWritable = {
-    status?: string;
-    data?: AdminCreateVoucherImportWritable;
+    status: string;
+    data: AdminCreateVoucherImportWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminGetUpdateProductImageWritable = {
-    file?: string;
+    file?: string | null;
     weight?: number;
 };
 
 export type AdminGetUpdateProductImageResponseWritable = {
-    status?: string;
-    data?: AdminGetUpdateProductImageWritable;
+    status: string;
+    data: AdminGetUpdateProductImageWritable;
 };
 
-/**
- * DEPRECATED : Replaced by the AdminCreateVoucherImportSerializer serializer.
- */
 export type AdminImportVoucherWritable = {
     product?: string;
     variant?: string;
@@ -3414,16 +2500,10 @@ export type AdminImportVoucherWritable = {
 };
 
 export type AdminImportVoucherResponseWritable = {
-    status?: string;
-    data?: AdminImportVoucherWritable;
+    status: string;
+    data: AdminImportVoucherWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminIntegrationWritable = {
     slug: string;
     name: string;
@@ -3431,16 +2511,10 @@ export type AdminIntegrationWritable = {
 };
 
 export type AdminIntegrationResponseWritable = {
-    status?: string;
-    data?: AdminIntegrationWritable;
+    status: string;
+    data: AdminIntegrationWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminIntegrationWebhookWritable = {
     url: string;
     /**
@@ -3451,32 +2525,20 @@ export type AdminIntegrationWebhookWritable = {
 };
 
 export type AdminIntegrationWebhookResponseWritable = {
-    status?: string;
-    data?: AdminIntegrationWebhookWritable;
+    status: string;
+    data: AdminIntegrationWebhookWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminListCreateProductImageWritable = {
     file: string;
     weight?: number;
 };
 
 export type AdminListCreateProductImageResponseWritable = {
-    status?: string;
-    data?: AdminListCreateProductImageWritable;
+    status: string;
+    data: AdminListCreateProductImageWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminPaymentWritable = {
     /**
      * * `pending` - pending
@@ -3487,16 +2549,10 @@ export type AdminPaymentWritable = {
 };
 
 export type AdminPaymentResponseWritable = {
-    status?: string;
-    data?: AdminPaymentWritable;
+    status: string;
+    data: AdminPaymentWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminProductWritable = {
     name: string;
     description: string | null;
@@ -3519,16 +2575,10 @@ export type AdminProductWritable = {
 };
 
 export type AdminProductResponseWritable = {
-    status?: string;
-    data?: AdminProductWritable;
+    status: string;
+    data: AdminProductWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminRefundWritable = {
     /**
      * * `pending` - pending
@@ -3539,16 +2589,10 @@ export type AdminRefundWritable = {
 };
 
 export type AdminRefundResponseWritable = {
-    status?: string;
-    data?: AdminRefundWritable;
+    status: string;
+    data: AdminRefundWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminSellerWritable = {
     name?: string | null;
     description?: string | null;
@@ -3559,22 +2603,14 @@ export type AdminSellerWritable = {
      * * `verified` - Verified
      */
     status: 'declined' | 'pending' | 'verified';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
 };
 
 export type AdminSellerResponseWritable = {
-    status?: string;
-    data?: AdminSellerWritable;
+    status: string;
+    data: AdminSellerWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateOrderWritable = {
     /**
      * * `pending` - pending
@@ -3584,33 +2620,17 @@ export type AdminUpdateOrderWritable = {
      * * `failed` - failed
      */
     status: 'pending' | 'reserved' | 'placed' | 'complete' | 'failed';
-    shipping_address?: {
-        [key: string]: unknown;
-    } | null;
-    billing_address?: {
-        [key: string]: unknown;
-    } | null;
+    shipping_address?: unknown;
+    billing_address?: unknown;
     contact_mobile?: string | null;
-    contact_email?: string | null;
+    contact_email?: string | string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateProductOptionWritable = {
     name?: string | null;
     values?: Array<string>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateProductPriceWritable = {
     amount?: number | null;
     allow_custom_amount?: boolean;
@@ -3618,29 +2638,15 @@ export type AdminUpdateProductPriceWritable = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateProductVariantWritable = {
     voucher_schema?: CreateUpdateVariantVoucherSchema | null;
     code?: string | null;
     label?: string | null;
-    options: {
-        [key: string]: unknown;
-    };
+    options: unknown;
     quantity: number | null;
     tracked?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateProductVariantPriceWritable = {
     amount?: number | null;
     allow_custom_amount?: boolean;
@@ -3648,12 +2654,6 @@ export type AdminUpdateProductVariantPriceWritable = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateVoucherWritable = {
     /**
      * * `available` - available
@@ -3665,31 +2665,19 @@ export type AdminUpdateVoucherWritable = {
     status: 'available' | 'reserved' | 'purchased' | 'redeemed' | 'partially_redeemed';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CategoryWritable = {
     [key: string]: unknown;
 };
 
 export type CategoryResponseWritable = {
-    status?: string;
-    data?: CategoryWritable;
+    status: string;
+    data: CategoryWritable;
 };
 
 export type CompanyResponseWritable = {
-    status?: string;
+    status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreatePaymentWritable = {
     /**
      * * `rehive` - rehive
@@ -3697,21 +2685,11 @@ export type CreatePaymentWritable = {
     type?: 'rehive';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ExtendedOrderWritable = {
-    shipping_address?: {
-        [key: string]: unknown;
-    } | null;
-    billing_address?: {
-        [key: string]: unknown;
-    } | null;
+    shipping_address?: unknown;
+    billing_address?: unknown;
     contact_mobile?: string | null;
-    contact_email?: string | null;
+    contact_email?: string | string | null;
     requires_shipping_address?: boolean;
     requires_billing_address?: boolean;
     requires_contact_mobile?: boolean;
@@ -3719,27 +2697,15 @@ export type ExtendedOrderWritable = {
 };
 
 export type ExtendedOrderResponseWritable = {
-    status?: string;
-    data?: ExtendedOrderWritable;
+    status: string;
+    data: ExtendedOrderWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateProductOptionWritable = {
     name?: string | null;
     values: Array<string>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateProductPriceWritable = {
     amount?: number | null;
     currency: string;
@@ -3748,29 +2714,15 @@ export type ManagerCreateProductPriceWritable = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateProductVariantWritable = {
     voucher_schema?: CreateUpdateVariantVoucherSchema | null;
     code?: string | null;
     label?: string | null;
-    options: {
-        [key: string]: unknown;
-    };
+    options: unknown;
     quantity: number | null;
     tracked?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateProductVariantPriceWritable = {
     currency: string;
     amount?: number | null;
@@ -3779,12 +2731,6 @@ export type ManagerCreateProductVariantPriceWritable = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateRefundWritable = {
     /**
      * * `rehive` - rehive
@@ -3795,33 +2741,19 @@ export type ManagerCreateRefundWritable = {
     reason?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateSellerWritable = {
     id: string;
     name?: string | null;
     description?: string | null;
     account: string;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
 };
 
 export type ManagerCreateSellerResponseWritable = {
-    status?: string;
-    data?: ManagerCreateSellerWritable;
+    status: string;
+    data: ManagerCreateSellerWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateUpdateProductWritable = {
     name: string;
     description?: string | null;
@@ -3833,9 +2765,7 @@ export type ManagerCreateUpdateProductWritable = {
     instant_buy?: boolean;
     supplier?: string | null;
     countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-    metadata?: {
-        [key: string]: unknown;
-    };
+    metadata?: unknown;
     integration?: string | null;
     requires_shipping_address?: boolean;
     requires_billing_address?: boolean;
@@ -3844,12 +2774,6 @@ export type ManagerCreateUpdateProductWritable = {
     enabled?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateVoucherWritable = {
     product?: string;
     item?: string;
@@ -3858,12 +2782,6 @@ export type ManagerCreateVoucherWritable = {
     expires?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateVoucherImportWritable = {
     product?: string;
     variant?: string;
@@ -3871,29 +2789,20 @@ export type ManagerCreateVoucherImportWritable = {
 };
 
 export type ManagerCreateVoucherImportResponseWritable = {
-    status?: string;
-    data?: ManagerCreateVoucherImportWritable;
+    status: string;
+    data: ManagerCreateVoucherImportWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerGetUpdateProductImageWritable = {
-    file?: string;
+    file?: string | null;
     weight?: number;
 };
 
 export type ManagerGetUpdateProductImageResponseWritable = {
-    status?: string;
-    data?: ManagerGetUpdateProductImageWritable;
+    status: string;
+    data: ManagerGetUpdateProductImageWritable;
 };
 
-/**
- * DEPRECATED : Replaced by the ManagerCreateVoucherImportSerializer serializer.
- */
 export type ManagerImportVoucherWritable = {
     product?: string;
     variant?: string;
@@ -3901,16 +2810,10 @@ export type ManagerImportVoucherWritable = {
 };
 
 export type ManagerImportVoucherResponseWritable = {
-    status?: string;
-    data?: ManagerImportVoucherWritable;
+    status: string;
+    data: ManagerImportVoucherWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerIntegrationWritable = {
     slug: string;
     name: string;
@@ -3918,16 +2821,10 @@ export type ManagerIntegrationWritable = {
 };
 
 export type ManagerIntegrationResponseWritable = {
-    status?: string;
-    data?: ManagerIntegrationWritable;
+    status: string;
+    data: ManagerIntegrationWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerIntegrationWebhookWritable = {
     url: string;
     /**
@@ -3938,32 +2835,20 @@ export type ManagerIntegrationWebhookWritable = {
 };
 
 export type ManagerIntegrationWebhookResponseWritable = {
-    status?: string;
-    data?: ManagerIntegrationWebhookWritable;
+    status: string;
+    data: ManagerIntegrationWebhookWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerListCreateProductImageWritable = {
     file: string;
     weight?: number;
 };
 
 export type ManagerListCreateProductImageResponseWritable = {
-    status?: string;
-    data?: ManagerListCreateProductImageWritable;
+    status: string;
+    data: ManagerListCreateProductImageWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerPaymentWritable = {
     /**
      * * `pending` - pending
@@ -3974,16 +2859,10 @@ export type ManagerPaymentWritable = {
 };
 
 export type ManagerPaymentResponseWritable = {
-    status?: string;
-    data?: ManagerPaymentWritable;
+    status: string;
+    data: ManagerPaymentWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerProductWritable = {
     name: string;
     description: string | null;
@@ -4007,16 +2886,10 @@ export type ManagerProductWritable = {
 };
 
 export type ManagerProductResponseWritable = {
-    status?: string;
-    data?: ManagerProductWritable;
+    status: string;
+    data: ManagerProductWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerRefundWritable = {
     /**
      * * `pending` - pending
@@ -4027,36 +2900,22 @@ export type ManagerRefundWritable = {
 };
 
 export type ManagerRefundResponseWritable = {
-    status?: string;
-    data?: ManagerRefundWritable;
+    status: string;
+    data: ManagerRefundWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerSellerWritable = {
     name?: string | null;
     description?: string | null;
     account: string;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
 };
 
 export type ManagerSellerResponseWritable = {
-    status?: string;
-    data?: ManagerSellerWritable;
+    status: string;
+    data: ManagerSellerWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerUpdateOrderWritable = {
     /**
      * * `pending` - pending
@@ -4066,33 +2925,17 @@ export type ManagerUpdateOrderWritable = {
      * * `failed` - failed
      */
     status: 'pending' | 'reserved' | 'placed' | 'complete' | 'failed';
-    shipping_address?: {
-        [key: string]: unknown;
-    } | null;
-    billing_address?: {
-        [key: string]: unknown;
-    } | null;
+    shipping_address?: unknown;
+    billing_address?: unknown;
     contact_mobile?: string | null;
-    contact_email?: string | null;
+    contact_email?: string | string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerUpdateProductOptionWritable = {
     name?: string | null;
     values?: Array<string>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerUpdateProductPriceWritable = {
     amount?: number | null;
     allow_custom_amount?: boolean;
@@ -4100,29 +2943,15 @@ export type ManagerUpdateProductPriceWritable = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerUpdateProductVariantWritable = {
     voucher_schema?: CreateUpdateVariantVoucherSchema | null;
     code?: string | null;
     label?: string | null;
-    options: {
-        [key: string]: unknown;
-    };
+    options: unknown;
     quantity: number | null;
     tracked?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerUpdateProductVariantPriceWritable = {
     amount?: number | null;
     allow_custom_amount?: boolean;
@@ -4130,12 +2959,6 @@ export type ManagerUpdateProductVariantPriceWritable = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerUpdateVoucherWritable = {
     /**
      * * `available` - available
@@ -4147,27 +2970,13 @@ export type ManagerUpdateVoucherWritable = {
     status: 'available' | 'reserved' | 'purchased' | 'redeemed' | 'partially_redeemed';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type OrderWritable = {
     [key: string]: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type OrderItemWritable = {
     product?: string;
-    variant: {
-        [key: string]: unknown;
-    };
+    variant: unknown;
     /**
      * * `processing` - processing
      * * `shipped` - shipped
@@ -4180,415 +2989,397 @@ export type OrderItemWritable = {
 };
 
 export type OrderItemResponseWritable = {
-    status?: string;
-    data?: OrderItemWritable;
+    status: string;
+    data: OrderItemWritable;
 };
 
 export type OrderResponseWritable = {
-    status?: string;
-    data?: OrderWritable;
+    status: string;
+    data: OrderWritable;
 };
 
 export type PaginatedAdminCreateVoucherImportListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCreateVoucherImportWritable>;
+    results: Array<AdminCreateVoucherImportWritable>;
 };
 
 export type PaginatedAdminCreateVoucherImportListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminCreateVoucherImportListWritable;
+    status: string;
+    data: PaginatedAdminCreateVoucherImportListWritable;
 };
 
 export type PaginatedAdminIntegrationListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminIntegrationWritable>;
+    results: Array<AdminIntegrationWritable>;
 };
 
 export type PaginatedAdminIntegrationListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminIntegrationListWritable;
+    status: string;
+    data: PaginatedAdminIntegrationListWritable;
 };
 
 export type PaginatedAdminIntegrationWebhookListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminIntegrationWebhookWritable>;
+    results: Array<AdminIntegrationWebhookWritable>;
 };
 
 export type PaginatedAdminIntegrationWebhookListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminIntegrationWebhookListWritable;
+    status: string;
+    data: PaginatedAdminIntegrationWebhookListWritable;
 };
 
 export type PaginatedAdminListCreateProductImageListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminListCreateProductImageWritable>;
+    results: Array<AdminListCreateProductImageWritable>;
 };
 
 export type PaginatedAdminListCreateProductImageListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminListCreateProductImageListWritable;
+    status: string;
+    data: PaginatedAdminListCreateProductImageListWritable;
 };
 
 export type PaginatedAdminPaymentListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminPaymentWritable>;
+    results: Array<AdminPaymentWritable>;
 };
 
 export type PaginatedAdminPaymentListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminPaymentListWritable;
+    status: string;
+    data: PaginatedAdminPaymentListWritable;
 };
 
 export type PaginatedAdminProductListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminProductWritable>;
+    results: Array<AdminProductWritable>;
 };
 
 export type PaginatedAdminProductListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminProductListWritable;
+    status: string;
+    data: PaginatedAdminProductListWritable;
 };
 
 export type PaginatedAdminRefundListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminRefundWritable>;
+    results: Array<AdminRefundWritable>;
 };
 
 export type PaginatedAdminRefundListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminRefundListWritable;
+    status: string;
+    data: PaginatedAdminRefundListWritable;
 };
 
 export type PaginatedAdminSellerListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminSellerWritable>;
+    results: Array<AdminSellerWritable>;
 };
 
 export type PaginatedAdminSellerListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminSellerListWritable;
+    status: string;
+    data: PaginatedAdminSellerListWritable;
 };
 
 export type PaginatedCategoryListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<CategoryWritable>;
+    results: Array<CategoryWritable>;
 };
 
 export type PaginatedCategoryListResponseWritable = {
-    status?: string;
-    data?: PaginatedCategoryListWritable;
+    status: string;
+    data: PaginatedCategoryListWritable;
 };
 
 export type PaginatedManagerCreateVoucherImportListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerCreateVoucherImportWritable>;
+    results: Array<ManagerCreateVoucherImportWritable>;
 };
 
 export type PaginatedManagerCreateVoucherImportListResponseWritable = {
-    status?: string;
-    data?: PaginatedManagerCreateVoucherImportListWritable;
+    status: string;
+    data: PaginatedManagerCreateVoucherImportListWritable;
 };
 
 export type PaginatedManagerIntegrationListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerIntegrationWritable>;
+    results: Array<ManagerIntegrationWritable>;
 };
 
 export type PaginatedManagerIntegrationListResponseWritable = {
-    status?: string;
-    data?: PaginatedManagerIntegrationListWritable;
+    status: string;
+    data: PaginatedManagerIntegrationListWritable;
 };
 
 export type PaginatedManagerIntegrationWebhookListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerIntegrationWebhookWritable>;
+    results: Array<ManagerIntegrationWebhookWritable>;
 };
 
 export type PaginatedManagerIntegrationWebhookListResponseWritable = {
-    status?: string;
-    data?: PaginatedManagerIntegrationWebhookListWritable;
+    status: string;
+    data: PaginatedManagerIntegrationWebhookListWritable;
 };
 
 export type PaginatedManagerListCreateProductImageListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerListCreateProductImageWritable>;
+    results: Array<ManagerListCreateProductImageWritable>;
 };
 
 export type PaginatedManagerListCreateProductImageListResponseWritable = {
-    status?: string;
-    data?: PaginatedManagerListCreateProductImageListWritable;
+    status: string;
+    data: PaginatedManagerListCreateProductImageListWritable;
 };
 
 export type PaginatedManagerPaymentListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerPaymentWritable>;
+    results: Array<ManagerPaymentWritable>;
 };
 
 export type PaginatedManagerPaymentListResponseWritable = {
-    status?: string;
-    data?: PaginatedManagerPaymentListWritable;
+    status: string;
+    data: PaginatedManagerPaymentListWritable;
 };
 
 export type PaginatedManagerProductListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerProductWritable>;
+    results: Array<ManagerProductWritable>;
 };
 
 export type PaginatedManagerProductListResponseWritable = {
-    status?: string;
-    data?: PaginatedManagerProductListWritable;
+    status: string;
+    data: PaginatedManagerProductListWritable;
 };
 
 export type PaginatedManagerRefundListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerRefundWritable>;
+    results: Array<ManagerRefundWritable>;
 };
 
 export type PaginatedManagerRefundListResponseWritable = {
-    status?: string;
-    data?: PaginatedManagerRefundListWritable;
+    status: string;
+    data: PaginatedManagerRefundListWritable;
 };
 
 export type PaginatedManagerSellerListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerSellerWritable>;
+    results: Array<ManagerSellerWritable>;
 };
 
 export type PaginatedManagerSellerListResponseWritable = {
-    status?: string;
-    data?: PaginatedManagerSellerListWritable;
+    status: string;
+    data: PaginatedManagerSellerListWritable;
 };
 
 export type PaginatedOrderItemListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<OrderItemWritable>;
+    results: Array<OrderItemWritable>;
 };
 
 export type PaginatedOrderItemListResponseWritable = {
-    status?: string;
-    data?: PaginatedOrderItemListWritable;
+    status: string;
+    data: PaginatedOrderItemListWritable;
 };
 
 export type PaginatedOrderListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<OrderWritable>;
+    results: Array<OrderWritable>;
 };
 
 export type PaginatedOrderListResponseWritable = {
-    status?: string;
-    data?: PaginatedOrderListWritable;
+    status: string;
+    data: PaginatedOrderListWritable;
 };
 
 export type PaginatedPaymentListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedPaymentListResponseWritable = {
-    status?: string;
-    data?: PaginatedPaymentListWritable;
+    status: string;
+    data: PaginatedPaymentListWritable;
 };
 
 export type PaginatedProductImageListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ProductImageWritable>;
+    results: Array<ProductImageWritable>;
 };
 
 export type PaginatedProductImageListResponseWritable = {
-    status?: string;
-    data?: PaginatedProductImageListWritable;
+    status: string;
+    data: PaginatedProductImageListWritable;
 };
 
 export type PaginatedProductListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ProductWritable>;
+    results: Array<ProductWritable>;
 };
 
 export type PaginatedProductListResponseWritable = {
-    status?: string;
-    data?: PaginatedProductListWritable;
+    status: string;
+    data: PaginatedProductListWritable;
 };
 
 export type PaginatedProductOptionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedProductOptionListResponseWritable = {
-    status?: string;
-    data?: PaginatedProductOptionListWritable;
+    status: string;
+    data: PaginatedProductOptionListWritable;
 };
 
 export type PaginatedProductPriceListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ProductPriceWritable>;
+    results: Array<ProductPriceWritable>;
 };
 
 export type PaginatedProductPriceListResponseWritable = {
-    status?: string;
-    data?: PaginatedProductPriceListWritable;
+    status: string;
+    data: PaginatedProductPriceListWritable;
 };
 
 export type PaginatedProductVariantListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ProductVariantWritable>;
+    results: Array<ProductVariantWritable>;
 };
 
 export type PaginatedProductVariantListResponseWritable = {
-    status?: string;
-    data?: PaginatedProductVariantListWritable;
+    status: string;
+    data: PaginatedProductVariantListWritable;
 };
 
 export type PaginatedProductVariantPriceListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ProductVariantPriceWritable>;
+    results: Array<ProductVariantPriceWritable>;
 };
 
 export type PaginatedProductVariantPriceListResponseWritable = {
-    status?: string;
-    data?: PaginatedProductVariantPriceListWritable;
+    status: string;
+    data: PaginatedProductVariantPriceListWritable;
 };
 
 export type PaginatedRedemptionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedRedemptionListResponseWritable = {
-    status?: string;
-    data?: PaginatedRedemptionListWritable;
+    status: string;
+    data: PaginatedRedemptionListWritable;
 };
 
 export type PaginatedRefundListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedRefundListResponseWritable = {
-    status?: string;
-    data?: PaginatedRefundListWritable;
+    status: string;
+    data: PaginatedRefundListWritable;
 };
 
 export type PaginatedSellerListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<SellerWritable>;
+    results: Array<SellerWritable>;
 };
 
 export type PaginatedSellerListResponseWritable = {
-    status?: string;
-    data?: PaginatedSellerListWritable;
+    status: string;
+    data: PaginatedSellerListWritable;
 };
 
 export type PaginatedVoucherActionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedVoucherActionListResponseWritable = {
-    status?: string;
-    data?: PaginatedVoucherActionListWritable;
+    status: string;
+    data: PaginatedVoucherActionListWritable;
 };
 
 export type PaginatedVoucherListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<VoucherWritable>;
+    results: Array<VoucherWritable>;
 };
 
 export type PaginatedVoucherListResponseWritable = {
-    status?: string;
-    data?: PaginatedVoucherListWritable;
+    status: string;
+    data: PaginatedVoucherListWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminCompanyWritable = {
     manager_groups?: Array<string> | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminCreateCategoryWritable = {
     name?: string;
     parent?: string;
-    image?: string;
+    image?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminCreateUpdateProductWritable = {
     name?: string;
     description?: string | null;
@@ -4600,9 +3391,7 @@ export type PatchedAdminCreateUpdateProductWritable = {
     instant_buy?: boolean;
     supplier?: string | null;
     countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-    metadata?: {
-        [key: string]: unknown;
-    };
+    metadata?: unknown;
     integration?: string | null;
     seller?: string | null;
     account?: string | null;
@@ -4613,35 +3402,17 @@ export type PatchedAdminCreateUpdateProductWritable = {
     enabled?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminGetUpdateProductImageWritable = {
-    file?: string;
+    file?: string | null;
     weight?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminIntegrationWritable = {
     slug?: string;
     name?: string;
     description?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminIntegrationWebhookWritable = {
     url?: string;
     /**
@@ -4651,12 +3422,6 @@ export type PatchedAdminIntegrationWebhookWritable = {
     secret?: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminPaymentWritable = {
     /**
      * * `pending` - pending
@@ -4666,12 +3431,6 @@ export type PatchedAdminPaymentWritable = {
     status?: 'pending' | 'complete' | 'failed';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminRefundWritable = {
     /**
      * * `pending` - pending
@@ -4681,12 +3440,6 @@ export type PatchedAdminRefundWritable = {
     status?: 'pending' | 'complete' | 'failed';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminSellerWritable = {
     name?: string | null;
     description?: string | null;
@@ -4697,17 +3450,9 @@ export type PatchedAdminSellerWritable = {
      * * `verified` - Verified
      */
     status?: 'declined' | 'pending' | 'verified';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateOrderWritable = {
     /**
      * * `pending` - pending
@@ -4717,33 +3462,17 @@ export type PatchedAdminUpdateOrderWritable = {
      * * `failed` - failed
      */
     status?: 'pending' | 'reserved' | 'placed' | 'complete' | 'failed';
-    shipping_address?: {
-        [key: string]: unknown;
-    } | null;
-    billing_address?: {
-        [key: string]: unknown;
-    } | null;
+    shipping_address?: unknown;
+    billing_address?: unknown;
     contact_mobile?: string | null;
-    contact_email?: string | null;
+    contact_email?: string | string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateProductOptionWritable = {
     name?: string | null;
     values?: Array<string>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateProductPriceWritable = {
     amount?: number | null;
     allow_custom_amount?: boolean;
@@ -4751,29 +3480,15 @@ export type PatchedAdminUpdateProductPriceWritable = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateProductVariantWritable = {
     voucher_schema?: CreateUpdateVariantVoucherSchema | null;
     code?: string | null;
     label?: string | null;
-    options?: {
-        [key: string]: unknown;
-    };
+    options?: unknown;
     quantity?: number | null;
     tracked?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateProductVariantPriceWritable = {
     amount?: number | null;
     allow_custom_amount?: boolean;
@@ -4781,12 +3496,6 @@ export type PatchedAdminUpdateProductVariantPriceWritable = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateVoucherWritable = {
     /**
      * * `available` - available
@@ -4798,12 +3507,6 @@ export type PatchedAdminUpdateVoucherWritable = {
     status?: 'available' | 'reserved' | 'purchased' | 'redeemed' | 'partially_redeemed';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerCreateUpdateProductWritable = {
     name?: string;
     description?: string | null;
@@ -4815,9 +3518,7 @@ export type PatchedManagerCreateUpdateProductWritable = {
     instant_buy?: boolean;
     supplier?: string | null;
     countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-    metadata?: {
-        [key: string]: unknown;
-    };
+    metadata?: unknown;
     integration?: string | null;
     requires_shipping_address?: boolean;
     requires_billing_address?: boolean;
@@ -4826,35 +3527,17 @@ export type PatchedManagerCreateUpdateProductWritable = {
     enabled?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerGetUpdateProductImageWritable = {
-    file?: string;
+    file?: string | null;
     weight?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerIntegrationWritable = {
     slug?: string;
     name?: string;
     description?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerIntegrationWebhookWritable = {
     url?: string;
     /**
@@ -4864,12 +3547,6 @@ export type PatchedManagerIntegrationWebhookWritable = {
     secret?: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerPaymentWritable = {
     /**
      * * `pending` - pending
@@ -4879,12 +3556,6 @@ export type PatchedManagerPaymentWritable = {
     status?: 'pending' | 'complete' | 'failed';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerRefundWritable = {
     /**
      * * `pending` - pending
@@ -4894,27 +3565,13 @@ export type PatchedManagerRefundWritable = {
     status?: 'pending' | 'complete' | 'failed';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerSellerWritable = {
     name?: string | null;
     description?: string | null;
     account?: string;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerUpdateOrderWritable = {
     /**
      * * `pending` - pending
@@ -4924,33 +3581,17 @@ export type PatchedManagerUpdateOrderWritable = {
      * * `failed` - failed
      */
     status?: 'pending' | 'reserved' | 'placed' | 'complete' | 'failed';
-    shipping_address?: {
-        [key: string]: unknown;
-    } | null;
-    billing_address?: {
-        [key: string]: unknown;
-    } | null;
+    shipping_address?: unknown;
+    billing_address?: unknown;
     contact_mobile?: string | null;
-    contact_email?: string | null;
+    contact_email?: string | string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerUpdateProductOptionWritable = {
     name?: string | null;
     values?: Array<string>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerUpdateProductPriceWritable = {
     amount?: number | null;
     allow_custom_amount?: boolean;
@@ -4958,29 +3599,15 @@ export type PatchedManagerUpdateProductPriceWritable = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerUpdateProductVariantWritable = {
     voucher_schema?: CreateUpdateVariantVoucherSchema | null;
     code?: string | null;
     label?: string | null;
-    options?: {
-        [key: string]: unknown;
-    };
+    options?: unknown;
     quantity?: number | null;
     tracked?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerUpdateProductVariantPriceWritable = {
     amount?: number | null;
     allow_custom_amount?: boolean;
@@ -4988,12 +3615,6 @@ export type PatchedManagerUpdateProductVariantPriceWritable = {
     max_custom_amount?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerUpdateVoucherWritable = {
     /**
      * * `available` - available
@@ -5005,33 +3626,17 @@ export type PatchedManagerUpdateVoucherWritable = {
     status?: 'available' | 'reserved' | 'purchased' | 'redeemed' | 'partially_redeemed';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedUserUpdateOrderWritable = {
-    shipping_address?: {
-        [key: string]: unknown;
-    } | null;
-    billing_address?: {
-        [key: string]: unknown;
-    } | null;
+    shipping_address?: unknown;
+    billing_address?: unknown;
     contact_mobile?: string | null;
-    contact_email?: string | null;
+    contact_email?: string | string | null;
 };
 
 export type PaymentResponseWritable = {
-    status?: string;
+    status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ProductWritable = {
     name: string;
     description: string | null;
@@ -5048,106 +3653,70 @@ export type ProductWritable = {
     images: Array<ProductImageWritable>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ProductImageWritable = {
     file: string;
     weight: number;
 };
 
 export type ProductImageResponseWritable = {
-    status?: string;
-    data?: ProductImageWritable;
+    status: string;
+    data: ProductImageWritable;
 };
 
 export type ProductOptionResponseWritable = {
-    status?: string;
+    status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ProductPriceWritable = {
     [key: string]: unknown;
 };
 
 export type ProductPriceResponseWritable = {
-    status?: string;
-    data?: ProductPriceWritable;
+    status: string;
+    data: ProductPriceWritable;
 };
 
 export type ProductResponseWritable = {
-    status?: string;
-    data?: ProductWritable;
+    status: string;
+    data: ProductWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ProductVariantWritable = {
     quantity: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ProductVariantPriceWritable = {
     [key: string]: unknown;
 };
 
 export type ProductVariantPriceResponseWritable = {
-    status?: string;
-    data?: ProductVariantPriceWritable;
+    status: string;
+    data: ProductVariantPriceWritable;
 };
 
 export type ProductVariantResponseWritable = {
-    status?: string;
-    data?: ProductVariantWritable;
+    status: string;
+    data: ProductVariantWritable;
 };
 
 export type RedemptionResponseWritable = {
-    status?: string;
+    status: string;
 };
 
 export type RefundResponseWritable = {
-    status?: string;
+    status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type SellerWritable = {
     name?: string | null;
     description?: string | null;
 };
 
 export type SellerResponseWritable = {
-    status?: string;
-    data?: SellerWritable;
+    status: string;
+    data: SellerWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ShortOrderItemWritable = {
     /**
      * * `processing` - processing
@@ -5159,93 +3728,47 @@ export type ShortOrderItemWritable = {
     status?: 'processing' | 'shipped' | 'fulfilled' | 'complete' | 'failed' | '' | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ShortProductWritable = {
     [key: string]: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCreateOrderWritable = {
     currency: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserUpdateOrderWritable = {
-    shipping_address?: {
-        [key: string]: unknown;
-    } | null;
-    billing_address?: {
-        [key: string]: unknown;
-    } | null;
+    shipping_address?: unknown;
+    billing_address?: unknown;
     contact_mobile?: string | null;
-    contact_email?: string | null;
+    contact_email?: string | string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type VariantVoucherSchemaWritable = {
     [key: string]: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type VoucherWritable = {
     [key: string]: unknown;
 };
 
 export type VoucherActionResponseWritable = {
-    status?: string;
+    status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type VoucherImportWritable = {
     file: string;
 };
 
 export type VoucherImportResponseWritable = {
-    status?: string;
-    data?: VoucherImportWritable;
+    status: string;
+    data: VoucherImportWritable;
 };
 
 export type VoucherResponseWritable = {
-    status?: string;
-    data?: VoucherWritable;
+    status: string;
+    data: VoucherWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type VoucherSchemaWritable = {
     /**
      * * `static` - static
@@ -5283,9 +3806,6 @@ export type AdminCategoriesListData = {
     body?: never;
     path?: never;
     query?: {
-        id?: string;
-        name?: string;
-        name__contains?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -5294,8 +3814,6 @@ export type AdminCategoriesListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        parent?: string;
-        parent__isnull?: string;
     };
     url: '/admin/categories/';
 };
@@ -5422,7 +3940,6 @@ export type AdminCurrenciesListData = {
     body?: never;
     path?: never;
     query?: {
-        code?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -5658,22 +4175,6 @@ export type AdminOrdersListData = {
     body?: never;
     path?: never;
     query?: {
-        categories?: string;
-        created?: string;
-        created__gt?: string;
-        created__lt?: string;
-        currency?: string;
-        id?: string;
-        items__status?: string;
-        /**
-         * Ordering
-         *
-         * * `created` - Created
-         * * `-created` - Created (descending)
-         * * `updated` - Updated
-         * * `-updated` - Updated (descending)
-         */
-        orderby?: Array<'-created' | '-updated' | 'created' | 'updated'>;
         /**
          * A page number within the paginated result set.
          */
@@ -5682,17 +4183,6 @@ export type AdminOrdersListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        placed?: string;
-        placed__gt?: string;
-        placed__lt?: string;
-        seller?: string;
-        status?: string;
-        statuses?: string;
-        total_price?: string;
-        updated?: string;
-        updated__gt?: string;
-        updated__lt?: string;
-        user?: string;
     };
     url: '/admin/orders/';
 };
@@ -5782,11 +4272,6 @@ export type AdminOrdersItemsListData = {
         identifier: string;
     };
     query?: {
-        categories?: string;
-        code?: string;
-        countries?: string;
-        id?: string;
-        name?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -5795,9 +4280,6 @@ export type AdminOrdersItemsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        product?: string;
-        quantity?: number;
-        supplier?: string;
     };
     url: '/admin/orders/{identifier}/items/';
 };
@@ -5829,7 +4311,6 @@ export type AdminOrdersPaymentsListData = {
         identifier: string;
     };
     query?: {
-        id?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -5838,8 +4319,6 @@ export type AdminOrdersPaymentsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        status?: string;
-        type?: string;
     };
     url: '/admin/orders/{identifier}/payments/';
 };
@@ -5871,7 +4350,6 @@ export type AdminOrdersRefundsListData = {
         identifier: string;
     };
     query?: {
-        id?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -5880,8 +4358,6 @@ export type AdminOrdersRefundsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        status?: string;
-        type?: string;
     };
     url: '/admin/orders/{identifier}/refunds/';
 };
@@ -6071,23 +4547,6 @@ export type AdminProductsListData = {
     body?: never;
     path?: never;
     query?: {
-        categories?: string;
-        code?: string;
-        countries?: string;
-        currency?: string;
-        enabled?: boolean;
-        id?: string;
-        name?: string;
-        name__contains?: string;
-        /**
-         * Ordering
-         *
-         * * `created` - Created
-         * * `-created` - Created (descending)
-         * * `updated` - Updated
-         * * `-updated` - Updated (descending)
-         */
-        orderby?: Array<'-created' | '-updated' | 'created' | 'updated'>;
         /**
          * A page number within the paginated result set.
          */
@@ -6096,12 +4555,6 @@ export type AdminProductsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        quantity?: number;
-        quantity__gt?: number;
-        quantity__lt?: number;
-        seller?: string;
-        seller__isnull?: string;
-        supplier?: string;
     };
     url: '/admin/products/';
 };
@@ -6230,7 +4683,6 @@ export type AdminProductsOptionsListData = {
         identifier: string;
     };
     query?: {
-        id?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -6270,8 +4722,6 @@ export type AdminProductsPricesListData = {
         identifier: string;
     };
     query?: {
-        currency?: string;
-        id?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -6311,7 +4761,6 @@ export type AdminProductsVariantsListData = {
         identifier: string;
     };
     query?: {
-        id?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -6843,7 +5292,6 @@ export type AdminSellersListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        status?: string;
     };
     url: '/admin/sellers/';
 };
@@ -6953,21 +5401,6 @@ export type AdminVouchersListData = {
     body?: never;
     path?: never;
     query?: {
-        code?: string;
-        id?: string;
-        item?: string;
-        item__isnull?: string;
-        order?: string;
-        order__created?: string;
-        order__created__gt?: string;
-        order__created__lt?: string;
-        order__isnull?: string;
-        order__placed?: string;
-        order__placed__gt?: string;
-        order__placed__lt?: string;
-        order__updated?: string;
-        order__updated__gt?: string;
-        order__updated__lt?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -6976,8 +5409,6 @@ export type AdminVouchersListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        product?: string;
-        status?: string;
     };
     url: '/admin/vouchers/';
 };
@@ -7144,9 +5575,6 @@ export type ManagerCategoriesListData = {
     body?: never;
     path?: never;
     query?: {
-        id?: string;
-        name?: string;
-        name__contains?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -7155,8 +5583,6 @@ export type ManagerCategoriesListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        parent?: string;
-        parent__isnull?: string;
     };
     url: '/manager/categories/';
 };
@@ -7199,7 +5625,6 @@ export type ManagerCurrenciesListData = {
     body?: never;
     path?: never;
     query?: {
-        code?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -7531,22 +5956,6 @@ export type ManagerSellersOrdersListData = {
         seller_id: string;
     };
     query?: {
-        categories?: string;
-        created?: string;
-        created__gt?: string;
-        created__lt?: string;
-        currency?: string;
-        id?: string;
-        items__status?: string;
-        /**
-         * Ordering
-         *
-         * * `created` - Created
-         * * `-created` - Created (descending)
-         * * `updated` - Updated
-         * * `-updated` - Updated (descending)
-         */
-        orderby?: Array<'-created' | '-updated' | 'created' | 'updated'>;
         /**
          * A page number within the paginated result set.
          */
@@ -7555,16 +5964,6 @@ export type ManagerSellersOrdersListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        placed?: string;
-        placed__gt?: string;
-        placed__lt?: string;
-        status?: string;
-        statuses?: string;
-        total_price?: string;
-        updated?: string;
-        updated__gt?: string;
-        updated__lt?: string;
-        user?: string;
     };
     url: '/manager/sellers/{seller_id}/orders/';
 };
@@ -7630,11 +6029,6 @@ export type ManagerSellersOrdersItemsListData = {
         seller_id: string;
     };
     query?: {
-        categories?: string;
-        code?: string;
-        countries?: string;
-        id?: string;
-        name?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -7643,9 +6037,6 @@ export type ManagerSellersOrdersItemsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        product?: string;
-        quantity?: number;
-        supplier?: string;
     };
     url: '/manager/sellers/{seller_id}/orders/{identifier}/items/';
 };
@@ -7663,7 +6054,6 @@ export type ManagerSellersOrdersPaymentsListData = {
         seller_id: string;
     };
     query?: {
-        id?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -7672,8 +6062,6 @@ export type ManagerSellersOrdersPaymentsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        status?: string;
-        type?: string;
     };
     url: '/manager/sellers/{seller_id}/orders/{identifier}/payments/';
 };
@@ -7691,7 +6079,6 @@ export type ManagerSellersOrdersRefundsListData = {
         seller_id: string;
     };
     query?: {
-        id?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -7700,8 +6087,6 @@ export type ManagerSellersOrdersRefundsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        status?: string;
-        type?: string;
     };
     url: '/manager/sellers/{seller_id}/orders/{identifier}/refunds/';
 };
@@ -7887,23 +6272,6 @@ export type ManagerSellersProductsListData = {
         seller_id: string;
     };
     query?: {
-        categories?: string;
-        code?: string;
-        countries?: string;
-        currency?: string;
-        enabled?: boolean;
-        id?: string;
-        name?: string;
-        name__contains?: string;
-        /**
-         * Ordering
-         *
-         * * `created` - Created
-         * * `-created` - Created (descending)
-         * * `updated` - Updated
-         * * `-updated` - Updated (descending)
-         */
-        orderby?: Array<'-created' | '-updated' | 'created' | 'updated'>;
         /**
          * A page number within the paginated result set.
          */
@@ -7912,12 +6280,6 @@ export type ManagerSellersProductsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        quantity?: number;
-        quantity__gt?: number;
-        quantity__lt?: number;
-        seller?: string;
-        seller__isnull?: string;
-        supplier?: string;
     };
     url: '/manager/sellers/{seller_id}/products/';
 };
@@ -8055,7 +6417,6 @@ export type ManagerSellersProductsOptionsListData = {
         seller_id: string;
     };
     query?: {
-        id?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -8097,8 +6458,6 @@ export type ManagerSellersProductsPricesListData = {
         seller_id: string;
     };
     query?: {
-        currency?: string;
-        id?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -8140,7 +6499,6 @@ export type ManagerSellersProductsVariantsListData = {
         seller_id: string;
     };
     query?: {
-        id?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -8768,21 +7126,6 @@ export type ManagerSellersVouchersListData = {
         seller_id: string;
     };
     query?: {
-        code?: string;
-        id?: string;
-        item?: string;
-        item__isnull?: string;
-        order?: string;
-        order__created?: string;
-        order__created__gt?: string;
-        order__created__lt?: string;
-        order__isnull?: string;
-        order__placed?: string;
-        order__placed__gt?: string;
-        order__placed__lt?: string;
-        order__updated?: string;
-        order__updated__gt?: string;
-        order__updated__lt?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -8791,8 +7134,6 @@ export type ManagerSellersVouchersListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        product?: string;
-        status?: string;
     };
     url: '/manager/sellers/{seller_id}/vouchers/';
 };
@@ -8943,9 +7284,6 @@ export type UserCategoriesListData = {
     body?: never;
     path?: never;
     query?: {
-        id?: string;
-        name?: string;
-        name__contains?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -8954,8 +7292,6 @@ export type UserCategoriesListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        parent?: string;
-        parent__isnull?: string;
     };
     url: '/user/categories/';
 };
@@ -8998,22 +7334,6 @@ export type UserOrdersListData = {
     body?: never;
     path?: never;
     query?: {
-        categories?: string;
-        created?: string;
-        created__gt?: string;
-        created__lt?: string;
-        currency?: string;
-        id?: string;
-        items__status?: string;
-        /**
-         * Ordering
-         *
-         * * `created` - Created
-         * * `-created` - Created (descending)
-         * * `updated` - Updated
-         * * `-updated` - Updated (descending)
-         */
-        orderby?: Array<'-created' | '-updated' | 'created' | 'updated'>;
         /**
          * A page number within the paginated result set.
          */
@@ -9022,15 +7342,6 @@ export type UserOrdersListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        placed?: string;
-        placed__gt?: string;
-        placed__lt?: string;
-        status?: string;
-        statuses?: string;
-        total_price?: string;
-        updated?: string;
-        updated__gt?: string;
-        updated__lt?: string;
     };
     url: '/user/orders/';
 };
@@ -9120,11 +7431,6 @@ export type UserOrdersItemsListData = {
         identifier: string;
     };
     query?: {
-        categories?: string;
-        code?: string;
-        countries?: string;
-        id?: string;
-        name?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -9133,9 +7439,6 @@ export type UserOrdersItemsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        product?: string;
-        quantity?: number;
-        supplier?: string;
     };
     url: '/user/orders/{identifier}/items/';
 };
@@ -9167,7 +7470,6 @@ export type UserOrdersPaymentsListData = {
         identifier: string;
     };
     query?: {
-        id?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -9176,8 +7478,6 @@ export type UserOrdersPaymentsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        status?: string;
-        type?: string;
     };
     url: '/user/orders/{identifier}/payments/';
 };
@@ -9209,7 +7509,6 @@ export type UserOrdersRefundsListData = {
         identifier: string;
     };
     query?: {
-        id?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -9218,8 +7517,6 @@ export type UserOrdersRefundsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        status?: string;
-        type?: string;
     };
     url: '/user/orders/{identifier}/refunds/';
 };
@@ -9330,23 +7627,6 @@ export type UserProductsListData = {
     body?: never;
     path?: never;
     query?: {
-        categories?: string;
-        code?: string;
-        countries?: string;
-        currency?: string;
-        enabled?: boolean;
-        id?: string;
-        name?: string;
-        name__contains?: string;
-        /**
-         * Ordering
-         *
-         * * `created` - Created
-         * * `-created` - Created (descending)
-         * * `updated` - Updated
-         * * `-updated` - Updated (descending)
-         */
-        orderby?: Array<'-created' | '-updated' | 'created' | 'updated'>;
         /**
          * A page number within the paginated result set.
          */
@@ -9355,12 +7635,6 @@ export type UserProductsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        quantity?: number;
-        quantity__gt?: number;
-        quantity__lt?: number;
-        seller?: string;
-        seller__isnull?: string;
-        supplier?: string;
     };
     url: '/user/products/';
 };
@@ -9392,8 +7666,6 @@ export type UserProductsPricesListData = {
         identifier: string;
     };
     query?: {
-        currency?: string;
-        id?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -9418,7 +7690,6 @@ export type UserProductsVariantsListData = {
         identifier: string;
     };
     query?: {
-        id?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -9600,21 +7871,6 @@ export type UserVouchersListData = {
     body?: never;
     path?: never;
     query?: {
-        code?: string;
-        id?: string;
-        item?: string;
-        item__isnull?: string;
-        order?: string;
-        order__created?: string;
-        order__created__gt?: string;
-        order__created__lt?: string;
-        order__isnull?: string;
-        order__placed?: string;
-        order__placed__gt?: string;
-        order__placed__lt?: string;
-        order__updated?: string;
-        order__updated__gt?: string;
-        order__updated__lt?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -9623,8 +7879,6 @@ export type UserVouchersListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        product?: string;
-        status?: string;
     };
     url: '/user/vouchers/';
 };

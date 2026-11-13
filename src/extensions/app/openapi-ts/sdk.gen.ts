@@ -148,6 +148,9 @@ export const adminAppCodebasesRetrieve = <ThrowOnError extends boolean = false>(
 
 /**
  * Retrieve company
+ *
+ * Retrieve the authenticating admin's company. `domains` contains the active domains that route to the legacy wallet app and `latest_domains` contains the active domains that route to the latest wallet app.
+ *
  */
 export const adminCompanyRetrieve = <ThrowOnError extends boolean = false>(options?: Options<AdminCompanyRetrieveData, ThrowOnError>): RequestResult<AdminCompanyRetrieveResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AdminCompanyRetrieveResponses, unknown, ThrowOnError>({
     security: [{
@@ -208,6 +211,11 @@ export const adminDomainsList = <ThrowOnError extends boolean = false>(options?:
 
 /**
  * Create domain
+ *
+ * Create a domain for the company. Use `app` to choose which wallet app the domain routes to: `legacy` (the default) routes the domain at the legacy wallet via an nginx ingress, `latest` routes it at the latest wallet via the shared Gateway.
+ *
+ * Both apps use the same DNS instruction: the client points a CNAME record at the Cloudflare for SaaS hostname, so `app` can be changed later by updating the domain. An active domain moves to the other app without being deactivated.
+ *
  */
 export const adminDomainsCreate = <ThrowOnError extends boolean = false>(options: Options<AdminDomainsCreateData, ThrowOnError>): RequestResult<AdminDomainsCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AdminDomainsCreateResponses, unknown, ThrowOnError>({
     security: [{
@@ -477,6 +485,11 @@ export const deactivateCreate = <ThrowOnError extends boolean = false>(options: 
 
 /**
  * Retrieve public company
+ *
+ * Retrieve the public configuration for a company. A company can be looked up by `company`, by `domain` (any active domain, for either app) or by mobile app identifiers.
+ *
+ * `domains` contains the active domains that route to the legacy wallet app and `latest_domains` contains the active domains that route to the latest wallet app.
+ *
  */
 export const publicCompanyRetrieve = <ThrowOnError extends boolean = false>(options?: Options<PublicCompanyRetrieveData, ThrowOnError>): RequestResult<PublicCompanyRetrieveResponses, unknown, ThrowOnError> => (options?.client ?? client).get<PublicCompanyRetrieveResponses, unknown, ThrowOnError>({
     security: [{

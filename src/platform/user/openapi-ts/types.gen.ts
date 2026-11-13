@@ -86,6 +86,11 @@ export type AccountAsset = {
     readonly updated: number;
 };
 
+export type AccountAssetEffectiveControl = {
+    account_currency: TransactionAccountAsset;
+    readonly controls: Array<EffectiveControl>;
+};
+
 export type AccountAssetFee = {
     readonly id: number;
     name: string | null;
@@ -271,12 +276,59 @@ export type AdminAccountAssetFeeResponse = {
 };
 
 export type AdminCompanyAddress = {
+    readonly id: number;
+    /**
+     * * `permanent` - Permanent
+     * * `contact` - Contact
+     * * `shipping` - Shipping
+     * * `billing` - Billing
+     * * `business` - Business
+     * * `registered` - Registered
+     * * `operating` - Operating
+     */
+    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business' | 'registered' | 'operating';
     line_1?: string | null;
     line_2?: string | null;
     city?: string | null;
     state_province?: string | null;
     country?: string | null;
     postal_code?: string | null;
+};
+
+export type AdminCompanySettingsRequest = {
+    allow_transactions?: boolean;
+    allow_debit_transactions?: boolean;
+    allow_credit_transactions?: boolean;
+    disallowed_transaction_subtypes: Array<CompanyDisallowedTransactionSubtypeRequest>;
+    require_transaction_subtypes?: boolean;
+    require_verification?: boolean;
+    allow_registrations?: boolean;
+    require_registration_code?: boolean;
+    allow_overdrafts?: boolean;
+    allow_session_durations?: boolean;
+    require_registration?: boolean;
+    default_session_duration?: number;
+    /**
+     * Default lifespan of refresh tokens in seconds. Only applies to sessions created after it is changed.
+     */
+    default_refresh_token_duration?: number;
+    default_transaction_lifespan?: number;
+    require_terms_and_conditions?: boolean;
+    require_privacy_policy?: boolean;
+    account_reference_length?: number;
+    password_reset_url?: string | string | null;
+    password_set_url?: string | string | null;
+    email_verification_url?: string | string | null;
+    deactivate_verification_url?: string | string | null;
+    request_delete_verification_url?: string | string | null;
+    registration_url?: string | string | null;
+    terms_and_conditions_url?: string | string | null;
+    privacy_policy_url?: string | string | null;
+    nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
+    disallowed_mobile_countries: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    disallow_disposable_email_domains?: boolean;
 };
 
 export type Asset = {
@@ -304,7 +356,7 @@ export type Auth = {
      * Unique identifier used to reference this user in the API.
      */
     readonly id: string;
-    username: string | null;
+    username?: string | string | null;
     readonly email: string | null;
     readonly mobile: string | null;
     first_name?: string | null;
@@ -2038,7 +2090,273 @@ export type AuthResponse = {
 export type AuthToken = {
     token_key: string;
     readonly label: string;
+    /**
+     * IP address of the request that created the token.
+     */
+    readonly ip_address: string;
+    /**
+     * Country the IP address geolocated to when the token was created.
+     *
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    readonly ip_country: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW';
+    /**
+     * User agent of the request that created the token.
+     */
+    readonly user_agent: string;
     readonly expires: number;
+    /**
+     * When the token's refresh token expires, if it has one.
+     */
+    readonly refresh_expires: number | null;
     readonly created: number;
 };
 
@@ -2068,6 +2386,7 @@ export type Authenticated = {
     user: ProtectedUserInfo;
     readonly challenges: Array<AuthenticatorChallenge>;
     readonly expires: number;
+    readonly refresh_expires: number | null;
     readonly created: number;
 };
 
@@ -2101,7 +2420,7 @@ export type BankOwner = {
     last_name?: string | null;
     full_name?: string | null;
     phone_number?: string | null;
-    email_address?: string | null;
+    email_address?: string | string | null;
     company_name?: string | null;
     ein_tin?: string | null;
     address?: BankOwnerAddress;
@@ -2637,7 +2956,7 @@ export type BankOwnerRequest = {
     last_name?: string | null;
     full_name?: string | null;
     phone_number?: string | null;
-    email_address?: string | null;
+    email_address?: string | string | null;
     company_name?: string | null;
     ein_tin?: string | null;
     address?: BankOwnerAddressRequest;
@@ -2650,11 +2969,12 @@ export type Company = {
     name?: string | null;
     legal_name?: string | null;
     description?: string | null;
-    website?: string | null;
-    support_website?: string | null;
-    documentation_website?: string | null;
-    support_email?: string | null;
-    contact_email?: string | null;
+    website?: string | string | null;
+    support_website?: string | string | null;
+    documentation_website?: string | string | null;
+    support_email?: string | string | null;
+    support_phone?: string | null;
+    contact_email?: string | string | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -3248,49 +3568,27 @@ export type CompanySettings = {
     require_transaction_subtypes?: boolean;
     require_verification?: boolean;
     allow_registrations?: boolean;
+    require_registration_code?: boolean;
     allow_overdrafts?: boolean;
     allow_session_durations?: boolean;
     require_registration?: boolean;
     default_session_duration?: number;
+    /**
+     * Default lifespan of refresh tokens in seconds. Only applies to sessions created after it is changed.
+     */
+    default_refresh_token_duration?: number;
     default_transaction_lifespan?: number;
     require_terms_and_conditions?: boolean;
     require_privacy_policy?: boolean;
     account_reference_length?: number;
-    password_reset_url?: string | null;
-    password_set_url?: string | null;
-    email_verification_url?: string | null;
-    deactivate_verification_url?: string | null;
-    request_delete_verification_url?: string | null;
-    terms_and_conditions_url?: string | null;
-    privacy_policy_url?: string | null;
-    nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-    residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-    supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
-};
-
-export type CompanySettingsRequest = {
-    allow_transactions?: boolean;
-    allow_debit_transactions?: boolean;
-    allow_credit_transactions?: boolean;
-    disallowed_transaction_subtypes: Array<CompanyDisallowedTransactionSubtypeRequest>;
-    require_transaction_subtypes?: boolean;
-    require_verification?: boolean;
-    allow_registrations?: boolean;
-    allow_overdrafts?: boolean;
-    allow_session_durations?: boolean;
-    require_registration?: boolean;
-    default_session_duration?: number;
-    default_transaction_lifespan?: number;
-    require_terms_and_conditions?: boolean;
-    require_privacy_policy?: boolean;
-    account_reference_length?: number;
-    password_reset_url?: string | null;
-    password_set_url?: string | null;
-    email_verification_url?: string | null;
-    deactivate_verification_url?: string | null;
-    request_delete_verification_url?: string | null;
-    terms_and_conditions_url?: string | null;
-    privacy_policy_url?: string | null;
+    password_reset_url?: string | string | null;
+    password_set_url?: string | string | null;
+    email_verification_url?: string | string | null;
+    deactivate_verification_url?: string | string | null;
+    request_delete_verification_url?: string | string | null;
+    registration_url?: string | string | null;
+    terms_and_conditions_url?: string | string | null;
+    privacy_policy_url?: string | string | null;
     nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
@@ -3299,7 +3597,7 @@ export type CompanySettingsRequest = {
 export type CompanyWalletAccount = {
     readonly id: number;
     username?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     name?: string | null;
     type?: string | null;
@@ -3328,6 +3626,10 @@ export type CreateAccountAccountAssetRequest = {
 export type CreateAuthTokenRequest = {
     password: string;
     duration?: number | null;
+    /**
+     * Lifespan of the refresh token in seconds, defaults to the company's default refresh token duration. Persists across refreshes.
+     */
+    refresh_token_duration?: number | null;
     label?: string | null;
 };
 
@@ -3336,11 +3638,12 @@ export type CreateCompanyRequest = {
     name?: string | null;
     legal_name?: string | null;
     description?: string | null;
-    website?: string | null;
-    support_website?: string | null;
-    documentation_website?: string | null;
-    support_email?: string | null;
-    contact_email?: string | null;
+    website?: string | string | null;
+    support_website?: string | string | null;
+    documentation_website?: string | string | null;
+    support_email?: string | string | null;
+    support_phone?: string | null;
+    contact_email?: string | string | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -3903,7 +4206,7 @@ export type CryptoOwner = {
     last_name?: string | null;
     full_name?: string | null;
     phone_number?: string | null;
-    email_address?: string | null;
+    email_address?: string | string | null;
     company_name?: string | null;
     ein_tin?: string | null;
     /**
@@ -4958,7 +5261,7 @@ export type CryptoOwnerRequest = {
     last_name?: string | null;
     full_name?: string | null;
     phone_number?: string | null;
-    email_address?: string | null;
+    email_address?: string | string | null;
     company_name?: string | null;
     ein_tin?: string | null;
     /**
@@ -5490,6 +5793,16 @@ export type DeactivateRequest = {
     company: string;
 };
 
+export type DeliverVerifyEmailRequest = {
+    email: string;
+    company: string;
+};
+
+export type DeliverVerifyMobileRequest = {
+    mobile: string;
+    company: string;
+};
+
 export type Device = {
     readonly id: number;
     readonly imei: string;
@@ -5547,7 +5860,7 @@ export type DeviceResponse = {
 };
 
 export type DocumentFile = {
-    readonly file: string;
+    readonly file: string | null;
     readonly label: string | null;
     readonly description: string | null;
 };
@@ -5574,6 +5887,128 @@ export type DocumentType = {
 export type DocumentTypeResponse = {
     status: string;
     data: DocumentType;
+};
+
+export type EffectiveControl = {
+    /**
+     * * `credit` - Credit
+     * * `debit` - Debit
+     */
+    readonly tx_type: 'credit' | 'debit';
+    readonly subtype: string | null;
+    readonly enabled: boolean;
+    readonly disabled_by: Array<EffectiveControlBlocker>;
+};
+
+export type EffectiveControlBlocker = {
+    /**
+     * * `accesscontrolrule` - Access Control Rule
+     * * `account` - Account
+     * * `accountcurrency` - Account Currency
+     * * `accountcurrencylimit` - Account Currency Limit
+     * * `accountcurrencyfee` - Account Currency Fee
+     * * `accountdefinition` - Account Definition
+     * * `accountdefinitiongroup` - Account Definition Group
+     * * `accountdefinitiongroupcurrency` - Account Definition Group Currency
+     * * `alert` - Alert
+     * * `currency` - Currency
+     * * `auditlog` - Audit Log
+     * * `authenticator` - Authenticator
+     * * `authenticatorchallenge` - Authenticator Challenge
+     * * `authenticatorrule` - Authenticator Rule
+     * * `backgroundtask` - Background Task
+     * * `bankowneraddress` - Bank Owner Address
+     * * `bankbranchaddress` - Bank Branch Address
+     * * `case` - Case
+     * * `casenote` - Case Note
+     * * `casetype` - Case Type
+     * * `company` - Company
+     * * `companyaddress` - Company Address
+     * * `companybankaccount` - Company Bank Account
+     * * `companywalletaccount` - Company Wallet Account
+     * * `companyservice` - Company Service
+     * * `companynotification` - Company Notification
+     * * `cryptoowneraddress` - Crypto Owner Address
+     * * `device` - Device
+     * * `deviceapp` - Device App
+     * * `document` - Document
+     * * `documenttype` - Document Type
+     * * `export` - Export
+     * * `exportpage` - Export Page
+     * * `email` - Email
+     * * `group` - Group
+     * * `grouplimit` - Group Limit
+     * * `groupfee` - Group Fee
+     * * `grouppermission` - Group Permission
+     * * `grouptier` - Group Tier
+     * * `grouptierrequirement` - Group Tier Requirement
+     * * `grouptierlimit` - Group Tier Limit
+     * * `grouptierfee` - Group Tier Fee
+     * * `grouptierrequirementsetitem` - Group Tier Requirement Set Item
+     * * `grouptierrequirementset` - Group Tier Requirement Set
+     * * `legalterm` - Legal Term
+     * * `legaltermversion` - Legal Term Version
+     * * `commonlist` - Common List
+     * * `commonlistitem` - Common List Item
+     * * `metric` - Metric
+     * * `metric_schema` - Metric Schema
+     * * `metric_point` - Metric Point
+     * * `mfa` - Mfa
+     * * `mfasmsdevice` - Mfa Sms Device
+     * * `mfatotpdevice` - Mfa Totp Device
+     * * `mfastaticdevice` - Mfa Static Device
+     * * `mfatokenverification` - Mfa Token Verification
+     * * `mobile` - Mobile
+     * * `mobileconfirmation` - Mobile Confirmation
+     * * `notification` - Notification
+     * * `oauthclient` - Oauth Client
+     * * `oauthlink` - Oauth Link
+     * * `oauthsession` - Oauth Session
+     * * `oidckey` - Oidc Key
+     * * `permission` - Permission
+     * * `policy` - Policy
+     * * `recoverycode` - Recovery Code
+     * * `refresh_token` - Refresh Token
+     * * `registrationcode` - Registration Code
+     * * `request` - Request
+     * * `resourcerequirementrule` - Resource Requirement Rule
+     * * `rule` - Rule
+     * * `ruleeffect` - Rule Effect
+     * * `rulelog` - Rule Log
+     * * `service` - Service
+     * * `statement` - Statement
+     * * `token` - Token
+     * * `transaction` - Transaction
+     * * `transactionfee` - Transaction Fee
+     * * `transactionsubtype` - Transaction Subtype
+     * * `transactionmessage` - Transaction Message
+     * * `transactioncollection` - Transaction Collection
+     * * `transactiontag` - Transaction Tag
+     * * `user` - User
+     * * `useraddress` - User Address
+     * * `userbankaccount` - User Bank Account
+     * * `usercontact` - User Contact
+     * * `userwalletaccount` - User Wallet Account
+     * * `usercryptoaccount` - User Crypto Account
+     * * `usercryptoaccountattestation` - User Crypto Account Attestation
+     * * `userlegaltermversion` - User Legal Term Version
+     * * `usermessage` - User Message
+     * * `userpermission` - User Permission
+     * * `usertag` - User Tag
+     * * `walletowneraddress` - Wallet Owner Address
+     * * `webhook` - Webhook
+     * * `webhooktask` - Webhook Task
+     * * `webhookrequest` - Webhook Request
+     */
+    readonly resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'case' | 'casenote' | 'casetype' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'commonlist' | 'commonlistitem' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'recoverycode' | 'refresh_token' | 'registrationcode' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'transactiontag' | 'user' | 'useraddress' | 'userbankaccount' | 'usercontact' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest';
+    /**
+     * * `tx_type_disabled` - Tx Type Disabled
+     * * `subtype_disabled` - Subtype Disabled
+     * * `subtype_required` - Subtype Required
+     * * `verification_required` - Verification Required
+     * * `tier_required` - Tier Required
+     */
+    readonly reason: 'tx_type_disabled' | 'subtype_disabled' | 'subtype_required' | 'verification_required' | 'tier_required';
 };
 
 export type EffectiveFee = {
@@ -5749,6 +6184,7 @@ export type ExtendedAuthenticated = {
     user: ExtendedUserInfo;
     readonly challenges: Array<AuthenticatorChallenge>;
     readonly expires: number;
+    readonly refresh_expires: number | null;
     readonly created: number;
 };
 
@@ -5887,7 +6323,7 @@ export type ExtendedUserInfo = {
      * Unique identifier used to reference this user in the API.
      */
     readonly id: string;
-    username: string | null;
+    username?: string | string | null;
     readonly email: string | null;
     readonly mobile: string | null;
     first_name?: string | null;
@@ -7614,7 +8050,7 @@ export type ExtendedUserInfo = {
 };
 
 export type ExtendedUserInfoRequest = {
-    username: string | null;
+    username?: string | string | null;
     first_name?: string | null;
     middle_name?: string | null;
     last_name?: string | null;
@@ -9374,7 +9810,10 @@ export type GroupPermission = {
      * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
+     * * `case` - Case
+     * * `commonlist` - Common List
      * * `company` - Company
+     * * `contact` - Contact
      * * `cryptoaccount` - Crypto Account
      * * `device` - Device
      * * `document` - Document
@@ -9387,9 +9826,12 @@ export type GroupPermission = {
      * * `mobile` - Mobile
      * * `notification` - Notification
      * * `oauthclient` - Oauth Client
+     * * `password` - Password
      * * `permission` - Permission
      * * `policy` - Policy
+     * * `registrationcode` - Registration Code
      * * `request` - Request
+     * * `rule` - Rule
      * * `service` - Service
      * * `token` - Token
      * * `transaction` - Transaction
@@ -9398,7 +9840,7 @@ export type GroupPermission = {
      * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'policy' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'case' | 'commonlist' | 'company' | 'contact' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'policy' | 'registrationcode' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -9897,10 +10339,10 @@ export type OauthVerifyResponse = {
 };
 
 export type PaginatedAccountAccountAssetList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AccountAccountAsset>;
+    results: Array<AccountAccountAsset>;
 };
 
 export type PaginatedAccountAccountAssetListResponse = {
@@ -9908,11 +10350,23 @@ export type PaginatedAccountAccountAssetListResponse = {
     data: PaginatedAccountAccountAssetList;
 };
 
-export type PaginatedAccountAssetFeeList = {
-    count?: number;
+export type PaginatedAccountAssetEffectiveControlList = {
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AccountAssetFee>;
+    results: Array<AccountAssetEffectiveControl>;
+};
+
+export type PaginatedAccountAssetEffectiveControlListResponse = {
+    status: string;
+    data: PaginatedAccountAssetEffectiveControlList;
+};
+
+export type PaginatedAccountAssetFeeList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AccountAssetFee>;
 };
 
 export type PaginatedAccountAssetFeeListResponse = {
@@ -9921,10 +10375,10 @@ export type PaginatedAccountAssetFeeListResponse = {
 };
 
 export type PaginatedAccountAssetLimitList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AccountAssetLimit>;
+    results: Array<AccountAssetLimit>;
 };
 
 export type PaginatedAccountAssetLimitListResponse = {
@@ -9933,10 +10387,10 @@ export type PaginatedAccountAssetLimitListResponse = {
 };
 
 export type PaginatedAccountAssetList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AccountAsset>;
+    results: Array<AccountAsset>;
 };
 
 export type PaginatedAccountAssetListResponse = {
@@ -9945,10 +10399,10 @@ export type PaginatedAccountAssetListResponse = {
 };
 
 export type PaginatedAccountDefinitionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AccountDefinition>;
+    results: Array<AccountDefinition>;
 };
 
 export type PaginatedAccountDefinitionListResponse = {
@@ -9957,10 +10411,10 @@ export type PaginatedAccountDefinitionListResponse = {
 };
 
 export type PaginatedAccountList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Account>;
+    results: Array<Account>;
 };
 
 export type PaginatedAccountListResponse = {
@@ -9969,10 +10423,10 @@ export type PaginatedAccountListResponse = {
 };
 
 export type PaginatedAssetList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Asset>;
+    results: Array<Asset>;
 };
 
 export type PaginatedAssetListResponse = {
@@ -9981,10 +10435,10 @@ export type PaginatedAssetListResponse = {
 };
 
 export type PaginatedCompanyBankAccountList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<CompanyBankAccount>;
+    results: Array<CompanyBankAccount>;
 };
 
 export type PaginatedCompanyBankAccountListResponse = {
@@ -9993,10 +10447,10 @@ export type PaginatedCompanyBankAccountListResponse = {
 };
 
 export type PaginatedCompanyWalletAccountList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<CompanyWalletAccount>;
+    results: Array<CompanyWalletAccount>;
 };
 
 export type PaginatedCompanyWalletAccountListResponse = {
@@ -10005,10 +10459,10 @@ export type PaginatedCompanyWalletAccountListResponse = {
 };
 
 export type PaginatedCryptoAccountAttestationList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<CryptoAccountAttestation>;
+    results: Array<CryptoAccountAttestation>;
 };
 
 export type PaginatedCryptoAccountAttestationListResponse = {
@@ -10017,10 +10471,10 @@ export type PaginatedCryptoAccountAttestationListResponse = {
 };
 
 export type PaginatedDeviceAppList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<DeviceApp>;
+    results: Array<DeviceApp>;
 };
 
 export type PaginatedDeviceAppListResponse = {
@@ -10029,10 +10483,10 @@ export type PaginatedDeviceAppListResponse = {
 };
 
 export type PaginatedDocumentTypeList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<DocumentType>;
+    results: Array<DocumentType>;
 };
 
 export type PaginatedDocumentTypeListResponse = {
@@ -10041,10 +10495,10 @@ export type PaginatedDocumentTypeListResponse = {
 };
 
 export type PaginatedExportList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Export>;
+    results: Array<Export>;
 };
 
 export type PaginatedExportListResponse = {
@@ -10053,10 +10507,10 @@ export type PaginatedExportListResponse = {
 };
 
 export type PaginatedGroupFeeList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupFee>;
+    results: Array<GroupFee>;
 };
 
 export type PaginatedGroupFeeListResponse = {
@@ -10065,10 +10519,10 @@ export type PaginatedGroupFeeListResponse = {
 };
 
 export type PaginatedGroupLimitList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupLimit>;
+    results: Array<GroupLimit>;
 };
 
 export type PaginatedGroupLimitListResponse = {
@@ -10077,10 +10531,10 @@ export type PaginatedGroupLimitListResponse = {
 };
 
 export type PaginatedGroupPermissionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupPermission>;
+    results: Array<GroupPermission>;
 };
 
 export type PaginatedGroupPermissionListResponse = {
@@ -10089,10 +10543,10 @@ export type PaginatedGroupPermissionListResponse = {
 };
 
 export type PaginatedGroupTierFeeList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupTierFee>;
+    results: Array<GroupTierFee>;
 };
 
 export type PaginatedGroupTierFeeListResponse = {
@@ -10101,10 +10555,10 @@ export type PaginatedGroupTierFeeListResponse = {
 };
 
 export type PaginatedGroupTierLimitList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupTierLimit>;
+    results: Array<GroupTierLimit>;
 };
 
 export type PaginatedGroupTierLimitListResponse = {
@@ -10113,10 +10567,10 @@ export type PaginatedGroupTierLimitListResponse = {
 };
 
 export type PaginatedGroupTierList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupTier>;
+    results: Array<GroupTier>;
 };
 
 export type PaginatedGroupTierListResponse = {
@@ -10125,10 +10579,10 @@ export type PaginatedGroupTierListResponse = {
 };
 
 export type PaginatedGroupTierRequirementSetItemList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupTierRequirementSetItem>;
+    results: Array<GroupTierRequirementSetItem>;
 };
 
 export type PaginatedGroupTierRequirementSetItemListResponse = {
@@ -10137,10 +10591,10 @@ export type PaginatedGroupTierRequirementSetItemListResponse = {
 };
 
 export type PaginatedGroupTierRequirementSetList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupTierRequirementSet>;
+    results: Array<GroupTierRequirementSet>;
 };
 
 export type PaginatedGroupTierRequirementSetListResponse = {
@@ -10149,10 +10603,10 @@ export type PaginatedGroupTierRequirementSetListResponse = {
 };
 
 export type PaginatedLegalTermList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<LegalTerm>;
+    results: Array<LegalTerm>;
 };
 
 export type PaginatedLegalTermListResponse = {
@@ -10161,10 +10615,10 @@ export type PaginatedLegalTermListResponse = {
 };
 
 export type PaginatedLegalTermVersionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<LegalTermVersion>;
+    results: Array<LegalTermVersion>;
 };
 
 export type PaginatedLegalTermVersionListResponse = {
@@ -10173,10 +10627,10 @@ export type PaginatedLegalTermVersionListResponse = {
 };
 
 export type PaginatedMaskedMfaAuthenticatorList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<MaskedMfaAuthenticator>;
+    results: Array<MaskedMfaAuthenticator>;
 };
 
 export type PaginatedMaskedMfaAuthenticatorListResponse = {
@@ -10185,10 +10639,10 @@ export type PaginatedMaskedMfaAuthenticatorListResponse = {
 };
 
 export type PaginatedMetricList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Metric>;
+    results: Array<Metric>;
 };
 
 export type PaginatedMetricListResponse = {
@@ -10197,10 +10651,10 @@ export type PaginatedMetricListResponse = {
 };
 
 export type PaginatedMetricPointList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<MetricPoint>;
+    results: Array<MetricPoint>;
 };
 
 export type PaginatedMetricPointListResponse = {
@@ -10209,10 +10663,10 @@ export type PaginatedMetricPointListResponse = {
 };
 
 export type PaginatedOauthClientList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<OauthClient>;
+    results: Array<OauthClient>;
 };
 
 export type PaginatedOauthClientListResponse = {
@@ -10221,10 +10675,10 @@ export type PaginatedOauthClientListResponse = {
 };
 
 export type PaginatedPublicCompanyLegalTermList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<PublicCompanyLegalTerm>;
+    results: Array<PublicCompanyLegalTerm>;
 };
 
 export type PaginatedPublicCompanyLegalTermListResponse = {
@@ -10233,10 +10687,10 @@ export type PaginatedPublicCompanyLegalTermListResponse = {
 };
 
 export type PaginatedPublicCompanyLegalTermVersionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<PublicCompanyLegalTermVersion>;
+    results: Array<PublicCompanyLegalTermVersion>;
 };
 
 export type PaginatedPublicCompanyLegalTermVersionListResponse = {
@@ -10245,10 +10699,10 @@ export type PaginatedPublicCompanyLegalTermVersionListResponse = {
 };
 
 export type PaginatedPublicCompanyList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<PublicCompany>;
+    results: Array<PublicCompany>;
 };
 
 export type PaginatedPublicCompanyListResponse = {
@@ -10257,10 +10711,10 @@ export type PaginatedPublicCompanyListResponse = {
 };
 
 export type PaginatedPublicGroupList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<PublicGroup>;
+    results: Array<PublicGroup>;
 };
 
 export type PaginatedPublicGroupListResponse = {
@@ -10269,10 +10723,10 @@ export type PaginatedPublicGroupListResponse = {
 };
 
 export type PaginatedPublicLegalTermList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<PublicLegalTerm>;
+    results: Array<PublicLegalTerm>;
 };
 
 export type PaginatedPublicLegalTermListResponse = {
@@ -10281,10 +10735,10 @@ export type PaginatedPublicLegalTermListResponse = {
 };
 
 export type PaginatedPublicLegalTermVersionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<PublicLegalTermVersion>;
+    results: Array<PublicLegalTermVersion>;
 };
 
 export type PaginatedPublicLegalTermVersionListResponse = {
@@ -10293,10 +10747,10 @@ export type PaginatedPublicLegalTermVersionListResponse = {
 };
 
 export type PaginatedStatementList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Statement>;
+    results: Array<Statement>;
 };
 
 export type PaginatedStatementListResponse = {
@@ -10305,10 +10759,10 @@ export type PaginatedStatementListResponse = {
 };
 
 export type PaginatedTransactionCollectionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<TransactionCollection>;
+    results: Array<TransactionCollection>;
 };
 
 export type PaginatedTransactionCollectionListResponse = {
@@ -10317,10 +10771,10 @@ export type PaginatedTransactionCollectionListResponse = {
 };
 
 export type PaginatedTransactionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Transaction>;
+    results: Array<Transaction>;
 };
 
 export type PaginatedTransactionListResponse = {
@@ -10329,10 +10783,10 @@ export type PaginatedTransactionListResponse = {
 };
 
 export type PaginatedTransactionMessageList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<TransactionMessage>;
+    results: Array<TransactionMessage>;
 };
 
 export type PaginatedTransactionMessageListResponse = {
@@ -10341,10 +10795,10 @@ export type PaginatedTransactionMessageListResponse = {
 };
 
 export type PaginatedUserDocumentList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserDocument>;
+    results: Array<UserDocument>;
 };
 
 export type PaginatedUserDocumentListResponse = {
@@ -10353,10 +10807,10 @@ export type PaginatedUserDocumentListResponse = {
 };
 
 export type PaginatedUserGroupList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserGroup>;
+    results: Array<UserGroup>;
 };
 
 export type PaginatedUserGroupListResponse = {
@@ -10365,10 +10819,10 @@ export type PaginatedUserGroupListResponse = {
 };
 
 export type PaginatedUserMessageList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserMessage>;
+    results: Array<UserMessage>;
 };
 
 export type PaginatedUserMessageListResponse = {
@@ -10377,10 +10831,10 @@ export type PaginatedUserMessageListResponse = {
 };
 
 export type PaginatedUserPermissionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserPermission>;
+    results: Array<UserPermission>;
 };
 
 export type PaginatedUserPermissionListResponse = {
@@ -10389,10 +10843,10 @@ export type PaginatedUserPermissionListResponse = {
 };
 
 export type PaginatedUserWalletAccountAssetList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserWalletAccountAsset>;
+    results: Array<UserWalletAccountAsset>;
 };
 
 export type PaginatedUserWalletAccountAssetListResponse = {
@@ -10486,7 +10940,7 @@ export type PatchedEmailRequest = {
 };
 
 export type PatchedExtendedUserInfoRequest = {
-    username?: string | null;
+    username?: string | string | null;
     first_name?: string | null;
     middle_name?: string | null;
     last_name?: string | null;
@@ -12480,9 +12934,19 @@ export type PatchedUserBankAccountRequest = {
     } | null;
 };
 
+export type PatchedUserContactRequest = {
+    /**
+     * A nickname chosen by the owner of the contact.
+     */
+    name?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
 export type PatchedUserWalletAccountRequest = {
     username?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     name?: string | null;
     type?: string | null;
@@ -12503,11 +12967,12 @@ export type PublicCompany = {
     name?: string | null;
     legal_name?: string | null;
     description?: string | null;
-    website?: string | null;
-    support_website?: string | null;
-    documentation_website?: string | null;
-    support_email?: string | null;
-    contact_email?: string | null;
+    website?: string | string | null;
+    support_website?: string | string | null;
+    documentation_website?: string | string | null;
+    support_email?: string | string | null;
+    support_phone?: string | null;
+    contact_email?: string | string | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -12828,6 +13293,8 @@ export type PublicCompanyResponse = {
 
 export type PublicCompanySettings = {
     allow_session_durations?: boolean;
+    allow_registrations?: boolean;
+    require_registration_code?: boolean;
     readonly terms_and_conditions_url: string;
     readonly privacy_policy_url: string;
     nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
@@ -13110,6 +13577,10 @@ export type ReducedUserInfoRequest = {
 
 export type RefreshRequest = {
     session_duration?: number | null;
+    /**
+     * Lifespan of the new refresh token in seconds, defaults to the session's current refresh token duration. Persists across subsequent refreshes.
+     */
+    refresh_token_duration?: number | null;
 };
 
 export type Refreshed = {
@@ -13118,6 +13589,7 @@ export type Refreshed = {
      */
     readonly refresh_token: string;
     readonly expires: number;
+    readonly refresh_expires: number;
     readonly created: number;
 };
 
@@ -13128,7 +13600,7 @@ export type RefreshedResponse = {
 
 export type RegisterCompanyRequest = {
     username?: string;
-    email?: string;
+    email?: string | string;
     mobile?: string;
     company: CreateCompanyRequest;
     id_number?: string | null;
@@ -14180,7 +14652,7 @@ export type RegisterCompanyRequest = {
 
 export type RegisterRequest = {
     username?: string;
-    email?: string;
+    email?: string | string;
     mobile?: string;
     company: string;
     id_number?: string | null;
@@ -15232,16 +15704,6 @@ export type RegisterRequest = {
 
 export type RequestDeleteRequest = {
     user: string;
-    company: string;
-};
-
-export type ResendVerifyEmailRequest = {
-    email: string;
-    company: string;
-};
-
-export type ResendVerifyMobileRequest = {
-    mobile: string;
     company: string;
 };
 
@@ -16701,6 +17163,50 @@ export type UserBankBranchAddressRequest = {
     state_code?: string | null;
 };
 
+export type UserContact = {
+    readonly id: number;
+    /**
+     * * `email` - Email
+     * * `mobile` - Mobile
+     */
+    readonly type: 'email' | 'mobile';
+    /**
+     * Email address or E.164 mobile number of another user in this company. Validated for format only; never checked against registered users.
+     */
+    readonly identifier: string;
+    /**
+     * A nickname chosen by the owner of the contact.
+     */
+    name?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type UserContactList = Array<UserContact>;
+
+export type UserContactListResponse = {
+    status: string;
+    data: UserContactList;
+};
+
+export type UserContactRequest = {
+    /**
+     * A nickname chosen by the owner of the contact.
+     */
+    name?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+export type UserContactResponse = {
+    status: string;
+    data: UserContact;
+};
+
 export type UserCreateBankAccountRequest = {
     name?: string | null;
     number?: string | null;
@@ -16737,17 +17243,291 @@ export type UserCreateBankAccountRequest = {
     action?: 'withdraw' | 'origin';
 };
 
+export type UserCreateContactRequest = {
+    /**
+     * Whether the identifier is an email address or a mobile number.
+     *
+     * * `email` - Email
+     * * `mobile` - Mobile
+     */
+    type: 'email' | 'mobile';
+    /**
+     * Email address or E.164 mobile number of another user in this company, matching `type`. Validated for format only; never checked against registered users.
+     */
+    identifier: string;
+    /**
+     * A nickname chosen by the owner of the contact.
+     */
+    name?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
 export type UserCreateDocumentRequest = {
     file?: Blob | File;
     metadata?: {
         [key: string]: unknown;
     } | null;
     expires?: number | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | null;
+    number?: string | null;
 };
 
 export type UserCreateWalletAccountRequest = {
     username?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     name?: string | null;
     type?: string | null;
@@ -16775,7 +17555,7 @@ export type UserDisallowedTransactionSubtypeRequest = {
 
 export type UserDocument = {
     readonly id: number;
-    file?: string;
+    file?: string | null;
     readonly files: Array<DocumentFile>;
     type: ReducedDocumentType;
     /**
@@ -16793,6 +17573,259 @@ export type UserDocument = {
     } | null;
     readonly note: string | null;
     expires?: number | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | null;
+    number?: string | null;
     readonly created: number;
     readonly updated: number;
     readonly frozen: {
@@ -16863,7 +17896,10 @@ export type UserPermission = {
      * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
+     * * `case` - Case
+     * * `commonlist` - Common List
      * * `company` - Company
+     * * `contact` - Contact
      * * `cryptoaccount` - Crypto Account
      * * `device` - Device
      * * `document` - Document
@@ -16876,9 +17912,12 @@ export type UserPermission = {
      * * `mobile` - Mobile
      * * `notification` - Notification
      * * `oauthclient` - Oauth Client
+     * * `password` - Password
      * * `permission` - Permission
      * * `policy` - Policy
+     * * `registrationcode` - Registration Code
      * * `request` - Request
+     * * `rule` - Rule
      * * `service` - Service
      * * `token` - Token
      * * `transaction` - Transaction
@@ -16887,7 +17926,7 @@ export type UserPermission = {
      * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'permission' | 'policy' | 'request' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'case' | 'commonlist' | 'company' | 'contact' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'policy' | 'registrationcode' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -16927,7 +17966,7 @@ export type UserVerification = {
 export type UserWalletAccount = {
     readonly id: number;
     username?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     name?: string | null;
     readonly code: string | null;
@@ -16985,7 +18024,7 @@ export type UserWalletAccountListResponse = {
 
 export type UserWalletAccountRequest = {
     username?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     name?: string | null;
     type?: string | null;
@@ -17024,7 +18063,7 @@ export type WalletOwner = {
     last_name?: string | null;
     full_name?: string | null;
     phone_number?: string | null;
-    email_address?: string | null;
+    email_address?: string | string | null;
     company_name?: string | null;
     ein_tin?: string | null;
     address?: WalletOwnerAddress;
@@ -17560,7 +18599,7 @@ export type WalletOwnerRequest = {
     last_name?: string | null;
     full_name?: string | null;
     phone_number?: string | null;
-    email_address?: string | null;
+    email_address?: string | string | null;
     company_name?: string | null;
     ein_tin?: string | null;
     address?: WalletOwnerAddressRequest;
@@ -17593,6 +18632,10 @@ export type AccountAssetWritable = {
      * Whether this is the account's currently active currency.
      */
     active: boolean;
+};
+
+export type AccountAssetEffectiveControlWritable = {
+    [key: string]: unknown;
 };
 
 export type AccountAssetFeeWritable = {
@@ -17684,6 +18727,25 @@ export type AdminAccountAssetFeeResponseWritable = {
     data: AdminAccountAssetFeeWritable;
 };
 
+export type AdminCompanyAddressWritable = {
+    /**
+     * * `permanent` - Permanent
+     * * `contact` - Contact
+     * * `shipping` - Shipping
+     * * `billing` - Billing
+     * * `business` - Business
+     * * `registered` - Registered
+     * * `operating` - Operating
+     */
+    type?: 'permanent' | 'contact' | 'shipping' | 'billing' | 'business' | 'registered' | 'operating';
+    line_1?: string | null;
+    line_2?: string | null;
+    city?: string | null;
+    state_province?: string | null;
+    country?: string | null;
+    postal_code?: string | null;
+};
+
 export type AssetWritable = {
     code?: string | null;
     display_code?: string | null;
@@ -17700,7 +18762,7 @@ export type AssetResponseWritable = {
 };
 
 export type AuthWritable = {
-    username: string | null;
+    username?: string | string | null;
     first_name?: string | null;
     middle_name?: string | null;
     last_name?: string | null;
@@ -19409,11 +20471,12 @@ export type CompanyWritable = {
     name?: string | null;
     legal_name?: string | null;
     description?: string | null;
-    website?: string | null;
-    support_website?: string | null;
-    documentation_website?: string | null;
-    support_email?: string | null;
-    contact_email?: string | null;
+    website?: string | string | null;
+    support_website?: string | string | null;
+    documentation_website?: string | string | null;
+    support_email?: string | string | null;
+    support_phone?: string | null;
+    contact_email?: string | string | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -19715,21 +20778,27 @@ export type CompanySettingsWritable = {
     require_transaction_subtypes?: boolean;
     require_verification?: boolean;
     allow_registrations?: boolean;
+    require_registration_code?: boolean;
     allow_overdrafts?: boolean;
     allow_session_durations?: boolean;
     require_registration?: boolean;
     default_session_duration?: number;
+    /**
+     * Default lifespan of refresh tokens in seconds. Only applies to sessions created after it is changed.
+     */
+    default_refresh_token_duration?: number;
     default_transaction_lifespan?: number;
     require_terms_and_conditions?: boolean;
     require_privacy_policy?: boolean;
     account_reference_length?: number;
-    password_reset_url?: string | null;
-    password_set_url?: string | null;
-    email_verification_url?: string | null;
-    deactivate_verification_url?: string | null;
-    request_delete_verification_url?: string | null;
-    terms_and_conditions_url?: string | null;
-    privacy_policy_url?: string | null;
+    password_reset_url?: string | string | null;
+    password_set_url?: string | string | null;
+    email_verification_url?: string | string | null;
+    deactivate_verification_url?: string | string | null;
+    request_delete_verification_url?: string | string | null;
+    registration_url?: string | string | null;
+    terms_and_conditions_url?: string | string | null;
+    privacy_policy_url?: string | string | null;
     nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
@@ -19737,7 +20806,7 @@ export type CompanySettingsWritable = {
 
 export type CompanyWalletAccountWritable = {
     username?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     name?: string | null;
     type?: string | null;
@@ -19762,11 +20831,12 @@ export type CreateCompanyRequestWritable = {
     name?: string | null;
     legal_name?: string | null;
     description?: string | null;
-    website?: string | null;
-    support_website?: string | null;
-    documentation_website?: string | null;
-    support_email?: string | null;
-    contact_email?: string | null;
+    website?: string | string | null;
+    support_website?: string | string | null;
+    documentation_website?: string | string | null;
+    support_email?: string | string | null;
+    support_phone?: string | null;
+    contact_email?: string | string | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -20391,7 +21461,7 @@ export type ExtendedTransactionResponseWritable = {
 };
 
 export type ExtendedUserInfoWritable = {
-    username: string | null;
+    username?: string | string | null;
     first_name?: string | null;
     middle_name?: string | null;
     last_name?: string | null;
@@ -22230,6 +23300,10 @@ export type LoginRequestWritable = {
     password: string;
     session_duration?: number | null;
     /**
+     * Lifespan of the refresh token in seconds, defaults to the company's default refresh token duration. Persists across refreshes.
+     */
+    refresh_token_duration?: number | null;
+    /**
      * * `cookie` - Cookie
      * * `token` - Token
      */
@@ -22338,6 +23412,10 @@ export type OauthLoginRequestWritable = {
     session: string;
     session_duration?: number | null;
     /**
+     * Lifespan of the refresh token in seconds, defaults to the company's default refresh token duration. Persists across refreshes.
+     */
+    refresh_token_duration?: number | null;
+    /**
      * * `cookie` - Cookie
      * * `token` - Token
      */
@@ -22346,9 +23424,17 @@ export type OauthLoginRequestWritable = {
 
 export type OauthRegisterRequestWritable = {
     session: string;
+    /**
+     * A registration code from an invite or a shared link. Required when the company requires one.
+     */
+    registration_code?: string | null;
     terms_and_conditions?: boolean;
     privacy_policy?: boolean;
     session_duration?: number | null;
+    /**
+     * Lifespan of the refresh token in seconds, defaults to the company's default refresh token duration. Persists across refreshes.
+     */
+    refresh_token_duration?: number | null;
     groups?: Array<string | null>;
     legal_term_versions?: Array<number>;
     /**
@@ -22378,10 +23464,10 @@ export type OauthVerifyResponseWritable = {
 };
 
 export type PaginatedAccountAccountAssetListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AccountAccountAssetWritable>;
+    results: Array<AccountAccountAssetWritable>;
 };
 
 export type PaginatedAccountAccountAssetListResponseWritable = {
@@ -22389,11 +23475,23 @@ export type PaginatedAccountAccountAssetListResponseWritable = {
     data: PaginatedAccountAccountAssetListWritable;
 };
 
-export type PaginatedAccountAssetFeeListWritable = {
-    count?: number;
+export type PaginatedAccountAssetEffectiveControlListWritable = {
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AccountAssetFeeWritable>;
+    results: Array<AccountAssetEffectiveControlWritable>;
+};
+
+export type PaginatedAccountAssetEffectiveControlListResponseWritable = {
+    status: string;
+    data: PaginatedAccountAssetEffectiveControlListWritable;
+};
+
+export type PaginatedAccountAssetFeeListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AccountAssetFeeWritable>;
 };
 
 export type PaginatedAccountAssetFeeListResponseWritable = {
@@ -22402,10 +23500,10 @@ export type PaginatedAccountAssetFeeListResponseWritable = {
 };
 
 export type PaginatedAccountAssetLimitListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AccountAssetLimitWritable>;
+    results: Array<AccountAssetLimitWritable>;
 };
 
 export type PaginatedAccountAssetLimitListResponseWritable = {
@@ -22414,10 +23512,10 @@ export type PaginatedAccountAssetLimitListResponseWritable = {
 };
 
 export type PaginatedAccountAssetListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AccountAssetWritable>;
+    results: Array<AccountAssetWritable>;
 };
 
 export type PaginatedAccountAssetListResponseWritable = {
@@ -22426,10 +23524,10 @@ export type PaginatedAccountAssetListResponseWritable = {
 };
 
 export type PaginatedAccountDefinitionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AccountDefinitionWritable>;
+    results: Array<AccountDefinitionWritable>;
 };
 
 export type PaginatedAccountDefinitionListResponseWritable = {
@@ -22438,10 +23536,10 @@ export type PaginatedAccountDefinitionListResponseWritable = {
 };
 
 export type PaginatedAccountListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AccountWritable>;
+    results: Array<AccountWritable>;
 };
 
 export type PaginatedAccountListResponseWritable = {
@@ -22450,10 +23548,10 @@ export type PaginatedAccountListResponseWritable = {
 };
 
 export type PaginatedAssetListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AssetWritable>;
+    results: Array<AssetWritable>;
 };
 
 export type PaginatedAssetListResponseWritable = {
@@ -22462,10 +23560,10 @@ export type PaginatedAssetListResponseWritable = {
 };
 
 export type PaginatedCompanyBankAccountListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<CompanyBankAccountWritable>;
+    results: Array<CompanyBankAccountWritable>;
 };
 
 export type PaginatedCompanyBankAccountListResponseWritable = {
@@ -22474,10 +23572,10 @@ export type PaginatedCompanyBankAccountListResponseWritable = {
 };
 
 export type PaginatedCompanyWalletAccountListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<CompanyWalletAccountWritable>;
+    results: Array<CompanyWalletAccountWritable>;
 };
 
 export type PaginatedCompanyWalletAccountListResponseWritable = {
@@ -22486,10 +23584,10 @@ export type PaginatedCompanyWalletAccountListResponseWritable = {
 };
 
 export type PaginatedCryptoAccountAttestationListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<CryptoAccountAttestationWritable>;
+    results: Array<CryptoAccountAttestationWritable>;
 };
 
 export type PaginatedCryptoAccountAttestationListResponseWritable = {
@@ -22498,10 +23596,10 @@ export type PaginatedCryptoAccountAttestationListResponseWritable = {
 };
 
 export type PaginatedDeviceAppListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<DeviceAppWritable>;
+    results: Array<DeviceAppWritable>;
 };
 
 export type PaginatedDeviceAppListResponseWritable = {
@@ -22510,10 +23608,10 @@ export type PaginatedDeviceAppListResponseWritable = {
 };
 
 export type PaginatedDocumentTypeListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<DocumentTypeWritable>;
+    results: Array<DocumentTypeWritable>;
 };
 
 export type PaginatedDocumentTypeListResponseWritable = {
@@ -22522,10 +23620,10 @@ export type PaginatedDocumentTypeListResponseWritable = {
 };
 
 export type PaginatedExportListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ExportWritable>;
+    results: Array<ExportWritable>;
 };
 
 export type PaginatedExportListResponseWritable = {
@@ -22534,10 +23632,10 @@ export type PaginatedExportListResponseWritable = {
 };
 
 export type PaginatedGroupFeeListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupFeeWritable>;
+    results: Array<GroupFeeWritable>;
 };
 
 export type PaginatedGroupFeeListResponseWritable = {
@@ -22546,10 +23644,10 @@ export type PaginatedGroupFeeListResponseWritable = {
 };
 
 export type PaginatedGroupLimitListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupLimitWritable>;
+    results: Array<GroupLimitWritable>;
 };
 
 export type PaginatedGroupLimitListResponseWritable = {
@@ -22558,10 +23656,10 @@ export type PaginatedGroupLimitListResponseWritable = {
 };
 
 export type PaginatedGroupPermissionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupPermissionWritable>;
+    results: Array<GroupPermissionWritable>;
 };
 
 export type PaginatedGroupPermissionListResponseWritable = {
@@ -22570,10 +23668,10 @@ export type PaginatedGroupPermissionListResponseWritable = {
 };
 
 export type PaginatedGroupTierFeeListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupTierFeeWritable>;
+    results: Array<GroupTierFeeWritable>;
 };
 
 export type PaginatedGroupTierFeeListResponseWritable = {
@@ -22582,10 +23680,10 @@ export type PaginatedGroupTierFeeListResponseWritable = {
 };
 
 export type PaginatedGroupTierLimitListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupTierLimitWritable>;
+    results: Array<GroupTierLimitWritable>;
 };
 
 export type PaginatedGroupTierLimitListResponseWritable = {
@@ -22594,10 +23692,10 @@ export type PaginatedGroupTierLimitListResponseWritable = {
 };
 
 export type PaginatedGroupTierListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupTierWritable>;
+    results: Array<GroupTierWritable>;
 };
 
 export type PaginatedGroupTierListResponseWritable = {
@@ -22606,10 +23704,10 @@ export type PaginatedGroupTierListResponseWritable = {
 };
 
 export type PaginatedGroupTierRequirementSetItemListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupTierRequirementSetItemWritable>;
+    results: Array<GroupTierRequirementSetItemWritable>;
 };
 
 export type PaginatedGroupTierRequirementSetItemListResponseWritable = {
@@ -22618,10 +23716,10 @@ export type PaginatedGroupTierRequirementSetItemListResponseWritable = {
 };
 
 export type PaginatedGroupTierRequirementSetListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupTierRequirementSetWritable>;
+    results: Array<GroupTierRequirementSetWritable>;
 };
 
 export type PaginatedGroupTierRequirementSetListResponseWritable = {
@@ -22630,10 +23728,10 @@ export type PaginatedGroupTierRequirementSetListResponseWritable = {
 };
 
 export type PaginatedLegalTermListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedLegalTermListResponseWritable = {
@@ -22642,10 +23740,10 @@ export type PaginatedLegalTermListResponseWritable = {
 };
 
 export type PaginatedLegalTermVersionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedLegalTermVersionListResponseWritable = {
@@ -22654,10 +23752,10 @@ export type PaginatedLegalTermVersionListResponseWritable = {
 };
 
 export type PaginatedMaskedMfaAuthenticatorListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<MaskedMfaAuthenticatorWritable>;
+    results: Array<MaskedMfaAuthenticatorWritable>;
 };
 
 export type PaginatedMaskedMfaAuthenticatorListResponseWritable = {
@@ -22666,10 +23764,10 @@ export type PaginatedMaskedMfaAuthenticatorListResponseWritable = {
 };
 
 export type PaginatedMetricListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<MetricWritable>;
+    results: Array<MetricWritable>;
 };
 
 export type PaginatedMetricListResponseWritable = {
@@ -22678,10 +23776,10 @@ export type PaginatedMetricListResponseWritable = {
 };
 
 export type PaginatedMetricPointListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedMetricPointListResponseWritable = {
@@ -22690,10 +23788,10 @@ export type PaginatedMetricPointListResponseWritable = {
 };
 
 export type PaginatedOauthClientListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedOauthClientListResponseWritable = {
@@ -22702,10 +23800,10 @@ export type PaginatedOauthClientListResponseWritable = {
 };
 
 export type PaginatedPublicCompanyLegalTermListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<PublicCompanyLegalTermWritable>;
+    results: Array<PublicCompanyLegalTermWritable>;
 };
 
 export type PaginatedPublicCompanyLegalTermListResponseWritable = {
@@ -22714,10 +23812,10 @@ export type PaginatedPublicCompanyLegalTermListResponseWritable = {
 };
 
 export type PaginatedPublicCompanyLegalTermVersionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedPublicCompanyLegalTermVersionListResponseWritable = {
@@ -22726,10 +23824,10 @@ export type PaginatedPublicCompanyLegalTermVersionListResponseWritable = {
 };
 
 export type PaginatedPublicCompanyListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<PublicCompanyWritable>;
+    results: Array<PublicCompanyWritable>;
 };
 
 export type PaginatedPublicCompanyListResponseWritable = {
@@ -22738,10 +23836,10 @@ export type PaginatedPublicCompanyListResponseWritable = {
 };
 
 export type PaginatedPublicLegalTermListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<PublicLegalTermWritable>;
+    results: Array<PublicLegalTermWritable>;
 };
 
 export type PaginatedPublicLegalTermListResponseWritable = {
@@ -22750,10 +23848,10 @@ export type PaginatedPublicLegalTermListResponseWritable = {
 };
 
 export type PaginatedPublicLegalTermVersionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedPublicLegalTermVersionListResponseWritable = {
@@ -22762,10 +23860,10 @@ export type PaginatedPublicLegalTermVersionListResponseWritable = {
 };
 
 export type PaginatedStatementListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<StatementWritable>;
+    results: Array<StatementWritable>;
 };
 
 export type PaginatedStatementListResponseWritable = {
@@ -22774,10 +23872,10 @@ export type PaginatedStatementListResponseWritable = {
 };
 
 export type PaginatedTransactionCollectionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<TransactionCollectionWritable>;
+    results: Array<TransactionCollectionWritable>;
 };
 
 export type PaginatedTransactionCollectionListResponseWritable = {
@@ -22786,10 +23884,10 @@ export type PaginatedTransactionCollectionListResponseWritable = {
 };
 
 export type PaginatedTransactionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<TransactionWritable>;
+    results: Array<TransactionWritable>;
 };
 
 export type PaginatedTransactionListResponseWritable = {
@@ -22798,10 +23896,10 @@ export type PaginatedTransactionListResponseWritable = {
 };
 
 export type PaginatedTransactionMessageListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<TransactionMessageWritable>;
+    results: Array<TransactionMessageWritable>;
 };
 
 export type PaginatedTransactionMessageListResponseWritable = {
@@ -22810,10 +23908,10 @@ export type PaginatedTransactionMessageListResponseWritable = {
 };
 
 export type PaginatedUserDocumentListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserDocumentWritable>;
+    results: Array<UserDocumentWritable>;
 };
 
 export type PaginatedUserDocumentListResponseWritable = {
@@ -22822,10 +23920,10 @@ export type PaginatedUserDocumentListResponseWritable = {
 };
 
 export type PaginatedUserGroupListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserGroupWritable>;
+    results: Array<UserGroupWritable>;
 };
 
 export type PaginatedUserGroupListResponseWritable = {
@@ -22834,10 +23932,10 @@ export type PaginatedUserGroupListResponseWritable = {
 };
 
 export type PaginatedUserMessageListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserMessageWritable>;
+    results: Array<UserMessageWritable>;
 };
 
 export type PaginatedUserMessageListResponseWritable = {
@@ -22846,10 +23944,10 @@ export type PaginatedUserMessageListResponseWritable = {
 };
 
 export type PaginatedUserPermissionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserPermissionWritable>;
+    results: Array<UserPermissionWritable>;
 };
 
 export type PaginatedUserPermissionListResponseWritable = {
@@ -22858,10 +23956,10 @@ export type PaginatedUserPermissionListResponseWritable = {
 };
 
 export type PaginatedUserWalletAccountAssetListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserWalletAccountAssetWritable>;
+    results: Array<UserWalletAccountAssetWritable>;
 };
 
 export type PaginatedUserWalletAccountAssetListResponseWritable = {
@@ -22912,11 +24010,12 @@ export type PublicCompanyWritable = {
     name?: string | null;
     legal_name?: string | null;
     description?: string | null;
-    website?: string | null;
-    support_website?: string | null;
-    documentation_website?: string | null;
-    support_email?: string | null;
-    contact_email?: string | null;
+    website?: string | string | null;
+    support_website?: string | string | null;
+    documentation_website?: string | string | null;
+    support_email?: string | string | null;
+    support_phone?: string | null;
+    contact_email?: string | string | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -23197,6 +24296,8 @@ export type PublicCompanyResponseWritable = {
 
 export type PublicCompanySettingsWritable = {
     allow_session_durations?: boolean;
+    allow_registrations?: boolean;
+    require_registration_code?: boolean;
     nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
 };
@@ -23273,7 +24374,7 @@ export type RegisterCompanyRequestWritable = {
     middle_name?: string;
     last_name?: string;
     username?: string;
-    email?: string;
+    email?: string | string;
     mobile?: string;
     company: CreateCompanyRequestWritable;
     id_number?: string | null;
@@ -24338,7 +25439,7 @@ export type RegisterRequestWritable = {
     middle_name?: string;
     last_name?: string;
     username?: string;
-    email?: string;
+    email?: string | string;
     mobile?: string;
     company: string;
     id_number?: string | null;
@@ -25391,6 +26492,10 @@ export type RegisterRequestWritable = {
     terms_and_conditions?: boolean;
     privacy_policy?: boolean;
     session_duration?: number | null;
+    /**
+     * Lifespan of the refresh token in seconds, defaults to the company's default refresh token duration. Persists across refreshes.
+     */
+    refresh_token_duration?: number | null;
     groups?: Array<string | null>;
     legal_term_versions?: Array<number>;
     /**
@@ -25398,6 +26503,10 @@ export type RegisterRequestWritable = {
      * * `token` - Token
      */
     auth_method?: 'cookie' | 'token';
+    /**
+     * A registration code from an invite or a shared link. Required when the company requires one.
+     */
+    registration_code?: string | null;
 };
 
 export type StatementWritable = {
@@ -25803,6 +26912,28 @@ export type UserBankAccountResponseWritable = {
     data: UserBankAccountWritable;
 };
 
+export type UserContactWritable = {
+    /**
+     * A nickname chosen by the owner of the contact.
+     */
+    name?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+export type UserContactListWritable = Array<UserContactWritable>;
+
+export type UserContactListResponseWritable = {
+    status: string;
+    data: UserContactListWritable;
+};
+
+export type UserContactResponseWritable = {
+    status: string;
+    data: UserContactWritable;
+};
+
 export type UserCreateDocumentRequestWritable = {
     file?: Blob | File;
     /**
@@ -25814,6 +26945,259 @@ export type UserCreateDocumentRequestWritable = {
         [key: string]: unknown;
     } | null;
     expires?: number | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | null;
+    number?: string | null;
 };
 
 export type UserDisallowedTransactionSubtypeWritable = {
@@ -25821,11 +27205,264 @@ export type UserDisallowedTransactionSubtypeWritable = {
 };
 
 export type UserDocumentWritable = {
-    file?: string;
+    file?: string | null;
     metadata?: {
         [key: string]: unknown;
     } | null;
     expires?: number | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | null;
+    number?: string | null;
 };
 
 export type UserDocumentResponseWritable = {
@@ -25878,7 +27515,7 @@ export type UserSettingsWritable = {
 
 export type UserWalletAccountWritable = {
     username?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     name?: string | null;
     type?: string | null;
@@ -25965,6 +27602,36 @@ export type AccountCurrenciesListResponses = {
 };
 
 export type AccountCurrenciesListResponse = AccountCurrenciesListResponses[keyof AccountCurrenciesListResponses];
+
+export type AccountCurrenciesEffectiveControlsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        account?: string;
+        currency?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        subtype?: string;
+        /**
+         * * `credit` - Credit
+         * * `debit` - Debit
+         */
+        tx_type?: 'credit' | 'debit';
+    };
+    url: '/3/account-currencies/effective-controls/';
+};
+
+export type AccountCurrenciesEffectiveControlsListResponses = {
+    200: PaginatedAccountAssetEffectiveControlListResponse;
+};
+
+export type AccountCurrenciesEffectiveControlsListResponse = AccountCurrenciesEffectiveControlsListResponses[keyof AccountCurrenciesEffectiveControlsListResponses];
 
 export type AccountDefinitionsListData = {
     body?: never;
@@ -26403,8 +28070,21 @@ export type AuthEmailVerifyResponses = {
 
 export type AuthEmailVerifyResponse = AuthEmailVerifyResponses[keyof AuthEmailVerifyResponses];
 
+export type AuthEmailVerifyDeliverData = {
+    body: DeliverVerifyEmailRequest;
+    path?: never;
+    query?: never;
+    url: '/3/auth/email/verify/deliver/';
+};
+
+export type AuthEmailVerifyDeliverResponses = {
+    200: ActionResponse;
+};
+
+export type AuthEmailVerifyDeliverResponse = AuthEmailVerifyDeliverResponses[keyof AuthEmailVerifyDeliverResponses];
+
 export type AuthEmailVerifyResendData = {
-    body: ResendVerifyEmailRequest;
+    body: DeliverVerifyEmailRequest;
     path?: never;
     query?: never;
     url: '/3/auth/email/verify/resend/';
@@ -26562,8 +28242,21 @@ export type AuthMobileVerifyResponses = {
 
 export type AuthMobileVerifyResponse = AuthMobileVerifyResponses[keyof AuthMobileVerifyResponses];
 
+export type AuthMobileVerifyDeliverData = {
+    body: DeliverVerifyMobileRequest;
+    path?: never;
+    query?: never;
+    url: '/3/auth/mobile/verify/deliver/';
+};
+
+export type AuthMobileVerifyDeliverResponses = {
+    200: ActionResponse;
+};
+
+export type AuthMobileVerifyDeliverResponse = AuthMobileVerifyDeliverResponses[keyof AuthMobileVerifyDeliverResponses];
+
 export type AuthMobileVerifyResendData = {
-    body: ResendVerifyMobileRequest;
+    body: DeliverVerifyMobileRequest;
     path?: never;
     query?: never;
     url: '/3/auth/mobile/verify/resend/';
@@ -28290,7 +29983,7 @@ export type UserPartialUpdateResponses = {
 export type UserPartialUpdateResponse = UserPartialUpdateResponses[keyof UserPartialUpdateResponses];
 
 export type UserUpdateData = {
-    body: ExtendedUserInfoRequest;
+    body?: ExtendedUserInfoRequest;
     path?: never;
     query?: never;
     url: '/3/user/';
@@ -28404,6 +30097,11 @@ export type UserBankAccountsListData = {
         name__contains?: string;
         number?: string;
         status?: 'declined' | 'incomplete' | 'not_started' | 'obsolete' | 'paused' | 'pending' | 'verified';
+        updated?: string;
+        updated__gt?: string;
+        updated__gte?: string;
+        updated__lt?: string;
+        updated__lte?: string;
     };
     url: '/3/user/bank-accounts/';
 };
@@ -28652,12 +30350,123 @@ export type UserBankAccountsDocumentsRetrieveResponses = {
 
 export type UserBankAccountsDocumentsRetrieveResponse = UserBankAccountsDocumentsRetrieveResponses[keyof UserBankAccountsDocumentsRetrieveResponses];
 
+export type UserContactsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        created?: string;
+        created__gt?: string;
+        created__gte?: string;
+        created__lt?: string;
+        created__lte?: string;
+        identifier?: string;
+        name?: string;
+        name__contains?: string;
+        /**
+         * Ordering
+         *
+         * * `created` - Created
+         * * `-created` - Created (descending)
+         * * `name` - Name
+         * * `-name` - Name (descending)
+         */
+        orderby?: Array<'-created' | '-name' | 'created' | 'name'>;
+        type?: 'email' | 'mobile';
+        updated?: string;
+        updated__gt?: string;
+        updated__gte?: string;
+        updated__lt?: string;
+        updated__lte?: string;
+    };
+    url: '/3/user/contacts/';
+};
+
+export type UserContactsListResponses = {
+    200: UserContactListResponse;
+};
+
+export type UserContactsListResponse = UserContactsListResponses[keyof UserContactsListResponses];
+
+export type UserContactsCreateData = {
+    body: UserCreateContactRequest;
+    path?: never;
+    query?: never;
+    url: '/3/user/contacts/';
+};
+
+export type UserContactsCreateResponses = {
+    201: UserContactResponse;
+};
+
+export type UserContactsCreateResponse = UserContactsCreateResponses[keyof UserContactsCreateResponses];
+
+export type UserContactsDestroyData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/3/user/contacts/{id}/';
+};
+
+export type UserContactsDestroyResponses = {
+    200: ActionResponse;
+};
+
+export type UserContactsDestroyResponse = UserContactsDestroyResponses[keyof UserContactsDestroyResponses];
+
+export type UserContactsRetrieveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/3/user/contacts/{id}/';
+};
+
+export type UserContactsRetrieveResponses = {
+    200: UserContactResponse;
+};
+
+export type UserContactsRetrieveResponse = UserContactsRetrieveResponses[keyof UserContactsRetrieveResponses];
+
+export type UserContactsPartialUpdateData = {
+    body?: PatchedUserContactRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/3/user/contacts/{id}/';
+};
+
+export type UserContactsPartialUpdateResponses = {
+    200: UserContactResponse;
+};
+
+export type UserContactsPartialUpdateResponse = UserContactsPartialUpdateResponses[keyof UserContactsPartialUpdateResponses];
+
+export type UserContactsUpdateData = {
+    body?: UserContactRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/3/user/contacts/{id}/';
+};
+
+export type UserContactsUpdateResponses = {
+    200: UserContactResponse;
+};
+
+export type UserContactsUpdateResponse = UserContactsUpdateResponses[keyof UserContactsUpdateResponses];
+
 export type UserCryptoAccountsListData = {
     body?: never;
     path?: never;
     query?: {
         account_currency?: string;
         action?: 'deposit' | 'origin' | 'withdraw';
+        address?: string;
         created?: string;
         created__gt?: string;
         created__gte?: string;
@@ -28668,6 +30477,11 @@ export type UserCryptoAccountsListData = {
         name?: string;
         name__contains?: string;
         status?: 'declined' | 'incomplete' | 'not_started' | 'obsolete' | 'paused' | 'pending' | 'verified';
+        updated?: string;
+        updated__gt?: string;
+        updated__gte?: string;
+        updated__lt?: string;
+        updated__lte?: string;
     };
     url: '/3/user/crypto-accounts/';
 };

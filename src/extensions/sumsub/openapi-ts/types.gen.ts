@@ -4,17 +4,10 @@ export type ClientOptions = {
     baseUrl: 'https://sumsub.services.rehive.com/api/' | (string & {});
 };
 
-/**
- * This serializer can be used if only a `status` is required in the response.
- */
 export type ActionResponse = {
     status: string;
 };
 
-/**
- * Serialize the activation data, should be a token that represents an admin
- * user.
- */
 export type Activate = {
     token: string;
     readonly id: string;
@@ -22,12 +15,6 @@ export type Activate = {
     readonly secret: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCompany = {
     readonly id: string;
     readonly secret: string;
@@ -49,12 +36,6 @@ export type AdminCompanyResponse = {
     data: AdminCompany;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCurrency = {
     readonly code: string;
     readonly display_code: string | null;
@@ -70,10 +51,6 @@ export type AdminCurrencyResponse = {
     data: AdminCurrency;
 };
 
-/**
- * Mapping between a platform document type id and a Sumsub document type.
- * Scoped to the requesting admin's company (enforced by the view).
- */
 export type AdminDocumentType = {
     readonly id: string;
     platform_type: string;
@@ -120,12 +97,10 @@ export type AdminDocumentTypeResponse = {
     data: AdminDocumentType;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type AdminResetUser = {
+    steps?: Array<'APPLICANT_DATA' | 'IDENTITY' | 'SELFIE' | 'PROOF_OF_RESIDENCE' | 'QUESTIONNAIRE'>;
+};
+
 export type AdminUpdateCompany = {
     readonly id: string;
     readonly secret: string;
@@ -142,11 +117,6 @@ export type AdminUpdateCompany = {
     };
 };
 
-/**
- * Admin-facing user serializer. Includes the internal `sumsub_client_comment`
- * (not safe for end users) plus created/updated timestamps. All fields are
- * read-only.
- */
 export type AdminUser = {
     readonly id: string;
     readonly sumsub_id: string;
@@ -189,10 +159,6 @@ export type AdminUserResponse = {
     data: AdminUser;
 };
 
-/**
- * Generate a Sumsub share token for the target admin user so another Sumsub
- * client (identified by `client_id`) can reuse this applicant's identity.
- */
 export type AdminUserShareToken = {
     client_id: string;
     readonly token: string;
@@ -203,20 +169,16 @@ export type AdminUserShareTokenResponse = {
     data: AdminUserShareToken;
 };
 
-/**
- * Serialize the deactivation data, should be a token that represents an admin
- * user.
- */
 export type Deactivate = {
     token: string;
     purge?: boolean;
 };
 
 export type PaginatedAdminCurrencyList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCurrency>;
+    results: Array<AdminCurrency>;
 };
 
 export type PaginatedAdminCurrencyListResponse = {
@@ -225,10 +187,10 @@ export type PaginatedAdminCurrencyListResponse = {
 };
 
 export type PaginatedAdminDocumentTypeList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminDocumentType>;
+    results: Array<AdminDocumentType>;
 };
 
 export type PaginatedAdminDocumentTypeListResponse = {
@@ -237,10 +199,10 @@ export type PaginatedAdminDocumentTypeListResponse = {
 };
 
 export type PaginatedAdminUserList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUser>;
+    results: Array<AdminUser>;
 };
 
 export type PaginatedAdminUserListResponse = {
@@ -248,12 +210,6 @@ export type PaginatedAdminUserListResponse = {
     data: PaginatedAdminUserList;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminCurrency = {
     readonly code?: string;
     readonly display_code?: string | null;
@@ -264,10 +220,6 @@ export type PatchedAdminCurrency = {
     readonly manager?: string | null;
 };
 
-/**
- * Mapping between a platform document type id and a Sumsub document type.
- * Scoped to the requesting admin's company (enforced by the view).
- */
 export type PatchedAdminDocumentType = {
     readonly id?: string;
     platform_type?: string;
@@ -309,12 +261,6 @@ export type PatchedAdminDocumentType = {
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateCompany = {
     readonly id?: string;
     readonly secret?: string;
@@ -331,12 +277,6 @@ export type PatchedAdminUpdateCompany = {
     };
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedUser = {
     readonly id?: string;
     readonly sumsub_id?: string;
@@ -365,15 +305,6 @@ export type PatchedUser = {
     readonly sumsub_moderation_comment?: string | null;
 };
 
-/**
- * Company-agnostic Sumsub webhook intake for a single shared Sumsub
- * account: the signature is verified with the global
- * `SUMSUB_WEBHOOK_SECRET_KEY` setting, and the company is resolved from
- * the payload's `sourceKey` (`company:<identifier>`), which Sumsub echoes
- * on every applicant-level event. Applicants must therefore carry the
- * company source key — this service tags them on creation, and older
- * applicants are backfilled on the Sumsub side.
- */
 export type SumsubGlobalWebhook = {
     type: string;
     applicantId?: string | null;
@@ -386,10 +317,6 @@ export type SumsubGlobalWebhook = {
     sourceKey?: string | null;
 };
 
-/**
- * Per-company Sumsub webhook intake: the company is taken from the URL
- * kwarg and provides the webhook secret.
- */
 export type SumsubWebhook = {
     type: string;
     applicantId?: string | null;
@@ -402,12 +329,6 @@ export type SumsubWebhook = {
     sourceKey?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type User = {
     readonly id: string;
     readonly sumsub_id: string;
@@ -436,13 +357,6 @@ export type User = {
     readonly sumsub_moderation_comment: string | null;
 };
 
-/**
- * Generate a Sumsub access token for the authenticated user.
- *
- * Creates a Sumsub applicant for the user on first call (populating initial
- * info from the Rehive platform resource), then issues a short-lived access
- * token that can be used to initialize the Sumsub Web/Mobile SDK.
- */
 export type UserAccessToken = {
     readonly token: string;
 };
@@ -452,12 +366,6 @@ export type UserAccessTokenResponse = {
     data: UserAccessToken;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCompany = {
     readonly id: string;
     readonly supported_groups: {
@@ -483,20 +391,18 @@ export type Webhook = {
      * * `currency.create` - Currency Create
      * * `currency.update` - Currency Update
      * * `user.update` - User Update
+     * * `address.update` - Address Update
+     * * `address.delete` - Address Delete
+     * * `document.update` - Document Update
+     * * `document.delete` - Document Delete
      */
-    event: 'currency.create' | 'currency.update' | 'user.update';
+    event: 'currency.create' | 'currency.update' | 'user.update' | 'address.update' | 'address.delete' | 'document.update' | 'document.delete';
     company: string;
     data: {
         [key: string]: unknown;
     };
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCompanyWritable = {
     [key: string]: unknown;
 };
@@ -510,10 +416,6 @@ export type AdminCurrencyResponseWritable = {
     status: string;
 };
 
-/**
- * Mapping between a platform document type id and a Sumsub document type.
- * Scoped to the requesting admin's company (enforced by the view).
- */
 export type AdminDocumentTypeWritable = {
     platform_type: string;
     /**
@@ -554,12 +456,6 @@ export type AdminDocumentTypeResponseWritable = {
     data: AdminDocumentTypeWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateCompanyWritable = {
     supported_groups?: {
         [key: string]: {
@@ -574,10 +470,10 @@ export type AdminUserResponseWritable = {
 };
 
 export type PaginatedAdminCurrencyListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedAdminCurrencyListResponseWritable = {
@@ -586,10 +482,10 @@ export type PaginatedAdminCurrencyListResponseWritable = {
 };
 
 export type PaginatedAdminDocumentTypeListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminDocumentTypeWritable>;
+    results: Array<AdminDocumentTypeWritable>;
 };
 
 export type PaginatedAdminDocumentTypeListResponseWritable = {
@@ -598,10 +494,10 @@ export type PaginatedAdminDocumentTypeListResponseWritable = {
 };
 
 export type PaginatedAdminUserListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedAdminUserListResponseWritable = {
@@ -609,10 +505,6 @@ export type PaginatedAdminUserListResponseWritable = {
     data: PaginatedAdminUserListWritable;
 };
 
-/**
- * Mapping between a platform document type id and a Sumsub document type.
- * Scoped to the requesting admin's company (enforced by the view).
- */
 export type PatchedAdminDocumentTypeWritable = {
     platform_type?: string;
     /**
@@ -648,12 +540,6 @@ export type PatchedAdminDocumentTypeWritable = {
     sumsub_type?: 'ID_CARD' | 'PASSPORT' | 'DRIVERS' | 'RESIDENCE_PERMIT' | 'VISA' | 'UTILITY_BILL' | 'UTILITY_BILL2' | 'SELFIE' | 'VIDEO_SELFIE' | 'IDENTITY_VIDEO' | 'PROFILE_IMAGE' | 'ID_DOC_PHOTO' | 'EXTERNAL_DB_DOC' | 'AGREEMENT' | 'CONTRACT' | 'SIGNED_CONTRACT' | 'DRIVERS_TRANSLATION' | 'INVESTOR_DOC' | 'VEHICLE_REGISTRATION_CERTIFICATE' | 'INCOME_SOURCE' | 'PAYMENT_METHOD' | 'PAYMENT_SOURCE' | 'BANK_CARD' | 'ARBITRARY_DOC' | 'OTHER' | 'COMPANY_DOC' | 'POWER_OF_ATTORNEY' | 'TRANSPARENCY_REGISTRY_EXTRACT';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateCompanyWritable = {
     supported_groups?: {
         [key: string]: {
@@ -667,12 +553,6 @@ export type UserAccessTokenResponseWritable = {
     status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCompanyWritable = {
     [key: string]: unknown;
 };
@@ -903,21 +783,6 @@ export type AdminDocumentTypesUpdateResponses = {
 
 export type AdminDocumentTypesUpdateResponse = AdminDocumentTypesUpdateResponses[keyof AdminDocumentTypesUpdateResponses];
 
-export type AdminUserShareCreateData = {
-    body: AdminUserShareToken;
-    path: {
-        identifier: string;
-    };
-    query?: never;
-    url: '/admin/user/{identifier}/share/';
-};
-
-export type AdminUserShareCreateResponses = {
-    201: AdminUserShareTokenResponse;
-};
-
-export type AdminUserShareCreateResponse = AdminUserShareCreateResponses[keyof AdminUserShareCreateResponses];
-
 export type AdminUsersListData = {
     body?: never;
     path?: never;
@@ -958,6 +823,36 @@ export type AdminUsersRetrieveResponses = {
 };
 
 export type AdminUsersRetrieveResponse = AdminUsersRetrieveResponses[keyof AdminUsersRetrieveResponses];
+
+export type AdminUsersResetCreateData = {
+    body?: AdminResetUser;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/admin/users/{identifier}/reset/';
+};
+
+export type AdminUsersResetCreateResponses = {
+    200: ActionResponse;
+};
+
+export type AdminUsersResetCreateResponse = AdminUsersResetCreateResponses[keyof AdminUsersResetCreateResponses];
+
+export type AdminUsersShareCreateData = {
+    body: AdminUserShareToken;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/admin/users/{identifier}/share/';
+};
+
+export type AdminUsersShareCreateResponses = {
+    201: AdminUserShareTokenResponse;
+};
+
+export type AdminUsersShareCreateResponse = AdminUsersShareCreateResponses[keyof AdminUsersShareCreateResponses];
 
 export type DeactivateCreateData = {
     body: Deactivate;

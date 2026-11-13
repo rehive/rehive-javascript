@@ -4,11 +4,8 @@ export type ClientOptions = {
     baseUrl: 'https://reward.services.rehive.io/api/' | (string & {});
 };
 
-/**
- * This serializer can be used if only a `status` is required in the response.
- */
 export type ActionResponse = {
-    status?: string;
+    status: string;
 };
 
 export type Activate = {
@@ -18,12 +15,6 @@ export type Activate = {
     readonly secret: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCampaign = {
     readonly id: string;
     name?: string;
@@ -110,16 +101,10 @@ export type AdminCampaign = {
 };
 
 export type AdminCampaignResponse = {
-    status?: string;
-    data?: AdminCampaign;
+    status: string;
+    data: AdminCampaign;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCompany = {
     readonly id: string;
     readonly identifier: string;
@@ -129,16 +114,10 @@ export type AdminCompany = {
 };
 
 export type AdminCompanyResponse = {
-    status?: string;
-    data?: AdminCompany;
+    status: string;
+    data: AdminCompany;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateReward = {
     readonly id: string;
     user: string;
@@ -153,17 +132,9 @@ export type AdminCreateReward = {
     status?: 'pending' | 'accepted' | 'rejected';
     readonly collection: string | null;
     readonly created: number;
-    data?: {
-        [key: string]: unknown;
-    };
+    data?: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateUpdateCampaign = {
     readonly id: string;
     name?: string;
@@ -249,12 +220,6 @@ export type AdminCreateUpdateCampaign = {
     event_amount?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminReward = {
     readonly id: string;
     readonly user: string;
@@ -273,16 +238,10 @@ export type AdminReward = {
 };
 
 export type AdminRewardResponse = {
-    status?: string;
-    data?: AdminReward;
+    status: string;
+    data: AdminReward;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUser = {
     readonly id: string;
     readonly referral_code: string | null;
@@ -290,16 +249,10 @@ export type AdminUser = {
 };
 
 export type AdminUserResponse = {
-    status?: string;
-    data?: AdminUser;
+    status: string;
+    data: AdminUser;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Campaign = {
     readonly id: string;
     name?: string;
@@ -308,12 +261,6 @@ export type Campaign = {
     default_status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Currency = {
     code: string;
     display_code?: string | null;
@@ -325,8 +272,8 @@ export type Currency = {
 };
 
 export type CurrencyResponse = {
-    status?: string;
-    data?: Currency;
+    status: string;
+    data: Currency;
 };
 
 export type Deactivate = {
@@ -335,83 +282,77 @@ export type Deactivate = {
 };
 
 export type PaginatedAdminCampaignList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCampaign>;
+    results: Array<AdminCampaign>;
 };
 
 export type PaginatedAdminCampaignListResponse = {
-    status?: string;
-    data?: PaginatedAdminCampaignList;
+    status: string;
+    data: PaginatedAdminCampaignList;
 };
 
 export type PaginatedAdminRewardList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminReward>;
+    results: Array<AdminReward>;
 };
 
 export type PaginatedAdminRewardListResponse = {
-    status?: string;
-    data?: PaginatedAdminRewardList;
+    status: string;
+    data: PaginatedAdminRewardList;
 };
 
 export type PaginatedAdminUserList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUser>;
+    results: Array<AdminUser>;
 };
 
 export type PaginatedAdminUserListResponse = {
-    status?: string;
-    data?: PaginatedAdminUserList;
+    status: string;
+    data: PaginatedAdminUserList;
 };
 
 export type PaginatedCurrencyList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Currency>;
+    results: Array<Currency>;
 };
 
 export type PaginatedCurrencyListResponse = {
-    status?: string;
-    data?: PaginatedCurrencyList;
+    status: string;
+    data: PaginatedCurrencyList;
 };
 
 export type PaginatedUserCampaignList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserCampaign>;
+    results: Array<UserCampaign>;
 };
 
 export type PaginatedUserCampaignListResponse = {
-    status?: string;
-    data?: PaginatedUserCampaignList;
+    status: string;
+    data: PaginatedUserCampaignList;
 };
 
 export type PaginatedUserRewardList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserReward>;
+    results: Array<UserReward>;
 };
 
 export type PaginatedUserRewardListResponse = {
-    status?: string;
-    data?: PaginatedUserRewardList;
+    status: string;
+    data: PaginatedUserRewardList;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminCompany = {
     readonly id?: string;
     readonly identifier?: string;
@@ -420,12 +361,6 @@ export type PatchedAdminCompany = {
     operational_account?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminCreateUpdateCampaign = {
     readonly id?: string;
     name?: string;
@@ -511,12 +446,6 @@ export type PatchedAdminCreateUpdateCampaign = {
     event_amount?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminReward = {
     readonly id?: string;
     readonly user?: string;
@@ -534,35 +463,17 @@ export type PatchedAdminReward = {
     readonly created?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedUserUpdateReferral = {
     readonly referral_code?: string | null;
     referee_code?: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type User = {
     readonly id: string;
     readonly referral_code: string | null;
     readonly referee_code: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCampaign = {
     readonly id: string;
     name?: string;
@@ -590,16 +501,10 @@ export type UserCampaign = {
 };
 
 export type UserCampaignResponse = {
-    status?: string;
-    data?: UserCampaign;
+    status: string;
+    data: UserCampaign;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCreateReward = {
     readonly id: string;
     readonly user: string;
@@ -612,16 +517,10 @@ export type UserCreateReward = {
 };
 
 export type UserResponse = {
-    status?: string;
-    data?: User;
+    status: string;
+    data: User;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserReward = {
     readonly id: string;
     readonly user: string;
@@ -635,16 +534,10 @@ export type UserReward = {
 };
 
 export type UserRewardResponse = {
-    status?: string;
-    data?: UserReward;
+    status: string;
+    data: UserReward;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserUpdateReferral = {
     readonly referral_code: string | null;
     referee_code: string;
@@ -690,17 +583,9 @@ export type Webhook = {
      */
     event: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'address.create' | 'address.update' | 'document.create' | 'document.update' | 'bank_account.create' | 'bank_account.update' | 'crypto_account.create' | 'crypto_account.update' | 'account.create' | 'account.update' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify';
     company: string;
-    data: {
-        [key: string]: unknown;
-    };
+    data: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCampaignWritable = {
     name?: string;
     image?: string | null;
@@ -782,31 +667,19 @@ export type AdminCampaignWritable = {
 };
 
 export type AdminCampaignResponseWritable = {
-    status?: string;
-    data?: AdminCampaignWritable;
+    status: string;
+    data: AdminCampaignWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCompanyWritable = {
     operational_account?: string | null;
 };
 
 export type AdminCompanyResponseWritable = {
-    status?: string;
-    data?: AdminCompanyWritable;
+    status: string;
+    data: AdminCompanyWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateRewardWritable = {
     user: string;
     campaign?: string;
@@ -818,17 +691,9 @@ export type AdminCreateRewardWritable = {
      * * `rejected` - Rejected
      */
     status?: 'pending' | 'accepted' | 'rejected';
-    data?: {
-        [key: string]: unknown;
-    };
+    data?: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateUpdateCampaignWritable = {
     name?: string;
     image?: string | null;
@@ -912,12 +777,6 @@ export type AdminCreateUpdateCampaignWritable = {
     event_amount?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminRewardWritable = {
     /**
      * * `pending` - Pending
@@ -928,20 +787,14 @@ export type AdminRewardWritable = {
 };
 
 export type AdminRewardResponseWritable = {
-    status?: string;
-    data?: AdminRewardWritable;
+    status: string;
+    data: AdminRewardWritable;
 };
 
 export type AdminUserResponseWritable = {
-    status?: string;
+    status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CampaignWritable = {
     name?: string;
     description?: string;
@@ -950,81 +803,69 @@ export type CampaignWritable = {
 };
 
 export type PaginatedAdminCampaignListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCampaignWritable>;
+    results: Array<AdminCampaignWritable>;
 };
 
 export type PaginatedAdminCampaignListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminCampaignListWritable;
+    status: string;
+    data: PaginatedAdminCampaignListWritable;
 };
 
 export type PaginatedAdminRewardListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminRewardWritable>;
+    results: Array<AdminRewardWritable>;
 };
 
 export type PaginatedAdminRewardListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminRewardListWritable;
+    status: string;
+    data: PaginatedAdminRewardListWritable;
 };
 
 export type PaginatedAdminUserListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedAdminUserListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminUserListWritable;
+    status: string;
+    data: PaginatedAdminUserListWritable;
 };
 
 export type PaginatedUserCampaignListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserCampaignWritable>;
+    results: Array<UserCampaignWritable>;
 };
 
 export type PaginatedUserCampaignListResponseWritable = {
-    status?: string;
-    data?: PaginatedUserCampaignListWritable;
+    status: string;
+    data: PaginatedUserCampaignListWritable;
 };
 
 export type PaginatedUserRewardListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserRewardWritable>;
+    results: Array<UserRewardWritable>;
 };
 
 export type PaginatedUserRewardListResponseWritable = {
-    status?: string;
-    data?: PaginatedUserRewardListWritable;
+    status: string;
+    data: PaginatedUserRewardListWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminCompanyWritable = {
     operational_account?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminCreateUpdateCampaignWritable = {
     name?: string;
     image?: string | null;
@@ -1108,12 +949,6 @@ export type PatchedAdminCreateUpdateCampaignWritable = {
     event_amount?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminRewardWritable = {
     /**
      * * `pending` - Pending
@@ -1123,22 +958,10 @@ export type PatchedAdminRewardWritable = {
     status?: 'pending' | 'accepted' | 'rejected';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedUserUpdateReferralWritable = {
     referee_code?: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCampaignWritable = {
     name?: string;
     image?: string | null;
@@ -1160,48 +983,28 @@ export type UserCampaignWritable = {
 };
 
 export type UserCampaignResponseWritable = {
-    status?: string;
-    data?: UserCampaignWritable;
+    status: string;
+    data: UserCampaignWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCreateRewardWritable = {
     campaign: string;
-    data?: {
-        [key: string]: unknown;
-    };
+    data?: unknown;
 };
 
 export type UserResponseWritable = {
-    status?: string;
+    status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserRewardWritable = {
     collection?: string | null;
 };
 
 export type UserRewardResponseWritable = {
-    status?: string;
-    data?: UserRewardWritable;
+    status: string;
+    data: UserRewardWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserUpdateReferralWritable = {
     referee_code: string;
 };
@@ -1223,14 +1026,6 @@ export type AdminCampaignsListData = {
     body?: never;
     path?: never;
     query?: {
-        active?: boolean;
-        available?: string;
-        currency?: string;
-        end_date?: string;
-        end_date__gt?: string;
-        end_date__lt?: string;
-        id?: string;
-        name__contains?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -1239,12 +1034,6 @@ export type AdminCampaignsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        search?: string;
-        start_date?: string;
-        start_date__gt?: string;
-        start_date__lt?: string;
-        type?: string;
-        visible?: boolean;
     };
     url: '/admin/campaigns/';
 };
@@ -1371,7 +1160,6 @@ export type AdminCurrenciesListData = {
     body?: never;
     path?: never;
     query?: {
-        code?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -1409,9 +1197,6 @@ export type AdminRewardsListData = {
     body?: never;
     path?: never;
     query?: {
-        campaign?: string;
-        currency?: string;
-        id?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -1420,10 +1205,6 @@ export type AdminRewardsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        status?: string;
-        status__in?: string;
-        type?: string;
-        user?: string;
     };
     url: '/admin/rewards/';
 };
@@ -1496,7 +1277,6 @@ export type AdminUsersListData = {
     body?: never;
     path?: never;
     query?: {
-        id?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -1505,8 +1285,6 @@ export type AdminUsersListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        referee_code?: string;
-        referral_code?: string;
     };
     url: '/admin/users/';
 };
@@ -1601,14 +1379,6 @@ export type UserCampaignsListData = {
     body?: never;
     path?: never;
     query?: {
-        active?: boolean;
-        available?: string;
-        currency?: string;
-        end_date?: string;
-        end_date__gt?: string;
-        end_date__lt?: string;
-        id?: string;
-        name__contains?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -1617,12 +1387,6 @@ export type UserCampaignsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        search?: string;
-        start_date?: string;
-        start_date__gt?: string;
-        start_date__lt?: string;
-        type?: string;
-        visible?: boolean;
     };
     url: '/user/campaigns/';
 };
@@ -1652,9 +1416,6 @@ export type UserRewardsListData = {
     body?: never;
     path?: never;
     query?: {
-        campaign?: string;
-        currency?: string;
-        id?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -1663,9 +1424,6 @@ export type UserRewardsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        status?: string;
-        status__in?: string;
-        type?: string;
     };
     url: '/user/rewards/';
 };

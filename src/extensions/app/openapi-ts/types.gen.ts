@@ -32,6 +32,7 @@ export type AdminCompany = {
     android_play_store_url?: string | null;
     apple_app_store_url?: string | null;
     readonly domains: Array<string> | null;
+    readonly latest_domains: Array<string> | null;
 };
 
 export type AdminCompanyResponse = {
@@ -52,6 +53,13 @@ export type AdminCreateDomain = {
      * * `client` - Client
      */
     host?: 'native' | 'client';
+    /**
+     * The app the domain points at. `legacy` routes the domain at the legacy wallet, `latest` routes it at the latest wallet. Defaults to `legacy`.
+     *
+     * * `legacy` - Legacy
+     * * `latest` - Latest
+     */
+    app?: 'legacy' | 'latest';
     domain: string;
     /**
      * * `active` - Active
@@ -90,8 +98,24 @@ export type AdminDomain = {
      * * `client` - Client
      */
     readonly host: 'native' | 'client';
+    /**
+     * The app the domain points at. Changing it on an active domain moves the domain to the other app without deactivating it. It cannot be changed in the same request as `status`.
+     *
+     * * `legacy` - Legacy
+     * * `latest` - Latest
+     */
+    app?: 'legacy' | 'latest';
+    /**
+     * The app the domain is waiting to be served by, usually for a few minutes: the latest app, for an active domain moving there (it keeps serving `app` meanwhile) or an inactive one being activated there. Null when neither is in progress.
+     *
+     * * `legacy` - Legacy
+     * * `latest` - Latest
+     */
+    readonly pending_app: 'legacy' | 'latest';
     readonly domain: string;
     /**
+     * Activating a domain on the latest app leaves it `inactive`, with `pending_app` set, until the latest app serves it.
+     *
      * * `active` - Active
      * * `inactive` - Inactive
      */
@@ -173,6 +197,7 @@ export type Company = {
     android_play_store_url?: string | null;
     apple_app_store_url?: string | null;
     readonly domains: Array<string> | null;
+    readonly latest_domains: Array<string> | null;
 };
 
 export type CompanyResponse = {
@@ -340,6 +365,7 @@ export type PatchedAdminCompany = {
     android_play_store_url?: string | null;
     apple_app_store_url?: string | null;
     readonly domains?: Array<string> | null;
+    readonly latest_domains?: Array<string> | null;
 };
 
 /**
@@ -355,8 +381,24 @@ export type PatchedAdminDomain = {
      * * `client` - Client
      */
     readonly host?: 'native' | 'client';
+    /**
+     * The app the domain points at. Changing it on an active domain moves the domain to the other app without deactivating it. It cannot be changed in the same request as `status`.
+     *
+     * * `legacy` - Legacy
+     * * `latest` - Latest
+     */
+    app?: 'legacy' | 'latest';
+    /**
+     * The app the domain is waiting to be served by, usually for a few minutes: the latest app, for an active domain moving there (it keeps serving `app` meanwhile) or an inactive one being activated there. Null when neither is in progress.
+     *
+     * * `legacy` - Legacy
+     * * `latest` - Latest
+     */
+    readonly pending_app?: 'legacy' | 'latest';
     readonly domain?: string;
     /**
+     * Activating a domain on the latest app leaves it `inactive`, with `pending_app` set, until the latest app serves it.
+     *
      * * `active` - Active
      * * `inactive` - Inactive
      */
@@ -569,6 +611,13 @@ export type AdminCreateDomainWritable = {
      * * `client` - Client
      */
     host?: 'native' | 'client';
+    /**
+     * The app the domain points at. `legacy` routes the domain at the legacy wallet, `latest` routes it at the latest wallet. Defaults to `legacy`.
+     *
+     * * `legacy` - Legacy
+     * * `latest` - Latest
+     */
+    app?: 'legacy' | 'latest';
     domain: string;
 };
 
@@ -580,6 +629,15 @@ export type AdminCreateDomainWritable = {
  */
 export type AdminDomainWritable = {
     /**
+     * The app the domain points at. Changing it on an active domain moves the domain to the other app without deactivating it. It cannot be changed in the same request as `status`.
+     *
+     * * `legacy` - Legacy
+     * * `latest` - Latest
+     */
+    app?: 'legacy' | 'latest';
+    /**
+     * Activating a domain on the latest app leaves it `inactive`, with `pending_app` set, until the latest app serves it.
+     *
      * * `active` - Active
      * * `inactive` - Inactive
      */
@@ -811,6 +869,15 @@ export type PatchedAdminCompanyWritable = {
  */
 export type PatchedAdminDomainWritable = {
     /**
+     * The app the domain points at. Changing it on an active domain moves the domain to the other app without deactivating it. It cannot be changed in the same request as `status`.
+     *
+     * * `legacy` - Legacy
+     * * `latest` - Latest
+     */
+    app?: 'legacy' | 'latest';
+    /**
+     * Activating a domain on the latest app leaves it `inactive`, with `pending_app` set, until the latest app serves it.
+     *
      * * `active` - Active
      * * `inactive` - Inactive
      */

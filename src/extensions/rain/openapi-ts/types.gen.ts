@@ -4,17 +4,10 @@ export type ClientOptions = {
     baseUrl: 'https://rain.services.rehive.com/api/' | (string & {});
 };
 
-/**
- * This serializer can be used if only a `status` is required in the response.
- */
 export type ActionResponse = {
     status: string;
 };
 
-/**
- * Serialize the activation data, should be a token that represents an admin
- * user.
- */
 export type Activate = {
     token: string;
     readonly id: string;
@@ -22,12 +15,6 @@ export type Activate = {
     readonly secret: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCard = {
     readonly id: string;
     readonly account: string;
@@ -37,18 +24,17 @@ export type AdminCard = {
      * * `physical` - Physical
      */
     readonly type: 'virtual' | 'physical';
+    /**
+     * * `partner_managed` - Partner Managed
+     * * `rain_managed` - Rain Managed
+     */
+    readonly program_type: 'partner_managed' | 'rain_managed';
     readonly rain_id: string | null;
     readonly created: number;
     readonly updated: number;
     readonly user: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCompany = {
     readonly id: string;
     readonly secret: string;
@@ -57,9 +43,15 @@ export type AdminCompany = {
      * * `production` - Production
      */
     readonly mode: 'test' | 'production';
+    /**
+     * * `partner_managed` - Partner Managed
+     * * `rain_managed` - Rain Managed
+     */
+    readonly program_type: 'partner_managed' | 'rain_managed';
     readonly operational_account: string | null;
     rain_api_key: string;
     rain_webhook_api_key: string;
+    readonly rain_configurations: Array<AdminRainConfiguration>;
     /**
      * Maps a platform group name to its config. A `*` key applies to any group, as defaults underneath an exact group match.
      */
@@ -72,6 +64,7 @@ export type AdminCompany = {
             kyc_collector?: 'rain' | 'sumsub';
         };
     };
+    readonly three_ds_notification_id: string;
 };
 
 export type AdminCompanyResponse = {
@@ -79,12 +72,6 @@ export type AdminCompanyResponse = {
     data: AdminCompany;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCurrency = {
     readonly code: string;
     readonly display_code: string | null;
@@ -101,6 +88,7 @@ export type AdminCurrency = {
      * * `solana` - Solana
      */
     rain_chain?: 'solana';
+    rain_chain_id?: number | null;
 };
 
 export type AdminCurrencyResponse = {
@@ -108,12 +96,6 @@ export type AdminCurrencyResponse = {
     data: AdminCurrency;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminExtendedCard = {
     readonly id: string;
     readonly account: string;
@@ -123,6 +105,11 @@ export type AdminExtendedCard = {
      * * `physical` - Physical
      */
     readonly type: 'virtual' | 'physical';
+    /**
+     * * `partner_managed` - Partner Managed
+     * * `rain_managed` - Rain Managed
+     */
+    readonly program_type: 'partner_managed' | 'rain_managed';
     readonly rain_id: string | null;
     /**
      * * `notActivated` - Not Activated
@@ -144,12 +131,67 @@ export type AdminExtendedCardResponse = {
     data: AdminExtendedCard;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type AdminRainConfiguration = {
+    /**
+     * * `partner_managed` - Partner Managed
+     * * `rain_managed` - Rain Managed
+     */
+    readonly program_type: 'partner_managed' | 'rain_managed';
+    readonly api_key: string;
+    readonly webhook_api_key: string;
+};
+
+export type AdminRainConfigurationResponse = {
+    status: string;
+    data: AdminRainConfiguration;
+};
+
+export type AdminThreeDsChallenge = {
+    readonly id: string;
+    card: UserCard;
+    readonly amount: string;
+    readonly currency: string;
+    readonly merchant_name: string | null;
+    readonly merchant_country: string | null;
+    /**
+     * * `pending` - Pending
+     * * `authenticated` - Authenticated
+     * * `declined` - Declined
+     * * `expired` - Expired
+     * * `failed` - Failed
+     */
+    readonly status: 'pending' | 'authenticated' | 'declined' | 'expired' | 'failed';
+    /**
+     * * `authenticate` - Authenticate
+     * * `decline` - Decline
+     */
+    readonly decision: 'authenticate' | 'decline';
+    readonly expires_in_seconds: number;
+    readonly start_time: number;
+    readonly expiry_time: number;
+    readonly decided_at: number;
+    readonly simulated: boolean;
+    readonly created: number;
+    readonly updated: number;
+    readonly user: string;
+    /**
+     * * `partner_managed` - Partner Managed
+     * * `rain_managed` - Rain Managed
+     */
+    readonly program_type: 'partner_managed' | 'rain_managed';
+    readonly rain_challenge_id: string;
+    readonly rain_transaction_id: string;
+    readonly rain_response: {
+        [key: string]: unknown;
+    } | null;
+    readonly push_error: string | null;
+};
+
+export type AdminThreeDsChallengeResponse = {
+    status: string;
+    data: AdminThreeDsChallenge;
+};
+
 export type AdminUpdateCompany = {
     readonly id: string;
     readonly secret: string;
@@ -158,9 +200,15 @@ export type AdminUpdateCompany = {
      * * `production` - Production
      */
     readonly mode: 'test' | 'production';
+    /**
+     * * `partner_managed` - Partner Managed
+     * * `rain_managed` - Rain Managed
+     */
+    program_type?: 'partner_managed' | 'rain_managed';
     operational_account?: string | null;
     rain_api_key?: string;
     rain_webhook_api_key?: string | null;
+    readonly rain_configurations: Array<AdminRainConfiguration>;
     /**
      * Maps a platform group name to its config. A `*` key applies to any group, as defaults underneath an exact group match.
      */
@@ -175,12 +223,16 @@ export type AdminUpdateCompany = {
     };
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type AdminUpdateRainConfiguration = {
+    /**
+     * * `partner_managed` - Partner Managed
+     * * `rain_managed` - Rain Managed
+     */
+    readonly program_type: 'partner_managed' | 'rain_managed';
+    api_key?: string;
+    webhook_api_key?: string | null;
+};
+
 export type Currency = {
     code: string;
     /**
@@ -191,6 +243,7 @@ export type Currency = {
      * * `solana` - Solana
      */
     rain_chain?: 'solana';
+    rain_chain_id?: number | null;
     display_code?: string | null;
     description?: string | null;
     symbol?: string | null;
@@ -198,10 +251,6 @@ export type Currency = {
     divisibility?: number;
 };
 
-/**
- * Serialize the deactivation data, should be a token that represents an admin
- * user.
- */
 export type Deactivate = {
     token: string;
     purge?: boolean;
@@ -213,10 +262,10 @@ export type EncryptedData = {
 };
 
 export type PaginatedAdminCardList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCard>;
+    results: Array<AdminCard>;
 };
 
 export type PaginatedAdminCardListResponse = {
@@ -225,10 +274,10 @@ export type PaginatedAdminCardListResponse = {
 };
 
 export type PaginatedAdminCurrencyList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCurrency>;
+    results: Array<AdminCurrency>;
 };
 
 export type PaginatedAdminCurrencyListResponse = {
@@ -236,11 +285,23 @@ export type PaginatedAdminCurrencyListResponse = {
     data: PaginatedAdminCurrencyList;
 };
 
-export type PaginatedUserApplicationList = {
-    count?: number;
+export type PaginatedAdminThreeDsChallengeList = {
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserApplication>;
+    results: Array<AdminThreeDsChallenge>;
+};
+
+export type PaginatedAdminThreeDsChallengeListResponse = {
+    status: string;
+    data: PaginatedAdminThreeDsChallengeList;
+};
+
+export type PaginatedUserApplicationList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<UserApplication>;
 };
 
 export type PaginatedUserApplicationListResponse = {
@@ -249,10 +310,10 @@ export type PaginatedUserApplicationListResponse = {
 };
 
 export type PaginatedUserCardList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserCard>;
+    results: Array<UserCard>;
 };
 
 export type PaginatedUserCardListResponse = {
@@ -260,12 +321,30 @@ export type PaginatedUserCardListResponse = {
     data: PaginatedUserCardList;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type PaginatedUserCollateralContractList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<UserCollateralContract>;
+};
+
+export type PaginatedUserCollateralContractListResponse = {
+    status: string;
+    data: PaginatedUserCollateralContractList;
+};
+
+export type PaginatedUserThreeDsChallengeList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<UserThreeDsChallenge>;
+};
+
+export type PaginatedUserThreeDsChallengeListResponse = {
+    status: string;
+    data: PaginatedUserThreeDsChallengeList;
+};
+
 export type PatchedAdminCurrency = {
     readonly code?: string;
     readonly display_code?: string | null;
@@ -282,14 +361,9 @@ export type PatchedAdminCurrency = {
      * * `solana` - Solana
      */
     rain_chain?: 'solana';
+    rain_chain_id?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateCompany = {
     readonly id?: string;
     readonly secret?: string;
@@ -298,9 +372,15 @@ export type PatchedAdminUpdateCompany = {
      * * `production` - Production
      */
     readonly mode?: 'test' | 'production';
+    /**
+     * * `partner_managed` - Partner Managed
+     * * `rain_managed` - Rain Managed
+     */
+    program_type?: 'partner_managed' | 'rain_managed';
     operational_account?: string | null;
     rain_api_key?: string;
     rain_webhook_api_key?: string | null;
+    readonly rain_configurations?: Array<AdminRainConfiguration>;
     /**
      * Maps a platform group name to its config. A `*` key applies to any group, as defaults underneath an exact group match.
      */
@@ -315,16 +395,49 @@ export type PatchedAdminUpdateCompany = {
     };
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type PatchedAdminUpdateRainConfiguration = {
+    /**
+     * * `partner_managed` - Partner Managed
+     * * `rain_managed` - Rain Managed
+     */
+    readonly program_type?: 'partner_managed' | 'rain_managed';
+    api_key?: string;
+    webhook_api_key?: string | null;
+};
+
 export type PatchedUser = {
     readonly id?: string;
     readonly rain_id?: string;
     terms_accepted?: boolean;
+};
+
+export type PatchedUserDecideThreeDsChallenge = {
+    readonly id?: string;
+    card?: UserCard;
+    readonly amount?: string;
+    readonly currency?: string;
+    readonly merchant_name?: string | null;
+    readonly merchant_country?: string | null;
+    /**
+     * * `pending` - Pending
+     * * `authenticated` - Authenticated
+     * * `declined` - Declined
+     * * `expired` - Expired
+     * * `failed` - Failed
+     */
+    readonly status?: 'pending' | 'authenticated' | 'declined' | 'expired' | 'failed';
+    /**
+     * * `authenticate` - Authenticate
+     * * `decline` - Decline
+     */
+    decision?: 'authenticate' | 'decline';
+    readonly expires_in_seconds?: number;
+    readonly start_time?: number;
+    readonly expiry_time?: number;
+    readonly decided_at?: number;
+    readonly simulated?: boolean;
+    readonly created?: number;
+    readonly updated?: number;
 };
 
 export type PatchedUserUpdateCardPin = {
@@ -340,24 +453,12 @@ export type RainWebhook = {
     };
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type User = {
     readonly id: string;
     readonly rain_id: string;
     terms_accepted?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserApplication = {
     readonly id: string;
     readonly account: string | null;
@@ -367,6 +468,7 @@ export type UserApplication = {
     readonly account_purpose: string | null;
     readonly expected_monthly_volume: string;
     readonly terms_and_conditions: boolean;
+    readonly wallet_address: string | null;
     readonly first_name: string | null;
     readonly last_name: string | null;
     readonly birth_date: string | null;
@@ -651,12 +753,21 @@ export type UserApplicationResponse = {
     data: UserApplication;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type UserBalances = {
+    readonly credit_limit: number;
+    readonly pending_charges: number;
+    readonly posted_charges: number;
+    readonly balance_due: number;
+    readonly spending_power: number;
+    readonly spending_power_with_wallet: number;
+    readonly currency: string;
+};
+
+export type UserBalancesResponse = {
+    status: string;
+    data: UserBalances;
+};
+
 export type UserCard = {
     readonly id: string;
     readonly account: string;
@@ -666,6 +777,11 @@ export type UserCard = {
      * * `physical` - Physical
      */
     readonly type: 'virtual' | 'physical';
+    /**
+     * * `partner_managed` - Partner Managed
+     * * `rain_managed` - Rain Managed
+     */
+    readonly program_type: 'partner_managed' | 'rain_managed';
     readonly rain_id: string | null;
     readonly created: number;
     readonly updated: number;
@@ -690,12 +806,29 @@ export type UserCardPinResponse = {
     data: UserCardPin;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type UserCollateralContract = {
+    readonly id: string;
+    readonly chain_id: number;
+    readonly user_address: string | null;
+    readonly proxy_address: string | null;
+    readonly deposit_address: string | null;
+    readonly controller_address: string | null;
+    readonly contract_version: number;
+    readonly tokens: {
+        [key: string]: unknown;
+    };
+    readonly onramp: {
+        [key: string]: unknown;
+    } | null;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type UserCollateralContractResponse = {
+    status: string;
+    data: UserCollateralContract;
+};
+
 export type UserCompany = {
     readonly id: string;
     /**
@@ -710,6 +843,11 @@ export type UserCompany = {
             kyc_collector?: 'rain' | 'sumsub';
         };
     };
+    /**
+     * * `partner_managed` - Partner Managed
+     * * `rain_managed` - Rain Managed
+     */
+    readonly program_type: 'partner_managed' | 'rain_managed';
 };
 
 export type UserCompanyResponse = {
@@ -717,12 +855,6 @@ export type UserCompanyResponse = {
     data: UserCompany;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCreateApplication = {
     readonly id: string;
     account?: string | null;
@@ -732,6 +864,7 @@ export type UserCreateApplication = {
     account_purpose?: string | null;
     expected_monthly_volume: number;
     terms_and_conditions?: boolean;
+    wallet_address?: string | null;
     readonly first_name: string | null;
     readonly last_name: string | null;
     readonly birth_date: string | null;
@@ -1011,12 +1144,6 @@ export type UserCreateApplication = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCreateCard = {
     readonly id: string;
     account: string;
@@ -1026,17 +1153,45 @@ export type UserCreateCard = {
      * * `physical` - Physical
      */
     readonly type: 'virtual' | 'physical';
+    /**
+     * * `partner_managed` - Partner Managed
+     * * `rain_managed` - Rain Managed
+     */
+    readonly program_type: 'partner_managed' | 'rain_managed';
     readonly rain_id: string | null;
     readonly created: number;
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type UserDecideThreeDsChallenge = {
+    readonly id: string;
+    card: UserCard;
+    readonly amount: string;
+    readonly currency: string;
+    readonly merchant_name: string | null;
+    readonly merchant_country: string | null;
+    /**
+     * * `pending` - Pending
+     * * `authenticated` - Authenticated
+     * * `declined` - Declined
+     * * `expired` - Expired
+     * * `failed` - Failed
+     */
+    readonly status: 'pending' | 'authenticated' | 'declined' | 'expired' | 'failed';
+    /**
+     * * `authenticate` - Authenticate
+     * * `decline` - Decline
+     */
+    decision: 'authenticate' | 'decline';
+    readonly expires_in_seconds: number;
+    readonly start_time: number;
+    readonly expiry_time: number;
+    readonly decided_at: number;
+    readonly simulated: boolean;
+    readonly created: number;
+    readonly updated: number;
+};
+
 export type UserExtendedCard = {
     readonly id: string;
     readonly account: string;
@@ -1046,6 +1201,11 @@ export type UserExtendedCard = {
      * * `physical` - Physical
      */
     readonly type: 'virtual' | 'physical';
+    /**
+     * * `partner_managed` - Partner Managed
+     * * `rain_managed` - Rain Managed
+     */
+    readonly program_type: 'partner_managed' | 'rain_managed';
     readonly rain_id: string | null;
     /**
      * * `notActivated` - Not Activated
@@ -1071,6 +1231,40 @@ export type UserResponse = {
     data: User;
 };
 
+export type UserThreeDsChallenge = {
+    readonly id: string;
+    card: UserCard;
+    readonly amount: string;
+    readonly currency: string;
+    readonly merchant_name: string | null;
+    readonly merchant_country: string | null;
+    /**
+     * * `pending` - Pending
+     * * `authenticated` - Authenticated
+     * * `declined` - Declined
+     * * `expired` - Expired
+     * * `failed` - Failed
+     */
+    readonly status: 'pending' | 'authenticated' | 'declined' | 'expired' | 'failed';
+    /**
+     * * `authenticate` - Authenticate
+     * * `decline` - Decline
+     */
+    readonly decision: 'authenticate' | 'decline';
+    readonly expires_in_seconds: number;
+    readonly start_time: number;
+    readonly expiry_time: number;
+    readonly decided_at: number;
+    readonly simulated: boolean;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type UserThreeDsChallengeResponse = {
+    status: string;
+    data: UserThreeDsChallenge;
+};
+
 export type UserUpdateCardPin = {
     [key: string]: unknown;
 };
@@ -1089,22 +1283,10 @@ export type Webhook = {
     };
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCardWritable = {
     [key: string]: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCompanyWritable = {
     rain_api_key: string;
     rain_webhook_api_key: string;
@@ -1115,12 +1297,6 @@ export type AdminCompanyResponseWritable = {
     data: AdminCompanyWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCurrencyWritable = {
     /**
      * * `usd` - Usd
@@ -1130,6 +1306,7 @@ export type AdminCurrencyWritable = {
      * * `solana` - Solana
      */
     rain_chain?: 'solana';
+    rain_chain_id?: number | null;
 };
 
 export type AdminCurrencyResponseWritable = {
@@ -1137,12 +1314,6 @@ export type AdminCurrencyResponseWritable = {
     data: AdminCurrencyWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminExtendedCardWritable = {
     [key: string]: unknown;
 };
@@ -1152,13 +1323,25 @@ export type AdminExtendedCardResponseWritable = {
     data: AdminExtendedCardWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type AdminRainConfigurationResponseWritable = {
+    status: string;
+};
+
+export type AdminThreeDsChallengeWritable = {
+    [key: string]: unknown;
+};
+
+export type AdminThreeDsChallengeResponseWritable = {
+    status: string;
+    data: AdminThreeDsChallengeWritable;
+};
+
 export type AdminUpdateCompanyWritable = {
+    /**
+     * * `partner_managed` - Partner Managed
+     * * `rain_managed` - Rain Managed
+     */
+    program_type?: 'partner_managed' | 'rain_managed';
     operational_account?: string | null;
     rain_api_key?: string;
     rain_webhook_api_key?: string | null;
@@ -1176,11 +1359,16 @@ export type AdminUpdateCompanyWritable = {
     };
 };
 
+export type AdminUpdateRainConfigurationWritable = {
+    api_key?: string;
+    webhook_api_key?: string | null;
+};
+
 export type PaginatedAdminCardListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCardWritable>;
+    results: Array<AdminCardWritable>;
 };
 
 export type PaginatedAdminCardListResponseWritable = {
@@ -1189,10 +1377,10 @@ export type PaginatedAdminCardListResponseWritable = {
 };
 
 export type PaginatedAdminCurrencyListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCurrencyWritable>;
+    results: Array<AdminCurrencyWritable>;
 };
 
 export type PaginatedAdminCurrencyListResponseWritable = {
@@ -1200,11 +1388,23 @@ export type PaginatedAdminCurrencyListResponseWritable = {
     data: PaginatedAdminCurrencyListWritable;
 };
 
-export type PaginatedUserApplicationListWritable = {
-    count?: number;
+export type PaginatedAdminThreeDsChallengeListWritable = {
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserApplicationWritable>;
+    results: Array<AdminThreeDsChallengeWritable>;
+};
+
+export type PaginatedAdminThreeDsChallengeListResponseWritable = {
+    status: string;
+    data: PaginatedAdminThreeDsChallengeListWritable;
+};
+
+export type PaginatedUserApplicationListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<UserApplicationWritable>;
 };
 
 export type PaginatedUserApplicationListResponseWritable = {
@@ -1213,10 +1413,10 @@ export type PaginatedUserApplicationListResponseWritable = {
 };
 
 export type PaginatedUserCardListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserCardWritable>;
+    results: Array<UserCardWritable>;
 };
 
 export type PaginatedUserCardListResponseWritable = {
@@ -1224,12 +1424,30 @@ export type PaginatedUserCardListResponseWritable = {
     data: PaginatedUserCardListWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type PaginatedUserCollateralContractListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
+export type PaginatedUserCollateralContractListResponseWritable = {
+    status: string;
+    data: PaginatedUserCollateralContractListWritable;
+};
+
+export type PaginatedUserThreeDsChallengeListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<UserThreeDsChallengeWritable>;
+};
+
+export type PaginatedUserThreeDsChallengeListResponseWritable = {
+    status: string;
+    data: PaginatedUserThreeDsChallengeListWritable;
+};
+
 export type PatchedAdminCurrencyWritable = {
     /**
      * * `usd` - Usd
@@ -1239,15 +1457,15 @@ export type PatchedAdminCurrencyWritable = {
      * * `solana` - Solana
      */
     rain_chain?: 'solana';
+    rain_chain_id?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateCompanyWritable = {
+    /**
+     * * `partner_managed` - Partner Managed
+     * * `rain_managed` - Rain Managed
+     */
+    program_type?: 'partner_managed' | 'rain_managed';
     operational_account?: string | null;
     rain_api_key?: string;
     rain_webhook_api_key?: string | null;
@@ -1265,36 +1483,31 @@ export type PatchedAdminUpdateCompanyWritable = {
     };
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type PatchedAdminUpdateRainConfigurationWritable = {
+    api_key?: string;
+    webhook_api_key?: string | null;
+};
+
 export type PatchedUserWritable = {
     terms_accepted?: boolean;
+};
+
+export type PatchedUserDecideThreeDsChallengeWritable = {
+    /**
+     * * `authenticate` - Authenticate
+     * * `decline` - Decline
+     */
+    decision?: 'authenticate' | 'decline';
 };
 
 export type PatchedUserUpdateCardPinWritable = {
     encrypted_pin?: EncryptedData;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserWritable = {
     terms_accepted?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserApplicationWritable = {
     [key: string]: unknown;
 };
@@ -1304,22 +1517,18 @@ export type UserApplicationResponseWritable = {
     data: UserApplicationWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type UserBalancesResponseWritable = {
+    status: string;
+};
+
 export type UserCardWritable = {
     [key: string]: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type UserCollateralContractResponseWritable = {
+    status: string;
+};
+
 export type UserCompanyWritable = {
     [key: string]: unknown;
 };
@@ -1329,23 +1538,19 @@ export type UserCompanyResponseWritable = {
     data: UserCompanyWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCreateCardWritable = {
     account: string;
     currency: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type UserDecideThreeDsChallengeWritable = {
+    /**
+     * * `authenticate` - Authenticate
+     * * `decline` - Decline
+     */
+    decision: 'authenticate' | 'decline';
+};
+
 export type UserExtendedCardWritable = {
     [key: string]: unknown;
 };
@@ -1358,6 +1563,15 @@ export type UserExtendedCardResponseWritable = {
 export type UserResponseWritable = {
     status: string;
     data: UserWritable;
+};
+
+export type UserThreeDsChallengeWritable = {
+    [key: string]: unknown;
+};
+
+export type UserThreeDsChallengeResponseWritable = {
+    status: string;
+    data: UserThreeDsChallengeWritable;
 };
 
 export type UserUpdateCardPinWritable = {
@@ -1377,6 +1591,56 @@ export type ActivateCreateResponses = {
 
 export type ActivateCreateResponse = ActivateCreateResponses[keyof ActivateCreateResponses];
 
+export type Admin3DsChallengesListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        card?: string;
+        currency?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        rain_challenge_id?: string;
+        rain_transaction_id?: string;
+        /**
+         * * `pending` - pending
+         * * `authenticated` - authenticated
+         * * `declined` - declined
+         * * `expired` - expired
+         * * `failed` - failed
+         */
+        status?: 'authenticated' | 'declined' | 'expired' | 'failed' | 'pending';
+        user?: string;
+    };
+    url: '/admin/3ds-challenges/';
+};
+
+export type Admin3DsChallengesListResponses = {
+    200: PaginatedAdminThreeDsChallengeListResponse;
+};
+
+export type Admin3DsChallengesListResponse = Admin3DsChallengesListResponses[keyof Admin3DsChallengesListResponses];
+
+export type Admin3DsChallengesRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/admin/3ds-challenges/{identifier}/';
+};
+
+export type Admin3DsChallengesRetrieveResponses = {
+    200: AdminThreeDsChallengeResponse;
+};
+
+export type Admin3DsChallengesRetrieveResponse = Admin3DsChallengesRetrieveResponses[keyof Admin3DsChallengesRetrieveResponses];
+
 export type AdminCardsListData = {
     body?: never;
     path?: never;
@@ -1391,6 +1655,11 @@ export type AdminCardsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
+        /**
+         * * `partner_managed` - partner_managed
+         * * `rain_managed` - rain_managed
+         */
+        program_type?: 'partner_managed' | 'rain_managed';
         rain_id?: string;
         user?: string;
     };
@@ -1456,6 +1725,51 @@ export type AdminCompanyUpdateResponses = {
 };
 
 export type AdminCompanyUpdateResponse = AdminCompanyUpdateResponses[keyof AdminCompanyUpdateResponses];
+
+export type AdminCompanyConfigurationsRetrieveData = {
+    body?: never;
+    path: {
+        program_type: string;
+    };
+    query?: never;
+    url: '/admin/company/configurations/{program_type}/';
+};
+
+export type AdminCompanyConfigurationsRetrieveResponses = {
+    200: AdminRainConfigurationResponse;
+};
+
+export type AdminCompanyConfigurationsRetrieveResponse = AdminCompanyConfigurationsRetrieveResponses[keyof AdminCompanyConfigurationsRetrieveResponses];
+
+export type AdminCompanyConfigurationsPartialUpdateData = {
+    body?: PatchedAdminUpdateRainConfigurationWritable;
+    path: {
+        program_type: string;
+    };
+    query?: never;
+    url: '/admin/company/configurations/{program_type}/';
+};
+
+export type AdminCompanyConfigurationsPartialUpdateResponses = {
+    200: AdminRainConfigurationResponse;
+};
+
+export type AdminCompanyConfigurationsPartialUpdateResponse = AdminCompanyConfigurationsPartialUpdateResponses[keyof AdminCompanyConfigurationsPartialUpdateResponses];
+
+export type AdminCompanyConfigurationsUpdateData = {
+    body?: AdminUpdateRainConfigurationWritable;
+    path: {
+        program_type: string;
+    };
+    query?: never;
+    url: '/admin/company/configurations/{program_type}/';
+};
+
+export type AdminCompanyConfigurationsUpdateResponses = {
+    200: AdminRainConfigurationResponse;
+};
+
+export type AdminCompanyConfigurationsUpdateResponse = AdminCompanyConfigurationsUpdateResponses[keyof AdminCompanyConfigurationsUpdateResponses];
 
 export type AdminCurrenciesListData = {
     body?: never;
@@ -1591,6 +1905,98 @@ export type UserUpdateResponses = {
 
 export type UserUpdateResponse = UserUpdateResponses[keyof UserUpdateResponses];
 
+export type User3DsChallengesListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        card?: string;
+        currency?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        /**
+         * * `pending` - pending
+         * * `authenticated` - authenticated
+         * * `declined` - declined
+         * * `expired` - expired
+         * * `failed` - failed
+         */
+        status?: 'authenticated' | 'declined' | 'expired' | 'failed' | 'pending';
+    };
+    url: '/user/3ds-challenges/';
+};
+
+export type User3DsChallengesListResponses = {
+    200: PaginatedUserThreeDsChallengeListResponse;
+};
+
+export type User3DsChallengesListResponse = User3DsChallengesListResponses[keyof User3DsChallengesListResponses];
+
+export type User3DsChallengesRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/user/3ds-challenges/{identifier}/';
+};
+
+export type User3DsChallengesRetrieveResponses = {
+    200: UserThreeDsChallengeResponse;
+};
+
+export type User3DsChallengesRetrieveResponse = User3DsChallengesRetrieveResponses[keyof User3DsChallengesRetrieveResponses];
+
+export type User3DsChallengesDecidePartialUpdateData = {
+    body?: PatchedUserDecideThreeDsChallengeWritable;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/user/3ds-challenges/{identifier}/decide/';
+};
+
+export type User3DsChallengesDecidePartialUpdateResponses = {
+    200: UserThreeDsChallengeResponse;
+};
+
+export type User3DsChallengesDecidePartialUpdateResponse = User3DsChallengesDecidePartialUpdateResponses[keyof User3DsChallengesDecidePartialUpdateResponses];
+
+export type User3DsChallengesDecideCreateData = {
+    body: UserDecideThreeDsChallengeWritable;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/user/3ds-challenges/{identifier}/decide/';
+};
+
+export type User3DsChallengesDecideCreateResponses = {
+    200: UserThreeDsChallengeResponse;
+};
+
+export type User3DsChallengesDecideCreateResponse = User3DsChallengesDecideCreateResponses[keyof User3DsChallengesDecideCreateResponses];
+
+export type User3DsChallengesDecideUpdateData = {
+    body: UserDecideThreeDsChallengeWritable;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/user/3ds-challenges/{identifier}/decide/';
+};
+
+export type User3DsChallengesDecideUpdateResponses = {
+    200: UserThreeDsChallengeResponse;
+};
+
+export type User3DsChallengesDecideUpdateResponse = User3DsChallengesDecideUpdateResponses[keyof User3DsChallengesDecideUpdateResponses];
+
 export type UserApplicationsListData = {
     body?: never;
     path?: never;
@@ -1641,6 +2047,19 @@ export type UserApplicationsRetrieveResponses = {
 
 export type UserApplicationsRetrieveResponse = UserApplicationsRetrieveResponses[keyof UserApplicationsRetrieveResponses];
 
+export type UserBalancesRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/user/balances/';
+};
+
+export type UserBalancesRetrieveResponses = {
+    200: UserBalancesResponse;
+};
+
+export type UserBalancesRetrieveResponse = UserBalancesRetrieveResponses[keyof UserBalancesRetrieveResponses];
+
 export type UserCardsListData = {
     body?: never;
     path?: never;
@@ -1655,6 +2074,11 @@ export type UserCardsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
+        /**
+         * * `partner_managed` - partner_managed
+         * * `rain_managed` - rain_managed
+         */
+        program_type?: 'partner_managed' | 'rain_managed';
         rain_id?: string;
     };
     url: '/user/cards/';
@@ -1766,6 +2190,43 @@ export type UserCompanyRetrieveResponses = {
 };
 
 export type UserCompanyRetrieveResponse = UserCompanyRetrieveResponses[keyof UserCompanyRetrieveResponses];
+
+export type UserContractsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/user/contracts/';
+};
+
+export type UserContractsListResponses = {
+    200: PaginatedUserCollateralContractListResponse;
+};
+
+export type UserContractsListResponse = UserContractsListResponses[keyof UserContractsListResponses];
+
+export type UserContractsRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/user/contracts/{identifier}/';
+};
+
+export type UserContractsRetrieveResponses = {
+    200: UserCollateralContractResponse;
+};
+
+export type UserContractsRetrieveResponse = UserContractsRetrieveResponses[keyof UserContractsRetrieveResponses];
 
 export type WebhookCreateData = {
     body: Webhook;

@@ -4,17 +4,10 @@ export type ClientOptions = {
     baseUrl: 'https://payment-requests.services.rehive.com/api/' | (string & {});
 };
 
-/**
- * This serializer can be used if only a `status` is required in the response.
- */
 export type ActionResponse = {
-    status?: string;
+    status: string;
 };
 
-/**
- * Serialize the activation data, should be a token that represents an admin
- * user.
- */
 export type Activate = {
     token: string;
     readonly id: string;
@@ -22,9 +15,6 @@ export type Activate = {
     readonly secret: string;
 };
 
-/**
- * Serialize company, update and delete.
- */
 export type AdminCompany = {
     readonly id: string;
     readonly secret: string;
@@ -32,33 +22,33 @@ export type AdminCompany = {
     reminder_intervals?: Array<number>;
 };
 
-/**
- * Serialize Company Payment Processors, view, create and update.
- */
 export type AdminCompanyPaymentProcessor = {
     readonly id: string;
     active?: boolean;
     company_base_endpoint: string;
     payment_processor?: string;
     generate_accounts?: boolean;
+    rehive_subtype?: string | null;
+    /**
+     * * `bank` - Pay with bank
+     * * `crypto` - Pay with crypto
+     * * `wallet` - Pay with wallet
+     * * `otp` - Pay with OTP
+     */
+    option?: 'bank' | 'crypto' | 'wallet' | 'otp' | null;
+    delivers_onchain?: boolean | null;
 };
 
 export type AdminCompanyPaymentProcessorResponse = {
-    status?: string;
-    data?: AdminCompanyPaymentProcessor;
+    status: string;
+    data: AdminCompanyPaymentProcessor;
 };
 
 export type AdminCompanyResponse = {
-    status?: string;
-    data?: AdminCompany;
+    status: string;
+    data: AdminCompany;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminPaymentProcessor = {
     readonly id: string;
     readonly native: boolean;
@@ -74,30 +64,31 @@ export type AdminPaymentProcessor = {
      * * `custom` - Custom
      */
     type: 'wallet' | 'crypto' | 'credit_card' | 'redirect' | 'bank' | 'custom';
+    /**
+     * * `bank` - Pay with bank
+     * * `crypto` - Pay with crypto
+     * * `wallet` - Pay with wallet
+     * * `otp` - Pay with OTP
+     */
+    option?: 'bank' | 'crypto' | 'wallet' | 'otp' | null;
     description: string;
     selector_description?: string | null;
     pending_processing_description?: string | null;
     processing_description?: string | null;
     currencies?: Array<string | null> | null;
     longest_expiration_time?: number;
-    rehive_transaction_identifier?: {
-        [key: string]: unknown;
-    } | null;
+    rehive_transaction_identifier?: unknown;
     rehive_subtype?: string | null;
     generate_accounts?: boolean;
+    delivers_onchain?: boolean;
+    provider?: string | null;
 };
 
 export type AdminPaymentProcessorResponse = {
-    status?: string;
-    data?: AdminPaymentProcessor;
+    status: string;
+    data: AdminPaymentProcessor;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminRefund = {
     readonly id: string;
     amount?: number;
@@ -121,16 +112,10 @@ export type AdminRefund = {
 };
 
 export type AdminRefundResponse = {
-    status?: string;
-    data?: AdminRefund;
+    status: string;
+    data: AdminRefund;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminRequestCreateUpdate = {
     readonly id: string;
     user: string;
@@ -138,11 +123,14 @@ export type AdminRequestCreateUpdate = {
     request_reference?: string | null;
     request_currency: string;
     request_amount?: number | null;
+    /**
+     * * `recipient` - Recipient
+     * * `payer` - Payer
+     */
+    fee_payer?: 'recipient' | 'payer';
     primary_payment_processor?: string;
     description?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     /**
      * * `draft` - Draft
      * * `initiated` - Initiated
@@ -173,16 +161,10 @@ export type AdminRequestCreateUpdate = {
 };
 
 export type AdminRequestCreateUpdateResponse = {
-    status?: string;
-    data?: AdminRequestCreateUpdate;
+    status: string;
+    data: AdminRequestCreateUpdate;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUser = {
     readonly id: string;
     base_currency?: string | null;
@@ -195,16 +177,10 @@ export type AdminUser = {
 };
 
 export type AdminUserResponse = {
-    status?: string;
-    data?: AdminUser;
+    status: string;
+    data: AdminUser;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminWebhook = {
     readonly id: string;
     secret?: string | null;
@@ -221,16 +197,10 @@ export type AdminWebhook = {
 };
 
 export type AdminWebhookResponse = {
-    status?: string;
-    data?: AdminWebhook;
+    status: string;
+    data: AdminWebhook;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AvailablePaymentProcessor = {
     readonly id: string;
     readonly native: boolean;
@@ -251,10 +221,16 @@ export type AvailablePaymentProcessor = {
      * * `custom` - Custom
      */
     type: 'wallet' | 'crypto' | 'credit_card' | 'redirect' | 'bank' | 'custom';
+    /**
+     * * `bank` - Pay with bank
+     * * `crypto` - Pay with crypto
+     * * `wallet` - Pay with wallet
+     * * `otp` - Pay with OTP
+     */
+    readonly option: 'bank' | 'crypto' | 'wallet' | 'otp';
+    readonly delivers_onchain: boolean;
     readonly longest_expiration_time: number;
-    readonly rehive_transaction_identifier: {
-        [key: string]: unknown;
-    } | null;
+    readonly rehive_transaction_identifier: unknown;
     readonly rehive_subtype: string | null;
     readonly active_weight: number;
     readonly generate_accounts: boolean;
@@ -262,9 +238,6 @@ export type AvailablePaymentProcessor = {
     weight: number;
 };
 
-/**
- * Serialize company, update and delete.
- */
 export type CompanyConfiguration = {
     base_redirect_url?: string | null;
     readonly otp_notification_id: string | null;
@@ -272,34 +245,34 @@ export type CompanyConfiguration = {
     reminder_default?: boolean;
     request_param_config?: string | null;
     generate_user_operational_accounts?: boolean;
+    custody_providers?: unknown;
 };
 
 export type CompanyConfigurationResponse = {
-    status?: string;
-    data?: CompanyConfiguration;
+    status: string;
+    data: CompanyConfiguration;
 };
 
-/**
- * Serialize Company Payment Processor, view, create and update.
- */
 export type CompanyPaymentProcessor = {
     readonly id: string;
     readonly active: boolean;
     payment_processor: PaymentProcessor;
     readonly currencies: Array<Currency>;
+    /**
+     * * `bank` - Pay with bank
+     * * `crypto` - Pay with crypto
+     * * `wallet` - Pay with wallet
+     * * `otp` - Pay with OTP
+     */
+    readonly option: 'bank' | 'crypto' | 'wallet' | 'otp';
+    readonly delivers_onchain: boolean;
 };
 
 export type CompanyPaymentProcessorResponse = {
-    status?: string;
-    data?: CompanyPaymentProcessor;
+    status: string;
+    data: CompanyPaymentProcessor;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ConversionQuote = {
     /**
      * * `quoted` - Quoted
@@ -313,12 +286,6 @@ export type ConversionQuote = {
     readonly rate: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateRefund = {
     readonly id: string;
     amount?: number;
@@ -342,16 +309,10 @@ export type CreateRefund = {
 };
 
 export type CreateRefundResponse = {
-    status?: string;
-    data?: CreateRefund;
+    status: string;
+    data: CreateRefund;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Currency = {
     code: string;
     display_code?: string | null;
@@ -359,12 +320,10 @@ export type Currency = {
     symbol?: string | null;
     unit?: string | null;
     divisibility?: number;
+    readonly asset: string;
+    readonly self_custody: boolean;
 };
 
-/**
- * Serialize the deactivation data, should be a token that represents an admin
- * user.
- */
 export type Deactivate = {
     token: string;
     purge?: boolean;
@@ -375,140 +334,137 @@ export type OtpChallenge = {
 };
 
 export type PaginatedAdminUserList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUser>;
+    results: Array<AdminUser>;
 };
 
 export type PaginatedAdminUserListResponse = {
-    status?: string;
-    data?: PaginatedAdminUserList;
+    status: string;
+    data: PaginatedAdminUserList;
 };
 
 export type PaginatedAdminWebhookList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminWebhook>;
+    results: Array<AdminWebhook>;
 };
 
 export type PaginatedAdminWebhookListResponse = {
-    status?: string;
-    data?: PaginatedAdminWebhookList;
+    status: string;
+    data: PaginatedAdminWebhookList;
 };
 
 export type PaginatedCompanyPaymentProcessorList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<CompanyPaymentProcessor>;
+    results: Array<CompanyPaymentProcessor>;
 };
 
 export type PaginatedCompanyPaymentProcessorListResponse = {
-    status?: string;
-    data?: PaginatedCompanyPaymentProcessorList;
+    status: string;
+    data: PaginatedCompanyPaymentProcessorList;
 };
 
 export type PaginatedPaymentProcessorList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<PaymentProcessor>;
+    results: Array<PaymentProcessor>;
 };
 
 export type PaginatedPaymentProcessorListResponse = {
-    status?: string;
-    data?: PaginatedPaymentProcessorList;
+    status: string;
+    data: PaginatedPaymentProcessorList;
 };
 
 export type PaginatedPaymentProcessorQuoteList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<PaymentProcessorQuote>;
+    results: Array<PaymentProcessorQuote>;
 };
 
 export type PaginatedPaymentProcessorQuoteListResponse = {
-    status?: string;
-    data?: PaginatedPaymentProcessorQuoteList;
+    status: string;
+    data: PaginatedPaymentProcessorQuoteList;
 };
 
 export type PaginatedRefundList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Refund>;
+    results: Array<Refund>;
 };
 
 export type PaginatedRefundListResponse = {
-    status?: string;
-    data?: PaginatedRefundList;
+    status: string;
+    data: PaginatedRefundList;
 };
 
 export type PaginatedRequestList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Request>;
+    results: Array<Request>;
 };
 
 export type PaginatedRequestListResponse = {
-    status?: string;
-    data?: PaginatedRequestList;
+    status: string;
+    data: PaginatedRequestList;
 };
 
 export type PaginatedRequestLogsList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<RequestLogs>;
+    results: Array<RequestLogs>;
 };
 
 export type PaginatedRequestLogsListResponse = {
-    status?: string;
-    data?: PaginatedRequestLogsList;
+    status: string;
+    data: PaginatedRequestLogsList;
 };
 
 export type PaginatedRequestTransactionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<RequestTransaction>;
+    results: Array<RequestTransaction>;
 };
 
 export type PaginatedRequestTransactionListResponse = {
-    status?: string;
-    data?: PaginatedRequestTransactionList;
+    status: string;
+    data: PaginatedRequestTransactionList;
 };
 
 export type PaginatedUserCompanyPaymentProcessorList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserCompanyPaymentProcessor>;
+    results: Array<UserCompanyPaymentProcessor>;
 };
 
 export type PaginatedUserCompanyPaymentProcessorListResponse = {
-    status?: string;
-    data?: PaginatedUserCompanyPaymentProcessorList;
+    status: string;
+    data: PaginatedUserCompanyPaymentProcessorList;
 };
 
 export type PaginatedWebhookList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Webhook>;
+    results: Array<Webhook>;
 };
 
 export type PaginatedWebhookListResponse = {
-    status?: string;
-    data?: PaginatedWebhookList;
+    status: string;
+    data: PaginatedWebhookList;
 };
 
-/**
- * Serialize company, update and delete.
- */
 export type PatchedAdminCompany = {
     readonly id?: string;
     readonly secret?: string;
@@ -516,23 +472,23 @@ export type PatchedAdminCompany = {
     reminder_intervals?: Array<number>;
 };
 
-/**
- * Serialize Company Payment Processors, view, create and update.
- */
 export type PatchedAdminCompanyPaymentProcessor = {
     readonly id?: string;
     active?: boolean;
     company_base_endpoint?: string;
     payment_processor?: string;
     generate_accounts?: boolean;
+    rehive_subtype?: string | null;
+    /**
+     * * `bank` - Pay with bank
+     * * `crypto` - Pay with crypto
+     * * `wallet` - Pay with wallet
+     * * `otp` - Pay with OTP
+     */
+    option?: 'bank' | 'crypto' | 'wallet' | 'otp' | null;
+    delivers_onchain?: boolean | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminPaymentProcessor = {
     readonly id?: string;
     readonly native?: boolean;
@@ -548,25 +504,26 @@ export type PatchedAdminPaymentProcessor = {
      * * `custom` - Custom
      */
     type?: 'wallet' | 'crypto' | 'credit_card' | 'redirect' | 'bank' | 'custom';
+    /**
+     * * `bank` - Pay with bank
+     * * `crypto` - Pay with crypto
+     * * `wallet` - Pay with wallet
+     * * `otp` - Pay with OTP
+     */
+    option?: 'bank' | 'crypto' | 'wallet' | 'otp' | null;
     description?: string;
     selector_description?: string | null;
     pending_processing_description?: string | null;
     processing_description?: string | null;
     currencies?: Array<string | null> | null;
     longest_expiration_time?: number;
-    rehive_transaction_identifier?: {
-        [key: string]: unknown;
-    } | null;
+    rehive_transaction_identifier?: unknown;
     rehive_subtype?: string | null;
     generate_accounts?: boolean;
+    delivers_onchain?: boolean;
+    provider?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminRequestCreateUpdate = {
     readonly id?: string;
     user?: string;
@@ -574,11 +531,14 @@ export type PatchedAdminRequestCreateUpdate = {
     request_reference?: string | null;
     request_currency?: string;
     request_amount?: number | null;
+    /**
+     * * `recipient` - Recipient
+     * * `payer` - Payer
+     */
+    fee_payer?: 'recipient' | 'payer';
     primary_payment_processor?: string;
     description?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     /**
      * * `draft` - Draft
      * * `initiated` - Initiated
@@ -608,12 +568,6 @@ export type PatchedAdminRequestCreateUpdate = {
     payment_processor_quotes?: Array<PaymentProcessorQuote>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUser = {
     readonly id?: string;
     base_currency?: string | null;
@@ -625,12 +579,6 @@ export type PatchedAdminUser = {
     readonly last_name?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminWebhook = {
     readonly id?: string;
     secret?: string | null;
@@ -646,9 +594,6 @@ export type PatchedAdminWebhook = {
     event?: 'service_payment_requests.request.create' | 'service_payment_requests.request.update' | 'service_payment_requests.quote.create' | 'service_payment_requests.otp.create' | 'service_payment_requests.payer_reminder' | 'service_payment_requests.payer_requested';
 };
 
-/**
- * Serialize company, update and delete.
- */
 export type PatchedCompanyConfiguration = {
     base_redirect_url?: string | null;
     readonly otp_notification_id?: string | null;
@@ -656,14 +601,9 @@ export type PatchedCompanyConfiguration = {
     reminder_default?: boolean;
     request_param_config?: string | null;
     generate_user_operational_accounts?: boolean;
+    custody_providers?: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedPublicRequestUpdate = {
     readonly id?: string;
     user?: User;
@@ -674,9 +614,7 @@ export type PatchedPublicRequestUpdate = {
     readonly request_amount?: number | null;
     primary_payment_processor?: string;
     readonly description?: string | null;
-    readonly metadata?: {
-        [key: string]: unknown;
-    } | null;
+    readonly metadata?: unknown;
     /**
      * * `draft` - Draft
      * * `initiated` - Initiated
@@ -705,12 +643,6 @@ export type PatchedPublicRequestUpdate = {
     note?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedRequestCreateUpdate = {
     readonly id?: string;
     user?: User;
@@ -718,11 +650,14 @@ export type PatchedRequestCreateUpdate = {
     request_reference?: string | null;
     request_currency?: string;
     request_amount?: number | null;
+    /**
+     * * `recipient` - Recipient
+     * * `payer` - Payer
+     */
+    fee_payer?: 'recipient' | 'payer';
     primary_payment_processor?: string;
     description?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     /**
      * * `draft` - Draft
      * * `initiated` - Initiated
@@ -752,21 +687,12 @@ export type PatchedRequestCreateUpdate = {
     payment_processor_quotes?: Array<PaymentProcessorQuote>;
 };
 
-/**
- * Serialize Company Payment Processors, view, create and update.
- */
 export type PatchedUserCrudCompanyPaymentProcessor = {
     readonly id?: string;
     active?: boolean;
     readonly company_payment_processor?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedWebhook = {
     readonly id?: string;
     secret?: string | null;
@@ -782,12 +708,39 @@ export type PatchedWebhook = {
     event?: 'service_payment_requests.request.create' | 'service_payment_requests.request.update' | 'service_payment_requests.quote.create' | 'service_payment_requests.otp.create' | 'service_payment_requests.payer_reminder' | 'service_payment_requests.payer_requested';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type PaymentOption = {
+    /**
+     * * `bank` - Pay with bank
+     * * `crypto` - Pay with crypto
+     * * `wallet` - Pay with wallet
+     * * `otp` - Pay with OTP
+     */
+    readonly option: 'bank' | 'crypto' | 'wallet' | 'otp';
+    readonly label: string;
+    readonly currencies: Array<PaymentOptionCurrency>;
+    readonly payment_processors: Array<PaymentOptionProcessor>;
+};
+
+export type PaymentOptionCurrency = {
+    readonly code: string;
+    readonly display_code: string;
+    readonly asset: string;
+    readonly self_custody: boolean;
+};
+
+export type PaymentOptionList = Array<PaymentOption>;
+
+export type PaymentOptionListResponse = {
+    status: string;
+    data: PaymentOptionList;
+};
+
+export type PaymentOptionProcessor = {
+    readonly unique_string_name: string;
+    readonly name: string;
+    readonly currencies: Array<string>;
+};
+
 export type PaymentProcessor = {
     readonly id: string;
     readonly native: boolean;
@@ -808,36 +761,48 @@ export type PaymentProcessor = {
      * * `custom` - Custom
      */
     type: 'wallet' | 'crypto' | 'credit_card' | 'redirect' | 'bank' | 'custom';
+    /**
+     * * `bank` - Pay with bank
+     * * `crypto` - Pay with crypto
+     * * `wallet` - Pay with wallet
+     * * `otp` - Pay with OTP
+     */
+    readonly option: 'bank' | 'crypto' | 'wallet' | 'otp';
+    readonly delivers_onchain: boolean;
     readonly longest_expiration_time: number;
-    readonly rehive_transaction_identifier: {
-        [key: string]: unknown;
-    } | null;
+    readonly rehive_transaction_identifier: unknown;
     readonly rehive_subtype: string | null;
     readonly active_weight: number;
     readonly generate_accounts: boolean;
     weight: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PaymentProcessorQuote = {
     readonly id: string;
     readonly request: number;
     readonly reference: string | null;
-    readonly deposit_details: {
-        [key: string]: unknown;
-    } | null;
+    readonly deposit_details: unknown;
+    readonly destination: unknown;
     payment_processor?: PaymentProcessor;
     readonly currency: {
         [key: string]: unknown;
     };
     readonly amount: number;
+    readonly fee: number;
+    readonly total_amount: number;
     readonly total_paid: number;
     readonly total_pending: number;
+    readonly total_paid_gross: number;
+    readonly total_fees: number;
+    readonly remaining_amount: number;
+    readonly net_amount: number;
+    /**
+     * * `recipient` - Recipient
+     * * `payer` - Payer
+     */
+    readonly fee_payer: 'recipient' | 'payer';
+    readonly total_paid_out: number;
+    readonly rehive_subtype: string;
     expiration_date?: number;
     /**
      * * `pending` - Pending
@@ -858,21 +823,15 @@ export type PaymentProcessorQuote = {
 };
 
 export type PaymentProcessorQuoteResponse = {
-    status?: string;
-    data?: PaymentProcessorQuote;
+    status: string;
+    data: PaymentProcessorQuote;
 };
 
 export type PaymentProcessorResponse = {
-    status?: string;
-    data?: PaymentProcessor;
+    status: string;
+    data: PaymentProcessor;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PublicRequest = {
     readonly id: string;
     user?: User;
@@ -882,11 +841,14 @@ export type PublicRequest = {
         [key: string]: unknown;
     };
     readonly request_amount: number | null;
+    /**
+     * * `recipient` - Recipient
+     * * `payer` - Payer
+     */
+    readonly fee_payer: 'recipient' | 'payer';
     primary_payment_processor?: PaymentProcessor;
     readonly description: string | null;
-    readonly metadata: {
-        [key: string]: unknown;
-    } | null;
+    readonly metadata: unknown;
     /**
      * * `draft` - Draft
      * * `initiated` - Initiated
@@ -918,16 +880,10 @@ export type PublicRequest = {
 };
 
 export type PublicRequestResponse = {
-    status?: string;
-    data?: PublicRequest;
+    status: string;
+    data: PublicRequest;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Refund = {
     readonly id: string;
     amount?: number;
@@ -962,17 +918,9 @@ export type RehiveWebhook = {
      */
     event: 'currency.create' | 'currency.update' | 'transaction.initiate' | 'transaction.execute' | 'user.create' | 'user.update';
     company: string;
-    data: {
-        [key: string]: unknown;
-    };
+    data: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Request = {
     readonly id: string;
     user?: User;
@@ -984,11 +932,14 @@ export type Request = {
         [key: string]: unknown;
     };
     request_amount?: number | null;
+    /**
+     * * `recipient` - Recipient
+     * * `payer` - Payer
+     */
+    readonly fee_payer: 'recipient' | 'payer';
     primary_payment_processor?: PaymentProcessor;
     description?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     /**
      * * `draft` - Draft
      * * `initiated` - Initiated
@@ -1020,12 +971,6 @@ export type Request = {
     updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type RequestCreateUpdate = {
     readonly id: string;
     user?: User;
@@ -1033,11 +978,14 @@ export type RequestCreateUpdate = {
     request_reference?: string | null;
     request_currency: string;
     request_amount?: number | null;
+    /**
+     * * `recipient` - Recipient
+     * * `payer` - Payer
+     */
+    fee_payer?: 'recipient' | 'payer';
     primary_payment_processor?: string;
     description?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     /**
      * * `draft` - Draft
      * * `initiated` - Initiated
@@ -1068,16 +1016,10 @@ export type RequestCreateUpdate = {
 };
 
 export type RequestCreateUpdateResponse = {
-    status?: string;
-    data?: RequestCreateUpdate;
+    status: string;
+    data: RequestCreateUpdate;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type RequestLogs = {
     readonly request: number;
     readonly user_agent: string | null;
@@ -1087,16 +1029,10 @@ export type RequestLogs = {
 };
 
 export type RequestResponse = {
-    status?: string;
-    data?: Request;
+    status: string;
+    data: Request;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type RequestTransaction = {
     readonly rehive_code: string;
     /**
@@ -1108,17 +1044,14 @@ export type RequestTransaction = {
      */
     status: 'pending' | 'pending_settled' | 'settled' | 'complete' | 'failed';
     readonly payment_processor_quote: number;
+    readonly gross_amount: number | null;
+    readonly fee_amount: number | null;
+    readonly net_amount: number | null;
     readonly details: {
         [key: string]: unknown;
     };
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type User = {
     readonly id: string;
     base_currency?: string | null;
@@ -1130,9 +1063,6 @@ export type User = {
     readonly last_name: string | null;
 };
 
-/**
- * Serialize Company Payment Processors, view, create and update.
- */
 export type UserCrudCompanyPaymentProcessor = {
     readonly id: string;
     active?: boolean;
@@ -1140,13 +1070,10 @@ export type UserCrudCompanyPaymentProcessor = {
 };
 
 export type UserCrudCompanyPaymentProcessorResponse = {
-    status?: string;
-    data?: UserCrudCompanyPaymentProcessor;
+    status: string;
+    data: UserCrudCompanyPaymentProcessor;
 };
 
-/**
- * Serialize Company Payment Processors, view, create and update.
- */
 export type UserCompanyPaymentProcessor = {
     readonly id: string;
     readonly active: boolean;
@@ -1155,16 +1082,10 @@ export type UserCompanyPaymentProcessor = {
 };
 
 export type UserCompanyPaymentProcessorResponse = {
-    status?: string;
-    data?: UserCompanyPaymentProcessor;
+    status: string;
+    data: UserCompanyPaymentProcessor;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Webhook = {
     readonly id: string;
     secret?: string | null;
@@ -1181,21 +1102,15 @@ export type Webhook = {
 };
 
 export type WebhookResponse = {
-    status?: string;
-    data?: Webhook;
+    status: string;
+    data: Webhook;
 };
 
-/**
- * Serialize company, update and delete.
- */
 export type AdminCompanyWritable = {
     name: string;
     reminder_intervals?: Array<number>;
 };
 
-/**
- * Serialize Company Payment Processors, view, create and update.
- */
 export type AdminCompanyPaymentProcessorWritable = {
     active?: boolean;
     company_base_endpoint: string;
@@ -1203,24 +1118,27 @@ export type AdminCompanyPaymentProcessorWritable = {
     payment_processor?: string;
     currencies?: Array<string>;
     generate_accounts?: boolean;
+    rehive_subtype?: string | null;
+    /**
+     * * `bank` - Pay with bank
+     * * `crypto` - Pay with crypto
+     * * `wallet` - Pay with wallet
+     * * `otp` - Pay with OTP
+     */
+    option?: 'bank' | 'crypto' | 'wallet' | 'otp' | null;
+    delivers_onchain?: boolean | null;
 };
 
 export type AdminCompanyPaymentProcessorResponseWritable = {
-    status?: string;
-    data?: AdminCompanyPaymentProcessorWritable;
+    status: string;
+    data: AdminCompanyPaymentProcessorWritable;
 };
 
 export type AdminCompanyResponseWritable = {
-    status?: string;
-    data?: AdminCompanyWritable;
+    status: string;
+    data: AdminCompanyWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminPaymentProcessorWritable = {
     unique_string_name: string;
     logo?: string | null;
@@ -1234,30 +1152,31 @@ export type AdminPaymentProcessorWritable = {
      * * `custom` - Custom
      */
     type: 'wallet' | 'crypto' | 'credit_card' | 'redirect' | 'bank' | 'custom';
+    /**
+     * * `bank` - Pay with bank
+     * * `crypto` - Pay with crypto
+     * * `wallet` - Pay with wallet
+     * * `otp` - Pay with OTP
+     */
+    option?: 'bank' | 'crypto' | 'wallet' | 'otp' | null;
     description: string;
     selector_description?: string | null;
     pending_processing_description?: string | null;
     processing_description?: string | null;
     currencies?: Array<string | null> | null;
     longest_expiration_time?: number;
-    rehive_transaction_identifier?: {
-        [key: string]: unknown;
-    } | null;
+    rehive_transaction_identifier?: unknown;
     rehive_subtype?: string | null;
     generate_accounts?: boolean;
+    delivers_onchain?: boolean;
+    provider?: string | null;
 };
 
 export type AdminPaymentProcessorResponseWritable = {
-    status?: string;
-    data?: AdminPaymentProcessorWritable;
+    status: string;
+    data: AdminPaymentProcessorWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminRefundWritable = {
     amount?: number;
     currency: string;
@@ -1271,27 +1190,24 @@ export type AdminRefundWritable = {
 };
 
 export type AdminRefundResponseWritable = {
-    status?: string;
-    data?: AdminRefundWritable;
+    status: string;
+    data: AdminRefundWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminRequestCreateUpdateWritable = {
     user: string;
     payer_user?: UserWritable;
     request_reference?: string | null;
     request_currency: string;
     request_amount?: number | null;
+    /**
+     * * `recipient` - Recipient
+     * * `payer` - Payer
+     */
+    fee_payer?: 'recipient' | 'payer';
     primary_payment_processor?: string;
     description?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     /**
      * * `draft` - Draft
      * * `initiated` - Initiated
@@ -1321,32 +1237,20 @@ export type AdminRequestCreateUpdateWritable = {
 };
 
 export type AdminRequestCreateUpdateResponseWritable = {
-    status?: string;
-    data?: AdminRequestCreateUpdateWritable;
+    status: string;
+    data: AdminRequestCreateUpdateWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUserWritable = {
     base_currency?: string | null;
     rate_padding?: string | null;
 };
 
 export type AdminUserResponseWritable = {
-    status?: string;
-    data?: AdminUserWritable;
+    status: string;
+    data: AdminUserWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminWebhookWritable = {
     secret?: string | null;
     url: string;
@@ -1362,16 +1266,10 @@ export type AdminWebhookWritable = {
 };
 
 export type AdminWebhookResponseWritable = {
-    status?: string;
-    data?: AdminWebhookWritable;
+    status: string;
+    data: AdminWebhookWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AvailablePaymentProcessorWritable = {
     /**
      * * `wallet` - Wallet
@@ -1386,39 +1284,28 @@ export type AvailablePaymentProcessorWritable = {
     weight: number;
 };
 
-/**
- * Serialize company, update and delete.
- */
 export type CompanyConfigurationWritable = {
     base_redirect_url?: string | null;
     reminder_default?: boolean;
     request_param_config?: string | null;
     generate_user_operational_accounts?: boolean;
+    custody_providers?: unknown;
 };
 
 export type CompanyConfigurationResponseWritable = {
-    status?: string;
-    data?: CompanyConfigurationWritable;
+    status: string;
+    data: CompanyConfigurationWritable;
 };
 
-/**
- * Serialize Company Payment Processor, view, create and update.
- */
 export type CompanyPaymentProcessorWritable = {
     [key: string]: unknown;
 };
 
 export type CompanyPaymentProcessorResponseWritable = {
-    status?: string;
-    data?: CompanyPaymentProcessorWritable;
+    status: string;
+    data: CompanyPaymentProcessorWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ConversionQuoteWritable = {
     /**
      * * `quoted` - Quoted
@@ -1430,12 +1317,6 @@ export type ConversionQuoteWritable = {
     status: 'quoted' | 'pending' | 'complete' | 'failed' | 'cancelled';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CreateRefundWritable = {
     amount?: number;
     currency: string;
@@ -1449,153 +1330,156 @@ export type CreateRefundWritable = {
 };
 
 export type CreateRefundResponseWritable = {
-    status?: string;
-    data?: CreateRefundWritable;
+    status: string;
+    data: CreateRefundWritable;
+};
+
+export type CurrencyWritable = {
+    code: string;
+    display_code?: string | null;
+    description?: string | null;
+    symbol?: string | null;
+    unit?: string | null;
+    divisibility?: number;
 };
 
 export type PaginatedAdminUserListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUserWritable>;
+    results: Array<AdminUserWritable>;
 };
 
 export type PaginatedAdminUserListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminUserListWritable;
+    status: string;
+    data: PaginatedAdminUserListWritable;
 };
 
 export type PaginatedAdminWebhookListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminWebhookWritable>;
+    results: Array<AdminWebhookWritable>;
 };
 
 export type PaginatedAdminWebhookListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminWebhookListWritable;
+    status: string;
+    data: PaginatedAdminWebhookListWritable;
 };
 
 export type PaginatedCompanyPaymentProcessorListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<CompanyPaymentProcessorWritable>;
+    results: Array<CompanyPaymentProcessorWritable>;
 };
 
 export type PaginatedCompanyPaymentProcessorListResponseWritable = {
-    status?: string;
-    data?: PaginatedCompanyPaymentProcessorListWritable;
+    status: string;
+    data: PaginatedCompanyPaymentProcessorListWritable;
 };
 
 export type PaginatedPaymentProcessorListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<PaymentProcessorWritable>;
+    results: Array<PaymentProcessorWritable>;
 };
 
 export type PaginatedPaymentProcessorListResponseWritable = {
-    status?: string;
-    data?: PaginatedPaymentProcessorListWritable;
+    status: string;
+    data: PaginatedPaymentProcessorListWritable;
 };
 
 export type PaginatedPaymentProcessorQuoteListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<PaymentProcessorQuoteWritable>;
+    results: Array<PaymentProcessorQuoteWritable>;
 };
 
 export type PaginatedPaymentProcessorQuoteListResponseWritable = {
-    status?: string;
-    data?: PaginatedPaymentProcessorQuoteListWritable;
+    status: string;
+    data: PaginatedPaymentProcessorQuoteListWritable;
 };
 
 export type PaginatedRefundListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<RefundWritable>;
+    results: Array<RefundWritable>;
 };
 
 export type PaginatedRefundListResponseWritable = {
-    status?: string;
-    data?: PaginatedRefundListWritable;
+    status: string;
+    data: PaginatedRefundListWritable;
 };
 
 export type PaginatedRequestListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<RequestWritable>;
+    results: Array<RequestWritable>;
 };
 
 export type PaginatedRequestListResponseWritable = {
-    status?: string;
-    data?: PaginatedRequestListWritable;
+    status: string;
+    data: PaginatedRequestListWritable;
 };
 
 export type PaginatedRequestLogsListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedRequestLogsListResponseWritable = {
-    status?: string;
-    data?: PaginatedRequestLogsListWritable;
+    status: string;
+    data: PaginatedRequestLogsListWritable;
 };
 
 export type PaginatedRequestTransactionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<RequestTransactionWritable>;
+    results: Array<RequestTransactionWritable>;
 };
 
 export type PaginatedRequestTransactionListResponseWritable = {
-    status?: string;
-    data?: PaginatedRequestTransactionListWritable;
+    status: string;
+    data: PaginatedRequestTransactionListWritable;
 };
 
 export type PaginatedUserCompanyPaymentProcessorListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserCompanyPaymentProcessorWritable>;
+    results: Array<UserCompanyPaymentProcessorWritable>;
 };
 
 export type PaginatedUserCompanyPaymentProcessorListResponseWritable = {
-    status?: string;
-    data?: PaginatedUserCompanyPaymentProcessorListWritable;
+    status: string;
+    data: PaginatedUserCompanyPaymentProcessorListWritable;
 };
 
 export type PaginatedWebhookListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<WebhookWritable>;
+    results: Array<WebhookWritable>;
 };
 
 export type PaginatedWebhookListResponseWritable = {
-    status?: string;
-    data?: PaginatedWebhookListWritable;
+    status: string;
+    data: PaginatedWebhookListWritable;
 };
 
-/**
- * Serialize company, update and delete.
- */
 export type PatchedAdminCompanyWritable = {
     name?: string;
     reminder_intervals?: Array<number>;
 };
 
-/**
- * Serialize Company Payment Processors, view, create and update.
- */
 export type PatchedAdminCompanyPaymentProcessorWritable = {
     active?: boolean;
     company_base_endpoint?: string;
@@ -1603,14 +1487,17 @@ export type PatchedAdminCompanyPaymentProcessorWritable = {
     payment_processor?: string;
     currencies?: Array<string>;
     generate_accounts?: boolean;
+    rehive_subtype?: string | null;
+    /**
+     * * `bank` - Pay with bank
+     * * `crypto` - Pay with crypto
+     * * `wallet` - Pay with wallet
+     * * `otp` - Pay with OTP
+     */
+    option?: 'bank' | 'crypto' | 'wallet' | 'otp' | null;
+    delivers_onchain?: boolean | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminPaymentProcessorWritable = {
     unique_string_name?: string;
     logo?: string | null;
@@ -1624,36 +1511,40 @@ export type PatchedAdminPaymentProcessorWritable = {
      * * `custom` - Custom
      */
     type?: 'wallet' | 'crypto' | 'credit_card' | 'redirect' | 'bank' | 'custom';
+    /**
+     * * `bank` - Pay with bank
+     * * `crypto` - Pay with crypto
+     * * `wallet` - Pay with wallet
+     * * `otp` - Pay with OTP
+     */
+    option?: 'bank' | 'crypto' | 'wallet' | 'otp' | null;
     description?: string;
     selector_description?: string | null;
     pending_processing_description?: string | null;
     processing_description?: string | null;
     currencies?: Array<string | null> | null;
     longest_expiration_time?: number;
-    rehive_transaction_identifier?: {
-        [key: string]: unknown;
-    } | null;
+    rehive_transaction_identifier?: unknown;
     rehive_subtype?: string | null;
     generate_accounts?: boolean;
+    delivers_onchain?: boolean;
+    provider?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminRequestCreateUpdateWritable = {
     user?: string;
     payer_user?: UserWritable;
     request_reference?: string | null;
     request_currency?: string;
     request_amount?: number | null;
+    /**
+     * * `recipient` - Recipient
+     * * `payer` - Payer
+     */
+    fee_payer?: 'recipient' | 'payer';
     primary_payment_processor?: string;
     description?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     /**
      * * `draft` - Draft
      * * `initiated` - Initiated
@@ -1682,23 +1573,11 @@ export type PatchedAdminRequestCreateUpdateWritable = {
     payment_processor_quotes?: Array<PaymentProcessorQuoteWritable>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUserWritable = {
     base_currency?: string | null;
     rate_padding?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminWebhookWritable = {
     secret?: string | null;
     url?: string;
@@ -1713,22 +1592,14 @@ export type PatchedAdminWebhookWritable = {
     event?: 'service_payment_requests.request.create' | 'service_payment_requests.request.update' | 'service_payment_requests.quote.create' | 'service_payment_requests.otp.create' | 'service_payment_requests.payer_reminder' | 'service_payment_requests.payer_requested';
 };
 
-/**
- * Serialize company, update and delete.
- */
 export type PatchedCompanyConfigurationWritable = {
     base_redirect_url?: string | null;
     reminder_default?: boolean;
     request_param_config?: string | null;
     generate_user_operational_accounts?: boolean;
+    custody_providers?: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedPublicRequestUpdateWritable = {
     user?: UserWritable;
     primary_payment_processor?: string;
@@ -1754,25 +1625,29 @@ export type PatchedPublicRequestUpdateWritable = {
     available_payment_processors?: Array<AvailablePaymentProcessorWritable>;
     quote_amount?: string;
     note?: string | null;
+    /**
+     * * `bank` - Pay with bank
+     * * `crypto` - Pay with crypto
+     * * `wallet` - Pay with wallet
+     * * `otp` - Pay with OTP
+     */
+    payment_option?: 'bank' | 'crypto' | 'wallet' | 'otp';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedRequestCreateUpdateWritable = {
     user?: UserWritable;
     payer_user?: UserWritable;
     request_reference?: string | null;
     request_currency?: string;
     request_amount?: number | null;
+    /**
+     * * `recipient` - Recipient
+     * * `payer` - Payer
+     */
+    fee_payer?: 'recipient' | 'payer';
     primary_payment_processor?: string;
     description?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     /**
      * * `draft` - Draft
      * * `initiated` - Initiated
@@ -1801,20 +1676,11 @@ export type PatchedRequestCreateUpdateWritable = {
     payment_processor_quotes?: Array<PaymentProcessorQuoteWritable>;
 };
 
-/**
- * Serialize Company Payment Processors, view, create and update.
- */
 export type PatchedUserCrudCompanyPaymentProcessorWritable = {
     active?: boolean;
     currencies?: Array<string>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedWebhookWritable = {
     secret?: string | null;
     url?: string;
@@ -1829,12 +1695,10 @@ export type PatchedWebhookWritable = {
     event?: 'service_payment_requests.request.create' | 'service_payment_requests.request.update' | 'service_payment_requests.quote.create' | 'service_payment_requests.otp.create' | 'service_payment_requests.payer_reminder' | 'service_payment_requests.payer_requested';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type PaymentOptionListResponseWritable = {
+    status: string;
+};
+
 export type PaymentProcessorWritable = {
     /**
      * * `wallet` - Wallet
@@ -1848,12 +1712,6 @@ export type PaymentProcessorWritable = {
     weight: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PaymentProcessorQuoteWritable = {
     payment_processor?: PaymentProcessorWritable;
     expiration_date?: number;
@@ -1875,21 +1733,15 @@ export type PaymentProcessorQuoteWritable = {
 };
 
 export type PaymentProcessorQuoteResponseWritable = {
-    status?: string;
-    data?: PaymentProcessorQuoteWritable;
+    status: string;
+    data: PaymentProcessorQuoteWritable;
 };
 
 export type PaymentProcessorResponseWritable = {
-    status?: string;
-    data?: PaymentProcessorWritable;
+    status: string;
+    data: PaymentProcessorWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PublicRequestWritable = {
     user?: UserWritable;
     payer_user?: UserWritable;
@@ -1920,19 +1772,13 @@ export type PublicRequestWritable = {
 };
 
 export type PublicRequestResponseWritable = {
-    status?: string;
-    data?: PublicRequestWritable;
+    status: string;
+    data: PublicRequestWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type RefundWritable = {
     amount?: number;
-    currency: Currency;
+    currency: CurrencyWritable;
     /**
      * * `native` - Native
      */
@@ -1942,12 +1788,6 @@ export type RefundWritable = {
     updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type RequestWritable = {
     user?: UserWritable;
     payer_user?: UserWritable;
@@ -1955,9 +1795,7 @@ export type RequestWritable = {
     request_amount?: number | null;
     primary_payment_processor?: PaymentProcessorWritable;
     description?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     /**
      * * `draft` - Draft
      * * `initiated` - Initiated
@@ -1987,23 +1825,20 @@ export type RequestWritable = {
     updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type RequestCreateUpdateWritable = {
     user?: UserWritable;
     payer_user?: UserWritable;
     request_reference?: string | null;
     request_currency: string;
     request_amount?: number | null;
+    /**
+     * * `recipient` - Recipient
+     * * `payer` - Payer
+     */
+    fee_payer?: 'recipient' | 'payer';
     primary_payment_processor?: string;
     description?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     /**
      * * `draft` - Draft
      * * `initiated` - Initiated
@@ -2033,21 +1868,15 @@ export type RequestCreateUpdateWritable = {
 };
 
 export type RequestCreateUpdateResponseWritable = {
-    status?: string;
-    data?: RequestCreateUpdateWritable;
+    status: string;
+    data: RequestCreateUpdateWritable;
 };
 
 export type RequestResponseWritable = {
-    status?: string;
-    data?: RequestWritable;
+    status: string;
+    data: RequestWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type RequestTransactionWritable = {
     /**
      * * `pending` - Pending
@@ -2059,47 +1888,29 @@ export type RequestTransactionWritable = {
     status: 'pending' | 'pending_settled' | 'settled' | 'complete' | 'failed';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserWritable = {
     base_currency?: string | null;
 };
 
-/**
- * Serialize Company Payment Processors, view, create and update.
- */
 export type UserCrudCompanyPaymentProcessorWritable = {
     active?: boolean;
     currencies?: Array<string>;
 };
 
 export type UserCrudCompanyPaymentProcessorResponseWritable = {
-    status?: string;
-    data?: UserCrudCompanyPaymentProcessorWritable;
+    status: string;
+    data: UserCrudCompanyPaymentProcessorWritable;
 };
 
-/**
- * Serialize Company Payment Processors, view, create and update.
- */
 export type UserCompanyPaymentProcessorWritable = {
     company_payment_processor: CompanyPaymentProcessorWritable;
 };
 
 export type UserCompanyPaymentProcessorResponseWritable = {
-    status?: string;
-    data?: UserCompanyPaymentProcessorWritable;
+    status: string;
+    data: UserCompanyPaymentProcessorWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type WebhookWritable = {
     secret?: string | null;
     url: string;
@@ -2115,8 +1926,8 @@ export type WebhookWritable = {
 };
 
 export type WebhookResponseWritable = {
-    status?: string;
-    data?: WebhookWritable;
+    status: string;
+    data: WebhookWritable;
 };
 
 export type ActivateCreateData = {
@@ -2742,7 +2553,6 @@ export type AdminWebhooksListData = {
     body?: never;
     path?: never;
     query?: {
-        event?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -2751,8 +2561,6 @@ export type AdminWebhooksListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        secret?: string;
-        url?: string;
     };
     url: '/admin/webhooks/';
 };
@@ -2908,6 +2716,21 @@ export type RequestsOtpChallengeCreateResponses = {
 };
 
 export type RequestsOtpChallengeCreateResponse = RequestsOtpChallengeCreateResponses[keyof RequestsOtpChallengeCreateResponses];
+
+export type RequestsPaymentOptionsListData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/requests/{identifier}/payment_options/';
+};
+
+export type RequestsPaymentOptionsListResponses = {
+    200: PaymentOptionListResponse;
+};
+
+export type RequestsPaymentOptionsListResponse = RequestsPaymentOptionsListResponses[keyof RequestsPaymentOptionsListResponses];
 
 export type RequestsPaymentProcessorsListData = {
     body?: never;
