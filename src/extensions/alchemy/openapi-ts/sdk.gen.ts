@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { ActivateCreateData, ActivateCreateResponses, AdminAddressesCreateData, AdminAddressesCreateResponses, AdminAddressesDestroyData, AdminAddressesDestroyResponses, AdminAddressesListData, AdminAddressesListResponses, AdminAddressesRetrieveData, AdminAddressesRetrieveResponses, AdminCompanyPartialUpdateData, AdminCompanyPartialUpdateResponses, AdminCompanyRetrieveData, AdminCompanyRetrieveResponses, AdminCompanyUpdateData, AdminCompanyUpdateResponses, AdminDepositAddressesCreateData, AdminDepositAddressesCreateResponses, AdminDepositFactoriesCreateData, AdminDepositFactoriesCreateResponses, AdminDepositFactoriesListData, AdminDepositFactoriesListResponses, AdminDepositFactoriesRetrieveData, AdminDepositFactoriesRetrieveResponses, AdminOnchainTransactionsListData, AdminOnchainTransactionsListResponses, AdminOnchainTransactionsRetrieveData, AdminOnchainTransactionsRetrieveResponses, AlchemyWebhookCreateData, AlchemyWebhookCreateResponses, DeactivateCreateData, DeactivateCreateResponses, UserAccountAddressLookupCreateData, UserAccountAddressLookupCreateResponses, UserAddressesCreateData, UserAddressesCreateResponses, UserAddressesListData, UserAddressesListResponses, UserAddressesRetrieveData, UserAddressesRetrieveResponses, UserCollectionsPartialUpdateData, UserCollectionsPartialUpdateResponses, UserCollectionsRetrieveData, UserCollectionsRetrieveResponses, UserCollectionsUpdateData, UserCollectionsUpdateResponses, UserOnchainTransactionsCancelCreateData, UserOnchainTransactionsCancelCreateResponses, UserOnchainTransactionsListData, UserOnchainTransactionsListResponses, UserOnchainTransactionsPartialUpdateData, UserOnchainTransactionsPartialUpdateResponses, UserOnchainTransactionsRetrieveData, UserOnchainTransactionsRetrieveResponses, UserOnchainTransactionsUpdateData, UserOnchainTransactionsUpdateResponses, UserPartialUpdateData, UserPartialUpdateResponses, UserRetrieveData, UserRetrieveResponses, UserUpdateData, UserUpdateResponses, WebhookCreateData, WebhookCreateResponses } from './types.gen';
+import type { ActivateCreateData, ActivateCreateResponses, AdminAddressesCreateData, AdminAddressesCreateResponses, AdminAddressesDestroyData, AdminAddressesDestroyResponses, AdminAddressesListData, AdminAddressesListResponses, AdminAddressesRetrieveData, AdminAddressesRetrieveResponses, AdminCompanyPartialUpdateData, AdminCompanyPartialUpdateResponses, AdminCompanyRetrieveData, AdminCompanyRetrieveResponses, AdminCompanyUpdateData, AdminCompanyUpdateResponses, AdminDepositAddressesCreateData, AdminDepositAddressesCreateResponses, AdminDepositFactoriesCreateData, AdminDepositFactoriesCreateResponses, AdminDepositFactoriesListData, AdminDepositFactoriesListResponses, AdminDepositFactoriesRetrieveData, AdminDepositFactoriesRetrieveResponses, AdminOnchainTransactionsListData, AdminOnchainTransactionsListResponses, AdminOnchainTransactionsRetrieveData, AdminOnchainTransactionsRetrieveResponses, AdminPrsDestinationCreateData, AdminPrsDestinationCreateResponses, AdminPrsQuoteCreateData, AdminPrsQuoteCreateResponses, AdminUsersListData, AdminUsersListResponses, AdminUsersRetrieveData, AdminUsersRetrieveResponses, AlchemyWebhookCreateData, AlchemyWebhookCreateResponses, DeactivateCreateData, DeactivateCreateResponses, PrivyWebhookCreateData, PrivyWebhookCreateResponses, UserAccountAddressLookupCreateData, UserAccountAddressLookupCreateResponses, UserAddressesCreateData, UserAddressesCreateResponses, UserAddressesListData, UserAddressesListResponses, UserAddressesRetrieveData, UserAddressesRetrieveResponses, UserCollectionsPartialUpdateData, UserCollectionsPartialUpdateResponses, UserCollectionsRetrieveData, UserCollectionsRetrieveResponses, UserCollectionsUpdateData, UserCollectionsUpdateResponses, UserOnchainTransactionsCancelCreateData, UserOnchainTransactionsCancelCreateResponses, UserOnchainTransactionsListData, UserOnchainTransactionsListResponses, UserOnchainTransactionsPartialUpdateData, UserOnchainTransactionsPartialUpdateResponses, UserOnchainTransactionsRetrieveData, UserOnchainTransactionsRetrieveResponses, UserOnchainTransactionsUpdateData, UserOnchainTransactionsUpdateResponses, UserPartialUpdateData, UserPartialUpdateResponses, UserRetrieveData, UserRetrieveResponses, UserUpdateData, UserUpdateResponses, WebhookCreateData, WebhookCreateResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -125,6 +125,38 @@ export const adminOnchainTransactionsRetrieve = <ThrowOnError extends boolean = 
     ...options
 });
 
+export const adminPrsDestinationCreate = <ThrowOnError extends boolean = false>(options: Options<AdminPrsDestinationCreateData, ThrowOnError>): RequestResult<AdminPrsDestinationCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AdminPrsDestinationCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/admin/prs/destination/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const adminPrsQuoteCreate = <ThrowOnError extends boolean = false>(options: Options<AdminPrsQuoteCreateData, ThrowOnError>): RequestResult<AdminPrsQuoteCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AdminPrsQuoteCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/admin/prs/quote/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const adminUsersList = <ThrowOnError extends boolean = false>(options?: Options<AdminUsersListData, ThrowOnError>): RequestResult<AdminUsersListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AdminUsersListResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/admin/users/',
+    ...options
+});
+
+export const adminUsersRetrieve = <ThrowOnError extends boolean = false>(options: Options<AdminUsersRetrieveData, ThrowOnError>): RequestResult<AdminUsersRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AdminUsersRetrieveResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/admin/users/{identifier}/',
+    ...options
+});
+
 export const alchemyWebhookCreate = <ThrowOnError extends boolean = false>(options: Options<AlchemyWebhookCreateData, ThrowOnError>): RequestResult<AlchemyWebhookCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AlchemyWebhookCreateResponses, unknown, ThrowOnError>({
     url: '/alchemy_webhook/',
     ...options,
@@ -140,6 +172,15 @@ export const deactivateCreate = <ThrowOnError extends boolean = false>(options: 
     headers: {
         'Content-Type': 'application/json',
         ...options.headers
+    }
+});
+
+export const privyWebhookCreate = <ThrowOnError extends boolean = false>(options?: Options<PrivyWebhookCreateData, ThrowOnError>): RequestResult<PrivyWebhookCreateResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PrivyWebhookCreateResponses, unknown, ThrowOnError>({
+    url: '/privy_webhook/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
     }
 });
 

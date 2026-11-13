@@ -37,8 +37,6 @@ Generated files are written directly to:
 - `src/extensions/notifications/openapi-ts/`
 - `src/extensions/products/openapi-ts/`
 - `src/extensions/rewards/openapi-ts/`
-- `src/extensions/stellar/openapi-ts/`
-- `src/extensions/stellar-testnet/openapi-ts/`
 - `src/extensions/business/openapi-ts/`
 - `src/extensions/payment-requests/openapi-ts/`
 - `src/extensions/bridge/openapi-ts/`
@@ -62,8 +60,6 @@ The generation script (`scripts/codegen-openapi-ts.sh`) uses:
 - `https://notification.services.rehive.com/schema.json`
 - `https://product.services.rehive.com/schema.json`
 - `https://reward.services.rehive.com/schema.json`
-- `https://stellar.services.rehive.com/swagger/?format=openapi`
-- `https://stellar-testnet.services.rehive.com/swagger/?format=openapi`
 - `https://business.services.rehive.com/schema.json`
 - `https://payment-requests.services.rehive.com/schema.json`
 - `https://bridge.services.rehive.com/schema.json`
@@ -75,6 +71,14 @@ The generation script (`scripts/codegen-openapi-ts.sh`) uses:
 - `https://sumsub.services.rehive.com/schema.json`
 - `https://mukuru.services.rehive.com/schema.json`
 - `https://risk.services.rehive.com/schema.json`
+
+## Frozen Clients
+
+`stellar` and `stellar-testnet` are no longer regenerated. Their committed
+output in `src/extensions/stellar*/openapi-ts/` still ships and is excluded from
+`codegen:openapi-ts:clean`, so it stays as last generated. The
+`fix-codegen-types.sh` pass still globs over it, which is a no-op on
+already-patched output.
 
 ## Unhealthy Schema Endpoints
 

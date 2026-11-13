@@ -4,12 +4,6 @@ export type ClientOptions = {
     baseUrl: 'https://builder.services.rehive.io/api/' | (string & {});
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminBuildTask = {
     readonly id: string;
     readonly status: string;
@@ -20,9 +14,7 @@ export type AdminBuildTask = {
      */
     readonly total_steps: number;
     readonly errors: Array<string> | null;
-    config: {
-        [key: string]: unknown;
-    };
+    config: unknown;
     template?: string | null;
     template_version?: string | null;
     readonly created: number;
@@ -30,14 +22,10 @@ export type AdminBuildTask = {
 };
 
 export type AdminBuildTaskResponse = {
-    status?: string;
-    data?: AdminBuildTask;
+    status: string;
+    data: AdminBuildTask;
 };
 
-/**
- * Template management. The config is managed exclusively through
- * template versions and is therefore read-only here.
- */
 export type AdminCreateTemplate = {
     id: string;
     name: string;
@@ -50,20 +38,14 @@ export type AdminCreateTemplate = {
      * * `account_cofiguration` - Account Configuration
      */
     type: 'solution' | 'subtype' | 'group' | 'account_cofiguration';
-    link?: string | null;
+    link?: string | string | null;
     active?: boolean;
     readonly version: string;
-    readonly config: {
-        [key: string]: unknown;
-    };
+    readonly config: unknown;
     readonly created: number;
     readonly updated: number;
 };
 
-/**
- * Template management. The config is managed exclusively through
- * template versions and is therefore read-only here.
- */
 export type AdminTemplate = {
     readonly id: string;
     name: string;
@@ -76,24 +58,322 @@ export type AdminTemplate = {
      * * `account_cofiguration` - Account Configuration
      */
     type: 'solution' | 'subtype' | 'group' | 'account_cofiguration';
-    link?: string | null;
+    link?: string | string | null;
     active?: boolean;
     readonly version: string;
-    readonly config: {
-        [key: string]: unknown;
-    };
+    readonly config: unknown;
     readonly created: number;
     readonly updated: number;
 };
 
-/**
- * Result of comparing a company's live configuration against a template
- * version.
- *
- * Read-only: the comparison view builds this payload itself, so the
- * serializer exists to describe the response, not to validate input.
- */
-export type AdminTemplateComparison = {
+export type AdminTemplateResponse = {
+    status: string;
+    data: AdminTemplate;
+};
+
+export type AdminTemplateVersion = {
+    version: string;
+    config?: unknown;
+    published?: boolean;
+    readonly published_at: number;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type AdminTemplateVersionResponse = {
+    status: string;
+    data: AdminTemplateVersion;
+};
+
+export type AdminUpdateTemplateVersion = {
+    readonly version: string;
+    readonly config: unknown;
+    published?: boolean;
+    readonly published_at: number;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type AdminUpdateTemplateVersionResponse = {
+    status: string;
+    data: AdminUpdateTemplateVersion;
+};
+
+export type OperatorApplyReconciliationPlan = {
+    operations: Array<string>;
+};
+
+export type OperatorCompanySync = {
+    readonly company: string;
+    readonly status: string;
+    readonly template: string;
+    /**
+     * Null if the version compared against has since been removed.
+     */
+    readonly version: string | null;
+    /**
+     * Resources missing or differing at the time of the check.
+     */
+    readonly differences: number;
+    /**
+     * The verdict for everything Rehive's platform owns.
+     */
+    readonly platform: {
+        [key: string]: unknown;
+    } | null;
+    /**
+     * The verdict for extension-owned configuration. Null when the check predates the split.
+     */
+    readonly extensions: {
+        [key: string]: unknown;
+    } | null;
+    readonly checked: number;
+    /**
+     * The company was applied to after this check, so the result describes the company as it was, not as it is.
+     */
+    readonly stale: boolean;
+};
+
+export type OperatorCreateReconciliationPlan = {
+    /**
+     * * `merge` - merge
+     * * `replace` - replace
+     */
+    mode?: 'merge' | 'replace';
+    fee_values?: Array<OperatorFeeValue>;
+};
+
+export type OperatorFeeValue = {
+    /**
+     * * `group_fees` - group_fees
+     * * `group_tier_fees` - group_tier_fees
+     */
+    section: 'group_fees' | 'group_tier_fees';
+    group: string;
+    level?: string | null;
+    key: {
+        [key: string]: unknown;
+    };
+    value?: string;
+    percentage?: string;
+};
+
+export type OperatorFeeValueRow = {
+    readonly section: string;
+    readonly group: string;
+    readonly level: string | null;
+    readonly key: {
+        [key: string]: unknown;
+    };
+    readonly name: string | null;
+    readonly description: string | null;
+    readonly tx_type: string | null;
+    readonly subtype: string | null;
+    readonly currency: string | null;
+    readonly template: {
+        [key: string]: unknown;
+    };
+    readonly live: {
+        [key: string]: unknown;
+    } | null;
+};
+
+export type OperatorFeeValueRowResponse = {
+    status: string;
+    data: OperatorFeeValueRow;
+};
+
+export type OperatorReconciliationPlan = {
+    readonly id: string;
+    readonly company: string;
+    readonly template: string;
+    readonly version: string;
+    readonly operator_email: string;
+    readonly mode: string;
+    readonly fee_values: unknown;
+    readonly fingerprints: unknown;
+    readonly comparison: unknown;
+    readonly operations: unknown;
+    readonly selected_operations: Array<string>;
+    readonly results: unknown;
+    readonly errors: Array<string>;
+    readonly status: string;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type OperatorReconciliationPlanResponse = {
+    status: string;
+    data: OperatorReconciliationPlan;
+};
+
+export type OperatorReconciliationPlanSummary = {
+    readonly id: string;
+    readonly company: string;
+    readonly template: string;
+    readonly version: string;
+    readonly operator_email: string;
+    readonly mode: string;
+    readonly status: string;
+    readonly operation_count: number;
+    readonly selected_count: number;
+    readonly result_count: number;
+    readonly errors: Array<string>;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type OperatorRefreshCompanySync = {
+    template?: string | null;
+};
+
+export type OperatorRefreshCompanySyncResponse = {
+    status: string;
+    data: OperatorRefreshCompanySync;
+};
+
+export type OperatorTemplateVersion = {
+    readonly version: string;
+    readonly config: unknown;
+    readonly published: boolean;
+    readonly published_at: number;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type OperatorTemplateVersionResponse = {
+    status: string;
+    data: OperatorTemplateVersion;
+};
+
+export type PaginatedAdminBuildTaskList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AdminBuildTask>;
+};
+
+export type PaginatedAdminBuildTaskListResponse = {
+    status: string;
+    data: PaginatedAdminBuildTaskList;
+};
+
+export type PaginatedAdminTemplateList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AdminTemplate>;
+};
+
+export type PaginatedAdminTemplateListResponse = {
+    status: string;
+    data: PaginatedAdminTemplateList;
+};
+
+export type PaginatedAdminTemplateVersionList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AdminTemplateVersion>;
+};
+
+export type PaginatedAdminTemplateVersionListResponse = {
+    status: string;
+    data: PaginatedAdminTemplateVersionList;
+};
+
+export type PaginatedOperatorCompanySyncList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<OperatorCompanySync>;
+};
+
+export type PaginatedOperatorCompanySyncListResponse = {
+    status: string;
+    data: PaginatedOperatorCompanySyncList;
+};
+
+export type PaginatedOperatorReconciliationPlanSummaryList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<OperatorReconciliationPlanSummary>;
+};
+
+export type PaginatedOperatorReconciliationPlanSummaryListResponse = {
+    status: string;
+    data: PaginatedOperatorReconciliationPlanSummaryList;
+};
+
+export type PaginatedOperatorTemplateVersionList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<OperatorTemplateVersion>;
+};
+
+export type PaginatedOperatorTemplateVersionListResponse = {
+    status: string;
+    data: PaginatedOperatorTemplateVersionList;
+};
+
+export type PaginatedTemplateList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<Template>;
+};
+
+export type PaginatedTemplateListResponse = {
+    status: string;
+    data: PaginatedTemplateList;
+};
+
+export type PatchedAdminTemplate = {
+    readonly id?: string;
+    name?: string;
+    description?: string;
+    short_description?: string | null;
+    /**
+     * * `solution` - Solution
+     * * `subtype` - Subtype
+     * * `group` - Group
+     * * `account_cofiguration` - Account Configuration
+     */
+    type?: 'solution' | 'subtype' | 'group' | 'account_cofiguration';
+    link?: string | string | null;
+    active?: boolean;
+    readonly version?: string;
+    readonly config?: unknown;
+    readonly created?: number;
+    readonly updated?: number;
+};
+
+export type PatchedAdminUpdateTemplateVersion = {
+    readonly version?: string;
+    readonly config?: unknown;
+    published?: boolean;
+    readonly published_at?: number;
+    readonly created?: number;
+    readonly updated?: number;
+};
+
+export type Template = {
+    readonly id: string;
+    readonly name: string;
+    readonly description: string;
+    readonly short_description: string | null;
+    readonly type: string;
+    readonly link: string | null;
+    readonly active: boolean;
+    readonly version: string;
+    readonly config: unknown;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type TemplateComparison = {
     readonly template: string;
     readonly version: string;
     /**
@@ -108,6 +388,22 @@ export type AdminTemplateComparison = {
     readonly sync_status: 'in_sync' | 'out_of_sync' | 'incomplete';
     readonly complete: boolean;
     /**
+     * The same verdict for everything Rehive's platform owns.
+     */
+    readonly platform: {
+        [key: string]: unknown;
+    };
+    /**
+     * The same verdict for extension-owned configuration.
+     */
+    readonly extensions: {
+        [key: string]: unknown;
+    };
+    /**
+     * Compared sections shown for inspection but excluded from sync verdicts and subject to console reconciliation protection.
+     */
+    readonly protected_sections: Array<string>;
+    /**
      * Per-section results, keyed by config section name.
      */
     readonly sections: {
@@ -115,198 +411,27 @@ export type AdminTemplateComparison = {
     };
 };
 
-export type AdminTemplateComparisonResponse = {
-    status?: string;
-    data?: AdminTemplateComparison;
-};
-
-export type AdminTemplateResponse = {
-    status?: string;
-    data?: AdminTemplate;
-};
-
-/**
- * Template version management. Versions are immutable once created;
- * the only mutation allowed is publishing (which promotes the version's
- * config to the template's active config).
- */
-export type AdminTemplateVersion = {
-    version: string;
-    config?: {
-        [key: string]: unknown;
-    };
-    published?: boolean;
-    readonly published_at: number;
-    readonly created: number;
-    readonly updated: number;
-};
-
-export type AdminTemplateVersionResponse = {
-    status?: string;
-    data?: AdminTemplateVersion;
-};
-
-/**
- * Template version management. Versions are immutable once created;
- * the only mutation allowed is publishing (which promotes the version's
- * config to the template's active config).
- */
-export type AdminUpdateTemplateVersion = {
-    readonly version: string;
-    readonly config: {
-        [key: string]: unknown;
-    };
-    published?: boolean;
-    readonly published_at: number;
-    readonly created: number;
-    readonly updated: number;
-};
-
-export type AdminUpdateTemplateVersionResponse = {
-    status?: string;
-    data?: AdminUpdateTemplateVersion;
-};
-
-export type PaginatedAdminBuildTaskList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<AdminBuildTask>;
-};
-
-export type PaginatedAdminBuildTaskListResponse = {
-    status?: string;
-    data?: PaginatedAdminBuildTaskList;
-};
-
-export type PaginatedAdminTemplateList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<AdminTemplate>;
-};
-
-export type PaginatedAdminTemplateListResponse = {
-    status?: string;
-    data?: PaginatedAdminTemplateList;
-};
-
-export type PaginatedAdminTemplateVersionList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<AdminTemplateVersion>;
-};
-
-export type PaginatedAdminTemplateVersionListResponse = {
-    status?: string;
-    data?: PaginatedAdminTemplateVersionList;
-};
-
-export type PaginatedTemplateList = {
-    count?: number;
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<Template>;
-};
-
-export type PaginatedTemplateListResponse = {
-    status?: string;
-    data?: PaginatedTemplateList;
-};
-
-/**
- * Template management. The config is managed exclusively through
- * template versions and is therefore read-only here.
- */
-export type PatchedAdminTemplate = {
-    readonly id?: string;
-    name?: string;
-    description?: string;
-    short_description?: string | null;
-    /**
-     * * `solution` - Solution
-     * * `subtype` - Subtype
-     * * `group` - Group
-     * * `account_cofiguration` - Account Configuration
-     */
-    type?: 'solution' | 'subtype' | 'group' | 'account_cofiguration';
-    link?: string | null;
-    active?: boolean;
-    readonly version?: string;
-    readonly config?: {
-        [key: string]: unknown;
-    };
-    readonly created?: number;
-    readonly updated?: number;
-};
-
-/**
- * Template version management. Versions are immutable once created;
- * the only mutation allowed is publishing (which promotes the version's
- * config to the template's active config).
- */
-export type PatchedAdminUpdateTemplateVersion = {
-    readonly version?: string;
-    readonly config?: {
-        [key: string]: unknown;
-    };
-    published?: boolean;
-    readonly published_at?: number;
-    readonly created?: number;
-    readonly updated?: number;
-};
-
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
-export type Template = {
-    readonly id: string;
-    readonly name: string;
-    readonly description: string;
-    readonly short_description: string | null;
-    readonly type: string;
-    readonly link: string | null;
-    readonly active: boolean;
-    readonly version: string;
-    readonly config: {
-        [key: string]: unknown;
-    };
-    readonly created: number;
-    readonly updated: number;
+export type TemplateComparisonResponse = {
+    status: string;
+    data: TemplateComparison;
 };
 
 export type TemplateResponse = {
-    status?: string;
-    data?: Template;
+    status: string;
+    data: Template;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminBuildTaskWritable = {
-    config: {
-        [key: string]: unknown;
-    };
+    config: unknown;
     template?: string | null;
     template_version?: string | null;
 };
 
 export type AdminBuildTaskResponseWritable = {
-    status?: string;
-    data?: AdminBuildTaskWritable;
+    status: string;
+    data: AdminBuildTaskWritable;
 };
 
-/**
- * Template management. The config is managed exclusively through
- * template versions and is therefore read-only here.
- */
 export type AdminCreateTemplateWritable = {
     id: string;
     name: string;
@@ -319,14 +444,10 @@ export type AdminCreateTemplateWritable = {
      * * `account_cofiguration` - Account Configuration
      */
     type: 'solution' | 'subtype' | 'group' | 'account_cofiguration';
-    link?: string | null;
+    link?: string | string | null;
     active?: boolean;
 };
 
-/**
- * Template management. The config is managed exclusively through
- * template versions and is therefore read-only here.
- */
 export type AdminTemplateWritable = {
     name: string;
     description: string;
@@ -338,103 +459,131 @@ export type AdminTemplateWritable = {
      * * `account_cofiguration` - Account Configuration
      */
     type: 'solution' | 'subtype' | 'group' | 'account_cofiguration';
-    link?: string | null;
+    link?: string | string | null;
     active?: boolean;
 };
 
-export type AdminTemplateComparisonResponseWritable = {
-    status?: string;
-};
-
 export type AdminTemplateResponseWritable = {
-    status?: string;
-    data?: AdminTemplateWritable;
+    status: string;
+    data: AdminTemplateWritable;
 };
 
-/**
- * Template version management. Versions are immutable once created;
- * the only mutation allowed is publishing (which promotes the version's
- * config to the template's active config).
- */
 export type AdminTemplateVersionWritable = {
     version: string;
-    config?: {
-        [key: string]: unknown;
-    };
+    config?: unknown;
     published?: boolean;
 };
 
 export type AdminTemplateVersionResponseWritable = {
-    status?: string;
-    data?: AdminTemplateVersionWritable;
+    status: string;
+    data: AdminTemplateVersionWritable;
 };
 
-/**
- * Template version management. Versions are immutable once created;
- * the only mutation allowed is publishing (which promotes the version's
- * config to the template's active config).
- */
 export type AdminUpdateTemplateVersionWritable = {
     published?: boolean;
 };
 
 export type AdminUpdateTemplateVersionResponseWritable = {
-    status?: string;
-    data?: AdminUpdateTemplateVersionWritable;
+    status: string;
+    data: AdminUpdateTemplateVersionWritable;
+};
+
+export type OperatorFeeValueRowResponseWritable = {
+    status: string;
+};
+
+export type OperatorReconciliationPlanResponseWritable = {
+    status: string;
+};
+
+export type OperatorTemplateVersionResponseWritable = {
+    status: string;
 };
 
 export type PaginatedAdminBuildTaskListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminBuildTaskWritable>;
+    results: Array<AdminBuildTaskWritable>;
 };
 
 export type PaginatedAdminBuildTaskListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminBuildTaskListWritable;
+    status: string;
+    data: PaginatedAdminBuildTaskListWritable;
 };
 
 export type PaginatedAdminTemplateListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminTemplateWritable>;
+    results: Array<AdminTemplateWritable>;
 };
 
 export type PaginatedAdminTemplateListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminTemplateListWritable;
+    status: string;
+    data: PaginatedAdminTemplateListWritable;
 };
 
 export type PaginatedAdminTemplateVersionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminTemplateVersionWritable>;
+    results: Array<AdminTemplateVersionWritable>;
 };
 
 export type PaginatedAdminTemplateVersionListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminTemplateVersionListWritable;
+    status: string;
+    data: PaginatedAdminTemplateVersionListWritable;
+};
+
+export type PaginatedOperatorCompanySyncListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
+export type PaginatedOperatorCompanySyncListResponseWritable = {
+    status: string;
+    data: PaginatedOperatorCompanySyncListWritable;
+};
+
+export type PaginatedOperatorReconciliationPlanSummaryListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
+export type PaginatedOperatorReconciliationPlanSummaryListResponseWritable = {
+    status: string;
+    data: PaginatedOperatorReconciliationPlanSummaryListWritable;
+};
+
+export type PaginatedOperatorTemplateVersionListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
+export type PaginatedOperatorTemplateVersionListResponseWritable = {
+    status: string;
+    data: PaginatedOperatorTemplateVersionListWritable;
 };
 
 export type PaginatedTemplateListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedTemplateListResponseWritable = {
-    status?: string;
-    data?: PaginatedTemplateListWritable;
+    status: string;
+    data: PaginatedTemplateListWritable;
 };
 
-/**
- * Template management. The config is managed exclusively through
- * template versions and is therefore read-only here.
- */
 export type PatchedAdminTemplateWritable = {
     name?: string;
     description?: string;
@@ -446,21 +595,20 @@ export type PatchedAdminTemplateWritable = {
      * * `account_cofiguration` - Account Configuration
      */
     type?: 'solution' | 'subtype' | 'group' | 'account_cofiguration';
-    link?: string | null;
+    link?: string | string | null;
     active?: boolean;
 };
 
-/**
- * Template version management. Versions are immutable once created;
- * the only mutation allowed is publishing (which promotes the version's
- * config to the template's active config).
- */
 export type PatchedAdminUpdateTemplateVersionWritable = {
     published?: boolean;
 };
 
+export type TemplateComparisonResponseWritable = {
+    status: string;
+};
+
 export type TemplateResponseWritable = {
-    status?: string;
+    status: string;
 };
 
 export type AdminBuildTasksListData = {
@@ -595,21 +743,6 @@ export type AdminTemplatesUpdateResponses = {
 
 export type AdminTemplatesUpdateResponse = AdminTemplatesUpdateResponses[keyof AdminTemplatesUpdateResponses];
 
-export type AdminTemplatesComparisonRetrieveData = {
-    body?: never;
-    path: {
-        identifier: string;
-    };
-    query?: never;
-    url: '/admin/templates/{identifier}/comparison/';
-};
-
-export type AdminTemplatesComparisonRetrieveResponses = {
-    200: AdminTemplateComparisonResponse;
-};
-
-export type AdminTemplatesComparisonRetrieveResponse = AdminTemplatesComparisonRetrieveResponses[keyof AdminTemplatesComparisonRetrieveResponses];
-
 export type AdminTemplatesVersionsListData = {
     body?: never;
     path: {
@@ -713,21 +846,355 @@ export type AdminTemplatesVersionsUpdateResponses = {
 
 export type AdminTemplatesVersionsUpdateResponse = AdminTemplatesVersionsUpdateResponses[keyof AdminTemplatesVersionsUpdateResponses];
 
-export type AdminTemplatesVersionsComparisonRetrieveData = {
+export type OperatorCompaniesSyncCreateData = {
+    body?: OperatorRefreshCompanySync;
+    path: {
+        company_id: string;
+    };
+    query?: never;
+    url: '/operator/companies/{company_id}/sync/';
+};
+
+export type OperatorCompaniesSyncCreateResponses = {
+    201: OperatorRefreshCompanySyncResponse;
+};
+
+export type OperatorCompaniesSyncCreateResponse = OperatorCompaniesSyncCreateResponses[keyof OperatorCompaniesSyncCreateResponses];
+
+export type OperatorCompaniesTemplatesComparisonRetrieveData = {
+    body?: never;
+    path: {
+        company_id: string;
+        identifier: string;
+    };
+    query?: never;
+    url: '/operator/companies/{company_id}/templates/{identifier}/comparison/';
+};
+
+export type OperatorCompaniesTemplatesComparisonRetrieveResponses = {
+    200: TemplateComparisonResponse;
+};
+
+export type OperatorCompaniesTemplatesComparisonRetrieveResponse = OperatorCompaniesTemplatesComparisonRetrieveResponses[keyof OperatorCompaniesTemplatesComparisonRetrieveResponses];
+
+export type OperatorCompaniesTemplatesFeeValuesRetrieveData = {
+    body?: never;
+    path: {
+        company_id: string;
+        identifier: string;
+    };
+    query?: never;
+    url: '/operator/companies/{company_id}/templates/{identifier}/fee-values/';
+};
+
+export type OperatorCompaniesTemplatesFeeValuesRetrieveResponses = {
+    200: OperatorFeeValueRowResponse;
+};
+
+export type OperatorCompaniesTemplatesFeeValuesRetrieveResponse = OperatorCompaniesTemplatesFeeValuesRetrieveResponses[keyof OperatorCompaniesTemplatesFeeValuesRetrieveResponses];
+
+export type OperatorCompaniesTemplatesVersionsComparisonRetrieveData = {
+    body?: never;
+    path: {
+        company_id: string;
+        identifier: string;
+        version: string;
+    };
+    query?: never;
+    url: '/operator/companies/{company_id}/templates/{identifier}/versions/{version}/comparison/';
+};
+
+export type OperatorCompaniesTemplatesVersionsComparisonRetrieveResponses = {
+    200: TemplateComparisonResponse;
+};
+
+export type OperatorCompaniesTemplatesVersionsComparisonRetrieveResponse = OperatorCompaniesTemplatesVersionsComparisonRetrieveResponses[keyof OperatorCompaniesTemplatesVersionsComparisonRetrieveResponses];
+
+export type OperatorCompaniesTemplatesVersionsFeeValuesRetrieveData = {
+    body?: never;
+    path: {
+        company_id: string;
+        identifier: string;
+        version: string;
+    };
+    query?: never;
+    url: '/operator/companies/{company_id}/templates/{identifier}/versions/{version}/fee-values/';
+};
+
+export type OperatorCompaniesTemplatesVersionsFeeValuesRetrieveResponses = {
+    200: OperatorFeeValueRowResponse;
+};
+
+export type OperatorCompaniesTemplatesVersionsFeeValuesRetrieveResponse = OperatorCompaniesTemplatesVersionsFeeValuesRetrieveResponses[keyof OperatorCompaniesTemplatesVersionsFeeValuesRetrieveResponses];
+
+export type OperatorCompaniesTemplatesVersionsPlansCreateData = {
+    body?: OperatorCreateReconciliationPlan;
+    path: {
+        company_id: string;
+        identifier: string;
+        version: string;
+    };
+    query?: never;
+    url: '/operator/companies/{company_id}/templates/{identifier}/versions/{version}/plans/';
+};
+
+export type OperatorCompaniesTemplatesVersionsPlansCreateResponses = {
+    201: OperatorReconciliationPlanResponse;
+};
+
+export type OperatorCompaniesTemplatesVersionsPlansCreateResponse = OperatorCompaniesTemplatesVersionsPlansCreateResponses[keyof OperatorCompaniesTemplatesVersionsPlansCreateResponses];
+
+export type OperatorCompaniesSyncListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        company?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        stale?: boolean;
+        template?: string;
+    };
+    url: '/operator/companies/sync/';
+};
+
+export type OperatorCompaniesSyncListResponses = {
+    200: PaginatedOperatorCompanySyncListResponse;
+};
+
+export type OperatorCompaniesSyncListResponse = OperatorCompaniesSyncListResponses[keyof OperatorCompaniesSyncListResponses];
+
+export type OperatorPlansListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        company?: string;
+        mode?: string;
+        operator_email?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        status?: string;
+        template?: string;
+        version?: string;
+    };
+    url: '/operator/plans/';
+};
+
+export type OperatorPlansListResponses = {
+    200: PaginatedOperatorReconciliationPlanSummaryListResponse;
+};
+
+export type OperatorPlansListResponse = OperatorPlansListResponses[keyof OperatorPlansListResponses];
+
+export type OperatorPlansRetrieveData = {
+    body?: never;
+    path: {
+        plan_id: string;
+    };
+    query?: never;
+    url: '/operator/plans/{plan_id}/';
+};
+
+export type OperatorPlansRetrieveResponses = {
+    200: OperatorReconciliationPlanResponse;
+};
+
+export type OperatorPlansRetrieveResponse = OperatorPlansRetrieveResponses[keyof OperatorPlansRetrieveResponses];
+
+export type OperatorPlansApplyCreateData = {
+    body: OperatorApplyReconciliationPlan;
+    path: {
+        plan_id: string;
+    };
+    query?: never;
+    url: '/operator/plans/{plan_id}/apply/';
+};
+
+export type OperatorPlansApplyCreateResponses = {
+    202: OperatorReconciliationPlanResponse;
+};
+
+export type OperatorPlansApplyCreateResponse = OperatorPlansApplyCreateResponses[keyof OperatorPlansApplyCreateResponses];
+
+export type OperatorTemplatesListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        active?: boolean;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        type?: string;
+    };
+    url: '/operator/templates/';
+};
+
+export type OperatorTemplatesListResponses = {
+    200: PaginatedAdminTemplateListResponse;
+};
+
+export type OperatorTemplatesListResponse = OperatorTemplatesListResponses[keyof OperatorTemplatesListResponses];
+
+export type OperatorTemplatesCreateData = {
+    body: AdminCreateTemplateWritable;
+    path?: never;
+    query?: never;
+    url: '/operator/templates/';
+};
+
+export type OperatorTemplatesCreateResponses = {
+    201: AdminTemplateResponse;
+};
+
+export type OperatorTemplatesCreateResponse = OperatorTemplatesCreateResponses[keyof OperatorTemplatesCreateResponses];
+
+export type OperatorTemplatesRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/operator/templates/{identifier}/';
+};
+
+export type OperatorTemplatesRetrieveResponses = {
+    200: AdminTemplateResponse;
+};
+
+export type OperatorTemplatesRetrieveResponse = OperatorTemplatesRetrieveResponses[keyof OperatorTemplatesRetrieveResponses];
+
+export type OperatorTemplatesPartialUpdateData = {
+    body?: PatchedAdminTemplateWritable;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/operator/templates/{identifier}/';
+};
+
+export type OperatorTemplatesPartialUpdateResponses = {
+    200: AdminTemplateResponse;
+};
+
+export type OperatorTemplatesPartialUpdateResponse = OperatorTemplatesPartialUpdateResponses[keyof OperatorTemplatesPartialUpdateResponses];
+
+export type OperatorTemplatesUpdateData = {
+    body: AdminTemplateWritable;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/operator/templates/{identifier}/';
+};
+
+export type OperatorTemplatesUpdateResponses = {
+    200: AdminTemplateResponse;
+};
+
+export type OperatorTemplatesUpdateResponse = OperatorTemplatesUpdateResponses[keyof OperatorTemplatesUpdateResponses];
+
+export type OperatorTemplatesVersionsListData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/operator/templates/{identifier}/versions/';
+};
+
+export type OperatorTemplatesVersionsListResponses = {
+    200: PaginatedOperatorTemplateVersionListResponse;
+};
+
+export type OperatorTemplatesVersionsListResponse = OperatorTemplatesVersionsListResponses[keyof OperatorTemplatesVersionsListResponses];
+
+export type OperatorTemplatesVersionsCreateData = {
+    body: AdminTemplateVersionWritable;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/operator/templates/{identifier}/versions/';
+};
+
+export type OperatorTemplatesVersionsCreateResponses = {
+    201: OperatorTemplateVersionResponse;
+};
+
+export type OperatorTemplatesVersionsCreateResponse = OperatorTemplatesVersionsCreateResponses[keyof OperatorTemplatesVersionsCreateResponses];
+
+export type OperatorTemplatesVersionsRetrieveData = {
     body?: never;
     path: {
         identifier: string;
         version: string;
     };
     query?: never;
-    url: '/admin/templates/{identifier}/versions/{version}/comparison/';
+    url: '/operator/templates/{identifier}/versions/{version}/';
 };
 
-export type AdminTemplatesVersionsComparisonRetrieveResponses = {
-    200: AdminTemplateComparisonResponse;
+export type OperatorTemplatesVersionsRetrieveResponses = {
+    200: OperatorTemplateVersionResponse;
 };
 
-export type AdminTemplatesVersionsComparisonRetrieveResponse = AdminTemplatesVersionsComparisonRetrieveResponses[keyof AdminTemplatesVersionsComparisonRetrieveResponses];
+export type OperatorTemplatesVersionsRetrieveResponse = OperatorTemplatesVersionsRetrieveResponses[keyof OperatorTemplatesVersionsRetrieveResponses];
+
+export type OperatorTemplatesVersionsPartialUpdateData = {
+    body?: PatchedAdminUpdateTemplateVersionWritable;
+    path: {
+        identifier: string;
+        version: string;
+    };
+    query?: never;
+    url: '/operator/templates/{identifier}/versions/{version}/';
+};
+
+export type OperatorTemplatesVersionsPartialUpdateResponses = {
+    200: OperatorTemplateVersionResponse;
+};
+
+export type OperatorTemplatesVersionsPartialUpdateResponse = OperatorTemplatesVersionsPartialUpdateResponses[keyof OperatorTemplatesVersionsPartialUpdateResponses];
+
+export type OperatorTemplatesVersionsUpdateData = {
+    body?: AdminUpdateTemplateVersionWritable;
+    path: {
+        identifier: string;
+        version: string;
+    };
+    query?: never;
+    url: '/operator/templates/{identifier}/versions/{version}/';
+};
+
+export type OperatorTemplatesVersionsUpdateResponses = {
+    200: OperatorTemplateVersionResponse;
+};
+
+export type OperatorTemplatesVersionsUpdateResponse = OperatorTemplatesVersionsUpdateResponses[keyof OperatorTemplatesVersionsUpdateResponses];
 
 export type PublicTemplatesListData = {
     body?: never;

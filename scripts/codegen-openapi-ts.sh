@@ -75,8 +75,6 @@ generate "mass-send" "https://mass-send.services.rehive.com/schema.json" "src/ex
 generate "notifications" "https://notification.services.rehive.com/schema.json" "src/extensions/notifications/openapi-ts"
 generate "products" "https://product.services.rehive.com/schema.json" "src/extensions/products/openapi-ts"
 generate "rewards" "https://reward.services.rehive.com/schema.json" "src/extensions/rewards/openapi-ts"
-generate "stellar" "https://stellar.services.rehive.com/swagger/?format=openapi" "src/extensions/stellar/openapi-ts"
-generate "stellar-testnet" "https://stellar-testnet.services.rehive.com/swagger/?format=openapi" "src/extensions/stellar-testnet/openapi-ts"
 generate "business" "https://business.services.rehive.com/schema.json" "src/extensions/business/openapi-ts"
 generate "payment-requests" "https://payment-requests.services.rehive.com/schema.json" "src/extensions/payment-requests/openapi-ts"
 generate "bridge" "https://bridge.services.rehive.com/schema.json" "src/extensions/bridge/openapi-ts"

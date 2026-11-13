@@ -4,17 +4,10 @@ export type ClientOptions = {
     baseUrl: 'https://mass-send.services.rehive.com/api/1/' | (string & {});
 };
 
-/**
- * This serializer can be used if only a `status` is required in the response.
- */
 export type ActionResponse = {
-    status?: string;
+    status: string;
 };
 
-/**
- * Serialize the activation data, should be a token that represents an admin
- * user.
- */
 export type Activate = {
     token: string;
     readonly id: string;
@@ -22,12 +15,6 @@ export type Activate = {
     readonly secret: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCompany = {
     readonly id: string;
     readonly secret: string;
@@ -35,16 +22,10 @@ export type AdminCompany = {
 };
 
 export type AdminCompanyResponse = {
-    status?: string;
-    data?: AdminCompany;
+    status: string;
+    data: AdminCompany;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminListCreateTransactionBatch = {
     readonly id: string;
     file: string;
@@ -65,16 +46,10 @@ export type AdminListCreateTransactionBatch = {
 };
 
 export type AdminListCreateTransactionBatchResponse = {
-    status?: string;
-    data?: AdminListCreateTransactionBatch;
+    status: string;
+    data: AdminListCreateTransactionBatch;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminListCreateTransactionUpdateBatch = {
     readonly id: string;
     file: string;
@@ -94,25 +69,15 @@ export type AdminListCreateTransactionUpdateBatch = {
 };
 
 export type AdminListCreateTransactionUpdateBatchResponse = {
-    status?: string;
-    data?: AdminListCreateTransactionUpdateBatch;
+    status: string;
+    data: AdminListCreateTransactionUpdateBatch;
 };
 
-/**
- * Serialize the deactivation data, should be a token that represents an admin
- * user.
- */
 export type Deactivate = {
     token: string;
     purge?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ListCreateTransactionBatch = {
     readonly id: string;
     file: string;
@@ -128,16 +93,10 @@ export type ListCreateTransactionBatch = {
 };
 
 export type ListCreateTransactionBatchResponse = {
-    status?: string;
-    data?: ListCreateTransactionBatch;
+    status: string;
+    data: ListCreateTransactionBatch;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ListTransaction = {
     readonly id: number;
     readonly updated: string;
@@ -147,16 +106,12 @@ export type ListTransaction = {
     user?: string | null;
     recipient?: string | null;
     credit_account?: string | null;
-    credit_metadata?: {
-        [key: string]: unknown;
-    } | null;
+    credit_metadata?: unknown;
     credit_note?: string | null;
     credit_reference?: string | null;
     credit_subtype?: string | null;
     debit_account?: string | null;
-    debit_metadata?: {
-        [key: string]: unknown;
-    } | null;
+    debit_metadata?: unknown;
     debit_note?: string | null;
     debit_reference?: string | null;
     debit_subtype?: string | null;
@@ -166,21 +121,13 @@ export type ListTransaction = {
     idempotency_key?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ListTransactionUpdateRow = {
     readonly id: number;
     readonly updated: string;
     readonly created: string;
     tx_id: string;
     note?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     uploaded_to_rehive?: boolean;
     rehive_error?: string | null;
     processed?: boolean;
@@ -188,86 +135,74 @@ export type ListTransactionUpdateRow = {
 };
 
 export type PaginatedAdminListCreateTransactionBatchList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminListCreateTransactionBatch>;
+    results: Array<AdminListCreateTransactionBatch>;
 };
 
 export type PaginatedAdminListCreateTransactionBatchListResponse = {
-    status?: string;
-    data?: PaginatedAdminListCreateTransactionBatchList;
+    status: string;
+    data: PaginatedAdminListCreateTransactionBatchList;
 };
 
 export type PaginatedAdminListCreateTransactionUpdateBatchList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminListCreateTransactionUpdateBatch>;
+    results: Array<AdminListCreateTransactionUpdateBatch>;
 };
 
 export type PaginatedAdminListCreateTransactionUpdateBatchListResponse = {
-    status?: string;
-    data?: PaginatedAdminListCreateTransactionUpdateBatchList;
+    status: string;
+    data: PaginatedAdminListCreateTransactionUpdateBatchList;
 };
 
 export type PaginatedListCreateTransactionBatchList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ListCreateTransactionBatch>;
+    results: Array<ListCreateTransactionBatch>;
 };
 
 export type PaginatedListCreateTransactionBatchListResponse = {
-    status?: string;
-    data?: PaginatedListCreateTransactionBatchList;
+    status: string;
+    data: PaginatedListCreateTransactionBatchList;
 };
 
 export type PaginatedListTransactionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ListTransaction>;
+    results: Array<ListTransaction>;
 };
 
 export type PaginatedListTransactionListResponse = {
-    status?: string;
-    data?: PaginatedListTransactionList;
+    status: string;
+    data: PaginatedListTransactionList;
 };
 
 export type PaginatedListTransactionUpdateRowList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ListTransactionUpdateRow>;
+    results: Array<ListTransactionUpdateRow>;
 };
 
 export type PaginatedListTransactionUpdateRowListResponse = {
-    status?: string;
-    data?: PaginatedListTransactionUpdateRowList;
+    status: string;
+    data: PaginatedListTransactionUpdateRowList;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminCompany = {
     readonly id?: string;
     readonly secret?: string;
     name?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedTransactionBatch = {
     readonly id?: string;
-    readonly file?: string;
+    readonly file?: string | null;
     readonly file_hash?: string | null;
     readonly transactions_total?: number;
     readonly transactions_succeeded?: number;
@@ -279,15 +214,9 @@ export type PatchedTransactionBatch = {
     published?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedTransactionUpdateBatch = {
     readonly id?: string;
-    readonly file?: string;
+    readonly file?: string | null;
     readonly file_hash?: string | null;
     readonly rows_total?: number;
     readonly rows_succeeded?: number;
@@ -299,15 +228,9 @@ export type PatchedTransactionUpdateBatch = {
     published?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type TransactionBatch = {
     readonly id: string;
-    readonly file: string;
+    readonly file: string | null;
     readonly file_hash: string | null;
     readonly transactions_total: number;
     readonly transactions_succeeded: number;
@@ -320,19 +243,13 @@ export type TransactionBatch = {
 };
 
 export type TransactionBatchResponse = {
-    status?: string;
-    data?: TransactionBatch;
+    status: string;
+    data: TransactionBatch;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type TransactionUpdateBatch = {
     readonly id: string;
-    readonly file: string;
+    readonly file: string | null;
     readonly file_hash: string | null;
     readonly rows_total: number;
     readonly rows_succeeded: number;
@@ -352,32 +269,18 @@ export type Webhook = {
      */
     event: 'currency.create' | 'currency.update';
     company: string;
-    data: {
-        [key: string]: unknown;
-    };
+    data: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCompanyWritable = {
     name?: string | null;
 };
 
 export type AdminCompanyResponseWritable = {
-    status?: string;
-    data?: AdminCompanyWritable;
+    status: string;
+    data: AdminCompanyWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminListCreateTransactionBatchWritable = {
     file: string;
     published?: boolean;
@@ -389,16 +292,10 @@ export type AdminListCreateTransactionBatchWritable = {
 };
 
 export type AdminListCreateTransactionBatchResponseWritable = {
-    status?: string;
-    data?: AdminListCreateTransactionBatchWritable;
+    status: string;
+    data: AdminListCreateTransactionBatchWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminListCreateTransactionUpdateBatchWritable = {
     file: string;
     published?: boolean;
@@ -409,48 +306,32 @@ export type AdminListCreateTransactionUpdateBatchWritable = {
 };
 
 export type AdminListCreateTransactionUpdateBatchResponseWritable = {
-    status?: string;
-    data?: AdminListCreateTransactionUpdateBatchWritable;
+    status: string;
+    data: AdminListCreateTransactionUpdateBatchWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ListCreateTransactionBatchWritable = {
     file: string;
     published?: boolean;
 };
 
 export type ListCreateTransactionBatchResponseWritable = {
-    status?: string;
-    data?: ListCreateTransactionBatchWritable;
+    status: string;
+    data: ListCreateTransactionBatchWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ListTransactionWritable = {
     amount?: string | null;
     currency?: string | null;
     user?: string | null;
     recipient?: string | null;
     credit_account?: string | null;
-    credit_metadata?: {
-        [key: string]: unknown;
-    } | null;
+    credit_metadata?: unknown;
     credit_note?: string | null;
     credit_reference?: string | null;
     credit_subtype?: string | null;
     debit_account?: string | null;
-    debit_metadata?: {
-        [key: string]: unknown;
-    } | null;
+    debit_metadata?: unknown;
     debit_note?: string | null;
     debit_reference?: string | null;
     debit_subtype?: string | null;
@@ -460,18 +341,10 @@ export type ListTransactionWritable = {
     idempotency_key?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ListTransactionUpdateRowWritable = {
     tx_id: string;
     note?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     uploaded_to_rehive?: boolean;
     rehive_error?: string | null;
     processed?: boolean;
@@ -479,116 +352,86 @@ export type ListTransactionUpdateRowWritable = {
 };
 
 export type PaginatedAdminListCreateTransactionBatchListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminListCreateTransactionBatchWritable>;
+    results: Array<AdminListCreateTransactionBatchWritable>;
 };
 
 export type PaginatedAdminListCreateTransactionBatchListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminListCreateTransactionBatchListWritable;
+    status: string;
+    data: PaginatedAdminListCreateTransactionBatchListWritable;
 };
 
 export type PaginatedAdminListCreateTransactionUpdateBatchListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminListCreateTransactionUpdateBatchWritable>;
+    results: Array<AdminListCreateTransactionUpdateBatchWritable>;
 };
 
 export type PaginatedAdminListCreateTransactionUpdateBatchListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminListCreateTransactionUpdateBatchListWritable;
+    status: string;
+    data: PaginatedAdminListCreateTransactionUpdateBatchListWritable;
 };
 
 export type PaginatedListCreateTransactionBatchListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ListCreateTransactionBatchWritable>;
+    results: Array<ListCreateTransactionBatchWritable>;
 };
 
 export type PaginatedListCreateTransactionBatchListResponseWritable = {
-    status?: string;
-    data?: PaginatedListCreateTransactionBatchListWritable;
+    status: string;
+    data: PaginatedListCreateTransactionBatchListWritable;
 };
 
 export type PaginatedListTransactionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ListTransactionWritable>;
+    results: Array<ListTransactionWritable>;
 };
 
 export type PaginatedListTransactionListResponseWritable = {
-    status?: string;
-    data?: PaginatedListTransactionListWritable;
+    status: string;
+    data: PaginatedListTransactionListWritable;
 };
 
 export type PaginatedListTransactionUpdateRowListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ListTransactionUpdateRowWritable>;
+    results: Array<ListTransactionUpdateRowWritable>;
 };
 
 export type PaginatedListTransactionUpdateRowListResponseWritable = {
-    status?: string;
-    data?: PaginatedListTransactionUpdateRowListWritable;
+    status: string;
+    data: PaginatedListTransactionUpdateRowListWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminCompanyWritable = {
     name?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedTransactionBatchWritable = {
     published?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedTransactionUpdateBatchWritable = {
     published?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type TransactionBatchWritable = {
     published?: boolean;
 };
 
 export type TransactionBatchResponseWritable = {
-    status?: string;
-    data?: TransactionBatchWritable;
+    status: string;
+    data: TransactionBatchWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type TransactionUpdateBatchWritable = {
     published?: boolean;
 };
@@ -657,8 +500,6 @@ export type AdminTransactionUpdateBatchesListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        section?: string;
-        user?: string;
     };
     url: '/admin/transaction-update-batches/';
 };
@@ -763,8 +604,6 @@ export type AdminUploadsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        section?: string;
-        user?: string;
     };
     url: '/admin/uploads/';
 };

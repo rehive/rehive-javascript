@@ -4,17 +4,10 @@ export type ClientOptions = {
     baseUrl: 'https://bridge.services.rehive.com/api/' | (string & {});
 };
 
-/**
- * This serializer can be used if only a `status` is required in the response.
- */
 export type ActionResponse = {
     status: string;
 };
 
-/**
- * Serialize the activation data, should be a token that represents an admin
- * user.
- */
 export type Activate = {
     token: string;
     readonly id: string;
@@ -22,12 +15,6 @@ export type Activate = {
     readonly secret: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCompany = {
     readonly id: string;
     readonly secret: string;
@@ -39,6 +26,7 @@ export type AdminCompany = {
     bridge_api_key: string;
     readonly bridge_webhook_id: string | null;
     readonly admin_user_bridge_id: string | null;
+    readonly bridge_enabled_endorsements: Array<'base' | 'sepa' | 'spei' | 'pix' | 'pix_offramp' | 'pix_onramp' | 'cards' | 'faster_payments'>;
     readonly bridge_default_endorsements: Array<'base' | 'sepa' | 'spei' | 'pix' | 'pix_offramp' | 'pix_onramp' | 'cards' | 'faster_payments'>;
     readonly bridge_tos_platform_legal_term: string | null;
     readonly exchange_rate_override_bps: number;
@@ -69,12 +57,6 @@ export type AdminCreateLiquidationAddress = {
     chain: 'solana' | 'base' | 'ethereum' | 'stellar' | 'tron' | 'polygon' | 'arbitrum' | 'optimism';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreatePayoutConfiguration = {
     /**
      * * `solana` - Solana
@@ -123,12 +105,6 @@ export type AdminCryptoReturnPolicyResponse = {
     data: AdminCryptoReturnPolicy;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCurrency = {
     readonly code: string;
     /**
@@ -155,23 +131,49 @@ export type AdminCurrencyResponse = {
     data: AdminCurrency;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminDeposit = {
     readonly transaction: string;
-    readonly bridge_id: string | null;
+    readonly bridge_id: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type AdminExternalWallet = {
+    readonly id: string;
+    /**
+     * * `solana` - Solana
+     * * `base` - Base
+     * * `ethereum` - Ethereum
+     * * `stellar` - Stellar
+     * * `tron` - Tron
+     * * `polygon` - Polygon
+     * * `arbitrum` - Arbitrum
+     * * `optimism` - Optimism
+     */
+    readonly chain: 'solana' | 'base' | 'ethereum' | 'stellar' | 'tron' | 'polygon' | 'arbitrum' | 'optimism';
+    readonly address: string;
+    /**
+     * * `usdc` - Usdc
+     * * `eurc` - Eurc
+     * * `usdt` - Usdt
+     * * `gbp` - Gbp
+     * * `usd` - Usd
+     * * `eur` - Eur
+     * * `mxn` - Mxn
+     * * `brl` - Brl
+     */
+    readonly currency: 'usdc' | 'eurc' | 'usdt' | 'gbp' | 'usd' | 'eur' | 'mxn' | 'brl';
+    readonly account: string | null;
+    readonly account_currency: string | null;
+    readonly created: number;
+    readonly updated: number;
+    readonly user: string;
+    readonly active: boolean;
+};
+
+export type AdminExternalWalletResponse = {
+    status: string;
+    data: AdminExternalWallet;
+};
+
 export type AdminFundsRequest = {
     readonly id: string;
     readonly user: string;
@@ -195,12 +197,6 @@ export type AdminFundsRequestResponse = {
     data: AdminFundsRequest;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminLiquidationAddress = {
     readonly id: string;
     wallet: UserReducedWallet;
@@ -258,12 +254,6 @@ export type AdminOperationalAccountVirtualAccount = {
     source_currency?: 'gbp' | 'usd' | 'eur' | 'mxn' | 'brl';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminPaymentProcessorQuote = {
     id: string;
     account?: string | null;
@@ -284,6 +274,10 @@ export type AdminPaymentProcessorQuote = {
      * * `crypto` - Crypto
      */
     processor_type: 'bank' | 'wallet' | 'crypto';
+    request_account?: string | null;
+    destination?: {
+        [key: string]: unknown;
+    } | null;
 };
 
 export type AdminPaymentProcessorQuoteResponse = {
@@ -292,6 +286,7 @@ export type AdminPaymentProcessorQuoteResponse = {
     readonly deposit_details: {
         [key: string]: unknown;
     };
+    readonly subtype: string | null;
 };
 
 export type AdminPaymentProcessorQuoteResponseResponse = {
@@ -299,12 +294,6 @@ export type AdminPaymentProcessorQuoteResponseResponse = {
     data: AdminPaymentProcessorQuoteResponse;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminPayoutConfiguration = {
     readonly id: string;
     wallet: AdminWallet;
@@ -323,12 +312,6 @@ export type AdminPayoutConfigurationResponse = {
     data: AdminPayoutConfiguration;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminTransactionTransition = {
     readonly id: string;
     readonly transaction: string;
@@ -367,12 +350,6 @@ export type AdminTransactionTransitionResponse = {
     data: AdminTransactionTransition;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateCompany = {
     readonly id: string;
     readonly secret: string;
@@ -384,6 +361,7 @@ export type AdminUpdateCompany = {
     bridge_api_key?: string;
     readonly bridge_webhook_id: string | null;
     admin_user_bridge_id?: string | null;
+    bridge_enabled_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'pix_offramp' | 'pix_onramp' | 'cards' | 'faster_payments'>;
     bridge_default_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'pix_offramp' | 'pix_onramp' | 'cards' | 'faster_payments'> | null;
     bridge_tos_platform_legal_term?: string | null;
     exchange_rate_override_bps?: number | null;
@@ -392,12 +370,39 @@ export type AdminUpdateCompany = {
     };
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type AdminUpdateExternalWallet = {
+    readonly id: string;
+    /**
+     * * `solana` - Solana
+     * * `base` - Base
+     * * `ethereum` - Ethereum
+     * * `stellar` - Stellar
+     * * `tron` - Tron
+     * * `polygon` - Polygon
+     * * `arbitrum` - Arbitrum
+     * * `optimism` - Optimism
+     */
+    readonly chain: 'solana' | 'base' | 'ethereum' | 'stellar' | 'tron' | 'polygon' | 'arbitrum' | 'optimism';
+    readonly address: string;
+    /**
+     * * `usdc` - Usdc
+     * * `eurc` - Eurc
+     * * `usdt` - Usdt
+     * * `gbp` - Gbp
+     * * `usd` - Usd
+     * * `eur` - Eur
+     * * `mxn` - Mxn
+     * * `brl` - Brl
+     */
+    readonly currency: 'usdc' | 'eurc' | 'usdt' | 'gbp' | 'usd' | 'eur' | 'mxn' | 'brl';
+    readonly account: string | null;
+    readonly account_currency: string | null;
+    readonly created: number;
+    readonly updated: number;
+    readonly user: string;
+    active?: boolean;
+};
+
 export type AdminUser = {
     readonly id: string;
     readonly bridge_id: string | null;
@@ -416,10 +421,15 @@ export type AdminUser = {
      * * `paused` - Paused
      * * `rejected` - Rejected
      * * `under_review` - Under Review
+     * * `deposits_restricted` - Deposits Restricted
      * * `deleted` - Deleted
+     * * `submission_rejected` - Submission Rejected
      */
-    readonly bridge_status: 'active' | 'awaiting_questionnaire' | 'awaiting_ubo' | 'incomplete' | 'not_started' | 'offboarded' | 'paused' | 'rejected' | 'under_review' | 'deleted';
+    readonly bridge_status: 'active' | 'awaiting_questionnaire' | 'awaiting_ubo' | 'incomplete' | 'not_started' | 'offboarded' | 'paused' | 'rejected' | 'under_review' | 'deposits_restricted' | 'deleted' | 'submission_rejected';
     readonly bridge_rejection_reasons: {
+        [key: string]: unknown;
+    } | null;
+    readonly bridge_submission_errors: {
         [key: string]: unknown;
     } | null;
     readonly endorsements: {
@@ -428,6 +438,10 @@ export type AdminUser = {
     readonly bridge_endorsements: {
         [key: string]: unknown;
     } | null;
+    /**
+     * Endorsements eligible by individual residency or business address country, including those already requested or approved. Restricted to the company's enabled endorsements. Unknown country or customer type applies only the company restriction. This does not indicate approval.
+     */
+    readonly available_endorsements: Array<'base' | 'sepa' | 'spei' | 'pix' | 'pix_offramp' | 'pix_onramp' | 'cards' | 'faster_payments'>;
     readonly created: number;
     readonly updated: number;
 };
@@ -437,12 +451,6 @@ export type AdminUserResponse = {
     data: AdminUser;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminVirtualAccount = {
     readonly id: string;
     wallet: UserReducedWallet;
@@ -472,12 +480,6 @@ export type AdminVirtualAccountResponse = {
     data: AdminVirtualAccount;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminWallet = {
     readonly id: string;
     readonly user: string;
@@ -508,12 +510,6 @@ export type BridgeWebhook = {
     event_created_at: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Currency = {
     code: string;
     /**
@@ -544,20 +540,16 @@ export type CurrencyResponse = {
     data: Currency;
 };
 
-/**
- * Serialize the deactivation data, should be a token that represents an admin
- * user.
- */
 export type Deactivate = {
     token: string;
     purge?: boolean;
 };
 
 export type PaginatedAdminCurrencyList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCurrency>;
+    results: Array<AdminCurrency>;
 };
 
 export type PaginatedAdminCurrencyListResponse = {
@@ -565,11 +557,23 @@ export type PaginatedAdminCurrencyListResponse = {
     data: PaginatedAdminCurrencyList;
 };
 
-export type PaginatedAdminFundsRequestList = {
-    count?: number;
+export type PaginatedAdminExternalWalletList = {
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminFundsRequest>;
+    results: Array<AdminExternalWallet>;
+};
+
+export type PaginatedAdminExternalWalletListResponse = {
+    status: string;
+    data: PaginatedAdminExternalWalletList;
+};
+
+export type PaginatedAdminFundsRequestList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AdminFundsRequest>;
 };
 
 export type PaginatedAdminFundsRequestListResponse = {
@@ -578,10 +582,10 @@ export type PaginatedAdminFundsRequestListResponse = {
 };
 
 export type PaginatedAdminLiquidationAddressList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminLiquidationAddress>;
+    results: Array<AdminLiquidationAddress>;
 };
 
 export type PaginatedAdminLiquidationAddressListResponse = {
@@ -590,10 +594,10 @@ export type PaginatedAdminLiquidationAddressListResponse = {
 };
 
 export type PaginatedAdminPayoutConfigurationList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminPayoutConfiguration>;
+    results: Array<AdminPayoutConfiguration>;
 };
 
 export type PaginatedAdminPayoutConfigurationListResponse = {
@@ -602,10 +606,10 @@ export type PaginatedAdminPayoutConfigurationListResponse = {
 };
 
 export type PaginatedAdminTransactionTransitionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminTransactionTransition>;
+    results: Array<AdminTransactionTransition>;
 };
 
 export type PaginatedAdminTransactionTransitionListResponse = {
@@ -614,10 +618,10 @@ export type PaginatedAdminTransactionTransitionListResponse = {
 };
 
 export type PaginatedAdminUserList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUser>;
+    results: Array<AdminUser>;
 };
 
 export type PaginatedAdminUserListResponse = {
@@ -626,10 +630,10 @@ export type PaginatedAdminUserListResponse = {
 };
 
 export type PaginatedAdminVirtualAccountList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminVirtualAccount>;
+    results: Array<AdminVirtualAccount>;
 };
 
 export type PaginatedAdminVirtualAccountListResponse = {
@@ -638,10 +642,10 @@ export type PaginatedAdminVirtualAccountListResponse = {
 };
 
 export type PaginatedAdminWalletList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminWallet>;
+    results: Array<AdminWallet>;
 };
 
 export type PaginatedAdminWalletListResponse = {
@@ -650,10 +654,10 @@ export type PaginatedAdminWalletListResponse = {
 };
 
 export type PaginatedCurrencyList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Currency>;
+    results: Array<Currency>;
 };
 
 export type PaginatedCurrencyListResponse = {
@@ -662,10 +666,10 @@ export type PaginatedCurrencyListResponse = {
 };
 
 export type PaginatedTransactionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Transaction>;
+    results: Array<Transaction>;
 };
 
 export type PaginatedTransactionListResponse = {
@@ -674,10 +678,10 @@ export type PaginatedTransactionListResponse = {
 };
 
 export type PaginatedUserExternalWalletList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserExternalWallet>;
+    results: Array<UserExternalWallet>;
 };
 
 export type PaginatedUserExternalWalletListResponse = {
@@ -686,10 +690,10 @@ export type PaginatedUserExternalWalletListResponse = {
 };
 
 export type PaginatedUserStaticTemplateList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserStaticTemplate>;
+    results: Array<UserStaticTemplate>;
 };
 
 export type PaginatedUserStaticTemplateListResponse = {
@@ -698,10 +702,10 @@ export type PaginatedUserStaticTemplateListResponse = {
 };
 
 export type PaginatedUserVirtualAccountList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserVirtualAccount>;
+    results: Array<UserVirtualAccount>;
 };
 
 export type PaginatedUserVirtualAccountListResponse = {
@@ -722,12 +726,6 @@ export type PatchedAdminCryptoReturnPolicy = {
     strategy?: 'refund_to_sender' | 'static_address';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminCurrency = {
     readonly code?: string;
     /**
@@ -749,12 +747,6 @@ export type PatchedAdminCurrency = {
     readonly manager?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminPayoutConfiguration = {
     readonly id?: string;
     wallet?: AdminWallet;
@@ -768,12 +760,6 @@ export type PatchedAdminPayoutConfiguration = {
     readonly updated?: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateCompany = {
     readonly id?: string;
     readonly secret?: string;
@@ -785,6 +771,7 @@ export type PatchedAdminUpdateCompany = {
     bridge_api_key?: string;
     readonly bridge_webhook_id?: string | null;
     admin_user_bridge_id?: string | null;
+    bridge_enabled_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'pix_offramp' | 'pix_onramp' | 'cards' | 'faster_payments'>;
     bridge_default_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'pix_offramp' | 'pix_onramp' | 'cards' | 'faster_payments'> | null;
     bridge_tos_platform_legal_term?: string | null;
     exchange_rate_override_bps?: number | null;
@@ -793,24 +780,45 @@ export type PatchedAdminUpdateCompany = {
     };
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type PatchedAdminUpdateExternalWallet = {
+    readonly id?: string;
+    /**
+     * * `solana` - Solana
+     * * `base` - Base
+     * * `ethereum` - Ethereum
+     * * `stellar` - Stellar
+     * * `tron` - Tron
+     * * `polygon` - Polygon
+     * * `arbitrum` - Arbitrum
+     * * `optimism` - Optimism
+     */
+    readonly chain?: 'solana' | 'base' | 'ethereum' | 'stellar' | 'tron' | 'polygon' | 'arbitrum' | 'optimism';
+    readonly address?: string;
+    /**
+     * * `usdc` - Usdc
+     * * `eurc` - Eurc
+     * * `usdt` - Usdt
+     * * `gbp` - Gbp
+     * * `usd` - Usd
+     * * `eur` - Eur
+     * * `mxn` - Mxn
+     * * `brl` - Brl
+     */
+    readonly currency?: 'usdc' | 'eurc' | 'usdt' | 'gbp' | 'usd' | 'eur' | 'mxn' | 'brl';
+    readonly account?: string | null;
+    readonly account_currency?: string | null;
+    readonly created?: number;
+    readonly updated?: number;
+    readonly user?: string;
+    active?: boolean;
+};
+
 export type PatchedUpdateTransaction = {
     readonly id?: string;
     readonly collection?: string;
     wallet?: UserReducedWallet;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedUser = {
     readonly id?: string;
     readonly bridge_id?: string;
@@ -829,21 +837,21 @@ export type PatchedUser = {
      * * `paused` - Paused
      * * `rejected` - Rejected
      * * `under_review` - Under Review
+     * * `deposits_restricted` - Deposits Restricted
      * * `deleted` - Deleted
+     * * `submission_rejected` - Submission Rejected
      */
-    readonly bridge_status?: 'active' | 'awaiting_questionnaire' | 'awaiting_ubo' | 'incomplete' | 'not_started' | 'offboarded' | 'paused' | 'rejected' | 'under_review' | 'deleted';
+    readonly bridge_status?: 'active' | 'awaiting_questionnaire' | 'awaiting_ubo' | 'incomplete' | 'not_started' | 'offboarded' | 'paused' | 'rejected' | 'under_review' | 'deposits_restricted' | 'deleted' | 'submission_rejected';
     bridge_signed_agreement_id?: string;
     readonly endorsements?: {
         [key: string]: unknown;
     };
+    /**
+     * Endorsements eligible by individual residency or business address country, including those already requested or approved. Restricted to the company's enabled endorsements. Unknown country or customer type applies only the company restriction. This does not indicate approval.
+     */
+    readonly available_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'pix_offramp' | 'pix_onramp' | 'cards' | 'faster_payments'>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Transaction = {
     readonly id: string;
     readonly collection: string;
@@ -855,24 +863,12 @@ export type TransactionResponse = {
     data: Transaction;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UpdateTransaction = {
     readonly id: string;
     readonly collection: string;
     wallet: UserReducedWallet;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type User = {
     readonly id: string;
     readonly bridge_id: string;
@@ -891,13 +887,32 @@ export type User = {
      * * `paused` - Paused
      * * `rejected` - Rejected
      * * `under_review` - Under Review
+     * * `deposits_restricted` - Deposits Restricted
      * * `deleted` - Deleted
+     * * `submission_rejected` - Submission Rejected
      */
-    readonly bridge_status: 'active' | 'awaiting_questionnaire' | 'awaiting_ubo' | 'incomplete' | 'not_started' | 'offboarded' | 'paused' | 'rejected' | 'under_review' | 'deleted';
+    readonly bridge_status: 'active' | 'awaiting_questionnaire' | 'awaiting_ubo' | 'incomplete' | 'not_started' | 'offboarded' | 'paused' | 'rejected' | 'under_review' | 'deposits_restricted' | 'deleted' | 'submission_rejected';
     bridge_signed_agreement_id?: string;
     readonly endorsements: {
         [key: string]: unknown;
     };
+    /**
+     * Endorsements eligible by individual residency or business address country, including those already requested or approved. Restricted to the company's enabled endorsements. Unknown country or customer type applies only the company restriction. This does not indicate approval.
+     */
+    readonly available_endorsements: Array<'base' | 'sepa' | 'spei' | 'pix' | 'pix_offramp' | 'pix_onramp' | 'cards' | 'faster_payments'>;
+};
+
+export type UserCompany = {
+    readonly id: string;
+    readonly supported_groups: {
+        [key: string]: unknown;
+    };
+    readonly bridge_enabled_endorsements: Array<'base' | 'sepa' | 'spei' | 'pix' | 'pix_offramp' | 'pix_onramp' | 'cards' | 'faster_payments'>;
+};
+
+export type UserCompanyResponse = {
+    status: string;
+    data: UserCompany;
 };
 
 export type UserCreateCustomerLink = {
@@ -933,23 +948,11 @@ export type UserCreateExternalWallet = {
     account_currency?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCreateStaticTemplate = {
     account: string;
     currency: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCreateVirtualAccount = {
     account?: string;
     currency?: string;
@@ -1020,12 +1023,6 @@ export type UserExchangeRateResponseResponse = {
     data: UserExchangeRateResponse;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserExternalWallet = {
     readonly id: string;
     /**
@@ -1062,12 +1059,6 @@ export type UserExternalWalletResponse = {
     data: UserExternalWallet;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserReducedWallet = {
     readonly id: string;
     readonly account: string | null;
@@ -1080,12 +1071,6 @@ export type UserResponse = {
     data: User;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserStaticTemplate = {
     readonly id: string;
     wallet: UserReducedWallet;
@@ -1102,12 +1087,6 @@ export type UserStaticTemplateResponse = {
     data: UserStaticTemplate;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserVirtualAccount = {
     readonly id: string;
     wallet: UserReducedWallet;
@@ -1162,12 +1141,6 @@ export type Webhook = {
     };
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCompanyWritable = {
     bridge_api_key: string;
 };
@@ -1177,12 +1150,6 @@ export type AdminCompanyResponseWritable = {
     data: AdminCompanyWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreatePayoutConfigurationWritable = {
     account: string;
     currency: string;
@@ -1218,12 +1185,6 @@ export type AdminCryptoReturnPolicyResponseWritable = {
     data: AdminCryptoReturnPolicyWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCurrencyWritable = {
     /**
      * * `usdc` - Usdc
@@ -1243,16 +1204,14 @@ export type AdminCurrencyResponseWritable = {
     data: AdminCurrencyWritable;
 };
 
+export type AdminExternalWalletResponseWritable = {
+    status: string;
+};
+
 export type AdminFundsRequestResponseWritable = {
     status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminLiquidationAddressWritable = {
     [key: string]: unknown;
 };
@@ -1266,12 +1225,6 @@ export type AdminPaymentProcessorQuoteResponseResponseWritable = {
     status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminPayoutConfigurationWritable = {
     /**
      * * `solana` - Solana
@@ -1290,15 +1243,10 @@ export type AdminTransactionTransitionResponseWritable = {
     status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateCompanyWritable = {
     bridge_api_key?: string;
     admin_user_bridge_id?: string | null;
+    bridge_enabled_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'pix_offramp' | 'pix_onramp' | 'cards' | 'faster_payments'>;
     bridge_default_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'pix_offramp' | 'pix_onramp' | 'cards' | 'faster_payments'> | null;
     bridge_tos_platform_legal_term?: string | null;
     exchange_rate_override_bps?: number | null;
@@ -1307,16 +1255,14 @@ export type AdminUpdateCompanyWritable = {
     };
 };
 
+export type AdminUpdateExternalWalletWritable = {
+    active?: boolean;
+};
+
 export type AdminUserResponseWritable = {
     status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminVirtualAccountWritable = {
     [key: string]: unknown;
 };
@@ -1326,12 +1272,6 @@ export type AdminVirtualAccountResponseWritable = {
     data: AdminVirtualAccountWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminWalletWritable = {
     [key: string]: unknown;
 };
@@ -1342,10 +1282,10 @@ export type AdminWalletResponseWritable = {
 };
 
 export type PaginatedAdminCurrencyListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCurrencyWritable>;
+    results: Array<AdminCurrencyWritable>;
 };
 
 export type PaginatedAdminCurrencyListResponseWritable = {
@@ -1353,11 +1293,23 @@ export type PaginatedAdminCurrencyListResponseWritable = {
     data: PaginatedAdminCurrencyListWritable;
 };
 
-export type PaginatedAdminFundsRequestListWritable = {
-    count?: number;
+export type PaginatedAdminExternalWalletListWritable = {
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
+};
+
+export type PaginatedAdminExternalWalletListResponseWritable = {
+    status: string;
+    data: PaginatedAdminExternalWalletListWritable;
+};
+
+export type PaginatedAdminFundsRequestListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
 };
 
 export type PaginatedAdminFundsRequestListResponseWritable = {
@@ -1366,10 +1318,10 @@ export type PaginatedAdminFundsRequestListResponseWritable = {
 };
 
 export type PaginatedAdminLiquidationAddressListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminLiquidationAddressWritable>;
+    results: Array<AdminLiquidationAddressWritable>;
 };
 
 export type PaginatedAdminLiquidationAddressListResponseWritable = {
@@ -1378,10 +1330,10 @@ export type PaginatedAdminLiquidationAddressListResponseWritable = {
 };
 
 export type PaginatedAdminPayoutConfigurationListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminPayoutConfigurationWritable>;
+    results: Array<AdminPayoutConfigurationWritable>;
 };
 
 export type PaginatedAdminPayoutConfigurationListResponseWritable = {
@@ -1390,10 +1342,10 @@ export type PaginatedAdminPayoutConfigurationListResponseWritable = {
 };
 
 export type PaginatedAdminTransactionTransitionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedAdminTransactionTransitionListResponseWritable = {
@@ -1402,10 +1354,10 @@ export type PaginatedAdminTransactionTransitionListResponseWritable = {
 };
 
 export type PaginatedAdminUserListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedAdminUserListResponseWritable = {
@@ -1414,10 +1366,10 @@ export type PaginatedAdminUserListResponseWritable = {
 };
 
 export type PaginatedAdminVirtualAccountListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminVirtualAccountWritable>;
+    results: Array<AdminVirtualAccountWritable>;
 };
 
 export type PaginatedAdminVirtualAccountListResponseWritable = {
@@ -1426,10 +1378,10 @@ export type PaginatedAdminVirtualAccountListResponseWritable = {
 };
 
 export type PaginatedAdminWalletListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminWalletWritable>;
+    results: Array<AdminWalletWritable>;
 };
 
 export type PaginatedAdminWalletListResponseWritable = {
@@ -1438,10 +1390,10 @@ export type PaginatedAdminWalletListResponseWritable = {
 };
 
 export type PaginatedTransactionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<TransactionWritable>;
+    results: Array<TransactionWritable>;
 };
 
 export type PaginatedTransactionListResponseWritable = {
@@ -1450,10 +1402,10 @@ export type PaginatedTransactionListResponseWritable = {
 };
 
 export type PaginatedUserExternalWalletListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedUserExternalWalletListResponseWritable = {
@@ -1462,10 +1414,10 @@ export type PaginatedUserExternalWalletListResponseWritable = {
 };
 
 export type PaginatedUserStaticTemplateListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserStaticTemplateWritable>;
+    results: Array<UserStaticTemplateWritable>;
 };
 
 export type PaginatedUserStaticTemplateListResponseWritable = {
@@ -1474,10 +1426,10 @@ export type PaginatedUserStaticTemplateListResponseWritable = {
 };
 
 export type PaginatedUserVirtualAccountListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserVirtualAccountWritable>;
+    results: Array<UserVirtualAccountWritable>;
 };
 
 export type PaginatedUserVirtualAccountListResponseWritable = {
@@ -1497,12 +1449,6 @@ export type PatchedAdminCryptoReturnPolicyWritable = {
     strategy?: 'refund_to_sender' | 'static_address';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminCurrencyWritable = {
     /**
      * * `usdc` - Usdc
@@ -1517,12 +1463,6 @@ export type PatchedAdminCurrencyWritable = {
     bridge_chain?: 'solana' | 'base';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminPayoutConfigurationWritable = {
     /**
      * * `solana` - Solana
@@ -1532,15 +1472,10 @@ export type PatchedAdminPayoutConfigurationWritable = {
     destination_address?: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateCompanyWritable = {
     bridge_api_key?: string;
     admin_user_bridge_id?: string | null;
+    bridge_enabled_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'pix_offramp' | 'pix_onramp' | 'cards' | 'faster_payments'>;
     bridge_default_endorsements?: Array<'base' | 'sepa' | 'spei' | 'pix' | 'pix_offramp' | 'pix_onramp' | 'cards' | 'faster_payments'> | null;
     bridge_tos_platform_legal_term?: string | null;
     exchange_rate_override_bps?: number | null;
@@ -1549,34 +1484,20 @@ export type PatchedAdminUpdateCompanyWritable = {
     };
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
+export type PatchedAdminUpdateExternalWalletWritable = {
+    active?: boolean;
+};
+
 export type PatchedUpdateTransactionWritable = {
     metadata?: {
         [key: string]: unknown;
     };
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedUserWritable = {
     bridge_signed_agreement_id?: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type TransactionWritable = {
     [key: string]: unknown;
 };
@@ -1586,26 +1507,18 @@ export type TransactionResponseWritable = {
     data: TransactionWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UpdateTransactionWritable = {
     metadata: {
         [key: string]: unknown;
     };
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserWritable = {
     bridge_signed_agreement_id?: string;
+};
+
+export type UserCompanyResponseWritable = {
+    status: string;
 };
 
 export type UserCryptoDepositResponseResponseWritable = {
@@ -1620,12 +1533,6 @@ export type UserExternalWalletResponseWritable = {
     status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserReducedWalletWritable = {
     [key: string]: unknown;
 };
@@ -1635,12 +1542,6 @@ export type UserResponseWritable = {
     data: UserWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserStaticTemplateWritable = {
     [key: string]: unknown;
 };
@@ -1650,12 +1551,6 @@ export type UserStaticTemplateResponseWritable = {
     data: UserStaticTemplateWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserVirtualAccountWritable = {
     [key: string]: unknown;
 };
@@ -1869,6 +1764,81 @@ export type AdminCurrenciesUpdateResponses = {
 };
 
 export type AdminCurrenciesUpdateResponse = AdminCurrenciesUpdateResponses[keyof AdminCurrenciesUpdateResponses];
+
+export type AdminExternalWalletsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        account?: string;
+        account_currency?: string;
+        active?: boolean;
+        address?: string;
+        chain?: string;
+        currency?: string;
+        id?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        user?: string;
+    };
+    url: '/admin/external-wallets/';
+};
+
+export type AdminExternalWalletsListResponses = {
+    200: PaginatedAdminExternalWalletListResponse;
+};
+
+export type AdminExternalWalletsListResponse = AdminExternalWalletsListResponses[keyof AdminExternalWalletsListResponses];
+
+export type AdminExternalWalletsRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/admin/external-wallets/{identifier}/';
+};
+
+export type AdminExternalWalletsRetrieveResponses = {
+    200: AdminExternalWalletResponse;
+};
+
+export type AdminExternalWalletsRetrieveResponse = AdminExternalWalletsRetrieveResponses[keyof AdminExternalWalletsRetrieveResponses];
+
+export type AdminExternalWalletsPartialUpdateData = {
+    body?: PatchedAdminUpdateExternalWalletWritable;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/admin/external-wallets/{identifier}/';
+};
+
+export type AdminExternalWalletsPartialUpdateResponses = {
+    200: AdminExternalWalletResponse;
+};
+
+export type AdminExternalWalletsPartialUpdateResponse = AdminExternalWalletsPartialUpdateResponses[keyof AdminExternalWalletsPartialUpdateResponses];
+
+export type AdminExternalWalletsUpdateData = {
+    body?: AdminUpdateExternalWalletWritable;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/admin/external-wallets/{identifier}/';
+};
+
+export type AdminExternalWalletsUpdateResponses = {
+    200: AdminExternalWalletResponse;
+};
+
+export type AdminExternalWalletsUpdateResponse = AdminExternalWalletsUpdateResponses[keyof AdminExternalWalletsUpdateResponses];
 
 export type AdminFundsRequestsListData = {
     body?: never;
@@ -2209,6 +2179,21 @@ export type AdminUsersBridgeResourceDestroyResponses = {
 
 export type AdminUsersBridgeResourceDestroyResponse = AdminUsersBridgeResourceDestroyResponses[keyof AdminUsersBridgeResourceDestroyResponses];
 
+export type AdminUsersSyncCreateData = {
+    body?: AdminUser;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/admin/users/{identifier}/sync/';
+};
+
+export type AdminUsersSyncCreateResponses = {
+    202: ActionResponse;
+};
+
+export type AdminUsersSyncCreateResponse = AdminUsersSyncCreateResponses[keyof AdminUsersSyncCreateResponses];
+
 export type AdminVirtualAccountsListData = {
     body?: never;
     path?: never;
@@ -2373,6 +2358,19 @@ export type UserUpdateResponses = {
 };
 
 export type UserUpdateResponse = UserUpdateResponses[keyof UserUpdateResponses];
+
+export type UserCompanyRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/user/company/';
+};
+
+export type UserCompanyRetrieveResponses = {
+    200: UserCompanyResponse;
+};
+
+export type UserCompanyRetrieveResponse = UserCompanyRetrieveResponses[keyof UserCompanyRetrieveResponses];
 
 export type UserCryptoDepositCreateData = {
     body: UserCryptoDeposit;

@@ -285,7 +285,6 @@ export const adminIntegrationsWebhooksUpdate = <ThrowOnError extends boolean = f
  * List orders
  */
 export const adminOrdersList = <ThrowOnError extends boolean = false>(options?: Options<AdminOrdersListData, ThrowOnError>): RequestResult<AdminOrdersListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AdminOrdersListResponses, unknown, ThrowOnError>({
-    querySerializer: { parameters: { orderby: { array: { explode: false } } } },
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/admin/orders/',
     ...options
@@ -532,7 +531,6 @@ export const adminOrdersRefundsUpdate = <ThrowOnError extends boolean = false>(o
  * List products
  */
 export const adminProductsList = <ThrowOnError extends boolean = false>(options?: Options<AdminProductsListData, ThrowOnError>): RequestResult<AdminProductsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AdminProductsListResponses, unknown, ThrowOnError>({
-    querySerializer: { parameters: { orderby: { array: { explode: false } } } },
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/admin/products/',
     ...options
@@ -1431,7 +1429,6 @@ export const managerSellersIntegrationsWebhooksUpdate = <ThrowOnError extends bo
  * List orders
  */
 export const managerSellersOrdersList = <ThrowOnError extends boolean = false>(options: Options<ManagerSellersOrdersListData, ThrowOnError>): RequestResult<ManagerSellersOrdersListResponses, unknown, ThrowOnError> => (options.client ?? client).get<ManagerSellersOrdersListResponses, unknown, ThrowOnError>({
-    querySerializer: { parameters: { orderby: { array: { explode: false } } } },
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/manager/sellers/{seller_id}/orders/',
     ...options
@@ -1621,7 +1618,6 @@ export const managerSellersOrdersRefundsUpdate = <ThrowOnError extends boolean =
  * List products
  */
 export const managerSellersProductsList = <ThrowOnError extends boolean = false>(options: Options<ManagerSellersProductsListData, ThrowOnError>): RequestResult<ManagerSellersProductsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<ManagerSellersProductsListResponses, unknown, ThrowOnError>({
-    querySerializer: { parameters: { orderby: { array: { explode: false } } } },
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/manager/sellers/{seller_id}/products/',
     ...options
@@ -2257,7 +2253,6 @@ export const userCompanyRetrieve = <ThrowOnError extends boolean = false>(option
  * List orders
  */
 export const userOrdersList = <ThrowOnError extends boolean = false>(options?: Options<UserOrdersListData, ThrowOnError>): RequestResult<UserOrdersListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UserOrdersListResponses, unknown, ThrowOnError>({
-    querySerializer: { parameters: { orderby: { array: { explode: false } } } },
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/user/orders/',
     ...options
@@ -2439,7 +2434,6 @@ export const userOrdersRefundsRetrieve = <ThrowOnError extends boolean = false>(
  * List products
  */
 export const userProductsList = <ThrowOnError extends boolean = false>(options?: Options<UserProductsListData, ThrowOnError>): RequestResult<UserProductsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UserProductsListResponses, unknown, ThrowOnError>({
-    querySerializer: { parameters: { orderby: { array: { explode: false } } } },
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/user/products/',
     ...options

@@ -4,11 +4,8 @@ export type ClientOptions = {
     baseUrl: 'https://business.services.rehive.com/api/' | (string & {});
 };
 
-/**
- * This serializer can be used if only a `status` is required in the response.
- */
 export type ActionResponse = {
-    status?: string;
+    status: string;
 };
 
 export type Activate = {
@@ -17,12 +14,6 @@ export type Activate = {
     readonly secret: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminBusiness = {
     readonly id: string;
     name?: string | null;
@@ -30,9 +21,7 @@ export type AdminBusiness = {
     readonly owner: string;
     website?: string | null;
     inc_number?: string | null;
-    colors?: {
-        [key: string]: unknown;
-    } | null;
+    colors?: unknown;
     readonly categories: Array<BusinessCategory>;
     logo?: string | null;
     icon?: string | null;
@@ -188,7 +177,7 @@ export type AdminBusiness = {
      * * `MU` - Mauritius
      * * `YT` - Mayotte
      * * `MX` - Mexico
-     * * `FM` - Micronesia (Federated States of)
+     * * `FM` - Micronesia
      * * `MD` - Moldova
      * * `MC` - Monaco
      * * `MN` - Mongolia
@@ -273,7 +262,7 @@ export type AdminBusiness = {
      * * `TO` - Tonga
      * * `TT` - Trinidad and Tobago
      * * `TN` - Tunisia
-     * * `TR` - Turkey
+     * * `TR` - Türkiye
      * * `TM` - Turkmenistan
      * * `TC` - Turks and Caicos Islands
      * * `TV` - Tuvalu
@@ -311,19 +300,11 @@ export type AdminBusiness = {
      * * `offboarded` - offboarded
      */
     readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started' | 'under_review' | 'resubmission_requested' | 'offboarded';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     readonly created: number;
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminBusinessAutomatedPayoutDestination = {
     currency: Currency;
     /**
@@ -338,36 +319,24 @@ export type AdminBusinessAutomatedPayoutDestination = {
     readonly bank_account: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminBusinessCategory = {
     readonly id: string;
     name: string;
     parent?: string;
-    image?: string;
+    image?: string | null;
     readonly created: number;
     readonly updated: number;
     description?: string | null;
 };
 
 export type AdminBusinessCategoryResponse = {
-    status?: string;
-    data?: AdminBusinessCategory;
+    status: string;
+    data: AdminBusinessCategory;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminBusinessDocument = {
     readonly id: string;
-    readonly file: string;
+    readonly file: string | null;
     readonly files: Array<BusinessDocumentFile>;
     /**
      * * `incorporation_certificate` - incorporation_certificate
@@ -397,9 +366,7 @@ export type AdminBusinessDocument = {
      * * `not_started` - not_started
      */
     status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     note?: string | null;
     expires?: number | null;
     readonly created: number;
@@ -407,16 +374,10 @@ export type AdminBusinessDocument = {
 };
 
 export type AdminBusinessDocumentResponse = {
-    status?: string;
-    data?: AdminBusinessDocument;
+    status: string;
+    data: AdminBusinessDocument;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminBusinessPayout = {
     readonly id: string;
     readonly reference: string | null;
@@ -436,12 +397,6 @@ export type AdminBusinessPayout = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminBusinessPayoutDestination = {
     currency: Currency;
     /**
@@ -462,47 +417,35 @@ export type AdminBusinessPayoutDestination = {
 };
 
 export type AdminBusinessPayoutResponse = {
-    status?: string;
-    data?: AdminBusinessPayout;
+    status: string;
+    data: AdminBusinessPayout;
 };
 
 export type AdminBusinessPayoutTransaction = {
     readonly id: string;
     readonly collection: string;
     readonly parent: string;
-    readonly partner: {
-        [key: string]: unknown;
-    };
+    readonly partner: unknown;
     readonly tx_type: string;
     readonly subtype: string;
     readonly note: string;
-    readonly metadata: {
-        [key: string]: unknown;
-    };
+    readonly metadata: unknown;
     readonly status: string;
     readonly reference: string;
     readonly amount: number;
     readonly total_amount: number;
     readonly balance: number;
-    readonly currency: {
-        [key: string]: unknown;
-    };
+    readonly currency: unknown;
     readonly account: string;
     readonly created: number;
     readonly updated: number;
 };
 
 export type AdminBusinessResponse = {
-    status?: string;
-    data?: AdminBusiness;
+    status: string;
+    data: AdminBusiness;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminBusinessUser = {
     readonly id: string;
     business: ShortBusiness;
@@ -519,16 +462,10 @@ export type AdminBusinessUser = {
 };
 
 export type AdminBusinessUserResponse = {
-    status?: string;
-    data?: AdminBusinessUser;
+    status: string;
+    data: AdminBusinessUser;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCompany = {
     readonly id: string;
     readonly secret: string;
@@ -539,28 +476,16 @@ export type AdminCompany = {
     payout_hour?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCompanyPayoutMinimum = {
     currency: Currency;
     readonly amount: number;
 };
 
 export type AdminCompanyResponse = {
-    status?: string;
-    data?: AdminCompany;
+    status: string;
+    data: AdminCompany;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateBusinessDocument = {
     readonly id: string;
     /**
@@ -591,21 +516,13 @@ export type AdminCreateBusinessDocument = {
      * * `not_started` - not_started
      */
     status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     note?: string | null;
     expires?: number | null;
     readonly created: number;
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateBusinessPayout = {
     readonly id: string;
     reference?: string | null;
@@ -621,12 +538,6 @@ export type AdminCreateBusinessPayout = {
     destinations?: Array<AdminCreateBusinessPayoutDestination>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateBusinessPayoutDestination = {
     currency: string;
     /**
@@ -648,26 +559,14 @@ export type AdminCreateBusinessPayoutDestination = {
     readonly updated: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateBusinessUser = {
     business: string;
     user?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     roles: Array<'manager' | 'customer'>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateBusiness = {
     readonly id: string;
     name?: string | null;
@@ -675,9 +574,7 @@ export type AdminUpdateBusiness = {
     readonly owner: string;
     website?: string | null;
     inc_number?: string | null;
-    colors?: {
-        [key: string]: unknown;
-    } | null;
+    colors?: unknown;
     readonly categories: Array<BusinessCategory>;
     logo?: string | null;
     icon?: string | null;
@@ -833,7 +730,7 @@ export type AdminUpdateBusiness = {
      * * `MU` - Mauritius
      * * `YT` - Mayotte
      * * `MX` - Mexico
-     * * `FM` - Micronesia (Federated States of)
+     * * `FM` - Micronesia
      * * `MD` - Moldova
      * * `MC` - Monaco
      * * `MN` - Mongolia
@@ -918,7 +815,7 @@ export type AdminUpdateBusiness = {
      * * `TO` - Tonga
      * * `TT` - Trinidad and Tobago
      * * `TN` - Tunisia
-     * * `TR` - Turkey
+     * * `TR` - Türkiye
      * * `TM` - Turkmenistan
      * * `TC` - Turks and Caicos Islands
      * * `TV` - Tuvalu
@@ -956,34 +853,20 @@ export type AdminUpdateBusiness = {
      * * `offboarded` - offboarded
      */
     status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started' | 'under_review' | 'resubmission_requested' | 'offboarded';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     readonly created: number;
     readonly updated: number;
 };
 
 export type AdminUpdateBusinessResponse = {
-    status?: string;
-    data?: AdminUpdateBusiness;
+    status: string;
+    data: AdminUpdateBusiness;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateBusinessUser = {
     business: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateCompany = {
     readonly id: string;
     readonly secret: string;
@@ -994,12 +877,6 @@ export type AdminUpdateCompany = {
     payout_hour?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateCompanyPayoutMinimum = {
     currency: string;
     amount: number;
@@ -1010,16 +887,10 @@ export type BusinessCategories = {
 };
 
 export type BusinessCategoriesResponse = {
-    status?: string;
-    data?: BusinessCategories;
+    status: string;
+    data: BusinessCategories;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type BusinessCategory = {
     readonly id: string;
     readonly name: string;
@@ -1030,12 +901,6 @@ export type BusinessCategory = {
     readonly description: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type BusinessCategoryParent = {
     readonly id: string;
     readonly name: string;
@@ -1046,16 +911,10 @@ export type BusinessCategoryParent = {
 };
 
 export type BusinessCategoryResponse = {
-    status?: string;
-    data?: BusinessCategory;
+    status: string;
+    data: BusinessCategory;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type BusinessCategoryUpdate = {
     readonly id: string;
     readonly name: string;
@@ -1067,30 +926,18 @@ export type BusinessCategoryUpdate = {
 };
 
 export type BusinessCategoryUpdateResponse = {
-    status?: string;
-    data?: BusinessCategoryUpdate;
+    status: string;
+    data: BusinessCategoryUpdate;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type BusinessDocumentFile = {
-    readonly file: string;
+    readonly file: string | null;
 };
 
 export type BusinessDocumentFileWrite = {
     file: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type BusinessUser = {
     readonly id: string;
     readonly email: string | null;
@@ -1106,20 +953,14 @@ export type BusinessUser = {
 };
 
 export type BusinessUserResponse = {
-    status?: string;
-    data?: BusinessUser;
+    status: string;
+    data: BusinessUser;
 };
 
 export type BusinsessCategoryCreate = {
     categories: Array<string>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Currency = {
     code: string;
     display_code?: string | null;
@@ -1130,24 +971,16 @@ export type Currency = {
 };
 
 export type CurrencyResponse = {
-    status?: string;
-    data?: Currency;
+    status: string;
+    data: Currency;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CustomerBusiness = {
     readonly id: string;
     name?: string | null;
     description?: string | null;
     website?: string | null;
-    colors?: {
-        [key: string]: unknown;
-    } | null;
+    colors?: unknown;
     readonly categories: Array<BusinessCategory>;
     logo?: string | null;
     icon?: string | null;
@@ -1299,7 +1132,7 @@ export type CustomerBusiness = {
      * * `MU` - Mauritius
      * * `YT` - Mayotte
      * * `MX` - Mexico
-     * * `FM` - Micronesia (Federated States of)
+     * * `FM` - Micronesia
      * * `MD` - Moldova
      * * `MC` - Monaco
      * * `MN` - Mongolia
@@ -1384,7 +1217,7 @@ export type CustomerBusiness = {
      * * `TO` - Tonga
      * * `TT` - Trinidad and Tobago
      * * `TN` - Tunisia
-     * * `TR` - Turkey
+     * * `TR` - Türkiye
      * * `TM` - Turkmenistan
      * * `TC` - Turks and Caicos Islands
      * * `TV` - Tuvalu
@@ -1409,16 +1242,14 @@ export type CustomerBusiness = {
      */
     address_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
     address_postal_code?: string | null;
-    readonly metadata: {
-        [key: string]: unknown;
-    };
+    readonly metadata: unknown;
     readonly created: number;
     readonly updated: number;
 };
 
 export type CustomerBusinessResponse = {
-    status?: string;
-    data?: CustomerBusiness;
+    status: string;
+    data: CustomerBusiness;
 };
 
 export type CustomerEnroll = {
@@ -1430,12 +1261,6 @@ export type Deactivate = {
     purge?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerBusiness = {
     readonly id: string;
     name?: string | null;
@@ -1443,9 +1268,7 @@ export type ManagerBusiness = {
     readonly owner: string;
     website?: string | null;
     inc_number?: string | null;
-    colors?: {
-        [key: string]: unknown;
-    } | null;
+    colors?: unknown;
     readonly categories: Array<BusinessCategory>;
     logo?: string | null;
     icon?: string | null;
@@ -1601,7 +1424,7 @@ export type ManagerBusiness = {
      * * `MU` - Mauritius
      * * `YT` - Mayotte
      * * `MX` - Mexico
-     * * `FM` - Micronesia (Federated States of)
+     * * `FM` - Micronesia
      * * `MD` - Moldova
      * * `MC` - Monaco
      * * `MN` - Mongolia
@@ -1686,7 +1509,7 @@ export type ManagerBusiness = {
      * * `TO` - Tonga
      * * `TT` - Trinidad and Tobago
      * * `TN` - Tunisia
-     * * `TR` - Turkey
+     * * `TR` - Türkiye
      * * `TM` - Turkmenistan
      * * `TC` - Turks and Caicos Islands
      * * `TV` - Tuvalu
@@ -1724,19 +1547,11 @@ export type ManagerBusiness = {
      * * `offboarded` - offboarded
      */
     readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started' | 'under_review' | 'resubmission_requested' | 'offboarded';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     readonly created: number;
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerBusinessAutomatedPayoutDestination = {
     currency: Currency;
     /**
@@ -1751,15 +1566,9 @@ export type ManagerBusinessAutomatedPayoutDestination = {
     readonly bank_account: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerBusinessDocument = {
     readonly id: string;
-    readonly file: string;
+    readonly file: string | null;
     readonly files: Array<BusinessDocumentFile>;
     /**
      * * `incorporation_certificate` - incorporation_certificate
@@ -1789,9 +1598,7 @@ export type ManagerBusinessDocument = {
      * * `not_started` - not_started
      */
     readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     readonly note: string | null;
     expires?: number | null;
     readonly created: number;
@@ -1799,43 +1606,31 @@ export type ManagerBusinessDocument = {
 };
 
 export type ManagerBusinessDocumentResponse = {
-    status?: string;
-    data?: ManagerBusinessDocument;
+    status: string;
+    data: ManagerBusinessDocument;
 };
 
 export type ManagerBusinessInvoice = {
     readonly id: string;
-    readonly user: {
-        [key: string]: unknown;
-    };
+    readonly user: unknown;
     readonly account: string;
     request_reference?: string;
-    readonly request_currency: {
-        [key: string]: unknown;
-    };
+    readonly request_currency: unknown;
     request_amount: number;
-    readonly primary_payment_processor: {
-        [key: string]: unknown;
-    };
+    readonly primary_payment_processor: unknown;
     description?: string;
     status: string;
     return_url?: string;
     readonly redirect_url: string;
-    readonly payer_user: {
-        [key: string]: unknown;
-    };
+    readonly payer_user: unknown;
     payer_email?: string;
     payer_mobile_number?: string;
-    readonly payment_processor_quotes: {
-        [key: string]: unknown;
-    };
+    readonly payment_processor_quotes: unknown;
     expiration_date?: number;
     due_date?: number;
     send_request_on?: number;
     send_reminders?: boolean;
-    metadata?: {
-        [key: string]: unknown;
-    };
+    metadata?: unknown;
     readonly refunded: boolean;
     readonly created: number;
     readonly updated: number;
@@ -1851,9 +1646,7 @@ export type ManagerBusinessInvoiceLog = {
 export type ManagerBusinessInvoiceRefund = {
     readonly identifier: string;
     amount: number;
-    currency: {
-        [key: string]: unknown;
-    };
+    currency: unknown;
     readonly status: string;
     type: string;
     readonly transaction_collection: string;
@@ -1864,17 +1657,15 @@ export type ManagerBusinessInvoiceRefund = {
 };
 
 export type ManagerBusinessInvoiceResponse = {
-    status?: string;
-    data?: ManagerBusinessInvoice;
+    status: string;
+    data: ManagerBusinessInvoice;
 };
 
 export type ManagerBusinessInvoiceTransaction = {
     readonly rehive_code: string;
     readonly settled: boolean;
     readonly payment_processor_quote: number;
-    readonly details: {
-        [key: string]: unknown;
-    };
+    readonly details: unknown;
 };
 
 export type ManagerBusinessMetric = {
@@ -1883,16 +1674,10 @@ export type ManagerBusinessMetric = {
     readonly resource: string;
     readonly function: string;
     readonly expression: string;
-    readonly currency: {
-        [key: string]: unknown;
-    };
+    readonly currency: unknown;
     readonly timezone: string;
-    readonly query: {
-        [key: string]: unknown;
-    };
-    readonly metadata: {
-        [key: string]: unknown;
-    };
+    readonly query: unknown;
+    readonly metadata: unknown;
     readonly created: number;
     readonly updated: number;
 };
@@ -1904,16 +1689,10 @@ export type ManagerBusinessMetricPoint = {
 };
 
 export type ManagerBusinessMetricResponse = {
-    status?: string;
-    data?: ManagerBusinessMetric;
+    status: string;
+    data: ManagerBusinessMetric;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerBusinessPayout = {
     readonly id: string;
     readonly reference: string | null;
@@ -1933,12 +1712,6 @@ export type ManagerBusinessPayout = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerBusinessPayoutDestination = {
     currency: Currency;
     /**
@@ -1959,78 +1732,60 @@ export type ManagerBusinessPayoutDestination = {
 };
 
 export type ManagerBusinessPayoutResponse = {
-    status?: string;
-    data?: ManagerBusinessPayout;
+    status: string;
+    data: ManagerBusinessPayout;
 };
 
 export type ManagerBusinessPayoutTransaction = {
     readonly id: string;
     readonly collection: string;
     readonly parent: string;
-    readonly partner: {
-        [key: string]: unknown;
-    };
+    readonly partner: unknown;
     readonly tx_type: string;
     readonly subtype: string;
     readonly note: string;
-    readonly metadata: {
-        [key: string]: unknown;
-    };
+    readonly metadata: unknown;
     readonly status: string;
     readonly reference: string;
     readonly amount: number;
     readonly total_amount: number;
     readonly balance: number;
-    readonly currency: {
-        [key: string]: unknown;
-    };
+    readonly currency: unknown;
     readonly account: string;
     readonly created: number;
     readonly updated: number;
 };
 
 export type ManagerBusinessResponse = {
-    status?: string;
-    data?: ManagerBusiness;
+    status: string;
+    data: ManagerBusiness;
 };
 
 export type ManagerBusinessTransaction = {
     readonly id: string;
     readonly collection: string;
     readonly parent: string;
-    readonly partner: {
-        [key: string]: unknown;
-    };
+    readonly partner: unknown;
     readonly tx_type: string;
     readonly subtype: string;
     readonly note: string;
-    readonly metadata: {
-        [key: string]: unknown;
-    };
+    readonly metadata: unknown;
     readonly status: string;
     readonly reference: string;
     readonly amount: number;
     readonly total_amount: number;
     readonly balance: number;
-    readonly currency: {
-        [key: string]: unknown;
-    };
+    readonly currency: unknown;
     readonly account: string;
     readonly created: number;
     readonly updated: number;
 };
 
 export type ManagerBusinessTransactionResponse = {
-    status?: string;
-    data?: ManagerBusinessTransaction;
+    status: string;
+    data: ManagerBusinessTransaction;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCompany = {
     readonly id: string;
     readonly manager_groups: Array<string> | null;
@@ -2040,28 +1795,16 @@ export type ManagerCompany = {
     readonly payout_hour: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCompanyPayoutMinimum = {
     currency: Currency;
     readonly amount: number;
 };
 
 export type ManagerCompanyResponse = {
-    status?: string;
-    data?: ManagerCompany;
+    status: string;
+    data: ManagerCompany;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateBusiness = {
     id: string;
     name?: string | null;
@@ -2069,9 +1812,7 @@ export type ManagerCreateBusiness = {
     readonly owner: string;
     website?: string | null;
     inc_number?: string | null;
-    colors?: {
-        [key: string]: unknown;
-    } | null;
+    colors?: unknown;
     readonly categories: Array<BusinessCategory>;
     logo?: string | null;
     icon?: string | null;
@@ -2227,7 +1968,7 @@ export type ManagerCreateBusiness = {
      * * `MU` - Mauritius
      * * `YT` - Mayotte
      * * `MX` - Mexico
-     * * `FM` - Micronesia (Federated States of)
+     * * `FM` - Micronesia
      * * `MD` - Moldova
      * * `MC` - Monaco
      * * `MN` - Mongolia
@@ -2312,7 +2053,7 @@ export type ManagerCreateBusiness = {
      * * `TO` - Tonga
      * * `TT` - Trinidad and Tobago
      * * `TN` - Tunisia
-     * * `TR` - Turkey
+     * * `TR` - Türkiye
      * * `TM` - Turkmenistan
      * * `TC` - Turks and Caicos Islands
      * * `TV` - Tuvalu
@@ -2350,19 +2091,11 @@ export type ManagerCreateBusiness = {
      * * `offboarded` - offboarded
      */
     readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started' | 'under_review' | 'resubmission_requested' | 'offboarded';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     readonly created: number;
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateBusinessDocument = {
     readonly id: string;
     /**
@@ -2393,9 +2126,7 @@ export type ManagerCreateBusinessDocument = {
      * * `not_started` - not_started
      */
     readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     note?: string | null;
     expires?: number | null;
     readonly created: number;
@@ -2404,37 +2135,25 @@ export type ManagerCreateBusinessDocument = {
 
 export type ManagerCreateBusinessInvoice = {
     readonly id: string;
-    readonly user: {
-        [key: string]: unknown;
-    };
+    readonly user: unknown;
     readonly account: string;
     request_reference?: string;
-    readonly request_currency: {
-        [key: string]: unknown;
-    };
+    readonly request_currency: unknown;
     request_amount: number;
-    readonly primary_payment_processor: {
-        [key: string]: unknown;
-    };
+    readonly primary_payment_processor: unknown;
     description?: string;
     status: string;
     return_url?: string;
     readonly redirect_url: string;
-    readonly payer_user: {
-        [key: string]: unknown;
-    };
+    readonly payer_user: unknown;
     payer_email?: string;
     payer_mobile_number?: string;
-    readonly payment_processor_quotes: {
-        [key: string]: unknown;
-    };
+    readonly payment_processor_quotes: unknown;
     expiration_date?: number;
     due_date?: number;
     send_request_on?: number;
     send_reminders?: boolean;
-    metadata?: {
-        [key: string]: unknown;
-    };
+    metadata?: unknown;
     readonly refunded: boolean;
     readonly created: number;
     readonly updated: number;
@@ -2454,16 +2173,10 @@ export type ManagerCreateBusinessInvoiceRefund = {
 };
 
 export type ManagerCreateBusinessInvoiceRefundResponse = {
-    status?: string;
-    data?: ManagerCreateBusinessInvoiceRefund;
+    status: string;
+    data: ManagerCreateBusinessInvoiceRefund;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateBusinessPayout = {
     readonly id: string;
     reference?: string | null;
@@ -2479,12 +2192,6 @@ export type ManagerCreateBusinessPayout = {
     destinations?: Array<ManagerCreateBusinessPayoutDestination>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateBusinessPayoutDestination = {
     currency: string;
     /**
@@ -2506,25 +2213,13 @@ export type ManagerCreateBusinessPayoutDestination = {
     readonly updated: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateBusinessUser = {
     user?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     roles: Array<'manager' | 'customer'>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateUpdateBusinessAutomatedPayoutDestination = {
     currency: string;
     /**
@@ -2541,12 +2236,6 @@ export type ManagerCreateUpdateBusinessAutomatedPayoutDestination = {
     readonly updated: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerUpdateBusiness = {
     readonly id: string;
     name?: string | null;
@@ -2554,9 +2243,7 @@ export type ManagerUpdateBusiness = {
     readonly owner: string;
     website?: string | null;
     inc_number?: string | null;
-    colors?: {
-        [key: string]: unknown;
-    } | null;
+    colors?: unknown;
     readonly categories: Array<BusinessCategory>;
     logo?: string | null;
     icon?: string | null;
@@ -2712,7 +2399,7 @@ export type ManagerUpdateBusiness = {
      * * `MU` - Mauritius
      * * `YT` - Mayotte
      * * `MX` - Mexico
-     * * `FM` - Micronesia (Federated States of)
+     * * `FM` - Micronesia
      * * `MD` - Moldova
      * * `MC` - Monaco
      * * `MN` - Mongolia
@@ -2797,7 +2484,7 @@ export type ManagerUpdateBusiness = {
      * * `TO` - Tonga
      * * `TT` - Trinidad and Tobago
      * * `TN` - Tunisia
-     * * `TR` - Turkey
+     * * `TR` - Türkiye
      * * `TM` - Turkmenistan
      * * `TC` - Turks and Caicos Islands
      * * `TV` - Tuvalu
@@ -2835,350 +2522,318 @@ export type ManagerUpdateBusiness = {
      * * `offboarded` - offboarded
      */
     readonly status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started' | 'under_review' | 'resubmission_requested' | 'offboarded';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     readonly created: number;
     readonly updated: number;
 };
 
 export type ManagerUpdateBusinessInvoice = {
     readonly id: string;
-    readonly user: {
-        [key: string]: unknown;
-    };
+    readonly user: unknown;
     readonly account: string;
     request_reference?: string;
-    readonly request_currency: {
-        [key: string]: unknown;
-    };
+    readonly request_currency: unknown;
     request_amount: number;
-    readonly primary_payment_processor: {
-        [key: string]: unknown;
-    };
+    readonly primary_payment_processor: unknown;
     description?: string;
     status: string;
     return_url?: string;
     readonly redirect_url: string;
-    readonly payer_user: {
-        [key: string]: unknown;
-    };
+    readonly payer_user: unknown;
     payer_email?: string;
     payer_mobile_number?: string;
-    readonly payment_processor_quotes: {
-        [key: string]: unknown;
-    };
+    readonly payment_processor_quotes: unknown;
     expiration_date?: number;
     due_date?: number;
     send_request_on?: number;
     send_reminders?: boolean;
-    metadata?: {
-        [key: string]: unknown;
-    };
+    metadata?: unknown;
     readonly refunded: boolean;
     readonly created: number;
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerUpdateBusinessUser = {
     roles: Array<'manager' | 'customer'>;
 };
 
 export type PaginatedAdminBusinessCategoryList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminBusinessCategory>;
+    results: Array<AdminBusinessCategory>;
 };
 
 export type PaginatedAdminBusinessCategoryListResponse = {
-    status?: string;
-    data?: PaginatedAdminBusinessCategoryList;
+    status: string;
+    data: PaginatedAdminBusinessCategoryList;
 };
 
 export type PaginatedAdminBusinessDocumentList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminBusinessDocument>;
+    results: Array<AdminBusinessDocument>;
 };
 
 export type PaginatedAdminBusinessDocumentListResponse = {
-    status?: string;
-    data?: PaginatedAdminBusinessDocumentList;
+    status: string;
+    data: PaginatedAdminBusinessDocumentList;
 };
 
 export type PaginatedAdminBusinessList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminBusiness>;
+    results: Array<AdminBusiness>;
 };
 
 export type PaginatedAdminBusinessListResponse = {
-    status?: string;
-    data?: PaginatedAdminBusinessList;
+    status: string;
+    data: PaginatedAdminBusinessList;
 };
 
 export type PaginatedAdminBusinessPayoutList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminBusinessPayout>;
+    results: Array<AdminBusinessPayout>;
 };
 
 export type PaginatedAdminBusinessPayoutListResponse = {
-    status?: string;
-    data?: PaginatedAdminBusinessPayoutList;
+    status: string;
+    data: PaginatedAdminBusinessPayoutList;
 };
 
 export type PaginatedAdminBusinessPayoutTransactionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminBusinessPayoutTransaction>;
+    results: Array<AdminBusinessPayoutTransaction>;
 };
 
 export type PaginatedAdminBusinessPayoutTransactionListResponse = {
-    status?: string;
-    data?: PaginatedAdminBusinessPayoutTransactionList;
+    status: string;
+    data: PaginatedAdminBusinessPayoutTransactionList;
 };
 
 export type PaginatedAdminBusinessUserList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminBusinessUser>;
+    results: Array<AdminBusinessUser>;
 };
 
 export type PaginatedAdminBusinessUserListResponse = {
-    status?: string;
-    data?: PaginatedAdminBusinessUserList;
+    status: string;
+    data: PaginatedAdminBusinessUserList;
 };
 
 export type PaginatedBusinessCategoryList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<BusinessCategory>;
+    results: Array<BusinessCategory>;
 };
 
 export type PaginatedBusinessCategoryListResponse = {
-    status?: string;
-    data?: PaginatedBusinessCategoryList;
+    status: string;
+    data: PaginatedBusinessCategoryList;
 };
 
 export type PaginatedBusinessUserList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<BusinessUser>;
+    results: Array<BusinessUser>;
 };
 
 export type PaginatedBusinessUserListResponse = {
-    status?: string;
-    data?: PaginatedBusinessUserList;
+    status: string;
+    data: PaginatedBusinessUserList;
 };
 
 export type PaginatedCurrencyList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Currency>;
+    results: Array<Currency>;
 };
 
 export type PaginatedCurrencyListResponse = {
-    status?: string;
-    data?: PaginatedCurrencyList;
+    status: string;
+    data: PaginatedCurrencyList;
 };
 
 export type PaginatedCustomerBusinessList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<CustomerBusiness>;
+    results: Array<CustomerBusiness>;
 };
 
 export type PaginatedCustomerBusinessListResponse = {
-    status?: string;
-    data?: PaginatedCustomerBusinessList;
+    status: string;
+    data: PaginatedCustomerBusinessList;
 };
 
 export type PaginatedManagerBusinessDocumentList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerBusinessDocument>;
+    results: Array<ManagerBusinessDocument>;
 };
 
 export type PaginatedManagerBusinessDocumentListResponse = {
-    status?: string;
-    data?: PaginatedManagerBusinessDocumentList;
+    status: string;
+    data: PaginatedManagerBusinessDocumentList;
 };
 
 export type PaginatedManagerBusinessInvoiceList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerBusinessInvoice>;
+    results: Array<ManagerBusinessInvoice>;
 };
 
 export type PaginatedManagerBusinessInvoiceListResponse = {
-    status?: string;
-    data?: PaginatedManagerBusinessInvoiceList;
+    status: string;
+    data: PaginatedManagerBusinessInvoiceList;
 };
 
 export type PaginatedManagerBusinessInvoiceLogList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerBusinessInvoiceLog>;
+    results: Array<ManagerBusinessInvoiceLog>;
 };
 
 export type PaginatedManagerBusinessInvoiceLogListResponse = {
-    status?: string;
-    data?: PaginatedManagerBusinessInvoiceLogList;
+    status: string;
+    data: PaginatedManagerBusinessInvoiceLogList;
 };
 
 export type PaginatedManagerBusinessInvoiceRefundList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerBusinessInvoiceRefund>;
+    results: Array<ManagerBusinessInvoiceRefund>;
 };
 
 export type PaginatedManagerBusinessInvoiceRefundListResponse = {
-    status?: string;
-    data?: PaginatedManagerBusinessInvoiceRefundList;
+    status: string;
+    data: PaginatedManagerBusinessInvoiceRefundList;
 };
 
 export type PaginatedManagerBusinessInvoiceTransactionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerBusinessInvoiceTransaction>;
+    results: Array<ManagerBusinessInvoiceTransaction>;
 };
 
 export type PaginatedManagerBusinessInvoiceTransactionListResponse = {
-    status?: string;
-    data?: PaginatedManagerBusinessInvoiceTransactionList;
+    status: string;
+    data: PaginatedManagerBusinessInvoiceTransactionList;
 };
 
 export type PaginatedManagerBusinessList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerBusiness>;
+    results: Array<ManagerBusiness>;
 };
 
 export type PaginatedManagerBusinessListResponse = {
-    status?: string;
-    data?: PaginatedManagerBusinessList;
+    status: string;
+    data: PaginatedManagerBusinessList;
 };
 
 export type PaginatedManagerBusinessMetricList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerBusinessMetric>;
+    results: Array<ManagerBusinessMetric>;
 };
 
 export type PaginatedManagerBusinessMetricListResponse = {
-    status?: string;
-    data?: PaginatedManagerBusinessMetricList;
+    status: string;
+    data: PaginatedManagerBusinessMetricList;
 };
 
 export type PaginatedManagerBusinessMetricPointList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerBusinessMetricPoint>;
+    results: Array<ManagerBusinessMetricPoint>;
 };
 
 export type PaginatedManagerBusinessMetricPointListResponse = {
-    status?: string;
-    data?: PaginatedManagerBusinessMetricPointList;
+    status: string;
+    data: PaginatedManagerBusinessMetricPointList;
 };
 
 export type PaginatedManagerBusinessPayoutList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerBusinessPayout>;
+    results: Array<ManagerBusinessPayout>;
 };
 
 export type PaginatedManagerBusinessPayoutListResponse = {
-    status?: string;
-    data?: PaginatedManagerBusinessPayoutList;
+    status: string;
+    data: PaginatedManagerBusinessPayoutList;
 };
 
 export type PaginatedManagerBusinessPayoutTransactionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerBusinessPayoutTransaction>;
+    results: Array<ManagerBusinessPayoutTransaction>;
 };
 
 export type PaginatedManagerBusinessPayoutTransactionListResponse = {
-    status?: string;
-    data?: PaginatedManagerBusinessPayoutTransactionList;
+    status: string;
+    data: PaginatedManagerBusinessPayoutTransactionList;
 };
 
 export type PaginatedManagerBusinessTransactionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerBusinessTransaction>;
+    results: Array<ManagerBusinessTransaction>;
 };
 
 export type PaginatedManagerBusinessTransactionListResponse = {
-    status?: string;
-    data?: PaginatedManagerBusinessTransactionList;
+    status: string;
+    data: PaginatedManagerBusinessTransactionList;
 };
 
 export type PaginatedUserBusinessList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserBusiness>;
+    results: Array<UserBusiness>;
 };
 
 export type PaginatedUserBusinessListResponse = {
-    status?: string;
-    data?: PaginatedUserBusinessList;
+    status: string;
+    data: PaginatedUserBusinessList;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminBusinessCategory = {
     readonly id?: string;
     name?: string;
     parent?: string;
-    image?: string;
+    image?: string | null;
     readonly created?: number;
     readonly updated?: number;
     description?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminBusinessDocument = {
     readonly id?: string;
-    readonly file?: string;
+    readonly file?: string | null;
     readonly files?: Array<BusinessDocumentFile>;
     /**
      * * `incorporation_certificate` - incorporation_certificate
@@ -3208,21 +2863,13 @@ export type PatchedAdminBusinessDocument = {
      * * `not_started` - not_started
      */
     status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     note?: string | null;
     expires?: number | null;
     readonly created?: number;
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateBusiness = {
     readonly id?: string;
     name?: string | null;
@@ -3230,9 +2877,7 @@ export type PatchedAdminUpdateBusiness = {
     readonly owner?: string;
     website?: string | null;
     inc_number?: string | null;
-    colors?: {
-        [key: string]: unknown;
-    } | null;
+    colors?: unknown;
     readonly categories?: Array<BusinessCategory>;
     logo?: string | null;
     icon?: string | null;
@@ -3388,7 +3033,7 @@ export type PatchedAdminUpdateBusiness = {
      * * `MU` - Mauritius
      * * `YT` - Mayotte
      * * `MX` - Mexico
-     * * `FM` - Micronesia (Federated States of)
+     * * `FM` - Micronesia
      * * `MD` - Moldova
      * * `MC` - Monaco
      * * `MN` - Mongolia
@@ -3473,7 +3118,7 @@ export type PatchedAdminUpdateBusiness = {
      * * `TO` - Tonga
      * * `TT` - Trinidad and Tobago
      * * `TN` - Tunisia
-     * * `TR` - Turkey
+     * * `TR` - Türkiye
      * * `TM` - Turkmenistan
      * * `TC` - Turks and Caicos Islands
      * * `TV` - Tuvalu
@@ -3511,29 +3156,15 @@ export type PatchedAdminUpdateBusiness = {
      * * `offboarded` - offboarded
      */
     status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started' | 'under_review' | 'resubmission_requested' | 'offboarded';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     readonly created?: number;
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateBusinessUser = {
     business?: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateCompany = {
     readonly id?: string;
     readonly secret?: string;
@@ -3544,12 +3175,6 @@ export type PatchedAdminUpdateCompany = {
     payout_hour?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerUpdateBusiness = {
     readonly id?: string;
     name?: string | null;
@@ -3557,9 +3182,7 @@ export type PatchedManagerUpdateBusiness = {
     readonly owner?: string;
     website?: string | null;
     inc_number?: string | null;
-    colors?: {
-        [key: string]: unknown;
-    } | null;
+    colors?: unknown;
     readonly categories?: Array<BusinessCategory>;
     logo?: string | null;
     icon?: string | null;
@@ -3715,7 +3338,7 @@ export type PatchedManagerUpdateBusiness = {
      * * `MU` - Mauritius
      * * `YT` - Mayotte
      * * `MX` - Mexico
-     * * `FM` - Micronesia (Federated States of)
+     * * `FM` - Micronesia
      * * `MD` - Moldova
      * * `MC` - Monaco
      * * `MN` - Mongolia
@@ -3800,7 +3423,7 @@ export type PatchedManagerUpdateBusiness = {
      * * `TO` - Tonga
      * * `TT` - Trinidad and Tobago
      * * `TN` - Tunisia
-     * * `TR` - Turkey
+     * * `TR` - Türkiye
      * * `TM` - Turkmenistan
      * * `TC` - Turks and Caicos Islands
      * * `TV` - Tuvalu
@@ -3838,67 +3461,41 @@ export type PatchedManagerUpdateBusiness = {
      * * `offboarded` - offboarded
      */
     readonly status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started' | 'under_review' | 'resubmission_requested' | 'offboarded';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     readonly created?: number;
     readonly updated?: number;
 };
 
 export type PatchedManagerUpdateBusinessInvoice = {
     readonly id?: string;
-    readonly user?: {
-        [key: string]: unknown;
-    };
+    readonly user?: unknown;
     readonly account?: string;
     request_reference?: string;
-    readonly request_currency?: {
-        [key: string]: unknown;
-    };
+    readonly request_currency?: unknown;
     request_amount?: number;
-    readonly primary_payment_processor?: {
-        [key: string]: unknown;
-    };
+    readonly primary_payment_processor?: unknown;
     description?: string;
     status?: string;
     return_url?: string;
     readonly redirect_url?: string;
-    readonly payer_user?: {
-        [key: string]: unknown;
-    };
+    readonly payer_user?: unknown;
     payer_email?: string;
     payer_mobile_number?: string;
-    readonly payment_processor_quotes?: {
-        [key: string]: unknown;
-    };
+    readonly payment_processor_quotes?: unknown;
     expiration_date?: number;
     due_date?: number;
     send_request_on?: number;
     send_reminders?: boolean;
-    metadata?: {
-        [key: string]: unknown;
-    };
+    metadata?: unknown;
     readonly refunded?: boolean;
     readonly created?: number;
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerUpdateBusinessUser = {
     roles?: Array<'manager' | 'customer'>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ShortBusiness = {
     readonly id: string;
     name?: string | null;
@@ -3906,12 +3503,6 @@ export type ShortBusiness = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type User = {
     readonly id: string;
     readonly first_name: string | null;
@@ -3920,21 +3511,13 @@ export type User = {
     readonly profile: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserBusiness = {
     readonly id: string;
     readonly name: string | null;
     readonly description: string | null;
     readonly website: string | null;
     readonly inc_number: string | null;
-    readonly colors: {
-        [key: string]: unknown;
-    } | null;
+    readonly colors: unknown;
     readonly categories: Array<BusinessCategory>;
     readonly logo: string | null;
     readonly icon: string | null;
@@ -4087,7 +3670,7 @@ export type UserBusiness = {
      * * `MU` - Mauritius
      * * `YT` - Mayotte
      * * `MX` - Mexico
-     * * `FM` - Micronesia (Federated States of)
+     * * `FM` - Micronesia
      * * `MD` - Moldova
      * * `MC` - Monaco
      * * `MN` - Mongolia
@@ -4172,7 +3755,7 @@ export type UserBusiness = {
      * * `TO` - Tonga
      * * `TT` - Trinidad and Tobago
      * * `TN` - Tunisia
-     * * `TR` - Turkey
+     * * `TR` - Türkiye
      * * `TM` - Turkmenistan
      * * `TC` - Turks and Caicos Islands
      * * `TV` - Tuvalu
@@ -4197,32 +3780,24 @@ export type UserBusiness = {
      */
     readonly address_country: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | null;
     readonly address_postal_code: string | null;
-    readonly metadata: {
-        [key: string]: unknown;
-    };
+    readonly metadata: unknown;
     readonly created: number;
     readonly updated: number;
 };
 
 export type UserBusinessResponse = {
-    status?: string;
-    data?: UserBusiness;
+    status: string;
+    data: UserBusiness;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCompany = {
     readonly id: string;
     readonly manager_groups: Array<string> | null;
 };
 
 export type UserCompanyResponse = {
-    status?: string;
-    data?: UserCompany;
+    status: string;
+    data: UserCompany;
 };
 
 export type Webhook = {
@@ -4235,25 +3810,15 @@ export type Webhook = {
      */
     event: 'transaction.create' | 'currency.create' | 'currency.update' | 'user.update';
     company: string;
-    data: {
-        [key: string]: unknown;
-    };
+    data: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminBusinessWritable = {
     name?: string | null;
     description?: string | null;
     website?: string | null;
     inc_number?: string | null;
-    colors?: {
-        [key: string]: unknown;
-    } | null;
+    colors?: unknown;
     logo?: string | null;
     icon?: string | null;
     vat_number?: string | null;
@@ -4404,7 +3969,7 @@ export type AdminBusinessWritable = {
      * * `MU` - Mauritius
      * * `YT` - Mayotte
      * * `MX` - Mexico
-     * * `FM` - Micronesia (Federated States of)
+     * * `FM` - Micronesia
      * * `MD` - Moldova
      * * `MC` - Monaco
      * * `MN` - Mongolia
@@ -4489,7 +4054,7 @@ export type AdminBusinessWritable = {
      * * `TO` - Tonga
      * * `TT` - Trinidad and Tobago
      * * `TN` - Tunisia
-     * * `TR` - Turkey
+     * * `TR` - Türkiye
      * * `TM` - Turkmenistan
      * * `TC` - Turks and Caicos Islands
      * * `TV` - Tuvalu
@@ -4514,45 +4079,25 @@ export type AdminBusinessWritable = {
      */
     address_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
     address_postal_code?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminBusinessAutomatedPayoutDestinationWritable = {
     [key: string]: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminBusinessCategoryWritable = {
     name: string;
     parent?: string;
-    image?: string;
+    image?: string | null;
     description?: string | null;
 };
 
 export type AdminBusinessCategoryResponseWritable = {
-    status?: string;
-    data?: AdminBusinessCategoryWritable;
+    status: string;
+    data: AdminBusinessCategoryWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminBusinessDocumentWritable = {
     /**
      * * `obsolete` - obsolete
@@ -4564,69 +4109,43 @@ export type AdminBusinessDocumentWritable = {
      * * `not_started` - not_started
      */
     status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     note?: string | null;
     expires?: number | null;
 };
 
 export type AdminBusinessDocumentResponseWritable = {
-    status?: string;
-    data?: AdminBusinessDocumentWritable;
+    status: string;
+    data: AdminBusinessDocumentWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminBusinessPayoutWritable = {
     [key: string]: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminBusinessPayoutDestinationWritable = {
     [key: string]: unknown;
 };
 
 export type AdminBusinessPayoutResponseWritable = {
-    status?: string;
-    data?: AdminBusinessPayoutWritable;
+    status: string;
+    data: AdminBusinessPayoutWritable;
 };
 
 export type AdminBusinessResponseWritable = {
-    status?: string;
-    data?: AdminBusinessWritable;
+    status: string;
+    data: AdminBusinessWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminBusinessUserWritable = {
     [key: string]: unknown;
 };
 
 export type AdminBusinessUserResponseWritable = {
-    status?: string;
-    data?: AdminBusinessUserWritable;
+    status: string;
+    data: AdminBusinessUserWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCompanyWritable = {
     manager_groups?: Array<string> | null;
     payout_exclusion_period?: number;
@@ -4634,29 +4153,17 @@ export type AdminCompanyWritable = {
     payout_hour?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCompanyPayoutMinimumWritable = {
     [key: string]: unknown;
 };
 
 export type AdminCompanyResponseWritable = {
-    status?: string;
-    data?: AdminCompanyWritable;
+    status: string;
+    data: AdminCompanyWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateBusinessDocumentWritable = {
-    file?: string;
+    file?: string | null;
     /**
      * Multi-file upload. Submit as bracketed multipart keys: `files[<i>][file]` (binary) where `<i>` is the slot index (up to MAX_FLEXIBLE_FILES). Mutually exclusive with the legacy `file` field.
      */
@@ -4689,30 +4196,16 @@ export type AdminCreateBusinessDocumentWritable = {
      * * `not_started` - not_started
      */
     status: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     note?: string | null;
     expires?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateBusinessPayoutWritable = {
     reference?: string | null;
     destinations?: Array<AdminCreateBusinessPayoutDestinationWritable>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateBusinessPayoutDestinationWritable = {
     currency: string;
     /**
@@ -4727,20 +4220,12 @@ export type AdminCreateBusinessPayoutDestinationWritable = {
     bank_account?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateBusinessWritable = {
     name?: string | null;
     description?: string | null;
     website?: string | null;
     inc_number?: string | null;
-    colors?: {
-        [key: string]: unknown;
-    } | null;
+    colors?: unknown;
     logo?: string | null;
     icon?: string | null;
     vat_number?: string | null;
@@ -4891,7 +4376,7 @@ export type AdminUpdateBusinessWritable = {
      * * `MU` - Mauritius
      * * `YT` - Mayotte
      * * `MX` - Mexico
-     * * `FM` - Micronesia (Federated States of)
+     * * `FM` - Micronesia
      * * `MD` - Moldova
      * * `MC` - Monaco
      * * `MN` - Mongolia
@@ -4976,7 +4461,7 @@ export type AdminUpdateBusinessWritable = {
      * * `TO` - Tonga
      * * `TT` - Trinidad and Tobago
      * * `TN` - Tunisia
-     * * `TR` - Turkey
+     * * `TR` - Türkiye
      * * `TM` - Turkmenistan
      * * `TC` - Turks and Caicos Islands
      * * `TV` - Tuvalu
@@ -5014,33 +4499,19 @@ export type AdminUpdateBusinessWritable = {
      * * `offboarded` - offboarded
      */
     status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started' | 'under_review' | 'resubmission_requested' | 'offboarded';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
 };
 
 export type AdminUpdateBusinessResponseWritable = {
-    status?: string;
-    data?: AdminUpdateBusinessWritable;
+    status: string;
+    data: AdminUpdateBusinessWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateBusinessUserWritable = {
     business: string;
     roles: Array<'manager' | 'customer'>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateCompanyWritable = {
     manager_groups?: Array<string> | null;
     payout_minimums?: Array<AdminUpdateCompanyPayoutMinimum>;
@@ -5054,57 +4525,37 @@ export type BusinessCategoriesWritable = {
 };
 
 export type BusinessCategoriesResponseWritable = {
-    status?: string;
-    data?: BusinessCategoriesWritable;
+    status: string;
+    data: BusinessCategoriesWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type BusinessCategoryWritable = {
     [key: string]: unknown;
 };
 
 export type BusinessCategoryResponseWritable = {
-    status?: string;
-    data?: BusinessCategoryWritable;
+    status: string;
+    data: BusinessCategoryWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type BusinessCategoryUpdateWritable = {
     [key: string]: unknown;
 };
 
 export type BusinessCategoryUpdateResponseWritable = {
-    status?: string;
-    data?: BusinessCategoryUpdateWritable;
+    status: string;
+    data: BusinessCategoryUpdateWritable;
 };
 
 export type BusinessUserResponseWritable = {
-    status?: string;
+    status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type CustomerBusinessWritable = {
     name?: string | null;
     description?: string | null;
     website?: string | null;
-    colors?: {
-        [key: string]: unknown;
-    } | null;
+    colors?: unknown;
     logo?: string | null;
     icon?: string | null;
     address_line_1?: string | null;
@@ -5254,7 +4705,7 @@ export type CustomerBusinessWritable = {
      * * `MU` - Mauritius
      * * `YT` - Mayotte
      * * `MX` - Mexico
-     * * `FM` - Micronesia (Federated States of)
+     * * `FM` - Micronesia
      * * `MD` - Moldova
      * * `MC` - Monaco
      * * `MN` - Mongolia
@@ -5339,7 +4790,7 @@ export type CustomerBusinessWritable = {
      * * `TO` - Tonga
      * * `TT` - Trinidad and Tobago
      * * `TN` - Tunisia
-     * * `TR` - Turkey
+     * * `TR` - Türkiye
      * * `TM` - Turkmenistan
      * * `TC` - Turks and Caicos Islands
      * * `TV` - Tuvalu
@@ -5367,24 +4818,16 @@ export type CustomerBusinessWritable = {
 };
 
 export type CustomerBusinessResponseWritable = {
-    status?: string;
-    data?: CustomerBusinessWritable;
+    status: string;
+    data: CustomerBusinessWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerBusinessWritable = {
     name?: string | null;
     description?: string | null;
     website?: string | null;
     inc_number?: string | null;
-    colors?: {
-        [key: string]: unknown;
-    } | null;
+    colors?: unknown;
     logo?: string | null;
     icon?: string | null;
     vat_number?: string | null;
@@ -5535,7 +4978,7 @@ export type ManagerBusinessWritable = {
      * * `MU` - Mauritius
      * * `YT` - Mayotte
      * * `MX` - Mexico
-     * * `FM` - Micronesia (Federated States of)
+     * * `FM` - Micronesia
      * * `MD` - Moldova
      * * `MC` - Monaco
      * * `MN` - Mongolia
@@ -5620,7 +5063,7 @@ export type ManagerBusinessWritable = {
      * * `TO` - Tonga
      * * `TT` - Trinidad and Tobago
      * * `TN` - Tunisia
-     * * `TR` - Turkey
+     * * `TR` - Türkiye
      * * `TM` - Turkmenistan
      * * `TC` - Turks and Caicos Islands
      * * `TV` - Tuvalu
@@ -5645,37 +5088,21 @@ export type ManagerBusinessWritable = {
      */
     address_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
     address_postal_code?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerBusinessAutomatedPayoutDestinationWritable = {
     [key: string]: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerBusinessDocumentWritable = {
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     expires?: number | null;
 };
 
 export type ManagerBusinessDocumentResponseWritable = {
-    status?: string;
-    data?: ManagerBusinessDocumentWritable;
+    status: string;
+    data: ManagerBusinessDocumentWritable;
 };
 
 export type ManagerBusinessInvoiceWritable = {
@@ -5690,103 +5117,67 @@ export type ManagerBusinessInvoiceWritable = {
     due_date?: number;
     send_request_on?: number;
     send_reminders?: boolean;
-    metadata?: {
-        [key: string]: unknown;
-    };
+    metadata?: unknown;
 };
 
 export type ManagerBusinessInvoiceRefundWritable = {
     amount: number;
-    currency: {
-        [key: string]: unknown;
-    };
+    currency: unknown;
     type: string;
     reason?: string;
 };
 
 export type ManagerBusinessInvoiceResponseWritable = {
-    status?: string;
-    data?: ManagerBusinessInvoiceWritable;
+    status: string;
+    data: ManagerBusinessInvoiceWritable;
 };
 
 export type ManagerBusinessMetricResponseWritable = {
-    status?: string;
+    status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerBusinessPayoutWritable = {
     [key: string]: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerBusinessPayoutDestinationWritable = {
     [key: string]: unknown;
 };
 
 export type ManagerBusinessPayoutResponseWritable = {
-    status?: string;
-    data?: ManagerBusinessPayoutWritable;
+    status: string;
+    data: ManagerBusinessPayoutWritable;
 };
 
 export type ManagerBusinessResponseWritable = {
-    status?: string;
-    data?: ManagerBusinessWritable;
+    status: string;
+    data: ManagerBusinessWritable;
 };
 
 export type ManagerBusinessTransactionResponseWritable = {
-    status?: string;
+    status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCompanyWritable = {
     [key: string]: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCompanyPayoutMinimumWritable = {
     [key: string]: unknown;
 };
 
 export type ManagerCompanyResponseWritable = {
-    status?: string;
-    data?: ManagerCompanyWritable;
+    status: string;
+    data: ManagerCompanyWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateBusinessWritable = {
     id: string;
     name?: string | null;
     description?: string | null;
     website?: string | null;
     inc_number?: string | null;
-    colors?: {
-        [key: string]: unknown;
-    } | null;
+    colors?: unknown;
     logo?: string | null;
     icon?: string | null;
     account: string;
@@ -5941,7 +5332,7 @@ export type ManagerCreateBusinessWritable = {
      * * `MU` - Mauritius
      * * `YT` - Mayotte
      * * `MX` - Mexico
-     * * `FM` - Micronesia (Federated States of)
+     * * `FM` - Micronesia
      * * `MD` - Moldova
      * * `MC` - Monaco
      * * `MN` - Mongolia
@@ -6026,7 +5417,7 @@ export type ManagerCreateBusinessWritable = {
      * * `TO` - Tonga
      * * `TT` - Trinidad and Tobago
      * * `TN` - Tunisia
-     * * `TR` - Turkey
+     * * `TR` - Türkiye
      * * `TM` - Turkmenistan
      * * `TC` - Turks and Caicos Islands
      * * `TV` - Tuvalu
@@ -6051,19 +5442,11 @@ export type ManagerCreateBusinessWritable = {
      */
     address_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
     address_postal_code?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateBusinessDocumentWritable = {
-    file?: string;
+    file?: string | null;
     /**
      * Multi-file upload. Submit as bracketed multipart keys: `files[<i>][file]` (binary) where `<i>` is the slot index (up to MAX_FLEXIBLE_FILES). Mutually exclusive with the legacy `file` field.
      */
@@ -6086,9 +5469,7 @@ export type ManagerCreateBusinessDocumentWritable = {
      * * `other` - other
      */
     type: 'incorporation_certificate' | 'tax_certificate' | 'financial_statement' | 'trade_certificate' | 'shareholder_identification' | 'incumbency_certificate' | 'partnership_agreement' | 'power_of_attorney' | 'proof_of_address' | 'proof_of_nature_of_business' | 'self_declaration_form' | 'state_registry' | 'trust_agreement' | 'transparency_registry_extract' | 'other';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     note?: string | null;
     expires?: number | null;
 };
@@ -6105,9 +5486,7 @@ export type ManagerCreateBusinessInvoiceWritable = {
     due_date?: number;
     send_request_on?: number;
     send_reminders?: boolean;
-    metadata?: {
-        [key: string]: unknown;
-    };
+    metadata?: unknown;
 };
 
 export type ManagerCreateBusinessInvoiceRefundWritable = {
@@ -6118,27 +5497,15 @@ export type ManagerCreateBusinessInvoiceRefundWritable = {
 };
 
 export type ManagerCreateBusinessInvoiceRefundResponseWritable = {
-    status?: string;
-    data?: ManagerCreateBusinessInvoiceRefundWritable;
+    status: string;
+    data: ManagerCreateBusinessInvoiceRefundWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateBusinessPayoutWritable = {
     reference?: string | null;
     destinations?: Array<ManagerCreateBusinessPayoutDestinationWritable>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateBusinessPayoutDestinationWritable = {
     currency: string;
     /**
@@ -6153,12 +5520,6 @@ export type ManagerCreateBusinessPayoutDestinationWritable = {
     bank_account?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerCreateUpdateBusinessAutomatedPayoutDestinationWritable = {
     currency: string;
     /**
@@ -6173,20 +5534,12 @@ export type ManagerCreateUpdateBusinessAutomatedPayoutDestinationWritable = {
     bank_account?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ManagerUpdateBusinessWritable = {
     name?: string | null;
     description?: string | null;
     website?: string | null;
     inc_number?: string | null;
-    colors?: {
-        [key: string]: unknown;
-    } | null;
+    colors?: unknown;
     logo?: string | null;
     icon?: string | null;
     destinations?: Array<ManagerCreateUpdateBusinessAutomatedPayoutDestinationWritable>;
@@ -6338,7 +5691,7 @@ export type ManagerUpdateBusinessWritable = {
      * * `MU` - Mauritius
      * * `YT` - Mayotte
      * * `MX` - Mexico
-     * * `FM` - Micronesia (Federated States of)
+     * * `FM` - Micronesia
      * * `MD` - Moldova
      * * `MC` - Monaco
      * * `MN` - Mongolia
@@ -6423,7 +5776,7 @@ export type ManagerUpdateBusinessWritable = {
      * * `TO` - Tonga
      * * `TT` - Trinidad and Tobago
      * * `TN` - Tunisia
-     * * `TR` - Turkey
+     * * `TR` - Türkiye
      * * `TM` - Turkmenistan
      * * `TC` - Turks and Caicos Islands
      * * `TV` - Tuvalu
@@ -6448,9 +5801,7 @@ export type ManagerUpdateBusinessWritable = {
      */
     address_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
     address_postal_code?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
 };
 
 export type ManagerUpdateBusinessInvoiceWritable = {
@@ -6465,282 +5816,268 @@ export type ManagerUpdateBusinessInvoiceWritable = {
     due_date?: number;
     send_request_on?: number;
     send_reminders?: boolean;
-    metadata?: {
-        [key: string]: unknown;
-    };
+    metadata?: unknown;
 };
 
 export type PaginatedAdminBusinessCategoryListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminBusinessCategoryWritable>;
+    results: Array<AdminBusinessCategoryWritable>;
 };
 
 export type PaginatedAdminBusinessCategoryListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminBusinessCategoryListWritable;
+    status: string;
+    data: PaginatedAdminBusinessCategoryListWritable;
 };
 
 export type PaginatedAdminBusinessDocumentListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminBusinessDocumentWritable>;
+    results: Array<AdminBusinessDocumentWritable>;
 };
 
 export type PaginatedAdminBusinessDocumentListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminBusinessDocumentListWritable;
+    status: string;
+    data: PaginatedAdminBusinessDocumentListWritable;
 };
 
 export type PaginatedAdminBusinessListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminBusinessWritable>;
+    results: Array<AdminBusinessWritable>;
 };
 
 export type PaginatedAdminBusinessListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminBusinessListWritable;
+    status: string;
+    data: PaginatedAdminBusinessListWritable;
 };
 
 export type PaginatedAdminBusinessPayoutListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminBusinessPayoutWritable>;
+    results: Array<AdminBusinessPayoutWritable>;
 };
 
 export type PaginatedAdminBusinessPayoutListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminBusinessPayoutListWritable;
+    status: string;
+    data: PaginatedAdminBusinessPayoutListWritable;
 };
 
 export type PaginatedAdminBusinessPayoutTransactionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedAdminBusinessPayoutTransactionListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminBusinessPayoutTransactionListWritable;
+    status: string;
+    data: PaginatedAdminBusinessPayoutTransactionListWritable;
 };
 
 export type PaginatedAdminBusinessUserListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminBusinessUserWritable>;
+    results: Array<AdminBusinessUserWritable>;
 };
 
 export type PaginatedAdminBusinessUserListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminBusinessUserListWritable;
+    status: string;
+    data: PaginatedAdminBusinessUserListWritable;
 };
 
 export type PaginatedBusinessCategoryListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<BusinessCategoryWritable>;
+    results: Array<BusinessCategoryWritable>;
 };
 
 export type PaginatedBusinessCategoryListResponseWritable = {
-    status?: string;
-    data?: PaginatedBusinessCategoryListWritable;
+    status: string;
+    data: PaginatedBusinessCategoryListWritable;
 };
 
 export type PaginatedBusinessUserListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedBusinessUserListResponseWritable = {
-    status?: string;
-    data?: PaginatedBusinessUserListWritable;
+    status: string;
+    data: PaginatedBusinessUserListWritable;
 };
 
 export type PaginatedCustomerBusinessListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<CustomerBusinessWritable>;
+    results: Array<CustomerBusinessWritable>;
 };
 
 export type PaginatedCustomerBusinessListResponseWritable = {
-    status?: string;
-    data?: PaginatedCustomerBusinessListWritable;
+    status: string;
+    data: PaginatedCustomerBusinessListWritable;
 };
 
 export type PaginatedManagerBusinessDocumentListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerBusinessDocumentWritable>;
+    results: Array<ManagerBusinessDocumentWritable>;
 };
 
 export type PaginatedManagerBusinessDocumentListResponseWritable = {
-    status?: string;
-    data?: PaginatedManagerBusinessDocumentListWritable;
+    status: string;
+    data: PaginatedManagerBusinessDocumentListWritable;
 };
 
 export type PaginatedManagerBusinessInvoiceListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerBusinessInvoiceWritable>;
+    results: Array<ManagerBusinessInvoiceWritable>;
 };
 
 export type PaginatedManagerBusinessInvoiceListResponseWritable = {
-    status?: string;
-    data?: PaginatedManagerBusinessInvoiceListWritable;
+    status: string;
+    data: PaginatedManagerBusinessInvoiceListWritable;
 };
 
 export type PaginatedManagerBusinessInvoiceLogListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedManagerBusinessInvoiceLogListResponseWritable = {
-    status?: string;
-    data?: PaginatedManagerBusinessInvoiceLogListWritable;
+    status: string;
+    data: PaginatedManagerBusinessInvoiceLogListWritable;
 };
 
 export type PaginatedManagerBusinessInvoiceRefundListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerBusinessInvoiceRefundWritable>;
+    results: Array<ManagerBusinessInvoiceRefundWritable>;
 };
 
 export type PaginatedManagerBusinessInvoiceRefundListResponseWritable = {
-    status?: string;
-    data?: PaginatedManagerBusinessInvoiceRefundListWritable;
+    status: string;
+    data: PaginatedManagerBusinessInvoiceRefundListWritable;
 };
 
 export type PaginatedManagerBusinessInvoiceTransactionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedManagerBusinessInvoiceTransactionListResponseWritable = {
-    status?: string;
-    data?: PaginatedManagerBusinessInvoiceTransactionListWritable;
+    status: string;
+    data: PaginatedManagerBusinessInvoiceTransactionListWritable;
 };
 
 export type PaginatedManagerBusinessListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerBusinessWritable>;
+    results: Array<ManagerBusinessWritable>;
 };
 
 export type PaginatedManagerBusinessListResponseWritable = {
-    status?: string;
-    data?: PaginatedManagerBusinessListWritable;
+    status: string;
+    data: PaginatedManagerBusinessListWritable;
 };
 
 export type PaginatedManagerBusinessMetricListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedManagerBusinessMetricListResponseWritable = {
-    status?: string;
-    data?: PaginatedManagerBusinessMetricListWritable;
+    status: string;
+    data: PaginatedManagerBusinessMetricListWritable;
 };
 
 export type PaginatedManagerBusinessMetricPointListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedManagerBusinessMetricPointListResponseWritable = {
-    status?: string;
-    data?: PaginatedManagerBusinessMetricPointListWritable;
+    status: string;
+    data: PaginatedManagerBusinessMetricPointListWritable;
 };
 
 export type PaginatedManagerBusinessPayoutListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<ManagerBusinessPayoutWritable>;
+    results: Array<ManagerBusinessPayoutWritable>;
 };
 
 export type PaginatedManagerBusinessPayoutListResponseWritable = {
-    status?: string;
-    data?: PaginatedManagerBusinessPayoutListWritable;
+    status: string;
+    data: PaginatedManagerBusinessPayoutListWritable;
 };
 
 export type PaginatedManagerBusinessPayoutTransactionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedManagerBusinessPayoutTransactionListResponseWritable = {
-    status?: string;
-    data?: PaginatedManagerBusinessPayoutTransactionListWritable;
+    status: string;
+    data: PaginatedManagerBusinessPayoutTransactionListWritable;
 };
 
 export type PaginatedManagerBusinessTransactionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedManagerBusinessTransactionListResponseWritable = {
-    status?: string;
-    data?: PaginatedManagerBusinessTransactionListWritable;
+    status: string;
+    data: PaginatedManagerBusinessTransactionListWritable;
 };
 
 export type PaginatedUserBusinessListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserBusinessWritable>;
+    results: Array<UserBusinessWritable>;
 };
 
 export type PaginatedUserBusinessListResponseWritable = {
-    status?: string;
-    data?: PaginatedUserBusinessListWritable;
+    status: string;
+    data: PaginatedUserBusinessListWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminBusinessCategoryWritable = {
     name?: string;
     parent?: string;
-    image?: string;
+    image?: string | null;
     description?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminBusinessDocumentWritable = {
     /**
      * * `obsolete` - obsolete
@@ -6752,27 +6089,17 @@ export type PatchedAdminBusinessDocumentWritable = {
      * * `not_started` - not_started
      */
     status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     note?: string | null;
     expires?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateBusinessWritable = {
     name?: string | null;
     description?: string | null;
     website?: string | null;
     inc_number?: string | null;
-    colors?: {
-        [key: string]: unknown;
-    } | null;
+    colors?: unknown;
     logo?: string | null;
     icon?: string | null;
     vat_number?: string | null;
@@ -6923,7 +6250,7 @@ export type PatchedAdminUpdateBusinessWritable = {
      * * `MU` - Mauritius
      * * `YT` - Mayotte
      * * `MX` - Mexico
-     * * `FM` - Micronesia (Federated States of)
+     * * `FM` - Micronesia
      * * `MD` - Moldova
      * * `MC` - Monaco
      * * `MN` - Mongolia
@@ -7008,7 +6335,7 @@ export type PatchedAdminUpdateBusinessWritable = {
      * * `TO` - Tonga
      * * `TT` - Trinidad and Tobago
      * * `TN` - Tunisia
-     * * `TR` - Turkey
+     * * `TR` - Türkiye
      * * `TM` - Turkmenistan
      * * `TC` - Turks and Caicos Islands
      * * `TV` - Tuvalu
@@ -7046,28 +6373,14 @@ export type PatchedAdminUpdateBusinessWritable = {
      * * `offboarded` - offboarded
      */
     status?: 'obsolete' | 'declined' | 'pending' | 'paused' | 'incomplete' | 'verified' | 'not_started' | 'under_review' | 'resubmission_requested' | 'offboarded';
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateBusinessUserWritable = {
     business?: string;
     roles?: Array<'manager' | 'customer'>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateCompanyWritable = {
     manager_groups?: Array<string> | null;
     payout_minimums?: Array<AdminUpdateCompanyPayoutMinimum>;
@@ -7076,20 +6389,12 @@ export type PatchedAdminUpdateCompanyWritable = {
     payout_hour?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedManagerUpdateBusinessWritable = {
     name?: string | null;
     description?: string | null;
     website?: string | null;
     inc_number?: string | null;
-    colors?: {
-        [key: string]: unknown;
-    } | null;
+    colors?: unknown;
     logo?: string | null;
     icon?: string | null;
     destinations?: Array<ManagerCreateUpdateBusinessAutomatedPayoutDestinationWritable>;
@@ -7241,7 +6546,7 @@ export type PatchedManagerUpdateBusinessWritable = {
      * * `MU` - Mauritius
      * * `YT` - Mayotte
      * * `MX` - Mexico
-     * * `FM` - Micronesia (Federated States of)
+     * * `FM` - Micronesia
      * * `MD` - Moldova
      * * `MC` - Monaco
      * * `MN` - Mongolia
@@ -7326,7 +6631,7 @@ export type PatchedManagerUpdateBusinessWritable = {
      * * `TO` - Tonga
      * * `TT` - Trinidad and Tobago
      * * `TN` - Tunisia
-     * * `TR` - Turkey
+     * * `TR` - Türkiye
      * * `TM` - Turkmenistan
      * * `TC` - Turks and Caicos Islands
      * * `TV` - Tuvalu
@@ -7351,9 +6656,7 @@ export type PatchedManagerUpdateBusinessWritable = {
      */
     address_country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
     address_postal_code?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
 };
 
 export type PatchedManagerUpdateBusinessInvoiceWritable = {
@@ -7368,38 +6671,24 @@ export type PatchedManagerUpdateBusinessInvoiceWritable = {
     due_date?: number;
     send_request_on?: number;
     send_reminders?: boolean;
-    metadata?: {
-        [key: string]: unknown;
-    };
+    metadata?: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ShortBusinessWritable = {
     name?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserBusinessWritable = {
     [key: string]: unknown;
 };
 
 export type UserBusinessResponseWritable = {
-    status?: string;
-    data?: UserBusinessWritable;
+    status: string;
+    data: UserBusinessWritable;
 };
 
 export type UserCompanyResponseWritable = {
-    status?: string;
+    status: string;
 };
 
 export type ActivateCreateData = {
@@ -7963,7 +7252,6 @@ export type AdminCurrenciesListData = {
     body?: never;
     path?: never;
     query?: {
-        code?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -8649,8 +7937,6 @@ export type ManagerBusinessesUsersListData = {
         business_id: string;
     };
     query?: {
-        email?: string;
-        mobile?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -8659,8 +7945,6 @@ export type ManagerBusinessesUsersListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        roles?: string;
-        user?: string;
     };
     url: '/manager/businesses/{business_id}/users/';
 };
@@ -8827,8 +8111,6 @@ export type UserBusinessesListData = {
     body?: never;
     path?: never;
     query?: {
-        categories?: string;
-        identifier?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -8837,7 +8119,6 @@ export type UserBusinessesListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        status?: string;
     };
     url: '/user/businesses/';
 };

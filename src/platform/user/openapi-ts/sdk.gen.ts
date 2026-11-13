@@ -3,7 +3,7 @@
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
 import { formDataBodySerializer } from './core/bodySerializer.gen';
-import type { AccountCurrenciesListData, AccountCurrenciesListResponses, AccountDefinitionsListData, AccountDefinitionsListResponses, AccountDefinitionsRetrieveData, AccountDefinitionsRetrieveResponses, AccountsCreateData, AccountsCreateResponses, AccountsCurrenciesCreateData, AccountsCurrenciesCreateResponses, AccountsCurrenciesEffectiveFeesListData, AccountsCurrenciesEffectiveFeesListResponses, AccountsCurrenciesEffectiveLimitsListData, AccountsCurrenciesEffectiveLimitsListResponses, AccountsCurrenciesFeesListData, AccountsCurrenciesFeesListResponses, AccountsCurrenciesFeesRetrieveData, AccountsCurrenciesFeesRetrieveResponses, AccountsCurrenciesLimitsListData, AccountsCurrenciesLimitsListResponses, AccountsCurrenciesLimitsRetrieveData, AccountsCurrenciesLimitsRetrieveResponses, AccountsCurrenciesListData, AccountsCurrenciesListResponses, AccountsCurrenciesPartialUpdateData, AccountsCurrenciesPartialUpdateResponses, AccountsCurrenciesRetrieveData, AccountsCurrenciesRetrieveResponses, AccountsCurrenciesUpdateData, AccountsCurrenciesUpdateResponses, AccountsListData, AccountsListResponses, AccountsRetrieveData, AccountsRetrieveResponses, AuthDeactivateData, AuthDeactivateResponses, AuthDeactivateVerifyData, AuthDeactivateVerifyResponses, AuthEmailVerifyData, AuthEmailVerifyResendData, AuthEmailVerifyResendResponses, AuthEmailVerifyResponses, AuthJwtCreateData, AuthJwtCreateResponses, AuthLoginData, AuthLoginResponses, AuthLogoutData, AuthLogoutResponses, AuthMfaAuthenticatorsCreateData, AuthMfaAuthenticatorsCreateResponses, AuthMfaAuthenticatorsDestroyData, AuthMfaAuthenticatorsDestroyResponses, AuthMfaAuthenticatorsListData, AuthMfaAuthenticatorsListResponses, AuthMfaAuthenticatorsRetrieveData, AuthMfaAuthenticatorsRetrieveResponses, AuthMfaDeliverData, AuthMfaDeliverResponses, AuthMfaVerifyData, AuthMfaVerifyResponses, AuthMobileVerifyData, AuthMobileVerifyResendData, AuthMobileVerifyResendResponses, AuthMobileVerifyResponses, AuthOauthAuthorizeData, AuthOauthAuthorizeResponses, AuthOauthLoginData, AuthOauthLoginResponses, AuthOauthRegisterData, AuthOauthRegisterResponses, AuthOauthSessionData, AuthOauthSessionResponses, AuthOauthVerifyData, AuthOauthVerifyResponses, AuthPasswordChangeData, AuthPasswordChangeResponses, AuthPasswordResetConfirmData, AuthPasswordResetConfirmResponses, AuthPasswordResetData, AuthPasswordResetResponses, AuthRefreshData, AuthRefreshResponses, AuthRegisterCompanyData, AuthRegisterCompanyResponses, AuthRegisterData, AuthRegisterResponses, AuthRequestDeleteData, AuthRequestDeleteResponses, AuthRequestDeleteVerifyData, AuthRequestDeleteVerifyResponses, AuthRetrieveData, AuthRetrieveResponses, AuthTokensCreateData, AuthTokensCreateResponses, AuthTokensDestroyData, AuthTokensDestroyResponses, AuthTokensListData, AuthTokensListDestroyData, AuthTokensListDestroyResponses, AuthTokensListResponses, AuthTokensPartialUpdateData, AuthTokensPartialUpdateResponses, AuthTokensRetrieveData, AuthTokensRetrieveResponses, AuthTokensUpdateData, AuthTokensUpdateResponses, CompanyBankAccountsListData, CompanyBankAccountsListResponses, CompanyCurrenciesListData, CompanyCurrenciesListResponses, CompanyCurrenciesRetrieveData, CompanyCurrenciesRetrieveResponses, CompanyRetrieveData, CompanyRetrieveResponses, CompanyWalletAccountsListData, CompanyWalletAccountsListResponses, DocumentTypesListData, DocumentTypesListResponses, DocumentTypesRetrieveData, DocumentTypesRetrieveResponses, ExportsCreateData, ExportsCreateResponses, ExportsListData, ExportsListResponses, ExportsRetrieveData, ExportsRetrieveResponses, GroupsFeesListData, GroupsFeesListResponses, GroupsFeesRetrieveData, GroupsFeesRetrieveResponses, GroupsLimitsListData, GroupsLimitsListResponses, GroupsLimitsRetrieveData, GroupsLimitsRetrieveResponses, GroupsListData, GroupsListResponses, GroupsPermissionsListData, GroupsPermissionsListResponses, GroupsPermissionsRetrieveData, GroupsPermissionsRetrieveResponses, GroupsRetrieveData, GroupsRetrieveResponses, GroupsTiersFeesListData, GroupsTiersFeesListResponses, GroupsTiersFeesRetrieveData, GroupsTiersFeesRetrieveResponses, GroupsTiersLimitsListData, GroupsTiersLimitsListResponses, GroupsTiersLimitsRetrieveData, GroupsTiersLimitsRetrieveResponses, GroupsTiersListData, GroupsTiersListResponses, GroupsTiersRequirementSetsItemsListData, GroupsTiersRequirementSetsItemsListResponses, GroupsTiersRequirementSetsItemsRetrieveData, GroupsTiersRequirementSetsItemsRetrieveResponses, GroupsTiersRequirementSetsListData, GroupsTiersRequirementSetsListResponses, GroupsTiersRequirementSetsRetrieveData, GroupsTiersRequirementSetsRetrieveResponses, GroupsTiersRetrieveData, GroupsTiersRetrieveResponses, MetricsCreateData, MetricsCreateResponses, MetricsDestroyData, MetricsDestroyResponses, MetricsListData, MetricsListResponses, MetricsPointsListData, MetricsPointsListResponses, MetricsRetrieveData, MetricsRetrieveResponses, PermissionsListData, PermissionsListResponses, PermissionsRetrieveData, PermissionsRetrieveResponses, PublicCompaniesGroupsListData, PublicCompaniesGroupsListResponses, PublicCompaniesGroupsRetrieveData, PublicCompaniesGroupsRetrieveResponses, PublicCompaniesLegalTermsListData, PublicCompaniesLegalTermsListResponses, PublicCompaniesLegalTermsRetrieveData, PublicCompaniesLegalTermsRetrieveResponses, PublicCompaniesLegalTermsVersionsListData, PublicCompaniesLegalTermsVersionsListResponses, PublicCompaniesLegalTermsVersionsRetrieveData, PublicCompaniesLegalTermsVersionsRetrieveResponses, PublicCompaniesListData, PublicCompaniesListResponses, PublicCompaniesOauthClientsListData, PublicCompaniesOauthClientsListResponses, PublicCompaniesOauthClientsRetrieveData, PublicCompaniesOauthClientsRetrieveResponses, PublicCompaniesRetrieveData, PublicCompaniesRetrieveResponses, PublicLegalTermsListData, PublicLegalTermsListResponses, PublicLegalTermsRetrieveData, PublicLegalTermsRetrieveResponses, PublicLegalTermsVersionsListData, PublicLegalTermsVersionsListResponses, PublicLegalTermsVersionsRetrieveData, PublicLegalTermsVersionsRetrieveResponses, StatementsCreateData, StatementsCreateResponses, StatementsDestroyData, StatementsDestroyResponses, StatementsListData, StatementsListResponses, StatementsRetrieveData, StatementsRetrieveResponses, SubtypesListData, SubtypesListResponses, SubtypesRetrieveData, SubtypesRetrieveResponses, TransactionCollectionsCreateData, TransactionCollectionsCreateResponses, TransactionCollectionsListData, TransactionCollectionsListResponses, TransactionCollectionsRetrieveData, TransactionCollectionsRetrieveResponses, TransactionsCreateData, TransactionsCreateResponses, TransactionsCreditCreateData, TransactionsCreditCreateResponses, TransactionsDebitCreateData, TransactionsDebitCreateResponses, TransactionsListData, TransactionsListResponses, TransactionsMessagesListData, TransactionsMessagesListResponses, TransactionsMessagesRetrieveData, TransactionsMessagesRetrieveResponses, TransactionsPartialUpdateData, TransactionsPartialUpdateResponses, TransactionsRetrieveData, TransactionsRetrieveResponses, TransactionsTransferCreateData, TransactionsTransferCreateResponses, TransactionsUpdateData, TransactionsUpdateResponses, TransactionTotalsRetrieveData, TransactionTotalsRetrieveResponses, UserAddressesCreateData, UserAddressesCreateResponses, UserAddressesDestroyData, UserAddressesDestroyResponses, UserAddressesListData, UserAddressesListResponses, UserAddressesPartialUpdateData, UserAddressesPartialUpdateResponses, UserAddressesRetrieveData, UserAddressesRetrieveResponses, UserAddressesUpdateData, UserAddressesUpdateResponses, UserBankAccountsAccountCurrenciesCreateData, UserBankAccountsAccountCurrenciesCreateResponses, UserBankAccountsAccountCurrenciesDestroyData, UserBankAccountsAccountCurrenciesDestroyResponses, UserBankAccountsAccountCurrenciesListData, UserBankAccountsAccountCurrenciesListResponses, UserBankAccountsAccountCurrenciesRetrieveData, UserBankAccountsAccountCurrenciesRetrieveResponses, UserBankAccountsCreateData, UserBankAccountsCreateResponses, UserBankAccountsCurrenciesCreateData, UserBankAccountsCurrenciesCreateResponses, UserBankAccountsCurrenciesDestroyData, UserBankAccountsCurrenciesDestroyResponses, UserBankAccountsCurrenciesListData, UserBankAccountsCurrenciesListResponses, UserBankAccountsCurrenciesRetrieveData, UserBankAccountsCurrenciesRetrieveResponses, UserBankAccountsDestroyData, UserBankAccountsDestroyResponses, UserBankAccountsDocumentsListData, UserBankAccountsDocumentsListResponses, UserBankAccountsDocumentsRetrieveData, UserBankAccountsDocumentsRetrieveResponses, UserBankAccountsListData, UserBankAccountsListResponses, UserBankAccountsPartialUpdateData, UserBankAccountsPartialUpdateResponses, UserBankAccountsRetrieveData, UserBankAccountsRetrieveResponses, UserBankAccountsUpdateData, UserBankAccountsUpdateResponses, UserCryptoAccountsAccountCurrenciesCreateData, UserCryptoAccountsAccountCurrenciesCreateResponses, UserCryptoAccountsAccountCurrenciesDestroyData, UserCryptoAccountsAccountCurrenciesDestroyResponses, UserCryptoAccountsAccountCurrenciesListData, UserCryptoAccountsAccountCurrenciesListResponses, UserCryptoAccountsAccountCurrenciesRetrieveData, UserCryptoAccountsAccountCurrenciesRetrieveResponses, UserCryptoAccountsAttestationsCreateData, UserCryptoAccountsAttestationsCreateResponses, UserCryptoAccountsAttestationsListData, UserCryptoAccountsAttestationsListResponses, UserCryptoAccountsAttestationsRetrieveData, UserCryptoAccountsAttestationsRetrieveResponses, UserCryptoAccountsCreateData, UserCryptoAccountsCreateResponses, UserCryptoAccountsCurrenciesCreateData, UserCryptoAccountsCurrenciesCreateResponses, UserCryptoAccountsCurrenciesDestroyData, UserCryptoAccountsCurrenciesDestroyResponses, UserCryptoAccountsCurrenciesListData, UserCryptoAccountsCurrenciesListResponses, UserCryptoAccountsCurrenciesRetrieveData, UserCryptoAccountsCurrenciesRetrieveResponses, UserCryptoAccountsDestroyData, UserCryptoAccountsDestroyResponses, UserCryptoAccountsListData, UserCryptoAccountsListResponses, UserCryptoAccountsPartialUpdateData, UserCryptoAccountsPartialUpdateResponses, UserCryptoAccountsRetrieveData, UserCryptoAccountsRetrieveResponses, UserCryptoAccountsUpdateData, UserCryptoAccountsUpdateResponses, UserDevicesAppsCreateData, UserDevicesAppsCreateResponses, UserDevicesAppsDestroyData, UserDevicesAppsDestroyResponses, UserDevicesAppsListData, UserDevicesAppsListResponses, UserDevicesAppsPartialUpdateData, UserDevicesAppsPartialUpdateResponses, UserDevicesAppsRetrieveData, UserDevicesAppsRetrieveResponses, UserDevicesAppsUpdateData, UserDevicesAppsUpdateResponses, UserDevicesCreateData, UserDevicesCreateResponses, UserDevicesDestroyData, UserDevicesDestroyResponses, UserDevicesListData, UserDevicesListResponses, UserDevicesPartialUpdateData, UserDevicesPartialUpdateResponses, UserDevicesRetrieveData, UserDevicesRetrieveResponses, UserDevicesUpdateData, UserDevicesUpdateResponses, UserDocumentsCreateData, UserDocumentsCreateResponses, UserDocumentsDestroyData, UserDocumentsDestroyResponses, UserDocumentsListData, UserDocumentsListResponses, UserDocumentsRetrieveData, UserDocumentsRetrieveResponses, UserEmailsCreateData, UserEmailsCreateResponses, UserEmailsDestroyData, UserEmailsDestroyResponses, UserEmailsListData, UserEmailsListResponses, UserEmailsPartialUpdateData, UserEmailsPartialUpdateResponses, UserEmailsRetrieveData, UserEmailsRetrieveResponses, UserEmailsUpdateData, UserEmailsUpdateResponses, UserLegalTermsListData, UserLegalTermsListResponses, UserLegalTermsRetrieveData, UserLegalTermsRetrieveResponses, UserLegalTermsVersionsListData, UserLegalTermsVersionsListResponses, UserLegalTermsVersionsPartialUpdateData, UserLegalTermsVersionsPartialUpdateResponses, UserLegalTermsVersionsRetrieveData, UserLegalTermsVersionsRetrieveResponses, UserLegalTermsVersionsUpdateData, UserLegalTermsVersionsUpdateResponses, UserMessagesListData, UserMessagesListResponses, UserMessagesRetrieveData, UserMessagesRetrieveResponses, UserMobilesCreateData, UserMobilesCreateResponses, UserMobilesDestroyData, UserMobilesDestroyResponses, UserMobilesListData, UserMobilesListResponses, UserMobilesPartialUpdateData, UserMobilesPartialUpdateResponses, UserMobilesRetrieveData, UserMobilesRetrieveResponses, UserMobilesUpdateData, UserMobilesUpdateResponses, UserPartialUpdateData, UserPartialUpdateResponses, UserRetrieveData, UserRetrieveResponses, UserUpdateData, UserUpdateResponses, UserWalletAccountsAccountCurrenciesCreateData, UserWalletAccountsAccountCurrenciesCreateResponses, UserWalletAccountsAccountCurrenciesDestroyData, UserWalletAccountsAccountCurrenciesDestroyResponses, UserWalletAccountsAccountCurrenciesListData, UserWalletAccountsAccountCurrenciesListResponses, UserWalletAccountsAccountCurrenciesRetrieveData, UserWalletAccountsAccountCurrenciesRetrieveResponses, UserWalletAccountsCreateData, UserWalletAccountsCreateResponses, UserWalletAccountsCurrenciesCreateData, UserWalletAccountsCurrenciesCreateResponses, UserWalletAccountsCurrenciesDestroyData, UserWalletAccountsCurrenciesDestroyResponses, UserWalletAccountsCurrenciesListData, UserWalletAccountsCurrenciesListResponses, UserWalletAccountsCurrenciesRetrieveData, UserWalletAccountsCurrenciesRetrieveResponses, UserWalletAccountsDestroyData, UserWalletAccountsDestroyResponses, UserWalletAccountsListData, UserWalletAccountsListResponses, UserWalletAccountsPartialUpdateData, UserWalletAccountsPartialUpdateResponses, UserWalletAccountsRetrieveData, UserWalletAccountsRetrieveResponses, UserWalletAccountsUpdateData, UserWalletAccountsUpdateResponses } from './types.gen';
+import type { AccountCurrenciesEffectiveControlsListData, AccountCurrenciesEffectiveControlsListResponses, AccountCurrenciesListData, AccountCurrenciesListResponses, AccountDefinitionsListData, AccountDefinitionsListResponses, AccountDefinitionsRetrieveData, AccountDefinitionsRetrieveResponses, AccountsCreateData, AccountsCreateResponses, AccountsCurrenciesCreateData, AccountsCurrenciesCreateResponses, AccountsCurrenciesEffectiveFeesListData, AccountsCurrenciesEffectiveFeesListResponses, AccountsCurrenciesEffectiveLimitsListData, AccountsCurrenciesEffectiveLimitsListResponses, AccountsCurrenciesFeesListData, AccountsCurrenciesFeesListResponses, AccountsCurrenciesFeesRetrieveData, AccountsCurrenciesFeesRetrieveResponses, AccountsCurrenciesLimitsListData, AccountsCurrenciesLimitsListResponses, AccountsCurrenciesLimitsRetrieveData, AccountsCurrenciesLimitsRetrieveResponses, AccountsCurrenciesListData, AccountsCurrenciesListResponses, AccountsCurrenciesPartialUpdateData, AccountsCurrenciesPartialUpdateResponses, AccountsCurrenciesRetrieveData, AccountsCurrenciesRetrieveResponses, AccountsCurrenciesUpdateData, AccountsCurrenciesUpdateResponses, AccountsListData, AccountsListResponses, AccountsRetrieveData, AccountsRetrieveResponses, AuthDeactivateData, AuthDeactivateResponses, AuthDeactivateVerifyData, AuthDeactivateVerifyResponses, AuthEmailVerifyData, AuthEmailVerifyDeliverData, AuthEmailVerifyDeliverResponses, AuthEmailVerifyResendData, AuthEmailVerifyResendResponses, AuthEmailVerifyResponses, AuthJwtCreateData, AuthJwtCreateResponses, AuthLoginData, AuthLoginResponses, AuthLogoutData, AuthLogoutResponses, AuthMfaAuthenticatorsCreateData, AuthMfaAuthenticatorsCreateResponses, AuthMfaAuthenticatorsDestroyData, AuthMfaAuthenticatorsDestroyResponses, AuthMfaAuthenticatorsListData, AuthMfaAuthenticatorsListResponses, AuthMfaAuthenticatorsRetrieveData, AuthMfaAuthenticatorsRetrieveResponses, AuthMfaDeliverData, AuthMfaDeliverResponses, AuthMfaVerifyData, AuthMfaVerifyResponses, AuthMobileVerifyData, AuthMobileVerifyDeliverData, AuthMobileVerifyDeliverResponses, AuthMobileVerifyResendData, AuthMobileVerifyResendResponses, AuthMobileVerifyResponses, AuthOauthAuthorizeData, AuthOauthAuthorizeResponses, AuthOauthLoginData, AuthOauthLoginResponses, AuthOauthRegisterData, AuthOauthRegisterResponses, AuthOauthSessionData, AuthOauthSessionResponses, AuthOauthVerifyData, AuthOauthVerifyResponses, AuthPasswordChangeData, AuthPasswordChangeResponses, AuthPasswordResetConfirmData, AuthPasswordResetConfirmResponses, AuthPasswordResetData, AuthPasswordResetResponses, AuthRefreshData, AuthRefreshResponses, AuthRegisterCompanyData, AuthRegisterCompanyResponses, AuthRegisterData, AuthRegisterResponses, AuthRequestDeleteData, AuthRequestDeleteResponses, AuthRequestDeleteVerifyData, AuthRequestDeleteVerifyResponses, AuthRetrieveData, AuthRetrieveResponses, AuthTokensCreateData, AuthTokensCreateResponses, AuthTokensDestroyData, AuthTokensDestroyResponses, AuthTokensListData, AuthTokensListDestroyData, AuthTokensListDestroyResponses, AuthTokensListResponses, AuthTokensPartialUpdateData, AuthTokensPartialUpdateResponses, AuthTokensRetrieveData, AuthTokensRetrieveResponses, AuthTokensUpdateData, AuthTokensUpdateResponses, CompanyBankAccountsListData, CompanyBankAccountsListResponses, CompanyCurrenciesListData, CompanyCurrenciesListResponses, CompanyCurrenciesRetrieveData, CompanyCurrenciesRetrieveResponses, CompanyRetrieveData, CompanyRetrieveResponses, CompanyWalletAccountsListData, CompanyWalletAccountsListResponses, DocumentTypesListData, DocumentTypesListResponses, DocumentTypesRetrieveData, DocumentTypesRetrieveResponses, ExportsCreateData, ExportsCreateResponses, ExportsListData, ExportsListResponses, ExportsRetrieveData, ExportsRetrieveResponses, GroupsFeesListData, GroupsFeesListResponses, GroupsFeesRetrieveData, GroupsFeesRetrieveResponses, GroupsLimitsListData, GroupsLimitsListResponses, GroupsLimitsRetrieveData, GroupsLimitsRetrieveResponses, GroupsListData, GroupsListResponses, GroupsPermissionsListData, GroupsPermissionsListResponses, GroupsPermissionsRetrieveData, GroupsPermissionsRetrieveResponses, GroupsRetrieveData, GroupsRetrieveResponses, GroupsTiersFeesListData, GroupsTiersFeesListResponses, GroupsTiersFeesRetrieveData, GroupsTiersFeesRetrieveResponses, GroupsTiersLimitsListData, GroupsTiersLimitsListResponses, GroupsTiersLimitsRetrieveData, GroupsTiersLimitsRetrieveResponses, GroupsTiersListData, GroupsTiersListResponses, GroupsTiersRequirementSetsItemsListData, GroupsTiersRequirementSetsItemsListResponses, GroupsTiersRequirementSetsItemsRetrieveData, GroupsTiersRequirementSetsItemsRetrieveResponses, GroupsTiersRequirementSetsListData, GroupsTiersRequirementSetsListResponses, GroupsTiersRequirementSetsRetrieveData, GroupsTiersRequirementSetsRetrieveResponses, GroupsTiersRetrieveData, GroupsTiersRetrieveResponses, MetricsCreateData, MetricsCreateResponses, MetricsDestroyData, MetricsDestroyResponses, MetricsListData, MetricsListResponses, MetricsPointsListData, MetricsPointsListResponses, MetricsRetrieveData, MetricsRetrieveResponses, PermissionsListData, PermissionsListResponses, PermissionsRetrieveData, PermissionsRetrieveResponses, PublicCompaniesGroupsListData, PublicCompaniesGroupsListResponses, PublicCompaniesGroupsRetrieveData, PublicCompaniesGroupsRetrieveResponses, PublicCompaniesLegalTermsListData, PublicCompaniesLegalTermsListResponses, PublicCompaniesLegalTermsRetrieveData, PublicCompaniesLegalTermsRetrieveResponses, PublicCompaniesLegalTermsVersionsListData, PublicCompaniesLegalTermsVersionsListResponses, PublicCompaniesLegalTermsVersionsRetrieveData, PublicCompaniesLegalTermsVersionsRetrieveResponses, PublicCompaniesListData, PublicCompaniesListResponses, PublicCompaniesOauthClientsListData, PublicCompaniesOauthClientsListResponses, PublicCompaniesOauthClientsRetrieveData, PublicCompaniesOauthClientsRetrieveResponses, PublicCompaniesRetrieveData, PublicCompaniesRetrieveResponses, PublicLegalTermsListData, PublicLegalTermsListResponses, PublicLegalTermsRetrieveData, PublicLegalTermsRetrieveResponses, PublicLegalTermsVersionsListData, PublicLegalTermsVersionsListResponses, PublicLegalTermsVersionsRetrieveData, PublicLegalTermsVersionsRetrieveResponses, StatementsCreateData, StatementsCreateResponses, StatementsDestroyData, StatementsDestroyResponses, StatementsListData, StatementsListResponses, StatementsRetrieveData, StatementsRetrieveResponses, SubtypesListData, SubtypesListResponses, SubtypesRetrieveData, SubtypesRetrieveResponses, TransactionCollectionsCreateData, TransactionCollectionsCreateResponses, TransactionCollectionsListData, TransactionCollectionsListResponses, TransactionCollectionsRetrieveData, TransactionCollectionsRetrieveResponses, TransactionsCreateData, TransactionsCreateResponses, TransactionsCreditCreateData, TransactionsCreditCreateResponses, TransactionsDebitCreateData, TransactionsDebitCreateResponses, TransactionsListData, TransactionsListResponses, TransactionsMessagesListData, TransactionsMessagesListResponses, TransactionsMessagesRetrieveData, TransactionsMessagesRetrieveResponses, TransactionsPartialUpdateData, TransactionsPartialUpdateResponses, TransactionsRetrieveData, TransactionsRetrieveResponses, TransactionsTransferCreateData, TransactionsTransferCreateResponses, TransactionsUpdateData, TransactionsUpdateResponses, TransactionTotalsRetrieveData, TransactionTotalsRetrieveResponses, UserAddressesCreateData, UserAddressesCreateResponses, UserAddressesDestroyData, UserAddressesDestroyResponses, UserAddressesListData, UserAddressesListResponses, UserAddressesPartialUpdateData, UserAddressesPartialUpdateResponses, UserAddressesRetrieveData, UserAddressesRetrieveResponses, UserAddressesUpdateData, UserAddressesUpdateResponses, UserBankAccountsAccountCurrenciesCreateData, UserBankAccountsAccountCurrenciesCreateResponses, UserBankAccountsAccountCurrenciesDestroyData, UserBankAccountsAccountCurrenciesDestroyResponses, UserBankAccountsAccountCurrenciesListData, UserBankAccountsAccountCurrenciesListResponses, UserBankAccountsAccountCurrenciesRetrieveData, UserBankAccountsAccountCurrenciesRetrieveResponses, UserBankAccountsCreateData, UserBankAccountsCreateResponses, UserBankAccountsCurrenciesCreateData, UserBankAccountsCurrenciesCreateResponses, UserBankAccountsCurrenciesDestroyData, UserBankAccountsCurrenciesDestroyResponses, UserBankAccountsCurrenciesListData, UserBankAccountsCurrenciesListResponses, UserBankAccountsCurrenciesRetrieveData, UserBankAccountsCurrenciesRetrieveResponses, UserBankAccountsDestroyData, UserBankAccountsDestroyResponses, UserBankAccountsDocumentsListData, UserBankAccountsDocumentsListResponses, UserBankAccountsDocumentsRetrieveData, UserBankAccountsDocumentsRetrieveResponses, UserBankAccountsListData, UserBankAccountsListResponses, UserBankAccountsPartialUpdateData, UserBankAccountsPartialUpdateResponses, UserBankAccountsRetrieveData, UserBankAccountsRetrieveResponses, UserBankAccountsUpdateData, UserBankAccountsUpdateResponses, UserContactsCreateData, UserContactsCreateResponses, UserContactsDestroyData, UserContactsDestroyResponses, UserContactsListData, UserContactsListResponses, UserContactsPartialUpdateData, UserContactsPartialUpdateResponses, UserContactsRetrieveData, UserContactsRetrieveResponses, UserContactsUpdateData, UserContactsUpdateResponses, UserCryptoAccountsAccountCurrenciesCreateData, UserCryptoAccountsAccountCurrenciesCreateResponses, UserCryptoAccountsAccountCurrenciesDestroyData, UserCryptoAccountsAccountCurrenciesDestroyResponses, UserCryptoAccountsAccountCurrenciesListData, UserCryptoAccountsAccountCurrenciesListResponses, UserCryptoAccountsAccountCurrenciesRetrieveData, UserCryptoAccountsAccountCurrenciesRetrieveResponses, UserCryptoAccountsAttestationsCreateData, UserCryptoAccountsAttestationsCreateResponses, UserCryptoAccountsAttestationsListData, UserCryptoAccountsAttestationsListResponses, UserCryptoAccountsAttestationsRetrieveData, UserCryptoAccountsAttestationsRetrieveResponses, UserCryptoAccountsCreateData, UserCryptoAccountsCreateResponses, UserCryptoAccountsCurrenciesCreateData, UserCryptoAccountsCurrenciesCreateResponses, UserCryptoAccountsCurrenciesDestroyData, UserCryptoAccountsCurrenciesDestroyResponses, UserCryptoAccountsCurrenciesListData, UserCryptoAccountsCurrenciesListResponses, UserCryptoAccountsCurrenciesRetrieveData, UserCryptoAccountsCurrenciesRetrieveResponses, UserCryptoAccountsDestroyData, UserCryptoAccountsDestroyResponses, UserCryptoAccountsListData, UserCryptoAccountsListResponses, UserCryptoAccountsPartialUpdateData, UserCryptoAccountsPartialUpdateResponses, UserCryptoAccountsRetrieveData, UserCryptoAccountsRetrieveResponses, UserCryptoAccountsUpdateData, UserCryptoAccountsUpdateResponses, UserDevicesAppsCreateData, UserDevicesAppsCreateResponses, UserDevicesAppsDestroyData, UserDevicesAppsDestroyResponses, UserDevicesAppsListData, UserDevicesAppsListResponses, UserDevicesAppsPartialUpdateData, UserDevicesAppsPartialUpdateResponses, UserDevicesAppsRetrieveData, UserDevicesAppsRetrieveResponses, UserDevicesAppsUpdateData, UserDevicesAppsUpdateResponses, UserDevicesCreateData, UserDevicesCreateResponses, UserDevicesDestroyData, UserDevicesDestroyResponses, UserDevicesListData, UserDevicesListResponses, UserDevicesPartialUpdateData, UserDevicesPartialUpdateResponses, UserDevicesRetrieveData, UserDevicesRetrieveResponses, UserDevicesUpdateData, UserDevicesUpdateResponses, UserDocumentsCreateData, UserDocumentsCreateResponses, UserDocumentsDestroyData, UserDocumentsDestroyResponses, UserDocumentsListData, UserDocumentsListResponses, UserDocumentsRetrieveData, UserDocumentsRetrieveResponses, UserEmailsCreateData, UserEmailsCreateResponses, UserEmailsDestroyData, UserEmailsDestroyResponses, UserEmailsListData, UserEmailsListResponses, UserEmailsPartialUpdateData, UserEmailsPartialUpdateResponses, UserEmailsRetrieveData, UserEmailsRetrieveResponses, UserEmailsUpdateData, UserEmailsUpdateResponses, UserLegalTermsListData, UserLegalTermsListResponses, UserLegalTermsRetrieveData, UserLegalTermsRetrieveResponses, UserLegalTermsVersionsListData, UserLegalTermsVersionsListResponses, UserLegalTermsVersionsPartialUpdateData, UserLegalTermsVersionsPartialUpdateResponses, UserLegalTermsVersionsRetrieveData, UserLegalTermsVersionsRetrieveResponses, UserLegalTermsVersionsUpdateData, UserLegalTermsVersionsUpdateResponses, UserMessagesListData, UserMessagesListResponses, UserMessagesRetrieveData, UserMessagesRetrieveResponses, UserMobilesCreateData, UserMobilesCreateResponses, UserMobilesDestroyData, UserMobilesDestroyResponses, UserMobilesListData, UserMobilesListResponses, UserMobilesPartialUpdateData, UserMobilesPartialUpdateResponses, UserMobilesRetrieveData, UserMobilesRetrieveResponses, UserMobilesUpdateData, UserMobilesUpdateResponses, UserPartialUpdateData, UserPartialUpdateResponses, UserRetrieveData, UserRetrieveResponses, UserUpdateData, UserUpdateResponses, UserWalletAccountsAccountCurrenciesCreateData, UserWalletAccountsAccountCurrenciesCreateResponses, UserWalletAccountsAccountCurrenciesDestroyData, UserWalletAccountsAccountCurrenciesDestroyResponses, UserWalletAccountsAccountCurrenciesListData, UserWalletAccountsAccountCurrenciesListResponses, UserWalletAccountsAccountCurrenciesRetrieveData, UserWalletAccountsAccountCurrenciesRetrieveResponses, UserWalletAccountsCreateData, UserWalletAccountsCreateResponses, UserWalletAccountsCurrenciesCreateData, UserWalletAccountsCurrenciesCreateResponses, UserWalletAccountsCurrenciesDestroyData, UserWalletAccountsCurrenciesDestroyResponses, UserWalletAccountsCurrenciesListData, UserWalletAccountsCurrenciesListResponses, UserWalletAccountsCurrenciesRetrieveData, UserWalletAccountsCurrenciesRetrieveResponses, UserWalletAccountsDestroyData, UserWalletAccountsDestroyResponses, UserWalletAccountsListData, UserWalletAccountsListResponses, UserWalletAccountsPartialUpdateData, UserWalletAccountsPartialUpdateResponses, UserWalletAccountsRetrieveData, UserWalletAccountsRetrieveResponses, UserWalletAccountsUpdateData, UserWalletAccountsUpdateResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -32,6 +32,22 @@ export const accountCurrenciesList = <ThrowOnError extends boolean = false>(opti
             type: 'apiKey'
         }],
     url: '/3/account-currencies/',
+    ...options
+});
+
+/**
+ * List effective account currency controls
+ *
+ * List whether each transaction type and subtype can transact on the currencies enabled on the authenticated user's accounts, resolving the company, user, group, tier and account currency controls and the subtype, verification and tier prerequisites the same way transactions check them. Results are paginated by account currency. Each result has the `account_currency` and its `controls`: one per `tx_type` and `subtype` (`null` for a transaction without one), whether it is `enabled`, and every control that blocks it in `disabled_by`: the `resource` that owns it and the `reason` (`tx_type_disabled`, `subtype_disabled`, `subtype_required`, `verification_required` or `tier_required`). Filter by `account` and `currency` for a single account currency, and optionally by transaction type (`tx_type`) or a single `subtype`. Balances, limits and other checks made when a transaction is created are not included.
+ *
+ */
+export const accountCurrenciesEffectiveControlsList = <ThrowOnError extends boolean = false>(options?: Options<AccountCurrenciesEffectiveControlsListData, ThrowOnError>): RequestResult<AccountCurrenciesEffectiveControlsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AccountCurrenciesEffectiveControlsListResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/3/account-currencies/effective-controls/',
     ...options
 });
 
@@ -215,7 +231,7 @@ export const accountsCurrenciesUpdate = <ThrowOnError extends boolean = false>(o
 /**
  * List effective account currency fees
  *
- * List the effective (resolved) transaction fees for a currency enabled on an account, combining account, tier, and group fees with the same resolution used during transaction processing. A named fee is returned once, for the highest-priority layer that defines it, while nameless fees all apply. Optionally filter by transaction type (`tx_type`) or subtype (`subtype`).
+ * List the effective (resolved) transaction fees for a currency enabled on an account, combining account, tier, and group fees with the same resolution used during transaction processing. A named fee is returned once, for the highest-priority layer that defines it, while nameless fees all apply. By default the fees of every subtype are returned: a transaction with a subtype applies both the fees bound to that subtype and the generic (no subtype) fees. Filter by `subtype` to get the fees for a single subtype. Optionally filter by transaction type (`tx_type`).
  *
  */
 export const accountsCurrenciesEffectiveFeesList = <ThrowOnError extends boolean = false>(options: Options<AccountsCurrenciesEffectiveFeesListData, ThrowOnError>): RequestResult<AccountsCurrenciesEffectiveFeesListResponses, unknown, ThrowOnError> => (options.client ?? client).get<AccountsCurrenciesEffectiveFeesListResponses, unknown, ThrowOnError>({
@@ -231,7 +247,7 @@ export const accountsCurrenciesEffectiveFeesList = <ThrowOnError extends boolean
 /**
  * List effective account currency limits
  *
- * List the effective (resolved) transaction limits for a currency enabled on an account, combining account, tier, and group limits with the same priority resolution used during transaction validation. Each limit type is returned at most once, with the highest-priority limit winning. Optionally filter by transaction type (`tx_type`) or subtype (`subtype`).
+ * List the effective (resolved) transaction limits for a currency enabled on an account, combining account, tier, and group limits with the same priority resolution used during transaction validation. By default the limits of every subtype are returned: each limit type at most once per subtype (or no subtype), with the highest-priority limit winning. For a transaction with a subtype, a limit bound to that subtype takes priority over a generic (no subtype) limit of the same type. Filter by `subtype` to get the limits resolved for a single subtype. Optionally filter by transaction type (`tx_type`).
  *
  */
 export const accountsCurrenciesEffectiveLimitsList = <ThrowOnError extends boolean = false>(options: Options<AccountsCurrenciesEffectiveLimitsListData, ThrowOnError>): RequestResult<AccountsCurrenciesEffectiveLimitsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<AccountsCurrenciesEffectiveLimitsListResponses, unknown, ThrowOnError>({
@@ -385,10 +401,27 @@ export const authEmailVerify = <ThrowOnError extends boolean = false>(options: O
 });
 
 /**
+ * Deliver email verification
+ *
+ * Deliver an email verification message for an unverified email address in the given company. No authentication is required, and the response does not reveal whether the email address exists.
+ *
+ */
+export const authEmailVerifyDeliver = <ThrowOnError extends boolean = false>(options: Options<AuthEmailVerifyDeliverData, ThrowOnError>): RequestResult<AuthEmailVerifyDeliverResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthEmailVerifyDeliverResponses, unknown, ThrowOnError>({
+    url: '/3/auth/email/verify/deliver/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
  * Resend email verification
  *
- * Resend the email verification message for an unverified email address in the given company. No authentication is required, and the response does not reveal whether the email address exists.
+ * Deprecated alias of the deliver email verification endpoint.
  *
+ *
+ * @deprecated
  */
 export const authEmailVerifyResend = <ThrowOnError extends boolean = false>(options: Options<AuthEmailVerifyResendData, ThrowOnError>): RequestResult<AuthEmailVerifyResendResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthEmailVerifyResendResponses, unknown, ThrowOnError>({
     url: '/3/auth/email/verify/resend/',
@@ -583,10 +616,27 @@ export const authMobileVerify = <ThrowOnError extends boolean = false>(options: 
 });
 
 /**
+ * Deliver mobile verification
+ *
+ * Deliver a mobile verification code for an unverified mobile number in the given company. No authentication is required, and the response does not reveal whether the mobile number exists. Each delivery issues a new code and restarts its 10 minute expiry.
+ *
+ */
+export const authMobileVerifyDeliver = <ThrowOnError extends boolean = false>(options: Options<AuthMobileVerifyDeliverData, ThrowOnError>): RequestResult<AuthMobileVerifyDeliverResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthMobileVerifyDeliverResponses, unknown, ThrowOnError>({
+    url: '/3/auth/mobile/verify/deliver/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
  * Resend mobile verification
  *
- * Resend the mobile verification code for an unverified mobile number in the given company. No authentication is required, and the response does not reveal whether the mobile number exists. Resending issues a new code and restarts its 10 minute expiry.
+ * Deprecated alias of the deliver mobile verification endpoint.
  *
+ *
+ * @deprecated
  */
 export const authMobileVerifyResend = <ThrowOnError extends boolean = false>(options: Options<AuthMobileVerifyResendData, ThrowOnError>): RequestResult<AuthMobileVerifyResendResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthMobileVerifyResendResponses, unknown, ThrowOnError>({
     url: '/3/auth/mobile/verify/resend/',
@@ -725,7 +775,7 @@ export const authPasswordResetConfirm = <ThrowOnError extends boolean = false>(o
 /**
  * Refresh authentication
  *
- * Exchange a valid refresh token for a new authentication token, extending the session. Returns a fresh refresh token for future refreshes. Authentication is provided by the refresh token itself.
+ * Exchange a valid refresh token for a new authentication token, extending the session. Returns a fresh refresh token for future refreshes. Authentication is provided by the refresh token itself. The session and refresh token durations the session was created with are reused, unless overridden, in which case the overrides apply to subsequent refreshes as well.
  *
  */
 export const authRefresh = <ThrowOnError extends boolean = false>(options?: Options<AuthRefreshData, ThrowOnError>): RequestResult<AuthRefreshResponses, unknown, ThrowOnError> => (options?.client ?? client).post<AuthRefreshResponses, unknown, ThrowOnError>({
@@ -822,7 +872,7 @@ export const authTokensList = <ThrowOnError extends boolean = false>(options?: O
 /**
  * Create auth token
  *
- * Create a new API token for the authenticated user. Requires the user's password and returns the new token, with an optional label and expiry duration.
+ * Create a new API token for the authenticated user. Requires the user's password and returns the new token, with an optional label, expiry duration, and refresh token duration.
  *
  */
 export const authTokensCreate = <ThrowOnError extends boolean = false>(options: Options<AuthTokensCreateData, ThrowOnError>): RequestResult<AuthTokensCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AuthTokensCreateResponses, unknown, ThrowOnError>({
@@ -1996,7 +2046,7 @@ export const userPartialUpdate = <ThrowOnError extends boolean = false>(options?
  * Update the authenticated user's profile.
  *
  */
-export const userUpdate = <ThrowOnError extends boolean = false>(options: Options<UserUpdateData, ThrowOnError>): RequestResult<UserUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<UserUpdateResponses, unknown, ThrowOnError>({
+export const userUpdate = <ThrowOnError extends boolean = false>(options?: Options<UserUpdateData, ThrowOnError>): RequestResult<UserUpdateResponses, unknown, ThrowOnError> => (options?.client ?? client).put<UserUpdateResponses, unknown, ThrowOnError>({
     security: [{
             key: 'apiAuth',
             name: 'Authorization',
@@ -2007,7 +2057,7 @@ export const userUpdate = <ThrowOnError extends boolean = false>(options: Option
     ...formDataBodySerializer,
     headers: {
         'Content-Type': null,
-        ...options.headers
+        ...options?.headers
     }
 });
 
@@ -2401,6 +2451,115 @@ export const userBankAccountsDocumentsRetrieve = <ThrowOnError extends boolean =
         }],
     url: '/3/user/bank-accounts/{id}/documents/{document_type}/',
     ...options
+});
+
+/**
+ * List contacts
+ *
+ * List the contacts saved by the authenticated user.
+ *
+ */
+export const userContactsList = <ThrowOnError extends boolean = false>(options?: Options<UserContactsListData, ThrowOnError>): RequestResult<UserContactsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<UserContactsListResponses, unknown, ThrowOnError>({
+    querySerializer: { parameters: { orderby: { array: { explode: false } } } },
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/3/user/contacts/',
+    ...options
+});
+
+/**
+ * Create contact
+ *
+ * Save a contact for the authenticated user. Accepts an email or mobile as the identifier.
+ *
+ */
+export const userContactsCreate = <ThrowOnError extends boolean = false>(options: Options<UserContactsCreateData, ThrowOnError>): RequestResult<UserContactsCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<UserContactsCreateResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/3/user/contacts/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Delete contact
+ *
+ * Delete a contact saved by the authenticated user.
+ *
+ */
+export const userContactsDestroy = <ThrowOnError extends boolean = false>(options: Options<UserContactsDestroyData, ThrowOnError>): RequestResult<UserContactsDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<UserContactsDestroyResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/3/user/contacts/{id}/',
+    ...options
+});
+
+/**
+ * Retrieve contact
+ *
+ * Return a single contact saved by the authenticated user.
+ *
+ */
+export const userContactsRetrieve = <ThrowOnError extends boolean = false>(options: Options<UserContactsRetrieveData, ThrowOnError>): RequestResult<UserContactsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<UserContactsRetrieveResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/3/user/contacts/{id}/',
+    ...options
+});
+
+/**
+ * Partially update contact
+ *
+ * Partially update a contact saved by the authenticated user. Only the name and metadata can change; to point a contact at a different email address or mobile number, delete it and create a new one.
+ *
+ */
+export const userContactsPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<UserContactsPartialUpdateData, ThrowOnError>): RequestResult<UserContactsPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<UserContactsPartialUpdateResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/3/user/contacts/{id}/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Update contact
+ *
+ * Update a contact saved by the authenticated user. Only the name and metadata can change; to point a contact at a different email address or mobile number, delete it and create a new one.
+ *
+ */
+export const userContactsUpdate = <ThrowOnError extends boolean = false>(options: Options<UserContactsUpdateData, ThrowOnError>): RequestResult<UserContactsUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<UserContactsUpdateResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/3/user/contacts/{id}/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
 });
 
 /**

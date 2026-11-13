@@ -4,17 +4,10 @@ export type ClientOptions = {
     baseUrl: 'https://notification.services.rehive.com/api/' | (string & {});
 };
 
-/**
- * This serializer can be used if only a `status` is required in the response.
- */
 export type ActionResponse = {
-    status?: string;
+    status: string;
 };
 
-/**
- * Serialize the activation data, should be a token that represents an admin
- * user.
- */
 export type Activate = {
     token: string;
     readonly id: string;
@@ -24,13 +17,10 @@ export type Activate = {
     readonly push_enabled: boolean;
 };
 
-/**
- * Serialize company, update and delete.
- */
 export type AdminCompany = {
     readonly id: string;
     readonly secret: string;
-    push_enabled?: boolean;
+    readonly push_enabled: boolean;
     /**
      * * `test` - Test
      * * `production` - Production
@@ -38,23 +28,21 @@ export type AdminCompany = {
     readonly mode: 'test' | 'production';
     quotas: Quotas;
     bimi_selector_header?: string | null;
-    name?: string | null;
-    website?: string | null;
-    system_email?: string | null;
-    support_email?: string | null;
-    contact_email?: string | null;
-    logo?: string | null;
-    icon?: string | null;
+    sms_disallowed_countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'CD' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VA' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    readonly name: string | null;
+    readonly website: string | null;
+    readonly system_email: string | null;
+    readonly support_email: string | null;
+    readonly contact_email: string | null;
+    readonly logo: string | null;
+    readonly icon: string | null;
 };
 
 export type AdminCompanyResponse = {
-    status?: string;
-    data?: AdminCompany;
+    status: string;
+    data: AdminCompany;
 };
 
-/**
- * Serialize notifications, create, update and delete.
- */
 export type AdminCreateUpdateNotification = {
     readonly id: number;
     /**
@@ -73,9 +61,7 @@ export type AdminCreateUpdateNotification = {
     sms_message?: string | null;
     push_message?: string | null;
     whatsapp_content_sid?: string | null;
-    whatsapp_content_variables?: {
-        [key: string]: unknown;
-    } | null;
+    whatsapp_content_variables?: unknown;
     use_twilio_verify?: boolean;
     enabled?: boolean;
     preference_enabled?: boolean;
@@ -84,35 +70,28 @@ export type AdminCreateUpdateNotification = {
     to_mobile?: string | null;
     to_user?: string | null;
     expression?: string | null;
-    from_email?: string | null;
+    from_email?: string | string | null;
     system_enabled?: boolean;
 };
 
-/**
- * Serialize notifications, create, update and delete.
- */
 export type AdminCredential = {
     readonly id: number;
     /**
      * * `twilio` - twilio
      * * `sendgrid` - sendgrid
+     * * `gikko` - gikko
      */
-    credential_type: 'twilio' | 'sendgrid';
-    credentials?: {
-        [key: string]: unknown;
-    };
+    credential_type: 'twilio' | 'sendgrid' | 'gikko';
+    credentials?: unknown;
     readonly created: number;
     readonly updated: number;
 };
 
 export type AdminCredentialResponse = {
-    status?: string;
-    data?: AdminCredential;
+    status: string;
+    data: AdminCredential;
 };
 
-/**
- * Serialize notification logs.
- */
 export type AdminLog = {
     readonly id: number;
     readonly notification: string | null;
@@ -140,20 +119,14 @@ export type AdminLog = {
 };
 
 export type AdminLogResponse = {
-    status?: string;
-    data?: AdminLog;
+    status: string;
+    data: AdminLog;
 };
 
-/**
- * Serialize log sending.
- */
 export type AdminLogSend = {
     recipient?: string;
 };
 
-/**
- * Serialize notifications, create, update and delete.
- */
 export type AdminNotification = {
     readonly id: number;
     /**
@@ -173,9 +146,7 @@ export type AdminNotification = {
     sms_message?: string | null;
     push_message?: string | null;
     whatsapp_content_sid?: string | null;
-    whatsapp_content_variables?: {
-        [key: string]: unknown;
-    } | null;
+    whatsapp_content_variables?: unknown;
     use_twilio_verify?: boolean;
     enabled?: boolean;
     preference_enabled?: boolean;
@@ -184,31 +155,22 @@ export type AdminNotification = {
     to_mobile?: string | null;
     to_user?: string | null;
     expression?: string | null;
-    from_email?: string | null;
+    from_email?: string | string | null;
     layout?: ReducedNotificationLayout;
     system_enabled?: boolean;
 };
 
 export type AdminNotificationResponse = {
-    status?: string;
-    data?: AdminNotification;
+    status: string;
+    data: AdminNotification;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminReducedTemplate = {
     id: string;
     default?: boolean;
     deletable?: boolean;
 };
 
-/**
- * Serialize templates.
- */
 export type AdminTemplate = {
     id: string;
     /**
@@ -241,17 +203,12 @@ export type AdminTemplate = {
 };
 
 export type AdminTemplateResponse = {
-    status?: string;
-    data?: AdminTemplate;
+    status: string;
+    data: AdminTemplate;
 };
 
-/**
- * Trigger a notification.
- */
 export type AdminTriggerNotification = {
-    data?: {
-        [key: string]: unknown;
-    } | null;
+    data?: unknown;
     users?: Array<string> | null;
     groups?: Array<string> | null;
     readonly id: string;
@@ -264,21 +221,11 @@ export type AdminTriggerNotification = {
     readonly status: 'pending' | 'processing' | 'completed' | 'failed';
 };
 
-/**
- * Serialize the deactivation data, should be a token that represents an admin
- * user.
- */
 export type Deactivate = {
     token: string;
     purge?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type LayoutTemplate = {
     readonly id: string;
     readonly name: string;
@@ -299,16 +246,10 @@ export type LayoutTemplate = {
 };
 
 export type LayoutTemplateResponse = {
-    status?: string;
-    data?: LayoutTemplate;
+    status: string;
+    data: LayoutTemplate;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type NotificationLayout = {
     readonly id: string;
     name: string;
@@ -329,113 +270,110 @@ export type NotificationLayout = {
 };
 
 export type NotificationLayoutResponse = {
-    status?: string;
-    data?: NotificationLayout;
+    status: string;
+    data: NotificationLayout;
 };
 
 export type PaginatedAdminCredentialList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCredential>;
+    results: Array<AdminCredential>;
 };
 
 export type PaginatedAdminCredentialListResponse = {
-    status?: string;
-    data?: PaginatedAdminCredentialList;
+    status: string;
+    data: PaginatedAdminCredentialList;
 };
 
 export type PaginatedAdminLogList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminLog>;
+    results: Array<AdminLog>;
 };
 
 export type PaginatedAdminLogListResponse = {
-    status?: string;
-    data?: PaginatedAdminLogList;
+    status: string;
+    data: PaginatedAdminLogList;
 };
 
 export type PaginatedAdminNotificationList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminNotification>;
+    results: Array<AdminNotification>;
 };
 
 export type PaginatedAdminNotificationListResponse = {
-    status?: string;
-    data?: PaginatedAdminNotificationList;
+    status: string;
+    data: PaginatedAdminNotificationList;
 };
 
 export type PaginatedAdminTemplateList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminTemplate>;
+    results: Array<AdminTemplate>;
 };
 
 export type PaginatedAdminTemplateListResponse = {
-    status?: string;
-    data?: PaginatedAdminTemplateList;
+    status: string;
+    data: PaginatedAdminTemplateList;
 };
 
 export type PaginatedLayoutTemplateList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<LayoutTemplate>;
+    results: Array<LayoutTemplate>;
 };
 
 export type PaginatedLayoutTemplateListResponse = {
-    status?: string;
-    data?: PaginatedLayoutTemplateList;
+    status: string;
+    data: PaginatedLayoutTemplateList;
 };
 
 export type PaginatedNotificationLayoutList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<NotificationLayout>;
+    results: Array<NotificationLayout>;
 };
 
 export type PaginatedNotificationLayoutListResponse = {
-    status?: string;
-    data?: PaginatedNotificationLayoutList;
+    status: string;
+    data: PaginatedNotificationLayoutList;
 };
 
 export type PaginatedUserLogList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserLog>;
+    results: Array<UserLog>;
 };
 
 export type PaginatedUserLogListResponse = {
-    status?: string;
-    data?: PaginatedUserLogList;
+    status: string;
+    data: PaginatedUserLogList;
 };
 
 export type PaginatedUserNotificationList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserNotification>;
+    results: Array<UserNotification>;
 };
 
 export type PaginatedUserNotificationListResponse = {
-    status?: string;
-    data?: PaginatedUserNotificationList;
+    status: string;
+    data: PaginatedUserNotificationList;
 };
 
-/**
- * Serialize company, update and delete.
- */
 export type PatchedAdminCompany = {
     readonly id?: string;
     readonly secret?: string;
-    push_enabled?: boolean;
+    readonly push_enabled?: boolean;
     /**
      * * `test` - Test
      * * `production` - Production
@@ -443,18 +381,16 @@ export type PatchedAdminCompany = {
     readonly mode?: 'test' | 'production';
     quotas?: Quotas;
     bimi_selector_header?: string | null;
-    name?: string | null;
-    website?: string | null;
-    system_email?: string | null;
-    support_email?: string | null;
-    contact_email?: string | null;
-    logo?: string | null;
-    icon?: string | null;
+    sms_disallowed_countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'CD' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VA' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    readonly name?: string | null;
+    readonly website?: string | null;
+    readonly system_email?: string | null;
+    readonly support_email?: string | null;
+    readonly contact_email?: string | null;
+    readonly logo?: string | null;
+    readonly icon?: string | null;
 };
 
-/**
- * Serialize notifications, create, update and delete.
- */
 export type PatchedAdminCreateUpdateNotification = {
     readonly id?: number;
     /**
@@ -473,9 +409,7 @@ export type PatchedAdminCreateUpdateNotification = {
     sms_message?: string | null;
     push_message?: string | null;
     whatsapp_content_sid?: string | null;
-    whatsapp_content_variables?: {
-        [key: string]: unknown;
-    } | null;
+    whatsapp_content_variables?: unknown;
     use_twilio_verify?: boolean;
     enabled?: boolean;
     preference_enabled?: boolean;
@@ -484,33 +418,23 @@ export type PatchedAdminCreateUpdateNotification = {
     to_mobile?: string | null;
     to_user?: string | null;
     expression?: string | null;
-    from_email?: string | null;
+    from_email?: string | string | null;
     system_enabled?: boolean;
 };
 
-/**
- * Serialize notifications, create, update and delete.
- */
 export type PatchedAdminCredential = {
     readonly id?: number;
     /**
      * * `twilio` - twilio
      * * `sendgrid` - sendgrid
+     * * `gikko` - gikko
      */
-    credential_type?: 'twilio' | 'sendgrid';
-    credentials?: {
-        [key: string]: unknown;
-    };
+    credential_type?: 'twilio' | 'sendgrid' | 'gikko';
+    credentials?: unknown;
     readonly created?: number;
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedNotificationLayout = {
     readonly id?: string;
     name?: string;
@@ -530,9 +454,6 @@ export type PatchedNotificationLayout = {
     readonly updated?: number;
 };
 
-/**
- * Serialize notification logs for users (masked values only).
- */
 export type PatchedUserLog = {
     readonly id?: number;
     readonly notification?: string | null;
@@ -555,10 +476,6 @@ export type PatchedUserLog = {
     received?: boolean;
 };
 
-/**
- * Serialize notifications update. Actually updates the notification
- * preference instead.
- */
 export type PatchedUserUpdateNotification = {
     enabled?: boolean;
 };
@@ -568,12 +485,6 @@ export type Quotas = {
     readonly email: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedLayoutTemplate = {
     readonly id: string;
     name: string;
@@ -582,12 +493,6 @@ export type ReducedLayoutTemplate = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedNotificationLayout = {
     readonly id: string;
     name: string;
@@ -596,9 +501,6 @@ export type ReducedNotificationLayout = {
     readonly updated: number;
 };
 
-/**
- * Serialize notification logs for users (masked values only).
- */
 export type UserLog = {
     readonly id: number;
     readonly notification: string | null;
@@ -622,13 +524,10 @@ export type UserLog = {
 };
 
 export type UserLogResponse = {
-    status?: string;
-    data?: UserLog;
+    status: string;
+    data: UserLog;
 };
 
-/**
- * Serialize notifications.
- */
 export type UserNotification = {
     readonly id: number;
     name: string;
@@ -639,54 +538,31 @@ export type UserNotification = {
 };
 
 export type UserNotificationResponse = {
-    status?: string;
-    data?: UserNotification;
+    status: string;
+    data: UserNotification;
 };
 
-/**
- * Serialize notifications update. Actually updates the notification
- * preference instead.
- */
 export type UserUpdateNotification = {
     enabled: boolean;
 };
 
-/**
- * Validate and serialize the webhook data. The secret key and company are
- * used to identify a specific company.
- */
 export type Webhook = {
     id: string;
     event: string;
     company: string;
-    data: {
-        [key: string]: unknown;
-    };
+    data: unknown;
 };
 
-/**
- * Serialize company, update and delete.
- */
 export type AdminCompanyWritable = {
-    push_enabled?: boolean;
     bimi_selector_header?: string | null;
-    name?: string | null;
-    website?: string | null;
-    system_email?: string | null;
-    support_email?: string | null;
-    contact_email?: string | null;
-    logo?: string | null;
-    icon?: string | null;
+    sms_disallowed_countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'CD' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VA' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
 };
 
 export type AdminCompanyResponseWritable = {
-    status?: string;
-    data?: AdminCompanyWritable;
+    status: string;
+    data: AdminCompanyWritable;
 };
 
-/**
- * Serialize notifications, create, update and delete.
- */
 export type AdminCreateUpdateNotificationWritable = {
     /**
      * * `email` - email
@@ -704,9 +580,7 @@ export type AdminCreateUpdateNotificationWritable = {
     sms_message?: string | null;
     push_message?: string | null;
     whatsapp_content_sid?: string | null;
-    whatsapp_content_variables?: {
-        [key: string]: unknown;
-    } | null;
+    whatsapp_content_variables?: unknown;
     use_twilio_verify?: boolean;
     enabled?: boolean;
     preference_enabled?: boolean;
@@ -715,33 +589,26 @@ export type AdminCreateUpdateNotificationWritable = {
     to_mobile?: string | null;
     to_user?: string | null;
     expression?: string | null;
-    from_email?: string | null;
+    from_email?: string | string | null;
     layout?: string | null;
     system_enabled?: boolean;
 };
 
-/**
- * Serialize notifications, create, update and delete.
- */
 export type AdminCredentialWritable = {
     /**
      * * `twilio` - twilio
      * * `sendgrid` - sendgrid
+     * * `gikko` - gikko
      */
-    credential_type: 'twilio' | 'sendgrid';
-    credentials?: {
-        [key: string]: unknown;
-    };
+    credential_type: 'twilio' | 'sendgrid' | 'gikko';
+    credentials?: unknown;
 };
 
 export type AdminCredentialResponseWritable = {
-    status?: string;
-    data?: AdminCredentialWritable;
+    status: string;
+    data: AdminCredentialWritable;
 };
 
-/**
- * Serialize notification logs.
- */
 export type AdminLogWritable = {
     recipient: string;
     whatsapp_content_sid?: string | null;
@@ -753,13 +620,10 @@ export type AdminLogWritable = {
 };
 
 export type AdminLogResponseWritable = {
-    status?: string;
-    data?: AdminLogWritable;
+    status: string;
+    data: AdminLogWritable;
 };
 
-/**
- * Serialize notifications, create, update and delete.
- */
 export type AdminNotificationWritable = {
     template?: AdminReducedTemplate | null;
     name: string;
@@ -770,9 +634,7 @@ export type AdminNotificationWritable = {
     sms_message?: string | null;
     push_message?: string | null;
     whatsapp_content_sid?: string | null;
-    whatsapp_content_variables?: {
-        [key: string]: unknown;
-    } | null;
+    whatsapp_content_variables?: unknown;
     use_twilio_verify?: boolean;
     enabled?: boolean;
     preference_enabled?: boolean;
@@ -780,19 +642,16 @@ export type AdminNotificationWritable = {
     to_mobile?: string | null;
     to_user?: string | null;
     expression?: string | null;
-    from_email?: string | null;
+    from_email?: string | string | null;
     layout?: ReducedNotificationLayoutWritable;
     system_enabled?: boolean;
 };
 
 export type AdminNotificationResponseWritable = {
-    status?: string;
-    data?: AdminNotificationWritable;
+    status: string;
+    data: AdminNotificationWritable;
 };
 
-/**
- * Serialize templates.
- */
 export type AdminTemplateWritable = {
     id: string;
     /**
@@ -821,20 +680,14 @@ export type AdminTemplateWritable = {
 };
 
 export type AdminTemplateResponseWritable = {
-    status?: string;
-    data?: AdminTemplateWritable;
+    status: string;
+    data: AdminTemplateWritable;
 };
 
 export type LayoutTemplateResponseWritable = {
-    status?: string;
+    status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type NotificationLayoutWritable = {
     name: string;
     description?: string | null;
@@ -852,124 +705,111 @@ export type NotificationLayoutWritable = {
 };
 
 export type NotificationLayoutResponseWritable = {
-    status?: string;
-    data?: NotificationLayoutWritable;
+    status: string;
+    data: NotificationLayoutWritable;
 };
 
 export type PaginatedAdminCredentialListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCredentialWritable>;
+    results: Array<AdminCredentialWritable>;
 };
 
 export type PaginatedAdminCredentialListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminCredentialListWritable;
+    status: string;
+    data: PaginatedAdminCredentialListWritable;
 };
 
 export type PaginatedAdminLogListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminLogWritable>;
+    results: Array<AdminLogWritable>;
 };
 
 export type PaginatedAdminLogListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminLogListWritable;
+    status: string;
+    data: PaginatedAdminLogListWritable;
 };
 
 export type PaginatedAdminNotificationListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminNotificationWritable>;
+    results: Array<AdminNotificationWritable>;
 };
 
 export type PaginatedAdminNotificationListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminNotificationListWritable;
+    status: string;
+    data: PaginatedAdminNotificationListWritable;
 };
 
 export type PaginatedAdminTemplateListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminTemplateWritable>;
+    results: Array<AdminTemplateWritable>;
 };
 
 export type PaginatedAdminTemplateListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminTemplateListWritable;
+    status: string;
+    data: PaginatedAdminTemplateListWritable;
 };
 
 export type PaginatedLayoutTemplateListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedLayoutTemplateListResponseWritable = {
-    status?: string;
-    data?: PaginatedLayoutTemplateListWritable;
+    status: string;
+    data: PaginatedLayoutTemplateListWritable;
 };
 
 export type PaginatedNotificationLayoutListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<NotificationLayoutWritable>;
+    results: Array<NotificationLayoutWritable>;
 };
 
 export type PaginatedNotificationLayoutListResponseWritable = {
-    status?: string;
-    data?: PaginatedNotificationLayoutListWritable;
+    status: string;
+    data: PaginatedNotificationLayoutListWritable;
 };
 
 export type PaginatedUserLogListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserLogWritable>;
+    results: Array<UserLogWritable>;
 };
 
 export type PaginatedUserLogListResponseWritable = {
-    status?: string;
-    data?: PaginatedUserLogListWritable;
+    status: string;
+    data: PaginatedUserLogListWritable;
 };
 
 export type PaginatedUserNotificationListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserNotificationWritable>;
+    results: Array<UserNotificationWritable>;
 };
 
 export type PaginatedUserNotificationListResponseWritable = {
-    status?: string;
-    data?: PaginatedUserNotificationListWritable;
+    status: string;
+    data: PaginatedUserNotificationListWritable;
 };
 
-/**
- * Serialize company, update and delete.
- */
 export type PatchedAdminCompanyWritable = {
-    push_enabled?: boolean;
     bimi_selector_header?: string | null;
-    name?: string | null;
-    website?: string | null;
-    system_email?: string | null;
-    support_email?: string | null;
-    contact_email?: string | null;
-    logo?: string | null;
-    icon?: string | null;
+    sms_disallowed_countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'CD' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VA' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
 };
 
-/**
- * Serialize notifications, create, update and delete.
- */
 export type PatchedAdminCreateUpdateNotificationWritable = {
     /**
      * * `email` - email
@@ -987,9 +827,7 @@ export type PatchedAdminCreateUpdateNotificationWritable = {
     sms_message?: string | null;
     push_message?: string | null;
     whatsapp_content_sid?: string | null;
-    whatsapp_content_variables?: {
-        [key: string]: unknown;
-    } | null;
+    whatsapp_content_variables?: unknown;
     use_twilio_verify?: boolean;
     enabled?: boolean;
     preference_enabled?: boolean;
@@ -998,31 +836,21 @@ export type PatchedAdminCreateUpdateNotificationWritable = {
     to_mobile?: string | null;
     to_user?: string | null;
     expression?: string | null;
-    from_email?: string | null;
+    from_email?: string | string | null;
     layout?: string | null;
     system_enabled?: boolean;
 };
 
-/**
- * Serialize notifications, create, update and delete.
- */
 export type PatchedAdminCredentialWritable = {
     /**
      * * `twilio` - twilio
      * * `sendgrid` - sendgrid
+     * * `gikko` - gikko
      */
-    credential_type?: 'twilio' | 'sendgrid';
-    credentials?: {
-        [key: string]: unknown;
-    };
+    credential_type?: 'twilio' | 'sendgrid' | 'gikko';
+    credentials?: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedNotificationLayoutWritable = {
     name?: string;
     description?: string | null;
@@ -1039,58 +867,37 @@ export type PatchedNotificationLayoutWritable = {
     push_layout?: string | null;
 };
 
-/**
- * Serialize notification logs for users (masked values only).
- */
 export type PatchedUserLogWritable = {
     received?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedLayoutTemplateWritable = {
     name: string;
     description?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type ReducedNotificationLayoutWritable = {
     name: string;
     description?: string | null;
 };
 
-/**
- * Serialize notification logs for users (masked values only).
- */
 export type UserLogWritable = {
     received: boolean;
 };
 
 export type UserLogResponseWritable = {
-    status?: string;
-    data?: UserLogWritable;
+    status: string;
+    data: UserLogWritable;
 };
 
-/**
- * Serialize notifications.
- */
 export type UserNotificationWritable = {
     name: string;
     description?: string | null;
 };
 
 export type UserNotificationResponseWritable = {
-    status?: string;
-    data?: UserNotificationWritable;
+    status: string;
+    data: UserNotificationWritable;
 };
 
 export type ActivateCreateData = {
@@ -1244,7 +1051,6 @@ export type AdminLayoutTemplatesListData = {
     body?: never;
     path?: never;
     query?: {
-        name?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -1253,7 +1059,6 @@ export type AdminLayoutTemplatesListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        type?: string;
     };
     url: '/admin/layout-templates/';
 };
@@ -1283,7 +1088,6 @@ export type AdminLayoutsListData = {
     body?: never;
     path?: never;
     query?: {
-        name?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -1292,7 +1096,6 @@ export type AdminLayoutsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        type?: string;
     };
     url: '/admin/layouts/';
 };
@@ -1380,11 +1183,6 @@ export type AdminLogsListData = {
     body?: never;
     path?: never;
     query?: {
-        created__gt?: string;
-        created__lt?: string;
-        notification?: string;
-        notification__name?: string;
-        notification__name__contains?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -1393,13 +1191,6 @@ export type AdminLogsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        received?: boolean;
-        recipient?: string;
-        recipient__contains?: string;
-        sent?: boolean;
-        type?: string;
-        type__in?: string;
-        user__identifier?: string;
     };
     url: '/admin/logs/';
 };
@@ -1444,9 +1235,6 @@ export type AdminNotificationsListData = {
     body?: never;
     path?: never;
     query?: {
-        event?: string;
-        layout?: string;
-        name?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -1455,7 +1243,6 @@ export type AdminNotificationsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        type?: string;
     };
     url: '/admin/notifications/';
 };
@@ -1558,9 +1345,6 @@ export type AdminTemplatesListData = {
     body?: never;
     path?: never;
     query?: {
-        event?: string;
-        layout?: string;
-        name?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -1569,7 +1353,6 @@ export type AdminTemplatesListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        type?: string;
     };
     url: '/admin/templates/';
 };
@@ -1625,8 +1408,6 @@ export type UserLogsListData = {
     body?: never;
     path?: never;
     query?: {
-        created__gt?: string;
-        created__lt?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -1635,7 +1416,6 @@ export type UserLogsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        received?: boolean;
     };
     url: '/user/logs/';
 };
@@ -1695,9 +1475,6 @@ export type UserNotificationsListData = {
     body?: never;
     path?: never;
     query?: {
-        event?: string;
-        layout?: string;
-        name?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -1706,7 +1483,6 @@ export type UserNotificationsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        type?: string;
     };
     url: '/user/notifications/';
 };

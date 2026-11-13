@@ -47,6 +47,7 @@ export type AdminCompany = {
      */
     mukuru_chain?: 'base';
     readonly mukuru_callback_password: string;
+    mukuru_create_on_signed?: boolean;
     business_sender_first_name?: string;
     business_sender_last_name?: string;
     business_sender_street_address?: string;
@@ -168,6 +169,7 @@ export type AdminUpdateCompany = {
      * * `base` - Base
      */
     mukuru_chain?: 'base';
+    mukuru_create_on_signed?: boolean;
     business_sender_first_name?: string;
     business_sender_last_name?: string;
     business_sender_street_address?: string;
@@ -294,6 +296,7 @@ export type PatchedAdminUpdateCompany = {
      * * `base` - Base
      */
     mukuru_chain?: 'base';
+    mukuru_create_on_signed?: boolean;
     business_sender_first_name?: string;
     business_sender_last_name?: string;
     business_sender_street_address?: string;
@@ -384,6 +387,7 @@ export type AdminCompanyWritable = {
      * * `base` - Base
      */
     mukuru_chain?: 'base';
+    mukuru_create_on_signed?: boolean;
     business_sender_first_name?: string;
     business_sender_last_name?: string;
     business_sender_street_address?: string;
@@ -446,6 +450,7 @@ export type AdminUpdateCompanyWritable = {
      */
     mukuru_chain?: 'base';
     mukuru_callback_password?: string;
+    mukuru_create_on_signed?: boolean;
     business_sender_first_name?: string;
     business_sender_last_name?: string;
     business_sender_street_address?: string;
@@ -542,6 +547,7 @@ export type PatchedAdminUpdateCompanyWritable = {
      */
     mukuru_chain?: 'base';
     mukuru_callback_password?: string;
+    mukuru_create_on_signed?: boolean;
     business_sender_first_name?: string;
     business_sender_last_name?: string;
     business_sender_street_address?: string;

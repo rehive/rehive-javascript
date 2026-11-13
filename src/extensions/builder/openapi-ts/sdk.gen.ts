@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AdminBuildTasksCreateData, AdminBuildTasksCreateResponses, AdminBuildTasksListData, AdminBuildTasksListResponses, AdminBuildTasksRetrieveData, AdminBuildTasksRetrieveResponses, AdminTemplatesComparisonRetrieveData, AdminTemplatesComparisonRetrieveResponses, AdminTemplatesCreateData, AdminTemplatesCreateResponses, AdminTemplatesListData, AdminTemplatesListResponses, AdminTemplatesPartialUpdateData, AdminTemplatesPartialUpdateResponses, AdminTemplatesRetrieveData, AdminTemplatesRetrieveResponses, AdminTemplatesUpdateData, AdminTemplatesUpdateResponses, AdminTemplatesVersionsComparisonRetrieveData, AdminTemplatesVersionsComparisonRetrieveResponses, AdminTemplatesVersionsCreateData, AdminTemplatesVersionsCreateResponses, AdminTemplatesVersionsDestroyData, AdminTemplatesVersionsDestroyResponses, AdminTemplatesVersionsListData, AdminTemplatesVersionsListResponses, AdminTemplatesVersionsPartialUpdateData, AdminTemplatesVersionsPartialUpdateResponses, AdminTemplatesVersionsRetrieveData, AdminTemplatesVersionsRetrieveResponses, AdminTemplatesVersionsUpdateData, AdminTemplatesVersionsUpdateResponses, PublicTemplatesListData, PublicTemplatesListResponses, PublicTemplatesRetrieveData, PublicTemplatesRetrieveResponses } from './types.gen';
+import type { AdminBuildTasksCreateData, AdminBuildTasksCreateResponses, AdminBuildTasksListData, AdminBuildTasksListResponses, AdminBuildTasksRetrieveData, AdminBuildTasksRetrieveResponses, AdminTemplatesCreateData, AdminTemplatesCreateResponses, AdminTemplatesListData, AdminTemplatesListResponses, AdminTemplatesPartialUpdateData, AdminTemplatesPartialUpdateResponses, AdminTemplatesRetrieveData, AdminTemplatesRetrieveResponses, AdminTemplatesUpdateData, AdminTemplatesUpdateResponses, AdminTemplatesVersionsCreateData, AdminTemplatesVersionsCreateResponses, AdminTemplatesVersionsDestroyData, AdminTemplatesVersionsDestroyResponses, AdminTemplatesVersionsListData, AdminTemplatesVersionsListResponses, AdminTemplatesVersionsPartialUpdateData, AdminTemplatesVersionsPartialUpdateResponses, AdminTemplatesVersionsRetrieveData, AdminTemplatesVersionsRetrieveResponses, AdminTemplatesVersionsUpdateData, AdminTemplatesVersionsUpdateResponses, OperatorCompaniesSyncCreateData, OperatorCompaniesSyncCreateResponses, OperatorCompaniesSyncListData, OperatorCompaniesSyncListResponses, OperatorCompaniesTemplatesComparisonRetrieveData, OperatorCompaniesTemplatesComparisonRetrieveResponses, OperatorCompaniesTemplatesFeeValuesRetrieveData, OperatorCompaniesTemplatesFeeValuesRetrieveResponses, OperatorCompaniesTemplatesVersionsComparisonRetrieveData, OperatorCompaniesTemplatesVersionsComparisonRetrieveResponses, OperatorCompaniesTemplatesVersionsFeeValuesRetrieveData, OperatorCompaniesTemplatesVersionsFeeValuesRetrieveResponses, OperatorCompaniesTemplatesVersionsPlansCreateData, OperatorCompaniesTemplatesVersionsPlansCreateResponses, OperatorPlansApplyCreateData, OperatorPlansApplyCreateResponses, OperatorPlansListData, OperatorPlansListResponses, OperatorPlansRetrieveData, OperatorPlansRetrieveResponses, OperatorTemplatesCreateData, OperatorTemplatesCreateResponses, OperatorTemplatesListData, OperatorTemplatesListResponses, OperatorTemplatesPartialUpdateData, OperatorTemplatesPartialUpdateResponses, OperatorTemplatesRetrieveData, OperatorTemplatesRetrieveResponses, OperatorTemplatesUpdateData, OperatorTemplatesUpdateResponses, OperatorTemplatesVersionsCreateData, OperatorTemplatesVersionsCreateResponses, OperatorTemplatesVersionsListData, OperatorTemplatesVersionsListResponses, OperatorTemplatesVersionsPartialUpdateData, OperatorTemplatesVersionsPartialUpdateResponses, OperatorTemplatesVersionsRetrieveData, OperatorTemplatesVersionsRetrieveResponses, OperatorTemplatesVersionsUpdateData, OperatorTemplatesVersionsUpdateResponses, PublicTemplatesListData, PublicTemplatesListResponses, PublicTemplatesRetrieveData, PublicTemplatesRetrieveResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -22,7 +22,11 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
  * List build tasks
  */
 export const adminBuildTasksList = <ThrowOnError extends boolean = false>(options?: Options<AdminBuildTasksListData, ThrowOnError>): RequestResult<AdminBuildTasksListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AdminBuildTasksListResponses, unknown, ThrowOnError>({
-    security: [{ name: 'Authorization', type: 'apiKey' }],
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
     url: '/admin/build-tasks/',
     ...options
 });
@@ -31,7 +35,11 @@ export const adminBuildTasksList = <ThrowOnError extends boolean = false>(option
  * Create build tasks
  */
 export const adminBuildTasksCreate = <ThrowOnError extends boolean = false>(options: Options<AdminBuildTasksCreateData, ThrowOnError>): RequestResult<AdminBuildTasksCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AdminBuildTasksCreateResponses, unknown, ThrowOnError>({
-    security: [{ name: 'Authorization', type: 'apiKey' }],
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
     url: '/admin/build-tasks/',
     ...options,
     headers: {
@@ -44,14 +52,31 @@ export const adminBuildTasksCreate = <ThrowOnError extends boolean = false>(opti
  * Retrieve build task
  */
 export const adminBuildTasksRetrieve = <ThrowOnError extends boolean = false>(options: Options<AdminBuildTasksRetrieveData, ThrowOnError>): RequestResult<AdminBuildTasksRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AdminBuildTasksRetrieveResponses, unknown, ThrowOnError>({
-    security: [{ name: 'Authorization', type: 'apiKey' }],
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
     url: '/admin/build-tasks/{identifier}/',
     ...options
 });
 
-export const adminTemplatesList = <ThrowOnError extends boolean = false>(options?: Options<AdminTemplatesListData, ThrowOnError>): RequestResult<AdminTemplatesListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AdminTemplatesListResponses, unknown, ThrowOnError>({ url: '/admin/templates/', ...options });
+export const adminTemplatesList = <ThrowOnError extends boolean = false>(options?: Options<AdminTemplatesListData, ThrowOnError>): RequestResult<AdminTemplatesListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AdminTemplatesListResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/admin/templates/',
+    ...options
+});
 
 export const adminTemplatesCreate = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesCreateData, ThrowOnError>): RequestResult<AdminTemplatesCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AdminTemplatesCreateResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
     url: '/admin/templates/',
     ...options,
     headers: {
@@ -60,9 +85,22 @@ export const adminTemplatesCreate = <ThrowOnError extends boolean = false>(optio
     }
 });
 
-export const adminTemplatesRetrieve = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesRetrieveData, ThrowOnError>): RequestResult<AdminTemplatesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AdminTemplatesRetrieveResponses, unknown, ThrowOnError>({ url: '/admin/templates/{identifier}/', ...options });
+export const adminTemplatesRetrieve = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesRetrieveData, ThrowOnError>): RequestResult<AdminTemplatesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AdminTemplatesRetrieveResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/admin/templates/{identifier}/',
+    ...options
+});
 
 export const adminTemplatesPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesPartialUpdateData, ThrowOnError>): RequestResult<AdminTemplatesPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<AdminTemplatesPartialUpdateResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
     url: '/admin/templates/{identifier}/',
     ...options,
     headers: {
@@ -72,6 +110,11 @@ export const adminTemplatesPartialUpdate = <ThrowOnError extends boolean = false
 });
 
 export const adminTemplatesUpdate = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesUpdateData, ThrowOnError>): RequestResult<AdminTemplatesUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<AdminTemplatesUpdateResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
     url: '/admin/templates/{identifier}/',
     ...options,
     headers: {
@@ -80,15 +123,22 @@ export const adminTemplatesUpdate = <ThrowOnError extends boolean = false>(optio
     }
 });
 
-export const adminTemplatesComparisonRetrieve = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesComparisonRetrieveData, ThrowOnError>): RequestResult<AdminTemplatesComparisonRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AdminTemplatesComparisonRetrieveResponses, unknown, ThrowOnError>({
-    security: [{ name: 'Authorization', type: 'apiKey' }],
-    url: '/admin/templates/{identifier}/comparison/',
+export const adminTemplatesVersionsList = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesVersionsListData, ThrowOnError>): RequestResult<AdminTemplatesVersionsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<AdminTemplatesVersionsListResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/admin/templates/{identifier}/versions/',
     ...options
 });
 
-export const adminTemplatesVersionsList = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesVersionsListData, ThrowOnError>): RequestResult<AdminTemplatesVersionsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<AdminTemplatesVersionsListResponses, unknown, ThrowOnError>({ url: '/admin/templates/{identifier}/versions/', ...options });
-
 export const adminTemplatesVersionsCreate = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesVersionsCreateData, ThrowOnError>): RequestResult<AdminTemplatesVersionsCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AdminTemplatesVersionsCreateResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
     url: '/admin/templates/{identifier}/versions/',
     ...options,
     headers: {
@@ -97,11 +147,32 @@ export const adminTemplatesVersionsCreate = <ThrowOnError extends boolean = fals
     }
 });
 
-export const adminTemplatesVersionsDestroy = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesVersionsDestroyData, ThrowOnError>): RequestResult<AdminTemplatesVersionsDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<AdminTemplatesVersionsDestroyResponses, unknown, ThrowOnError>({ url: '/admin/templates/{identifier}/versions/{version}/', ...options });
+export const adminTemplatesVersionsDestroy = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesVersionsDestroyData, ThrowOnError>): RequestResult<AdminTemplatesVersionsDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<AdminTemplatesVersionsDestroyResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/admin/templates/{identifier}/versions/{version}/',
+    ...options
+});
 
-export const adminTemplatesVersionsRetrieve = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesVersionsRetrieveData, ThrowOnError>): RequestResult<AdminTemplatesVersionsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AdminTemplatesVersionsRetrieveResponses, unknown, ThrowOnError>({ url: '/admin/templates/{identifier}/versions/{version}/', ...options });
+export const adminTemplatesVersionsRetrieve = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesVersionsRetrieveData, ThrowOnError>): RequestResult<AdminTemplatesVersionsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AdminTemplatesVersionsRetrieveResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/admin/templates/{identifier}/versions/{version}/',
+    ...options
+});
 
 export const adminTemplatesVersionsPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesVersionsPartialUpdateData, ThrowOnError>): RequestResult<AdminTemplatesVersionsPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<AdminTemplatesVersionsPartialUpdateResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
     url: '/admin/templates/{identifier}/versions/{version}/',
     ...options,
     headers: {
@@ -111,6 +182,11 @@ export const adminTemplatesVersionsPartialUpdate = <ThrowOnError extends boolean
 });
 
 export const adminTemplatesVersionsUpdate = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesVersionsUpdateData, ThrowOnError>): RequestResult<AdminTemplatesVersionsUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<AdminTemplatesVersionsUpdateResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'apiAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
     url: '/admin/templates/{identifier}/versions/{version}/',
     ...options,
     headers: {
@@ -119,10 +195,276 @@ export const adminTemplatesVersionsUpdate = <ThrowOnError extends boolean = fals
     }
 });
 
-export const adminTemplatesVersionsComparisonRetrieve = <ThrowOnError extends boolean = false>(options: Options<AdminTemplatesVersionsComparisonRetrieveData, ThrowOnError>): RequestResult<AdminTemplatesVersionsComparisonRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<AdminTemplatesVersionsComparisonRetrieveResponses, unknown, ThrowOnError>({
-    security: [{ name: 'Authorization', type: 'apiKey' }],
-    url: '/admin/templates/{identifier}/versions/{version}/comparison/',
+export const operatorCompaniesSyncCreate = <ThrowOnError extends boolean = false>(options: Options<OperatorCompaniesSyncCreateData, ThrowOnError>): RequestResult<OperatorCompaniesSyncCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<OperatorCompaniesSyncCreateResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'operatorAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/operator/companies/{company_id}/sync/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Compare a template with an explicit target company
+ */
+export const operatorCompaniesTemplatesComparisonRetrieve = <ThrowOnError extends boolean = false>(options: Options<OperatorCompaniesTemplatesComparisonRetrieveData, ThrowOnError>): RequestResult<OperatorCompaniesTemplatesComparisonRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<OperatorCompaniesTemplatesComparisonRetrieveResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'operatorAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/operator/companies/{company_id}/templates/{identifier}/comparison/',
     ...options
+});
+
+/**
+ * List a template's fees with the target company's values
+ */
+export const operatorCompaniesTemplatesFeeValuesRetrieve = <ThrowOnError extends boolean = false>(options: Options<OperatorCompaniesTemplatesFeeValuesRetrieveData, ThrowOnError>): RequestResult<OperatorCompaniesTemplatesFeeValuesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<OperatorCompaniesTemplatesFeeValuesRetrieveResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'operatorAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/operator/companies/{company_id}/templates/{identifier}/fee-values/',
+    ...options
+});
+
+/**
+ * Compare a template with an explicit target company
+ */
+export const operatorCompaniesTemplatesVersionsComparisonRetrieve = <ThrowOnError extends boolean = false>(options: Options<OperatorCompaniesTemplatesVersionsComparisonRetrieveData, ThrowOnError>): RequestResult<OperatorCompaniesTemplatesVersionsComparisonRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<OperatorCompaniesTemplatesVersionsComparisonRetrieveResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'operatorAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/operator/companies/{company_id}/templates/{identifier}/versions/{version}/comparison/',
+    ...options
+});
+
+/**
+ * List a template's fees with the target company's values
+ */
+export const operatorCompaniesTemplatesVersionsFeeValuesRetrieve = <ThrowOnError extends boolean = false>(options: Options<OperatorCompaniesTemplatesVersionsFeeValuesRetrieveData, ThrowOnError>): RequestResult<OperatorCompaniesTemplatesVersionsFeeValuesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<OperatorCompaniesTemplatesVersionsFeeValuesRetrieveResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'operatorAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/operator/companies/{company_id}/templates/{identifier}/versions/{version}/fee-values/',
+    ...options
+});
+
+/**
+ * Create a cross-company reconciliation plan
+ */
+export const operatorCompaniesTemplatesVersionsPlansCreate = <ThrowOnError extends boolean = false>(options: Options<OperatorCompaniesTemplatesVersionsPlansCreateData, ThrowOnError>): RequestResult<OperatorCompaniesTemplatesVersionsPlansCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<OperatorCompaniesTemplatesVersionsPlansCreateResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'operatorAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/operator/companies/{company_id}/templates/{identifier}/versions/{version}/plans/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const operatorCompaniesSyncList = <ThrowOnError extends boolean = false>(options?: Options<OperatorCompaniesSyncListData, ThrowOnError>): RequestResult<OperatorCompaniesSyncListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<OperatorCompaniesSyncListResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'operatorAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/operator/companies/sync/',
+    ...options
+});
+
+/**
+ * List cross-company reconciliation plans
+ */
+export const operatorPlansList = <ThrowOnError extends boolean = false>(options?: Options<OperatorPlansListData, ThrowOnError>): RequestResult<OperatorPlansListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<OperatorPlansListResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'operatorAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/operator/plans/',
+    ...options
+});
+
+/**
+ * Retrieve a cross-company reconciliation plan
+ */
+export const operatorPlansRetrieve = <ThrowOnError extends boolean = false>(options: Options<OperatorPlansRetrieveData, ThrowOnError>): RequestResult<OperatorPlansRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<OperatorPlansRetrieveResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'operatorAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/operator/plans/{plan_id}/',
+    ...options
+});
+
+/**
+ * Apply selected supported reconciliation operations
+ */
+export const operatorPlansApplyCreate = <ThrowOnError extends boolean = false>(options: Options<OperatorPlansApplyCreateData, ThrowOnError>): RequestResult<OperatorPlansApplyCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<OperatorPlansApplyCreateResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'operatorAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/operator/plans/{plan_id}/apply/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * List templates
+ */
+export const operatorTemplatesList = <ThrowOnError extends boolean = false>(options?: Options<OperatorTemplatesListData, ThrowOnError>): RequestResult<OperatorTemplatesListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<OperatorTemplatesListResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'operatorAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/operator/templates/',
+    ...options
+});
+
+export const operatorTemplatesCreate = <ThrowOnError extends boolean = false>(options: Options<OperatorTemplatesCreateData, ThrowOnError>): RequestResult<OperatorTemplatesCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<OperatorTemplatesCreateResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'operatorAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/operator/templates/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Retrieve template
+ */
+export const operatorTemplatesRetrieve = <ThrowOnError extends boolean = false>(options: Options<OperatorTemplatesRetrieveData, ThrowOnError>): RequestResult<OperatorTemplatesRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<OperatorTemplatesRetrieveResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'operatorAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/operator/templates/{identifier}/',
+    ...options
+});
+
+export const operatorTemplatesPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<OperatorTemplatesPartialUpdateData, ThrowOnError>): RequestResult<OperatorTemplatesPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<OperatorTemplatesPartialUpdateResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'operatorAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/operator/templates/{identifier}/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const operatorTemplatesUpdate = <ThrowOnError extends boolean = false>(options: Options<OperatorTemplatesUpdateData, ThrowOnError>): RequestResult<OperatorTemplatesUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<OperatorTemplatesUpdateResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'operatorAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/operator/templates/{identifier}/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * List template versions
+ */
+export const operatorTemplatesVersionsList = <ThrowOnError extends boolean = false>(options: Options<OperatorTemplatesVersionsListData, ThrowOnError>): RequestResult<OperatorTemplatesVersionsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<OperatorTemplatesVersionsListResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'operatorAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/operator/templates/{identifier}/versions/',
+    ...options
+});
+
+export const operatorTemplatesVersionsCreate = <ThrowOnError extends boolean = false>(options: Options<OperatorTemplatesVersionsCreateData, ThrowOnError>): RequestResult<OperatorTemplatesVersionsCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<OperatorTemplatesVersionsCreateResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'operatorAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/operator/templates/{identifier}/versions/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Retrieve template version
+ */
+export const operatorTemplatesVersionsRetrieve = <ThrowOnError extends boolean = false>(options: Options<OperatorTemplatesVersionsRetrieveData, ThrowOnError>): RequestResult<OperatorTemplatesVersionsRetrieveResponses, unknown, ThrowOnError> => (options.client ?? client).get<OperatorTemplatesVersionsRetrieveResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'operatorAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/operator/templates/{identifier}/versions/{version}/',
+    ...options
+});
+
+export const operatorTemplatesVersionsPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<OperatorTemplatesVersionsPartialUpdateData, ThrowOnError>): RequestResult<OperatorTemplatesVersionsPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<OperatorTemplatesVersionsPartialUpdateResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'operatorAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/operator/templates/{identifier}/versions/{version}/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const operatorTemplatesVersionsUpdate = <ThrowOnError extends boolean = false>(options: Options<OperatorTemplatesVersionsUpdateData, ThrowOnError>): RequestResult<OperatorTemplatesVersionsUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).put<OperatorTemplatesVersionsUpdateResponses, unknown, ThrowOnError>({
+    security: [{
+            key: 'operatorAuth',
+            name: 'Authorization',
+            type: 'apiKey'
+        }],
+    url: '/operator/templates/{identifier}/versions/{version}/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
 });
 
 /**

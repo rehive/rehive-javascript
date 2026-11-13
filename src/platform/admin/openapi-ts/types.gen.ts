@@ -30,6 +30,11 @@ export type AccountAsset = {
     readonly updated: number;
 };
 
+export type AccountAssetEffectiveControl = {
+    account_currency: TransactionAccountAsset;
+    readonly controls: Array<EffectiveControl>;
+};
+
 export type AccountAssetLimit = {
     readonly id: number;
     /**
@@ -115,7 +120,9 @@ export type AdminAccessControlRule = {
      * * `ip` - Ip
      */
     type: 'ip';
-    value: string;
+    value?: string | null;
+    readonly common_list: string;
+    countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'> | null;
     label?: string | null;
     user?: ReducedUserInfo;
     group?: AdminReducedGroup;
@@ -383,12 +390,9 @@ export type AdminAlert = {
     priority?: 'info' | 'low' | 'medium' | 'high' | 'critical';
     /**
      * * `open` - Open
-     * * `assigned` - Assigned
-     * * `paused` - Paused
      * * `closed` - Closed
-     * * `reopened` - Reopened
      */
-    status: 'open' | 'assigned' | 'paused' | 'closed' | 'reopened';
+    status: 'open' | 'closed';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -399,6 +403,11 @@ export type AdminAlert = {
     actions?: Array<{
         [key: string]: unknown;
     }>;
+};
+
+export type AdminAlertResponse = {
+    status: string;
+    data: AdminAlert;
 };
 
 export type AdminAppendTransactionCollectionMultiTransactionRequest = {
@@ -456,6 +465,9 @@ export type AdminAuditLog = {
      * * `backgroundtask` - Background Task
      * * `bankowneraddress` - Bank Owner Address
      * * `bankbranchaddress` - Bank Branch Address
+     * * `case` - Case
+     * * `casenote` - Case Note
+     * * `casetype` - Case Type
      * * `company` - Company
      * * `companyaddress` - Company Address
      * * `companybankaccount` - Company Bank Account
@@ -500,8 +512,10 @@ export type AdminAuditLog = {
      * * `oauthsession` - Oauth Session
      * * `oidckey` - Oidc Key
      * * `permission` - Permission
+     * * `policy` - Policy
      * * `recoverycode` - Recovery Code
      * * `refresh_token` - Refresh Token
+     * * `registrationcode` - Registration Code
      * * `request` - Request
      * * `resourcerequirementrule` - Resource Requirement Rule
      * * `rule` - Rule
@@ -515,9 +529,11 @@ export type AdminAuditLog = {
      * * `transactionsubtype` - Transaction Subtype
      * * `transactionmessage` - Transaction Message
      * * `transactioncollection` - Transaction Collection
+     * * `transactiontag` - Transaction Tag
      * * `user` - User
      * * `useraddress` - User Address
      * * `userbankaccount` - User Bank Account
+     * * `usercontact` - User Contact
      * * `userwalletaccount` - User Wallet Account
      * * `usercryptoaccount` - User Crypto Account
      * * `usercryptoaccountattestation` - User Crypto Account Attestation
@@ -530,7 +546,7 @@ export type AdminAuditLog = {
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    readonly resource_type: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'commonlist' | 'commonlistitem' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest';
+    readonly resource_type: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'case' | 'casenote' | 'casetype' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'commonlist' | 'commonlistitem' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'recoverycode' | 'refresh_token' | 'registrationcode' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'transactiontag' | 'user' | 'useraddress' | 'userbankaccount' | 'usercontact' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest';
     readonly resource_id: string;
     readonly context: {
         [key: string]: unknown;
@@ -566,7 +582,273 @@ export type AdminAuthToken = {
     readonly token_key: string;
     user: ReducedUserInfo;
     readonly label: string;
+    /**
+     * IP address of the request that created the token.
+     */
+    readonly ip_address: string;
+    /**
+     * Country the IP address geolocated to when the token was created.
+     *
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    readonly ip_country: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW';
+    /**
+     * User agent of the request that created the token.
+     */
+    readonly user_agent: string;
     readonly expires: number;
+    /**
+     * When the token's refresh token expires, if it has one.
+     */
+    readonly refresh_expires: number | null;
     readonly created: number;
 };
 
@@ -602,6 +884,88 @@ export type AdminAuthenticatorRule = {
 export type AdminAuthenticatorRuleResponse = {
     status: string;
     data: AdminAuthenticatorRule;
+};
+
+export type AdminCase = {
+    readonly id: string;
+    type: AdminReducedCaseType;
+    user: ReducedUserInfo;
+    transaction: AdminReducedTransaction;
+    author: ReducedUserInfo;
+    rule: ReducedRule | null;
+    readonly assignees: Array<ReducedUserInfo>;
+    readonly policies: Array<AdminReducedPolicy>;
+    title?: string | null;
+    description?: string | null;
+    /**
+     * * `open` - Open
+     * * `paused` - Paused
+     * * `closed` - Closed
+     */
+    status?: 'open' | 'paused' | 'closed';
+    /**
+     * * `low` - Low
+     * * `medium` - Medium
+     * * `high` - High
+     * * `critical` - Critical
+     */
+    priority?: 'low' | 'medium' | 'high' | 'critical' | null;
+    readonly checks: unknown;
+    readonly actions: Array<{
+        [key: string]: unknown;
+    }>;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type AdminCaseNote = {
+    readonly id: string;
+    author: ReducedUserInfo;
+    content: string;
+    readonly files: Array<CaseNoteFile>;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type AdminCaseNoteRequest = {
+    content: string;
+};
+
+export type AdminCaseNoteResponse = {
+    status: string;
+    data: AdminCaseNote;
+};
+
+export type AdminCaseResponse = {
+    status: string;
+    data: AdminCase;
+};
+
+export type AdminCaseType = {
+    readonly id: string;
+    readonly key: string;
+    readonly name: string;
+    readonly description: string | null;
+    /**
+     * * `low` - Low
+     * * `medium` - Medium
+     * * `high` - High
+     * * `critical` - Critical
+     */
+    readonly default_priority: 'low' | 'medium' | 'high' | 'critical';
+    readonly checks: unknown;
+    readonly archived: boolean;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type AdminCaseTypeResponse = {
+    status: string;
+    data: AdminCaseType;
 };
 
 export type AdminCommonList = {
@@ -652,12 +1016,12 @@ export type AdminCompany = {
     name?: string | null;
     legal_name?: string | null;
     description?: string | null;
-    website?: string | null;
-    support_website?: string | null;
-    documentation_website?: string | null;
-    support_email?: string | null;
+    website?: string | string | null;
+    support_website?: string | string | null;
+    documentation_website?: string | string | null;
+    support_email?: string | string | null;
     support_phone?: string | null;
-    contact_email?: string | null;
+    contact_email?: string | string | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -913,7 +1277,7 @@ export type AdminCompany = {
     logo?: string | null;
     icon?: string | null;
     address: AdminCompanyAddress;
-    settings: CompanySettings;
+    settings: AdminCompanySettings;
     readonly services: Array<ReducedService>;
     public?: boolean;
     metadata?: {
@@ -1379,8 +1743,9 @@ export type AdminCompanyLegalEntity = {
      */
     expected_monthly_transactions?: 'under_100' | 'from_100_to_1k' | 'from_1k_to_10k' | 'from_10k_to_100k' | 'over_100k' | 'not_sure' | null;
     compliance_officer_name?: string | null;
-    compliance_officer_email?: string | null;
+    compliance_officer_email?: string | string | null;
     compliance_officer_phone?: string | null;
+    compliance_officer_availability?: string | null;
     owners?: {
         [key: string]: unknown;
     } | null;
@@ -1718,8 +2083,9 @@ export type AdminCompanyLegalEntityRequest = {
      */
     expected_monthly_transactions?: 'under_100' | 'from_100_to_1k' | 'from_1k_to_10k' | 'from_10k_to_100k' | 'over_100k' | 'not_sure' | null;
     compliance_officer_name?: string | null;
-    compliance_officer_email?: string | null;
+    compliance_officer_email?: string | string | null;
     compliance_officer_phone?: string | null;
+    compliance_officer_availability?: string | null;
     owners?: {
         [key: string]: unknown;
     } | null;
@@ -1781,12 +2147,12 @@ export type AdminCompanyRequest = {
     name?: string | null;
     legal_name?: string | null;
     description?: string | null;
-    website?: string | null;
-    support_website?: string | null;
-    documentation_website?: string | null;
-    support_email?: string | null;
+    website?: string | string | null;
+    support_website?: string | string | null;
+    documentation_website?: string | string | null;
+    support_email?: string | string | null;
     support_phone?: string | null;
-    contact_email?: string | null;
+    contact_email?: string | string | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -2068,24 +2434,68 @@ export type AdminCompanySettings = {
     require_transaction_subtypes?: boolean;
     require_verification?: boolean;
     allow_registrations?: boolean;
+    require_registration_code?: boolean;
     allow_overdrafts?: boolean;
     allow_session_durations?: boolean;
     require_registration?: boolean;
     default_session_duration?: number;
+    /**
+     * Default lifespan of refresh tokens in seconds. Only applies to sessions created after it is changed.
+     */
+    default_refresh_token_duration?: number;
     default_transaction_lifespan?: number;
     require_terms_and_conditions?: boolean;
     require_privacy_policy?: boolean;
     account_reference_length?: number;
-    password_reset_url?: string | null;
-    password_set_url?: string | null;
-    email_verification_url?: string | null;
-    deactivate_verification_url?: string | null;
-    request_delete_verification_url?: string | null;
-    terms_and_conditions_url?: string | null;
-    privacy_policy_url?: string | null;
+    password_reset_url?: string | string | null;
+    password_set_url?: string | string | null;
+    email_verification_url?: string | string | null;
+    deactivate_verification_url?: string | string | null;
+    request_delete_verification_url?: string | string | null;
+    registration_url?: string | string | null;
+    terms_and_conditions_url?: string | string | null;
+    privacy_policy_url?: string | string | null;
     nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
+    disallowed_mobile_countries: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    disallow_disposable_email_domains?: boolean;
+};
+
+export type AdminCompanySettingsRequest = {
+    allow_transactions?: boolean;
+    allow_debit_transactions?: boolean;
+    allow_credit_transactions?: boolean;
+    disallowed_transaction_subtypes: Array<CompanyDisallowedTransactionSubtypeRequest>;
+    require_transaction_subtypes?: boolean;
+    require_verification?: boolean;
+    allow_registrations?: boolean;
+    require_registration_code?: boolean;
+    allow_overdrafts?: boolean;
+    allow_session_durations?: boolean;
+    require_registration?: boolean;
+    default_session_duration?: number;
+    /**
+     * Default lifespan of refresh tokens in seconds. Only applies to sessions created after it is changed.
+     */
+    default_refresh_token_duration?: number;
+    default_transaction_lifespan?: number;
+    require_terms_and_conditions?: boolean;
+    require_privacy_policy?: boolean;
+    account_reference_length?: number;
+    password_reset_url?: string | string | null;
+    password_set_url?: string | string | null;
+    email_verification_url?: string | string | null;
+    deactivate_verification_url?: string | string | null;
+    request_delete_verification_url?: string | string | null;
+    registration_url?: string | string | null;
+    terms_and_conditions_url?: string | string | null;
+    privacy_policy_url?: string | string | null;
+    nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
+    disallowed_mobile_countries: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    disallow_disposable_email_domains?: boolean;
 };
 
 export type AdminCompanySettingsResponse = {
@@ -2096,7 +2506,7 @@ export type AdminCompanySettingsResponse = {
 export type AdminCompanyWalletAccount = {
     readonly id: number;
     username?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     name?: string | null;
     type?: string | null;
@@ -2136,7 +2546,7 @@ export type AdminCompanyWalletAccountAssetResponse = {
 
 export type AdminCompanyWalletAccountRequest = {
     username?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     name?: string | null;
     type?: string | null;
@@ -2174,7 +2584,14 @@ export type AdminCreateAccessControlRuleRequest = {
      * * `ip` - Ip
      */
     type: 'ip';
-    value: string;
+    /**
+     * An exact IP, or `*` to match every IP.
+     */
+    value?: string | null;
+    /**
+     * ISO 3166-1 alpha-2 codes of the countries to match.
+     */
+    countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'> | null;
     label?: string | null;
 };
 
@@ -2238,12 +2655,9 @@ export type AdminCreateAlertRequest = {
     priority?: 'info' | 'low' | 'medium' | 'high' | 'critical';
     /**
      * * `open` - Open
-     * * `assigned` - Assigned
-     * * `paused` - Paused
      * * `closed` - Closed
-     * * `reopened` - Reopened
      */
-    status: 'open' | 'assigned' | 'paused' | 'closed' | 'reopened';
+    status: 'open' | 'closed';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -2269,6 +2683,10 @@ export type AdminCreateAssetRequest = {
 
 export type AdminCreateAuthTokenRequest = {
     duration?: number | null;
+    /**
+     * Lifespan of the refresh token in seconds, defaults to the company's default refresh token duration. Persists across refreshes.
+     */
+    refresh_token_duration?: number | null;
     user: string;
     label?: string | null;
 };
@@ -2290,6 +2708,36 @@ export type AdminCreateAuthenticatorRuleRequest = {
     authenticator_types: Array<'totp' | 'sms' | 'static'>;
     duration?: number | null;
     session_age?: number | null;
+};
+
+export type AdminCreateCaseAlertRequest = {
+    alert: string;
+};
+
+export type AdminCreateCaseNoteRequest = {
+    content: string;
+};
+
+export type AdminCreateCaseRequest = {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * * `open` - Open
+     * * `paused` - Paused
+     * * `closed` - Closed
+     */
+    status?: 'open' | 'paused' | 'closed';
+    /**
+     * * `low` - Low
+     * * `medium` - Medium
+     * * `high` - High
+     * * `critical` - Critical
+     */
+    priority?: 'low' | 'medium' | 'high' | 'critical' | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
 };
 
 export type AdminCreateChallengeRequest = {
@@ -2513,6 +2961,55 @@ export type AdminCreateMultiUserPermissionRequest = {
     [key: string]: unknown;
 };
 
+export type AdminCreatePolicy = {
+    readonly id: string;
+    title: string;
+    description?: string | null;
+    /**
+     * The policy document, formatted as Markdown.
+     */
+    content: string;
+    legal_content?: string | null;
+    legal_url?: string | string | null;
+    archived?: boolean;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type AdminCreatePolicyRequest = {
+    title: string;
+    description?: string | null;
+    /**
+     * The policy document, formatted as Markdown.
+     */
+    content: string;
+    legal_content?: string | null;
+    legal_url?: string | string | null;
+    archived?: boolean;
+};
+
+export type AdminCreatePolicyResponse = {
+    status: string;
+    data: AdminCreatePolicy;
+};
+
+export type AdminCreateRegistrationCodeRequest = {
+    /**
+     * Generated when left out.
+     */
+    code?: string | null;
+    label?: string | null;
+    /**
+     * How many registrations the code allows. Null is no limit.
+     */
+    max_uses?: number | null;
+    expires?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+};
+
 export type AdminCreateRuleEffectRequest = {
     /**
      * * `create_account_asset_limit` - Create Account Asset Limit
@@ -2522,10 +3019,13 @@ export type AdminCreateRuleEffectRequest = {
      * * `create_transaction_message` - Create Transaction Message
      * * `create_user_alert` - Create User Alert
      * * `create_transaction_alert` - Create Transaction Alert
+     * * `create_user_case` - Create User Case
+     * * `create_transaction_case` - Create Transaction Case
      * * `create_user_tag` - Create User Tag
      * * `create_transaction_tag` - Create Transaction Tag
+     * * `generate_risk_score_tag` - Generate Risk Score Tag
      */
-    type: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert' | 'create_user_tag' | 'create_transaction_tag';
+    type: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert' | 'create_user_case' | 'create_transaction_case' | 'create_user_tag' | 'create_transaction_tag' | 'generate_risk_score_tag';
     label?: string | null;
     params?: {
         [key: string]: unknown;
@@ -2550,12 +3050,14 @@ export type AdminCreateRuleRequest = {
      * * `mobile.create` - Mobile Create
      * * `mobile.create.conflict` - Mobile Create Conflict
      * * `device.create` - Device Create
+     * * `crypto_account.create` - Crypto Account Create
+     * * `crypto_account.update` - Crypto Account Update
      * * `user.tag.create` - User Tag Create
      * * `user.tag.delete` - User Tag Delete
      * * `transaction.tag.create` - Transaction Tag Create
      * * `transaction.tag.delete` - Transaction Tag Delete
      */
-    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'user.update' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
+    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'user.update' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'crypto_account.create' | 'crypto_account.update' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
     condition?: {
         [key: string]: unknown;
     } | null;
@@ -3011,6 +3513,19 @@ export type AdminCreateUserBankAccountRequest = {
     action?: 'withdraw' | 'deposit' | 'origin' | null;
 };
 
+export type AdminCreateUserContactRequest = {
+    /**
+     * * `email` - Email
+     * * `mobile` - Mobile
+     */
+    type: 'email' | 'mobile';
+    identifier: string;
+    name?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
 export type AdminCreateUserDocumentRequest = {
     /**
      * * `obsolete` - Obsolete
@@ -3029,6 +3544,259 @@ export type AdminCreateUserDocumentRequest = {
     archived?: boolean;
     expires?: number | null;
     /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | null;
+    number?: string | null;
+    /**
      * JSON merge patch of frozen (end-user immutable) elements. Supports an `actions` object keyed by action name and a `fields` object keyed by field name. Each value must be an empty object to add a freeze or `null` to remove one; a `created` timestamp is stamped on new freezes automatically.
      */
     frozen?: {
@@ -3043,7 +3811,7 @@ export type AdminCreateUserGroupRequest = {
 export type AdminCreateUserInfoRequest = {
     id?: string;
     username?: string;
-    email?: string;
+    email?: string | string;
     mobile?: string;
     first_name?: string | null;
     middle_name?: string | null;
@@ -4776,7 +5544,7 @@ export type AdminCreateUserWalletAccountAssetRequest = {
 
 export type AdminCreateUserWalletAccountRequest = {
     username?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     name?: string | null;
     type?: string | null;
@@ -4997,6 +5765,35 @@ export type AdminDocumentTypeResponse = {
     data: AdminDocumentType;
 };
 
+export type AdminEffectiveFee = {
+    readonly id: number;
+    readonly resource: string;
+    readonly name: string | null;
+    readonly description: string | null;
+    /**
+     * Convert the fee value from Decimal to int based on asset divisibility
+     */
+    readonly value: number;
+    readonly percentage: number | null;
+    /**
+     * * `credit` - Credit
+     * * `debit` - Debit
+     */
+    readonly tx_type: 'credit' | 'debit';
+    readonly subtype: string | null;
+    readonly debit_account: string | null;
+    readonly credit_account: string | null;
+    readonly debit_subtype: string | null;
+    readonly credit_subtype: string | null;
+};
+
+export type AdminEffectiveFeeList = Array<AdminEffectiveFee>;
+
+export type AdminEffectiveFeeListResponse = {
+    status: string;
+    data: AdminEffectiveFeeList;
+};
+
 export type AdminEmail = {
     user: ReducedUserInfo;
     readonly id: number;
@@ -5155,12 +5952,9 @@ export type AdminExtendedAlert = {
     priority?: 'info' | 'low' | 'medium' | 'high' | 'critical';
     /**
      * * `open` - Open
-     * * `assigned` - Assigned
-     * * `paused` - Paused
      * * `closed` - Closed
-     * * `reopened` - Reopened
      */
-    status: 'open' | 'assigned' | 'paused' | 'closed' | 'reopened';
+    status: 'open' | 'closed';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -5186,12 +5980,9 @@ export type AdminExtendedAlertRequest = {
     priority?: 'info' | 'low' | 'medium' | 'high' | 'critical';
     /**
      * * `open` - Open
-     * * `assigned` - Assigned
-     * * `paused` - Paused
      * * `closed` - Closed
-     * * `reopened` - Reopened
      */
-    status: 'open' | 'assigned' | 'paused' | 'closed' | 'reopened';
+    status: 'open' | 'closed';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -5209,9 +6000,276 @@ export type AdminExtendedAlertResponse = {
 export type AdminExtendedAuthToken = {
     readonly token_key: string;
     readonly token: string;
+    readonly refresh_token: string | null;
     user: ReducedUserInfo;
     readonly label: string;
+    /**
+     * IP address of the request that created the token.
+     */
+    readonly ip_address: string;
+    /**
+     * Country the IP address geolocated to when the token was created.
+     *
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    readonly ip_country: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW';
+    /**
+     * User agent of the request that created the token.
+     */
+    readonly user_agent: string;
     readonly expires: number;
+    /**
+     * When the token's refresh token expires, if it has one.
+     */
+    readonly refresh_expires: number | null;
     readonly created: number;
 };
 
@@ -5302,10 +6360,264 @@ export type AdminExtendedRequest = {
      * Correlation id shared with the audit-log rows produced by this request (matches AuditLog.request_identifier).
      */
     readonly identifier: string | null;
-    user: ReducedUserInfo;
+    user: ReducedUserInfo | null;
     readonly key: string | null;
     readonly token_key: string | null;
     readonly ip_address: string | null;
+    /**
+     * Country the IP address geolocated to at the time.
+     *
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    readonly ip_country: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | null;
     readonly scheme: string;
     readonly path: string | null;
     readonly method: string;
@@ -5338,6 +6650,9 @@ export type AdminExtendedRequest = {
      * * `backgroundtask` - Background Task
      * * `bankowneraddress` - Bank Owner Address
      * * `bankbranchaddress` - Bank Branch Address
+     * * `case` - Case
+     * * `casenote` - Case Note
+     * * `casetype` - Case Type
      * * `company` - Company
      * * `companyaddress` - Company Address
      * * `companybankaccount` - Company Bank Account
@@ -5382,8 +6697,10 @@ export type AdminExtendedRequest = {
      * * `oauthsession` - Oauth Session
      * * `oidckey` - Oidc Key
      * * `permission` - Permission
+     * * `policy` - Policy
      * * `recoverycode` - Recovery Code
      * * `refresh_token` - Refresh Token
+     * * `registrationcode` - Registration Code
      * * `request` - Request
      * * `resourcerequirementrule` - Resource Requirement Rule
      * * `rule` - Rule
@@ -5397,9 +6714,11 @@ export type AdminExtendedRequest = {
      * * `transactionsubtype` - Transaction Subtype
      * * `transactionmessage` - Transaction Message
      * * `transactioncollection` - Transaction Collection
+     * * `transactiontag` - Transaction Tag
      * * `user` - User
      * * `useraddress` - User Address
      * * `userbankaccount` - User Bank Account
+     * * `usercontact` - User Contact
      * * `userwalletaccount` - User Wallet Account
      * * `usercryptoaccount` - User Crypto Account
      * * `usercryptoaccountattestation` - User Crypto Account Attestation
@@ -5412,13 +6731,8 @@ export type AdminExtendedRequest = {
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'commonlist' | 'commonlistitem' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'case' | 'casenote' | 'casetype' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'commonlist' | 'commonlistitem' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'recoverycode' | 'refresh_token' | 'registrationcode' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'transactiontag' | 'user' | 'useraddress' | 'userbankaccount' | 'usercontact' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
     readonly resource_id: string | null;
-    /**
-     * Return a response object. This has to be unpickled from a stored
-     * binary field. If it fails, throw an error so we can investigate but
-     * return None as well.
-     */
     readonly response: {
         [key: string]: unknown;
     };
@@ -5429,6 +6743,52 @@ export type AdminExtendedRequest = {
 export type AdminExtendedRequestResponse = {
     status: string;
     data: AdminExtendedRequest;
+};
+
+export type AdminExtendedRule = {
+    readonly id: string;
+    author: ReducedUserInfo;
+    /**
+     * * `trigger` - Trigger
+     */
+    type?: 'trigger';
+    name: string;
+    label?: string | null;
+    description?: string | null;
+    tags?: Array<string> | null;
+    /**
+     * * `transaction.execute` - Transaction Execute
+     * * `transaction.initiate` - Transaction Initiate
+     * * `user.create` - User Create
+     * * `user.update` - User Update
+     * * `email.create` - Email Create
+     * * `mobile.create` - Mobile Create
+     * * `mobile.create.conflict` - Mobile Create Conflict
+     * * `device.create` - Device Create
+     * * `crypto_account.create` - Crypto Account Create
+     * * `crypto_account.update` - Crypto Account Update
+     * * `user.tag.create` - User Tag Create
+     * * `user.tag.delete` - User Tag Delete
+     * * `transaction.tag.create` - Transaction Tag Create
+     * * `transaction.tag.delete` - Transaction Tag Delete
+     */
+    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'user.update' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'crypto_account.create' | 'crypto_account.update' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
+    condition?: {
+        [key: string]: unknown;
+    } | null;
+    enabled?: boolean;
+    readonly effects: Array<AdminRuleEffect>;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    readonly created: string;
+    readonly updated: string;
+    readonly policies: Array<AdminReducedPolicy>;
+};
+
+export type AdminExtendedRuleResponse = {
+    status: string;
+    data: AdminExtendedRule;
 };
 
 export type AdminExtendedTransaction = {
@@ -5553,7 +6913,7 @@ export type AdminExtendedUserInfo = {
      * Unique identifier used to reference this user in the API.
      */
     readonly id: string;
-    username: string | null;
+    username?: string | string | null;
     readonly email: string | null;
     readonly mobile: string | null;
     first_name?: string | null;
@@ -7287,6 +8647,7 @@ export type AdminExtendedUserInfo = {
     };
     readonly tags: Array<UserTag>;
     settings: UserSettings;
+    readonly registration_code: string | null;
 };
 
 export type AdminExtendedUserInfoResponse = {
@@ -7437,8 +8798,10 @@ export type AdminGroupPermission = {
      * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
+     * * `case` - Case
      * * `commonlist` - Common List
      * * `company` - Company
+     * * `contact` - Contact
      * * `cryptoaccount` - Crypto Account
      * * `device` - Device
      * * `document` - Document
@@ -7453,6 +8816,8 @@ export type AdminGroupPermission = {
      * * `oauthclient` - Oauth Client
      * * `password` - Password
      * * `permission` - Permission
+     * * `policy` - Policy
+     * * `registrationcode` - Registration Code
      * * `request` - Request
      * * `rule` - Rule
      * * `service` - Service
@@ -7463,7 +8828,7 @@ export type AdminGroupPermission = {
      * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'commonlist' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'case' | 'commonlist' | 'company' | 'contact' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'policy' | 'registrationcode' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -7497,11 +8862,12 @@ export type AdminGroupSettings = {
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
     disallowed_transaction_subtypes: Array<GroupDisallowedTransactionSubtype>;
-    password_reset_url?: string | null;
-    password_set_url?: string | null;
-    email_verification_url?: string | null;
-    deactivate_verification_url?: string | null;
-    request_delete_verification_url?: string | null;
+    password_reset_url?: string | string | null;
+    password_set_url?: string | string | null;
+    email_verification_url?: string | string | null;
+    deactivate_verification_url?: string | string | null;
+    request_delete_verification_url?: string | string | null;
+    registration_url?: string | string | null;
 };
 
 export type AdminGroupSettingsRequest = {
@@ -7509,11 +8875,12 @@ export type AdminGroupSettingsRequest = {
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
     disallowed_transaction_subtypes: Array<GroupDisallowedTransactionSubtypeRequest>;
-    password_reset_url?: string | null;
-    password_set_url?: string | null;
-    email_verification_url?: string | null;
-    deactivate_verification_url?: string | null;
-    request_delete_verification_url?: string | null;
+    password_reset_url?: string | string | null;
+    password_set_url?: string | string | null;
+    email_verification_url?: string | string | null;
+    deactivate_verification_url?: string | string | null;
+    request_delete_verification_url?: string | string | null;
+    registration_url?: string | string | null;
 };
 
 export type AdminGroupSettingsResponse = {
@@ -7642,6 +9009,35 @@ export type AdminGroupTierResponse = {
     data: AdminGroupTier;
 };
 
+export type AdminInviteRegistrationCode = {
+    readonly registration_codes: Array<AdminRegistrationCode>;
+    readonly skipped: Array<AdminSkippedInvite>;
+};
+
+export type AdminInviteRegistrationCodeRequest = {
+    /**
+     * Up to 500 addresses. Repeats are merged, and an address that cannot get an invite is skipped with the reason.
+     */
+    emails: Array<string>;
+    label?: string | null;
+    /**
+     * The name of the user group the codes put people in.
+     */
+    group?: string | null;
+    /**
+     * Defaults to 30 days from now.
+     */
+    expires?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+export type AdminInviteRegistrationCodeResponse = {
+    status: string;
+    data: AdminInviteRegistrationCode;
+};
+
 export type AdminLegalTerm = {
     readonly id: number;
     /**
@@ -7668,7 +9064,7 @@ export type AdminLegalTermVersion = {
     readonly version: number;
     note?: string | null;
     content?: string | null;
-    url?: string | null;
+    url?: string | string | null;
     urls?: Array<LegalTermVersionUrl> | null;
     readonly created: number;
     archived?: boolean;
@@ -7678,7 +9074,7 @@ export type AdminLegalTermVersion = {
 export type AdminLegalTermVersionRequest = {
     note?: string | null;
     content?: string | null;
-    url?: string | null;
+    url?: string | string | null;
     urls?: Array<LegalTermVersionUrlRequest> | null;
     archived?: boolean;
 };
@@ -7692,6 +9088,10 @@ export type AdminLoginRequest = {
     user: string;
     password: string;
     session_duration?: number | null;
+    /**
+     * Lifespan of the refresh token in seconds, defaults to the company's default refresh token duration. Persists across refreshes.
+     */
+    refresh_token_duration?: number | null;
 };
 
 export type AdminMfaAuthenticator = {
@@ -7922,6 +9322,38 @@ export type AdminPasswordResetRequest = {
     user: string;
 };
 
+export type AdminPolicy = {
+    readonly id: string;
+    title: string;
+    description?: string | null;
+    /**
+     * The policy document, formatted as Markdown.
+     */
+    content: string;
+    legal_content?: string | null;
+    legal_url?: string | string | null;
+    archived?: boolean;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type AdminPolicyRequest = {
+    title: string;
+    description?: string | null;
+    /**
+     * The policy document, formatted as Markdown.
+     */
+    content: string;
+    legal_content?: string | null;
+    legal_url?: string | string | null;
+    archived?: boolean;
+};
+
+export type AdminPolicyResponse = {
+    status: string;
+    data: AdminPolicy;
+};
+
 export type AdminReducedAccountAccountAsset = {
     readonly id: string;
     /**
@@ -7977,7 +9409,24 @@ export type AdminReducedAccountAssetResponse = {
     data: AdminReducedAccountAsset;
 };
 
+export type AdminReducedCaseType = {
+    readonly id: string;
+    readonly key: string;
+    readonly name: string;
+};
+
 export type AdminReducedGroup = {
+    name: string;
+    label?: string | null;
+    /**
+     * * `system` - System
+     * * `admin` - Admin
+     * * `user` - User
+     */
+    section: 'system' | 'admin' | 'user';
+};
+
+export type AdminReducedGroupRequest = {
     name: string;
     label?: string | null;
     /**
@@ -7995,6 +9444,37 @@ export type AdminReducedLegalTermVersion = {
     readonly updated: number;
 };
 
+export type AdminReducedPolicy = {
+    readonly id: string;
+    readonly title: string;
+    readonly description: string | null;
+    readonly legal_url: string | null;
+    readonly archived: boolean;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type AdminReducedTransaction = {
+    readonly id: string;
+    /**
+     * * `credit` - Credit
+     * * `debit` - Debit
+     */
+    readonly tx_type: 'credit' | 'debit';
+    readonly subtype: string | null;
+    /**
+     * * `Initiating` - Initiating
+     * * `Quoted` - Quoted
+     * * `Pending` - Pending
+     * * `Complete` - Complete
+     * * `Failed` - Failed
+     */
+    readonly status: 'Initiating' | 'Quoted' | 'Pending' | 'Complete' | 'Failed';
+    readonly amount: number;
+    readonly currency: string;
+    readonly created: number;
+};
+
 export type AdminReducedUserLegalTermVersion = {
     readonly id: number;
     readonly version: number;
@@ -8007,7 +9487,7 @@ export type AdminReducedUserLegalTermVersion = {
 
 export type AdminRegisterRequest = {
     username?: string;
-    email?: string;
+    email?: string | string;
     mobile?: string;
     /**
      * * `AF` - Afghanistan
@@ -9051,16 +10531,312 @@ export type AdminRegisterRequest = {
     tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
 };
 
+export type AdminRegistrationCode = {
+    readonly id: string;
+    readonly code: string;
+    label?: string | null;
+    readonly email: string | null;
+    group: AdminReducedGroup;
+    /**
+     * How many registrations the code allows. Null is no limit.
+     */
+    max_uses?: number | null;
+    readonly uses: number;
+    expires?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+    /**
+     * The link that opens registration with this code.
+     */
+    readonly url: string;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type AdminRegistrationCodeRequest = {
+    label?: string | null;
+    /**
+     * How many registrations the code allows. Null is no limit.
+     */
+    max_uses?: number | null;
+    expires?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+};
+
+export type AdminRegistrationCodeResponse = {
+    status: string;
+    data: AdminRegistrationCode;
+};
+
 export type AdminRequest = {
     readonly id: number;
     /**
      * Correlation id shared with the audit-log rows produced by this request (matches AuditLog.request_identifier).
      */
     readonly identifier: string | null;
-    user: ReducedUserInfo;
+    user: ReducedUserInfo | null;
     readonly key: string | null;
     readonly token_key: string | null;
     readonly ip_address: string | null;
+    /**
+     * Country the IP address geolocated to at the time.
+     *
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    readonly ip_country: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | null;
     readonly scheme: string;
     readonly path: string | null;
     readonly method: string;
@@ -9093,6 +10869,9 @@ export type AdminRequest = {
      * * `backgroundtask` - Background Task
      * * `bankowneraddress` - Bank Owner Address
      * * `bankbranchaddress` - Bank Branch Address
+     * * `case` - Case
+     * * `casenote` - Case Note
+     * * `casetype` - Case Type
      * * `company` - Company
      * * `companyaddress` - Company Address
      * * `companybankaccount` - Company Bank Account
@@ -9137,8 +10916,10 @@ export type AdminRequest = {
      * * `oauthsession` - Oauth Session
      * * `oidckey` - Oidc Key
      * * `permission` - Permission
+     * * `policy` - Policy
      * * `recoverycode` - Recovery Code
      * * `refresh_token` - Refresh Token
+     * * `registrationcode` - Registration Code
      * * `request` - Request
      * * `resourcerequirementrule` - Resource Requirement Rule
      * * `rule` - Rule
@@ -9152,9 +10933,11 @@ export type AdminRequest = {
      * * `transactionsubtype` - Transaction Subtype
      * * `transactionmessage` - Transaction Message
      * * `transactioncollection` - Transaction Collection
+     * * `transactiontag` - Transaction Tag
      * * `user` - User
      * * `useraddress` - User Address
      * * `userbankaccount` - User Bank Account
+     * * `usercontact` - User Contact
      * * `userwalletaccount` - User Wallet Account
      * * `usercryptoaccount` - User Crypto Account
      * * `usercryptoaccountattestation` - User Crypto Account Attestation
@@ -9167,7 +10950,7 @@ export type AdminRequest = {
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'commonlist' | 'commonlistitem' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'case' | 'casenote' | 'casetype' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'commonlist' | 'commonlistitem' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'recoverycode' | 'refresh_token' | 'registrationcode' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'transactiontag' | 'user' | 'useraddress' | 'userbankaccount' | 'usercontact' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
     readonly resource_id: string | null;
     readonly created: number;
     readonly updated: number;
@@ -9197,12 +10980,14 @@ export type AdminRule = {
      * * `mobile.create` - Mobile Create
      * * `mobile.create.conflict` - Mobile Create Conflict
      * * `device.create` - Device Create
+     * * `crypto_account.create` - Crypto Account Create
+     * * `crypto_account.update` - Crypto Account Update
      * * `user.tag.create` - User Tag Create
      * * `user.tag.delete` - User Tag Delete
      * * `transaction.tag.create` - Transaction Tag Create
      * * `transaction.tag.delete` - Transaction Tag Delete
      */
-    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'user.update' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
+    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'user.update' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'crypto_account.create' | 'crypto_account.update' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
     condition?: {
         [key: string]: unknown;
     } | null;
@@ -9225,10 +11010,13 @@ export type AdminRuleEffect = {
      * * `create_transaction_message` - Create Transaction Message
      * * `create_user_alert` - Create User Alert
      * * `create_transaction_alert` - Create Transaction Alert
+     * * `create_user_case` - Create User Case
+     * * `create_transaction_case` - Create Transaction Case
      * * `create_user_tag` - Create User Tag
      * * `create_transaction_tag` - Create Transaction Tag
+     * * `generate_risk_score_tag` - Generate Risk Score Tag
      */
-    type: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert' | 'create_user_tag' | 'create_transaction_tag';
+    type: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert' | 'create_user_case' | 'create_transaction_case' | 'create_user_tag' | 'create_transaction_tag' | 'generate_risk_score_tag';
     label?: string | null;
     params?: {
         [key: string]: unknown;
@@ -9246,10 +11034,13 @@ export type AdminRuleEffectRequest = {
      * * `create_transaction_message` - Create Transaction Message
      * * `create_user_alert` - Create User Alert
      * * `create_transaction_alert` - Create Transaction Alert
+     * * `create_user_case` - Create User Case
+     * * `create_transaction_case` - Create Transaction Case
      * * `create_user_tag` - Create User Tag
      * * `create_transaction_tag` - Create Transaction Tag
+     * * `generate_risk_score_tag` - Generate Risk Score Tag
      */
-    type: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert' | 'create_user_tag' | 'create_transaction_tag';
+    type: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert' | 'create_user_case' | 'create_transaction_case' | 'create_user_tag' | 'create_transaction_tag' | 'generate_risk_score_tag';
     label?: string | null;
     params?: {
         [key: string]: unknown;
@@ -9263,7 +11054,7 @@ export type AdminRuleEffectResponse = {
 
 export type AdminRuleLog = {
     readonly id: string;
-    rule: ReducedRule;
+    rule: ReducedRule | null;
     /**
      * * `accesscontrolrule` - Access Control Rule
      * * `account` - Account
@@ -9282,6 +11073,9 @@ export type AdminRuleLog = {
      * * `backgroundtask` - Background Task
      * * `bankowneraddress` - Bank Owner Address
      * * `bankbranchaddress` - Bank Branch Address
+     * * `case` - Case
+     * * `casenote` - Case Note
+     * * `casetype` - Case Type
      * * `company` - Company
      * * `companyaddress` - Company Address
      * * `companybankaccount` - Company Bank Account
@@ -9326,8 +11120,10 @@ export type AdminRuleLog = {
      * * `oauthsession` - Oauth Session
      * * `oidckey` - Oidc Key
      * * `permission` - Permission
+     * * `policy` - Policy
      * * `recoverycode` - Recovery Code
      * * `refresh_token` - Refresh Token
+     * * `registrationcode` - Registration Code
      * * `request` - Request
      * * `resourcerequirementrule` - Resource Requirement Rule
      * * `rule` - Rule
@@ -9341,9 +11137,11 @@ export type AdminRuleLog = {
      * * `transactionsubtype` - Transaction Subtype
      * * `transactionmessage` - Transaction Message
      * * `transactioncollection` - Transaction Collection
+     * * `transactiontag` - Transaction Tag
      * * `user` - User
      * * `useraddress` - User Address
      * * `userbankaccount` - User Bank Account
+     * * `usercontact` - User Contact
      * * `userwalletaccount` - User Wallet Account
      * * `usercryptoaccount` - User Crypto Account
      * * `usercryptoaccountattestation` - User Crypto Account Attestation
@@ -9356,7 +11154,7 @@ export type AdminRuleLog = {
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    readonly resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'commonlist' | 'commonlistitem' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest';
+    readonly resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'case' | 'casenote' | 'casetype' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'commonlist' | 'commonlistitem' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'recoverycode' | 'refresh_token' | 'registrationcode' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'transactiontag' | 'user' | 'useraddress' | 'userbankaccount' | 'usercontact' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest';
     readonly resource_id: string | null;
     readonly event: string;
     readonly data: {
@@ -9372,44 +11170,6 @@ export type AdminRuleLog = {
 export type AdminRuleLogResponse = {
     status: string;
     data: AdminRuleLog;
-};
-
-export type AdminRuleRequest = {
-    /**
-     * * `trigger` - Trigger
-     */
-    type?: 'trigger';
-    name: string;
-    label?: string | null;
-    description?: string | null;
-    tags?: Array<string> | null;
-    /**
-     * * `transaction.execute` - Transaction Execute
-     * * `transaction.initiate` - Transaction Initiate
-     * * `user.create` - User Create
-     * * `user.update` - User Update
-     * * `email.create` - Email Create
-     * * `mobile.create` - Mobile Create
-     * * `mobile.create.conflict` - Mobile Create Conflict
-     * * `device.create` - Device Create
-     * * `user.tag.create` - User Tag Create
-     * * `user.tag.delete` - User Tag Delete
-     * * `transaction.tag.create` - Transaction Tag Create
-     * * `transaction.tag.delete` - Transaction Tag Delete
-     */
-    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'user.update' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
-    condition?: {
-        [key: string]: unknown;
-    } | null;
-    enabled?: boolean;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
-};
-
-export type AdminRuleResponse = {
-    status: string;
-    data: AdminRule;
 };
 
 export type AdminService = {
@@ -9445,6 +11205,16 @@ export type AdminServiceRequest = {
 export type AdminServiceResponse = {
     status: string;
     data: AdminService;
+};
+
+export type AdminSkippedInvite = {
+    email: string;
+    reason: string;
+};
+
+export type AdminSkippedInviteRequest = {
+    email: string;
+    reason: string;
 };
 
 export type AdminStatement = {
@@ -9741,6 +11511,32 @@ export type AdminUpdateAuthenticatorRuleRequest = {
     session_age?: number | null;
 };
 
+export type AdminUpdateCaseCheckRequest = {
+    [key: string]: unknown;
+};
+
+export type AdminUpdateCaseRequest = {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * * `open` - Open
+     * * `paused` - Paused
+     * * `closed` - Closed
+     */
+    status?: 'open' | 'paused' | 'closed';
+    /**
+     * * `low` - Low
+     * * `medium` - Medium
+     * * `high` - High
+     * * `critical` - Critical
+     */
+    priority?: 'low' | 'medium' | 'high' | 'critical' | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+};
+
 export type AdminUpdateCompanyLinkRequest = {
     /**
      * * `complete` - Complete
@@ -9756,24 +11552,32 @@ export type AdminUpdateCompanySettingsRequest = {
     require_transaction_subtypes?: boolean;
     require_verification?: boolean;
     allow_registrations?: boolean;
+    require_registration_code?: boolean;
     allow_overdrafts?: boolean;
     allow_session_durations?: boolean;
     require_registration?: boolean;
     default_session_duration?: number;
+    /**
+     * Default lifespan of refresh tokens in seconds. Only applies to sessions created after it is changed.
+     */
+    default_refresh_token_duration?: number;
     default_transaction_lifespan?: number;
     require_terms_and_conditions?: boolean;
     require_privacy_policy?: boolean;
     account_reference_length?: number;
-    password_reset_url?: string | null;
-    password_set_url?: string | null;
-    email_verification_url?: string | null;
-    deactivate_verification_url?: string | null;
-    request_delete_verification_url?: string | null;
-    terms_and_conditions_url?: string | null;
-    privacy_policy_url?: string | null;
+    password_reset_url?: string | string | null;
+    password_set_url?: string | string | null;
+    email_verification_url?: string | string | null;
+    deactivate_verification_url?: string | string | null;
+    request_delete_verification_url?: string | string | null;
+    registration_url?: string | string | null;
+    terms_and_conditions_url?: string | string | null;
+    privacy_policy_url?: string | string | null;
     nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
+    disallowed_mobile_countries: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    disallow_disposable_email_domains?: boolean;
 };
 
 export type AdminUpdateExtendedAccountRequest = {
@@ -9869,11 +11673,12 @@ export type AdminUpdateGroupSettingsRequest = {
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
     disallowed_transaction_subtypes: Array<unknown>;
-    password_reset_url?: string | null;
-    password_set_url?: string | null;
-    email_verification_url?: string | null;
-    deactivate_verification_url?: string | null;
-    request_delete_verification_url?: string | null;
+    password_reset_url?: string | string | null;
+    password_set_url?: string | string | null;
+    email_verification_url?: string | string | null;
+    deactivate_verification_url?: string | string | null;
+    request_delete_verification_url?: string | string | null;
+    registration_url?: string | string | null;
 };
 
 export type AdminUpdateGroupTierFeeRequest = {
@@ -9910,6 +11715,54 @@ export type AdminUpdateOauthClientRequest = {
     archived?: boolean;
 };
 
+export type AdminUpdateRegistrationCodeRequest = {
+    label?: string | null;
+    /**
+     * How many registrations the code allows. Null is no limit.
+     */
+    max_uses?: number | null;
+    expires?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+};
+
+export type AdminUpdateRuleRequest = {
+    /**
+     * * `trigger` - Trigger
+     */
+    type?: 'trigger';
+    name: string;
+    label?: string | null;
+    description?: string | null;
+    tags?: Array<string> | null;
+    /**
+     * * `transaction.execute` - Transaction Execute
+     * * `transaction.initiate` - Transaction Initiate
+     * * `user.create` - User Create
+     * * `user.update` - User Update
+     * * `email.create` - Email Create
+     * * `mobile.create` - Mobile Create
+     * * `mobile.create.conflict` - Mobile Create Conflict
+     * * `device.create` - Device Create
+     * * `crypto_account.create` - Crypto Account Create
+     * * `crypto_account.update` - Crypto Account Update
+     * * `user.tag.create` - User Tag Create
+     * * `user.tag.delete` - User Tag Delete
+     * * `transaction.tag.create` - Transaction Tag Create
+     * * `transaction.tag.delete` - Transaction Tag Delete
+     */
+    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'user.update' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'crypto_account.create' | 'crypto_account.update' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
+    condition?: {
+        [key: string]: unknown;
+    } | null;
+    enabled?: boolean;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
 export type AdminUpdateServicePermission = {
     readonly id: number;
     /**
@@ -9926,8 +11779,10 @@ export type AdminUpdateServicePermission = {
      * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
+     * * `case` - Case
      * * `commonlist` - Common List
      * * `company` - Company
+     * * `contact` - Contact
      * * `cryptoaccount` - Crypto Account
      * * `device` - Device
      * * `document` - Document
@@ -9942,6 +11797,8 @@ export type AdminUpdateServicePermission = {
      * * `oauthclient` - Oauth Client
      * * `password` - Password
      * * `permission` - Permission
+     * * `policy` - Policy
+     * * `registrationcode` - Registration Code
      * * `request` - Request
      * * `rule` - Rule
      * * `service` - Service
@@ -9952,7 +11809,7 @@ export type AdminUpdateServicePermission = {
      * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'commonlist' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'case' | 'commonlist' | 'company' | 'contact' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'policy' | 'registrationcode' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -10013,6 +11870,259 @@ export type AdminUpdateUserDocumentRequest = {
     archived?: boolean;
     expires?: number | null;
     /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | null;
+    number?: string | null;
+    /**
      * JSON merge patch of frozen (end-user immutable) elements. Supports an `actions` object keyed by action name and a `fields` object keyed by field name. Each value must be an empty object to add a freeze or `null` to remove one; a `created` timestamp is stamped on new freezes automatically.
      */
     frozen?: {
@@ -10021,7 +12131,7 @@ export type AdminUpdateUserDocumentRequest = {
 };
 
 export type AdminUpdateUserInfoRequest = {
-    username: string | null;
+    username?: string | string | null;
     email?: string;
     mobile?: string;
     first_name?: string | null;
@@ -12972,10 +15082,39 @@ export type AdminUserBankBranchAddressRequest = {
     state_code?: string | null;
 };
 
+export type AdminUserContact = {
+    readonly id: number;
+    user: ReducedUserInfo;
+    /**
+     * * `email` - Email
+     * * `mobile` - Mobile
+     */
+    readonly type: 'email' | 'mobile';
+    readonly identifier: string;
+    name?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    readonly created: number;
+    readonly updated: number;
+};
+
+export type AdminUserContactRequest = {
+    name?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+export type AdminUserContactResponse = {
+    status: string;
+    data: AdminUserContact;
+};
+
 export type AdminUserDocument = {
     readonly id: number;
     user: ReducedUserInfo;
-    readonly file: string;
+    readonly file: string | null;
     readonly files: Array<DocumentFile>;
     type: ReducedDocumentType;
     /**
@@ -12994,6 +15133,259 @@ export type AdminUserDocument = {
     readonly note: string | null;
     readonly archived: boolean;
     readonly expires: number;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    readonly country: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW';
+    readonly number: string | null;
     readonly created: number;
     readonly updated: number;
     readonly frozen: {
@@ -13033,7 +15425,7 @@ export type AdminUserInfo = {
      * Unique identifier used to reference this user in the API.
      */
     readonly id: string;
-    username: string | null;
+    username?: string | string | null;
     readonly email: string | null;
     readonly mobile: string | null;
     first_name?: string | null;
@@ -14854,8 +17246,10 @@ export type AdminUserPermission = {
      * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
+     * * `case` - Case
      * * `commonlist` - Common List
      * * `company` - Company
+     * * `contact` - Contact
      * * `cryptoaccount` - Crypto Account
      * * `device` - Device
      * * `document` - Document
@@ -14870,6 +17264,8 @@ export type AdminUserPermission = {
      * * `oauthclient` - Oauth Client
      * * `password` - Password
      * * `permission` - Permission
+     * * `policy` - Policy
+     * * `registrationcode` - Registration Code
      * * `request` - Request
      * * `rule` - Rule
      * * `service` - Service
@@ -14880,7 +17276,7 @@ export type AdminUserPermission = {
      * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'commonlist' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'case' | 'commonlist' | 'company' | 'contact' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'policy' | 'registrationcode' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -14911,13 +17307,20 @@ export type AdminUserTagRequest = {
     metadata?: {
         [key: string]: unknown;
     } | null;
+    /**
+     * Whether the category and key hold a `single` value or `multiple` values on this user or transaction. Adding a value to a single key deletes its other value. Once single, a key stays single, whatever later requests send. Defaults to `multiple`.
+     *
+     * * `single` - Single
+     * * `multiple` - Multiple
+     */
+    cardinality?: 'single' | 'multiple';
 };
 
 export type AdminUserWalletAccount = {
     readonly id: number;
     user: ReducedUserInfo;
     username?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     name?: string | null;
     readonly code: string | null;
@@ -14976,7 +17379,7 @@ export type AdminUserWalletAccountAssetResponse = {
 
 export type AdminUserWalletAccountRequest = {
     username?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     name?: string | null;
     type?: string | null;
@@ -15035,8 +17438,10 @@ export type AdminWebhook = {
      * * `device.create` - Device Create
      * * `address.create` - Address Create
      * * `address.update` - Address Update
+     * * `address.delete` - Address Delete
      * * `document.create` - Document Create
      * * `document.update` - Document Update
+     * * `document.delete` - Document Delete
      * * `bank_account.create` - Bank Account Create
      * * `bank_account.update` - Bank Account Update
      * * `bank_account.delete` - Bank Account Delete
@@ -15058,8 +17463,9 @@ export type AdminWebhook = {
      * * `mfa.sms.verify.consume` - Mfa Sms Verify Consume
      * * `alert.create` - Alert Create
      * * `alert.update` - Alert Update
+     * * `registration_code.invite` - Registration Code Invite
      */
-    event: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'user.mobile.verify.consume' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'device.create' | 'address.create' | 'address.update' | 'document.create' | 'document.update' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'wallet_account.create' | 'wallet_account.update' | 'wallet_account.delete' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify' | 'mfa.sms.verify.consume' | 'alert.create' | 'alert.update';
+    event: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'user.mobile.verify.consume' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'device.create' | 'address.create' | 'address.update' | 'address.delete' | 'document.create' | 'document.update' | 'document.delete' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'wallet_account.create' | 'wallet_account.update' | 'wallet_account.delete' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify' | 'mfa.sms.verify.consume' | 'alert.create' | 'alert.update' | 'registration_code.invite';
     secret?: string;
     condition?: string | null;
     enabled?: boolean;
@@ -15093,8 +17499,10 @@ export type AdminWebhookRequest = {
      * * `device.create` - Device Create
      * * `address.create` - Address Create
      * * `address.update` - Address Update
+     * * `address.delete` - Address Delete
      * * `document.create` - Document Create
      * * `document.update` - Document Update
+     * * `document.delete` - Document Delete
      * * `bank_account.create` - Bank Account Create
      * * `bank_account.update` - Bank Account Update
      * * `bank_account.delete` - Bank Account Delete
@@ -15116,8 +17524,9 @@ export type AdminWebhookRequest = {
      * * `mfa.sms.verify.consume` - Mfa Sms Verify Consume
      * * `alert.create` - Alert Create
      * * `alert.update` - Alert Update
+     * * `registration_code.invite` - Registration Code Invite
      */
-    event: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'user.mobile.verify.consume' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'device.create' | 'address.create' | 'address.update' | 'document.create' | 'document.update' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'wallet_account.create' | 'wallet_account.update' | 'wallet_account.delete' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify' | 'mfa.sms.verify.consume' | 'alert.create' | 'alert.update';
+    event: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'user.mobile.verify.consume' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'device.create' | 'address.create' | 'address.update' | 'address.delete' | 'document.create' | 'document.update' | 'document.delete' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'wallet_account.create' | 'wallet_account.update' | 'wallet_account.delete' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify' | 'mfa.sms.verify.consume' | 'alert.create' | 'alert.update' | 'registration_code.invite';
     secret?: string;
     condition?: string | null;
     enabled?: boolean;
@@ -15171,6 +17580,7 @@ export type Authenticated = {
     user: ProtectedUserInfo;
     readonly challenges: Array<AuthenticatorChallenge>;
     readonly expires: number;
+    readonly refresh_expires: number | null;
     readonly created: number;
 };
 
@@ -15209,7 +17619,7 @@ export type BankOwner = {
     last_name?: string | null;
     full_name?: string | null;
     phone_number?: string | null;
-    email_address?: string | null;
+    email_address?: string | string | null;
     company_name?: string | null;
     ein_tin?: string | null;
     address?: BankOwnerAddress;
@@ -15745,12 +18155,16 @@ export type BankOwnerRequest = {
     last_name?: string | null;
     full_name?: string | null;
     phone_number?: string | null;
-    email_address?: string | null;
+    email_address?: string | string | null;
     company_name?: string | null;
     ein_tin?: string | null;
     address?: BankOwnerAddressRequest;
     address_text?: string | null;
     cpf_cpnj?: string | null;
+};
+
+export type CaseNoteFile = {
+    readonly file: string | null;
 };
 
 export type CompanyBankBranchAddress = {
@@ -16284,62 +18698,6 @@ export type CompanyDisallowedTransactionSubtypeRequest = {
     subtype: ReducedTransactionSubtypeRequest;
 };
 
-export type CompanySettings = {
-    allow_transactions?: boolean;
-    allow_debit_transactions?: boolean;
-    allow_credit_transactions?: boolean;
-    disallowed_transaction_subtypes: Array<CompanyDisallowedTransactionSubtype>;
-    require_transaction_subtypes?: boolean;
-    require_verification?: boolean;
-    allow_registrations?: boolean;
-    allow_overdrafts?: boolean;
-    allow_session_durations?: boolean;
-    require_registration?: boolean;
-    default_session_duration?: number;
-    default_transaction_lifespan?: number;
-    require_terms_and_conditions?: boolean;
-    require_privacy_policy?: boolean;
-    account_reference_length?: number;
-    password_reset_url?: string | null;
-    password_set_url?: string | null;
-    email_verification_url?: string | null;
-    deactivate_verification_url?: string | null;
-    request_delete_verification_url?: string | null;
-    terms_and_conditions_url?: string | null;
-    privacy_policy_url?: string | null;
-    nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-    residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-    supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
-};
-
-export type CompanySettingsRequest = {
-    allow_transactions?: boolean;
-    allow_debit_transactions?: boolean;
-    allow_credit_transactions?: boolean;
-    disallowed_transaction_subtypes: Array<CompanyDisallowedTransactionSubtypeRequest>;
-    require_transaction_subtypes?: boolean;
-    require_verification?: boolean;
-    allow_registrations?: boolean;
-    allow_overdrafts?: boolean;
-    allow_session_durations?: boolean;
-    require_registration?: boolean;
-    default_session_duration?: number;
-    default_transaction_lifespan?: number;
-    require_terms_and_conditions?: boolean;
-    require_privacy_policy?: boolean;
-    account_reference_length?: number;
-    password_reset_url?: string | null;
-    password_set_url?: string | null;
-    email_verification_url?: string | null;
-    deactivate_verification_url?: string | null;
-    request_delete_verification_url?: string | null;
-    terms_and_conditions_url?: string | null;
-    privacy_policy_url?: string | null;
-    nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-    residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-    supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
-};
-
 export type CreateGroupTierRequirementSetItemRequest = {
     name?: string | null;
     description?: string | null;
@@ -16363,8 +18721,10 @@ export type CreatePermissionRequest = {
      * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
+     * * `case` - Case
      * * `commonlist` - Common List
      * * `company` - Company
+     * * `contact` - Contact
      * * `cryptoaccount` - Crypto Account
      * * `device` - Device
      * * `document` - Document
@@ -16379,6 +18739,8 @@ export type CreatePermissionRequest = {
      * * `oauthclient` - Oauth Client
      * * `password` - Password
      * * `permission` - Permission
+     * * `policy` - Policy
+     * * `registrationcode` - Registration Code
      * * `request` - Request
      * * `rule` - Rule
      * * `service` - Service
@@ -16389,7 +18751,7 @@ export type CreatePermissionRequest = {
      * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'commonlist' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
+    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'case' | 'commonlist' | 'company' | 'contact' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'policy' | 'registrationcode' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -16435,7 +18797,7 @@ export type CryptoOwner = {
     last_name?: string | null;
     full_name?: string | null;
     phone_number?: string | null;
-    email_address?: string | null;
+    email_address?: string | string | null;
     company_name?: string | null;
     ein_tin?: string | null;
     /**
@@ -17490,7 +19852,7 @@ export type CryptoOwnerRequest = {
     last_name?: string | null;
     full_name?: string | null;
     phone_number?: string | null;
-    email_address?: string | null;
+    email_address?: string | string | null;
     company_name?: string | null;
     ein_tin?: string | null;
     /**
@@ -18026,7 +20388,7 @@ export type DeviceAppRequest = {
 };
 
 export type DocumentFile = {
-    readonly file: string;
+    readonly file: string | null;
     readonly label: string | null;
     readonly description: string | null;
 };
@@ -18037,29 +20399,159 @@ export type DocumentFileWriteRequest = {
     description?: string;
 };
 
-export type EffectiveFee = {
-    readonly id: number;
-    readonly resource: string;
-    readonly name: string | null;
-    readonly description: string | null;
-    /**
-     * Convert the fee value from Decimal to int based on asset divisibility
-     */
-    readonly value: number;
-    readonly percentage: number | null;
+export type EffectiveControl = {
     /**
      * * `credit` - Credit
      * * `debit` - Debit
      */
     readonly tx_type: 'credit' | 'debit';
     readonly subtype: string | null;
+    readonly enabled: boolean;
+    readonly disabled_by: Array<EffectiveControlBlocker>;
 };
 
-export type EffectiveFeeList = Array<EffectiveFee>;
+export type EffectiveControlBlocker = {
+    /**
+     * * `accesscontrolrule` - Access Control Rule
+     * * `account` - Account
+     * * `accountcurrency` - Account Currency
+     * * `accountcurrencylimit` - Account Currency Limit
+     * * `accountcurrencyfee` - Account Currency Fee
+     * * `accountdefinition` - Account Definition
+     * * `accountdefinitiongroup` - Account Definition Group
+     * * `accountdefinitiongroupcurrency` - Account Definition Group Currency
+     * * `alert` - Alert
+     * * `currency` - Currency
+     * * `auditlog` - Audit Log
+     * * `authenticator` - Authenticator
+     * * `authenticatorchallenge` - Authenticator Challenge
+     * * `authenticatorrule` - Authenticator Rule
+     * * `backgroundtask` - Background Task
+     * * `bankowneraddress` - Bank Owner Address
+     * * `bankbranchaddress` - Bank Branch Address
+     * * `case` - Case
+     * * `casenote` - Case Note
+     * * `casetype` - Case Type
+     * * `company` - Company
+     * * `companyaddress` - Company Address
+     * * `companybankaccount` - Company Bank Account
+     * * `companywalletaccount` - Company Wallet Account
+     * * `companyservice` - Company Service
+     * * `companynotification` - Company Notification
+     * * `cryptoowneraddress` - Crypto Owner Address
+     * * `device` - Device
+     * * `deviceapp` - Device App
+     * * `document` - Document
+     * * `documenttype` - Document Type
+     * * `export` - Export
+     * * `exportpage` - Export Page
+     * * `email` - Email
+     * * `group` - Group
+     * * `grouplimit` - Group Limit
+     * * `groupfee` - Group Fee
+     * * `grouppermission` - Group Permission
+     * * `grouptier` - Group Tier
+     * * `grouptierrequirement` - Group Tier Requirement
+     * * `grouptierlimit` - Group Tier Limit
+     * * `grouptierfee` - Group Tier Fee
+     * * `grouptierrequirementsetitem` - Group Tier Requirement Set Item
+     * * `grouptierrequirementset` - Group Tier Requirement Set
+     * * `legalterm` - Legal Term
+     * * `legaltermversion` - Legal Term Version
+     * * `commonlist` - Common List
+     * * `commonlistitem` - Common List Item
+     * * `metric` - Metric
+     * * `metric_schema` - Metric Schema
+     * * `metric_point` - Metric Point
+     * * `mfa` - Mfa
+     * * `mfasmsdevice` - Mfa Sms Device
+     * * `mfatotpdevice` - Mfa Totp Device
+     * * `mfastaticdevice` - Mfa Static Device
+     * * `mfatokenverification` - Mfa Token Verification
+     * * `mobile` - Mobile
+     * * `mobileconfirmation` - Mobile Confirmation
+     * * `notification` - Notification
+     * * `oauthclient` - Oauth Client
+     * * `oauthlink` - Oauth Link
+     * * `oauthsession` - Oauth Session
+     * * `oidckey` - Oidc Key
+     * * `permission` - Permission
+     * * `policy` - Policy
+     * * `recoverycode` - Recovery Code
+     * * `refresh_token` - Refresh Token
+     * * `registrationcode` - Registration Code
+     * * `request` - Request
+     * * `resourcerequirementrule` - Resource Requirement Rule
+     * * `rule` - Rule
+     * * `ruleeffect` - Rule Effect
+     * * `rulelog` - Rule Log
+     * * `service` - Service
+     * * `statement` - Statement
+     * * `token` - Token
+     * * `transaction` - Transaction
+     * * `transactionfee` - Transaction Fee
+     * * `transactionsubtype` - Transaction Subtype
+     * * `transactionmessage` - Transaction Message
+     * * `transactioncollection` - Transaction Collection
+     * * `transactiontag` - Transaction Tag
+     * * `user` - User
+     * * `useraddress` - User Address
+     * * `userbankaccount` - User Bank Account
+     * * `usercontact` - User Contact
+     * * `userwalletaccount` - User Wallet Account
+     * * `usercryptoaccount` - User Crypto Account
+     * * `usercryptoaccountattestation` - User Crypto Account Attestation
+     * * `userlegaltermversion` - User Legal Term Version
+     * * `usermessage` - User Message
+     * * `userpermission` - User Permission
+     * * `usertag` - User Tag
+     * * `walletowneraddress` - Wallet Owner Address
+     * * `webhook` - Webhook
+     * * `webhooktask` - Webhook Task
+     * * `webhookrequest` - Webhook Request
+     */
+    readonly resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'case' | 'casenote' | 'casetype' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'commonlist' | 'commonlistitem' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'recoverycode' | 'refresh_token' | 'registrationcode' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'transactiontag' | 'user' | 'useraddress' | 'userbankaccount' | 'usercontact' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest';
+    /**
+     * * `tx_type_disabled` - Tx Type Disabled
+     * * `subtype_disabled` - Subtype Disabled
+     * * `subtype_required` - Subtype Required
+     * * `verification_required` - Verification Required
+     * * `tier_required` - Tier Required
+     */
+    readonly reason: 'tx_type_disabled' | 'subtype_disabled' | 'subtype_required' | 'verification_required' | 'tier_required';
+};
 
-export type EffectiveFeeListResponse = {
+export type EffectiveLimit = {
+    readonly id: number;
+    readonly resource: string;
+    /**
+     * * `max` - Maximum
+     * * `day_max` - Maximum per day
+     * * `week_max` - Maximum per week
+     * * `month_max` - Maximum per month
+     * * `min` - Minimum
+     * * `overdraft` - Overdraft
+     */
+    readonly type: 'max' | 'day_max' | 'week_max' | 'month_max' | 'min' | 'overdraft';
+    /**
+     * * `credit` - Credit
+     * * `debit` - Debit
+     */
+    readonly tx_type: 'credit' | 'debit';
+    readonly subtype: string | null;
+    /**
+     * Convert the limit value from Decimal to int based on asset divisibility
+     */
+    readonly value: number;
+    readonly begin: number | null;
+    readonly end: number | null;
+};
+
+export type EffectiveLimitList = Array<EffectiveLimit>;
+
+export type EffectiveLimitListResponse = {
     status: string;
-    data: EffectiveFeeList;
+    data: EffectiveLimitList;
 };
 
 export type ExtendedAuthenticated = {
@@ -18076,6 +20568,7 @@ export type ExtendedAuthenticated = {
     user: ExtendedUserInfo;
     readonly challenges: Array<AuthenticatorChallenge>;
     readonly expires: number;
+    readonly refresh_expires: number | null;
     readonly created: number;
 };
 
@@ -18089,7 +20582,7 @@ export type ExtendedUserInfo = {
      * Unique identifier used to reference this user in the API.
      */
     readonly id: string;
-    username: string | null;
+    username?: string | string | null;
     readonly email: string | null;
     readonly mobile: string | null;
     first_name?: string | null;
@@ -19841,8 +22334,10 @@ export type GroupPermission = {
      * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
+     * * `case` - Case
      * * `commonlist` - Common List
      * * `company` - Company
+     * * `contact` - Contact
      * * `cryptoaccount` - Crypto Account
      * * `device` - Device
      * * `document` - Document
@@ -19857,6 +22352,8 @@ export type GroupPermission = {
      * * `oauthclient` - Oauth Client
      * * `password` - Password
      * * `permission` - Permission
+     * * `policy` - Policy
+     * * `registrationcode` - Registration Code
      * * `request` - Request
      * * `rule` - Rule
      * * `service` - Service
@@ -19867,7 +22364,7 @@ export type GroupPermission = {
      * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'commonlist' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'case' | 'commonlist' | 'company' | 'contact' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'policy' | 'registrationcode' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -20076,11 +22573,23 @@ export type NoneTypeResponse = {
     };
 };
 
-export type PaginatedAdminAccessControlRuleList = {
-    count?: number;
+export type PaginatedAccountAssetEffectiveControlList = {
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAccessControlRule>;
+    results: Array<AccountAssetEffectiveControl>;
+};
+
+export type PaginatedAccountAssetEffectiveControlListResponse = {
+    status: string;
+    data: PaginatedAccountAssetEffectiveControlList;
+};
+
+export type PaginatedAdminAccessControlRuleList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AdminAccessControlRule>;
 };
 
 export type PaginatedAdminAccessControlRuleListResponse = {
@@ -20089,10 +22598,10 @@ export type PaginatedAdminAccessControlRuleListResponse = {
 };
 
 export type PaginatedAdminAccountAccountAssetList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAccountAccountAsset>;
+    results: Array<AdminAccountAccountAsset>;
 };
 
 export type PaginatedAdminAccountAccountAssetListResponse = {
@@ -20101,10 +22610,10 @@ export type PaginatedAdminAccountAccountAssetListResponse = {
 };
 
 export type PaginatedAdminAccountAssetLimitList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAccountAssetLimit>;
+    results: Array<AdminAccountAssetLimit>;
 };
 
 export type PaginatedAdminAccountAssetLimitListResponse = {
@@ -20113,10 +22622,10 @@ export type PaginatedAdminAccountAssetLimitListResponse = {
 };
 
 export type PaginatedAdminAccountAssetList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAccountAsset>;
+    results: Array<AdminAccountAsset>;
 };
 
 export type PaginatedAdminAccountAssetListResponse = {
@@ -20125,10 +22634,10 @@ export type PaginatedAdminAccountAssetListResponse = {
 };
 
 export type PaginatedAdminAccountDefinitionGroupAssetList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAccountDefinitionGroupAsset>;
+    results: Array<AdminAccountDefinitionGroupAsset>;
 };
 
 export type PaginatedAdminAccountDefinitionGroupAssetListResponse = {
@@ -20137,10 +22646,10 @@ export type PaginatedAdminAccountDefinitionGroupAssetListResponse = {
 };
 
 export type PaginatedAdminAccountDefinitionGroupList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAccountDefinitionGroup>;
+    results: Array<AdminAccountDefinitionGroup>;
 };
 
 export type PaginatedAdminAccountDefinitionGroupListResponse = {
@@ -20149,10 +22658,10 @@ export type PaginatedAdminAccountDefinitionGroupListResponse = {
 };
 
 export type PaginatedAdminAccountDefinitionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAccountDefinition>;
+    results: Array<AdminAccountDefinition>;
 };
 
 export type PaginatedAdminAccountDefinitionListResponse = {
@@ -20161,10 +22670,10 @@ export type PaginatedAdminAccountDefinitionListResponse = {
 };
 
 export type PaginatedAdminAccountList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAccount>;
+    results: Array<AdminAccount>;
 };
 
 export type PaginatedAdminAccountListResponse = {
@@ -20173,10 +22682,10 @@ export type PaginatedAdminAccountListResponse = {
 };
 
 export type PaginatedAdminAlertList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAlert>;
+    results: Array<AdminAlert>;
 };
 
 export type PaginatedAdminAlertListResponse = {
@@ -20185,10 +22694,10 @@ export type PaginatedAdminAlertListResponse = {
 };
 
 export type PaginatedAdminAssetList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAsset>;
+    results: Array<AdminAsset>;
 };
 
 export type PaginatedAdminAssetListResponse = {
@@ -20197,10 +22706,10 @@ export type PaginatedAdminAssetListResponse = {
 };
 
 export type PaginatedAdminAuditLogList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAuditLog>;
+    results: Array<AdminAuditLog>;
 };
 
 export type PaginatedAdminAuditLogListResponse = {
@@ -20209,10 +22718,10 @@ export type PaginatedAdminAuditLogListResponse = {
 };
 
 export type PaginatedAdminAuthTokenList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAuthToken>;
+    results: Array<AdminAuthToken>;
 };
 
 export type PaginatedAdminAuthTokenListResponse = {
@@ -20221,10 +22730,10 @@ export type PaginatedAdminAuthTokenListResponse = {
 };
 
 export type PaginatedAdminAuthenticatorRuleList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAuthenticatorRule>;
+    results: Array<AdminAuthenticatorRule>;
 };
 
 export type PaginatedAdminAuthenticatorRuleListResponse = {
@@ -20232,11 +22741,47 @@ export type PaginatedAdminAuthenticatorRuleListResponse = {
     data: PaginatedAdminAuthenticatorRuleList;
 };
 
-export type PaginatedAdminCommonListItemList = {
-    count?: number;
+export type PaginatedAdminCaseList = {
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCommonListItem>;
+    results: Array<AdminCase>;
+};
+
+export type PaginatedAdminCaseListResponse = {
+    status: string;
+    data: PaginatedAdminCaseList;
+};
+
+export type PaginatedAdminCaseNoteList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AdminCaseNote>;
+};
+
+export type PaginatedAdminCaseNoteListResponse = {
+    status: string;
+    data: PaginatedAdminCaseNoteList;
+};
+
+export type PaginatedAdminCaseTypeList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AdminCaseType>;
+};
+
+export type PaginatedAdminCaseTypeListResponse = {
+    status: string;
+    data: PaginatedAdminCaseTypeList;
+};
+
+export type PaginatedAdminCommonListItemList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AdminCommonListItem>;
 };
 
 export type PaginatedAdminCommonListItemListResponse = {
@@ -20245,10 +22790,10 @@ export type PaginatedAdminCommonListItemListResponse = {
 };
 
 export type PaginatedAdminCommonListList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCommonList>;
+    results: Array<AdminCommonList>;
 };
 
 export type PaginatedAdminCommonListListResponse = {
@@ -20257,10 +22802,10 @@ export type PaginatedAdminCommonListListResponse = {
 };
 
 export type PaginatedAdminCompanyAddressList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCompanyAddress>;
+    results: Array<AdminCompanyAddress>;
 };
 
 export type PaginatedAdminCompanyAddressListResponse = {
@@ -20269,10 +22814,10 @@ export type PaginatedAdminCompanyAddressListResponse = {
 };
 
 export type PaginatedAdminCompanyBankAccountAssetList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCompanyBankAccountAsset>;
+    results: Array<AdminCompanyBankAccountAsset>;
 };
 
 export type PaginatedAdminCompanyBankAccountAssetListResponse = {
@@ -20281,10 +22826,10 @@ export type PaginatedAdminCompanyBankAccountAssetListResponse = {
 };
 
 export type PaginatedAdminCompanyBankAccountList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCompanyBankAccount>;
+    results: Array<AdminCompanyBankAccount>;
 };
 
 export type PaginatedAdminCompanyBankAccountListResponse = {
@@ -20293,10 +22838,10 @@ export type PaginatedAdminCompanyBankAccountListResponse = {
 };
 
 export type PaginatedAdminCompanyLinkList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCompanyLink>;
+    results: Array<AdminCompanyLink>;
 };
 
 export type PaginatedAdminCompanyLinkListResponse = {
@@ -20305,10 +22850,10 @@ export type PaginatedAdminCompanyLinkListResponse = {
 };
 
 export type PaginatedAdminCompanyWalletAccountAssetList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCompanyWalletAccountAsset>;
+    results: Array<AdminCompanyWalletAccountAsset>;
 };
 
 export type PaginatedAdminCompanyWalletAccountAssetListResponse = {
@@ -20317,10 +22862,10 @@ export type PaginatedAdminCompanyWalletAccountAssetListResponse = {
 };
 
 export type PaginatedAdminCompanyWalletAccountList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCompanyWalletAccount>;
+    results: Array<AdminCompanyWalletAccount>;
 };
 
 export type PaginatedAdminCompanyWalletAccountListResponse = {
@@ -20329,10 +22874,10 @@ export type PaginatedAdminCompanyWalletAccountListResponse = {
 };
 
 export type PaginatedAdminCryptoAccountList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCryptoAccount>;
+    results: Array<AdminCryptoAccount>;
 };
 
 export type PaginatedAdminCryptoAccountListResponse = {
@@ -20341,10 +22886,10 @@ export type PaginatedAdminCryptoAccountListResponse = {
 };
 
 export type PaginatedAdminDeviceAppList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminDeviceApp>;
+    results: Array<AdminDeviceApp>;
 };
 
 export type PaginatedAdminDeviceAppListResponse = {
@@ -20353,10 +22898,10 @@ export type PaginatedAdminDeviceAppListResponse = {
 };
 
 export type PaginatedAdminDeviceList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminDevice>;
+    results: Array<AdminDevice>;
 };
 
 export type PaginatedAdminDeviceListResponse = {
@@ -20365,10 +22910,10 @@ export type PaginatedAdminDeviceListResponse = {
 };
 
 export type PaginatedAdminDocumentTypeList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminDocumentType>;
+    results: Array<AdminDocumentType>;
 };
 
 export type PaginatedAdminDocumentTypeListResponse = {
@@ -20377,10 +22922,10 @@ export type PaginatedAdminDocumentTypeListResponse = {
 };
 
 export type PaginatedAdminEmailList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminEmail>;
+    results: Array<AdminEmail>;
 };
 
 export type PaginatedAdminEmailListResponse = {
@@ -20389,10 +22934,10 @@ export type PaginatedAdminEmailListResponse = {
 };
 
 export type PaginatedAdminExportList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminExport>;
+    results: Array<AdminExport>;
 };
 
 export type PaginatedAdminExportListResponse = {
@@ -20401,10 +22946,10 @@ export type PaginatedAdminExportListResponse = {
 };
 
 export type PaginatedAdminExportTemplateList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminExportTemplate>;
+    results: Array<AdminExportTemplate>;
 };
 
 export type PaginatedAdminExportTemplateListResponse = {
@@ -20413,10 +22958,10 @@ export type PaginatedAdminExportTemplateListResponse = {
 };
 
 export type PaginatedAdminGroupList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminGroup>;
+    results: Array<AdminGroup>;
 };
 
 export type PaginatedAdminGroupListResponse = {
@@ -20425,10 +22970,10 @@ export type PaginatedAdminGroupListResponse = {
 };
 
 export type PaginatedAdminLegalTermList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminLegalTerm>;
+    results: Array<AdminLegalTerm>;
 };
 
 export type PaginatedAdminLegalTermListResponse = {
@@ -20437,10 +22982,10 @@ export type PaginatedAdminLegalTermListResponse = {
 };
 
 export type PaginatedAdminLegalTermVersionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminLegalTermVersion>;
+    results: Array<AdminLegalTermVersion>;
 };
 
 export type PaginatedAdminLegalTermVersionListResponse = {
@@ -20449,10 +22994,10 @@ export type PaginatedAdminLegalTermVersionListResponse = {
 };
 
 export type PaginatedAdminMfaAuthenticatorList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminMfaAuthenticator>;
+    results: Array<AdminMfaAuthenticator>;
 };
 
 export type PaginatedAdminMfaAuthenticatorListResponse = {
@@ -20461,10 +23006,10 @@ export type PaginatedAdminMfaAuthenticatorListResponse = {
 };
 
 export type PaginatedAdminMetricList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminMetric>;
+    results: Array<AdminMetric>;
 };
 
 export type PaginatedAdminMetricListResponse = {
@@ -20473,10 +23018,10 @@ export type PaginatedAdminMetricListResponse = {
 };
 
 export type PaginatedAdminMetricPointList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminMetricPoint>;
+    results: Array<AdminMetricPoint>;
 };
 
 export type PaginatedAdminMetricPointListResponse = {
@@ -20485,10 +23030,10 @@ export type PaginatedAdminMetricPointListResponse = {
 };
 
 export type PaginatedAdminMobileList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminMobile>;
+    results: Array<AdminMobile>;
 };
 
 export type PaginatedAdminMobileListResponse = {
@@ -20497,10 +23042,10 @@ export type PaginatedAdminMobileListResponse = {
 };
 
 export type PaginatedAdminOauthClientList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminOauthClient>;
+    results: Array<AdminOauthClient>;
 };
 
 export type PaginatedAdminOauthClientListResponse = {
@@ -20508,11 +23053,35 @@ export type PaginatedAdminOauthClientListResponse = {
     data: PaginatedAdminOauthClientList;
 };
 
-export type PaginatedAdminRequestList = {
-    count?: number;
+export type PaginatedAdminPolicyList = {
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminRequest>;
+    results: Array<AdminPolicy>;
+};
+
+export type PaginatedAdminPolicyListResponse = {
+    status: string;
+    data: PaginatedAdminPolicyList;
+};
+
+export type PaginatedAdminRegistrationCodeList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AdminRegistrationCode>;
+};
+
+export type PaginatedAdminRegistrationCodeListResponse = {
+    status: string;
+    data: PaginatedAdminRegistrationCodeList;
+};
+
+export type PaginatedAdminRequestList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AdminRequest>;
 };
 
 export type PaginatedAdminRequestListResponse = {
@@ -20521,10 +23090,10 @@ export type PaginatedAdminRequestListResponse = {
 };
 
 export type PaginatedAdminRuleEffectList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminRuleEffect>;
+    results: Array<AdminRuleEffect>;
 };
 
 export type PaginatedAdminRuleEffectListResponse = {
@@ -20533,10 +23102,10 @@ export type PaginatedAdminRuleEffectListResponse = {
 };
 
 export type PaginatedAdminRuleList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminRule>;
+    results: Array<AdminRule>;
 };
 
 export type PaginatedAdminRuleListResponse = {
@@ -20545,10 +23114,10 @@ export type PaginatedAdminRuleListResponse = {
 };
 
 export type PaginatedAdminRuleLogList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminRuleLog>;
+    results: Array<AdminRuleLog>;
 };
 
 export type PaginatedAdminRuleLogListResponse = {
@@ -20557,10 +23126,10 @@ export type PaginatedAdminRuleLogListResponse = {
 };
 
 export type PaginatedAdminServiceList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminService>;
+    results: Array<AdminService>;
 };
 
 export type PaginatedAdminServiceListResponse = {
@@ -20569,10 +23138,10 @@ export type PaginatedAdminServiceListResponse = {
 };
 
 export type PaginatedAdminStatementList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminStatement>;
+    results: Array<AdminStatement>;
 };
 
 export type PaginatedAdminStatementListResponse = {
@@ -20581,10 +23150,10 @@ export type PaginatedAdminStatementListResponse = {
 };
 
 export type PaginatedAdminTransactionCollectionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminTransactionCollection>;
+    results: Array<AdminTransactionCollection>;
 };
 
 export type PaginatedAdminTransactionCollectionListResponse = {
@@ -20593,10 +23162,10 @@ export type PaginatedAdminTransactionCollectionListResponse = {
 };
 
 export type PaginatedAdminTransactionCollectionTransactionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminTransactionCollectionTransaction>;
+    results: Array<AdminTransactionCollectionTransaction>;
 };
 
 export type PaginatedAdminTransactionCollectionTransactionListResponse = {
@@ -20605,10 +23174,10 @@ export type PaginatedAdminTransactionCollectionTransactionListResponse = {
 };
 
 export type PaginatedAdminTransactionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminTransaction>;
+    results: Array<AdminTransaction>;
 };
 
 export type PaginatedAdminTransactionListResponse = {
@@ -20617,10 +23186,10 @@ export type PaginatedAdminTransactionListResponse = {
 };
 
 export type PaginatedAdminTransactionMessageList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminTransactionMessage>;
+    results: Array<AdminTransactionMessage>;
 };
 
 export type PaginatedAdminTransactionMessageListResponse = {
@@ -20629,10 +23198,10 @@ export type PaginatedAdminTransactionMessageListResponse = {
 };
 
 export type PaginatedAdminTransactionTransitionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminTransactionTransition>;
+    results: Array<AdminTransactionTransition>;
 };
 
 export type PaginatedAdminTransactionTransitionListResponse = {
@@ -20641,10 +23210,10 @@ export type PaginatedAdminTransactionTransitionListResponse = {
 };
 
 export type PaginatedAdminUserAddressList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUserAddress>;
+    results: Array<AdminUserAddress>;
 };
 
 export type PaginatedAdminUserAddressListResponse = {
@@ -20653,10 +23222,10 @@ export type PaginatedAdminUserAddressListResponse = {
 };
 
 export type PaginatedAdminUserBankAccountList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUserBankAccount>;
+    results: Array<AdminUserBankAccount>;
 };
 
 export type PaginatedAdminUserBankAccountListResponse = {
@@ -20664,11 +23233,23 @@ export type PaginatedAdminUserBankAccountListResponse = {
     data: PaginatedAdminUserBankAccountList;
 };
 
-export type PaginatedAdminUserDocumentList = {
-    count?: number;
+export type PaginatedAdminUserContactList = {
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUserDocument>;
+    results: Array<AdminUserContact>;
+};
+
+export type PaginatedAdminUserContactListResponse = {
+    status: string;
+    data: PaginatedAdminUserContactList;
+};
+
+export type PaginatedAdminUserDocumentList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AdminUserDocument>;
 };
 
 export type PaginatedAdminUserDocumentListResponse = {
@@ -20677,10 +23258,10 @@ export type PaginatedAdminUserDocumentListResponse = {
 };
 
 export type PaginatedAdminUserGroupList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUserGroup>;
+    results: Array<AdminUserGroup>;
 };
 
 export type PaginatedAdminUserGroupListResponse = {
@@ -20689,10 +23270,10 @@ export type PaginatedAdminUserGroupListResponse = {
 };
 
 export type PaginatedAdminUserInfoList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUserInfo>;
+    results: Array<AdminUserInfo>;
 };
 
 export type PaginatedAdminUserInfoListResponse = {
@@ -20701,10 +23282,10 @@ export type PaginatedAdminUserInfoListResponse = {
 };
 
 export type PaginatedAdminUserLegalTermList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUserLegalTerm>;
+    results: Array<AdminUserLegalTerm>;
 };
 
 export type PaginatedAdminUserLegalTermListResponse = {
@@ -20713,10 +23294,10 @@ export type PaginatedAdminUserLegalTermListResponse = {
 };
 
 export type PaginatedAdminUserLegalTermVersionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUserLegalTermVersion>;
+    results: Array<AdminUserLegalTermVersion>;
 };
 
 export type PaginatedAdminUserLegalTermVersionListResponse = {
@@ -20725,10 +23306,10 @@ export type PaginatedAdminUserLegalTermVersionListResponse = {
 };
 
 export type PaginatedAdminUserMessageList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUserMessage>;
+    results: Array<AdminUserMessage>;
 };
 
 export type PaginatedAdminUserMessageListResponse = {
@@ -20737,10 +23318,10 @@ export type PaginatedAdminUserMessageListResponse = {
 };
 
 export type PaginatedAdminUserWalletAccountList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUserWalletAccount>;
+    results: Array<AdminUserWalletAccount>;
 };
 
 export type PaginatedAdminUserWalletAccountListResponse = {
@@ -20749,10 +23330,10 @@ export type PaginatedAdminUserWalletAccountListResponse = {
 };
 
 export type PaginatedAdminWebhookList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminWebhook>;
+    results: Array<AdminWebhook>;
 };
 
 export type PaginatedAdminWebhookListResponse = {
@@ -20761,10 +23342,10 @@ export type PaginatedAdminWebhookListResponse = {
 };
 
 export type PaginatedAdminWebhookRequestLogList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminWebhookRequestLog>;
+    results: Array<AdminWebhookRequestLog>;
 };
 
 export type PaginatedAdminWebhookRequestLogListResponse = {
@@ -20773,10 +23354,10 @@ export type PaginatedAdminWebhookRequestLogListResponse = {
 };
 
 export type PaginatedAdminWebhookTaskList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminWebhookTask>;
+    results: Array<AdminWebhookTask>;
 };
 
 export type PaginatedAdminWebhookTaskListResponse = {
@@ -20785,10 +23366,10 @@ export type PaginatedAdminWebhookTaskListResponse = {
 };
 
 export type PaginatedGroupPermissionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupPermission>;
+    results: Array<GroupPermission>;
 };
 
 export type PaginatedGroupPermissionListResponse = {
@@ -20797,10 +23378,10 @@ export type PaginatedGroupPermissionListResponse = {
 };
 
 export type PaginatedGroupTierRequirementSetItemList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupTierRequirementSetItem>;
+    results: Array<GroupTierRequirementSetItem>;
 };
 
 export type PaginatedGroupTierRequirementSetItemListResponse = {
@@ -20809,10 +23390,10 @@ export type PaginatedGroupTierRequirementSetItemListResponse = {
 };
 
 export type PaginatedGroupTierRequirementSetList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupTierRequirementSet>;
+    results: Array<GroupTierRequirementSet>;
 };
 
 export type PaginatedGroupTierRequirementSetListResponse = {
@@ -20821,10 +23402,10 @@ export type PaginatedGroupTierRequirementSetListResponse = {
 };
 
 export type PaginatedPermissionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Permission>;
+    results: Array<Permission>;
 };
 
 export type PaginatedPermissionListResponse = {
@@ -20833,10 +23414,10 @@ export type PaginatedPermissionListResponse = {
 };
 
 export type PaginatedTransactionTagList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<TransactionTag>;
+    results: Array<TransactionTag>;
 };
 
 export type PaginatedTransactionTagListResponse = {
@@ -20845,10 +23426,10 @@ export type PaginatedTransactionTagListResponse = {
 };
 
 export type PaginatedUserPermissionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserPermission>;
+    results: Array<UserPermission>;
 };
 
 export type PaginatedUserPermissionListResponse = {
@@ -20857,10 +23438,10 @@ export type PaginatedUserPermissionListResponse = {
 };
 
 export type PaginatedUserTagList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserTag>;
+    results: Array<UserTag>;
 };
 
 export type PaginatedUserTagListResponse = {
@@ -20894,6 +23475,10 @@ export type PatchedAdminAccountAccountAssetSettingsUpdateRequest = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
+};
+
+export type PatchedAdminCaseNoteRequest = {
+    content?: string;
 };
 
 export type PatchedAdminCommonListItemRequest = {
@@ -21268,8 +23853,9 @@ export type PatchedAdminCompanyLegalEntityRequest = {
      */
     expected_monthly_transactions?: 'under_100' | 'from_100_to_1k' | 'from_1k_to_10k' | 'from_10k_to_100k' | 'over_100k' | 'not_sure' | null;
     compliance_officer_name?: string | null;
-    compliance_officer_email?: string | null;
+    compliance_officer_email?: string | string | null;
     compliance_officer_phone?: string | null;
+    compliance_officer_availability?: string | null;
     owners?: {
         [key: string]: unknown;
     } | null;
@@ -21299,12 +23885,12 @@ export type PatchedAdminCompanyRequest = {
     name?: string | null;
     legal_name?: string | null;
     description?: string | null;
-    website?: string | null;
-    support_website?: string | null;
-    documentation_website?: string | null;
-    support_email?: string | null;
+    website?: string | string | null;
+    support_website?: string | string | null;
+    documentation_website?: string | string | null;
+    support_email?: string | string | null;
     support_phone?: string | null;
-    contact_email?: string | null;
+    contact_email?: string | string | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -21575,7 +24161,7 @@ export type PatchedAdminCompanyRequest = {
 
 export type PatchedAdminCompanyWalletAccountRequest = {
     username?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     name?: string | null;
     type?: string | null;
@@ -21603,7 +24189,14 @@ export type PatchedAdminCreateAccessControlRuleRequest = {
      * * `ip` - Ip
      */
     type?: 'ip';
-    value?: string;
+    /**
+     * An exact IP, or `*` to match every IP.
+     */
+    value?: string | null;
+    /**
+     * ISO 3166-1 alpha-2 codes of the countries to match.
+     */
+    countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'> | null;
     label?: string | null;
 };
 
@@ -21632,10 +24225,13 @@ export type PatchedAdminCreateRuleEffectRequest = {
      * * `create_transaction_message` - Create Transaction Message
      * * `create_user_alert` - Create User Alert
      * * `create_transaction_alert` - Create Transaction Alert
+     * * `create_user_case` - Create User Case
+     * * `create_transaction_case` - Create Transaction Case
      * * `create_user_tag` - Create User Tag
      * * `create_transaction_tag` - Create Transaction Tag
+     * * `generate_risk_score_tag` - Generate Risk Score Tag
      */
-    type?: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert' | 'create_user_tag' | 'create_transaction_tag';
+    type?: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert' | 'create_user_case' | 'create_transaction_case' | 'create_user_tag' | 'create_transaction_tag' | 'generate_risk_score_tag';
     label?: string | null;
     params?: {
         [key: string]: unknown;
@@ -21749,12 +24345,9 @@ export type PatchedAdminExtendedAlertRequest = {
     priority?: 'info' | 'low' | 'medium' | 'high' | 'critical';
     /**
      * * `open` - Open
-     * * `assigned` - Assigned
-     * * `paused` - Paused
      * * `closed` - Closed
-     * * `reopened` - Reopened
      */
-    status?: 'open' | 'assigned' | 'paused' | 'closed' | 'reopened';
+    status?: 'open' | 'closed';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -21780,7 +24373,7 @@ export type PatchedAdminGroupPermissionRequest = {
 export type PatchedAdminLegalTermVersionRequest = {
     note?: string | null;
     content?: string | null;
-    url?: string | null;
+    url?: string | string | null;
     urls?: Array<LegalTermVersionUrlRequest> | null;
     archived?: boolean;
 };
@@ -21791,37 +24384,16 @@ export type PatchedAdminMobileRequest = {
     archived?: boolean;
 };
 
-export type PatchedAdminRuleRequest = {
-    /**
-     * * `trigger` - Trigger
-     */
-    type?: 'trigger';
-    name?: string;
-    label?: string | null;
+export type PatchedAdminPolicyRequest = {
+    title?: string;
     description?: string | null;
-    tags?: Array<string> | null;
     /**
-     * * `transaction.execute` - Transaction Execute
-     * * `transaction.initiate` - Transaction Initiate
-     * * `user.create` - User Create
-     * * `user.update` - User Update
-     * * `email.create` - Email Create
-     * * `mobile.create` - Mobile Create
-     * * `mobile.create.conflict` - Mobile Create Conflict
-     * * `device.create` - Device Create
-     * * `user.tag.create` - User Tag Create
-     * * `user.tag.delete` - User Tag Delete
-     * * `transaction.tag.create` - Transaction Tag Create
-     * * `transaction.tag.delete` - Transaction Tag Delete
+     * The policy document, formatted as Markdown.
      */
-    event?: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'user.update' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
-    condition?: {
-        [key: string]: unknown;
-    } | null;
-    enabled?: boolean;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    content?: string;
+    legal_content?: string | null;
+    legal_url?: string | string | null;
+    archived?: boolean;
 };
 
 export type PatchedAdminUpdateAccountDefinitionGroupAssetRequest = {
@@ -21864,6 +24436,32 @@ export type PatchedAdminUpdateAuthenticatorRuleRequest = {
     session_age?: number | null;
 };
 
+export type PatchedAdminUpdateCaseCheckRequest = {
+    [key: string]: unknown;
+};
+
+export type PatchedAdminUpdateCaseRequest = {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * * `open` - Open
+     * * `paused` - Paused
+     * * `closed` - Closed
+     */
+    status?: 'open' | 'paused' | 'closed';
+    /**
+     * * `low` - Low
+     * * `medium` - Medium
+     * * `high` - High
+     * * `critical` - Critical
+     */
+    priority?: 'low' | 'medium' | 'high' | 'critical' | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+};
+
 export type PatchedAdminUpdateCompanyLinkRequest = {
     /**
      * * `complete` - Complete
@@ -21879,24 +24477,32 @@ export type PatchedAdminUpdateCompanySettingsRequest = {
     require_transaction_subtypes?: boolean;
     require_verification?: boolean;
     allow_registrations?: boolean;
+    require_registration_code?: boolean;
     allow_overdrafts?: boolean;
     allow_session_durations?: boolean;
     require_registration?: boolean;
     default_session_duration?: number;
+    /**
+     * Default lifespan of refresh tokens in seconds. Only applies to sessions created after it is changed.
+     */
+    default_refresh_token_duration?: number;
     default_transaction_lifespan?: number;
     require_terms_and_conditions?: boolean;
     require_privacy_policy?: boolean;
     account_reference_length?: number;
-    password_reset_url?: string | null;
-    password_set_url?: string | null;
-    email_verification_url?: string | null;
-    deactivate_verification_url?: string | null;
-    request_delete_verification_url?: string | null;
-    terms_and_conditions_url?: string | null;
-    privacy_policy_url?: string | null;
+    password_reset_url?: string | string | null;
+    password_set_url?: string | string | null;
+    email_verification_url?: string | string | null;
+    deactivate_verification_url?: string | string | null;
+    request_delete_verification_url?: string | string | null;
+    registration_url?: string | string | null;
+    terms_and_conditions_url?: string | string | null;
+    privacy_policy_url?: string | string | null;
     nationalities?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     residencies?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
+    disallowed_mobile_countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    disallow_disposable_email_domains?: boolean;
 };
 
 export type PatchedAdminUpdateExtendedAccountRequest = {
@@ -21966,11 +24572,12 @@ export type PatchedAdminUpdateGroupSettingsRequest = {
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
     disallowed_transaction_subtypes?: Array<unknown>;
-    password_reset_url?: string | null;
-    password_set_url?: string | null;
-    email_verification_url?: string | null;
-    deactivate_verification_url?: string | null;
-    request_delete_verification_url?: string | null;
+    password_reset_url?: string | string | null;
+    password_set_url?: string | string | null;
+    email_verification_url?: string | string | null;
+    deactivate_verification_url?: string | string | null;
+    request_delete_verification_url?: string | string | null;
+    registration_url?: string | string | null;
 };
 
 export type PatchedAdminUpdateGroupTierFeeRequest = {
@@ -22005,6 +24612,54 @@ export type PatchedAdminUpdateOauthClientRequest = {
         [key: string]: unknown;
     } | null;
     archived?: boolean;
+};
+
+export type PatchedAdminUpdateRegistrationCodeRequest = {
+    label?: string | null;
+    /**
+     * How many registrations the code allows. Null is no limit.
+     */
+    max_uses?: number | null;
+    expires?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+};
+
+export type PatchedAdminUpdateRuleRequest = {
+    /**
+     * * `trigger` - Trigger
+     */
+    type?: 'trigger';
+    name?: string;
+    label?: string | null;
+    description?: string | null;
+    tags?: Array<string> | null;
+    /**
+     * * `transaction.execute` - Transaction Execute
+     * * `transaction.initiate` - Transaction Initiate
+     * * `user.create` - User Create
+     * * `user.update` - User Update
+     * * `email.create` - Email Create
+     * * `mobile.create` - Mobile Create
+     * * `mobile.create.conflict` - Mobile Create Conflict
+     * * `device.create` - Device Create
+     * * `crypto_account.create` - Crypto Account Create
+     * * `crypto_account.update` - Crypto Account Update
+     * * `user.tag.create` - User Tag Create
+     * * `user.tag.delete` - User Tag Delete
+     * * `transaction.tag.create` - Transaction Tag Create
+     * * `transaction.tag.delete` - Transaction Tag Delete
+     */
+    event?: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'user.update' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'crypto_account.create' | 'crypto_account.update' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
+    condition?: {
+        [key: string]: unknown;
+    } | null;
+    enabled?: boolean;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
 };
 
 export type PatchedAdminUpdateServiceRequest = {
@@ -22053,6 +24708,259 @@ export type PatchedAdminUpdateUserDocumentRequest = {
     archived?: boolean;
     expires?: number | null;
     /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | null;
+    number?: string | null;
+    /**
      * JSON merge patch of frozen (end-user immutable) elements. Supports an `actions` object keyed by action name and a `fields` object keyed by field name. Each value must be an empty object to add a freeze or `null` to remove one; a `created` timestamp is stamped on new freezes automatically.
      */
     frozen?: {
@@ -22061,7 +24969,7 @@ export type PatchedAdminUpdateUserDocumentRequest = {
 };
 
 export type PatchedAdminUpdateUserInfoRequest = {
-    username?: string | null;
+    username?: string | string | null;
     email?: string;
     mobile?: string;
     first_name?: string | null;
@@ -24110,6 +27018,13 @@ export type PatchedAdminUserBankAccountRequest = {
     action?: 'withdraw' | 'deposit' | 'origin' | null;
 };
 
+export type PatchedAdminUserContactRequest = {
+    name?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
 export type PatchedAdminUserPermissionRequest = {
     properties?: {
         [key: string]: unknown;
@@ -24118,7 +27033,7 @@ export type PatchedAdminUserPermissionRequest = {
 
 export type PatchedAdminUserWalletAccountRequest = {
     username?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     name?: string | null;
     type?: string | null;
@@ -24171,8 +27086,10 @@ export type PatchedAdminWebhookRequest = {
      * * `device.create` - Device Create
      * * `address.create` - Address Create
      * * `address.update` - Address Update
+     * * `address.delete` - Address Delete
      * * `document.create` - Document Create
      * * `document.update` - Document Update
+     * * `document.delete` - Document Delete
      * * `bank_account.create` - Bank Account Create
      * * `bank_account.update` - Bank Account Update
      * * `bank_account.delete` - Bank Account Delete
@@ -24194,8 +27111,9 @@ export type PatchedAdminWebhookRequest = {
      * * `mfa.sms.verify.consume` - Mfa Sms Verify Consume
      * * `alert.create` - Alert Create
      * * `alert.update` - Alert Update
+     * * `registration_code.invite` - Registration Code Invite
      */
-    event?: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'user.mobile.verify.consume' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'device.create' | 'address.create' | 'address.update' | 'document.create' | 'document.update' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'wallet_account.create' | 'wallet_account.update' | 'wallet_account.delete' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify' | 'mfa.sms.verify.consume' | 'alert.create' | 'alert.update';
+    event?: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'user.mobile.verify.consume' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'device.create' | 'address.create' | 'address.update' | 'address.delete' | 'document.create' | 'document.update' | 'document.delete' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'wallet_account.create' | 'wallet_account.update' | 'wallet_account.delete' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify' | 'mfa.sms.verify.consume' | 'alert.create' | 'alert.update' | 'registration_code.invite';
     secret?: string;
     condition?: string | null;
     enabled?: boolean;
@@ -24236,8 +27154,10 @@ export type Permission = {
      * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
+     * * `case` - Case
      * * `commonlist` - Common List
      * * `company` - Company
+     * * `contact` - Contact
      * * `cryptoaccount` - Crypto Account
      * * `device` - Device
      * * `document` - Document
@@ -24252,6 +27172,8 @@ export type Permission = {
      * * `oauthclient` - Oauth Client
      * * `password` - Password
      * * `permission` - Permission
+     * * `policy` - Policy
+     * * `registrationcode` - Registration Code
      * * `request` - Request
      * * `rule` - Rule
      * * `service` - Service
@@ -24262,7 +27184,7 @@ export type Permission = {
      * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'commonlist' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'case' | 'commonlist' | 'company' | 'contact' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'policy' | 'registrationcode' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -24524,6 +27446,17 @@ export type TagWriteRequest = {
     metadata?: {
         [key: string]: unknown;
     } | null;
+    /**
+     * Whether the category and key hold a `single` value or `multiple` values on this user or transaction. Adding a value to a single key deletes its other value. Once single, a key stays single, whatever later requests send. Defaults to `multiple`.
+     *
+     * * `single` - Single
+     * * `multiple` - Multiple
+     */
+    cardinality?: 'single' | 'multiple';
+    /**
+     * Deprecated: set `cardinality` to `single` instead.
+     */
+    replace?: boolean;
 };
 
 export type TotalTransaction = {
@@ -24591,6 +27524,13 @@ export type TransactionTag = {
     metadata?: {
         [key: string]: unknown;
     } | null;
+    /**
+     * Whether the category and key hold a `single` value or `multiple` values on this user or transaction. Adding a value to a single key deletes its other value. Once single, a key stays single, whatever later requests send. Defaults to `multiple`.
+     *
+     * * `single` - Single
+     * * `multiple` - Multiple
+     */
+    cardinality?: 'single' | 'multiple';
     readonly created: number;
     readonly updated: number;
 };
@@ -24602,6 +27542,13 @@ export type TransactionTagRequest = {
     metadata?: {
         [key: string]: unknown;
     } | null;
+    /**
+     * Whether the category and key hold a `single` value or `multiple` values on this user or transaction. Adding a value to a single key deletes its other value. Once single, a key stays single, whatever later requests send. Defaults to `multiple`.
+     *
+     * * `single` - Single
+     * * `multiple` - Multiple
+     */
+    cardinality?: 'single' | 'multiple';
 };
 
 export type TransactionTagResponse = {
@@ -24656,8 +27603,10 @@ export type UserPermission = {
      * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
+     * * `case` - Case
      * * `commonlist` - Common List
      * * `company` - Company
+     * * `contact` - Contact
      * * `cryptoaccount` - Crypto Account
      * * `device` - Device
      * * `document` - Document
@@ -24672,6 +27621,8 @@ export type UserPermission = {
      * * `oauthclient` - Oauth Client
      * * `password` - Password
      * * `permission` - Permission
+     * * `policy` - Policy
+     * * `registrationcode` - Registration Code
      * * `request` - Request
      * * `rule` - Rule
      * * `service` - Service
@@ -24682,7 +27633,7 @@ export type UserPermission = {
      * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'commonlist' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
+    readonly type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'case' | 'commonlist' | 'company' | 'contact' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'policy' | 'registrationcode' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -24722,6 +27673,13 @@ export type UserTag = {
     metadata?: {
         [key: string]: unknown;
     } | null;
+    /**
+     * Whether the category and key hold a `single` value or `multiple` values on this user or transaction. Adding a value to a single key deletes its other value. Once single, a key stays single, whatever later requests send. Defaults to `multiple`.
+     *
+     * * `single` - Single
+     * * `multiple` - Multiple
+     */
+    cardinality?: 'single' | 'multiple';
     readonly created: number;
     readonly updated: number;
 };
@@ -24733,6 +27691,13 @@ export type UserTagRequest = {
     metadata?: {
         [key: string]: unknown;
     } | null;
+    /**
+     * Whether the category and key hold a `single` value or `multiple` values on this user or transaction. Adding a value to a single key deletes its other value. Once single, a key stays single, whatever later requests send. Defaults to `multiple`.
+     *
+     * * `single` - Single
+     * * `multiple` - Multiple
+     */
+    cardinality?: 'single' | 'multiple';
 };
 
 export type UserTagResponse = {
@@ -24759,7 +27724,7 @@ export type WalletOwner = {
     last_name?: string | null;
     full_name?: string | null;
     phone_number?: string | null;
-    email_address?: string | null;
+    email_address?: string | string | null;
     company_name?: string | null;
     ein_tin?: string | null;
     address?: WalletOwnerAddress;
@@ -25295,7 +28260,7 @@ export type WalletOwnerRequest = {
     last_name?: string | null;
     full_name?: string | null;
     phone_number?: string | null;
-    email_address?: string | null;
+    email_address?: string | string | null;
     company_name?: string | null;
     ein_tin?: string | null;
     address?: WalletOwnerAddressRequest;
@@ -25308,6 +28273,10 @@ export type AccountAssetWritable = {
      * Whether this is the account's currently active currency.
      */
     active: boolean;
+};
+
+export type AccountAssetEffectiveControlWritable = {
+    [key: string]: unknown;
 };
 
 export type AccountAssetLimitWritable = {
@@ -25354,7 +28323,8 @@ export type AdminAccessControlRuleWritable = {
      * * `ip` - Ip
      */
     type: 'ip';
-    value: string;
+    value?: string | null;
+    countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'> | null;
     label?: string | null;
     user?: ReducedUserInfoWritable;
     group?: AdminReducedGroup;
@@ -25529,12 +28499,9 @@ export type AdminAlertWritable = {
     priority?: 'info' | 'low' | 'medium' | 'high' | 'critical';
     /**
      * * `open` - Open
-     * * `assigned` - Assigned
-     * * `paused` - Paused
      * * `closed` - Closed
-     * * `reopened` - Reopened
      */
-    status: 'open' | 'assigned' | 'paused' | 'closed' | 'reopened';
+    status: 'open' | 'closed';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -25542,6 +28509,11 @@ export type AdminAlertWritable = {
     actions?: Array<{
         [key: string]: unknown;
     }>;
+};
+
+export type AdminAlertResponseWritable = {
+    status: string;
+    data: AdminAlertWritable;
 };
 
 export type AdminAppendTransactionCollectionMultiTransactionRequestWritable = {
@@ -25626,6 +28598,46 @@ export type AdminAuthenticatorRuleResponseWritable = {
     data: AdminAuthenticatorRuleWritable;
 };
 
+export type AdminCaseWritable = {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * * `open` - Open
+     * * `paused` - Paused
+     * * `closed` - Closed
+     */
+    status?: 'open' | 'paused' | 'closed';
+    /**
+     * * `low` - Low
+     * * `medium` - Medium
+     * * `high` - High
+     * * `critical` - Critical
+     */
+    priority?: 'low' | 'medium' | 'high' | 'critical' | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+};
+
+export type AdminCaseNoteWritable = {
+    content: string;
+};
+
+export type AdminCaseNoteResponseWritable = {
+    status: string;
+    data: AdminCaseNoteWritable;
+};
+
+export type AdminCaseResponseWritable = {
+    status: string;
+    data: AdminCaseWritable;
+};
+
+export type AdminCaseTypeResponseWritable = {
+    status: string;
+};
+
 export type AdminCommonListWritable = {
     name: string;
     label?: string | null;
@@ -25651,12 +28663,12 @@ export type AdminCompanyWritable = {
     name?: string | null;
     legal_name?: string | null;
     description?: string | null;
-    website?: string | null;
-    support_website?: string | null;
-    documentation_website?: string | null;
-    support_email?: string | null;
+    website?: string | string | null;
+    support_website?: string | string | null;
+    documentation_website?: string | string | null;
+    support_email?: string | string | null;
     support_phone?: string | null;
-    contact_email?: string | null;
+    contact_email?: string | string | null;
     /**
      * * `AF` - Afghanistan
      * * `AX` - Åland Islands
@@ -26025,24 +29037,32 @@ export type AdminCompanySettingsWritable = {
     require_transaction_subtypes?: boolean;
     require_verification?: boolean;
     allow_registrations?: boolean;
+    require_registration_code?: boolean;
     allow_overdrafts?: boolean;
     allow_session_durations?: boolean;
     require_registration?: boolean;
     default_session_duration?: number;
+    /**
+     * Default lifespan of refresh tokens in seconds. Only applies to sessions created after it is changed.
+     */
+    default_refresh_token_duration?: number;
     default_transaction_lifespan?: number;
     require_terms_and_conditions?: boolean;
     require_privacy_policy?: boolean;
     account_reference_length?: number;
-    password_reset_url?: string | null;
-    password_set_url?: string | null;
-    email_verification_url?: string | null;
-    deactivate_verification_url?: string | null;
-    request_delete_verification_url?: string | null;
-    terms_and_conditions_url?: string | null;
-    privacy_policy_url?: string | null;
+    password_reset_url?: string | string | null;
+    password_set_url?: string | string | null;
+    email_verification_url?: string | string | null;
+    deactivate_verification_url?: string | string | null;
+    request_delete_verification_url?: string | string | null;
+    registration_url?: string | string | null;
+    terms_and_conditions_url?: string | string | null;
+    privacy_policy_url?: string | string | null;
     nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
+    disallowed_mobile_countries: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    disallow_disposable_email_domains?: boolean;
 };
 
 export type AdminCompanySettingsResponseWritable = {
@@ -26052,7 +29072,7 @@ export type AdminCompanySettingsResponseWritable = {
 
 export type AdminCompanyWalletAccountWritable = {
     username?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     name?: string | null;
     type?: string | null;
@@ -26090,6 +29110,15 @@ export type AdminCompanyWalletAccountResponseWritable = {
     data: AdminCompanyWalletAccountWritable;
 };
 
+export type AdminConsumeChallengeRequestWritable = {
+    challenge: string;
+    fingerprint: string;
+    /**
+     * Identifier, email or mobile of the user the challenge was created for.
+     */
+    user: string;
+};
+
 export type AdminCreateAccessControlRuleRequestWritable = {
     /**
      * * `allow` - Allow
@@ -26100,7 +29129,18 @@ export type AdminCreateAccessControlRuleRequestWritable = {
      * * `ip` - Ip
      */
     type: 'ip';
-    value: string;
+    /**
+     * An exact IP, or `*` to match every IP.
+     */
+    value?: string | null;
+    /**
+     * The ID of a list whose items are the IPs to match.
+     */
+    common_list?: string | null;
+    /**
+     * ISO 3166-1 alpha-2 codes of the countries to match.
+     */
+    countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'> | null;
     label?: string | null;
     user?: string | null;
     group?: string | null;
@@ -26236,12 +29276,9 @@ export type AdminCreateAlertRequestWritable = {
     priority?: 'info' | 'low' | 'medium' | 'high' | 'critical';
     /**
      * * `open` - Open
-     * * `assigned` - Assigned
-     * * `paused` - Paused
      * * `closed` - Closed
-     * * `reopened` - Reopened
      */
-    status: 'open' | 'assigned' | 'paused' | 'closed' | 'reopened';
+    status: 'open' | 'closed';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -26288,6 +29325,71 @@ export type AdminCreateAuthenticatorRuleRequestWritable = {
     group?: string;
     duration?: number | null;
     session_age?: number | null;
+};
+
+export type AdminCreateCaseNoteRequestWritable = {
+    content: string;
+    files?: Array<Blob | File>;
+};
+
+export type AdminCreateCaseRequestWritable = {
+    /**
+     * Key of the case type, e.g. `risk_review`.
+     */
+    type: string;
+    user?: string;
+    transaction?: string;
+    /**
+     * Ids of the admin users assigned. Replaces the set.
+     */
+    assignees?: Array<string>;
+    /**
+     * Ids of the policies the case concerns. Replaces the set.
+     */
+    policies?: Array<string>;
+    title?: string | null;
+    description?: string | null;
+    /**
+     * * `open` - Open
+     * * `paused` - Paused
+     * * `closed` - Closed
+     */
+    status?: 'open' | 'paused' | 'closed';
+    /**
+     * * `low` - Low
+     * * `medium` - Medium
+     * * `high` - High
+     * * `critical` - Critical
+     */
+    priority?: 'low' | 'medium' | 'high' | 'critical' | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+    /**
+     * Ids of the alerts linked to the case. Replaces the set.
+     */
+    alerts?: Array<string>;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
 };
 
 export type AdminCreateChallengeRequestWritable = {
@@ -26493,8 +29595,10 @@ export type AdminCreateGroupPermissionRequestWritable = {
      * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
+     * * `case` - Case
      * * `commonlist` - Common List
      * * `company` - Company
+     * * `contact` - Contact
      * * `cryptoaccount` - Crypto Account
      * * `device` - Device
      * * `document` - Document
@@ -26509,6 +29613,8 @@ export type AdminCreateGroupPermissionRequestWritable = {
      * * `oauthclient` - Oauth Client
      * * `password` - Password
      * * `permission` - Permission
+     * * `policy` - Policy
+     * * `registrationcode` - Registration Code
      * * `request` - Request
      * * `rule` - Rule
      * * `service` - Service
@@ -26519,7 +29625,7 @@ export type AdminCreateGroupPermissionRequestWritable = {
      * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'commonlist' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
+    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'case' | 'commonlist' | 'company' | 'contact' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'policy' | 'registrationcode' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -26654,6 +29760,103 @@ export type AdminCreateMultiTransactionRequestWritable = {
 
 export type AdminCreateMultiUserPermissionRequestWritable = {
     permissions: Array<AdminCreateUserPermissionRequestWritable>;
+};
+
+export type AdminCreatePolicyWritable = {
+    title: string;
+    description?: string | null;
+    /**
+     * The policy document, formatted as Markdown.
+     */
+    content: string;
+    legal_content?: string | null;
+    legal_url?: string | string | null;
+    archived?: boolean;
+};
+
+export type AdminCreatePolicyResponseWritable = {
+    status: string;
+    data: AdminCreatePolicyWritable;
+};
+
+export type AdminCreateRegistrationCodeRequestWritable = {
+    /**
+     * Generated when left out.
+     */
+    code?: string | null;
+    label?: string | null;
+    /**
+     * The name of the user group the code puts people in.
+     */
+    group?: string | null;
+    /**
+     * How many registrations the code allows. Null is no limit.
+     */
+    max_uses?: number | null;
+    expires?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
+};
+
+export type AdminCreateRuleRequestWritable = {
+    /**
+     * * `trigger` - Trigger
+     */
+    type?: 'trigger';
+    name: string;
+    label?: string | null;
+    description?: string | null;
+    tags?: Array<string> | null;
+    /**
+     * * `transaction.execute` - Transaction Execute
+     * * `transaction.initiate` - Transaction Initiate
+     * * `user.create` - User Create
+     * * `user.update` - User Update
+     * * `email.create` - Email Create
+     * * `mobile.create` - Mobile Create
+     * * `mobile.create.conflict` - Mobile Create Conflict
+     * * `device.create` - Device Create
+     * * `crypto_account.create` - Crypto Account Create
+     * * `crypto_account.update` - Crypto Account Update
+     * * `user.tag.create` - User Tag Create
+     * * `user.tag.delete` - User Tag Delete
+     * * `transaction.tag.create` - Transaction Tag Create
+     * * `transaction.tag.delete` - Transaction Tag Delete
+     */
+    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'user.update' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'crypto_account.create' | 'crypto_account.update' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
+    condition?: {
+        [key: string]: unknown;
+    } | null;
+    enabled?: boolean;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    /**
+     * Ids of the policies the rule enforces. Replaces the set.
+     */
+    policies?: Array<string>;
 };
 
 export type AdminCreateServicePermissionRequestWritable = {
@@ -27121,6 +30324,40 @@ export type AdminCreateUserBankAccountRequestWritable = {
     };
 };
 
+export type AdminCreateUserContactRequestWritable = {
+    user: string;
+    /**
+     * * `email` - Email
+     * * `mobile` - Mobile
+     */
+    type: 'email' | 'mobile';
+    identifier: string;
+    name?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
+};
+
 export type AdminCreateUserDocumentRequestWritable = {
     user: string;
     file?: Blob | File;
@@ -27145,6 +30382,259 @@ export type AdminCreateUserDocumentRequestWritable = {
     note?: string | null;
     archived?: boolean;
     expires?: number | null;
+    /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | null;
+    number?: string | null;
     /**
      * JSON merge patch of frozen (end-user immutable) elements. Supports an `actions` object keyed by action name and a `fields` object keyed by field name. Each value must be an empty object to add a freeze or `null` to remove one; a `created` timestamp is stamped on new freezes automatically.
      */
@@ -27176,7 +30666,7 @@ export type AdminCreateUserDocumentRequestWritable = {
 export type AdminCreateUserInfoRequestWritable = {
     id?: string;
     username?: string;
-    email?: string;
+    email?: string | string;
     mobile?: string;
     first_name?: string | null;
     middle_name?: string | null;
@@ -28905,8 +32395,10 @@ export type AdminCreateUserPermissionRequestWritable = {
      * * `alert` - Alert
      * * `currency` - Currency
      * * `bankaccount` - Bank Account
+     * * `case` - Case
      * * `commonlist` - Common List
      * * `company` - Company
+     * * `contact` - Contact
      * * `cryptoaccount` - Crypto Account
      * * `device` - Device
      * * `document` - Document
@@ -28921,6 +32413,8 @@ export type AdminCreateUserPermissionRequestWritable = {
      * * `oauthclient` - Oauth Client
      * * `password` - Password
      * * `permission` - Permission
+     * * `policy` - Policy
+     * * `registrationcode` - Registration Code
      * * `request` - Request
      * * `rule` - Rule
      * * `service` - Service
@@ -28931,7 +32425,7 @@ export type AdminCreateUserPermissionRequestWritable = {
      * * `walletaccount` - Wallet Account
      * * `webhook` - Webhook
      */
-    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'commonlist' | 'company' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
+    type: 'accesscontrolrule' | 'account' | 'accountdefinition' | 'address' | 'alert' | 'currency' | 'bankaccount' | 'case' | 'commonlist' | 'company' | 'contact' | 'cryptoaccount' | 'device' | 'document' | 'email' | 'group' | 'jwt' | 'legalterm' | 'mfa' | 'mfarule' | 'mobile' | 'notification' | 'oauthclient' | 'password' | 'permission' | 'policy' | 'registrationcode' | 'request' | 'rule' | 'service' | 'token' | 'transaction' | 'transactionsubtypes' | 'user' | 'walletaccount' | 'webhook';
     /**
      * * `view` - View
      * * `add` - Add
@@ -28947,7 +32441,7 @@ export type AdminCreateUserPermissionRequestWritable = {
 export type AdminCreateUserWalletAccountRequestWritable = {
     user: string;
     username?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     name?: string | null;
     type?: string | null;
@@ -29153,6 +32647,10 @@ export type AdminDocumentTypeResponseWritable = {
     data: AdminDocumentTypeWritable;
 };
 
+export type AdminEffectiveFeeListResponseWritable = {
+    status: string;
+};
+
 export type AdminEmailWritable = {
     primary?: boolean;
     verified?: boolean;
@@ -29298,12 +32796,9 @@ export type AdminExtendedAlertWritable = {
     priority?: 'info' | 'low' | 'medium' | 'high' | 'critical';
     /**
      * * `open` - Open
-     * * `assigned` - Assigned
-     * * `paused` - Paused
      * * `closed` - Closed
-     * * `reopened` - Reopened
      */
-    status: 'open' | 'assigned' | 'paused' | 'closed' | 'reopened';
+    status: 'open' | 'closed';
     metadata?: {
         [key: string]: unknown;
     } | null;
@@ -29377,6 +32872,9 @@ export type AdminExtendedRequestWritable = {
      * * `backgroundtask` - Background Task
      * * `bankowneraddress` - Bank Owner Address
      * * `bankbranchaddress` - Bank Branch Address
+     * * `case` - Case
+     * * `casenote` - Case Note
+     * * `casetype` - Case Type
      * * `company` - Company
      * * `companyaddress` - Company Address
      * * `companybankaccount` - Company Bank Account
@@ -29421,8 +32919,10 @@ export type AdminExtendedRequestWritable = {
      * * `oauthsession` - Oauth Session
      * * `oidckey` - Oidc Key
      * * `permission` - Permission
+     * * `policy` - Policy
      * * `recoverycode` - Recovery Code
      * * `refresh_token` - Refresh Token
+     * * `registrationcode` - Registration Code
      * * `request` - Request
      * * `resourcerequirementrule` - Resource Requirement Rule
      * * `rule` - Rule
@@ -29436,9 +32936,11 @@ export type AdminExtendedRequestWritable = {
      * * `transactionsubtype` - Transaction Subtype
      * * `transactionmessage` - Transaction Message
      * * `transactioncollection` - Transaction Collection
+     * * `transactiontag` - Transaction Tag
      * * `user` - User
      * * `useraddress` - User Address
      * * `userbankaccount` - User Bank Account
+     * * `usercontact` - User Contact
      * * `userwalletaccount` - User Wallet Account
      * * `usercryptoaccount` - User Crypto Account
      * * `usercryptoaccountattestation` - User Crypto Account Attestation
@@ -29451,12 +32953,52 @@ export type AdminExtendedRequestWritable = {
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'commonlist' | 'commonlistitem' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'case' | 'casenote' | 'casetype' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'commonlist' | 'commonlistitem' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'recoverycode' | 'refresh_token' | 'registrationcode' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'transactiontag' | 'user' | 'useraddress' | 'userbankaccount' | 'usercontact' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
 };
 
 export type AdminExtendedRequestResponseWritable = {
     status: string;
     data: AdminExtendedRequestWritable;
+};
+
+export type AdminExtendedRuleWritable = {
+    /**
+     * * `trigger` - Trigger
+     */
+    type?: 'trigger';
+    name: string;
+    label?: string | null;
+    description?: string | null;
+    tags?: Array<string> | null;
+    /**
+     * * `transaction.execute` - Transaction Execute
+     * * `transaction.initiate` - Transaction Initiate
+     * * `user.create` - User Create
+     * * `user.update` - User Update
+     * * `email.create` - Email Create
+     * * `mobile.create` - Mobile Create
+     * * `mobile.create.conflict` - Mobile Create Conflict
+     * * `device.create` - Device Create
+     * * `crypto_account.create` - Crypto Account Create
+     * * `crypto_account.update` - Crypto Account Update
+     * * `user.tag.create` - User Tag Create
+     * * `user.tag.delete` - User Tag Delete
+     * * `transaction.tag.create` - Transaction Tag Create
+     * * `transaction.tag.delete` - Transaction Tag Delete
+     */
+    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'user.update' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'crypto_account.create' | 'crypto_account.update' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
+    condition?: {
+        [key: string]: unknown;
+    } | null;
+    enabled?: boolean;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+export type AdminExtendedRuleResponseWritable = {
+    status: string;
+    data: AdminExtendedRuleWritable;
 };
 
 export type AdminExtendedTransactionWritable = {
@@ -29482,7 +33024,7 @@ export type AdminExtendedTransactionTransitionResponseWritable = {
 };
 
 export type AdminExtendedUserInfoWritable = {
-    username: string | null;
+    username?: string | string | null;
     first_name?: string | null;
     middle_name?: string | null;
     last_name?: string | null;
@@ -31280,11 +34822,12 @@ export type AdminGroupSettingsWritable = {
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
     disallowed_transaction_subtypes: Array<GroupDisallowedTransactionSubtypeWritable>;
-    password_reset_url?: string | null;
-    password_set_url?: string | null;
-    email_verification_url?: string | null;
-    deactivate_verification_url?: string | null;
-    request_delete_verification_url?: string | null;
+    password_reset_url?: string | string | null;
+    password_set_url?: string | string | null;
+    email_verification_url?: string | string | null;
+    deactivate_verification_url?: string | string | null;
+    request_delete_verification_url?: string | string | null;
+    registration_url?: string | string | null;
 };
 
 export type AdminGroupSettingsResponseWritable = {
@@ -31371,6 +34914,15 @@ export type AdminGroupTierResponseWritable = {
     data: AdminGroupTierWritable;
 };
 
+export type AdminInviteRegistrationCodeWritable = {
+    [key: string]: unknown;
+};
+
+export type AdminInviteRegistrationCodeResponseWritable = {
+    status: string;
+    data: AdminInviteRegistrationCodeWritable;
+};
+
 export type AdminLegalTermWritable = {
     name: string;
     description?: string | null;
@@ -31385,7 +34937,7 @@ export type AdminLegalTermResponseWritable = {
 export type AdminLegalTermVersionWritable = {
     note?: string | null;
     content?: string | null;
-    url?: string | null;
+    url?: string | string | null;
     urls?: Array<LegalTermVersionUrl> | null;
     archived?: boolean;
 };
@@ -31522,6 +35074,23 @@ export type AdminOverviewAssetResponseWritable = {
     status: string;
 };
 
+export type AdminPolicyWritable = {
+    title: string;
+    description?: string | null;
+    /**
+     * The policy document, formatted as Markdown.
+     */
+    content: string;
+    legal_content?: string | null;
+    legal_url?: string | string | null;
+    archived?: boolean;
+};
+
+export type AdminPolicyResponseWritable = {
+    status: string;
+    data: AdminPolicyWritable;
+};
+
 export type AdminReducedAccountAccountAssetWritable = {
     /**
      * Whether this is the account's currently active currency.
@@ -31555,7 +35124,7 @@ export type AdminRegisterRequestWritable = {
     middle_name?: string;
     last_name?: string;
     username?: string;
-    email?: string;
+    email?: string | string;
     mobile?: string;
     /**
      * * `AF` - Afghanistan
@@ -32074,6 +35643,10 @@ export type AdminRegisterRequestWritable = {
     terms_and_conditions?: boolean;
     privacy_policy?: boolean;
     session_duration?: number | null;
+    /**
+     * Lifespan of the refresh token in seconds, defaults to the company's default refresh token duration. Persists across refreshes.
+     */
+    refresh_token_duration?: number | null;
     groups?: Array<string | null>;
     legal_term_versions?: Array<number>;
     id_number?: string | null;
@@ -32611,6 +36184,24 @@ export type AdminRegisterRequestWritable = {
     tax_residency?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | '' | null;
 };
 
+export type AdminRegistrationCodeWritable = {
+    label?: string | null;
+    /**
+     * How many registrations the code allows. Null is no limit.
+     */
+    max_uses?: number | null;
+    expires?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+};
+
+export type AdminRegistrationCodeResponseWritable = {
+    status: string;
+    data: AdminRegistrationCodeWritable;
+};
+
 export type AdminRequestWritable = {
     headers: {
         [key: string]: unknown;
@@ -32633,6 +36224,9 @@ export type AdminRequestWritable = {
      * * `backgroundtask` - Background Task
      * * `bankowneraddress` - Bank Owner Address
      * * `bankbranchaddress` - Bank Branch Address
+     * * `case` - Case
+     * * `casenote` - Case Note
+     * * `casetype` - Case Type
      * * `company` - Company
      * * `companyaddress` - Company Address
      * * `companybankaccount` - Company Bank Account
@@ -32677,8 +36271,10 @@ export type AdminRequestWritable = {
      * * `oauthsession` - Oauth Session
      * * `oidckey` - Oidc Key
      * * `permission` - Permission
+     * * `policy` - Policy
      * * `recoverycode` - Recovery Code
      * * `refresh_token` - Refresh Token
+     * * `registrationcode` - Registration Code
      * * `request` - Request
      * * `resourcerequirementrule` - Resource Requirement Rule
      * * `rule` - Rule
@@ -32692,9 +36288,11 @@ export type AdminRequestWritable = {
      * * `transactionsubtype` - Transaction Subtype
      * * `transactionmessage` - Transaction Message
      * * `transactioncollection` - Transaction Collection
+     * * `transactiontag` - Transaction Tag
      * * `user` - User
      * * `useraddress` - User Address
      * * `userbankaccount` - User Bank Account
+     * * `usercontact` - User Contact
      * * `userwalletaccount` - User Wallet Account
      * * `usercryptoaccount` - User Crypto Account
      * * `usercryptoaccountattestation` - User Crypto Account Attestation
@@ -32707,7 +36305,7 @@ export type AdminRequestWritable = {
      * * `webhooktask` - Webhook Task
      * * `webhookrequest` - Webhook Request
      */
-    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'commonlist' | 'commonlistitem' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'user' | 'useraddress' | 'userbankaccount' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
+    resource: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencylimit' | 'accountcurrencyfee' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'currency' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankowneraddress' | 'bankbranchaddress' | 'case' | 'casenote' | 'casetype' | 'company' | 'companyaddress' | 'companybankaccount' | 'companywalletaccount' | 'companyservice' | 'companynotification' | 'cryptoowneraddress' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'export' | 'exportpage' | 'email' | 'group' | 'grouplimit' | 'groupfee' | 'grouppermission' | 'grouptier' | 'grouptierrequirement' | 'grouptierlimit' | 'grouptierfee' | 'grouptierrequirementsetitem' | 'grouptierrequirementset' | 'legalterm' | 'legaltermversion' | 'commonlist' | 'commonlistitem' | 'metric' | 'metric_schema' | 'metric_point' | 'mfa' | 'mfasmsdevice' | 'mfatotpdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'recoverycode' | 'refresh_token' | 'registrationcode' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactionfee' | 'transactionsubtype' | 'transactionmessage' | 'transactioncollection' | 'transactiontag' | 'user' | 'useraddress' | 'userbankaccount' | 'usercontact' | 'userwalletaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'walletowneraddress' | 'webhook' | 'webhooktask' | 'webhookrequest' | null;
 };
 
 export type AdminRuleWritable = {
@@ -32728,12 +36326,14 @@ export type AdminRuleWritable = {
      * * `mobile.create` - Mobile Create
      * * `mobile.create.conflict` - Mobile Create Conflict
      * * `device.create` - Device Create
+     * * `crypto_account.create` - Crypto Account Create
+     * * `crypto_account.update` - Crypto Account Update
      * * `user.tag.create` - User Tag Create
      * * `user.tag.delete` - User Tag Delete
      * * `transaction.tag.create` - Transaction Tag Create
      * * `transaction.tag.delete` - Transaction Tag Delete
      */
-    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'user.update' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
+    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'user.update' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'crypto_account.create' | 'crypto_account.update' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
     condition?: {
         [key: string]: unknown;
     } | null;
@@ -32752,10 +36352,13 @@ export type AdminRuleEffectWritable = {
      * * `create_transaction_message` - Create Transaction Message
      * * `create_user_alert` - Create User Alert
      * * `create_transaction_alert` - Create Transaction Alert
+     * * `create_user_case` - Create User Case
+     * * `create_transaction_case` - Create Transaction Case
      * * `create_user_tag` - Create User Tag
      * * `create_transaction_tag` - Create Transaction Tag
+     * * `generate_risk_score_tag` - Generate Risk Score Tag
      */
-    type: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert' | 'create_user_tag' | 'create_transaction_tag';
+    type: 'create_account_asset_limit' | 'disable_user_transactions' | 'disable_user_transaction_type' | 'create_user_message' | 'create_transaction_message' | 'create_user_alert' | 'create_transaction_alert' | 'create_user_case' | 'create_transaction_case' | 'create_user_tag' | 'create_transaction_tag' | 'generate_risk_score_tag';
     label?: string | null;
     params?: {
         [key: string]: unknown;
@@ -32769,11 +36372,6 @@ export type AdminRuleEffectResponseWritable = {
 
 export type AdminRuleLogResponseWritable = {
     status: string;
-};
-
-export type AdminRuleResponseWritable = {
-    status: string;
-    data: AdminRuleWritable;
 };
 
 export type AdminServiceWritable = {
@@ -32894,6 +36492,85 @@ export type AdminUpdateAuthenticatorRuleRequestWritable = {
     session_age?: number | null;
 };
 
+export type AdminUpdateCaseCheckRequestWritable = {
+    done?: boolean;
+    note?: string | null;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
+};
+
+export type AdminUpdateCaseRequestWritable = {
+    /**
+     * Ids of the admin users assigned. Replaces the set.
+     */
+    assignees?: Array<string>;
+    /**
+     * Ids of the policies the case concerns. Replaces the set.
+     */
+    policies?: Array<string>;
+    title?: string | null;
+    description?: string | null;
+    /**
+     * * `open` - Open
+     * * `paused` - Paused
+     * * `closed` - Closed
+     */
+    status?: 'open' | 'paused' | 'closed';
+    /**
+     * * `low` - Low
+     * * `medium` - Medium
+     * * `high` - High
+     * * `critical` - Critical
+     */
+    priority?: 'low' | 'medium' | 'high' | 'critical' | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+    /**
+     * Ids of the alerts linked to the case. Replaces the set.
+     */
+    alerts?: Array<string>;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
+};
+
 export type AdminUpdateCompanySettingsRequestWritable = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
@@ -32902,24 +36579,32 @@ export type AdminUpdateCompanySettingsRequestWritable = {
     require_transaction_subtypes?: boolean;
     require_verification?: boolean;
     allow_registrations?: boolean;
+    require_registration_code?: boolean;
     allow_overdrafts?: boolean;
     allow_session_durations?: boolean;
     require_registration?: boolean;
     default_session_duration?: number;
+    /**
+     * Default lifespan of refresh tokens in seconds. Only applies to sessions created after it is changed.
+     */
+    default_refresh_token_duration?: number;
     default_transaction_lifespan?: number;
     require_terms_and_conditions?: boolean;
     require_privacy_policy?: boolean;
     account_reference_length?: number;
-    password_reset_url?: string | null;
-    password_set_url?: string | null;
-    email_verification_url?: string | null;
-    deactivate_verification_url?: string | null;
-    request_delete_verification_url?: string | null;
-    terms_and_conditions_url?: string | null;
-    privacy_policy_url?: string | null;
+    password_reset_url?: string | string | null;
+    password_set_url?: string | string | null;
+    email_verification_url?: string | string | null;
+    deactivate_verification_url?: string | string | null;
+    request_delete_verification_url?: string | string | null;
+    registration_url?: string | string | null;
+    terms_and_conditions_url?: string | string | null;
+    privacy_policy_url?: string | string | null;
     nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
+    disallowed_mobile_countries: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    disallow_disposable_email_domains?: boolean;
 };
 
 export type AdminUpdateGroupWritable = {
@@ -33000,11 +36685,12 @@ export type AdminUpdateGroupSettingsRequestWritable = {
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
     disallowed_transaction_subtypes: Array<UpdateGroupDisallowedTransactionSubtypeRequest>;
-    password_reset_url?: string | null;
-    password_set_url?: string | null;
-    email_verification_url?: string | null;
-    deactivate_verification_url?: string | null;
-    request_delete_verification_url?: string | null;
+    password_reset_url?: string | string | null;
+    password_set_url?: string | string | null;
+    email_verification_url?: string | string | null;
+    deactivate_verification_url?: string | string | null;
+    request_delete_verification_url?: string | string | null;
+    registration_url?: string | string | null;
 };
 
 export type AdminUpdateGroupTierFeeRequestWritable = {
@@ -33065,6 +36751,82 @@ export type AdminUpdateGroupTierSettingsRequestWritable = {
     disallowed_transaction_subtypes: Array<UpdateGroupTierDisallowedTransactionSubtypeRequest>;
 };
 
+export type AdminUpdateRegistrationCodeRequestWritable = {
+    label?: string | null;
+    /**
+     * The name of the user group the code puts people in.
+     */
+    group?: string | null;
+    /**
+     * How many registrations the code allows. Null is no limit.
+     */
+    max_uses?: number | null;
+    expires?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
+};
+
+export type AdminUpdateRuleRequestWritable = {
+    /**
+     * * `trigger` - Trigger
+     */
+    type?: 'trigger';
+    name: string;
+    label?: string | null;
+    description?: string | null;
+    tags?: Array<string> | null;
+    /**
+     * * `transaction.execute` - Transaction Execute
+     * * `transaction.initiate` - Transaction Initiate
+     * * `user.create` - User Create
+     * * `user.update` - User Update
+     * * `email.create` - Email Create
+     * * `mobile.create` - Mobile Create
+     * * `mobile.create.conflict` - Mobile Create Conflict
+     * * `device.create` - Device Create
+     * * `crypto_account.create` - Crypto Account Create
+     * * `crypto_account.update` - Crypto Account Update
+     * * `user.tag.create` - User Tag Create
+     * * `user.tag.delete` - User Tag Delete
+     * * `transaction.tag.create` - Transaction Tag Create
+     * * `transaction.tag.delete` - Transaction Tag Delete
+     */
+    event: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'user.update' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'crypto_account.create' | 'crypto_account.update' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
+    condition?: {
+        [key: string]: unknown;
+    } | null;
+    enabled?: boolean;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    /**
+     * Ids of the policies the rule enforces. Replaces the set.
+     */
+    policies?: Array<string>;
+};
+
 export type AdminUpdateServicePermissionResponseWritable = {
     status: string;
 };
@@ -33115,6 +36877,259 @@ export type AdminUpdateUserDocumentRequestWritable = {
     archived?: boolean;
     expires?: number | null;
     /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | null;
+    number?: string | null;
+    /**
      * JSON merge patch of frozen (end-user immutable) elements. Supports an `actions` object keyed by action name and a `fields` object keyed by field name. Each value must be an empty object to add a freeze or `null` to remove one; a `created` timestamp is stamped on new freezes automatically.
      */
     frozen?: {
@@ -33143,7 +37158,7 @@ export type AdminUpdateUserDocumentRequestWritable = {
 };
 
 export type AdminUpdateUserInfoRequestWritable = {
-    username: string | null;
+    username?: string | string | null;
     email?: string;
     mobile?: string;
     first_name?: string | null;
@@ -35640,6 +39655,45 @@ export type AdminUserBankAccountResponseWritable = {
     data: AdminUserBankAccountWritable;
 };
 
+export type AdminUserContactWritable = {
+    name?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+export type AdminUserContactRequestWritable = {
+    name?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
+};
+
+export type AdminUserContactResponseWritable = {
+    status: string;
+    data: AdminUserContactWritable;
+};
+
 export type AdminUserDocumentWritable = {
     [key: string]: unknown;
 };
@@ -35666,7 +39720,7 @@ export type AdminUserGroupResponseWritable = {
 };
 
 export type AdminUserInfoWritable = {
-    username: string | null;
+    username?: string | string | null;
     first_name?: string | null;
     middle_name?: string | null;
     last_name?: string | null;
@@ -37411,6 +41465,17 @@ export type AdminUserTagRequestWritable = {
         [key: string]: unknown;
     } | null;
     /**
+     * Whether the category and key hold a `single` value or `multiple` values on this user or transaction. Adding a value to a single key deletes its other value. Once single, a key stays single, whatever later requests send. Defaults to `multiple`.
+     *
+     * * `single` - Single
+     * * `multiple` - Multiple
+     */
+    cardinality?: 'single' | 'multiple';
+    /**
+     * Deprecated: set `cardinality` to `single` instead.
+     */
+    replace?: boolean;
+    /**
      * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
      */
     annotations?: {
@@ -37434,7 +41499,7 @@ export type AdminUserTagRequestWritable = {
 
 export type AdminUserWalletAccountWritable = {
     username?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     name?: string | null;
     type?: string | null;
@@ -37487,7 +41552,7 @@ export type AdminUserWalletAccountAssetResponseWritable = {
 
 export type AdminUserWalletAccountRequestWritable = {
     username?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     name?: string | null;
     type?: string | null;
@@ -37565,8 +41630,10 @@ export type AdminWebhookWritable = {
      * * `device.create` - Device Create
      * * `address.create` - Address Create
      * * `address.update` - Address Update
+     * * `address.delete` - Address Delete
      * * `document.create` - Document Create
      * * `document.update` - Document Update
+     * * `document.delete` - Document Delete
      * * `bank_account.create` - Bank Account Create
      * * `bank_account.update` - Bank Account Update
      * * `bank_account.delete` - Bank Account Delete
@@ -37588,8 +41655,9 @@ export type AdminWebhookWritable = {
      * * `mfa.sms.verify.consume` - Mfa Sms Verify Consume
      * * `alert.create` - Alert Create
      * * `alert.update` - Alert Update
+     * * `registration_code.invite` - Registration Code Invite
      */
-    event: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'user.mobile.verify.consume' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'device.create' | 'address.create' | 'address.update' | 'document.create' | 'document.update' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'wallet_account.create' | 'wallet_account.update' | 'wallet_account.delete' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify' | 'mfa.sms.verify.consume' | 'alert.create' | 'alert.update';
+    event: 'company.link.create' | 'company.link.update' | 'company.update' | 'currency.create' | 'currency.update' | 'user.create' | 'user.update' | 'user.password.reset' | 'user.password.set' | 'user.deactivate.verify' | 'user.request_delete.verify' | 'user.email.verify' | 'user.mobile.verify' | 'user.mobile.verify.consume' | 'email.create' | 'email.update' | 'mobile.create' | 'mobile.update' | 'device.create' | 'address.create' | 'address.update' | 'address.delete' | 'document.create' | 'document.update' | 'document.delete' | 'bank_account.create' | 'bank_account.update' | 'bank_account.delete' | 'crypto_account.create' | 'crypto_account.update' | 'wallet_account.create' | 'wallet_account.update' | 'wallet_account.delete' | 'account.create' | 'account.update' | 'account.currency.create' | 'transaction.create' | 'transaction.update' | 'transaction.initiate' | 'transaction.execute' | 'transaction.transition.create' | 'transaction.transition.update' | 'mfa.sms.verify' | 'mfa.sms.verify.consume' | 'alert.create' | 'alert.update' | 'registration_code.invite';
     secret?: string;
     condition?: string | null;
     enabled?: boolean;
@@ -37626,34 +41694,6 @@ export type CompanyDisallowedTransactionSubtypeWritable = {
     subtype: ReducedTransactionSubtypeWritable;
 };
 
-export type CompanySettingsWritable = {
-    allow_transactions?: boolean;
-    allow_debit_transactions?: boolean;
-    allow_credit_transactions?: boolean;
-    disallowed_transaction_subtypes: Array<CompanyDisallowedTransactionSubtypeWritable>;
-    require_transaction_subtypes?: boolean;
-    require_verification?: boolean;
-    allow_registrations?: boolean;
-    allow_overdrafts?: boolean;
-    allow_session_durations?: boolean;
-    require_registration?: boolean;
-    default_session_duration?: number;
-    default_transaction_lifespan?: number;
-    require_terms_and_conditions?: boolean;
-    require_privacy_policy?: boolean;
-    account_reference_length?: number;
-    password_reset_url?: string | null;
-    password_set_url?: string | null;
-    email_verification_url?: string | null;
-    deactivate_verification_url?: string | null;
-    request_delete_verification_url?: string | null;
-    terms_and_conditions_url?: string | null;
-    privacy_policy_url?: string | null;
-    nationalities: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-    residencies: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
-    supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
-};
-
 export type CreateGroupTierRequirementSetItemRequestWritable = {
     /**
      * * `resource` - Resource
@@ -37684,7 +41724,7 @@ export type CryptoAccountAttestationWritable = {
     } | null;
 };
 
-export type EffectiveFeeListResponseWritable = {
+export type EffectiveLimitListResponseWritable = {
     status: string;
 };
 
@@ -37698,7 +41738,7 @@ export type ExtendedAuthenticatedResponseWritable = {
 };
 
 export type ExtendedUserInfoWritable = {
-    username: string | null;
+    username?: string | string | null;
     first_name?: string | null;
     middle_name?: string | null;
     last_name?: string | null;
@@ -39455,11 +43495,23 @@ export type GroupTierSettingsResponseWritable = {
     data: GroupTierSettingsWritable;
 };
 
-export type PaginatedAdminAccessControlRuleListWritable = {
-    count?: number;
+export type PaginatedAccountAssetEffectiveControlListWritable = {
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAccessControlRuleWritable>;
+    results: Array<AccountAssetEffectiveControlWritable>;
+};
+
+export type PaginatedAccountAssetEffectiveControlListResponseWritable = {
+    status: string;
+    data: PaginatedAccountAssetEffectiveControlListWritable;
+};
+
+export type PaginatedAdminAccessControlRuleListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AdminAccessControlRuleWritable>;
 };
 
 export type PaginatedAdminAccessControlRuleListResponseWritable = {
@@ -39468,10 +43520,10 @@ export type PaginatedAdminAccessControlRuleListResponseWritable = {
 };
 
 export type PaginatedAdminAccountAccountAssetListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAccountAccountAssetWritable>;
+    results: Array<AdminAccountAccountAssetWritable>;
 };
 
 export type PaginatedAdminAccountAccountAssetListResponseWritable = {
@@ -39480,10 +43532,10 @@ export type PaginatedAdminAccountAccountAssetListResponseWritable = {
 };
 
 export type PaginatedAdminAccountAssetLimitListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAccountAssetLimitWritable>;
+    results: Array<AdminAccountAssetLimitWritable>;
 };
 
 export type PaginatedAdminAccountAssetLimitListResponseWritable = {
@@ -39492,10 +43544,10 @@ export type PaginatedAdminAccountAssetLimitListResponseWritable = {
 };
 
 export type PaginatedAdminAccountAssetListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAccountAssetWritable>;
+    results: Array<AdminAccountAssetWritable>;
 };
 
 export type PaginatedAdminAccountAssetListResponseWritable = {
@@ -39504,10 +43556,10 @@ export type PaginatedAdminAccountAssetListResponseWritable = {
 };
 
 export type PaginatedAdminAccountDefinitionGroupAssetListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAccountDefinitionGroupAssetWritable>;
+    results: Array<AdminAccountDefinitionGroupAssetWritable>;
 };
 
 export type PaginatedAdminAccountDefinitionGroupAssetListResponseWritable = {
@@ -39516,10 +43568,10 @@ export type PaginatedAdminAccountDefinitionGroupAssetListResponseWritable = {
 };
 
 export type PaginatedAdminAccountDefinitionGroupListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAccountDefinitionGroupWritable>;
+    results: Array<AdminAccountDefinitionGroupWritable>;
 };
 
 export type PaginatedAdminAccountDefinitionGroupListResponseWritable = {
@@ -39528,10 +43580,10 @@ export type PaginatedAdminAccountDefinitionGroupListResponseWritable = {
 };
 
 export type PaginatedAdminAccountDefinitionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAccountDefinitionWritable>;
+    results: Array<AdminAccountDefinitionWritable>;
 };
 
 export type PaginatedAdminAccountDefinitionListResponseWritable = {
@@ -39540,10 +43592,10 @@ export type PaginatedAdminAccountDefinitionListResponseWritable = {
 };
 
 export type PaginatedAdminAccountListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAccountWritable>;
+    results: Array<AdminAccountWritable>;
 };
 
 export type PaginatedAdminAccountListResponseWritable = {
@@ -39552,10 +43604,10 @@ export type PaginatedAdminAccountListResponseWritable = {
 };
 
 export type PaginatedAdminAlertListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAlertWritable>;
+    results: Array<AdminAlertWritable>;
 };
 
 export type PaginatedAdminAlertListResponseWritable = {
@@ -39564,10 +43616,10 @@ export type PaginatedAdminAlertListResponseWritable = {
 };
 
 export type PaginatedAdminAssetListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAssetWritable>;
+    results: Array<AdminAssetWritable>;
 };
 
 export type PaginatedAdminAssetListResponseWritable = {
@@ -39576,10 +43628,10 @@ export type PaginatedAdminAssetListResponseWritable = {
 };
 
 export type PaginatedAdminAuditLogListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAuditLogWritable>;
+    results: Array<AdminAuditLogWritable>;
 };
 
 export type PaginatedAdminAuditLogListResponseWritable = {
@@ -39588,10 +43640,10 @@ export type PaginatedAdminAuditLogListResponseWritable = {
 };
 
 export type PaginatedAdminAuthTokenListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAuthTokenWritable>;
+    results: Array<AdminAuthTokenWritable>;
 };
 
 export type PaginatedAdminAuthTokenListResponseWritable = {
@@ -39600,10 +43652,10 @@ export type PaginatedAdminAuthTokenListResponseWritable = {
 };
 
 export type PaginatedAdminAuthenticatorRuleListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminAuthenticatorRuleWritable>;
+    results: Array<AdminAuthenticatorRuleWritable>;
 };
 
 export type PaginatedAdminAuthenticatorRuleListResponseWritable = {
@@ -39611,11 +43663,47 @@ export type PaginatedAdminAuthenticatorRuleListResponseWritable = {
     data: PaginatedAdminAuthenticatorRuleListWritable;
 };
 
-export type PaginatedAdminCommonListItemListWritable = {
-    count?: number;
+export type PaginatedAdminCaseListWritable = {
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCommonListItemWritable>;
+    results: Array<AdminCaseWritable>;
+};
+
+export type PaginatedAdminCaseListResponseWritable = {
+    status: string;
+    data: PaginatedAdminCaseListWritable;
+};
+
+export type PaginatedAdminCaseNoteListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AdminCaseNoteWritable>;
+};
+
+export type PaginatedAdminCaseNoteListResponseWritable = {
+    status: string;
+    data: PaginatedAdminCaseNoteListWritable;
+};
+
+export type PaginatedAdminCaseTypeListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
+export type PaginatedAdminCaseTypeListResponseWritable = {
+    status: string;
+    data: PaginatedAdminCaseTypeListWritable;
+};
+
+export type PaginatedAdminCommonListItemListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AdminCommonListItemWritable>;
 };
 
 export type PaginatedAdminCommonListItemListResponseWritable = {
@@ -39624,10 +43712,10 @@ export type PaginatedAdminCommonListItemListResponseWritable = {
 };
 
 export type PaginatedAdminCommonListListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCommonListWritable>;
+    results: Array<AdminCommonListWritable>;
 };
 
 export type PaginatedAdminCommonListListResponseWritable = {
@@ -39636,10 +43724,10 @@ export type PaginatedAdminCommonListListResponseWritable = {
 };
 
 export type PaginatedAdminCompanyAddressListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCompanyAddressWritable>;
+    results: Array<AdminCompanyAddressWritable>;
 };
 
 export type PaginatedAdminCompanyAddressListResponseWritable = {
@@ -39648,10 +43736,10 @@ export type PaginatedAdminCompanyAddressListResponseWritable = {
 };
 
 export type PaginatedAdminCompanyBankAccountAssetListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCompanyBankAccountAssetWritable>;
+    results: Array<AdminCompanyBankAccountAssetWritable>;
 };
 
 export type PaginatedAdminCompanyBankAccountAssetListResponseWritable = {
@@ -39660,10 +43748,10 @@ export type PaginatedAdminCompanyBankAccountAssetListResponseWritable = {
 };
 
 export type PaginatedAdminCompanyBankAccountListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCompanyBankAccountWritable>;
+    results: Array<AdminCompanyBankAccountWritable>;
 };
 
 export type PaginatedAdminCompanyBankAccountListResponseWritable = {
@@ -39672,10 +43760,10 @@ export type PaginatedAdminCompanyBankAccountListResponseWritable = {
 };
 
 export type PaginatedAdminCompanyLinkListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCompanyLinkWritable>;
+    results: Array<AdminCompanyLinkWritable>;
 };
 
 export type PaginatedAdminCompanyLinkListResponseWritable = {
@@ -39684,10 +43772,10 @@ export type PaginatedAdminCompanyLinkListResponseWritable = {
 };
 
 export type PaginatedAdminCompanyWalletAccountAssetListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCompanyWalletAccountAssetWritable>;
+    results: Array<AdminCompanyWalletAccountAssetWritable>;
 };
 
 export type PaginatedAdminCompanyWalletAccountAssetListResponseWritable = {
@@ -39696,10 +43784,10 @@ export type PaginatedAdminCompanyWalletAccountAssetListResponseWritable = {
 };
 
 export type PaginatedAdminCompanyWalletAccountListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCompanyWalletAccountWritable>;
+    results: Array<AdminCompanyWalletAccountWritable>;
 };
 
 export type PaginatedAdminCompanyWalletAccountListResponseWritable = {
@@ -39708,10 +43796,10 @@ export type PaginatedAdminCompanyWalletAccountListResponseWritable = {
 };
 
 export type PaginatedAdminCryptoAccountListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCryptoAccountWritable>;
+    results: Array<AdminCryptoAccountWritable>;
 };
 
 export type PaginatedAdminCryptoAccountListResponseWritable = {
@@ -39720,10 +43808,10 @@ export type PaginatedAdminCryptoAccountListResponseWritable = {
 };
 
 export type PaginatedAdminDeviceAppListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminDeviceAppWritable>;
+    results: Array<AdminDeviceAppWritable>;
 };
 
 export type PaginatedAdminDeviceAppListResponseWritable = {
@@ -39732,10 +43820,10 @@ export type PaginatedAdminDeviceAppListResponseWritable = {
 };
 
 export type PaginatedAdminDeviceListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminDeviceWritable>;
+    results: Array<AdminDeviceWritable>;
 };
 
 export type PaginatedAdminDeviceListResponseWritable = {
@@ -39744,10 +43832,10 @@ export type PaginatedAdminDeviceListResponseWritable = {
 };
 
 export type PaginatedAdminDocumentTypeListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminDocumentTypeWritable>;
+    results: Array<AdminDocumentTypeWritable>;
 };
 
 export type PaginatedAdminDocumentTypeListResponseWritable = {
@@ -39756,10 +43844,10 @@ export type PaginatedAdminDocumentTypeListResponseWritable = {
 };
 
 export type PaginatedAdminEmailListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminEmailWritable>;
+    results: Array<AdminEmailWritable>;
 };
 
 export type PaginatedAdminEmailListResponseWritable = {
@@ -39768,10 +43856,10 @@ export type PaginatedAdminEmailListResponseWritable = {
 };
 
 export type PaginatedAdminExportListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminExportWritable>;
+    results: Array<AdminExportWritable>;
 };
 
 export type PaginatedAdminExportListResponseWritable = {
@@ -39780,10 +43868,10 @@ export type PaginatedAdminExportListResponseWritable = {
 };
 
 export type PaginatedAdminExportTemplateListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminExportTemplateWritable>;
+    results: Array<AdminExportTemplateWritable>;
 };
 
 export type PaginatedAdminExportTemplateListResponseWritable = {
@@ -39792,10 +43880,10 @@ export type PaginatedAdminExportTemplateListResponseWritable = {
 };
 
 export type PaginatedAdminGroupListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminGroupWritable>;
+    results: Array<AdminGroupWritable>;
 };
 
 export type PaginatedAdminGroupListResponseWritable = {
@@ -39804,10 +43892,10 @@ export type PaginatedAdminGroupListResponseWritable = {
 };
 
 export type PaginatedAdminLegalTermListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminLegalTermWritable>;
+    results: Array<AdminLegalTermWritable>;
 };
 
 export type PaginatedAdminLegalTermListResponseWritable = {
@@ -39816,10 +43904,10 @@ export type PaginatedAdminLegalTermListResponseWritable = {
 };
 
 export type PaginatedAdminLegalTermVersionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminLegalTermVersionWritable>;
+    results: Array<AdminLegalTermVersionWritable>;
 };
 
 export type PaginatedAdminLegalTermVersionListResponseWritable = {
@@ -39828,10 +43916,10 @@ export type PaginatedAdminLegalTermVersionListResponseWritable = {
 };
 
 export type PaginatedAdminMfaAuthenticatorListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminMfaAuthenticatorWritable>;
+    results: Array<AdminMfaAuthenticatorWritable>;
 };
 
 export type PaginatedAdminMfaAuthenticatorListResponseWritable = {
@@ -39840,10 +43928,10 @@ export type PaginatedAdminMfaAuthenticatorListResponseWritable = {
 };
 
 export type PaginatedAdminMetricListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminMetricWritable>;
+    results: Array<AdminMetricWritable>;
 };
 
 export type PaginatedAdminMetricListResponseWritable = {
@@ -39852,10 +43940,10 @@ export type PaginatedAdminMetricListResponseWritable = {
 };
 
 export type PaginatedAdminMetricPointListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedAdminMetricPointListResponseWritable = {
@@ -39864,10 +43952,10 @@ export type PaginatedAdminMetricPointListResponseWritable = {
 };
 
 export type PaginatedAdminMobileListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminMobileWritable>;
+    results: Array<AdminMobileWritable>;
 };
 
 export type PaginatedAdminMobileListResponseWritable = {
@@ -39876,10 +43964,10 @@ export type PaginatedAdminMobileListResponseWritable = {
 };
 
 export type PaginatedAdminOauthClientListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminOauthClientWritable>;
+    results: Array<AdminOauthClientWritable>;
 };
 
 export type PaginatedAdminOauthClientListResponseWritable = {
@@ -39887,11 +43975,35 @@ export type PaginatedAdminOauthClientListResponseWritable = {
     data: PaginatedAdminOauthClientListWritable;
 };
 
-export type PaginatedAdminRequestListWritable = {
-    count?: number;
+export type PaginatedAdminPolicyListWritable = {
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminRequestWritable>;
+    results: Array<AdminPolicyWritable>;
+};
+
+export type PaginatedAdminPolicyListResponseWritable = {
+    status: string;
+    data: PaginatedAdminPolicyListWritable;
+};
+
+export type PaginatedAdminRegistrationCodeListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AdminRegistrationCodeWritable>;
+};
+
+export type PaginatedAdminRegistrationCodeListResponseWritable = {
+    status: string;
+    data: PaginatedAdminRegistrationCodeListWritable;
+};
+
+export type PaginatedAdminRequestListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AdminRequestWritable>;
 };
 
 export type PaginatedAdminRequestListResponseWritable = {
@@ -39900,10 +44012,10 @@ export type PaginatedAdminRequestListResponseWritable = {
 };
 
 export type PaginatedAdminRuleEffectListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminRuleEffectWritable>;
+    results: Array<AdminRuleEffectWritable>;
 };
 
 export type PaginatedAdminRuleEffectListResponseWritable = {
@@ -39912,10 +44024,10 @@ export type PaginatedAdminRuleEffectListResponseWritable = {
 };
 
 export type PaginatedAdminRuleListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminRuleWritable>;
+    results: Array<AdminRuleWritable>;
 };
 
 export type PaginatedAdminRuleListResponseWritable = {
@@ -39924,10 +44036,10 @@ export type PaginatedAdminRuleListResponseWritable = {
 };
 
 export type PaginatedAdminRuleLogListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedAdminRuleLogListResponseWritable = {
@@ -39936,10 +44048,10 @@ export type PaginatedAdminRuleLogListResponseWritable = {
 };
 
 export type PaginatedAdminServiceListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminServiceWritable>;
+    results: Array<AdminServiceWritable>;
 };
 
 export type PaginatedAdminServiceListResponseWritable = {
@@ -39948,10 +44060,10 @@ export type PaginatedAdminServiceListResponseWritable = {
 };
 
 export type PaginatedAdminStatementListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminStatementWritable>;
+    results: Array<AdminStatementWritable>;
 };
 
 export type PaginatedAdminStatementListResponseWritable = {
@@ -39960,10 +44072,10 @@ export type PaginatedAdminStatementListResponseWritable = {
 };
 
 export type PaginatedAdminTransactionCollectionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminTransactionCollectionWritable>;
+    results: Array<AdminTransactionCollectionWritable>;
 };
 
 export type PaginatedAdminTransactionCollectionListResponseWritable = {
@@ -39972,10 +44084,10 @@ export type PaginatedAdminTransactionCollectionListResponseWritable = {
 };
 
 export type PaginatedAdminTransactionCollectionTransactionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminTransactionCollectionTransactionWritable>;
+    results: Array<AdminTransactionCollectionTransactionWritable>;
 };
 
 export type PaginatedAdminTransactionCollectionTransactionListResponseWritable = {
@@ -39984,10 +44096,10 @@ export type PaginatedAdminTransactionCollectionTransactionListResponseWritable =
 };
 
 export type PaginatedAdminTransactionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminTransactionWritable>;
+    results: Array<AdminTransactionWritable>;
 };
 
 export type PaginatedAdminTransactionListResponseWritable = {
@@ -39996,10 +44108,10 @@ export type PaginatedAdminTransactionListResponseWritable = {
 };
 
 export type PaginatedAdminTransactionMessageListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminTransactionMessageWritable>;
+    results: Array<AdminTransactionMessageWritable>;
 };
 
 export type PaginatedAdminTransactionMessageListResponseWritable = {
@@ -40008,10 +44120,10 @@ export type PaginatedAdminTransactionMessageListResponseWritable = {
 };
 
 export type PaginatedAdminTransactionTransitionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedAdminTransactionTransitionListResponseWritable = {
@@ -40020,10 +44132,10 @@ export type PaginatedAdminTransactionTransitionListResponseWritable = {
 };
 
 export type PaginatedAdminUserAddressListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUserAddressWritable>;
+    results: Array<AdminUserAddressWritable>;
 };
 
 export type PaginatedAdminUserAddressListResponseWritable = {
@@ -40032,10 +44144,10 @@ export type PaginatedAdminUserAddressListResponseWritable = {
 };
 
 export type PaginatedAdminUserBankAccountListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUserBankAccountWritable>;
+    results: Array<AdminUserBankAccountWritable>;
 };
 
 export type PaginatedAdminUserBankAccountListResponseWritable = {
@@ -40043,11 +44155,23 @@ export type PaginatedAdminUserBankAccountListResponseWritable = {
     data: PaginatedAdminUserBankAccountListWritable;
 };
 
-export type PaginatedAdminUserDocumentListWritable = {
-    count?: number;
+export type PaginatedAdminUserContactListWritable = {
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUserDocumentWritable>;
+    results: Array<AdminUserContactWritable>;
+};
+
+export type PaginatedAdminUserContactListResponseWritable = {
+    status: string;
+    data: PaginatedAdminUserContactListWritable;
+};
+
+export type PaginatedAdminUserDocumentListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AdminUserDocumentWritable>;
 };
 
 export type PaginatedAdminUserDocumentListResponseWritable = {
@@ -40056,10 +44180,10 @@ export type PaginatedAdminUserDocumentListResponseWritable = {
 };
 
 export type PaginatedAdminUserGroupListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUserGroupWritable>;
+    results: Array<AdminUserGroupWritable>;
 };
 
 export type PaginatedAdminUserGroupListResponseWritable = {
@@ -40068,10 +44192,10 @@ export type PaginatedAdminUserGroupListResponseWritable = {
 };
 
 export type PaginatedAdminUserInfoListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUserInfoWritable>;
+    results: Array<AdminUserInfoWritable>;
 };
 
 export type PaginatedAdminUserInfoListResponseWritable = {
@@ -40080,10 +44204,10 @@ export type PaginatedAdminUserInfoListResponseWritable = {
 };
 
 export type PaginatedAdminUserLegalTermListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUserLegalTermWritable>;
+    results: Array<AdminUserLegalTermWritable>;
 };
 
 export type PaginatedAdminUserLegalTermListResponseWritable = {
@@ -40092,10 +44216,10 @@ export type PaginatedAdminUserLegalTermListResponseWritable = {
 };
 
 export type PaginatedAdminUserLegalTermVersionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedAdminUserLegalTermVersionListResponseWritable = {
@@ -40104,10 +44228,10 @@ export type PaginatedAdminUserLegalTermVersionListResponseWritable = {
 };
 
 export type PaginatedAdminUserMessageListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUserMessageWritable>;
+    results: Array<AdminUserMessageWritable>;
 };
 
 export type PaginatedAdminUserMessageListResponseWritable = {
@@ -40116,10 +44240,10 @@ export type PaginatedAdminUserMessageListResponseWritable = {
 };
 
 export type PaginatedAdminUserWalletAccountListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUserWalletAccountWritable>;
+    results: Array<AdminUserWalletAccountWritable>;
 };
 
 export type PaginatedAdminUserWalletAccountListResponseWritable = {
@@ -40128,10 +44252,10 @@ export type PaginatedAdminUserWalletAccountListResponseWritable = {
 };
 
 export type PaginatedAdminWebhookListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminWebhookWritable>;
+    results: Array<AdminWebhookWritable>;
 };
 
 export type PaginatedAdminWebhookListResponseWritable = {
@@ -40140,10 +44264,10 @@ export type PaginatedAdminWebhookListResponseWritable = {
 };
 
 export type PaginatedAdminWebhookRequestLogListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedAdminWebhookRequestLogListResponseWritable = {
@@ -40152,10 +44276,10 @@ export type PaginatedAdminWebhookRequestLogListResponseWritable = {
 };
 
 export type PaginatedAdminWebhookTaskListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminWebhookTaskWritable>;
+    results: Array<AdminWebhookTaskWritable>;
 };
 
 export type PaginatedAdminWebhookTaskListResponseWritable = {
@@ -40164,10 +44288,10 @@ export type PaginatedAdminWebhookTaskListResponseWritable = {
 };
 
 export type PaginatedGroupPermissionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupPermissionWritable>;
+    results: Array<GroupPermissionWritable>;
 };
 
 export type PaginatedGroupPermissionListResponseWritable = {
@@ -40176,10 +44300,10 @@ export type PaginatedGroupPermissionListResponseWritable = {
 };
 
 export type PaginatedGroupTierRequirementSetItemListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupTierRequirementSetItemWritable>;
+    results: Array<GroupTierRequirementSetItemWritable>;
 };
 
 export type PaginatedGroupTierRequirementSetItemListResponseWritable = {
@@ -40188,10 +44312,10 @@ export type PaginatedGroupTierRequirementSetItemListResponseWritable = {
 };
 
 export type PaginatedGroupTierRequirementSetListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<GroupTierRequirementSetWritable>;
+    results: Array<GroupTierRequirementSetWritable>;
 };
 
 export type PaginatedGroupTierRequirementSetListResponseWritable = {
@@ -40200,10 +44324,10 @@ export type PaginatedGroupTierRequirementSetListResponseWritable = {
 };
 
 export type PaginatedPermissionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedPermissionListResponseWritable = {
@@ -40212,10 +44336,10 @@ export type PaginatedPermissionListResponseWritable = {
 };
 
 export type PaginatedTransactionTagListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<TransactionTagWritable>;
+    results: Array<TransactionTagWritable>;
 };
 
 export type PaginatedTransactionTagListResponseWritable = {
@@ -40224,10 +44348,10 @@ export type PaginatedTransactionTagListResponseWritable = {
 };
 
 export type PaginatedUserPermissionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserPermissionWritable>;
+    results: Array<UserPermissionWritable>;
 };
 
 export type PaginatedUserPermissionListResponseWritable = {
@@ -40236,10 +44360,10 @@ export type PaginatedUserPermissionListResponseWritable = {
 };
 
 export type PaginatedUserTagListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserTagWritable>;
+    results: Array<UserTagWritable>;
 };
 
 export type PaginatedUserTagListResponseWritable = {
@@ -40304,7 +44428,18 @@ export type PatchedAdminCreateAccessControlRuleRequestWritable = {
      * * `ip` - Ip
      */
     type?: 'ip';
-    value?: string;
+    /**
+     * An exact IP, or `*` to match every IP.
+     */
+    value?: string | null;
+    /**
+     * The ID of a list whose items are the IPs to match.
+     */
+    common_list?: string | null;
+    /**
+     * ISO 3166-1 alpha-2 codes of the countries to match.
+     */
+    countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'> | null;
     label?: string | null;
     user?: string | null;
     group?: string | null;
@@ -40536,6 +44671,85 @@ export type PatchedAdminUpdateAuthenticatorRuleRequestWritable = {
     session_age?: number | null;
 };
 
+export type PatchedAdminUpdateCaseCheckRequestWritable = {
+    done?: boolean;
+    note?: string | null;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
+};
+
+export type PatchedAdminUpdateCaseRequestWritable = {
+    /**
+     * Ids of the admin users assigned. Replaces the set.
+     */
+    assignees?: Array<string>;
+    /**
+     * Ids of the policies the case concerns. Replaces the set.
+     */
+    policies?: Array<string>;
+    title?: string | null;
+    description?: string | null;
+    /**
+     * * `open` - Open
+     * * `paused` - Paused
+     * * `closed` - Closed
+     */
+    status?: 'open' | 'paused' | 'closed';
+    /**
+     * * `low` - Low
+     * * `medium` - Medium
+     * * `high` - High
+     * * `critical` - Critical
+     */
+    priority?: 'low' | 'medium' | 'high' | 'critical' | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+    /**
+     * Ids of the alerts linked to the case. Replaces the set.
+     */
+    alerts?: Array<string>;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
+};
+
 export type PatchedAdminUpdateCompanySettingsRequestWritable = {
     allow_transactions?: boolean;
     allow_debit_transactions?: boolean;
@@ -40544,24 +44758,32 @@ export type PatchedAdminUpdateCompanySettingsRequestWritable = {
     require_transaction_subtypes?: boolean;
     require_verification?: boolean;
     allow_registrations?: boolean;
+    require_registration_code?: boolean;
     allow_overdrafts?: boolean;
     allow_session_durations?: boolean;
     require_registration?: boolean;
     default_session_duration?: number;
+    /**
+     * Default lifespan of refresh tokens in seconds. Only applies to sessions created after it is changed.
+     */
+    default_refresh_token_duration?: number;
     default_transaction_lifespan?: number;
     require_terms_and_conditions?: boolean;
     require_privacy_policy?: boolean;
     account_reference_length?: number;
-    password_reset_url?: string | null;
-    password_set_url?: string | null;
-    email_verification_url?: string | null;
-    deactivate_verification_url?: string | null;
-    request_delete_verification_url?: string | null;
-    terms_and_conditions_url?: string | null;
-    privacy_policy_url?: string | null;
+    password_reset_url?: string | string | null;
+    password_set_url?: string | string | null;
+    email_verification_url?: string | string | null;
+    deactivate_verification_url?: string | string | null;
+    request_delete_verification_url?: string | string | null;
+    registration_url?: string | string | null;
+    terms_and_conditions_url?: string | string | null;
+    privacy_policy_url?: string | string | null;
     nationalities?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     residencies?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
     supported_authenticators?: Array<'totp' | 'sms' | 'static'> | null;
+    disallowed_mobile_countries?: Array<'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW'>;
+    disallow_disposable_email_domains?: boolean;
 };
 
 export type PatchedAdminUpdateGroupFeeRequestWritable = {
@@ -40620,11 +44842,12 @@ export type PatchedAdminUpdateGroupSettingsRequestWritable = {
     allow_debit_transactions?: boolean;
     allow_credit_transactions?: boolean;
     disallowed_transaction_subtypes?: Array<UpdateGroupDisallowedTransactionSubtypeRequest>;
-    password_reset_url?: string | null;
-    password_set_url?: string | null;
-    email_verification_url?: string | null;
-    deactivate_verification_url?: string | null;
-    request_delete_verification_url?: string | null;
+    password_reset_url?: string | string | null;
+    password_set_url?: string | string | null;
+    email_verification_url?: string | string | null;
+    deactivate_verification_url?: string | string | null;
+    request_delete_verification_url?: string | string | null;
+    registration_url?: string | string | null;
 };
 
 export type PatchedAdminUpdateGroupTierFeeRequestWritable = {
@@ -40685,6 +44908,82 @@ export type PatchedAdminUpdateGroupTierSettingsRequestWritable = {
     disallowed_transaction_subtypes?: Array<UpdateGroupTierDisallowedTransactionSubtypeRequest>;
 };
 
+export type PatchedAdminUpdateRegistrationCodeRequestWritable = {
+    label?: string | null;
+    /**
+     * The name of the user group the code puts people in.
+     */
+    group?: string | null;
+    /**
+     * How many registrations the code allows. Null is no limit.
+     */
+    max_uses?: number | null;
+    expires?: number | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    archived?: boolean;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
+};
+
+export type PatchedAdminUpdateRuleRequestWritable = {
+    /**
+     * * `trigger` - Trigger
+     */
+    type?: 'trigger';
+    name?: string;
+    label?: string | null;
+    description?: string | null;
+    tags?: Array<string> | null;
+    /**
+     * * `transaction.execute` - Transaction Execute
+     * * `transaction.initiate` - Transaction Initiate
+     * * `user.create` - User Create
+     * * `user.update` - User Update
+     * * `email.create` - Email Create
+     * * `mobile.create` - Mobile Create
+     * * `mobile.create.conflict` - Mobile Create Conflict
+     * * `device.create` - Device Create
+     * * `crypto_account.create` - Crypto Account Create
+     * * `crypto_account.update` - Crypto Account Update
+     * * `user.tag.create` - User Tag Create
+     * * `user.tag.delete` - User Tag Delete
+     * * `transaction.tag.create` - Transaction Tag Create
+     * * `transaction.tag.delete` - Transaction Tag Delete
+     */
+    event?: 'transaction.execute' | 'transaction.initiate' | 'user.create' | 'user.update' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'device.create' | 'crypto_account.create' | 'crypto_account.update' | 'user.tag.create' | 'user.tag.delete' | 'transaction.tag.create' | 'transaction.tag.delete';
+    condition?: {
+        [key: string]: unknown;
+    } | null;
+    enabled?: boolean;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    /**
+     * Ids of the policies the rule enforces. Replaces the set.
+     */
+    policies?: Array<string>;
+};
+
 export type PatchedAdminUpdateTransactionCollectionRequestWritable = {
     /**
      * * `Quoted` - Quoted
@@ -40731,6 +45030,259 @@ export type PatchedAdminUpdateUserDocumentRequestWritable = {
     archived?: boolean;
     expires?: number | null;
     /**
+     * * `AF` - Afghanistan
+     * * `AX` - Åland Islands
+     * * `AL` - Albania
+     * * `DZ` - Algeria
+     * * `AS` - American Samoa
+     * * `AD` - Andorra
+     * * `AO` - Angola
+     * * `AI` - Anguilla
+     * * `AQ` - Antarctica
+     * * `AG` - Antigua and Barbuda
+     * * `AR` - Argentina
+     * * `AM` - Armenia
+     * * `AW` - Aruba
+     * * `AU` - Australia
+     * * `AT` - Austria
+     * * `AZ` - Azerbaijan
+     * * `BS` - Bahamas
+     * * `BH` - Bahrain
+     * * `BD` - Bangladesh
+     * * `BB` - Barbados
+     * * `BY` - Belarus
+     * * `BE` - Belgium
+     * * `BZ` - Belize
+     * * `BJ` - Benin
+     * * `BM` - Bermuda
+     * * `BT` - Bhutan
+     * * `BO` - Bolivia
+     * * `BQ` - Bonaire, Sint Eustatius and Saba
+     * * `BA` - Bosnia and Herzegovina
+     * * `BW` - Botswana
+     * * `BV` - Bouvet Island
+     * * `BR` - Brazil
+     * * `IO` - British Indian Ocean Territory
+     * * `BN` - Brunei
+     * * `BG` - Bulgaria
+     * * `BF` - Burkina Faso
+     * * `BI` - Burundi
+     * * `CV` - Cabo Verde
+     * * `KH` - Cambodia
+     * * `CM` - Cameroon
+     * * `CA` - Canada
+     * * `KY` - Cayman Islands
+     * * `CF` - Central African Republic
+     * * `TD` - Chad
+     * * `CL` - Chile
+     * * `CN` - China
+     * * `CX` - Christmas Island
+     * * `CC` - Cocos (Keeling) Islands
+     * * `CO` - Colombia
+     * * `KM` - Comoros
+     * * `CG` - Congo
+     * * `CD` - Congo (the Democratic Republic of the)
+     * * `CK` - Cook Islands
+     * * `CR` - Costa Rica
+     * * `CI` - Côte d'Ivoire
+     * * `HR` - Croatia
+     * * `CU` - Cuba
+     * * `CW` - Curaçao
+     * * `CY` - Cyprus
+     * * `CZ` - Czechia
+     * * `DK` - Denmark
+     * * `DJ` - Djibouti
+     * * `DM` - Dominica
+     * * `DO` - Dominican Republic
+     * * `EC` - Ecuador
+     * * `EG` - Egypt
+     * * `SV` - El Salvador
+     * * `GQ` - Equatorial Guinea
+     * * `ER` - Eritrea
+     * * `EE` - Estonia
+     * * `SZ` - Eswatini
+     * * `ET` - Ethiopia
+     * * `FK` - Falkland Islands (Malvinas)
+     * * `FO` - Faroe Islands
+     * * `FJ` - Fiji
+     * * `FI` - Finland
+     * * `FR` - France
+     * * `GF` - French Guiana
+     * * `PF` - French Polynesia
+     * * `TF` - French Southern Territories
+     * * `GA` - Gabon
+     * * `GM` - Gambia
+     * * `GE` - Georgia
+     * * `DE` - Germany
+     * * `GH` - Ghana
+     * * `GI` - Gibraltar
+     * * `GR` - Greece
+     * * `GL` - Greenland
+     * * `GD` - Grenada
+     * * `GP` - Guadeloupe
+     * * `GU` - Guam
+     * * `GT` - Guatemala
+     * * `GG` - Guernsey
+     * * `GN` - Guinea
+     * * `GW` - Guinea-Bissau
+     * * `GY` - Guyana
+     * * `HT` - Haiti
+     * * `HM` - Heard Island and McDonald Islands
+     * * `VA` - Holy See
+     * * `HN` - Honduras
+     * * `HK` - Hong Kong
+     * * `HU` - Hungary
+     * * `IS` - Iceland
+     * * `IN` - India
+     * * `ID` - Indonesia
+     * * `IR` - Iran
+     * * `IQ` - Iraq
+     * * `IE` - Ireland
+     * * `IM` - Isle of Man
+     * * `IL` - Israel
+     * * `IT` - Italy
+     * * `JM` - Jamaica
+     * * `JP` - Japan
+     * * `JE` - Jersey
+     * * `JO` - Jordan
+     * * `KZ` - Kazakhstan
+     * * `KE` - Kenya
+     * * `KI` - Kiribati
+     * * `KW` - Kuwait
+     * * `KG` - Kyrgyzstan
+     * * `LA` - Laos
+     * * `LV` - Latvia
+     * * `LB` - Lebanon
+     * * `LS` - Lesotho
+     * * `LR` - Liberia
+     * * `LY` - Libya
+     * * `LI` - Liechtenstein
+     * * `LT` - Lithuania
+     * * `LU` - Luxembourg
+     * * `MO` - Macao
+     * * `MG` - Madagascar
+     * * `MW` - Malawi
+     * * `MY` - Malaysia
+     * * `MV` - Maldives
+     * * `ML` - Mali
+     * * `MT` - Malta
+     * * `MH` - Marshall Islands
+     * * `MQ` - Martinique
+     * * `MR` - Mauritania
+     * * `MU` - Mauritius
+     * * `YT` - Mayotte
+     * * `MX` - Mexico
+     * * `FM` - Micronesia
+     * * `MD` - Moldova
+     * * `MC` - Monaco
+     * * `MN` - Mongolia
+     * * `ME` - Montenegro
+     * * `MS` - Montserrat
+     * * `MA` - Morocco
+     * * `MZ` - Mozambique
+     * * `MM` - Myanmar
+     * * `NA` - Namibia
+     * * `NR` - Nauru
+     * * `NP` - Nepal
+     * * `NL` - Netherlands
+     * * `NC` - New Caledonia
+     * * `NZ` - New Zealand
+     * * `NI` - Nicaragua
+     * * `NE` - Niger
+     * * `NG` - Nigeria
+     * * `NU` - Niue
+     * * `NF` - Norfolk Island
+     * * `KP` - North Korea
+     * * `MK` - North Macedonia
+     * * `MP` - Northern Mariana Islands
+     * * `NO` - Norway
+     * * `OM` - Oman
+     * * `PK` - Pakistan
+     * * `PW` - Palau
+     * * `PS` - Palestine, State of
+     * * `PA` - Panama
+     * * `PG` - Papua New Guinea
+     * * `PY` - Paraguay
+     * * `PE` - Peru
+     * * `PH` - Philippines
+     * * `PN` - Pitcairn
+     * * `PL` - Poland
+     * * `PT` - Portugal
+     * * `PR` - Puerto Rico
+     * * `QA` - Qatar
+     * * `RE` - Réunion
+     * * `RO` - Romania
+     * * `RU` - Russia
+     * * `RW` - Rwanda
+     * * `BL` - Saint Barthélemy
+     * * `SH` - Saint Helena, Ascension and Tristan da Cunha
+     * * `KN` - Saint Kitts and Nevis
+     * * `LC` - Saint Lucia
+     * * `MF` - Saint Martin (French part)
+     * * `PM` - Saint Pierre and Miquelon
+     * * `VC` - Saint Vincent and the Grenadines
+     * * `WS` - Samoa
+     * * `SM` - San Marino
+     * * `ST` - Sao Tome and Principe
+     * * `SA` - Saudi Arabia
+     * * `SN` - Senegal
+     * * `RS` - Serbia
+     * * `SC` - Seychelles
+     * * `SL` - Sierra Leone
+     * * `SG` - Singapore
+     * * `SX` - Sint Maarten (Dutch part)
+     * * `SK` - Slovakia
+     * * `SI` - Slovenia
+     * * `SB` - Solomon Islands
+     * * `SO` - Somalia
+     * * `ZA` - South Africa
+     * * `GS` - South Georgia and the South Sandwich Islands
+     * * `KR` - South Korea
+     * * `SS` - South Sudan
+     * * `ES` - Spain
+     * * `LK` - Sri Lanka
+     * * `SD` - Sudan
+     * * `SR` - Suriname
+     * * `SJ` - Svalbard and Jan Mayen
+     * * `SE` - Sweden
+     * * `CH` - Switzerland
+     * * `SY` - Syria
+     * * `TW` - Taiwan
+     * * `TJ` - Tajikistan
+     * * `TZ` - Tanzania
+     * * `TH` - Thailand
+     * * `TL` - Timor-Leste
+     * * `TG` - Togo
+     * * `TK` - Tokelau
+     * * `TO` - Tonga
+     * * `TT` - Trinidad and Tobago
+     * * `TN` - Tunisia
+     * * `TR` - Türkiye
+     * * `TM` - Turkmenistan
+     * * `TC` - Turks and Caicos Islands
+     * * `TV` - Tuvalu
+     * * `UG` - Uganda
+     * * `UA` - Ukraine
+     * * `AE` - United Arab Emirates
+     * * `GB` - United Kingdom
+     * * `UM` - United States Minor Outlying Islands
+     * * `US` - United States of America
+     * * `UY` - Uruguay
+     * * `UZ` - Uzbekistan
+     * * `VU` - Vanuatu
+     * * `VE` - Venezuela
+     * * `VN` - Vietnam
+     * * `VG` - Virgin Islands (British)
+     * * `VI` - Virgin Islands (U.S.)
+     * * `WF` - Wallis and Futuna
+     * * `EH` - Western Sahara
+     * * `YE` - Yemen
+     * * `ZM` - Zambia
+     * * `ZW` - Zimbabwe
+     */
+    country?: 'AF' | 'AX' | 'AL' | 'DZ' | 'AS' | 'AD' | 'AO' | 'AI' | 'AQ' | 'AG' | 'AR' | 'AM' | 'AW' | 'AU' | 'AT' | 'AZ' | 'BS' | 'BH' | 'BD' | 'BB' | 'BY' | 'BE' | 'BZ' | 'BJ' | 'BM' | 'BT' | 'BO' | 'BQ' | 'BA' | 'BW' | 'BV' | 'BR' | 'IO' | 'BN' | 'BG' | 'BF' | 'BI' | 'CV' | 'KH' | 'CM' | 'CA' | 'KY' | 'CF' | 'TD' | 'CL' | 'CN' | 'CX' | 'CC' | 'CO' | 'KM' | 'CG' | 'CD' | 'CK' | 'CR' | 'CI' | 'HR' | 'CU' | 'CW' | 'CY' | 'CZ' | 'DK' | 'DJ' | 'DM' | 'DO' | 'EC' | 'EG' | 'SV' | 'GQ' | 'ER' | 'EE' | 'SZ' | 'ET' | 'FK' | 'FO' | 'FJ' | 'FI' | 'FR' | 'GF' | 'PF' | 'TF' | 'GA' | 'GM' | 'GE' | 'DE' | 'GH' | 'GI' | 'GR' | 'GL' | 'GD' | 'GP' | 'GU' | 'GT' | 'GG' | 'GN' | 'GW' | 'GY' | 'HT' | 'HM' | 'VA' | 'HN' | 'HK' | 'HU' | 'IS' | 'IN' | 'ID' | 'IR' | 'IQ' | 'IE' | 'IM' | 'IL' | 'IT' | 'JM' | 'JP' | 'JE' | 'JO' | 'KZ' | 'KE' | 'KI' | 'KW' | 'KG' | 'LA' | 'LV' | 'LB' | 'LS' | 'LR' | 'LY' | 'LI' | 'LT' | 'LU' | 'MO' | 'MG' | 'MW' | 'MY' | 'MV' | 'ML' | 'MT' | 'MH' | 'MQ' | 'MR' | 'MU' | 'YT' | 'MX' | 'FM' | 'MD' | 'MC' | 'MN' | 'ME' | 'MS' | 'MA' | 'MZ' | 'MM' | 'NA' | 'NR' | 'NP' | 'NL' | 'NC' | 'NZ' | 'NI' | 'NE' | 'NG' | 'NU' | 'NF' | 'KP' | 'MK' | 'MP' | 'NO' | 'OM' | 'PK' | 'PW' | 'PS' | 'PA' | 'PG' | 'PY' | 'PE' | 'PH' | 'PN' | 'PL' | 'PT' | 'PR' | 'QA' | 'RE' | 'RO' | 'RU' | 'RW' | 'BL' | 'SH' | 'KN' | 'LC' | 'MF' | 'PM' | 'VC' | 'WS' | 'SM' | 'ST' | 'SA' | 'SN' | 'RS' | 'SC' | 'SL' | 'SG' | 'SX' | 'SK' | 'SI' | 'SB' | 'SO' | 'ZA' | 'GS' | 'KR' | 'SS' | 'ES' | 'LK' | 'SD' | 'SR' | 'SJ' | 'SE' | 'CH' | 'SY' | 'TW' | 'TJ' | 'TZ' | 'TH' | 'TL' | 'TG' | 'TK' | 'TO' | 'TT' | 'TN' | 'TR' | 'TM' | 'TC' | 'TV' | 'UG' | 'UA' | 'AE' | 'GB' | 'UM' | 'US' | 'UY' | 'UZ' | 'VU' | 'VE' | 'VN' | 'VG' | 'VI' | 'WF' | 'EH' | 'YE' | 'ZM' | 'ZW' | null;
+    number?: string | null;
+    /**
      * JSON merge patch of frozen (end-user immutable) elements. Supports an `actions` object keyed by action name and a `fields` object keyed by field name. Each value must be an empty object to add a freeze or `null` to remove one; a `created` timestamp is stamped on new freezes automatically.
      */
     frozen?: {
@@ -40759,7 +45311,7 @@ export type PatchedAdminUpdateUserDocumentRequestWritable = {
 };
 
 export type PatchedAdminUpdateUserInfoRequestWritable = {
-    username?: string | null;
+    username?: string | string | null;
     email?: string;
     mobile?: string;
     first_name?: string | null;
@@ -42889,9 +47441,36 @@ export type PatchedAdminUserBankAccountRequestWritable = {
     };
 };
 
+export type PatchedAdminUserContactRequestWritable = {
+    name?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    /**
+     * Optional annotations attached to the audit log. `fields` maps a changed field to `{message?, metadata?, priority?}`, e.g. `{"fields": {"status": {"message": "Verified manually", "metadata": {}, "priority": "high"}}}`. `priority` becomes the field's priority going forward. A field left at a raised priority cannot be changed by a request that omits `priority` (409); supplying one — including a lower one, which lowers the field's priority — allows the change. `object` is `{message?, metadata?}` for resources that change as a whole rather than field by field (a tag, say), e.g. `{"object": {"message": "Flagged in review"}}`; it takes no priority.
+     */
+    annotations?: {
+        /**
+         * Per-field annotations, keyed by changed field name.
+         */
+        fields?: {
+            [key: string]: {
+                message?: string;
+                priority?: 'normal' | 'high';
+            };
+        };
+        /**
+         * Annotation for the resource as a whole, for resources that change as a unit rather than field by field.
+         */
+        object?: {
+            message?: string;
+        };
+    };
+};
+
 export type PatchedAdminUserWalletAccountRequestWritable = {
     username?: string | null;
-    email?: string | null;
+    email?: string | string | null;
     mobile?: string | null;
     name?: string | null;
     type?: string | null;
@@ -43014,6 +47593,33 @@ export type TransactionTagWritable = {
     metadata?: {
         [key: string]: unknown;
     } | null;
+    /**
+     * Whether the category and key hold a `single` value or `multiple` values on this user or transaction. Adding a value to a single key deletes its other value. Once single, a key stays single, whatever later requests send. Defaults to `multiple`.
+     *
+     * * `single` - Single
+     * * `multiple` - Multiple
+     */
+    cardinality?: 'single' | 'multiple';
+};
+
+export type TransactionTagRequestWritable = {
+    category: string;
+    key: string;
+    value: string;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    /**
+     * Whether the category and key hold a `single` value or `multiple` values on this user or transaction. Adding a value to a single key deletes its other value. Once single, a key stays single, whatever later requests send. Defaults to `multiple`.
+     *
+     * * `single` - Single
+     * * `multiple` - Multiple
+     */
+    cardinality?: 'single' | 'multiple';
+    /**
+     * Deprecated: set `cardinality` to `single` instead.
+     */
+    replace?: boolean;
 };
 
 export type TransactionTagResponseWritable = {
@@ -43048,6 +47654,33 @@ export type UserTagWritable = {
     metadata?: {
         [key: string]: unknown;
     } | null;
+    /**
+     * Whether the category and key hold a `single` value or `multiple` values on this user or transaction. Adding a value to a single key deletes its other value. Once single, a key stays single, whatever later requests send. Defaults to `multiple`.
+     *
+     * * `single` - Single
+     * * `multiple` - Multiple
+     */
+    cardinality?: 'single' | 'multiple';
+};
+
+export type UserTagRequestWritable = {
+    category: string;
+    key: string;
+    value: string;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
+    /**
+     * Whether the category and key hold a `single` value or `multiple` values on this user or transaction. Adding a value to a single key deletes its other value. Once single, a key stays single, whatever later requests send. Defaults to `multiple`.
+     *
+     * * `single` - Single
+     * * `multiple` - Multiple
+     */
+    cardinality?: 'single' | 'multiple';
+    /**
+     * Deprecated: set `cardinality` to `single` instead.
+     */
+    replace?: boolean;
 };
 
 export type UserTagResponseWritable = {
@@ -43207,6 +47840,37 @@ export type AccountCurrenciesListResponses = {
 };
 
 export type AccountCurrenciesListResponse = AccountCurrenciesListResponses[keyof AccountCurrenciesListResponses];
+
+export type AccountCurrenciesEffectiveControlsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        account?: string;
+        currency?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        subtype?: string;
+        /**
+         * * `credit` - Credit
+         * * `debit` - Debit
+         */
+        tx_type?: 'credit' | 'debit';
+        user?: string;
+    };
+    url: '/3/admin/account-currencies/effective-controls/';
+};
+
+export type AccountCurrenciesEffectiveControlsListResponses = {
+    200: PaginatedAccountAssetEffectiveControlListResponse;
+};
+
+export type AccountCurrenciesEffectiveControlsListResponse = AccountCurrenciesEffectiveControlsListResponses[keyof AccountCurrenciesEffectiveControlsListResponses];
 
 export type AccountDefinitionsListData = {
     body?: never;
@@ -43731,10 +48395,33 @@ export type AccountsCurrenciesEffectiveFeesListData = {
 };
 
 export type AccountsCurrenciesEffectiveFeesListResponses = {
-    200: EffectiveFeeListResponse;
+    200: AdminEffectiveFeeListResponse;
 };
 
 export type AccountsCurrenciesEffectiveFeesListResponse = AccountsCurrenciesEffectiveFeesListResponses[keyof AccountsCurrenciesEffectiveFeesListResponses];
+
+export type AccountsCurrenciesEffectiveLimitsListData = {
+    body?: never;
+    path: {
+        code: string;
+        reference: string;
+    };
+    query?: {
+        subtype?: string;
+        /**
+         * * `credit` - Credit
+         * * `debit` - Debit
+         */
+        tx_type?: 'credit' | 'debit';
+    };
+    url: '/3/admin/accounts/{reference}/currencies/{code}/effective-limits/';
+};
+
+export type AccountsCurrenciesEffectiveLimitsListResponses = {
+    200: EffectiveLimitListResponse;
+};
+
+export type AccountsCurrenciesEffectiveLimitsListResponse = AccountsCurrenciesEffectiveLimitsListResponses[keyof AccountsCurrenciesEffectiveLimitsListResponses];
 
 export type AccountsCurrenciesFeesListData = {
     body?: never;
@@ -44016,8 +48703,8 @@ export type AlertsListData = {
         priority?: 'critical' | 'high' | 'info' | 'low' | 'medium';
         rule__name?: string;
         rule__name__icontains?: string;
-        status?: 'assigned' | 'closed' | 'open' | 'paused' | 'reopened';
-        status__in?: Array<'assigned' | 'closed' | 'open' | 'paused' | 'reopened'>;
+        status?: 'closed' | 'open';
+        status__in?: Array<'closed' | 'open'>;
         transaction?: string;
         updated?: string;
         updated__gt?: string;
@@ -44115,7 +48802,7 @@ export type AuditLogsListData = {
          */
         page_size?: number;
         resource_id?: string;
-        resource_type?: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencyfee' | 'accountcurrencylimit' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankbranchaddress' | 'bankowneraddress' | 'commonlist' | 'commonlistitem' | 'company' | 'companyaddress' | 'companybankaccount' | 'companynotification' | 'companyservice' | 'companywalletaccount' | 'cryptoowneraddress' | 'currency' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'email' | 'export' | 'exportpage' | 'group' | 'groupfee' | 'grouplimit' | 'grouppermission' | 'grouptier' | 'grouptierfee' | 'grouptierlimit' | 'grouptierrequirement' | 'grouptierrequirementset' | 'grouptierrequirementsetitem' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_point' | 'metric_schema' | 'mfa' | 'mfasmsdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mfatotpdevice' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactioncollection' | 'transactionfee' | 'transactionmessage' | 'transactionsubtype' | 'user' | 'useraddress' | 'userbankaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'userwalletaccount' | 'walletowneraddress' | 'webhook' | 'webhookrequest' | 'webhooktask';
+        resource_type?: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencyfee' | 'accountcurrencylimit' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankbranchaddress' | 'bankowneraddress' | 'case' | 'casenote' | 'casetype' | 'commonlist' | 'commonlistitem' | 'company' | 'companyaddress' | 'companybankaccount' | 'companynotification' | 'companyservice' | 'companywalletaccount' | 'cryptoowneraddress' | 'currency' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'email' | 'export' | 'exportpage' | 'group' | 'groupfee' | 'grouplimit' | 'grouppermission' | 'grouptier' | 'grouptierfee' | 'grouptierlimit' | 'grouptierrequirement' | 'grouptierrequirementset' | 'grouptierrequirementsetitem' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_point' | 'metric_schema' | 'mfa' | 'mfasmsdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mfatotpdevice' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'recoverycode' | 'refresh_token' | 'registrationcode' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactioncollection' | 'transactionfee' | 'transactionmessage' | 'transactionsubtype' | 'transactiontag' | 'user' | 'useraddress' | 'userbankaccount' | 'usercontact' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'userwalletaccount' | 'walletowneraddress' | 'webhook' | 'webhookrequest' | 'webhooktask';
         subject_user?: string;
     };
     url: '/3/admin/audit-logs/';
@@ -44507,6 +49194,409 @@ export type BankAccountsCurrenciesRetrieveResponses = {
 
 export type BankAccountsCurrenciesRetrieveResponse = BankAccountsCurrenciesRetrieveResponses[keyof BankAccountsCurrenciesRetrieveResponses];
 
+export type CaseTypesListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        archived?: boolean;
+        created?: string;
+        created__gt?: string;
+        created__gte?: string;
+        created__lt?: string;
+        created__lte?: string;
+        id?: string;
+        key?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        updated?: string;
+        updated__gt?: string;
+        updated__gte?: string;
+        updated__lt?: string;
+        updated__lte?: string;
+    };
+    url: '/3/admin/case-types/';
+};
+
+export type CaseTypesListResponses = {
+    200: PaginatedAdminCaseTypeListResponse;
+};
+
+export type CaseTypesListResponse = CaseTypesListResponses[keyof CaseTypesListResponses];
+
+export type CaseTypesRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/case-types/{identifier}/';
+};
+
+export type CaseTypesRetrieveResponses = {
+    200: AdminCaseTypeResponse;
+};
+
+export type CaseTypesRetrieveResponse = CaseTypesRetrieveResponses[keyof CaseTypesRetrieveResponses];
+
+export type CasesListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        archived?: boolean;
+        assignee?: string;
+        created?: string;
+        created__gt?: string;
+        created__gte?: string;
+        created__lt?: string;
+        created__lte?: string;
+        id?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        priority?: 'critical' | 'high' | 'low' | 'medium';
+        rule?: string;
+        status?: 'closed' | 'open' | 'paused';
+        status__in?: Array<'closed' | 'open' | 'paused'>;
+        transaction?: string;
+        type?: string;
+        updated?: string;
+        updated__gt?: string;
+        updated__gte?: string;
+        updated__lt?: string;
+        updated__lte?: string;
+        user?: string;
+    };
+    url: '/3/admin/cases/';
+};
+
+export type CasesListResponses = {
+    200: PaginatedAdminCaseListResponse;
+};
+
+export type CasesListResponse = CasesListResponses[keyof CasesListResponses];
+
+export type CasesCreateData = {
+    body: AdminCreateCaseRequestWritable;
+    path?: never;
+    query?: never;
+    url: '/3/admin/cases/';
+};
+
+export type CasesCreateResponses = {
+    201: AdminCaseResponse;
+};
+
+export type CasesCreateResponse = CasesCreateResponses[keyof CasesCreateResponses];
+
+export type CasesAlertsListData = {
+    body?: never;
+    path: {
+        case_identifier: string;
+    };
+    query?: {
+        author?: string;
+        created?: string;
+        created__gt?: string;
+        created__gte?: string;
+        created__lt?: string;
+        created__lte?: string;
+        name?: string;
+        name__icontains?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        priority?: 'critical' | 'high' | 'info' | 'low' | 'medium';
+        rule__name?: string;
+        rule__name__icontains?: string;
+        status?: 'closed' | 'open';
+        status__in?: Array<'closed' | 'open'>;
+        transaction?: string;
+        updated?: string;
+        updated__gt?: string;
+        updated__gte?: string;
+        updated__lt?: string;
+        updated__lte?: string;
+        user?: string;
+    };
+    url: '/3/admin/cases/{case_identifier}/alerts/';
+};
+
+export type CasesAlertsListResponses = {
+    200: PaginatedAdminAlertListResponse;
+};
+
+export type CasesAlertsListResponse = CasesAlertsListResponses[keyof CasesAlertsListResponses];
+
+export type CasesAlertsCreateData = {
+    body: AdminCreateCaseAlertRequest;
+    path: {
+        case_identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/cases/{case_identifier}/alerts/';
+};
+
+export type CasesAlertsCreateResponses = {
+    201: AdminAlertResponse;
+};
+
+export type CasesAlertsCreateResponse = CasesAlertsCreateResponses[keyof CasesAlertsCreateResponses];
+
+export type CasesAlertsDestroyData = {
+    body?: never;
+    path: {
+        case_identifier: string;
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/cases/{case_identifier}/alerts/{identifier}/';
+};
+
+export type CasesAlertsDestroyResponses = {
+    200: ActionResponse;
+};
+
+export type CasesAlertsDestroyResponse = CasesAlertsDestroyResponses[keyof CasesAlertsDestroyResponses];
+
+export type CasesAlertsRetrieveData = {
+    body?: never;
+    path: {
+        case_identifier: string;
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/cases/{case_identifier}/alerts/{identifier}/';
+};
+
+export type CasesAlertsRetrieveResponses = {
+    200: AdminAlertResponse;
+};
+
+export type CasesAlertsRetrieveResponse = CasesAlertsRetrieveResponses[keyof CasesAlertsRetrieveResponses];
+
+export type CasesChecksPartialUpdateData = {
+    body?: PatchedAdminUpdateCaseCheckRequestWritable;
+    path: {
+        case_identifier: string;
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/cases/{case_identifier}/checks/{identifier}/';
+};
+
+export type CasesChecksPartialUpdateResponses = {
+    200: AdminCaseResponse;
+};
+
+export type CasesChecksPartialUpdateResponse = CasesChecksPartialUpdateResponses[keyof CasesChecksPartialUpdateResponses];
+
+export type CasesChecksUpdateData = {
+    body?: AdminUpdateCaseCheckRequestWritable;
+    path: {
+        case_identifier: string;
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/cases/{case_identifier}/checks/{identifier}/';
+};
+
+export type CasesChecksUpdateResponses = {
+    200: AdminCaseResponse;
+};
+
+export type CasesChecksUpdateResponse = CasesChecksUpdateResponses[keyof CasesChecksUpdateResponses];
+
+export type CasesNotesListData = {
+    body?: never;
+    path: {
+        case_identifier: string;
+    };
+    query?: {
+        author?: string;
+        created?: string;
+        created__gt?: string;
+        created__gte?: string;
+        created__lt?: string;
+        created__lte?: string;
+        id?: string;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        updated?: string;
+        updated__gt?: string;
+        updated__gte?: string;
+        updated__lt?: string;
+        updated__lte?: string;
+    };
+    url: '/3/admin/cases/{case_identifier}/notes/';
+};
+
+export type CasesNotesListResponses = {
+    200: PaginatedAdminCaseNoteListResponse;
+};
+
+export type CasesNotesListResponse = CasesNotesListResponses[keyof CasesNotesListResponses];
+
+export type CasesNotesCreateData = {
+    body: AdminCreateCaseNoteRequestWritable;
+    path: {
+        case_identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/cases/{case_identifier}/notes/';
+};
+
+export type CasesNotesCreateResponses = {
+    201: AdminCaseNoteResponse;
+};
+
+export type CasesNotesCreateResponse = CasesNotesCreateResponses[keyof CasesNotesCreateResponses];
+
+export type CasesNotesDestroyData = {
+    body?: never;
+    path: {
+        case_identifier: string;
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/cases/{case_identifier}/notes/{identifier}/';
+};
+
+export type CasesNotesDestroyResponses = {
+    200: ActionResponse;
+};
+
+export type CasesNotesDestroyResponse = CasesNotesDestroyResponses[keyof CasesNotesDestroyResponses];
+
+export type CasesNotesRetrieveData = {
+    body?: never;
+    path: {
+        case_identifier: string;
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/cases/{case_identifier}/notes/{identifier}/';
+};
+
+export type CasesNotesRetrieveResponses = {
+    200: AdminCaseNoteResponse;
+};
+
+export type CasesNotesRetrieveResponse = CasesNotesRetrieveResponses[keyof CasesNotesRetrieveResponses];
+
+export type CasesNotesPartialUpdateData = {
+    body?: PatchedAdminCaseNoteRequest;
+    path: {
+        case_identifier: string;
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/cases/{case_identifier}/notes/{identifier}/';
+};
+
+export type CasesNotesPartialUpdateResponses = {
+    200: AdminCaseNoteResponse;
+};
+
+export type CasesNotesPartialUpdateResponse = CasesNotesPartialUpdateResponses[keyof CasesNotesPartialUpdateResponses];
+
+export type CasesNotesUpdateData = {
+    body: AdminCaseNoteRequest;
+    path: {
+        case_identifier: string;
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/cases/{case_identifier}/notes/{identifier}/';
+};
+
+export type CasesNotesUpdateResponses = {
+    200: AdminCaseNoteResponse;
+};
+
+export type CasesNotesUpdateResponse = CasesNotesUpdateResponses[keyof CasesNotesUpdateResponses];
+
+export type CasesDestroyData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/cases/{identifier}/';
+};
+
+export type CasesDestroyResponses = {
+    200: ActionResponse;
+};
+
+export type CasesDestroyResponse = CasesDestroyResponses[keyof CasesDestroyResponses];
+
+export type CasesRetrieveData = {
+    body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/cases/{identifier}/';
+};
+
+export type CasesRetrieveResponses = {
+    200: AdminCaseResponse;
+};
+
+export type CasesRetrieveResponse = CasesRetrieveResponses[keyof CasesRetrieveResponses];
+
+export type CasesPartialUpdateData = {
+    body?: PatchedAdminUpdateCaseRequestWritable;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/cases/{identifier}/';
+};
+
+export type CasesPartialUpdateResponses = {
+    200: AdminCaseResponse;
+};
+
+export type CasesPartialUpdateResponse = CasesPartialUpdateResponses[keyof CasesPartialUpdateResponses];
+
+export type CasesUpdateData = {
+    body?: AdminUpdateCaseRequestWritable;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/cases/{identifier}/';
+};
+
+export type CasesUpdateResponses = {
+    200: AdminCaseResponse;
+};
+
+export type CasesUpdateResponse = CasesUpdateResponses[keyof CasesUpdateResponses];
+
 export type ChallengesCreateData = {
     body: AdminCreateChallengeRequestWritable;
     path?: never;
@@ -44521,7 +49611,7 @@ export type ChallengesCreateResponses = {
 export type ChallengesCreateResponse = ChallengesCreateResponses[keyof ChallengesCreateResponses];
 
 export type ChallengesConsumeCreateData = {
-    body: AdminConsumeChallengeRequest;
+    body: AdminConsumeChallengeRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/challenges/consume/';
@@ -46889,16 +51979,13 @@ export type PoliciesListData = {
     body?: never;
     path?: never;
     query?: {
-        author?: string;
+        archived?: boolean;
         created?: string;
         created__gt?: string;
         created__gte?: string;
         created__lt?: string;
         created__lte?: string;
-        enabled?: boolean;
-        event?: 'device.create' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'transaction.execute' | 'transaction.initiate' | 'transaction.tag.create' | 'transaction.tag.delete' | 'user.create' | 'user.tag.create' | 'user.tag.delete' | 'user.update';
         id?: string;
-        name?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -46907,8 +51994,8 @@ export type PoliciesListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        tag?: string;
-        type?: 'trigger';
+        title?: string;
+        title__icontains?: string;
         updated?: string;
         updated__gt?: string;
         updated__gte?: string;
@@ -46919,20 +52006,20 @@ export type PoliciesListData = {
 };
 
 export type PoliciesListResponses = {
-    200: PaginatedAdminRuleListResponse;
+    200: PaginatedAdminPolicyListResponse;
 };
 
 export type PoliciesListResponse = PoliciesListResponses[keyof PoliciesListResponses];
 
 export type PoliciesCreateData = {
-    body: AdminCreateRuleRequest;
+    body: AdminCreatePolicyRequest;
     path?: never;
     query?: never;
     url: '/3/admin/policies/';
 };
 
 export type PoliciesCreateResponses = {
-    201: AdminRuleResponse;
+    201: AdminCreatePolicyResponse;
 };
 
 export type PoliciesCreateResponse = PoliciesCreateResponses[keyof PoliciesCreateResponses];
@@ -46962,13 +52049,13 @@ export type PoliciesRetrieveData = {
 };
 
 export type PoliciesRetrieveResponses = {
-    200: AdminRuleResponse;
+    200: AdminPolicyResponse;
 };
 
 export type PoliciesRetrieveResponse = PoliciesRetrieveResponses[keyof PoliciesRetrieveResponses];
 
 export type PoliciesPartialUpdateData = {
-    body?: PatchedAdminRuleRequest;
+    body?: PatchedAdminPolicyRequest;
     path: {
         identifier: string;
     };
@@ -46977,13 +52064,13 @@ export type PoliciesPartialUpdateData = {
 };
 
 export type PoliciesPartialUpdateResponses = {
-    200: AdminRuleResponse;
+    200: AdminPolicyResponse;
 };
 
 export type PoliciesPartialUpdateResponse = PoliciesPartialUpdateResponses[keyof PoliciesPartialUpdateResponses];
 
 export type PoliciesUpdateData = {
-    body: AdminRuleRequest;
+    body: AdminPolicyRequest;
     path: {
         identifier: string;
     };
@@ -46992,23 +52079,35 @@ export type PoliciesUpdateData = {
 };
 
 export type PoliciesUpdateResponses = {
-    200: AdminRuleResponse;
+    200: AdminPolicyResponse;
 };
 
 export type PoliciesUpdateResponse = PoliciesUpdateResponses[keyof PoliciesUpdateResponses];
 
-export type PoliciesEffectsListData = {
+export type RegistrationCodesListData = {
     body?: never;
-    path: {
-        rule_identifier: string;
-    };
+    path?: never;
     query?: {
+        archived?: boolean;
+        code?: string;
+        code__icontains?: string;
         created?: string;
         created__gt?: string;
         created__gte?: string;
         created__lt?: string;
         created__lte?: string;
+        email?: string;
+        email__icontains?: string;
+        email__isnull?: boolean;
+        expires?: string | null;
+        expires__gt?: string | null;
+        expires__gte?: string | null;
+        expires__lt?: string | null;
+        expires__lte?: string | null;
+        group?: string;
         id?: string;
+        label?: string;
+        label__icontains?: string;
         /**
          * A page number within the paginated result set.
          */
@@ -47017,146 +52116,126 @@ export type PoliciesEffectsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        type?: 'create_account_asset_limit' | 'create_transaction_alert' | 'create_transaction_message' | 'create_transaction_tag' | 'create_user_alert' | 'create_user_message' | 'create_user_tag' | 'disable_user_transaction_type' | 'disable_user_transactions';
         updated?: string;
         updated__gt?: string;
         updated__gte?: string;
         updated__lt?: string;
         updated__lte?: string;
+        uses?: number;
+        uses__gt?: number;
+        uses__gte?: number;
+        uses__lt?: number;
+        uses__lte?: number;
     };
-    url: '/3/admin/policies/{rule_identifier}/effects/';
+    url: '/3/admin/registration-codes/';
 };
 
-export type PoliciesEffectsListResponses = {
-    200: PaginatedAdminRuleEffectListResponse;
+export type RegistrationCodesListResponses = {
+    200: PaginatedAdminRegistrationCodeListResponse;
 };
 
-export type PoliciesEffectsListResponse = PoliciesEffectsListResponses[keyof PoliciesEffectsListResponses];
+export type RegistrationCodesListResponse = RegistrationCodesListResponses[keyof RegistrationCodesListResponses];
 
-export type PoliciesEffectsCreateData = {
-    body: AdminCreateRuleEffectRequest;
-    path: {
-        rule_identifier: string;
-    };
+export type RegistrationCodesCreateData = {
+    body?: AdminCreateRegistrationCodeRequestWritable;
+    path?: never;
     query?: never;
-    url: '/3/admin/policies/{rule_identifier}/effects/';
+    url: '/3/admin/registration-codes/';
 };
 
-export type PoliciesEffectsCreateResponses = {
-    201: AdminRuleEffectResponse;
+export type RegistrationCodesCreateResponses = {
+    201: AdminRegistrationCodeResponse;
 };
 
-export type PoliciesEffectsCreateResponse = PoliciesEffectsCreateResponses[keyof PoliciesEffectsCreateResponses];
+export type RegistrationCodesCreateResponse = RegistrationCodesCreateResponses[keyof RegistrationCodesCreateResponses];
 
-export type PoliciesEffectsDestroyData = {
+export type RegistrationCodesDestroyData = {
     body?: never;
     path: {
         identifier: string;
-        rule_identifier: string;
     };
     query?: never;
-    url: '/3/admin/policies/{rule_identifier}/effects/{identifier}/';
+    url: '/3/admin/registration-codes/{identifier}/';
 };
 
-export type PoliciesEffectsDestroyResponses = {
+export type RegistrationCodesDestroyResponses = {
     200: ActionResponse;
 };
 
-export type PoliciesEffectsDestroyResponse = PoliciesEffectsDestroyResponses[keyof PoliciesEffectsDestroyResponses];
+export type RegistrationCodesDestroyResponse = RegistrationCodesDestroyResponses[keyof RegistrationCodesDestroyResponses];
 
-export type PoliciesEffectsRetrieveData = {
+export type RegistrationCodesRetrieveData = {
     body?: never;
     path: {
         identifier: string;
-        rule_identifier: string;
     };
     query?: never;
-    url: '/3/admin/policies/{rule_identifier}/effects/{identifier}/';
+    url: '/3/admin/registration-codes/{identifier}/';
 };
 
-export type PoliciesEffectsRetrieveResponses = {
-    200: AdminRuleEffectResponse;
+export type RegistrationCodesRetrieveResponses = {
+    200: AdminRegistrationCodeResponse;
 };
 
-export type PoliciesEffectsRetrieveResponse = PoliciesEffectsRetrieveResponses[keyof PoliciesEffectsRetrieveResponses];
+export type RegistrationCodesRetrieveResponse = RegistrationCodesRetrieveResponses[keyof RegistrationCodesRetrieveResponses];
 
-export type PoliciesEffectsPartialUpdateData = {
-    body?: PatchedAdminCreateRuleEffectRequest;
+export type RegistrationCodesPartialUpdateData = {
+    body?: PatchedAdminUpdateRegistrationCodeRequestWritable;
     path: {
         identifier: string;
-        rule_identifier: string;
     };
     query?: never;
-    url: '/3/admin/policies/{rule_identifier}/effects/{identifier}/';
+    url: '/3/admin/registration-codes/{identifier}/';
 };
 
-export type PoliciesEffectsPartialUpdateResponses = {
-    200: AdminRuleEffectResponse;
+export type RegistrationCodesPartialUpdateResponses = {
+    200: AdminRegistrationCodeResponse;
 };
 
-export type PoliciesEffectsPartialUpdateResponse = PoliciesEffectsPartialUpdateResponses[keyof PoliciesEffectsPartialUpdateResponses];
+export type RegistrationCodesPartialUpdateResponse = RegistrationCodesPartialUpdateResponses[keyof RegistrationCodesPartialUpdateResponses];
 
-export type PoliciesEffectsUpdateData = {
-    body: AdminCreateRuleEffectRequest;
+export type RegistrationCodesUpdateData = {
+    body?: AdminUpdateRegistrationCodeRequestWritable;
     path: {
         identifier: string;
-        rule_identifier: string;
     };
     query?: never;
-    url: '/3/admin/policies/{rule_identifier}/effects/{identifier}/';
+    url: '/3/admin/registration-codes/{identifier}/';
 };
 
-export type PoliciesEffectsUpdateResponses = {
-    200: AdminRuleEffectResponse;
+export type RegistrationCodesUpdateResponses = {
+    200: AdminRegistrationCodeResponse;
 };
 
-export type PoliciesEffectsUpdateResponse = PoliciesEffectsUpdateResponses[keyof PoliciesEffectsUpdateResponses];
+export type RegistrationCodesUpdateResponse = RegistrationCodesUpdateResponses[keyof RegistrationCodesUpdateResponses];
 
-export type PolicyLogsListData = {
+export type RegistrationCodesDeliverCreateData = {
     body?: never;
+    path: {
+        identifier: string;
+    };
+    query?: never;
+    url: '/3/admin/registration-codes/{identifier}/deliver/';
+};
+
+export type RegistrationCodesDeliverCreateResponses = {
+    200: ActionResponse;
+};
+
+export type RegistrationCodesDeliverCreateResponse = RegistrationCodesDeliverCreateResponses[keyof RegistrationCodesDeliverCreateResponses];
+
+export type RegistrationCodesInviteCreateData = {
+    body: AdminInviteRegistrationCodeRequest;
     path?: never;
-    query?: {
-        created?: string;
-        created__gt?: string;
-        created__gte?: string;
-        created__lt?: string;
-        created__lte?: string;
-        id?: string;
-        /**
-         * A page number within the paginated result set.
-         */
-        page?: number;
-        /**
-         * Number of results to return per page.
-         */
-        page_size?: number;
-        resource?: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencyfee' | 'accountcurrencylimit' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankbranchaddress' | 'bankowneraddress' | 'commonlist' | 'commonlistitem' | 'company' | 'companyaddress' | 'companybankaccount' | 'companynotification' | 'companyservice' | 'companywalletaccount' | 'cryptoowneraddress' | 'currency' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'email' | 'export' | 'exportpage' | 'group' | 'groupfee' | 'grouplimit' | 'grouppermission' | 'grouptier' | 'grouptierfee' | 'grouptierlimit' | 'grouptierrequirement' | 'grouptierrequirementset' | 'grouptierrequirementsetitem' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_point' | 'metric_schema' | 'mfa' | 'mfasmsdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mfatotpdevice' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactioncollection' | 'transactionfee' | 'transactionmessage' | 'transactionsubtype' | 'user' | 'useraddress' | 'userbankaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'userwalletaccount' | 'walletowneraddress' | 'webhook' | 'webhookrequest' | 'webhooktask';
-        resource_id?: string;
-        rule?: string;
-    };
-    url: '/3/admin/policy-logs/';
-};
-
-export type PolicyLogsListResponses = {
-    200: PaginatedAdminRuleLogListResponse;
-};
-
-export type PolicyLogsListResponse = PolicyLogsListResponses[keyof PolicyLogsListResponses];
-
-export type PolicyLogsRetrieveData = {
-    body?: never;
-    path: {
-        identifier: string;
-    };
     query?: never;
-    url: '/3/admin/policy-logs/{identifier}/';
+    url: '/3/admin/registration-codes/invite/';
 };
 
-export type PolicyLogsRetrieveResponses = {
-    200: AdminRuleLogResponse;
+export type RegistrationCodesInviteCreateResponses = {
+    201: AdminInviteRegistrationCodeResponse;
 };
 
-export type PolicyLogsRetrieveResponse = PolicyLogsRetrieveResponses[keyof PolicyLogsRetrieveResponses];
+export type RegistrationCodesInviteCreateResponse = RegistrationCodesInviteCreateResponses[keyof RegistrationCodesInviteCreateResponses];
 
 export type RequestsListData = {
     body?: never;
@@ -47183,10 +52262,14 @@ export type RequestsListData = {
         page_size?: number;
         path?: string;
         path__contains?: string;
-        resource?: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencyfee' | 'accountcurrencylimit' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankbranchaddress' | 'bankowneraddress' | 'commonlist' | 'commonlistitem' | 'company' | 'companyaddress' | 'companybankaccount' | 'companynotification' | 'companyservice' | 'companywalletaccount' | 'cryptoowneraddress' | 'currency' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'email' | 'export' | 'exportpage' | 'group' | 'groupfee' | 'grouplimit' | 'grouppermission' | 'grouptier' | 'grouptierfee' | 'grouptierlimit' | 'grouptierrequirement' | 'grouptierrequirementset' | 'grouptierrequirementsetitem' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_point' | 'metric_schema' | 'mfa' | 'mfasmsdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mfatotpdevice' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactioncollection' | 'transactionfee' | 'transactionmessage' | 'transactionsubtype' | 'user' | 'useraddress' | 'userbankaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'userwalletaccount' | 'walletowneraddress' | 'webhook' | 'webhookrequest' | 'webhooktask';
+        resource?: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencyfee' | 'accountcurrencylimit' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankbranchaddress' | 'bankowneraddress' | 'case' | 'casenote' | 'casetype' | 'commonlist' | 'commonlistitem' | 'company' | 'companyaddress' | 'companybankaccount' | 'companynotification' | 'companyservice' | 'companywalletaccount' | 'cryptoowneraddress' | 'currency' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'email' | 'export' | 'exportpage' | 'group' | 'groupfee' | 'grouplimit' | 'grouppermission' | 'grouptier' | 'grouptierfee' | 'grouptierlimit' | 'grouptierrequirement' | 'grouptierrequirementset' | 'grouptierrequirementsetitem' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_point' | 'metric_schema' | 'mfa' | 'mfasmsdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mfatotpdevice' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'recoverycode' | 'refresh_token' | 'registrationcode' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactioncollection' | 'transactionfee' | 'transactionmessage' | 'transactionsubtype' | 'transactiontag' | 'user' | 'useraddress' | 'userbankaccount' | 'usercontact' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'userwalletaccount' | 'walletowneraddress' | 'webhook' | 'webhookrequest' | 'webhooktask';
         resource_id?: string;
         scheme?: string;
         status_code?: number;
+        status_code__gt?: number;
+        status_code__gte?: number;
+        status_code__lt?: number;
+        status_code__lte?: number;
         token_key?: string;
         user?: string;
     };
@@ -47232,7 +52315,7 @@ export type RuleLogsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        resource?: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencyfee' | 'accountcurrencylimit' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankbranchaddress' | 'bankowneraddress' | 'commonlist' | 'commonlistitem' | 'company' | 'companyaddress' | 'companybankaccount' | 'companynotification' | 'companyservice' | 'companywalletaccount' | 'cryptoowneraddress' | 'currency' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'email' | 'export' | 'exportpage' | 'group' | 'groupfee' | 'grouplimit' | 'grouppermission' | 'grouptier' | 'grouptierfee' | 'grouptierlimit' | 'grouptierrequirement' | 'grouptierrequirementset' | 'grouptierrequirementsetitem' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_point' | 'metric_schema' | 'mfa' | 'mfasmsdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mfatotpdevice' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'recoverycode' | 'refresh_token' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactioncollection' | 'transactionfee' | 'transactionmessage' | 'transactionsubtype' | 'user' | 'useraddress' | 'userbankaccount' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'userwalletaccount' | 'walletowneraddress' | 'webhook' | 'webhookrequest' | 'webhooktask';
+        resource?: 'accesscontrolrule' | 'account' | 'accountcurrency' | 'accountcurrencyfee' | 'accountcurrencylimit' | 'accountdefinition' | 'accountdefinitiongroup' | 'accountdefinitiongroupcurrency' | 'alert' | 'auditlog' | 'authenticator' | 'authenticatorchallenge' | 'authenticatorrule' | 'backgroundtask' | 'bankbranchaddress' | 'bankowneraddress' | 'case' | 'casenote' | 'casetype' | 'commonlist' | 'commonlistitem' | 'company' | 'companyaddress' | 'companybankaccount' | 'companynotification' | 'companyservice' | 'companywalletaccount' | 'cryptoowneraddress' | 'currency' | 'device' | 'deviceapp' | 'document' | 'documenttype' | 'email' | 'export' | 'exportpage' | 'group' | 'groupfee' | 'grouplimit' | 'grouppermission' | 'grouptier' | 'grouptierfee' | 'grouptierlimit' | 'grouptierrequirement' | 'grouptierrequirementset' | 'grouptierrequirementsetitem' | 'legalterm' | 'legaltermversion' | 'metric' | 'metric_point' | 'metric_schema' | 'mfa' | 'mfasmsdevice' | 'mfastaticdevice' | 'mfatokenverification' | 'mfatotpdevice' | 'mobile' | 'mobileconfirmation' | 'notification' | 'oauthclient' | 'oauthlink' | 'oauthsession' | 'oidckey' | 'permission' | 'policy' | 'recoverycode' | 'refresh_token' | 'registrationcode' | 'request' | 'resourcerequirementrule' | 'rule' | 'ruleeffect' | 'rulelog' | 'service' | 'statement' | 'token' | 'transaction' | 'transactioncollection' | 'transactionfee' | 'transactionmessage' | 'transactionsubtype' | 'transactiontag' | 'user' | 'useraddress' | 'userbankaccount' | 'usercontact' | 'usercryptoaccount' | 'usercryptoaccountattestation' | 'userlegaltermversion' | 'usermessage' | 'userpermission' | 'usertag' | 'userwalletaccount' | 'walletowneraddress' | 'webhook' | 'webhookrequest' | 'webhooktask';
         resource_id?: string;
         rule?: string;
     };
@@ -47271,7 +52354,7 @@ export type RulesListData = {
         created__lt?: string;
         created__lte?: string;
         enabled?: boolean;
-        event?: 'device.create' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'transaction.execute' | 'transaction.initiate' | 'transaction.tag.create' | 'transaction.tag.delete' | 'user.create' | 'user.tag.create' | 'user.tag.delete' | 'user.update';
+        event?: 'crypto_account.create' | 'crypto_account.update' | 'device.create' | 'email.create' | 'mobile.create' | 'mobile.create.conflict' | 'transaction.execute' | 'transaction.initiate' | 'transaction.tag.create' | 'transaction.tag.delete' | 'user.create' | 'user.tag.create' | 'user.tag.delete' | 'user.update';
         id?: string;
         name?: string;
         /**
@@ -47282,6 +52365,7 @@ export type RulesListData = {
          * Number of results to return per page.
          */
         page_size?: number;
+        policy?: string;
         tag?: string;
         type?: 'trigger';
         updated?: string;
@@ -47300,14 +52384,14 @@ export type RulesListResponses = {
 export type RulesListResponse = RulesListResponses[keyof RulesListResponses];
 
 export type RulesCreateData = {
-    body: AdminCreateRuleRequest;
+    body: AdminCreateRuleRequestWritable;
     path?: never;
     query?: never;
     url: '/3/admin/rules/';
 };
 
 export type RulesCreateResponses = {
-    201: AdminRuleResponse;
+    201: AdminExtendedRuleResponse;
 };
 
 export type RulesCreateResponse = RulesCreateResponses[keyof RulesCreateResponses];
@@ -47337,13 +52421,13 @@ export type RulesRetrieveData = {
 };
 
 export type RulesRetrieveResponses = {
-    200: AdminRuleResponse;
+    200: AdminExtendedRuleResponse;
 };
 
 export type RulesRetrieveResponse = RulesRetrieveResponses[keyof RulesRetrieveResponses];
 
 export type RulesPartialUpdateData = {
-    body?: PatchedAdminRuleRequest;
+    body?: PatchedAdminUpdateRuleRequestWritable;
     path: {
         identifier: string;
     };
@@ -47352,13 +52436,13 @@ export type RulesPartialUpdateData = {
 };
 
 export type RulesPartialUpdateResponses = {
-    200: AdminRuleResponse;
+    200: AdminExtendedRuleResponse;
 };
 
 export type RulesPartialUpdateResponse = RulesPartialUpdateResponses[keyof RulesPartialUpdateResponses];
 
 export type RulesUpdateData = {
-    body: AdminRuleRequest;
+    body: AdminUpdateRuleRequestWritable;
     path: {
         identifier: string;
     };
@@ -47367,7 +52451,7 @@ export type RulesUpdateData = {
 };
 
 export type RulesUpdateResponses = {
-    200: AdminRuleResponse;
+    200: AdminExtendedRuleResponse;
 };
 
 export type RulesUpdateResponse = RulesUpdateResponses[keyof RulesUpdateResponses];
@@ -47392,7 +52476,7 @@ export type RulesEffectsListData = {
          * Number of results to return per page.
          */
         page_size?: number;
-        type?: 'create_account_asset_limit' | 'create_transaction_alert' | 'create_transaction_message' | 'create_transaction_tag' | 'create_user_alert' | 'create_user_message' | 'create_user_tag' | 'disable_user_transaction_type' | 'disable_user_transactions';
+        type?: 'create_account_asset_limit' | 'create_transaction_alert' | 'create_transaction_case' | 'create_transaction_message' | 'create_transaction_tag' | 'create_user_alert' | 'create_user_case' | 'create_user_message' | 'create_user_tag' | 'disable_user_transaction_type' | 'disable_user_transactions' | 'generate_risk_score_tag';
         updated?: string;
         updated__gt?: string;
         updated__gte?: string;
@@ -48363,7 +53447,7 @@ export type TransactionsTagsListResponses = {
 export type TransactionsTagsListResponse = TransactionsTagsListResponses[keyof TransactionsTagsListResponses];
 
 export type TransactionsTagsCreateData = {
-    body: TransactionTagRequest;
+    body: TransactionTagRequestWritable;
     path: {
         tx_code: string;
     };
@@ -48477,22 +53561,28 @@ export type UsersListData = {
         balance?: string;
         created?: string;
         created__gt?: string;
+        created__gte?: string;
         created__lt?: string;
+        created__lte?: string;
+        crypto_account?: string;
         currency?: string;
         currency__code?: string;
         deactivated?: boolean;
+        device?: string;
         email?: string;
         email__contains?: string;
         first_name?: string;
         first_name__contains?: string;
         first_name__icontains?: string;
         group?: string;
+        group__exclude?: string;
         group__isnull?: boolean;
         id?: string;
         id__contains?: string;
         id__in?: string;
         id_number?: string;
         id_number__contains?: string;
+        ip_address?: string;
         language?: string;
         last_login?: string | null;
         last_login__gt?: string | null;
@@ -48776,6 +53866,7 @@ export type UsersListData = {
          * Number of results to return per page.
          */
         page_size?: number;
+        registration_code?: string;
         /**
          * * `AF` - Afghanistan
          * * `AX` - Åland Islands
@@ -49034,10 +54125,14 @@ export type UsersListData = {
         status?: 'declined' | 'incomplete' | 'not_started' | 'obsolete' | 'offboarded' | 'paused' | 'pending' | 'resubmission_requested' | 'under_review' | 'verified';
         status__in?: Array<'declined' | 'incomplete' | 'not_started' | 'obsolete' | 'offboarded' | 'paused' | 'pending' | 'resubmission_requested' | 'under_review' | 'verified'>;
         tag?: string;
+        tax_number?: string;
+        tax_number__contains?: string;
         temporary?: boolean;
         updated?: string;
         updated__gt?: string;
+        updated__gte?: string;
         updated__lt?: string;
+        updated__lte?: string;
         user?: string;
         username?: string;
         username__contains?: string;
@@ -49095,7 +54190,7 @@ export type UsersPartialUpdateResponses = {
 export type UsersPartialUpdateResponse = UsersPartialUpdateResponses[keyof UsersPartialUpdateResponses];
 
 export type UsersUpdateData = {
-    body: AdminUpdateUserInfoRequestWritable;
+    body?: AdminUpdateUserInfoRequestWritable;
     path: {
         identifier: string;
     };
@@ -49661,6 +54756,11 @@ export type UsersBankAccountsListData = {
          */
         page_size?: number;
         status?: 'declined' | 'incomplete' | 'not_started' | 'obsolete' | 'paused' | 'pending' | 'verified';
+        updated?: string;
+        updated__gt?: string;
+        updated__gte?: string;
+        updated__lt?: string;
+        updated__lte?: string;
         user?: string;
     };
     url: '/3/admin/users/bank-accounts/';
@@ -49869,12 +54969,132 @@ export type UsersBankAccountsCurrenciesRetrieveResponses = {
 
 export type UsersBankAccountsCurrenciesRetrieveResponse = UsersBankAccountsCurrenciesRetrieveResponses[keyof UsersBankAccountsCurrenciesRetrieveResponses];
 
+export type UsersContactsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        created?: string;
+        created__gt?: string;
+        created__gte?: string;
+        created__lt?: string;
+        created__lte?: string;
+        identifier?: string;
+        name?: string;
+        name__contains?: string;
+        /**
+         * Ordering
+         *
+         * * `created` - Created
+         * * `-created` - Created (descending)
+         * * `name` - Name
+         * * `-name` - Name (descending)
+         */
+        orderby?: Array<'-created' | '-name' | 'created' | 'name'>;
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+        type?: 'email' | 'mobile';
+        updated?: string;
+        updated__gt?: string;
+        updated__gte?: string;
+        updated__lt?: string;
+        updated__lte?: string;
+        user?: string;
+    };
+    url: '/3/admin/users/contacts/';
+};
+
+export type UsersContactsListResponses = {
+    200: PaginatedAdminUserContactListResponse;
+};
+
+export type UsersContactsListResponse = UsersContactsListResponses[keyof UsersContactsListResponses];
+
+export type UsersContactsCreateData = {
+    body: AdminCreateUserContactRequestWritable;
+    path?: never;
+    query?: never;
+    url: '/3/admin/users/contacts/';
+};
+
+export type UsersContactsCreateResponses = {
+    201: AdminUserContactResponse;
+};
+
+export type UsersContactsCreateResponse = UsersContactsCreateResponses[keyof UsersContactsCreateResponses];
+
+export type UsersContactsDestroyData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/3/admin/users/contacts/{id}/';
+};
+
+export type UsersContactsDestroyResponses = {
+    200: ActionResponse;
+};
+
+export type UsersContactsDestroyResponse = UsersContactsDestroyResponses[keyof UsersContactsDestroyResponses];
+
+export type UsersContactsRetrieveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/3/admin/users/contacts/{id}/';
+};
+
+export type UsersContactsRetrieveResponses = {
+    200: AdminUserContactResponse;
+};
+
+export type UsersContactsRetrieveResponse = UsersContactsRetrieveResponses[keyof UsersContactsRetrieveResponses];
+
+export type UsersContactsPartialUpdateData = {
+    body?: PatchedAdminUserContactRequestWritable;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/3/admin/users/contacts/{id}/';
+};
+
+export type UsersContactsPartialUpdateResponses = {
+    200: AdminUserContactResponse;
+};
+
+export type UsersContactsPartialUpdateResponse = UsersContactsPartialUpdateResponses[keyof UsersContactsPartialUpdateResponses];
+
+export type UsersContactsUpdateData = {
+    body?: AdminUserContactRequestWritable;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/3/admin/users/contacts/{id}/';
+};
+
+export type UsersContactsUpdateResponses = {
+    200: AdminUserContactResponse;
+};
+
+export type UsersContactsUpdateResponse = UsersContactsUpdateResponses[keyof UsersContactsUpdateResponses];
+
 export type UsersCryptoAccountsListData = {
     body?: never;
     path?: never;
     query?: {
         account_currency?: string;
         action?: 'deposit' | 'origin' | 'withdraw';
+        address?: string;
         created?: string;
         created__gt?: string;
         created__gte?: string;
@@ -49893,6 +55113,11 @@ export type UsersCryptoAccountsListData = {
          */
         page_size?: number;
         status?: 'declined' | 'incomplete' | 'not_started' | 'obsolete' | 'paused' | 'pending' | 'verified';
+        updated?: string;
+        updated__gt?: string;
+        updated__gte?: string;
+        updated__lt?: string;
+        updated__lte?: string;
         user?: string;
     };
     url: '/3/admin/users/crypto-accounts/';
@@ -50105,6 +55330,11 @@ export type UsersDevicesListData = {
     body?: never;
     path?: never;
     query?: {
+        created?: string;
+        created__gt?: string;
+        created__gte?: string;
+        created__lt?: string;
+        created__lte?: string;
         imei?: string;
         /**
          * A page number within the paginated result set.
@@ -50114,6 +55344,11 @@ export type UsersDevicesListData = {
          * Number of results to return per page.
          */
         page_size?: number;
+        updated?: string;
+        updated__gt?: string;
+        updated__gte?: string;
+        updated__lt?: string;
+        updated__lte?: string;
         user?: string;
     };
     url: '/3/admin/users/devices/';
@@ -51225,7 +56460,7 @@ export type WebhookTasksListData = {
         updated__lt?: string;
         updated__lte?: string;
         webhook?: number;
-        webhook__event?: 'account.create' | 'account.currency.create' | 'account.update' | 'address.create' | 'address.update' | 'alert.create' | 'alert.update' | 'bank_account.create' | 'bank_account.delete' | 'bank_account.update' | 'company.link.create' | 'company.link.update' | 'company.update' | 'crypto_account.create' | 'crypto_account.update' | 'currency.create' | 'currency.update' | 'device.create' | 'document.create' | 'document.update' | 'email.create' | 'email.update' | 'mfa.sms.verify' | 'mfa.sms.verify.consume' | 'mobile.create' | 'mobile.update' | 'transaction.create' | 'transaction.execute' | 'transaction.initiate' | 'transaction.transition.create' | 'transaction.transition.update' | 'transaction.update' | 'user.create' | 'user.deactivate.verify' | 'user.email.verify' | 'user.mobile.verify' | 'user.mobile.verify.consume' | 'user.password.reset' | 'user.password.set' | 'user.request_delete.verify' | 'user.update' | 'wallet_account.create' | 'wallet_account.delete' | 'wallet_account.update';
+        webhook__event?: 'account.create' | 'account.currency.create' | 'account.update' | 'address.create' | 'address.delete' | 'address.update' | 'alert.create' | 'alert.update' | 'bank_account.create' | 'bank_account.delete' | 'bank_account.update' | 'company.link.create' | 'company.link.update' | 'company.update' | 'crypto_account.create' | 'crypto_account.update' | 'currency.create' | 'currency.update' | 'device.create' | 'document.create' | 'document.delete' | 'document.update' | 'email.create' | 'email.update' | 'mfa.sms.verify' | 'mfa.sms.verify.consume' | 'mobile.create' | 'mobile.update' | 'registration_code.invite' | 'transaction.create' | 'transaction.execute' | 'transaction.initiate' | 'transaction.transition.create' | 'transaction.transition.update' | 'transaction.update' | 'user.create' | 'user.deactivate.verify' | 'user.email.verify' | 'user.mobile.verify' | 'user.mobile.verify.consume' | 'user.password.reset' | 'user.password.set' | 'user.request_delete.verify' | 'user.update' | 'wallet_account.create' | 'wallet_account.delete' | 'wallet_account.update';
         webhook__secret?: string;
         webhook__url?: string;
     };
@@ -51298,7 +56533,7 @@ export type WebhooksListData = {
     body?: never;
     path?: never;
     query?: {
-        event?: 'account.create' | 'account.currency.create' | 'account.update' | 'address.create' | 'address.update' | 'alert.create' | 'alert.update' | 'bank_account.create' | 'bank_account.delete' | 'bank_account.update' | 'company.link.create' | 'company.link.update' | 'company.update' | 'crypto_account.create' | 'crypto_account.update' | 'currency.create' | 'currency.update' | 'device.create' | 'document.create' | 'document.update' | 'email.create' | 'email.update' | 'mfa.sms.verify' | 'mfa.sms.verify.consume' | 'mobile.create' | 'mobile.update' | 'transaction.create' | 'transaction.execute' | 'transaction.initiate' | 'transaction.transition.create' | 'transaction.transition.update' | 'transaction.update' | 'user.create' | 'user.deactivate.verify' | 'user.email.verify' | 'user.mobile.verify' | 'user.mobile.verify.consume' | 'user.password.reset' | 'user.password.set' | 'user.request_delete.verify' | 'user.update' | 'wallet_account.create' | 'wallet_account.delete' | 'wallet_account.update';
+        event?: 'account.create' | 'account.currency.create' | 'account.update' | 'address.create' | 'address.delete' | 'address.update' | 'alert.create' | 'alert.update' | 'bank_account.create' | 'bank_account.delete' | 'bank_account.update' | 'company.link.create' | 'company.link.update' | 'company.update' | 'crypto_account.create' | 'crypto_account.update' | 'currency.create' | 'currency.update' | 'device.create' | 'document.create' | 'document.delete' | 'document.update' | 'email.create' | 'email.update' | 'mfa.sms.verify' | 'mfa.sms.verify.consume' | 'mobile.create' | 'mobile.update' | 'registration_code.invite' | 'transaction.create' | 'transaction.execute' | 'transaction.initiate' | 'transaction.transition.create' | 'transaction.transition.update' | 'transaction.update' | 'user.create' | 'user.deactivate.verify' | 'user.email.verify' | 'user.mobile.verify' | 'user.mobile.verify.consume' | 'user.password.reset' | 'user.password.set' | 'user.request_delete.verify' | 'user.update' | 'wallet_account.create' | 'wallet_account.delete' | 'wallet_account.update';
         /**
          * A page number within the paginated result set.
          */

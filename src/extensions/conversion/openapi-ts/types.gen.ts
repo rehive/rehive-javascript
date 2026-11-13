@@ -4,11 +4,8 @@ export type ClientOptions = {
     baseUrl: 'https://conversion.services.rehive.com/api/' | (string & {});
 };
 
-/**
- * This serializer can be used if only a `status` is required in the response.
- */
 export type ActionResponse = {
-    status?: string;
+    status: string;
 };
 
 export type Activate = {
@@ -18,12 +15,6 @@ export type Activate = {
     readonly secret: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCompany = {
     readonly id: string;
     readonly secret: string;
@@ -33,16 +24,10 @@ export type AdminCompany = {
 };
 
 export type AdminCompanyResponse = {
-    status?: string;
-    data?: AdminCompany;
+    status: string;
+    data: AdminCompany;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminConversion = {
     readonly id: string;
     readonly user: string;
@@ -66,20 +51,12 @@ export type AdminConversion = {
     status?: 'quoted' | 'pending' | 'complete' | 'failed';
     readonly collection: string | null;
     readonly txns: Array<string>;
-    readonly metadata: {
-        [key: string]: unknown;
-    };
+    readonly metadata: unknown;
     readonly expires: number;
     readonly created: number;
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminConversionPair = {
     readonly id: string;
     readonly key: string;
@@ -99,21 +76,15 @@ export type AdminConversionPair = {
 };
 
 export type AdminConversionPairResponse = {
-    status?: string;
-    data?: AdminConversionPair;
+    status: string;
+    data: AdminConversionPair;
 };
 
 export type AdminConversionResponse = {
-    status?: string;
-    data?: AdminConversion;
+    status: string;
+    data: AdminConversion;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateConversion = {
     readonly id: string;
     user: string;
@@ -137,20 +108,12 @@ export type AdminCreateConversion = {
     readonly status: 'quoted' | 'pending' | 'complete' | 'failed';
     readonly collection: string | null;
     readonly txns: Array<string>;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     readonly expires: number;
     readonly created: number;
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateConversionPair = {
     readonly id: string;
     key: string;
@@ -169,12 +132,6 @@ export type AdminCreateConversionPair = {
     transaction_type?: 'operational' | 'non_operational';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateRatePair = {
     readonly id: string;
     key: string;
@@ -184,12 +141,6 @@ export type AdminCreateRatePair = {
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCurrency = {
     code: string;
     display_code?: string | null;
@@ -201,16 +152,10 @@ export type AdminCurrency = {
 };
 
 export type AdminCurrencyResponse = {
-    status?: string;
-    data?: AdminCurrency;
+    status: string;
+    data: AdminCurrency;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminIntegration = {
     readonly id: string;
     slug: string;
@@ -222,16 +167,10 @@ export type AdminIntegration = {
 };
 
 export type AdminIntegrationResponse = {
-    status?: string;
-    data?: AdminIntegration;
+    status: string;
+    data: AdminIntegration;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminIntegrationWebhook = {
     readonly id: string;
     url: string;
@@ -246,16 +185,10 @@ export type AdminIntegrationWebhook = {
 };
 
 export type AdminIntegrationWebhookResponse = {
-    status?: string;
-    data?: AdminIntegrationWebhook;
+    status: string;
+    data: AdminIntegrationWebhook;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminRatePair = {
     readonly id: string;
     readonly key: string;
@@ -266,16 +199,10 @@ export type AdminRatePair = {
 };
 
 export type AdminRatePairResponse = {
-    status?: string;
-    data?: AdminRatePair;
+    status: string;
+    data: AdminRatePair;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateConversion = {
     readonly id: string;
     readonly user: string;
@@ -299,28 +226,20 @@ export type AdminUpdateConversion = {
     status: 'quoted' | 'pending' | 'complete' | 'failed';
     readonly collection: string | null;
     readonly txns: Array<string>;
-    readonly metadata: {
-        [key: string]: unknown;
-    };
+    readonly metadata: unknown;
     readonly expires: number;
     readonly created: number;
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUser = {
     readonly id: string;
     display_currency?: string | null;
 };
 
 export type AdminUserResponse = {
-    status?: string;
-    data?: AdminUser;
+    status: string;
+    data: AdminUser;
 };
 
 export type Deactivate = {
@@ -328,12 +247,6 @@ export type Deactivate = {
     purge?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type NewSnapshotRate = {
     key: string;
     date: number;
@@ -343,148 +256,142 @@ export type NewSnapshotRate = {
 export type NewSnapshotRateList = Array<NewSnapshotRate>;
 
 export type NewSnapshotRateListResponse = {
-    status?: string;
-    data?: NewSnapshotRateList;
+    status: string;
+    data: NewSnapshotRateList;
 };
 
 export type PaginatedAdminConversionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminConversion>;
+    results: Array<AdminConversion>;
 };
 
 export type PaginatedAdminConversionListResponse = {
-    status?: string;
-    data?: PaginatedAdminConversionList;
+    status: string;
+    data: PaginatedAdminConversionList;
 };
 
 export type PaginatedAdminConversionPairList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminConversionPair>;
+    results: Array<AdminConversionPair>;
 };
 
 export type PaginatedAdminConversionPairListResponse = {
-    status?: string;
-    data?: PaginatedAdminConversionPairList;
+    status: string;
+    data: PaginatedAdminConversionPairList;
 };
 
 export type PaginatedAdminCurrencyList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminCurrency>;
+    results: Array<AdminCurrency>;
 };
 
 export type PaginatedAdminCurrencyListResponse = {
-    status?: string;
-    data?: PaginatedAdminCurrencyList;
+    status: string;
+    data: PaginatedAdminCurrencyList;
 };
 
 export type PaginatedAdminIntegrationList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminIntegration>;
+    results: Array<AdminIntegration>;
 };
 
 export type PaginatedAdminIntegrationListResponse = {
-    status?: string;
-    data?: PaginatedAdminIntegrationList;
+    status: string;
+    data: PaginatedAdminIntegrationList;
 };
 
 export type PaginatedAdminIntegrationWebhookList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminIntegrationWebhook>;
+    results: Array<AdminIntegrationWebhook>;
 };
 
 export type PaginatedAdminIntegrationWebhookListResponse = {
-    status?: string;
-    data?: PaginatedAdminIntegrationWebhookList;
+    status: string;
+    data: PaginatedAdminIntegrationWebhookList;
 };
 
 export type PaginatedAdminRatePairList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminRatePair>;
+    results: Array<AdminRatePair>;
 };
 
 export type PaginatedAdminRatePairListResponse = {
-    status?: string;
-    data?: PaginatedAdminRatePairList;
+    status: string;
+    data: PaginatedAdminRatePairList;
 };
 
 export type PaginatedAdminUserList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUser>;
+    results: Array<AdminUser>;
 };
 
 export type PaginatedAdminUserListResponse = {
-    status?: string;
-    data?: PaginatedAdminUserList;
+    status: string;
+    data: PaginatedAdminUserList;
 };
 
 export type PaginatedUserConversionList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserConversion>;
+    results: Array<UserConversion>;
 };
 
 export type PaginatedUserConversionListResponse = {
-    status?: string;
-    data?: PaginatedUserConversionList;
+    status: string;
+    data: PaginatedUserConversionList;
 };
 
 export type PaginatedUserConversionPairList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserConversionPair>;
+    results: Array<UserConversionPair>;
 };
 
 export type PaginatedUserConversionPairListResponse = {
-    status?: string;
-    data?: PaginatedUserConversionPairList;
+    status: string;
+    data: PaginatedUserConversionPairList;
 };
 
 export type PaginatedUserCurrencyList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserCurrency>;
+    results: Array<UserCurrency>;
 };
 
 export type PaginatedUserCurrencyListResponse = {
-    status?: string;
-    data?: PaginatedUserCurrencyList;
+    status: string;
+    data: PaginatedUserCurrencyList;
 };
 
 export type PaginatedUserRateList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserRate>;
+    results: Array<UserRate>;
 };
 
 export type PaginatedUserRateListResponse = {
-    status?: string;
-    data?: PaginatedUserRateList;
+    status: string;
+    data: PaginatedUserRateList;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminCompany = {
     readonly id?: string;
     readonly secret?: string;
@@ -493,12 +400,6 @@ export type PatchedAdminCompany = {
     operational_account?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminCurrency = {
     code?: string;
     display_code?: string | null;
@@ -509,12 +410,6 @@ export type PatchedAdminCurrency = {
     archived?: boolean;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminIntegration = {
     readonly id?: string;
     slug?: string;
@@ -525,12 +420,6 @@ export type PatchedAdminIntegration = {
     readonly events?: Array<'conversion.quote' | 'conversion.execute'>;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminIntegrationWebhook = {
     readonly id?: string;
     url?: string;
@@ -544,12 +433,6 @@ export type PatchedAdminIntegrationWebhook = {
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminRatePair = {
     readonly id?: string;
     readonly key?: string;
@@ -559,12 +442,6 @@ export type PatchedAdminRatePair = {
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateConversion = {
     readonly id?: string;
     readonly user?: string;
@@ -588,20 +465,12 @@ export type PatchedAdminUpdateConversion = {
     status?: 'quoted' | 'pending' | 'complete' | 'failed';
     readonly collection?: string | null;
     readonly txns?: Array<string>;
-    readonly metadata?: {
-        [key: string]: unknown;
-    };
+    readonly metadata?: unknown;
     readonly expires?: number;
     readonly created?: number;
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateConversionPair = {
     readonly id?: string;
     readonly key?: string;
@@ -620,23 +489,11 @@ export type PatchedAdminUpdateConversionPair = {
     transaction_type?: 'operational' | 'non_operational';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUser = {
     readonly id?: string;
     display_currency?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedUserUpdateConversion = {
     readonly id?: string;
     readonly key?: string;
@@ -658,30 +515,16 @@ export type PatchedUserUpdateConversion = {
     status?: 'quoted' | 'pending' | 'complete' | 'failed';
     readonly collection?: string | null;
     readonly txns?: Array<string>;
-    readonly metadata?: {
-        [key: string]: unknown;
-    };
+    readonly metadata?: unknown;
     readonly expires?: number;
     readonly created?: number;
     readonly updated?: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedUserUpdateSettings = {
     display_currency?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type Rate = {
     id: string;
     key: string;
@@ -689,12 +532,6 @@ export type Rate = {
     readonly created: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserConversion = {
     readonly id: string;
     readonly key: string;
@@ -716,20 +553,12 @@ export type UserConversion = {
     status?: 'quoted' | 'pending' | 'complete' | 'failed';
     readonly collection: string | null;
     readonly txns: Array<string>;
-    readonly metadata: {
-        [key: string]: unknown;
-    };
+    readonly metadata: unknown;
     readonly expires: number;
     readonly created: number;
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserConversionPair = {
     readonly id: string;
     readonly key: string;
@@ -738,21 +567,15 @@ export type UserConversionPair = {
 };
 
 export type UserConversionPairResponse = {
-    status?: string;
-    data?: UserConversionPair;
+    status: string;
+    data: UserConversionPair;
 };
 
 export type UserConversionResponse = {
-    status?: string;
-    data?: UserConversion;
+    status: string;
+    data: UserConversion;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCreateConversion = {
     readonly id: string;
     key: string;
@@ -774,20 +597,12 @@ export type UserCreateConversion = {
     readonly status: 'quoted' | 'pending' | 'complete' | 'failed';
     readonly collection: string | null;
     readonly txns: Array<string>;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     readonly expires: number;
     readonly created: number;
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCurrency = {
     code: string;
     display_code?: string | null;
@@ -798,16 +613,10 @@ export type UserCurrency = {
 };
 
 export type UserCurrencyResponse = {
-    status?: string;
-    data?: UserCurrency;
+    status: string;
+    data: UserCurrency;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserRate = {
     id: string;
     key: string;
@@ -816,23 +625,17 @@ export type UserRate = {
 };
 
 export type UserRateResponse = {
-    status?: string;
-    data?: UserRate;
+    status: string;
+    data: UserRate;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserSettings = {
     readonly display_currency: string;
 };
 
 export type UserSettingsResponse = {
-    status?: string;
-    data?: UserSettings;
+    status: string;
+    data: UserSettings;
 };
 
 export type UserSnapshotRate = {
@@ -845,16 +648,10 @@ export type UserSnapshotRate = {
 };
 
 export type UserSnapshotRateResponse = {
-    status?: string;
-    data?: UserSnapshotRate;
+    status: string;
+    data: UserSnapshotRate;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserUpdateConversion = {
     readonly id: string;
     readonly key: string;
@@ -876,20 +673,12 @@ export type UserUpdateConversion = {
     status: 'quoted' | 'pending' | 'complete' | 'failed';
     readonly collection: string | null;
     readonly txns: Array<string>;
-    readonly metadata: {
-        [key: string]: unknown;
-    };
+    readonly metadata: unknown;
     readonly expires: number;
     readonly created: number;
     readonly updated: number;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserUpdateSettings = {
     display_currency?: string | null;
 };
@@ -903,33 +692,19 @@ export type Webhook = {
      */
     event: 'currency.create' | 'currency.update' | 'transaction.execute';
     company: string;
-    data: {
-        [key: string]: unknown;
-    };
+    data: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCompanyWritable = {
     display_currency?: string;
     operational_account?: string | null;
 };
 
 export type AdminCompanyResponseWritable = {
-    status?: string;
-    data?: AdminCompanyWritable;
+    status: string;
+    data: AdminCompanyWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminConversionWritable = {
     rate?: string;
     /**
@@ -941,12 +716,6 @@ export type AdminConversionWritable = {
     status?: 'quoted' | 'pending' | 'complete' | 'failed';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminConversionPairWritable = {
     path?: string | null;
     rate?: string | null;
@@ -962,21 +731,15 @@ export type AdminConversionPairWritable = {
 };
 
 export type AdminConversionPairResponseWritable = {
-    status?: string;
-    data?: AdminConversionPairWritable;
+    status: string;
+    data: AdminConversionPairWritable;
 };
 
 export type AdminConversionResponseWritable = {
-    status?: string;
-    data?: AdminConversionWritable;
+    status: string;
+    data: AdminConversionWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateConversionWritable = {
     user: string;
     key: string;
@@ -985,18 +748,10 @@ export type AdminCreateConversionWritable = {
     rate?: string | null;
     debit_account?: string | null;
     credit_account?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
     quote_duration?: number | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateConversionPairWritable = {
     key: string;
     path?: string | null;
@@ -1012,24 +767,12 @@ export type AdminCreateConversionPairWritable = {
     transaction_type?: 'operational' | 'non_operational';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminCreateRatePairWritable = {
     key: string;
     path?: string | null;
     rate?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminIntegrationWritable = {
     slug: string;
     name: string;
@@ -1037,16 +780,10 @@ export type AdminIntegrationWritable = {
 };
 
 export type AdminIntegrationResponseWritable = {
-    status?: string;
-    data?: AdminIntegrationWritable;
+    status: string;
+    data: AdminIntegrationWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminIntegrationWebhookWritable = {
     url: string;
     /**
@@ -1058,32 +795,20 @@ export type AdminIntegrationWebhookWritable = {
 };
 
 export type AdminIntegrationWebhookResponseWritable = {
-    status?: string;
-    data?: AdminIntegrationWebhookWritable;
+    status: string;
+    data: AdminIntegrationWebhookWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminRatePairWritable = {
     path?: string | null;
     rate?: string | null;
 };
 
 export type AdminRatePairResponseWritable = {
-    status?: string;
-    data?: AdminRatePairWritable;
+    status: string;
+    data: AdminRatePairWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUpdateConversionWritable = {
     rate?: string;
     /**
@@ -1095,27 +820,15 @@ export type AdminUpdateConversionWritable = {
     status: 'quoted' | 'pending' | 'complete' | 'failed';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminUserWritable = {
     display_currency?: string | null;
 };
 
 export type AdminUserResponseWritable = {
-    status?: string;
-    data?: AdminUserWritable;
+    status: string;
+    data: AdminUserWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type NewSnapshotRateWritable = {
     key: string;
     date: number;
@@ -1125,147 +838,129 @@ export type NewSnapshotRateWritable = {
 export type NewSnapshotRateListWritable = Array<NewSnapshotRateWritable>;
 
 export type NewSnapshotRateListResponseWritable = {
-    status?: string;
-    data?: NewSnapshotRateListWritable;
+    status: string;
+    data: NewSnapshotRateListWritable;
 };
 
 export type PaginatedAdminConversionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminConversionWritable>;
+    results: Array<AdminConversionWritable>;
 };
 
 export type PaginatedAdminConversionListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminConversionListWritable;
+    status: string;
+    data: PaginatedAdminConversionListWritable;
 };
 
 export type PaginatedAdminConversionPairListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminConversionPairWritable>;
+    results: Array<AdminConversionPairWritable>;
 };
 
 export type PaginatedAdminConversionPairListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminConversionPairListWritable;
+    status: string;
+    data: PaginatedAdminConversionPairListWritable;
 };
 
 export type PaginatedAdminIntegrationListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminIntegrationWritable>;
+    results: Array<AdminIntegrationWritable>;
 };
 
 export type PaginatedAdminIntegrationListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminIntegrationListWritable;
+    status: string;
+    data: PaginatedAdminIntegrationListWritable;
 };
 
 export type PaginatedAdminIntegrationWebhookListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminIntegrationWebhookWritable>;
+    results: Array<AdminIntegrationWebhookWritable>;
 };
 
 export type PaginatedAdminIntegrationWebhookListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminIntegrationWebhookListWritable;
+    status: string;
+    data: PaginatedAdminIntegrationWebhookListWritable;
 };
 
 export type PaginatedAdminRatePairListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminRatePairWritable>;
+    results: Array<AdminRatePairWritable>;
 };
 
 export type PaginatedAdminRatePairListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminRatePairListWritable;
+    status: string;
+    data: PaginatedAdminRatePairListWritable;
 };
 
 export type PaginatedAdminUserListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminUserWritable>;
+    results: Array<AdminUserWritable>;
 };
 
 export type PaginatedAdminUserListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminUserListWritable;
+    status: string;
+    data: PaginatedAdminUserListWritable;
 };
 
 export type PaginatedUserConversionListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserConversionWritable>;
+    results: Array<UserConversionWritable>;
 };
 
 export type PaginatedUserConversionListResponseWritable = {
-    status?: string;
-    data?: PaginatedUserConversionListWritable;
+    status: string;
+    data: PaginatedUserConversionListWritable;
 };
 
 export type PaginatedUserConversionPairListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedUserConversionPairListResponseWritable = {
-    status?: string;
-    data?: PaginatedUserConversionPairListWritable;
+    status: string;
+    data: PaginatedUserConversionPairListWritable;
 };
 
 export type PaginatedUserRateListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<UserRateWritable>;
+    results: Array<UserRateWritable>;
 };
 
 export type PaginatedUserRateListResponseWritable = {
-    status?: string;
-    data?: PaginatedUserRateListWritable;
+    status: string;
+    data: PaginatedUserRateListWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminCompanyWritable = {
     display_currency?: string;
     operational_account?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminIntegrationWritable = {
     slug?: string;
     name?: string;
     description?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminIntegrationWebhookWritable = {
     url?: string;
     /**
@@ -1276,23 +971,11 @@ export type PatchedAdminIntegrationWebhookWritable = {
     secret?: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminRatePairWritable = {
     path?: string | null;
     rate?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateConversionWritable = {
     rate?: string;
     /**
@@ -1304,12 +987,6 @@ export type PatchedAdminUpdateConversionWritable = {
     status?: 'quoted' | 'pending' | 'complete' | 'failed';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUpdateConversionPairWritable = {
     path?: string | null;
     rate?: string | null;
@@ -1324,22 +1001,10 @@ export type PatchedAdminUpdateConversionPairWritable = {
     transaction_type?: 'operational' | 'non_operational';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedAdminUserWritable = {
     display_currency?: string | null;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type PatchedUserUpdateConversionWritable = {
     /**
      * * `quoted` - Quoted
@@ -1350,24 +1015,12 @@ export type PatchedUserUpdateConversionWritable = {
     status?: 'quoted' | 'pending' | 'complete' | 'failed';
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type RateWritable = {
     id: string;
     key: string;
     rate: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserConversionWritable = {
     /**
      * * `quoted` - Quoted
@@ -1379,37 +1032,23 @@ export type UserConversionWritable = {
 };
 
 export type UserConversionPairResponseWritable = {
-    status?: string;
+    status: string;
 };
 
 export type UserConversionResponseWritable = {
-    status?: string;
-    data?: UserConversionWritable;
+    status: string;
+    data: UserConversionWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserCreateConversionWritable = {
     key: string;
     from_amount?: number | null;
     to_amount?: number | null;
     debit_account?: string | null;
     credit_account?: string | null;
-    metadata?: {
-        [key: string]: unknown;
-    } | null;
+    metadata?: unknown;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserRateWritable = {
     id: string;
     key: string;
@@ -1417,12 +1056,12 @@ export type UserRateWritable = {
 };
 
 export type UserRateResponseWritable = {
-    status?: string;
-    data?: UserRateWritable;
+    status: string;
+    data: UserRateWritable;
 };
 
 export type UserSettingsResponseWritable = {
-    status?: string;
+    status: string;
 };
 
 export type UserSnapshotRateWritable = {
@@ -1430,16 +1069,10 @@ export type UserSnapshotRateWritable = {
 };
 
 export type UserSnapshotRateResponseWritable = {
-    status?: string;
-    data?: UserSnapshotRateWritable;
+    status: string;
+    data: UserSnapshotRateWritable;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserUpdateConversionWritable = {
     /**
      * * `quoted` - Quoted
@@ -1984,7 +1617,6 @@ export type AdminRatePairsListData = {
     body?: never;
     path?: never;
     query?: {
-        id?: number;
         /**
          * A page number within the paginated result set.
          */
@@ -2350,6 +1982,13 @@ export type UserRatesListData = {
         created__lt?: string;
         created__lte?: string;
         id?: number;
+        /**
+         * * `hour` - hour
+         * * `day` - day
+         * * `week` - week
+         * * `month` - month
+         */
+        interval?: 'day' | 'hour' | 'month' | 'week';
         key?: string;
         /**
          * Multiple values may be separated by commas.

@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { ActivateCreateData, ActivateCreateResponses, AdminCompanyPartialUpdateData, AdminCompanyPartialUpdateResponses, AdminCompanyRetrieveData, AdminCompanyRetrieveResponses, AdminCompanyUpdateData, AdminCompanyUpdateResponses, AdminCurrenciesListData, AdminCurrenciesListResponses, AdminCurrenciesPartialUpdateData, AdminCurrenciesPartialUpdateResponses, AdminCurrenciesRetrieveData, AdminCurrenciesRetrieveResponses, AdminCurrenciesUpdateData, AdminCurrenciesUpdateResponses, AdminDocumentTypesCreateData, AdminDocumentTypesCreateResponses, AdminDocumentTypesDestroyData, AdminDocumentTypesDestroyResponses, AdminDocumentTypesListData, AdminDocumentTypesListResponses, AdminDocumentTypesPartialUpdateData, AdminDocumentTypesPartialUpdateResponses, AdminDocumentTypesRetrieveData, AdminDocumentTypesRetrieveResponses, AdminDocumentTypesUpdateData, AdminDocumentTypesUpdateResponses, AdminUserShareCreateData, AdminUserShareCreateResponses, AdminUsersListData, AdminUsersListResponses, AdminUsersRetrieveData, AdminUsersRetrieveResponses, DeactivateCreateData, DeactivateCreateResponses, SumsubWebhookCreate2Data, SumsubWebhookCreate2Responses, SumsubWebhookCreateData, SumsubWebhookCreateResponses, UserAccessTokenCreateData, UserAccessTokenCreateResponses, UserCompanyRetrieveData, UserCompanyRetrieveResponses, UserPartialUpdateData, UserPartialUpdateResponses, UserRetrieveData, UserRetrieveResponses, UserUpdateData, UserUpdateResponses, WebhookCreateData, WebhookCreateResponses } from './types.gen';
+import type { ActivateCreateData, ActivateCreateResponses, AdminCompanyPartialUpdateData, AdminCompanyPartialUpdateResponses, AdminCompanyRetrieveData, AdminCompanyRetrieveResponses, AdminCompanyUpdateData, AdminCompanyUpdateResponses, AdminCurrenciesListData, AdminCurrenciesListResponses, AdminCurrenciesPartialUpdateData, AdminCurrenciesPartialUpdateResponses, AdminCurrenciesRetrieveData, AdminCurrenciesRetrieveResponses, AdminCurrenciesUpdateData, AdminCurrenciesUpdateResponses, AdminDocumentTypesCreateData, AdminDocumentTypesCreateResponses, AdminDocumentTypesDestroyData, AdminDocumentTypesDestroyResponses, AdminDocumentTypesListData, AdminDocumentTypesListResponses, AdminDocumentTypesPartialUpdateData, AdminDocumentTypesPartialUpdateResponses, AdminDocumentTypesRetrieveData, AdminDocumentTypesRetrieveResponses, AdminDocumentTypesUpdateData, AdminDocumentTypesUpdateResponses, AdminUsersListData, AdminUsersListResponses, AdminUsersResetCreateData, AdminUsersResetCreateResponses, AdminUsersRetrieveData, AdminUsersRetrieveResponses, AdminUsersShareCreateData, AdminUsersShareCreateResponses, DeactivateCreateData, DeactivateCreateResponses, SumsubWebhookCreate2Data, SumsubWebhookCreate2Responses, SumsubWebhookCreateData, SumsubWebhookCreateResponses, UserAccessTokenCreateData, UserAccessTokenCreateResponses, UserCompanyRetrieveData, UserCompanyRetrieveResponses, UserPartialUpdateData, UserPartialUpdateResponses, UserRetrieveData, UserRetrieveResponses, UserUpdateData, UserUpdateResponses, WebhookCreateData, WebhookCreateResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -133,16 +133,6 @@ export const adminDocumentTypesUpdate = <ThrowOnError extends boolean = false>(o
     }
 });
 
-export const adminUserShareCreate = <ThrowOnError extends boolean = false>(options: Options<AdminUserShareCreateData, ThrowOnError>): RequestResult<AdminUserShareCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AdminUserShareCreateResponses, unknown, ThrowOnError>({
-    security: [{ name: 'Authorization', type: 'apiKey' }],
-    url: '/admin/user/{identifier}/share/',
-    ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
-});
-
 export const adminUsersList = <ThrowOnError extends boolean = false>(options?: Options<AdminUsersListData, ThrowOnError>): RequestResult<AdminUsersListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<AdminUsersListResponses, unknown, ThrowOnError>({
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/admin/users/',
@@ -153,6 +143,26 @@ export const adminUsersRetrieve = <ThrowOnError extends boolean = false>(options
     security: [{ name: 'Authorization', type: 'apiKey' }],
     url: '/admin/users/{identifier}/',
     ...options
+});
+
+export const adminUsersResetCreate = <ThrowOnError extends boolean = false>(options: Options<AdminUsersResetCreateData, ThrowOnError>): RequestResult<AdminUsersResetCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AdminUsersResetCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/admin/users/{identifier}/reset/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const adminUsersShareCreate = <ThrowOnError extends boolean = false>(options: Options<AdminUsersShareCreateData, ThrowOnError>): RequestResult<AdminUsersShareCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<AdminUsersShareCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'Authorization', type: 'apiKey' }],
+    url: '/admin/users/{identifier}/share/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
 });
 
 export const deactivateCreate = <ThrowOnError extends boolean = false>(options: Options<DeactivateCreateData, ThrowOnError>): RequestResult<DeactivateCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<DeactivateCreateResponses, unknown, ThrowOnError>({

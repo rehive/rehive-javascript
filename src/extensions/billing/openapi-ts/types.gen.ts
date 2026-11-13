@@ -4,11 +4,31 @@ export type ClientOptions = {
     baseUrl: 'https://billing.services.rehive.com/api/' | (string & {});
 };
 
-/**
- * This serializer can be used if only a `status` is required in the response.
- */
+export type AcceptAcknowledgement = {
+    key: string;
+    text: string;
+};
+
+export type Acknowledgement = {
+    readonly key: string;
+    readonly text: string;
+    readonly user_id: string;
+    readonly email: string;
+    readonly first_name: string;
+    readonly last_name: string;
+    readonly full_name: string;
+    readonly accepted_at: string;
+    readonly withdrawn_at: string | null;
+    readonly withdrawn_by_email: string;
+};
+
+export type AcknowledgementResponse = {
+    status: string;
+    data: Acknowledgement;
+};
+
 export type ActionResponse = {
-    status?: string;
+    status: string;
 };
 
 export type Activate = {
@@ -32,21 +52,19 @@ export type AdminCheckoutSession = {
 };
 
 export type AdminCheckoutSessionResponse = {
-    status?: string;
-    data?: AdminCheckoutSession;
+    status: string;
+    data: AdminCheckoutSession;
 };
 
 export type AdminCreateCheckoutSession = {
-    items?: Array<{
-        [key: string]: unknown;
-    }>;
+    items?: Array<unknown>;
     products?: Array<string>;
     readonly checkout_session: string;
 };
 
 export type AdminCreateCheckoutSessionResponse = {
-    status?: string;
-    data?: AdminCreateCheckoutSession;
+    status: string;
+    data: AdminCreateCheckoutSession;
 };
 
 export type AdminCreateCustomerPortalSession = {
@@ -55,16 +73,10 @@ export type AdminCreateCustomerPortalSession = {
 };
 
 export type AdminCreateCustomerPortalSessionResponse = {
-    status?: string;
-    data?: AdminCreateCustomerPortalSession;
+    status: string;
+    data: AdminCreateCustomerPortalSession;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminListPlan = {
     readonly id: string;
     readonly name: string;
@@ -73,15 +85,9 @@ export type AdminListPlan = {
     readonly slug: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminListProduct = {
-    stripe_id: string;
-    default_stripe_price_id: string;
+    stripe_id?: string | null;
+    default_stripe_price_id?: string | null;
     /**
      * * `primary` - Primary
      * * `usage` - Usage
@@ -93,24 +99,17 @@ export type AdminListProduct = {
 
 export type AdminPaymentMethod = {
     readonly id: string;
-    readonly billing_details: {
-        [key: string]: unknown;
-    };
-    readonly card: {
-        [key: string]: unknown;
-    };
+    readonly billing_details: unknown;
+    readonly card: unknown;
     readonly created: number;
     readonly type: string;
 };
 
 export type AdminPaymentMethodResponse = {
-    status?: string;
-    data?: AdminPaymentMethod;
+    status: string;
+    data: AdminPaymentMethod;
 };
 
-/**
- * The same as the user subscription serializer.
- */
 export type AdminSubscription = {
     id: string;
     name: string;
@@ -139,8 +138,211 @@ export type AdminSubscription = {
 };
 
 export type AdminSubscriptionResponse = {
-    status?: string;
-    data?: AdminSubscription;
+    status: string;
+    data: AdminSubscription;
+};
+
+export type AdminUsage = {
+    readonly currency: string;
+    readonly period_start: number;
+    readonly computed_at: number;
+    readonly total_amount: number;
+    readonly effective_total: number;
+    readonly usage_fee_use_higher: boolean;
+    readonly group_totals: {
+        [key: string]: number;
+    };
+    readonly items: Array<UsageFeeSnapshot>;
+    metric_sync: AdminUsageMetricSync | null;
+    readonly meter_reporting_enabled: boolean;
+    readonly preview: boolean;
+};
+
+export type AdminUsageMetricSync = {
+    readonly synced_at: number;
+    readonly ok: boolean;
+    readonly detail: Array<string>;
+};
+
+export type AdminUsageResponse = {
+    status: string;
+    data: AdminUsage;
+};
+
+export type AgreementOverride = {
+    /**
+     * * `nda` - NDA
+     * * `commercial_agreement` - Commercial Agreement
+     */
+    readonly agreement: 'nda' | 'commercial_agreement';
+    /**
+     * * `signed` - Signed
+     * * `not_relevant` - Not relevant
+     */
+    readonly outcome: 'signed' | 'not_relevant';
+    readonly set_at: string;
+    readonly set_by_email: string;
+};
+
+export type ChoosePlan = {
+    /**
+     * * `standard` - Standard
+     * * `premium` - Premium
+     * * `enterprise` - Enterprise
+     */
+    tier: 'standard' | 'premium' | 'enterprise';
+    packages?: Array<'discovery' | 'website' | 'design'>;
+    /**
+     * * `monthly` - Monthly
+     * * `annual` - Annual
+     */
+    billing_frequency?: 'monthly' | 'annual';
+};
+
+export type CommercialAgreement = {
+    readonly id: string;
+    readonly document_id: string;
+    /**
+     * * `ready` - Ready to sign
+     * * `signed` - Signed
+     * * `superseded` - Superseded
+     * * `void` - Void
+     * * `withdrawn` - Withdrawn
+     */
+    readonly status: 'ready' | 'signed' | 'superseded' | 'void' | 'withdrawn';
+    readonly title: string;
+    readonly plan: unknown;
+    readonly client_details: unknown;
+    readonly filled_fields: unknown;
+    readonly original_sha256: string;
+    readonly prepared_sha256: string;
+    readonly signed_sha256: string;
+    readonly uploaded_by_email: string;
+    readonly rehive_signer_name: string;
+    readonly rehive_signer_title: string;
+    readonly created: string;
+    readonly signed_at: string | null;
+    readonly signer_name: string;
+    readonly signer_title: string;
+    readonly signer_email: string;
+    readonly superseded_at: string | null;
+    readonly superseded_by_document_id: string;
+    /**
+     * * `standard` - Standard
+     * * `custom` - Custom
+     * * `external` - Signed outside Rehive
+     */
+    readonly kind: 'standard' | 'custom' | 'external';
+    readonly withdrawn_at: string | null;
+    readonly withdrawn_by_email: string;
+    readonly withdrawn_reason: string;
+};
+
+export type CommercialAgreementResponse = {
+    status: string;
+    data: CommercialAgreement;
+};
+
+export type CommercialPath = {
+    /**
+     * * `standard` - Standard
+     * * `custom` - Custom agreement
+     * * `external` - Signed outside Rehive
+     */
+    path: 'standard' | 'custom' | 'external';
+};
+
+export type CommercialState = {
+    /**
+     * * `standard` - Standard
+     * * `custom` - Custom agreement
+     * * `external` - Signed outside Rehive
+     */
+    readonly path: 'standard' | 'custom' | 'external';
+    readonly paid: boolean;
+    readonly locked: string | null;
+    subscription: CommercialSubscription | null;
+};
+
+export type CommercialStateResponse = {
+    status: string;
+    data: CommercialState;
+};
+
+export type CommercialSubscription = {
+    /**
+     * * `standard` - Standard
+     * * `plan` - Plan
+     * * `custom` - Custom
+     * * `linked` - Linked
+     */
+    readonly origin: 'standard' | 'plan' | 'custom' | 'linked';
+    /**
+     * * `pending` - Pending
+     * * `incomplete` - Incomplete
+     * * `incomplete_payment` - Incomplete Payment
+     * * `incomplete_expired` - Incomplete Expired
+     * * `trial_live` - Trial Live
+     * * `trial_expired` - Trial Expired
+     * * `past_due` - Past Due
+     * * `unpaid` - Unpaid
+     * * `active` - Active
+     * * `canceled` - Canceled
+     * * `paused` - Paused
+     */
+    readonly status: 'pending' | 'incomplete' | 'incomplete_payment' | 'incomplete_expired' | 'trial_live' | 'trial_expired' | 'past_due' | 'unpaid' | 'active' | 'canceled' | 'paused';
+    readonly invoice_paid: boolean | null;
+    readonly invoice_url: string;
+    readonly stripe_id: string | null;
+    readonly stripe_schedule_id: string;
+    readonly full_price_started_at: string | null;
+};
+
+export type ConfirmRepresentative = {
+    first_name: string;
+    last_name: string;
+    job_title?: string;
+    /**
+     * * `director` - Director, officer or owner
+     * * `employee` - Employee
+     * * `contractor` - Contractor or agency
+     * * `managed_partner` - Rehive Managed Partner
+     */
+    relationship: 'director' | 'employee' | 'contractor' | 'managed_partner';
+    managed_partner?: string;
+    authorized: boolean;
+    issued_email?: boolean;
+    director_letter?: boolean;
+};
+
+export type CreateNdaSigning = {
+    email: string;
+    name: string;
+    readonly signature_request_id: string;
+    readonly sent: boolean;
+};
+
+export type CreateNdaSigningResponse = {
+    status: string;
+    data: CreateNdaSigning;
+};
+
+export type CustomSubscription = {
+    amount: string;
+    /**
+     * * `month` - Month
+     * * `quarter` - Quarter
+     * * `year` - Year
+     */
+    interval: 'month' | 'quarter' | 'year';
+    one_off_fees?: Array<OneOffFee>;
+    /**
+     * * `invoice` - Invoice
+     * * `card` - Card
+     */
+    collection?: 'invoice' | 'card';
+    days_until_due?: number;
+    return_url?: string | string;
 };
 
 export type Deactivate = {
@@ -148,35 +350,670 @@ export type Deactivate = {
     purge?: boolean;
 };
 
-export type PaginatedAdminListPlanList = {
-    count?: number;
+export type LinkSubscription = {
+    stripe_subscription_id: string;
+};
+
+export type MarkStepReview = {
+    /**
+     * * `project_details` - Support details
+     * * `enduser_legal` - Terms and privacy policy
+     * * `config_setup` - Configuration set up
+     */
+    step: 'project_details' | 'enduser_legal' | 'config_setup';
+    reviewed?: boolean;
+    program_design_version?: number | null;
+};
+
+export type MarkStepReviewResponse = {
+    status: string;
+    data: MarkStepReview;
+};
+
+export type NdaStatus = {
+    readonly signed: boolean;
+    readonly signed_at: string | null;
+};
+
+export type NdaStatusResponse = {
+    status: string;
+    data: NdaStatus;
+};
+
+export type OneOffFee = {
+    description: string;
+    amount: string;
+};
+
+export type OpenStepGroup = {
+    /**
+     * * `program_design` - Program Design
+     * * `company_details` - Company details
+     * * `project_information` - Project information
+     * * `branding` - Branding
+     * * `enduser_terms` - End-user terms and privacy
+     * * `integrations` - Integrations
+     * * `prepare_app` - Prepare app
+     * * `compliance_onboarding` - Compliance onboarding
+     * * `training_support` - Training and Support
+     * * `your_configuration` - Your configuration
+     */
+    group: 'program_design' | 'company_details' | 'project_information' | 'branding' | 'enduser_terms' | 'integrations' | 'prepare_app' | 'compliance_onboarding' | 'training_support' | 'your_configuration';
+    opened?: boolean;
+};
+
+export type OpenStepGroupResponse = {
+    status: string;
+    data: OpenStepGroup;
+};
+
+export type OpenedStepGroup = {
+    /**
+     * * `program_design` - Program Design
+     * * `company_details` - Company details
+     * * `project_information` - Project information
+     * * `branding` - Branding
+     * * `enduser_terms` - End-user terms and privacy
+     * * `integrations` - Integrations
+     * * `prepare_app` - Prepare app
+     * * `compliance_onboarding` - Compliance onboarding
+     * * `training_support` - Training and Support
+     * * `your_configuration` - Your configuration
+     */
+    readonly group: 'program_design' | 'company_details' | 'project_information' | 'branding' | 'enduser_terms' | 'integrations' | 'prepare_app' | 'compliance_onboarding' | 'training_support' | 'your_configuration';
+    readonly opened_at: string;
+    readonly opened_by_email: string;
+};
+
+export type PaginatedAcknowledgementList = {
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminListPlan>;
+    results: Array<Acknowledgement>;
+};
+
+export type PaginatedAcknowledgementListResponse = {
+    status: string;
+    data: PaginatedAcknowledgementList;
+};
+
+export type PaginatedAdminListPlanList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AdminListPlan>;
 };
 
 export type PaginatedAdminListPlanListResponse = {
-    status?: string;
-    data?: PaginatedAdminListPlanList;
+    status: string;
+    data: PaginatedAdminListPlanList;
 };
 
 export type PaginatedAdminListProductList = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminListProduct>;
+    results: Array<AdminListProduct>;
 };
 
 export type PaginatedAdminListProductListResponse = {
-    status?: string;
-    data?: PaginatedAdminListProductList;
+    status: string;
+    data: PaginatedAdminListProductList;
+};
+
+export type PaginatedAgreementOverrideList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<AgreementOverride>;
+};
+
+export type PaginatedAgreementOverrideListResponse = {
+    status: string;
+    data: PaginatedAgreementOverrideList;
+};
+
+export type PaginatedCommercialAgreementList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<CommercialAgreement>;
+};
+
+export type PaginatedCommercialAgreementListResponse = {
+    status: string;
+    data: PaginatedCommercialAgreementList;
+};
+
+export type PaginatedOpenedStepGroupList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<OpenedStepGroup>;
+};
+
+export type PaginatedOpenedStepGroupListResponse = {
+    status: string;
+    data: PaginatedOpenedStepGroupList;
+};
+
+export type PaginatedRepresentativeConfirmationList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<RepresentativeConfirmation>;
+};
+
+export type PaginatedRepresentativeConfirmationListResponse = {
+    status: string;
+    data: PaginatedRepresentativeConfirmationList;
+};
+
+export type PaginatedServiceActivationList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<ServiceActivation>;
+};
+
+export type PaginatedServiceActivationListResponse = {
+    status: string;
+    data: PaginatedServiceActivationList;
+};
+
+export type PaginatedStepReviewList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<StepReview>;
+};
+
+export type PaginatedStepReviewListResponse = {
+    status: string;
+    data: PaginatedStepReviewList;
+};
+
+export type PaginatedStepSaveList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<StepSave>;
+};
+
+export type PaginatedStepSaveListResponse = {
+    status: string;
+    data: PaginatedStepSaveList;
+};
+
+export type PaymentGrace = {
+    readonly days: number;
+    readonly default_days: string;
+    readonly set_by_email: string;
+    readonly set_at: string;
+};
+
+export type PaymentGraceResponse = {
+    status: string;
+    data: PaymentGrace;
+};
+
+export type PaymentLink = {
+    readonly url: string;
+};
+
+export type PaymentLinkResponse = {
+    status: string;
+    data: PaymentLink;
+};
+
+export type PaymentPlan = {
+    phases: Array<PaymentPlanPhase>;
+    one_off_fees?: Array<PaymentPlanFee>;
+    discount?: PaymentPlanDiscount | null;
+    /**
+     * * `invoice` - Invoice
+     * * `card` - Card
+     */
+    collection?: 'invoice' | 'card';
+    days_until_due?: number;
+    preset?: string;
+};
+
+export type PaymentPlanDiscount = {
+    bills: number;
+    percent_off?: string;
+    amount_off_cents?: number;
+};
+
+export type PaymentPlanFee = {
+    description: string;
+    amount_cents: number;
+};
+
+export type PaymentPlanPhase = {
+    amount_cents: number;
+    /**
+     * * `1` - 1
+     * * `3` - 3
+     * * `6` - 6
+     * * `12` - 12
+     */
+    every_months: 1 | 3 | 6 | 12;
+    /**
+     * * `periods` - periods
+     * * `until_go_live` - until_go_live
+     * * `ongoing` - ongoing
+     */
+    length: 'periods' | 'until_go_live' | 'ongoing';
+    periods?: number;
+    long_stop_date?: string;
+};
+
+export type PlanChanges = {
+    note: string;
+};
+
+export type PlanCheckout = {
+    return_url: string;
+};
+
+export type PlanSelection = {
+    readonly id: string;
+    /**
+     * * `standard` - Standard
+     * * `premium` - Premium
+     * * `enterprise` - Enterprise
+     */
+    readonly tier: 'standard' | 'premium' | 'enterprise';
+    readonly packages: unknown;
+    /**
+     * * `monthly` - Monthly
+     * * `annual` - Annual
+     */
+    readonly billing_frequency: 'monthly' | 'annual';
+    /**
+     * * `proposed` - Proposed by Rehive
+     * * `changes_requested` - Changes Requested
+     * * `requested` - Agreement requested
+     * * `active` - Active
+     * * `superseded` - Superseded
+     */
+    readonly status: 'proposed' | 'changes_requested' | 'requested' | 'active' | 'superseded';
+    readonly requested_by_email: string;
+    readonly created: string;
+    readonly updated: string;
+    /**
+     * * `client` - Chosen by the client
+     * * `rehive` - Proposed by Rehive
+     */
+    readonly source: 'client' | 'rehive';
+    readonly terms_version: string;
+    readonly payment_plan: unknown;
+    readonly payment_plan_summary: string;
+    readonly proposed_by_email: string;
+    readonly rehive_note: string;
+    readonly client_note: string;
+    readonly accepted_at: string | null;
+    readonly based_on: unknown;
+    readonly needs_confirming: Array<unknown>;
+};
+
+export type PlanSelectionResponse = {
+    status: string;
+    data: PlanSelection;
+};
+
+export type ProjectMode = {
+    /**
+     * * `trial` - Trial Mode
+     * * `pilot` - Pilot Mode
+     */
+    readonly mode: 'trial' | 'pilot';
+    readonly set_at: string | null;
+    readonly set_by_email: string;
+    readonly trial_requested_at: string | null;
+    readonly trial_requested_by_email: string;
+    readonly pilot_requested_at: string | null;
+    readonly pilot_requested_by_email: string;
+    readonly changes: Array<ProjectModeChange>;
+};
+
+export type ProjectModeChange = {
+    /**
+     * * `trial` - Trial Mode
+     * * `pilot` - Pilot Mode
+     */
+    readonly from_mode: 'trial' | 'pilot';
+    /**
+     * * `trial` - Trial Mode
+     * * `pilot` - Pilot Mode
+     */
+    readonly to_mode: 'trial' | 'pilot';
+    readonly changed_by_email: string;
+    readonly created: string;
+};
+
+export type ProjectModeResponse = {
+    status: string;
+    data: ProjectMode;
+};
+
+export type ProposePlan = {
+    /**
+     * * `standard` - Standard
+     * * `premium` - Premium
+     * * `enterprise` - Enterprise
+     */
+    tier: 'standard' | 'premium' | 'enterprise';
+    packages?: Array<'discovery' | 'website' | 'design'>;
+    payment_plan: PaymentPlan;
+    note?: string;
+};
+
+export type RecordRepresentativeAuthorization = {
+    confirmation_id: number;
+    director_name: string;
+    director_title?: string;
+    director_email: string;
+    received_on: string;
+    note?: string;
+    file: string;
+};
+
+export type RecordStepSave = {
+    step: string;
+};
+
+export type RepresentativeAuthorization = {
+    readonly director_name: string;
+    readonly director_title: string;
+    readonly director_email: string;
+    readonly received_on: string;
+    readonly note: string;
+    readonly recorded_by_email: string;
+    readonly recorded_at: string;
+};
+
+export type RepresentativeConfirmation = {
+    readonly id: number;
+    readonly user_id: string;
+    readonly email: string;
+    readonly first_name: string;
+    readonly last_name: string;
+    readonly full_name: string;
+    readonly job_title: string;
+    /**
+     * * `director` - Director, officer or owner
+     * * `employee` - Employee
+     * * `contractor` - Contractor or agency
+     * * `managed_partner` - Rehive Managed Partner
+     */
+    readonly relationship: 'director' | 'employee' | 'contractor' | 'managed_partner';
+    readonly managed_partner: string;
+    readonly statements: unknown;
+    readonly confirmed_at: string;
+    readonly needs_authorization: boolean;
+    authorization: RepresentativeAuthorization | null;
+};
+
+export type RepresentativeConfirmationResponse = {
+    status: string;
+    data: RepresentativeConfirmation;
+};
+
+export type RequestProjectMode = {
+    /**
+     * * `trial` - Trial Mode
+     * * `pilot` - Pilot Mode
+     */
+    mode: 'trial' | 'pilot';
+    requested?: boolean;
+};
+
+export type ReviewNote = {
+    note: string;
+};
+
+export type ReviewNotes = {
+    notes?: string;
+};
+
+export type ReviewedRecord = {
+    readonly id: string;
+    /**
+     * * `company_details` - Company details
+     * * `program_design` - Program Design
+     */
+    readonly kind: 'company_details' | 'program_design';
+    readonly version: number;
+    /**
+     * * `draft` - Draft
+     * * `submitted` - In review
+     * * `changes_needed` - Changes Needed
+     * * `approved` - Approved
+     * * `superseded` - Superseded
+     */
+    readonly status: 'draft' | 'submitted' | 'changes_needed' | 'approved' | 'superseded';
+    readonly schema_version: number;
+    readonly data: unknown;
+    readonly submitted_at: string | null;
+    readonly submitted_by_email: string;
+    readonly reviewed_at: string | null;
+    readonly reviewed_by_email: string;
+    readonly review_note: string;
+    readonly rehive_notes: string;
+    readonly applied_at: string | null;
+    readonly apply_result: unknown;
+    readonly edited_after_payment: boolean;
+    readonly created: string;
+    readonly updated: string;
+};
+
+export type ReviewedRecordData = {
+    data?: unknown;
+};
+
+export type ReviewedRecordRehiveSave = {
+    data?: unknown;
+    notes?: string;
+};
+
+export type ReviewedRecordState = {
+    /**
+     * * `company_details` - Company details
+     * * `program_design` - Program Design
+     */
+    readonly kind: 'company_details' | 'program_design';
+    readonly label: string;
+    readonly form_fields: Array<unknown>;
+    working: ReviewedRecord | null;
+    approved: ReviewedRecord | null;
+    readonly versions: Array<ReviewedRecord>;
+    readonly live: unknown;
+    readonly locked: string | null;
+    readonly rehive_can_edit: boolean;
+};
+
+export type ReviewedRecordStateResponse = {
+    status: string;
+    data: ReviewedRecordState;
+};
+
+export type ServiceActivation = {
+    /**
+     * * `sumsub` - Sumsub
+     * * `privy` - Privy
+     * * `rain` - Rain
+     * * `rewards` - Rewards
+     * * `invoicing` - Invoicing
+     * * `mass_send` - Mass Send
+     */
+    readonly service: 'sumsub' | 'privy' | 'rain' | 'rewards' | 'invoicing' | 'mass_send';
+    readonly requested_at: string | null;
+    readonly requested_by_email: string;
+    readonly activated_at: string | null;
+    readonly activated_by_email: string;
+};
+
+export type ServiceActivationResponse = {
+    status: string;
+    data: ServiceActivation;
+};
+
+export type ServiceChoice = {
+    /**
+     * * `sumsub` - Sumsub
+     * * `privy` - Privy
+     * * `rain` - Rain
+     * * `rewards` - Rewards
+     * * `invoicing` - Invoicing
+     * * `mass_send` - Mass Send
+     */
+    service: 'sumsub' | 'privy' | 'rain' | 'rewards' | 'invoicing' | 'mass_send';
+};
+
+export type ServiceChoiceResponse = {
+    status: string;
+    data: ServiceChoice;
+};
+
+export type SetAgreementOverride = {
+    /**
+     * * `nda` - NDA
+     * * `commercial_agreement` - Commercial Agreement
+     */
+    agreement: 'nda' | 'commercial_agreement';
+    /**
+     * * `signed` - Signed
+     * * `not_relevant` - Not relevant
+     */
+    outcome: 'signed' | 'not_relevant' | null;
+};
+
+export type SetAgreementOverrideResponse = {
+    status: string;
+    data: SetAgreementOverride;
+};
+
+export type SetPaymentGrace = {
+    days: number;
+};
+
+export type SetProjectMode = {
+    /**
+     * * `trial` - Trial Mode
+     * * `pilot` - Pilot Mode
+     */
+    mode: 'trial' | 'pilot' | null;
+};
+
+export type SetSlackInvite = {
+    invite_url: string;
+};
+
+export type SignCommercialAgreement = {
+    signer_name: string;
+    signer_title?: string;
+    acknowledgments: {
+        [key: string]: boolean;
+    };
+};
+
+export type SlackChannel = {
+    readonly invite_url: string;
+    readonly added_by_email: string;
+    readonly added_at: string;
+    readonly joined_by_email: string;
+    readonly joined_at: string;
+};
+
+export type SlackChannelResponse = {
+    status: string;
+    data: SlackChannel;
+};
+
+export type SlackJoined = {
+    joined: boolean;
+};
+
+export type StepReview = {
+    /**
+     * * `project_details` - Support details
+     * * `enduser_legal` - Terms and privacy policy
+     * * `config_setup` - Configuration set up
+     */
+    readonly step: 'project_details' | 'enduser_legal' | 'config_setup';
+    readonly reviewed_at: string;
+    readonly reviewed_by_email: string;
+    readonly program_design_version: number | null;
+};
+
+export type StepSave = {
+    readonly step: string;
+    readonly saved_at: string;
+    readonly saved_by_email: string;
+};
+
+export type StepSaveResponse = {
+    status: string;
+    data: StepSave;
 };
 
 export type StripeWebhook = {
-    data: {
-        [key: string]: unknown;
-    };
+    data: unknown;
     type: string;
+};
+
+export type UploadCommercialAgreement = {
+    file: string;
+    title?: string;
+    rehive_signer_name: string;
+    rehive_signer_title?: string;
+};
+
+export type UploadSignedAgreement = {
+    file: string;
+    title?: string;
+    signer_name: string;
+    signer_title?: string;
+    signed_date: string;
+    rehive_signer_name?: string;
+};
+
+export type UsageFeeSnapshot = {
+    /**
+     * * `transaction` - Transaction
+     * * `active_users` - Active Users
+     */
+    readonly kind: 'transaction' | 'active_users';
+    readonly line_key: string;
+    readonly name: string;
+    readonly subtype: string | null;
+    /**
+     * * `conversion_service` - Conversion Service
+     * * `product_service` - Product Service
+     * * `rewards_service` - Rewards Service
+     * * `batch_send_service` - Batch Send Service
+     * * `stellar_service` - Stellar Service
+     * * `payment_requests_service` - Payment Requests Service
+     */
+    readonly service: 'conversion_service' | 'product_service' | 'rewards_service' | 'batch_send_service' | 'stellar_service' | 'payment_requests_service';
+    /**
+     * * `global` - Global
+     * * `global_subtype` - Global Subtype
+     * * `company` - Company
+     * * `subtype` - Subtype
+     */
+    readonly tier: 'global' | 'global_subtype' | 'company' | 'subtype';
+    readonly quantity: number;
+    readonly volume: number;
+    readonly percentage: string;
+    readonly unit_amount: number;
+    readonly amount: number;
+    readonly volume_fee: number;
+    readonly fixed_fee: number;
+    readonly currency: string;
+    readonly computed_at: number;
 };
 
 export type UserPublicKey = {
@@ -184,16 +1021,10 @@ export type UserPublicKey = {
 };
 
 export type UserPublicKeyResponse = {
-    status?: string;
-    data?: UserPublicKey;
+    status: string;
+    data: UserPublicKey;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserSubscription = {
     id: string;
     name: string;
@@ -222,98 +1053,248 @@ export type UserSubscription = {
 };
 
 export type UserSubscriptionResponse = {
-    status?: string;
-    data?: UserSubscription;
+    status: string;
+    data: UserSubscription;
 };
 
 export type Webhook = {
     id: string;
     /**
      * * `company.link.update` - company.link.update
+     * * `currency.create` - currency.create
+     * * `currency.update` - currency.update
      */
-    event: 'company.link.update';
+    event: 'company.link.update' | 'currency.create' | 'currency.update';
     company: string;
-    data: {
-        [key: string]: unknown;
-    };
+    data: unknown;
+};
+
+export type WithdrawAcknowledgement = {
+    key: string;
+};
+
+export type WithdrawAcknowledgementResponse = {
+    status: string;
+    data: WithdrawAcknowledgement;
+};
+
+export type WithdrawAgreement = {
+    reason?: string;
+};
+
+export type AcknowledgementResponseWritable = {
+    status: string;
 };
 
 export type AdminCheckoutSessionResponseWritable = {
-    status?: string;
+    status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type AdminListProductWritable = {
-    stripe_id: string;
-    default_stripe_price_id: string;
+    stripe_id?: string | null;
+    default_stripe_price_id?: string | null;
     name: string;
     slug: string;
 };
 
 export type AdminPaymentMethodResponseWritable = {
-    status?: string;
+    status: string;
 };
 
-/**
- * The same as the user subscription serializer.
- */
 export type AdminSubscriptionWritable = {
     id: string;
     name: string;
 };
 
 export type AdminSubscriptionResponseWritable = {
-    status?: string;
-    data?: AdminSubscriptionWritable;
+    status: string;
+    data: AdminSubscriptionWritable;
+};
+
+export type AdminUsageResponseWritable = {
+    status: string;
+};
+
+export type CommercialAgreementResponseWritable = {
+    status: string;
+};
+
+export type CommercialStateResponseWritable = {
+    status: string;
+};
+
+export type NdaStatusResponseWritable = {
+    status: string;
+};
+
+export type PaginatedAcknowledgementListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
+export type PaginatedAcknowledgementListResponseWritable = {
+    status: string;
+    data: PaginatedAcknowledgementListWritable;
 };
 
 export type PaginatedAdminListPlanListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<unknown>;
+    results: Array<unknown>;
 };
 
 export type PaginatedAdminListPlanListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminListPlanListWritable;
+    status: string;
+    data: PaginatedAdminListPlanListWritable;
 };
 
 export type PaginatedAdminListProductListWritable = {
-    count?: number;
+    count: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<AdminListProductWritable>;
+    results: Array<AdminListProductWritable>;
 };
 
 export type PaginatedAdminListProductListResponseWritable = {
-    status?: string;
-    data?: PaginatedAdminListProductListWritable;
+    status: string;
+    data: PaginatedAdminListProductListWritable;
+};
+
+export type PaginatedAgreementOverrideListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
+export type PaginatedAgreementOverrideListResponseWritable = {
+    status: string;
+    data: PaginatedAgreementOverrideListWritable;
+};
+
+export type PaginatedCommercialAgreementListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
+export type PaginatedCommercialAgreementListResponseWritable = {
+    status: string;
+    data: PaginatedCommercialAgreementListWritable;
+};
+
+export type PaginatedOpenedStepGroupListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
+export type PaginatedOpenedStepGroupListResponseWritable = {
+    status: string;
+    data: PaginatedOpenedStepGroupListWritable;
+};
+
+export type PaginatedRepresentativeConfirmationListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
+export type PaginatedRepresentativeConfirmationListResponseWritable = {
+    status: string;
+    data: PaginatedRepresentativeConfirmationListWritable;
+};
+
+export type PaginatedServiceActivationListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
+export type PaginatedServiceActivationListResponseWritable = {
+    status: string;
+    data: PaginatedServiceActivationListWritable;
+};
+
+export type PaginatedStepReviewListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
+export type PaginatedStepReviewListResponseWritable = {
+    status: string;
+    data: PaginatedStepReviewListWritable;
+};
+
+export type PaginatedStepSaveListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
+export type PaginatedStepSaveListResponseWritable = {
+    status: string;
+    data: PaginatedStepSaveListWritable;
+};
+
+export type PaymentGraceResponseWritable = {
+    status: string;
+};
+
+export type PaymentLinkResponseWritable = {
+    status: string;
+};
+
+export type PlanSelectionResponseWritable = {
+    status: string;
+};
+
+export type ProjectModeResponseWritable = {
+    status: string;
+};
+
+export type RepresentativeConfirmationResponseWritable = {
+    status: string;
+};
+
+export type ReviewedRecordStateResponseWritable = {
+    status: string;
+};
+
+export type ServiceActivationResponseWritable = {
+    status: string;
+};
+
+export type SlackChannelResponseWritable = {
+    status: string;
+};
+
+export type StepSaveResponseWritable = {
+    status: string;
 };
 
 export type UserPublicKeyResponseWritable = {
-    status?: string;
+    status: string;
 };
 
-/**
- * A ModelSerializer that takes additional arguments for
- * "fields", "omit" and "expand" in order to
- * control which fields are displayed, and whether to replace simple
- * values with complex, nested serializations
- */
 export type UserSubscriptionWritable = {
     id: string;
     name: string;
 };
 
 export type UserSubscriptionResponseWritable = {
-    status?: string;
-    data?: UserSubscriptionWritable;
+    status: string;
+    data: UserSubscriptionWritable;
 };
 
 export type ActivateCreateData = {
@@ -328,6 +1309,150 @@ export type ActivateCreateResponses = {
 };
 
 export type ActivateCreateResponse = ActivateCreateResponses[keyof ActivateCreateResponses];
+
+export type AdminAcknowledgementsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/admin/acknowledgements/';
+};
+
+export type AdminAcknowledgementsListResponses = {
+    200: PaginatedAcknowledgementListResponse;
+};
+
+export type AdminAcknowledgementsListResponse = AdminAcknowledgementsListResponses[keyof AdminAcknowledgementsListResponses];
+
+export type AdminAcknowledgementsCreateData = {
+    body: AcceptAcknowledgement;
+    path?: never;
+    query?: never;
+    url: '/admin/acknowledgements/';
+};
+
+export type AdminAcknowledgementsCreateResponses = {
+    201: AcknowledgementResponse;
+};
+
+export type AdminAcknowledgementsCreateResponse = AdminAcknowledgementsCreateResponses[keyof AdminAcknowledgementsCreateResponses];
+
+export type AdminAcknowledgementsWithdrawCreateData = {
+    body: WithdrawAcknowledgement;
+    path?: never;
+    query?: never;
+    url: '/admin/acknowledgements/withdraw/';
+};
+
+export type AdminAcknowledgementsWithdrawCreateResponses = {
+    200: WithdrawAcknowledgementResponse;
+};
+
+export type AdminAcknowledgementsWithdrawCreateResponse = AdminAcknowledgementsWithdrawCreateResponses[keyof AdminAcknowledgementsWithdrawCreateResponses];
+
+export type AdminActivationsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/admin/activations/';
+};
+
+export type AdminActivationsListResponses = {
+    200: PaginatedServiceActivationListResponse;
+};
+
+export type AdminActivationsListResponse = AdminActivationsListResponses[keyof AdminActivationsListResponses];
+
+export type AdminActivationsActivateCreateData = {
+    body: ServiceChoice;
+    path?: never;
+    query?: never;
+    url: '/admin/activations/activate/';
+};
+
+export type AdminActivationsActivateCreateResponses = {
+    200: ServiceActivationResponse;
+};
+
+export type AdminActivationsActivateCreateResponse = AdminActivationsActivateCreateResponses[keyof AdminActivationsActivateCreateResponses];
+
+export type AdminActivationsRequestCreateData = {
+    body: ServiceChoice;
+    path?: never;
+    query?: never;
+    url: '/admin/activations/request/';
+};
+
+export type AdminActivationsRequestCreateResponses = {
+    200: ServiceActivationResponse;
+};
+
+export type AdminActivationsRequestCreateResponse = AdminActivationsRequestCreateResponses[keyof AdminActivationsRequestCreateResponses];
+
+export type AdminActivationsWithdrawCreateData = {
+    body: ServiceChoice;
+    path?: never;
+    query?: never;
+    url: '/admin/activations/withdraw/';
+};
+
+export type AdminActivationsWithdrawCreateResponses = {
+    200: ServiceChoiceResponse;
+};
+
+export type AdminActivationsWithdrawCreateResponse = AdminActivationsWithdrawCreateResponses[keyof AdminActivationsWithdrawCreateResponses];
+
+export type AdminAgreementOverridesListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/admin/agreement-overrides/';
+};
+
+export type AdminAgreementOverridesListResponses = {
+    200: PaginatedAgreementOverrideListResponse;
+};
+
+export type AdminAgreementOverridesListResponse = AdminAgreementOverridesListResponses[keyof AdminAgreementOverridesListResponses];
+
+export type AdminAgreementOverridesSetCreateData = {
+    body: SetAgreementOverride;
+    path?: never;
+    query?: never;
+    url: '/admin/agreement-overrides/set/';
+};
+
+export type AdminAgreementOverridesSetCreateResponses = {
+    200: SetAgreementOverrideResponse;
+};
+
+export type AdminAgreementOverridesSetCreateResponse = AdminAgreementOverridesSetCreateResponses[keyof AdminAgreementOverridesSetCreateResponses];
 
 export type AdminCheckoutSessionCreateData = {
     body?: AdminCreateCheckoutSession;
@@ -357,6 +1482,146 @@ export type AdminCheckoutSessionRetrieveResponses = {
 
 export type AdminCheckoutSessionRetrieveResponse = AdminCheckoutSessionRetrieveResponses[keyof AdminCheckoutSessionRetrieveResponses];
 
+export type AdminCommercialAgreementRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/admin/commercial-agreement/';
+};
+
+export type AdminCommercialAgreementRetrieveResponses = {
+    200: CommercialAgreementResponse;
+};
+
+export type AdminCommercialAgreementRetrieveResponse = AdminCommercialAgreementRetrieveResponses[keyof AdminCommercialAgreementRetrieveResponses];
+
+export type AdminCommercialAgreementDocumentRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/admin/commercial-agreement/document/';
+};
+
+export type AdminCommercialAgreementDocumentRetrieveResponses = {
+    /**
+     * No response body
+     */
+    200: unknown;
+};
+
+export type AdminCommercialAgreementHistoryListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/admin/commercial-agreement/history/';
+};
+
+export type AdminCommercialAgreementHistoryListResponses = {
+    200: PaginatedCommercialAgreementListResponse;
+};
+
+export type AdminCommercialAgreementHistoryListResponse = AdminCommercialAgreementHistoryListResponses[keyof AdminCommercialAgreementHistoryListResponses];
+
+export type AdminCommercialAgreementSignCreateData = {
+    body: SignCommercialAgreement;
+    path?: never;
+    query?: never;
+    url: '/admin/commercial-agreement/sign/';
+};
+
+export type AdminCommercialAgreementSignCreateResponses = {
+    200: CommercialAgreementResponse;
+};
+
+export type AdminCommercialAgreementSignCreateResponse = AdminCommercialAgreementSignCreateResponses[keyof AdminCommercialAgreementSignCreateResponses];
+
+export type AdminCommercialAgreementUploadCreateData = {
+    body: UploadCommercialAgreement;
+    path?: never;
+    query?: never;
+    url: '/admin/commercial-agreement/upload/';
+};
+
+export type AdminCommercialAgreementUploadCreateResponses = {
+    201: CommercialAgreementResponse;
+};
+
+export type AdminCommercialAgreementUploadCreateResponse = AdminCommercialAgreementUploadCreateResponses[keyof AdminCommercialAgreementUploadCreateResponses];
+
+export type AdminCommercialAgreementUploadSignedCreateData = {
+    body: UploadSignedAgreement;
+    path?: never;
+    query?: never;
+    url: '/admin/commercial-agreement/upload-signed/';
+};
+
+export type AdminCommercialAgreementUploadSignedCreateResponses = {
+    201: CommercialAgreementResponse;
+};
+
+export type AdminCommercialAgreementUploadSignedCreateResponse = AdminCommercialAgreementUploadSignedCreateResponses[keyof AdminCommercialAgreementUploadSignedCreateResponses];
+
+export type AdminCommercialAgreementWithdrawCreateData = {
+    body?: WithdrawAgreement;
+    path?: never;
+    query?: never;
+    url: '/admin/commercial-agreement/withdraw/';
+};
+
+export type AdminCommercialAgreementWithdrawCreateResponses = {
+    200: CommercialAgreementResponse;
+};
+
+export type AdminCommercialAgreementWithdrawCreateResponse = AdminCommercialAgreementWithdrawCreateResponses[keyof AdminCommercialAgreementWithdrawCreateResponses];
+
+export type AdminCommercialPathRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/admin/commercial-path/';
+};
+
+export type AdminCommercialPathRetrieveResponses = {
+    200: CommercialStateResponse;
+};
+
+export type AdminCommercialPathRetrieveResponse = AdminCommercialPathRetrieveResponses[keyof AdminCommercialPathRetrieveResponses];
+
+export type AdminCommercialPathCreateData = {
+    body: CommercialPath;
+    path?: never;
+    query?: never;
+    url: '/admin/commercial-path/';
+};
+
+export type AdminCommercialPathCreateResponses = {
+    200: CommercialStateResponse;
+};
+
+export type AdminCommercialPathCreateResponse = AdminCommercialPathCreateResponses[keyof AdminCommercialPathCreateResponses];
+
+export type AdminCustomSubscriptionCreateData = {
+    body: CustomSubscription;
+    path?: never;
+    query?: never;
+    url: '/admin/custom-subscription/';
+};
+
+export type AdminCustomSubscriptionCreateResponses = {
+    201: CommercialStateResponse;
+};
+
+export type AdminCustomSubscriptionCreateResponse = AdminCustomSubscriptionCreateResponses[keyof AdminCustomSubscriptionCreateResponses];
+
 export type AdminCustomerPortalSessionCreateData = {
     body: AdminCreateCustomerPortalSession;
     path?: never;
@@ -369,6 +1634,120 @@ export type AdminCustomerPortalSessionCreateResponses = {
 };
 
 export type AdminCustomerPortalSessionCreateResponse = AdminCustomerPortalSessionCreateResponses[keyof AdminCustomerPortalSessionCreateResponses];
+
+export type AdminLinkSubscriptionCreateData = {
+    body: LinkSubscription;
+    path?: never;
+    query?: never;
+    url: '/admin/link-subscription/';
+};
+
+export type AdminLinkSubscriptionCreateResponses = {
+    201: CommercialStateResponse;
+};
+
+export type AdminLinkSubscriptionCreateResponse = AdminLinkSubscriptionCreateResponses[keyof AdminLinkSubscriptionCreateResponses];
+
+export type AdminNdaRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/admin/nda/';
+};
+
+export type AdminNdaRetrieveResponses = {
+    200: NdaStatusResponse;
+};
+
+export type AdminNdaRetrieveResponse = AdminNdaRetrieveResponses[keyof AdminNdaRetrieveResponses];
+
+export type AdminNdaRefreshCreateData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/admin/nda/refresh/';
+};
+
+export type AdminNdaRefreshCreateResponses = {
+    /**
+     * No response body
+     */
+    200: unknown;
+};
+
+export type AdminNdaSignCreateData = {
+    body: CreateNdaSigning;
+    path?: never;
+    query?: never;
+    url: '/admin/nda/sign/';
+};
+
+export type AdminNdaSignCreateResponses = {
+    201: CreateNdaSigningResponse;
+};
+
+export type AdminNdaSignCreateResponse = AdminNdaSignCreateResponses[keyof AdminNdaSignCreateResponses];
+
+export type AdminOpenedGroupsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/admin/opened-groups/';
+};
+
+export type AdminOpenedGroupsListResponses = {
+    200: PaginatedOpenedStepGroupListResponse;
+};
+
+export type AdminOpenedGroupsListResponse = AdminOpenedGroupsListResponses[keyof AdminOpenedGroupsListResponses];
+
+export type AdminOpenedGroupsSetCreateData = {
+    body: OpenStepGroup;
+    path?: never;
+    query?: never;
+    url: '/admin/opened-groups/set/';
+};
+
+export type AdminOpenedGroupsSetCreateResponses = {
+    200: OpenStepGroupResponse;
+};
+
+export type AdminOpenedGroupsSetCreateResponse = AdminOpenedGroupsSetCreateResponses[keyof AdminOpenedGroupsSetCreateResponses];
+
+export type AdminPaymentGraceRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/admin/payment-grace/';
+};
+
+export type AdminPaymentGraceRetrieveResponses = {
+    200: PaymentGraceResponse;
+};
+
+export type AdminPaymentGraceRetrieveResponse = AdminPaymentGraceRetrieveResponses[keyof AdminPaymentGraceRetrieveResponses];
+
+export type AdminPaymentGraceSetCreateData = {
+    body: SetPaymentGrace;
+    path?: never;
+    query?: never;
+    url: '/admin/payment-grace/set/';
+};
+
+export type AdminPaymentGraceSetCreateResponses = {
+    200: PaymentGraceResponse;
+};
+
+export type AdminPaymentGraceSetCreateResponse = AdminPaymentGraceSetCreateResponses[keyof AdminPaymentGraceSetCreateResponses];
 
 export type AdminPaymentMethodsRetrieveData = {
     body?: never;
@@ -384,6 +1763,84 @@ export type AdminPaymentMethodsRetrieveResponses = {
 };
 
 export type AdminPaymentMethodsRetrieveResponse = AdminPaymentMethodsRetrieveResponses[keyof AdminPaymentMethodsRetrieveResponses];
+
+export type AdminPlanCheckoutCreateData = {
+    body: PlanCheckout;
+    path?: never;
+    query?: never;
+    url: '/admin/plan-checkout/';
+};
+
+export type AdminPlanCheckoutCreateResponses = {
+    201: PaymentLinkResponse;
+};
+
+export type AdminPlanCheckoutCreateResponse = AdminPlanCheckoutCreateResponses[keyof AdminPlanCheckoutCreateResponses];
+
+export type AdminPlanSelectionRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/admin/plan-selection/';
+};
+
+export type AdminPlanSelectionRetrieveResponses = {
+    200: PlanSelectionResponse;
+};
+
+export type AdminPlanSelectionRetrieveResponse = AdminPlanSelectionRetrieveResponses[keyof AdminPlanSelectionRetrieveResponses];
+
+export type AdminPlanSelectionCreateData = {
+    body: ChoosePlan;
+    path?: never;
+    query?: never;
+    url: '/admin/plan-selection/';
+};
+
+export type AdminPlanSelectionCreateResponses = {
+    201: PlanSelectionResponse;
+};
+
+export type AdminPlanSelectionCreateResponse = AdminPlanSelectionCreateResponses[keyof AdminPlanSelectionCreateResponses];
+
+export type AdminPlanSelectionAcceptCreateData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/admin/plan-selection/accept/';
+};
+
+export type AdminPlanSelectionAcceptCreateResponses = {
+    200: PlanSelectionResponse;
+};
+
+export type AdminPlanSelectionAcceptCreateResponse = AdminPlanSelectionAcceptCreateResponses[keyof AdminPlanSelectionAcceptCreateResponses];
+
+export type AdminPlanSelectionProposeCreateData = {
+    body: ProposePlan;
+    path?: never;
+    query?: never;
+    url: '/admin/plan-selection/propose/';
+};
+
+export type AdminPlanSelectionProposeCreateResponses = {
+    201: PlanSelectionResponse;
+};
+
+export type AdminPlanSelectionProposeCreateResponse = AdminPlanSelectionProposeCreateResponses[keyof AdminPlanSelectionProposeCreateResponses];
+
+export type AdminPlanSelectionRequestChangesCreateData = {
+    body: PlanChanges;
+    path?: never;
+    query?: never;
+    url: '/admin/plan-selection/request-changes/';
+};
+
+export type AdminPlanSelectionRequestChangesCreateResponses = {
+    200: PlanSelectionResponse;
+};
+
+export type AdminPlanSelectionRequestChangesCreateResponse = AdminPlanSelectionRequestChangesCreateResponses[keyof AdminPlanSelectionRequestChangesCreateResponses];
 
 export type AdminPlansListData = {
     body?: never;
@@ -429,6 +1886,350 @@ export type AdminProductsListResponses = {
 
 export type AdminProductsListResponse = AdminProductsListResponses[keyof AdminProductsListResponses];
 
+export type AdminProjectModeRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/admin/project-mode/';
+};
+
+export type AdminProjectModeRetrieveResponses = {
+    200: ProjectModeResponse;
+};
+
+export type AdminProjectModeRetrieveResponse = AdminProjectModeRetrieveResponses[keyof AdminProjectModeRetrieveResponses];
+
+export type AdminProjectModeRequestCreateData = {
+    body: RequestProjectMode;
+    path?: never;
+    query?: never;
+    url: '/admin/project-mode/request/';
+};
+
+export type AdminProjectModeRequestCreateResponses = {
+    200: ProjectModeResponse;
+};
+
+export type AdminProjectModeRequestCreateResponse = AdminProjectModeRequestCreateResponses[keyof AdminProjectModeRequestCreateResponses];
+
+export type AdminProjectModeSetCreateData = {
+    body: SetProjectMode;
+    path?: never;
+    query?: never;
+    url: '/admin/project-mode/set/';
+};
+
+export type AdminProjectModeSetCreateResponses = {
+    200: ProjectModeResponse;
+};
+
+export type AdminProjectModeSetCreateResponse = AdminProjectModeSetCreateResponses[keyof AdminProjectModeSetCreateResponses];
+
+export type AdminRateCardRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/admin/rate-card/';
+};
+
+export type AdminRateCardRetrieveResponses = {
+    /**
+     * No response body
+     */
+    200: unknown;
+};
+
+export type AdminRepresentativeListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/admin/representative/';
+};
+
+export type AdminRepresentativeListResponses = {
+    200: PaginatedRepresentativeConfirmationListResponse;
+};
+
+export type AdminRepresentativeListResponse = AdminRepresentativeListResponses[keyof AdminRepresentativeListResponses];
+
+export type AdminRepresentativeAuthorizationCreateData = {
+    body: RecordRepresentativeAuthorization;
+    path?: never;
+    query?: never;
+    url: '/admin/representative/authorization/';
+};
+
+export type AdminRepresentativeAuthorizationCreateResponses = {
+    200: RepresentativeConfirmationResponse;
+};
+
+export type AdminRepresentativeAuthorizationCreateResponse = AdminRepresentativeAuthorizationCreateResponses[keyof AdminRepresentativeAuthorizationCreateResponses];
+
+export type AdminRepresentativeAuthorizationLetterRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/admin/representative/authorization/letter/';
+};
+
+export type AdminRepresentativeAuthorizationLetterRetrieveResponses = {
+    /**
+     * No response body
+     */
+    200: unknown;
+};
+
+export type AdminRepresentativeConfirmCreateData = {
+    body: ConfirmRepresentative;
+    path?: never;
+    query?: never;
+    url: '/admin/representative/confirm/';
+};
+
+export type AdminRepresentativeConfirmCreateResponses = {
+    200: RepresentativeConfirmationResponse;
+};
+
+export type AdminRepresentativeConfirmCreateResponse = AdminRepresentativeConfirmCreateResponses[keyof AdminRepresentativeConfirmCreateResponses];
+
+export type AdminReviewsRetrieveData = {
+    body?: never;
+    path: {
+        kind: string;
+    };
+    query?: never;
+    url: '/admin/reviews/{kind}/';
+};
+
+export type AdminReviewsRetrieveResponses = {
+    200: ReviewedRecordStateResponse;
+};
+
+export type AdminReviewsRetrieveResponse = AdminReviewsRetrieveResponses[keyof AdminReviewsRetrieveResponses];
+
+export type AdminReviewsApproveCreateData = {
+    body?: ReviewNotes;
+    path: {
+        kind: string;
+    };
+    query?: never;
+    url: '/admin/reviews/{kind}/approve/';
+};
+
+export type AdminReviewsApproveCreateResponses = {
+    200: ReviewedRecordStateResponse;
+};
+
+export type AdminReviewsApproveCreateResponse = AdminReviewsApproveCreateResponses[keyof AdminReviewsApproveCreateResponses];
+
+export type AdminReviewsDraftUpdateData = {
+    body?: ReviewedRecordData;
+    path: {
+        kind: string;
+    };
+    query?: never;
+    url: '/admin/reviews/{kind}/draft/';
+};
+
+export type AdminReviewsDraftUpdateResponses = {
+    200: ReviewedRecordStateResponse;
+};
+
+export type AdminReviewsDraftUpdateResponse = AdminReviewsDraftUpdateResponses[keyof AdminReviewsDraftUpdateResponses];
+
+export type AdminReviewsEditCreateData = {
+    body?: ReviewedRecordData;
+    path: {
+        kind: string;
+    };
+    query?: never;
+    url: '/admin/reviews/{kind}/edit/';
+};
+
+export type AdminReviewsEditCreateResponses = {
+    200: ReviewedRecordStateResponse;
+};
+
+export type AdminReviewsEditCreateResponse = AdminReviewsEditCreateResponses[keyof AdminReviewsEditCreateResponses];
+
+export type AdminReviewsNotesCreateData = {
+    body?: ReviewNotes;
+    path: {
+        kind: string;
+    };
+    query?: never;
+    url: '/admin/reviews/{kind}/notes/';
+};
+
+export type AdminReviewsNotesCreateResponses = {
+    200: ReviewedRecordStateResponse;
+};
+
+export type AdminReviewsNotesCreateResponse = AdminReviewsNotesCreateResponses[keyof AdminReviewsNotesCreateResponses];
+
+export type AdminReviewsRehiveSaveCreateData = {
+    body?: ReviewedRecordRehiveSave;
+    path: {
+        kind: string;
+    };
+    query?: never;
+    url: '/admin/reviews/{kind}/rehive-save/';
+};
+
+export type AdminReviewsRehiveSaveCreateResponses = {
+    200: ReviewedRecordStateResponse;
+};
+
+export type AdminReviewsRehiveSaveCreateResponse = AdminReviewsRehiveSaveCreateResponses[keyof AdminReviewsRehiveSaveCreateResponses];
+
+export type AdminReviewsRequestChangesCreateData = {
+    body: ReviewNote;
+    path: {
+        kind: string;
+    };
+    query?: never;
+    url: '/admin/reviews/{kind}/request-changes/';
+};
+
+export type AdminReviewsRequestChangesCreateResponses = {
+    200: ReviewedRecordStateResponse;
+};
+
+export type AdminReviewsRequestChangesCreateResponse = AdminReviewsRequestChangesCreateResponses[keyof AdminReviewsRequestChangesCreateResponses];
+
+export type AdminReviewsSubmitCreateData = {
+    body?: ReviewedRecordData;
+    path: {
+        kind: string;
+    };
+    query?: never;
+    url: '/admin/reviews/{kind}/submit/';
+};
+
+export type AdminReviewsSubmitCreateResponses = {
+    200: ReviewedRecordStateResponse;
+};
+
+export type AdminReviewsSubmitCreateResponse = AdminReviewsSubmitCreateResponses[keyof AdminReviewsSubmitCreateResponses];
+
+export type AdminSlackRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/admin/slack/';
+};
+
+export type AdminSlackRetrieveResponses = {
+    200: SlackChannelResponse;
+};
+
+export type AdminSlackRetrieveResponse = AdminSlackRetrieveResponses[keyof AdminSlackRetrieveResponses];
+
+export type AdminSlackInviteCreateData = {
+    body: SetSlackInvite;
+    path?: never;
+    query?: never;
+    url: '/admin/slack/invite/';
+};
+
+export type AdminSlackInviteCreateResponses = {
+    200: SlackChannelResponse;
+};
+
+export type AdminSlackInviteCreateResponse = AdminSlackInviteCreateResponses[keyof AdminSlackInviteCreateResponses];
+
+export type AdminSlackJoinedCreateData = {
+    body: SlackJoined;
+    path?: never;
+    query?: never;
+    url: '/admin/slack/joined/';
+};
+
+export type AdminSlackJoinedCreateResponses = {
+    200: SlackChannelResponse;
+};
+
+export type AdminSlackJoinedCreateResponse = AdminSlackJoinedCreateResponses[keyof AdminSlackJoinedCreateResponses];
+
+export type AdminStepReviewsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/admin/step-reviews/';
+};
+
+export type AdminStepReviewsListResponses = {
+    200: PaginatedStepReviewListResponse;
+};
+
+export type AdminStepReviewsListResponse = AdminStepReviewsListResponses[keyof AdminStepReviewsListResponses];
+
+export type AdminStepReviewsMarkCreateData = {
+    body: MarkStepReview;
+    path?: never;
+    query?: never;
+    url: '/admin/step-reviews/mark/';
+};
+
+export type AdminStepReviewsMarkCreateResponses = {
+    200: MarkStepReviewResponse;
+};
+
+export type AdminStepReviewsMarkCreateResponse = AdminStepReviewsMarkCreateResponses[keyof AdminStepReviewsMarkCreateResponses];
+
+export type AdminStepSavesListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * A page number within the paginated result set.
+         */
+        page?: number;
+        /**
+         * Number of results to return per page.
+         */
+        page_size?: number;
+    };
+    url: '/admin/step-saves/';
+};
+
+export type AdminStepSavesListResponses = {
+    200: PaginatedStepSaveListResponse;
+};
+
+export type AdminStepSavesListResponse = AdminStepSavesListResponses[keyof AdminStepSavesListResponses];
+
+export type AdminStepSavesCreateData = {
+    body: RecordStepSave;
+    path?: never;
+    query?: never;
+    url: '/admin/step-saves/';
+};
+
+export type AdminStepSavesCreateResponses = {
+    201: StepSaveResponse;
+};
+
+export type AdminStepSavesCreateResponse = AdminStepSavesCreateResponses[keyof AdminStepSavesCreateResponses];
+
 export type AdminSubscriptionRetrieveData = {
     body?: never;
     path?: never;
@@ -441,6 +2242,98 @@ export type AdminSubscriptionRetrieveResponses = {
 };
 
 export type AdminSubscriptionRetrieveResponse = AdminSubscriptionRetrieveResponses[keyof AdminSubscriptionRetrieveResponses];
+
+export type AdminSubscriptionRefreshPaymentCreateData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/admin/subscription/refresh-payment/';
+};
+
+export type AdminSubscriptionRefreshPaymentCreateResponses = {
+    200: CommercialStateResponse;
+};
+
+export type AdminSubscriptionRefreshPaymentCreateResponse = AdminSubscriptionRefreshPaymentCreateResponses[keyof AdminSubscriptionRefreshPaymentCreateResponses];
+
+export type AdminSubscriptionStartFullPriceCreateData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/admin/subscription/start-full-price/';
+};
+
+export type AdminSubscriptionStartFullPriceCreateResponses = {
+    200: CommercialStateResponse;
+};
+
+export type AdminSubscriptionStartFullPriceCreateResponse = AdminSubscriptionStartFullPriceCreateResponses[keyof AdminSubscriptionStartFullPriceCreateResponses];
+
+export type AdminUsageRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/admin/usage/';
+};
+
+export type AdminUsageRetrieveResponses = {
+    200: AdminUsageResponse;
+};
+
+export type AdminUsageRetrieveResponse = AdminUsageRetrieveResponses[keyof AdminUsageRetrieveResponses];
+
+export type AdminUsagePeriodsRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/admin/usage/periods/';
+};
+
+export type AdminUsagePeriodsRetrieveResponses = {
+    /**
+     * No response body
+     */
+    200: unknown;
+};
+
+export type AdminUsagePreviewCreateData = {
+    body?: AdminUsage;
+    path?: never;
+    query?: never;
+    url: '/admin/usage/preview/';
+};
+
+export type AdminUsagePreviewCreateResponses = {
+    201: AdminUsageResponse;
+};
+
+export type AdminUsagePreviewCreateResponse = AdminUsagePreviewCreateResponses[keyof AdminUsagePreviewCreateResponses];
+
+export type AdminUsageRefreshCreateData = {
+    body?: AdminUsage;
+    path?: never;
+    query?: never;
+    url: '/admin/usage/refresh/';
+};
+
+export type AdminUsageRefreshCreateResponses = {
+    201: AdminUsageResponse;
+};
+
+export type AdminUsageRefreshCreateResponse = AdminUsageRefreshCreateResponses[keyof AdminUsageRefreshCreateResponses];
+
+export type AdminUsageReportingCreateData = {
+    body?: AdminUsage;
+    path?: never;
+    query?: never;
+    url: '/admin/usage/reporting/';
+};
+
+export type AdminUsageReportingCreateResponses = {
+    201: AdminUsageResponse;
+};
+
+export type AdminUsageReportingCreateResponse = AdminUsageReportingCreateResponses[keyof AdminUsageReportingCreateResponses];
 
 export type DeactivateCreateData = {
     body: Deactivate;
